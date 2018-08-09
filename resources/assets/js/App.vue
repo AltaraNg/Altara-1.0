@@ -32,7 +32,10 @@
                                     <i class="now-ui-icons users_circle-08"></i>{{user_name}}
                                 </span>
                                 <div class="dropdown-menu" aria-labelledby="menu">
-                                    <span class="dropdown-item"><i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i>My Profile</span>
+                                    <router-link to="/user/profile" class="dropdown-item">
+                                        <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i>
+                                        My Profile
+                                    </router-link>
                                     <span class="dropdown-item"><i class="now-ui-icons arrows-1_refresh-69 pr-1"></i>Manage Customers</span>
                                     <span class="dropdown-item" @click.stop="logout"><i class="now-ui-icons media-1_button-power pr-1"></i>Logout</span>
                                 </div>
@@ -69,6 +72,10 @@
     import Loader from './components/Loader.vue'
     import SideNav from './components/SideNav.vue';
     import { post, interceptors} from "./helpers/api";
+
+    window.$ = require('jquery');
+    window.JQuery = require('jquery');
+
     export default{
         components:{
             SideNav,

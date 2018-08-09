@@ -337,9 +337,10 @@ textarea.valid-input{
   }
   .card .card-body{
     min-height:80px !important;
-    padding:15px 15px 0 !important;
+    padding:15px 15px !important;
   }
 }
+
 
 
 
@@ -362,7 +363,7 @@ textarea.valid-input{
     }
   }
   .card .card-body{
-    padding:10px 10px 0 !important;
+    padding:10px 10px !important;
   }
   small.text-muted{
     font-size:75% $_v;

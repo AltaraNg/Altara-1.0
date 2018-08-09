@@ -7,10 +7,6 @@
                 <i class="fas fa-home icon mt-1 float-left"></i>
                 <span class="name mt-2 float-left ml-2" v-bind:class="{hide:sideNavActive}">Home</span>
             </router-link>
-            <!--<router-link to="/customer-register" class="p-3 w-100 float-left">
-                <i class="fas fa-id-card icon mt-1 float-left"></i>
-                <span class="name mt-2 float-left ml-2" v-bind:class="{hide:sideNavActive}">New Customer</span>
-            </router-link>-->
         </div>
     </div>
 </template>

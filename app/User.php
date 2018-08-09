@@ -22,6 +22,7 @@ class User extends Authenticatable
         'staff_id',
         'password',
         'api_token',
+        'staff_phone_number',
     ];
 
     /**

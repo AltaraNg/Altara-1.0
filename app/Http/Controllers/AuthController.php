@@ -31,6 +31,8 @@ class AuthController extends Controller
 
             'staff_id' => 'required|string|unique:users',
 
+            'staff_phone_number' => 'required|unique:users',
+
             'role_id' => 'required|max:5',
 
             'password' => 'required|confirmed|between:6,25'
