@@ -133,4 +133,8 @@
         color: #074a74 !important;
         text-transform: capitalize;
     }
+    .alert{
+        position: absolute !important;
+    z-index: 101 !important;;
+    }
 </style>

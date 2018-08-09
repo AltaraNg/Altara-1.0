@@ -24172,7 +24172,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\nli>.nav-link[data-v-6dd1125c]:hover,\nli>.router-link-active[data-v-6dd1125c],\nli>.router-link-exact-active[data-v-6dd1125c]{\n    background-color: #074a74 !important;\n    border-radius:4px;\n    font-weight:500;\n    color : white !important;\n}\n.navbar-brand[data-v-6dd1125c]{\n    font-size: 26px;\n    font-weight: 500;\n    color: #074a74 !important;\n    text-transform: capitalize;\n}\n", ""]);
+exports.push([module.i, "\nli>.nav-link[data-v-6dd1125c]:hover,\nli>.router-link-active[data-v-6dd1125c],\nli>.router-link-exact-active[data-v-6dd1125c]{\n    background-color: #074a74 !important;\n    border-radius:4px;\n    font-weight:500;\n    color : white !important;\n}\n.navbar-brand[data-v-6dd1125c]{\n    font-size: 26px;\n    font-weight: 500;\n    color: #074a74 !important;\n    text-transform: capitalize;\n}\n.alert[data-v-6dd1125c]{\n    position: absolute !important;\nz-index: 101 !important;\n}\n", ""]);
 
 // exports
 
