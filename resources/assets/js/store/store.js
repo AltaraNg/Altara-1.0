@@ -3,14 +3,13 @@ import 'es6-promise/auto'
 import Vuex from 'vuex'
 Vue.use(Vuex);
 export const store = new Vuex.Store({
-    //strict:true,
     state: {
         loader:false,
-        mother:'',
-        user:100,
-        DSAAccess:[1,2,6,10,13,14],
-        DVAAccess:[1,2,6,10,13,14],
-        DCAAccess:[]
+        ProfileAccess:[],
+        ProfileEditAccess:[],
+        DSAAccess:[1,2,3,4,9,10,11],
+        DVAAccess:[1,2,3,4,6,9,13,14],
+        DCAAccess:[1,2,3,4,6,9,13,14],
     },
     getters:{
         getDSAAccess:state => {
@@ -21,18 +20,22 @@ export const store = new Vuex.Store({
         },
         getDCAAccess:state => {
             return state.DVAAccess;
+        },
+        getProfileAccess:state => {
+            return state.ProfileAccess;
+        },
+        getProfileEditAccess:state => {
+            return state.ProfileEditAccess;
         }
     },
     mutations:{
-        /*mutateMother:(state, payload) => {
-            state.mother = 'Bibiana Uwagba Nkemdilim' + payload;
-        }*/
+        mutateProfileAccess:(state, payload) => {
+            state.ProfileAccess.push(payload);
+        }
     },
     actions:{
-        /*mutateMother:(context, payload) => {
-            setTimeout(function(){
-                context.commit('mutateMother', payload);
-            },5000);
-        }*/
+        mutateProfileAccess:(context, payload) => {
+            context.commit('mutateProfileAccess', payload);
+        }
     }
 });

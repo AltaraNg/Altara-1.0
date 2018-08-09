@@ -37,7 +37,7 @@ class CustomerController extends Controller
 
         $form['employee_name'] = $user->first_name.' '.$user->last_name;
 
-        $form['employee_ID'] = $user->staff_id;
+        $form['employee_phone_number'] = $user->staff_phone_number;
 
         return response()->json([
 

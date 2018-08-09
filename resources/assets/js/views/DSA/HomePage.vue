@@ -1,6 +1,6 @@
 <template>
     <div class="Flo-Rel-FWid">
-        <div class="col-md-4 float-left product py-md-3 py-0 px-md-3 px-3">
+        <div class="col-md-4 float-left product py-md-3 pt-md-0 pt-2 pb-3 px-md-3 px-1">
             <div class="card Flo-Rel-FWid my-0">
                 <div class="card-body">
                     <h4 class="card-title mt-0">Customer Registration</h4>
@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 float-left product py-md-3 py-0 px-md-3 px-3">
+        <div class="col-md-4 float-left product py-md-3 pt-0 pb-3 px-md-3 px-1">
             <div class="card Flo-Rel-FWid my-0">
                 <div class="card-body">
                     <h4 class="card-title mt-0">Customer Update </h4>
@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 float-left product py-md-3 py-0 px-md-3 px-3">
+        <div class="col-md-4 float-left product py-md-3 pt-0 pb-3 px-md-3 px-1">
             <div class="card Flo-Rel-FWid my-0">
                 <div class="card-body">
                     <h4 class="card-title mt-0">Customer List</h4>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 float-left product py-md-3 py-0 px-md-3 px-3 mx-auto">
+        <div class="col-md-4 float-left product py-md-3 pt-0 pb-3 px-md-3 px-1">
             <div class="card Flo-Rel-FWid">
                 <div class="card-body">
                     <h4 class="card-title mt-0">DSA Logs</h4>

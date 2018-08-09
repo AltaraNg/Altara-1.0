@@ -21,7 +21,7 @@ class Customer extends Model
 
         return [
             'employee_name' => '',
-            'employee_ID' => '',
+            'employee_phone_number' => '',
             'Date_of_Registration' => '',
             'office_branch' => '',
             'first_name' => '',
@@ -63,6 +63,7 @@ class Customer extends Model
             'receive_income_means' => '',
             'post_in_company' => '',
             'days_of_work' => '',
+            'market_name' => '',
             'years_of_existence_or_work_duration' => '',
             'comp_street_name' => '',
             'comp_house_no' => '',

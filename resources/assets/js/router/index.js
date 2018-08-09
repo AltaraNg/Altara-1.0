@@ -8,9 +8,16 @@ import DVA from '../views/DVA/index.vue';
 import DVAHome from '../views/DVA/HomePage.vue';
 import Login from '../views/auth/Login.vue';
 import NotFound from '../views/NotFound.vue';
-import Profile from '../views/profile/Home.vue';
-import Register from '../views/auth/Register.vue';
+
+
+import Profile from '../views/profile/Index.vue';
 import ProfileEdit from '../views/profile/Edit.vue';
+import ProfileHome from '../views/profile/HomePage.vue';
+
+
+
+import Register from '../views/auth/Register.vue';
+
 Vue.use(VueRouter);
 const router = new VueRouter({
     routes:[
@@ -20,7 +27,7 @@ const router = new VueRouter({
         {path:'/register',component:Register,name:'register'},
         {path:'/user',component:Profile,
             children: [
-                { path: 'profile', component: Profile },
+                { path: 'profile', component: ProfileHome },
                 { path: 'profile/edit', component: ProfileEdit },
             ]
         },

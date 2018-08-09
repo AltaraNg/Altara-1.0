@@ -16,7 +16,7 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('employee_name',50);
-            $table->string('employee_ID',15);
+            $table->string('employee_phone_number',15);
             $table->string('Date_of_Registration',20);
             $table->string('office_branch',255);
             $table->string('first_name',20);
@@ -61,20 +61,20 @@ class CreateCustomersTable extends Migration
             //40
             $table->string('company_telno',20);
             //$table->string('type_of_company',50);
-            $table->string('receive_income_means',20);
-            $table->string('post_in_company',50);
+            $table->string('receive_income_means',20)->nullable();
+            $table->string('post_in_company',50)->nullable();
             //$table->string('business_income',100);
             $table->string('days_of_work',255);
-            //$table->string('market_name',100);
+            $table->string('market_name',100)->nullable();
             //$table->string('bank_account',100);
             //$table->string('monthly_gains',100);
-            $table->string('years_of_existence_or_work_duration',100);
+            $table->string('years_of_existence_or_work_duration',100)->nullable();
             //50
             $table->string('comp_street_name',100);
             $table->string('comp_house_no',100);
             $table->string('comp_area',50);
             $table->string('current_sal_or_business_income',20);
-            $table->string('payment_period',20);
+            $table->string('payment_period',20)->nullable();
             $table->string('cvisit_hour_from',20);
             $table->string('cvisit_hour_to',20);
             $table->string('nextofkin_first_name',20);

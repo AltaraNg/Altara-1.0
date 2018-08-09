@@ -11,8 +11,6 @@
 
                             <div class="Flo-Rel-FWid">
 
-
-
                                 <div class="col-md-6 col-sm-12 float-left px-0 px-md-3">
                                     <label class="category">* First Name</label>
                                     <div class="input-group">
@@ -57,6 +55,24 @@
                                 </div>
 
                                 <div class="col-md-6 col-sm-12 float-left px-0 px-md-3">
+                                    <label class="category">* Phone Number</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="081xxxxxxxx"
+                                               v-model="form.staff_phone_number" name="staff id"
+                                               v-validate="'required|numeric|max:11|min:11'"
+                                               data-vv-as="staff phone number">
+                                        <span class="input-group-addon"><i class="far fa-id-badge"></i></span>
+                                    </div>
+                                    <small class="error-control" v-if="errors.first('staff_phone_number')">{{
+                                        errors.first('staff_phone_number') }}</small>
+                                    <small class="error-control" v-if="error.staff_phone_number">{{error.staff_phone_number[0]}}</small>
+                                </div>
+
+                            </div>
+
+                            <div class="Flo-Rel-FWid">
+
+                                <div class="col-md-6 col-sm-12 float-left px-0 px-md-3">
                                     <label class="category">* Staff ID Number</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="AC/C/013/18"
@@ -68,11 +84,7 @@
                                     <small class="error-control" v-if="error.staff_id">{{error.staff_id[0]}}</small>
                                 </div>
 
-                            </div>
-
-                            <div class="Flo-Rel-FWid">
-
-                                <div class="col-sm-12 float-left px-0 px-md-3">
+                                <div class="col-md-6 col-sm-12 float-left px-0 px-md-3">
                                     <label class="category">* Position</label>
                                     <div class="input-group">
                                         <select name="position"
@@ -81,6 +93,7 @@
                                                 data-menu-style="dropdown-blue"
                                                 data-style="btn-default btn-outline" v-model="form.role_id"
                                                 v-validate="'required'" data-vv-name="position">
+                                            <option value="" selected>Select position</option>
                                             <option v-for="role in roles" :value="role.id">{{role.name}}</option>
                                         </select>
                                     </div>
@@ -162,6 +175,7 @@
                     password: '',
                     last_name: '',
                     first_name: '',
+                    staff_phone_number:'',
                     password_confirmation: ''
                 },
                 error: {},
@@ -179,7 +193,7 @@
                         post('api/register', this.form)
                             .then((res) => {
                                 if(res.data.registered) {
-                                    Flash.setSuccess('Congratulations! You have successfully registered.');
+                                    Flash.setSuccess('Congratulations! You have successfully registered. Kindly Login to continue..');
                                     this.$router.push('/login');
                                 }
                                 this.isProcessing = false;
