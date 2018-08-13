@@ -88,7 +88,7 @@
                                     <label class="category">* Position</label>
                                     <div class="input-group">
                                         <select name="position"
-                                                class="form-control"
+                                                class="form-control custom-select"
                                                 data-title="Single Select"
                                                 data-menu-style="dropdown-blue"
                                                 data-style="btn-default btn-outline" v-model="form.role_id"

@@ -1,38 +1,25 @@
-.show,
-.side-nav-link a .name {
+.show, .side-nav-link a .name {
   opacity: 1;
   display: block;
   visibility: visible;
 }
 
-.hide,
-.side-nav-link a .name.hide {
+.hide, .side-nav-link a .name.hide {
   opacity: 0 !important;
   display: none !important;
   visibility: hidden !important;
 }
 
-.Flo-Rel,
-.Flo-Rel-FWid,
-#customerRegister h5,
-.spaceAfter,
-.spaceBefore,
-.spaceBetween,
-.side-nav {
+.Flo-Rel, .Flo-Rel-FWid, #customerRegister h5, #employeeRegister h5, .spaceAfter, .spaceBefore, .spaceBetween, .side-nav {
   float: left;
   position: relative;
 }
 
-.Flo-Rel-FWid,
-#customerRegister h5,
-.spaceAfter,
-.spaceBefore,
-.spaceBetween {
+.Flo-Rel-FWid, #customerRegister h5, #employeeRegister h5, .spaceAfter, .spaceBefore, .spaceBetween {
   width: 100%;
 }
 
-html,
-body {
+html, body {
   font-family: "Raleway", sans-serif !important;
   font-weight: 500;
 }
@@ -105,8 +92,7 @@ body {
   transition: all 0.2s;
 }
 
-.side-nav-link a.router-link-active,
-.side-nav-link a.router-link-exact-active {
+.side-nav-link a.router-link-active, .side-nav-link a.router-link-exact-active {
   background-color: #fbfbfb !important;
 }
 
@@ -214,8 +200,7 @@ button,
           transform: scale(1.02);
 }
 
-.product i,
-.product svg {
+.product i, .product svg {
   font-size: 90px;
   opacity: 0.1;
 }
@@ -238,22 +223,20 @@ hr {
   border-top: 1px solid rgba(0, 0, 0, 0.8);
 }
 
-#customerRegister {
+#customerRegister, #employeeRegister {
   font-weight: 500;
 }
 
-#customerRegister input,
-#customerRegister textarea {
+#customerRegister input, #customerRegister textarea, #customerRegister select, #employeeRegister input, #employeeRegister textarea, #employeeRegister select {
   border-radius: 4px !important;
   border: 1px solid #E3E3E3;
 }
 
-#customerRegister input:focus,
-#customerRegister textarea:focus {
+#customerRegister input:focus, #customerRegister textarea:focus, #customerRegister select:focus, #employeeRegister input:focus, #employeeRegister textarea:focus, #employeeRegister select:focus {
   border: 1px solid #f96332;
 }
 
-#customerRegister h5 {
+#customerRegister h5, #employeeRegister h5 {
   background-color: rgba(0, 0, 0, 0.07);
   padding: 6px 15px;
   border-radius: 3px;
@@ -292,54 +275,32 @@ hr {
   color: #8e97a0 !important;
 }
 
-button,
-input,
-optgroup,
-select,
-textarea,
-.form-control::-webkit-input-placeholder {
+button, input, optgroup, select, textarea, .form-control::-webkit-input-placeholder {
   font-family: "Raleway", sans-serif !important;
   font-weight: 500;
 }
 
-button,
-input,
-optgroup,
-select,
-textarea,
-.form-control:-ms-input-placeholder {
+button, input, optgroup, select, textarea, .form-control:-ms-input-placeholder {
   font-family: "Raleway", sans-serif !important;
   font-weight: 500;
 }
 
-button,
-input,
-optgroup,
-select,
-textarea,
-.form-control::-ms-input-placeholder {
+button, input, optgroup, select, textarea, .form-control::-ms-input-placeholder {
   font-family: "Raleway", sans-serif !important;
   font-weight: 500;
 }
 
-button,
-input,
-optgroup,
-select,
-textarea,
-.form-control::placeholder {
+button, input, optgroup, select, textarea, .form-control::placeholder {
   font-family: "Raleway", sans-serif !important;
   font-weight: 500;
 }
 
-.fade-enter-active,
-.fade-leave-active {
+.fade-enter-active, .fade-leave-active {
   -webkit-transition: opacity .5s;
   transition: opacity .5s;
 }
 
-.fade-enter,
-.fade-leave-to {
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 
@@ -410,81 +371,66 @@ textarea.valid-input {
   body {
     font-size: 90% !important;
   }
-
   h4 {
     font-size: 18px !important;
   }
-
   div.main#main {
     width: 100% !important;
   }
-
   .navbar-translate {
     width: 100%;
   }
-
   .navbar-translate button {
     float: right;
   }
-
   .navbar-brand img {
     width: auto !important;
   }
-
   .nav-tabs {
     padding: 12px 0.7rem 7px !important;
   }
-
   .btn-lg {
     padding: 10px 30px !important;
   }
-
   .nav-item.dropdown {
     max-height: 42px !important;
   }
-
-  .product i,
-  .product svg {
+  .product i, .product svg {
     font-size: 50px;
   }
-
   .card .card-body {
     min-height: 80px !important;
     padding: 15px 15px !important;
   }
 }
 
+.page-header-image {
+  background-image: url("../../../public/images/bg5.jpg");
+}
+
 @media only screen and (max-width: 600px) {
   body {
     font-size: 80% !important;
   }
-
   h4 {
     font-size: 16px !important;
   }
-
   .nav-tabs {
     padding: 10px 0.7rem 5px !important;
   }
-
-  .product i,
-  .product svg {
+  .product i, .product svg {
     font-size: 30px;
     opacity: 0.2;
   }
-
   .card .card-body {
     padding: 10px 10px !important;
   }
-
   small.text-muted {
     font-size: 75% !important;
   }
-
   #customerRegister h5 {
     padding: 6px 10px;
     font-size: 14px !important;
     font-weight: 500;
   }
 }
-

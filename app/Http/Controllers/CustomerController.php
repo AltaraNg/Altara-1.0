@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -148,6 +149,8 @@ class CustomerController extends Controller
 
         $customer->days_of_work = implode(' ',$request['days_of_work']);
 
+        $customer->user_id = auth('api')->user()->id;
+
         $customer->save();
 
         return response()->json([
@@ -202,4 +205,18 @@ class CustomerController extends Controller
     {
         //
     }
+
+    /*public function search(Request $request){
+
+        $qry = $request->qry;
+
+        $roles = Role::select('name')->where('name','like','%'. $qry .'%')->get();
+
+        return response()->json([
+
+            'result' => $roles,
+
+        ]);
+
+    }*/
 }

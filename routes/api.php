@@ -20,5 +20,7 @@ use Illuminate\Http\Request;
 
 Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
+Route::get('/create', 'AuthController@create');
 Route::post('/register', 'AuthController@register');
 Route::resource('customer','CustomerController');
+Route::post('/search', 'CustomerController@search');

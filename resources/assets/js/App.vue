@@ -22,11 +22,18 @@
                     </div>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><router-link to="/home" class="nav-link"><i class="fas fa-home pr-1"></i>Home</router-link></li>
-                            <li class="nav-item" v-if="guest"><router-link to="/login" class="nav-link"><i
-                                    class="fas fa-sign-in-alt pr-1"></i>Login</router-link></li>
-                            <li class="nav-item" v-if="guest"><router-link to="/register" class="nav-link"><i
-                                    class="fas fa-user-plus pr-1"></i>Register</router-link></li>
+                            <li class="nav-item">
+                                <router-link to="/home" class="nav-link">
+                                    <i class="fas fa-home pr-1"></i>
+                                    Home
+                                </router-link>
+                            </li>
+                            <li class="nav-item" v-if="guest">
+                                <router-link to="/login" class="nav-link">
+                                    <i class="fas fa-sign-in-alt pr-1"></i>
+                                    Login
+                                </router-link>
+                            </li>
                             <li class="nav-item dropdown" v-if="auth">
                                 <span class="nav-link dropdown-toggle" id="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="now-ui-icons users_circle-08"></i>{{user_name}}
@@ -53,6 +60,7 @@
                     </button>
                 </div>
             </div>
+
             <div class="alert alert-danger ml-4 mr-4" role="alert" v-if="flash.error">
                 <div class="container">
                     <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
@@ -72,10 +80,6 @@
     import Loader from './components/Loader.vue'
     import SideNav from './components/SideNav.vue';
     import { post, interceptors} from "./helpers/api";
-
-    window.$ = require('jquery');
-    window.JQuery = require('jquery');
-
     export default{
         components:{
             SideNav,
@@ -140,7 +144,7 @@
         color: #074a74 !important;
         text-transform: capitalize;
     }
-    .alert{
+     .alert{
         position: absolute !important;
     z-index: 101 !important;;
     }

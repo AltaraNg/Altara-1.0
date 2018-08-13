@@ -1286,8 +1286,6 @@
                 emptyForm:{},
                 newCustomer:{},
                 isProcessing:false,
-                //workGuarantor:false,
-                //PersonalGuarantor:false,
                 gender:[
                     'Male','Female'
                 ],

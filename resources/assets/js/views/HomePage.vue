@@ -21,8 +21,22 @@
                 </ul>
                 <div class="card-body Flo-Rel-FWid">
                     <div class="text-center w-100 float-left">
-                        <i class="fas fa-id-card"></i>
+                        <i class="fas fa-file-signature"></i>
                         <p class="pt-md-3 pt-2">For the DVA Agents.</p>
+                    </div>
+                </div>
+            </router-link>
+        </div>
+        <div class="col-md-4 float-left product py-md-3 py-0 px-md-4 px-3">
+            <router-link to="hrm/home" class="card">
+                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                    <h6 class="text-center">HRM Portal</h6>
+                </ul>
+                <div class="card-body Flo-Rel-FWid">
+                    <div class="text-center w-100 float-left">
+                        <i class="fas fa-female"></i>
+                        <i class="fas fa-male"></i>
+                        <p class="pt-md-3 pt-2">For the HRM officers.</p>
                     </div>
                 </div>
             </router-link>
