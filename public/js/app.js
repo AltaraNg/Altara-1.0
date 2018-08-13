@@ -38736,7 +38736,7 @@ var render = function() {
                           _c("i", { staticClass: "fa fa-user-circle" })
                         ])
                       ]),
-                      _vm._v(" "),
+                      _vm._v("0\n                                "),
                       _vm.errors.first("last name")
                         ? _c("small", { staticClass: "error-control" }, [
                             _vm._v(_vm._s(_vm.errors.first("last name")))
