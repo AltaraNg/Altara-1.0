@@ -835,7 +835,7 @@ function applyToTag (styleElement, obj) {
     state: {
         api_token: null,
         user_id: null,
-        user_name: '',
+        user_name: null,
         role: null
     },
     initialize: function initialize() {
@@ -26342,15 +26342,14 @@ __webpack_require__(21);
 
 
 
-
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vee_validate__["a" /* default */]);
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-    el: '#root',
-    template: '<app></app>',
-    components: { App: __WEBPACK_IMPORTED_MODULE_1__App_vue___default.a },
+    render: function render(h) {
+        return h(__WEBPACK_IMPORTED_MODULE_1__App_vue___default.a);
+    },
     router: __WEBPACK_IMPORTED_MODULE_2__router__["a" /* default */],
     store: __WEBPACK_IMPORTED_MODULE_3__store_store__["a" /* store */]
-});
+}).$mount('#root');
 
 /***/ }),
 /* 21 */
@@ -30651,7 +30650,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\nli>.nav-link[data-v-6dd1125c]:hover,\nli>.router-link-active[data-v-6dd1125c],\nli>.router-link-exact-active[data-v-6dd1125c]{\n    background-color: #074a74 !important;\n    border-radius:4px;\n    font-weight:500;\n    color : white !important;\n}\n.navbar-brand[data-v-6dd1125c]{\n    font-size: 26px;\n    font-weight: 500;\n    color: #074a74 !important;\n    text-transform: capitalize;\n}\n.alert[data-v-6dd1125c]{\n    position: absolute !important;\nz-index: 101 !important;\n}\n", ""]);
+exports.push([module.i, "\nli>.nav-link[data-v-6dd1125c]:hover,\nli>.router-link-active[data-v-6dd1125c],\nli>.router-link-exact-active[data-v-6dd1125c]{\n    background-color: #074a74 !important;\n    border-radius:4px;\n    font-weight:500;\n    color : white !important;\n}\n.navbar-brand[data-v-6dd1125c]{\n    font-size: 26px;\n    font-weight: 500;\n    color: #074a74 !important;\n    text-transform: capitalize;\n}\n", ""]);
 
 // exports
 
@@ -30829,8 +30828,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Object(__WEBPACK_IMPORTED_MODULE_4__helpers_api__["c" /* post */])('/api/logout').then(function (res) {
                 if (res.data.logged_out) {
                     __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].remove();
-                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully logged out!');
                     _this2.$router.push('/login');
+                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully logged out!');
+                    vm.$forceUpdate();
                 }
             });
         }
@@ -32079,7 +32079,7 @@ var render = function() {
     [
       _c("loader"),
       _vm._v(" "),
-      _c("side-nav"),
+      _vm.auth ? _c("side-nav") : _vm._e(),
       _vm._v(" "),
       _c(
         "div",
@@ -35211,7 +35211,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    beforeCreate: function beforeCreate() {
+        if (!(this.$store.state.ProfileAccess.indexOf(role_id) !== -1) && !localStorage.getItem('api_token')) {
+            Flash.setError('You dont have access to that page!');
+            this.$router.push('/login');
+        }
+    }
+});
 
 /***/ }),
 /* 61 */
@@ -35457,7 +35464,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -35548,8 +35555,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('api/login', _this.form).then(function (res) {
                         if (res.data.authenticated) {
                             __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role);
-                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully logged in.');
                             _this.$router.push('/');
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully logged in.');
+                            vm.$forceUpdate();
                         }
                         _this.isProcessing = false;
                     }).catch(function (err) {
@@ -35962,7 +35970,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     beforeCreate: function beforeCreate() {
-        if (!(this.$store.state.DSAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) || !localStorage.getItem('api_token')) {
+        if (!(this.$store.state.DSAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
             __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError("You don't have access to that page!");
             this.$router.push('/login');
         }
@@ -37640,15 +37648,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             receiveIncomeMeans: ['Bank Deposit', 'Check', 'Cash'],
             paymentPeriod: ['Daily', 'Weekly', 'Monthly'],
             employmentStatus: ['Formal', 'Informal(Business)', 'Unemployed'],
-            branches: ['Challenge', 'Dugbe', 'Iwo Road', 'Gates', 'Bodija', 'Head Quarters(Lagos)'],
+            states: {},
+            branches: {},
             highestLevelOfEdu: ['No studies', 'Secondary', 'Polytechnic', 'Primary', 'University', 'Masters'],
             civilStatus: ['Single', 'Married', 'Divorced', 'Widow', 'Live Together'],
             typesOfHome: ['Family', 'Owned', 'Rented'],
             relationshipWG: ['Supervisor', 'Neighbouring worker', 'Co-worker', 'Employee'],
             relationshipPG: ['Friend', 'Family', 'Co-worker', 'Employee', 'Other'],
             relationships: ['Spouse', 'Mother', 'Sibling', 'Uncle', 'Nephew', 'In-law', 'Friend', 'Child', 'Father', 'Grandparent', 'Cousin', 'Caretaker', 'Grandchild'],
-            durations: ['less than 1 year', '1 year', '2 years', '3 years', 'between 4 - 9 years', 'more than 10 years', 'more than 20 years'],
-            states: ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara", "FCT"]
+            durations: ['less than 1 year', '1 year', '2 years', '3 years', 'between 4 - 9 years', 'more than 10 years', 'more than 20 years']
+
         };
     },
 
@@ -37707,10 +37716,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this2 = this;
 
         Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])('/api/customer/create').then(function (res) {
+            _this2.states = res.data.states;
+            _this2.branches = res.data.branches;
             _this2.newCustomer = res.data.form;
             _this2.newCustomer.days_of_work = [];
             _this2.newCustomer.Date_of_Registration = _this2.getDate();
         });
+    },
+    beforeCreate: function beforeCreate() {
+        if (!localStorage.getItem('api_token')) this.$router.push('/home');
     }
 });
 
@@ -38507,8 +38521,8 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _vm._l(_vm.states, function(state) {
-                        return _c("option", { domProps: { value: state } }, [
-                          _vm._v(_vm._s(state))
+                        return _c("option", { domProps: { value: state.id } }, [
+                          _vm._v(_vm._s(state.name))
                         ])
                       })
                     ],
@@ -40576,8 +40590,8 @@ var render = function() {
                               _vm._l(_vm.states, function(state) {
                                 return _c(
                                   "option",
-                                  { domProps: { value: state } },
-                                  [_vm._v(_vm._s(state))]
+                                  { domProps: { value: state.id } },
+                                  [_vm._v(_vm._s(state.name))]
                                 )
                               })
                             ],
@@ -41692,8 +41706,8 @@ var render = function() {
                                 _vm._l(_vm.states, function(state) {
                                   return _c(
                                     "option",
-                                    { domProps: { value: state } },
-                                    [_vm._v(_vm._s(state))]
+                                    { domProps: { value: state.id } },
+                                    [_vm._v(_vm._s(state.name))]
                                   )
                                 })
                               ],
@@ -43019,8 +43033,8 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _vm._l(_vm.states, function(state) {
-                        return _c("option", { domProps: { value: state } }, [
-                          _vm._v(_vm._s(state))
+                        return _c("option", { domProps: { value: state.id } }, [
+                          _vm._v(_vm._s(state.name))
                         ])
                       })
                     ],
@@ -43846,8 +43860,8 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _vm._l(_vm.states, function(state) {
-                        return _c("option", { domProps: { value: state } }, [
-                          _vm._v(_vm._s(state))
+                        return _c("option", { domProps: { value: state.id } }, [
+                          _vm._v(_vm._s(state.name))
                         ])
                       })
                     ],
@@ -44175,8 +44189,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.newCustomer.office_branch,
-                          expression: "newCustomer.office_branch"
+                          value: _vm.newCustomer.branch_id,
+                          expression: "newCustomer.branch_id"
                         },
                         {
                           name: "validate",
@@ -44188,7 +44202,7 @@ var render = function() {
                       staticClass: "custom-select w-100",
                       attrs: {
                         "data-vv-as": "office branch",
-                        name: "office_branch"
+                        name: "branch_id"
                       },
                       on: {
                         change: function($event) {
@@ -44202,7 +44216,7 @@ var render = function() {
                             })
                           _vm.$set(
                             _vm.newCustomer,
-                            "office_branch",
+                            "branch_id",
                             $event.target.multiple
                               ? $$selectedVal
                               : $$selectedVal[0]
@@ -44216,17 +44230,19 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _vm._l(_vm.branches, function(branch) {
-                        return _c("option", { domProps: { value: branch } }, [
-                          _vm._v(_vm._s(branch))
-                        ])
+                        return _c(
+                          "option",
+                          { domProps: { value: branch.id } },
+                          [_vm._v(_vm._s(branch.name))]
+                        )
                       })
                     ],
                     2
                   ),
                   _vm._v(" "),
-                  _vm.errors.first("office_branch")
+                  _vm.errors.first("branch_id")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("office_branch")))
+                        _vm._v(_vm._s(_vm.errors.first("branch_id")))
                       ])
                     : _vm._e()
                 ]
@@ -44354,7 +44370,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     beforeCreate: function beforeCreate() {
-        if (!(this.$store.state.DVAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) || !localStorage.getItem('api_token')) {
+        if (!(this.$store.state.DVAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
             __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('You dont have access to that page!');
             this.$router.push('/login');
         }
@@ -44640,7 +44656,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     beforeCreate: function beforeCreate() {
         var role_id = parseInt(localStorage.getItem('role'));
         this.$store.dispatch('mutateProfileAccess', role_id);
-        if (!(this.$store.state.ProfileAccess.indexOf(role_id) !== -1) || !localStorage.getItem('api_token')) {
+        if (!(this.$store.state.ProfileAccess.indexOf(role_id) !== -1) && !localStorage.getItem('api_token')) {
             __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('You dont have access to that page!');
             this.$router.push('/login');
         }
@@ -44974,12 +44990,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -45090,7 +45100,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     beforeCreate: function beforeCreate() {
-        if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) || !localStorage.getItem('api_token')) {
+        if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
             __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('You dont have access to that page!');
             this.$router.push('/login');
         }
@@ -45693,6 +45703,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -45703,7 +45747,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form: {},
             gender: ['Male', 'Female'],
             statuses: ['married', 'single', 'divorced', 'complicated'],
-            countries: [{ id: 1, name: 'nigeria' }, { id: 1, name: 'ghana' }],
+            password: '',
+            countries: ['Nigeria', 'Ghana'],
+            qualifications: ['Bachelors', 'Masters', 'Doctorate', 'Post-graduate'],
+            branches: {},
             error: {},
             isProcessing: false
         };
@@ -45722,7 +45769,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         if (res.data.registered) {
                             $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
                             __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setSuccess('Congratulations! You have successfully registered. Kindly Login to continue..');
-                            _this.$router.push('/');
+                            _this.password = res.data.password;
+                            _this.form = res.data.form;
                         }
                         _this.$store.state.loader = _this.isProcessing = false;
                     }).catch(function (err) {
@@ -45749,7 +45797,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["a" /* get */])('/api/create').then(function (res) {
             _this2.form = res.data.form;
             _this2.roles = res.data.roles;
+            _this2.branches = res.data.branches;
         });
+    },
+    beforeCreate: function beforeCreate() {
+        if (!localStorage.getItem('api_token')) this.$router.push('/home');
     }
 });
 
@@ -45769,6 +45821,15 @@ var render = function() {
         attrs: { id: "employeeRegister" }
       },
       [
+        _vm.password
+          ? _c("div", { staticClass: "custom-notify text-center" }, [
+              _vm._v(
+                "\n            The Employee has been registered.\n            NB: This is for testing purpose till we write the mailing and sms feature.\n            The employees password is: "
+              ),
+              _c("strong", [_vm._v(" " + _vm._s(_vm.password))])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("div", { staticClass: "card" }, [
           _c(
             "ul",
@@ -45777,7 +45838,7 @@ var render = function() {
                 "nav nav-tabs nav-tabs-neutral justify-content-center",
               attrs: { "data-background-color": "orange" }
             },
-            [_c("h6", [_vm._v("Staff")])]
+            [_c("h6", [_vm._v("Staff Registration")])]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "card-body pl-4 pr-4 float-left" }, [
@@ -46060,11 +46121,11 @@ var render = function() {
                         _vm._l(_vm.countries, function(country) {
                           return _c(
                             "option",
-                            { domProps: { value: country.name } },
+                            { domProps: { value: country } },
                             [
                               _vm._v(
                                 "\n                                " +
-                                  _vm._s(country.name) +
+                                  _vm._s(country) +
                                   "\n                            "
                               )
                             ]
@@ -46288,7 +46349,7 @@ var render = function() {
                   },
                   [
                     _c("label", { staticClass: "category" }, [
-                      _vm._v("* Position in the company")
+                      _vm._v("* Role in the company")
                     ]),
                     _vm._v(" "),
                     _c(
@@ -46309,7 +46370,7 @@ var render = function() {
                           }
                         ],
                         staticClass: "custom-select w-100",
-                        attrs: { name: "role_id", "data-vv-name": "position" },
+                        attrs: { name: "role", "data-vv-name": "role" },
                         on: {
                           change: function($event) {
                             var $$selectedVal = Array.prototype.filter
@@ -46332,7 +46393,7 @@ var render = function() {
                       },
                       [
                         _c("option", { attrs: { value: "", selected: "" } }, [
-                          _vm._v("Select position")
+                          _vm._v("Select role")
                         ]),
                         _vm._v(" "),
                         _vm._l(_vm.roles, function(role) {
@@ -46352,11 +46413,184 @@ var render = function() {
                       2
                     ),
                     _vm._v(" "),
-                    _vm.errors.first("role_id")
+                    _vm.errors.first("role")
                       ? _c("small", { staticClass: "form-text text-muted" }, [
                           _vm._v(
                             "\n                            " +
-                              _vm._s(_vm.errors.first("role_id")) +
+                              _vm._s(_vm.errors.first("role")) +
+                              "\n                        "
+                          )
+                        ])
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "spaceBetween  mb-md-2 mb-0" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                  },
+                  [
+                    _c("label", { staticClass: "category" }, [
+                      _vm._v("* Highest Qualification")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.highest_qualification,
+                            expression: "form.highest_qualification"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "custom-select w-100",
+                        attrs: {
+                          name: "qualification",
+                          "data-vv-name": "qualification"
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.form,
+                              "highest_qualification",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "", selected: "" } }, [
+                          _vm._v("Select qualification")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.qualifications, function(qualification) {
+                          return _c(
+                            "option",
+                            { domProps: { value: qualification } },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(qualification) +
+                                  "\n                            "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _vm.errors.has("qualification")
+                      ? _c("small", { staticClass: "form-text text-muted" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.errors.first("qualification")) +
+                              "\n                        "
+                          )
+                        ])
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                  },
+                  [
+                    _c("label", { staticClass: "category" }, [
+                      _vm._v("* Operations Branch")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.branch_id,
+                            expression: "form.branch_id"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "custom-select w-100",
+                        attrs: { name: "branch", "data-vv-name": "branch" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.form,
+                              "branch_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "", selected: "" } }, [
+                          _vm._v("Select branch")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.branches, function(branch) {
+                          return _c(
+                            "option",
+                            { domProps: { value: branch.id } },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(branch.name) +
+                                  "\n                            "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _vm.errors.has("branch")
+                      ? _c("small", { staticClass: "form-text text-muted" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.errors.first("branch")) +
                               "\n                        "
                           )
                         ])
@@ -46443,20 +46677,10 @@ var render = function() {
                           rawName: "v-model",
                           value: _vm.form.date_of_exit,
                           expression: "form.date_of_exit"
-                        },
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: {
-                        type: "date",
-                        name: "date_of_exit",
-                        "data-vv-as": "date of exit"
-                      },
+                      attrs: { type: "date" },
                       domProps: { value: _vm.form.date_of_exit },
                       on: {
                         input: function($event) {
@@ -46470,17 +46694,7 @@ var render = function() {
                           )
                         }
                       }
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.first("date_of_exit")
-                      ? _c("small", { staticClass: "form-text text-muted" }, [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(_vm.errors.first("date_of_exit")) +
-                              "\n                        "
-                          )
-                        ])
-                      : _vm._e()
+                    })
                   ]
                 ),
                 _vm._v(" "),

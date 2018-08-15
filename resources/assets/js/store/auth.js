@@ -2,7 +2,7 @@ export default {
     state: {
         api_token: null,
         user_id: null,
-        user_name:'',
+        user_name:null,
         role:null
     },
     initialize() {

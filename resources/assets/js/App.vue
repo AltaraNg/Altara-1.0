@@ -1,7 +1,7 @@
 <template>
     <div>
-        <loader/>
-        <side-nav/>
+        <loader></loader>
+        <side-nav v-if="auth"></side-nav>
         <div class="main" id="main">
             <nav class="navbar navbar-expand-lg bg-white">
                 <div class="container">
@@ -121,8 +121,9 @@
                     .then((res) => {
                         if(res.data.logged_out){
                             Auth.remove();
-                            Flash.setSuccess('You have successfully logged out!');
                             this.$router.push('/login');
+                            Flash.setSuccess('You have successfully logged out!');
+                            vm.$forceUpdate();
                         }
                     })
             }
@@ -143,9 +144,5 @@
         font-weight: 500;
         color: #074a74 !important;
         text-transform: capitalize;
-    }
-     .alert{
-        position: absolute !important;
-    z-index: 101 !important;;
     }
 </style>

@@ -71,10 +71,11 @@
                         this.error = {};
                         post('api/login', this.form)
                             .then((res) => {
-                                if(res.data.authenticated) {
+                                if(res.data.authenticated){
                                     Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role);
+                                    this.$router.push('/');
                                     Flash.setSuccess('You have successfully logged in.');
-                                    this.$router.push('/')
+                                    vm.$forceUpdate();
                                 }
                                 this.isProcessing = false
                             })

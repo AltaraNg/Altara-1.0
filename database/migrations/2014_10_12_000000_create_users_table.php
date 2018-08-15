@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('date_of_exit');
             $table->string('status');
             $table->string('phone_number')->unique();
+            $table->string('highest_qualification');
+            $table->string('branch_id');
             $table->string('password');
             $table->string('email')->unique();
             $table->string('address');
