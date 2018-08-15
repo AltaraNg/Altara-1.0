@@ -1,9 +1,9 @@
 <template>
     <div>
-        <loader/>
-        <side-nav/>
+      
+       <side-nav v-if="auth"></side-nav>
         <div class="main" id="main">
-            <nav class="navbar navbar-expand-lg bg-white">
+            <nav v-if="auth" class="navbar navbar-expand-lg bg-white">
                 <div class="container">
                     <div class="navbar-translate">
                         <router-link class="navbar-brand p-0" to="/home"><img class="float-left" :src="`/images/altara_logo.png`"></router-link>
@@ -70,82 +70,196 @@
                     </button>
                 </div>
             </div>
-            <router-view/>
+
+<transition name="fade" v-if="guest">
+        <!--<div class="section section-tabs" id="login">-->
+        <div class="mt-1 mt-sm-5 section-tabs" id="login">
+            <div class="col-md-5 ml-auto mr-auto">
+                <div class="card">
+                    <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                        <h6>Staff Login</h6>
+                    </ul>
+                    <form @submit.prevent="login" class="pt-1 pb-3">
+                        <div class="card-body fullWidth floLeft">
+
+                            <div class="col-sm-12 float-left px-0 px-md-3">
+                                <label class="category">* Staff ID</label>
+                                <div class="input-group">
+                                    <input class="form-control" placeholder="Staff ID"
+                                           v-model="form.staff_id" v-validate="'required'" name="Staff ID">
+                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                </div>
+                                <small class="error-control" v-if="errors.first('Staff ID')">{{ errors.first('Staff ID') }}
+                                </small>
+                                <small class="error-control" v-if="error.staff_id">{{error.staff_id[0]}}</small>
+                                <small class="error-control" v-if="error.email">{{error.email[0]}}</small>
+                            </div>
+                            <div class="col-sm-12 float-left px-0 px-md-3">
+                                <label class="category">* Password</label>
+                                <div class="input-group">
+                                    <input placeholder="Password" type="password" class="form-control"
+                                           v-model="form.password" v-validate="'required|min:6|max:25'"
+                                           name="password">
+                                    <span class="input-group-addon"><i class="fas fa-key"></i></span>
+                                </div>
+                                <small class="error-control" v-if="errors.first('password')">{{
+                                    errors.first('password') }} </small>
+                                <small class="error-control" v-if="error.password">{{error.password[0]}}</small>
+                            </div>
+                            <div class="col-sm-12 mb-3 float-left px-0 px-md-3">
+                                <button class="btn btn-block btn-lg btn-primary" type="submit" data-background-color="orange">
+                                    Login! &nbsp; <i class="far fa-paper-plane" :disabled="isProcessing"></i>
+                                </button>
+                            </div>
+                            <span class="text-center float-left w-100 pb-4">Forgot Password? <router-link
+                                    to="/forgotPassword">Click here</router-link></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </transition>
+
+          <router-view></router-view>
         </div>
     </div>
 </template>
 <script>
-    import Auth from "./store/auth";
-    import Flash from "./helpers/flash";
-    import Loader from './components/Loader.vue'
-    import SideNav from './components/SideNav.vue';
-    import { post, interceptors} from "./helpers/api";
-    export default{
-        components:{
-            SideNav,
-            Loader,
+import Auth from "./store/auth";
+import Flash from "./helpers/flash";
+import Loader from "./components/Loader.vue";
+import SideNav from "./components/SideNav.vue";
+import { post, interceptors } from "./helpers/api";
+export default {
+  components: {
+    SideNav,
+    Loader
+  },
+  data() {
+    return {
+      flash: Flash.state,
+      authState: Auth.state,
+      user_name: localStorage.getItem("user_name"),
+      form: {
+        staff_id: "",
+        password: ""
+      },
+      error: {},
+      isProcessing: false
+    };
+  },
+    beforeCreate(){
+            if(localStorage.getItem('api_token'))this.$router.push('/home');
         },
-        data() {
-            return {
-                flash: Flash.state,
-                authState: Auth.state,
-                user_name:localStorage.getItem('user_name'),
-            };
-        },
-        created(){
-            interceptors(err => {
-                if (err.response.status === 401) {
-                    Auth.remove();
-                    this.$router.push("/login");
-                }
-                if (err.response.status === 500) {
-                    Flash.setError(err.response.statusText);
-                }
-                if (err.response.status === 404) {
-                    this.$router.push("/not-found");
-                }
-            });
-            Auth.initialize();
-        },
-        computed:{
-            auth(){
-                return (this.authState.api_token && this.authState.user_id);
-            },
-            guest() {
-                return !this.auth;
-            }
-        },
-        methods:{
-            logout(){
-                post('/api/logout')
-                    .then((res) => {
-                        if(res.data.logged_out){
-                            Auth.remove();
-                            Flash.setSuccess('You have successfully logged out!');
-                            this.$router.push('/login');
-                        }
-                    })
-            }
-        }
+  created() {
+    interceptors(err => {
+      if (err.response.status === 401) {
+        Auth.remove();
+        this.$router.push("/");
+      }
+      if (err.response.status === 500) {
+        Flash.setError(err.response.statusText);
+      }
+      if (err.response.status === 404) {
+        this.$router.push("/not-found");
+      }
+      
+    });
+    Auth.initialize();
+  },
+  computed: {
+    auth() {
+      return this.authState.api_token && this.authState.user_id;
+    },
+    guest() {
+      return !this.auth;
+    },
+    cauth() {
+      if (!this.authState.api_token) {
+        this.checkauth = true;
+        return true;
+      }
+      return true;
     }
+  },
+  watch: {
+    checkauth: function() {
+      this.checkauth1();
+      console.log("call change");
+    }
+  },
+  methods: {
+    checkauth1() {
+      this.$router.push("/home");
+      console.log("call redirect");
+    },
+    login() {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          this.isProcessing = true;
+          this.error = {};
+          post("api/login", this.form)
+            .then(res => {
+              if (res.data.authenticated) {
+                Auth.set(
+                  res.data.api_token,
+                  res.data.user_id,
+                  res.data.user_name,
+                  res.data.role
+                );
+                Flash.setSuccess("You have successfully logged in.");
+                this.$router.push("/home");
+              }
+              this.isProcessing = false;
+            })
+            .catch(err => {
+              if (err.response.status === 422) {
+                this.error = err.response.data;
+                if (err.response.data.errors) {
+                  this.error = err.response.data.errors;
+                }
+                if (err.response.data.email) {
+                  this.error = err.response.data;
+                }
+              }
+              this.isProcessing = false;
+              Flash.setError("Check your login details and try again!");
+            });
+        }
+        if (!result) {
+          console.log("Kindly fill all the fields in the form!");
+        }
+      });
+    },
+    logout() {
+      post("/api/logout").then(res => {
+        if (res.data.logged_out) {
+          Auth.remove();
+          Flash.setSuccess("You have successfully logged out!");
+          this.$router.push("/");
+        }
+      });
+    }
+  }
+};
 </script>
 <style type="scss" scoped>
-    li>.nav-link:hover,
-    li>.router-link-active,
-    li>.router-link-exact-active{
-        background-color: #074a74 !important;
-        border-radius:4px;
-        font-weight:500;
-        color : white !important;
-    }
-    .navbar-brand{
-        font-size: 26px;
-        font-weight: 500;
-        color: #074a74 !important;
-        text-transform: capitalize;
-    }
-     .alert{
-        position: absolute !important;
-    z-index: 101 !important;;
-    }
+li > .nav-link:hover,
+li > .router-link-active,
+li > .router-link-exact-active {
+  background-color: #074a74 !important;
+  border-radius: 4px;
+  font-weight: 500;
+  color: white !important;
+}
+.navbar-brand {
+  font-size: 26px;
+  font-weight: 500;
+  color: #074a74 !important;
+  text-transform: capitalize;
+}
+.alert {
+  position: absolute !important;
+  z-index: 101 !important;
+}
 </style>

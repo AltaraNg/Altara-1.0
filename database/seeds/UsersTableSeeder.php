@@ -60,6 +60,5 @@ class UsersTableSeeder extends Seeder
         $user->next_of_kin_name = 'me';
         $user->next_of_kin_phone_no = '08163145041';
         $user->save();
-
     }
 }

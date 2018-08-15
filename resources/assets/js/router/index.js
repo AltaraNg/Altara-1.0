@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/HomePage.vue';
+import LandingPage from '../views/Landing.vue';
 //import Register from '../views/auth/Register.vue';
 
 import Login from '../views/auth/Login.vue';
@@ -25,7 +26,8 @@ import EmployeeRegister from '../views/HRM/employee/Register.vue';
 Vue.use(VueRouter);
 const router = new VueRouter({
     routes:[
-        {path: '/',redirect:{name:'home'}},
+        // {path: '/',redirect:{name:'home'}},
+        {path:'/'},
         {path:'/home',component:Home,name:'home'},
         {path:'/login',component:Login,name:'login'},
         //{path:'/register',component:Register,name:'register'},
