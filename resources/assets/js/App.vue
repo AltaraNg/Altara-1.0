@@ -148,9 +148,9 @@ export default {
       isProcessing: false
     };
   },
-    beforeCreate(){
-            if(localStorage.getItem('api_token'))this.$router.push('/home');
-        },
+  beforeCreate() {
+    if (localStorage.getItem("api_token")) this.$router.push("/home");
+  },
   created() {
     interceptors(err => {
       if (err.response.status === 401) {
@@ -163,7 +163,6 @@ export default {
       if (err.response.status === 404) {
         this.$router.push("/not-found");
       }
-      
     });
     Auth.initialize();
   },
@@ -174,25 +173,10 @@ export default {
     guest() {
       return !this.auth;
     },
-    cauth() {
-      if (!this.authState.api_token) {
-        this.checkauth = true;
-        return true;
-      }
-      return true;
-    }
   },
   watch: {
-    checkauth: function() {
-      this.checkauth1();
-      console.log("call change");
-    }
   },
   methods: {
-    checkauth1() {
-      this.$router.push("/home");
-      console.log("call redirect");
-    },
     login() {
       this.$validator.validateAll().then(result => {
         if (result) {

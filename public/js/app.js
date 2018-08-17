@@ -30853,7 +30853,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     };
   },
   beforeCreate: function beforeCreate() {
-    if (localStorage.getItem('api_token')) this.$router.push('/home');
+    if (localStorage.getItem("api_token")) this.$router.push("/home");
   },
   created: function created() {
     var _this = this;
@@ -30879,26 +30879,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     guest: function guest() {
       return !this.auth;
-    },
-    cauth: function cauth() {
-      if (!this.authState.api_token) {
-        this.checkauth = true;
-        return true;
-      }
-      return true;
     }
   },
-  watch: {
-    checkauth: function checkauth() {
-      this.checkauth1();
-      console.log("call change");
-    }
-  },
+  watch: {},
   methods: {
-    checkauth1: function checkauth1() {
-      this.$router.push("/home");
-      console.log("call redirect");
-    },
     login: function login() {
       var _this2 = this;
 
