@@ -1,7 +1,7 @@
 <template>
     <div>
-      
-       <side-nav v-if="auth"></side-nav>
+        <loader></loader>
+        <side-nav v-if="auth"></side-nav>
         <div class="main" id="main">
             <nav v-if="auth" class="navbar navbar-expand-lg bg-white">
                 <div class="container">

@@ -8,7 +8,7 @@
     import Flash from '../../helpers/flash';
     export default{
         beforeCreate(){
-            if(!(this.$store.state.DSAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) ||
+            if(!(this.$store.state.DSAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&
                 !localStorage.getItem('api_token')){
                 Flash.setError("You don't have access to that page!");
                 this.$router.push('/login');

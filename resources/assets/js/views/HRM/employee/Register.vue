@@ -1,13 +1,18 @@
 <template>
     <transition name="fade">
         <div class="Flo-Rel-FWid pt-md-3 pt-2" id="employeeRegister">
+
+            <div class="custom-notify text-center" v-if="password">
+                The Employee has been registered.
+                NB: This is for testing purpose till we write the mailing and sms feature.
+                The employees password is: <strong> {{password}}</strong>
+            </div>
+
             <div class="card">
 
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" data-background-color="orange">
-                    <h6>Staff</h6>
+                    <h6>Staff Registration</h6>
                 </ul>
-
-
 
                 <div class="card-body pl-4 pr-4 float-left">
                     <form class="float-left" @submit.prevent="register">
@@ -71,8 +76,8 @@
                                     v-model="form.nationality"
                                     v-validate="'required'">
                                 <option value="" selected>Select nationality</option>
-                                <option v-for="country in countries" :value="country.name">
-                                    {{country.name}}
+                                <option v-for="country in countries" :value="country">
+                                    {{country}}
                                 </option>
                             </select>
                             <small class="form-text text-muted" v-if="errors.first('nationality')">
@@ -135,20 +140,58 @@
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Position in the company</label>
-                            <select name="role_id"
+                            <label class="category">* Role in the company</label>
+                            <select name="role"
                                     class="custom-select w-100"
                                     v-model="form.role_id"
                                     v-validate="'required'"
-                                    data-vv-name="position">
-                                <option value="" selected>Select position</option>
+                                    data-vv-name="role">
+                                <option value="" selected>Select role</option>
                                 <option v-for="role in roles" :value="role.id">
                                     {{role.name}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
-                                   v-if="errors.first('role_id')">
-                                {{errors.first('role_id') }}
+                                   v-if="errors.first('role')">
+                                {{errors.first('role') }}
+                            </small>
+                        </div>
+
+                        <div class="spaceBetween  mb-md-2 mb-0"></div>
+
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label class="category">* Highest Qualification</label>
+                            <select name="qualification"
+                                    class="custom-select w-100"
+                                    v-model="form.highest_qualification"
+                                    v-validate="'required'"
+                                    data-vv-name="qualification">
+                                <option value="" selected>Select qualification</option>
+                                <option v-for="qualification in qualifications" :value="qualification">
+                                    {{qualification}}
+                                </option>
+                            </select>
+                            <small class="form-text text-muted"
+                                   v-if="errors.has('qualification')">
+                                {{errors.first('qualification') }}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label class="category">* Operations Branch</label>
+                            <select name="branch"
+                                    class="custom-select w-100"
+                                    v-model="form.branch_id"
+                                    v-validate="'required'"
+                                    data-vv-name="branch">
+                                <option value="" selected>Select branch</option>
+                                <option v-for="branch in branches" :value="branch.id">
+                                    {{branch.name}}
+                                </option>
+                            </select>
+                            <small class="form-text text-muted"
+                                   v-if="errors.has('branch')">
+                                {{errors.first('branch') }}
                             </small>
                         </div>
 
@@ -171,18 +214,10 @@
                             <label class="category">* Date of Exit</label>
                             <input type="date"
                                    class="form-control"
-                                   v-model="form.date_of_exit"
-                                   name="date_of_exit"
-                                   v-validate="'required'"
-                                   data-vv-as="date of exit">
-                            <small class="form-text text-muted"
-                                   v-if="errors.first('date_of_exit')">
-                                {{errors.first('date_of_exit') }}
-                            </small>
+                                   v-model="form.date_of_exit">
                         </div>
 
                         <div class="spaceBetween  mb-md-2 mb-0"></div>
-
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Describe Location</label>
@@ -197,7 +232,6 @@
                                 {{errors.first('address')}}
                             </small>
                         </div>
-
                         <!--gender-->
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="w-100 float-left pl-1">Gender</label>
@@ -351,20 +385,21 @@
                 statuses:[
                     'married','single','divorced','complicated'
                 ],
-                countries:[
-                    {id:1,name:'nigeria'},
-                    {id:1,name:'ghana'},
+                password:'',
+                countries:['Nigeria','Ghana'],
+                qualifications:[
+                    'Bachelors',
+                    'Masters',
+                    'Doctorate',
+                    'Post-graduate',
                 ],
+                branches:{},
                 error: {},
                 isProcessing: false
             }
         },
         methods: {
             register() {
-
-
-
-
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         this.$store.state.loader = this.isProcessing = true;
@@ -375,7 +410,8 @@
                                 if(res.data.registered) {
                                     $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
                                     Flash.setSuccess('Congratulations! You have successfully registered. Kindly Login to continue..');
-                                    this.$router.push('/')
+                                    this.password = res.data.password;
+                                    this.form = res.data.form;
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })
@@ -403,7 +439,11 @@
                 .then((res) => {
                     this.form = res.data.form;
                     this.roles = res.data.roles;
+                    this.branches = res.data.branches;
                 });
+        },
+        beforeCreate(){
+            if(!localStorage.getItem('api_token'))this.$router.push('/home');
         }
     }
 </script>

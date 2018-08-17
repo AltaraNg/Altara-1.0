@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Hash;
 use App\Role;
 use App\User;
+use App\Branch;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -20,11 +21,15 @@ class AuthController extends Controller
 
         $roles = Role::select('name','id')->get();
 
+        $branches = Branch::select('name','id')->get();
+
         return response()->json([
 
             'form' => $form,
 
             'roles' => $roles,
+
+            'branches' => $branches,
 
         ]);
     }
@@ -57,13 +62,17 @@ class AuthController extends Controller
 
         $user->save();
 
+        $form = User::form();
+
         return response()
 
             ->json([
 
                 'registered' => true,
 
-                'user_password' => $gen_password,
+                'password' => $gen_password,
+
+                'form' => $form,
 
             ]);
 

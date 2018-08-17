@@ -70,6 +70,12 @@ components: {
       isProcessing: false
     };
   },
+//   beforeCreate(){
+//             if(!(this.$store.state.ProfileAccess.indexOf(role_id) !== -1) && !localStorage.getItem('api_token')){
+//                 Flash.setError('You dont have access to that page!');
+//                 this.$router.push('/login');
+//             }
+//         },
   computed: {
     role() {
       return this.authState.role;
@@ -82,4 +88,5 @@ components: {
    
 }
 }
+
 </script>

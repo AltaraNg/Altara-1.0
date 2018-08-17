@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,4 +21,3 @@ Route::post('/logout', 'AuthController@logout');
 Route::get('/create', 'AuthController@create');
 Route::post('/register', 'AuthController@register');
 Route::resource('customer','CustomerController');
-Route::post('/search', 'CustomerController@search');
