@@ -37,6 +37,10 @@ class User extends Authenticatable
             'date_of_exit' => '',
             'status' => '',
             'phone_number' => '',
+
+            'highest_qualification' => '',
+            'branch_id' => '',
+
             'email' => '',
             'address' => '',
             'gender' => '',
@@ -54,6 +58,12 @@ class User extends Authenticatable
     public function customers()
     {
         return $this->hasMany(Customer::class);
+    }
+
+    /*user branch relationship*/
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
     }
 
 }

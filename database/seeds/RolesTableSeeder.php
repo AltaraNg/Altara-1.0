@@ -72,5 +72,10 @@ class RolesTableSeeder extends Seeder
         $role->name = 'Internal Operations Officer';
         $role->save();
 
+
+        $role = new Role();
+        $role->name = 'IT Support Personnel';
+        $role->save();
+
     }
 }

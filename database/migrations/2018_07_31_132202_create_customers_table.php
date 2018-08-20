@@ -23,7 +23,7 @@ class CreateCustomersTable extends Migration
 
             $table->string('employee_phone_number',15);
             $table->string('Date_of_Registration',20);
-            $table->string('office_branch',255);
+            $table->integer('branch_id')->unsigned();
             $table->string('first_name',20);
             $table->string('middle_name',20);
             $table->string('last_name',20);

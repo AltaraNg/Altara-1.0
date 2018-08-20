@@ -210,7 +210,6 @@
                         })
                     }
                     if(!result){
-                        //not validated
                         console.log('Kindly fill all the fields in the form!');
                     }
                 });

@@ -104,8 +104,11 @@ html,body {
 .side-nav.active{
   width: 60px $_v;
 }
+
+
+
 .main{
-  width:calc(100% - 240px);
+  width:100%;
   background-color: white;
   float: left;
   position: relative;
@@ -113,6 +116,7 @@ html,body {
   -moz-transition: all 0.4s;
   -o-transition: all 0.4s;
   transition: all 0.4s;
+  overflow-x : hidden;
   &#main{
     position: absolute;
     right: 0;
@@ -120,6 +124,9 @@ html,body {
 }
 .side-nav.active + div.main{
   width:calc(100% - 60px);
+}
+.side-nav + div.main{
+  width:calc(100% - 240px);
 }
 
 
@@ -288,6 +295,13 @@ textarea.valid-input{
   }
 }
 
+.custom-notify{
+  padding: 20px;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
 
 #navigation{
   .nav-item{

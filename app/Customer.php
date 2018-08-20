@@ -23,7 +23,7 @@ class Customer extends Model
             'employee_name' => '',
             'employee_phone_number' => '',
             'Date_of_Registration' => '',
-            'office_branch' => '',
+            'branch_id' => '',
             'first_name' => '',
             'middle_name' => '',
             'last_name' => '',

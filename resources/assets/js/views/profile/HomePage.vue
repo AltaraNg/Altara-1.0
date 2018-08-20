@@ -2,13 +2,7 @@
 
     <div class="profile-page sidebar-collapse">
 
-        <!--<div class="form-group col-md-4 px-md-3 px-1 float-left">
-            <input v-model="qry"  type="text" class="form-control" placeholder="what are you looking for...?" name="office_street_name"
-                v-on:keyup="autoCompleteNow">
-                <div class="pannel-footer" v-if="results.length">
-                    <p v-for="result in results">{{result.name}}</p>
-                </div>
-        </div>-->
+
 
         <!--<div class="wrapper">
             <div class="page-header page-header-small" filter-color="orange">
