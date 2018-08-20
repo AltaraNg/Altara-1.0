@@ -2,54 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\User;
-
 use Hash;
+use App\Role;
+use App\User;
+use App\Branch;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
-
         $this->middleware('auth:api')->only('logout');
-
     }
 
+    public function create()
+    {
+        $form = User::form();
+
+        $roles = Role::select('name','id')->get();
+
+        $branches = Branch::select('name','id')->get();
+
+        return response()->json([
+
+            'form' => $form,
+
+            'roles' => $roles,
+
+            'branches' => $branches,
+
+        ]);
+    }
 
     public function register(Request $request)
     {
+        /***validating the field below in the
+
+        **backend because vue validation
+
+        cant handle the validation**/
 
         $this->validate($request, [
 
-            'first_name' => 'required|max:255',
+            'email' => 'unique:users',
 
-            'last_name' => 'required|max:255',
+            'staff_id' => 'unique:users',
 
-            'email' => 'required|email|unique:users',
+            'phone_number' => 'unique:users',
 
-            'staff_id' => 'required|string|unique:users',
-
-            'staff_phone_number' => 'required|unique:users',
-
-            'role_id' => 'required|max:5',
-
-            'password' => 'required|confirmed|between:6,25'
         ]);
-
 
         $user = new User($request->all());
 
-        $user->password = bcrypt($request->password);
+        $gen_password = str_random(10);
+
+        $user->password = bcrypt($gen_password);
+
+        $user->hr_id = auth('api')->user()->id;
 
         $user->save();
+
+        $form = User::form();
 
         return response()
 
             ->json([
 
-                'registered' => true
+                'registered' => true,
+
+                'password' => $gen_password,
+
+                'form' => $form,
 
             ]);
 
@@ -59,15 +82,11 @@ class AuthController extends Controller
     {
         $this->validate($request, [
 
-            //'email' => 'required|email',
-
             'staff_id' => 'required',
 
             'password' => 'required|between:6,25'
 
         ]);
-
-        //$user = User::where('email', $request->email)
 
         $user = User::where('staff_id', $request->staff_id)
 
@@ -89,7 +108,7 @@ class AuthController extends Controller
 
                     'user_id' => $user->id,
 
-                    'user_name' => $user->first_name . ' ' .  $user->last_name,
+                    'user_name' => $user->full_name,
 
                     'role' => $user->role_id,
 
@@ -101,7 +120,7 @@ class AuthController extends Controller
 
             ->json([
 
-                'email' => ['Provided email and password does not match']
+                'email' => ['Provided staff id and password does not match']
 
             ], 422);
 

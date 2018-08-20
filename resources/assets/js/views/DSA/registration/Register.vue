@@ -3,6 +3,13 @@
         <div class="card">
             <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" data-background-color="orange">
                 <h6>Customer Registration</h6>
+
+
+
+
+
+
+
             </ul>
             <div class="card-body pl-4 pr-4 float-left">
                 <form class="float-left" @submit.prevent="register">
@@ -162,7 +169,7 @@
                         <select class="custom-select w-100" v-model="newCustomer.state"
                                 v-validate="'required|max:20'" name="state">
                             <option value="">select state</option>
-                            <option :value="state" v-for="state in states">{{state}}</option>
+                            <option :value="state.id" v-for="state in states">{{state.name}}</option>
                         </select>
                         <small class="form-text text-muted" v-if="errors.first('state')">{{
                             errors.first('state')}}
@@ -561,7 +568,7 @@
                                 <select class="custom-select w-100" v-model="newCustomer.company_state"
                                         v-validate="'required|max:20'" name="company_state" data-vv-as="company state">
                                     <option value="">select state</option>
-                                    <option :value="state" v-for="state in states">{{state}}</option>
+                                    <option :value="state.id" v-for="state in states">{{state.name}}</option>
                                 </select>
                                 <small class="form-text text-muted" v-if="errors.first('company_state')">{{
                                     errors.first('company_state')}}</small>
@@ -749,7 +756,7 @@
                                 <select class="custom-select w-100" v-model="newCustomer.company_state"
                                         v-validate="'required|max:20'" name="company_state" data-vv-as="company state">
                                     <option value="">select state</option>
-                                    <option :value="state" v-for="state in states">{{state}}</option>
+                                    <option :value="state.id" v-for="state in states">{{state.name}}</option>
                                 </select>
                                 <small class="form-text text-muted" v-if="errors.first('company_state')">{{
                                     errors.first('company_state')}}</small>
@@ -1019,7 +1026,7 @@
                                 v-validate="'required|max:25'" data-vv-as="work guarantor state"
                                 name="work_guarantor_state">
                             <option value="">select state</option>
-                            <option :value="state" v-for="state in states">{{state}}</option>
+                            <option :value="state.id" v-for="state in states">{{state.name}}</option>
                         </select>
                         <small class="form-text text-muted" v-if="errors.first('work_guarantor_state')">{{
                                     errors.first('work_guarantor_state')}}</small>
@@ -1186,7 +1193,7 @@
                                 v-validate="'required|max:25'" data-vv-as="personal guarantor state"
                                 name="personal_guarantor_state">
                             <option value="">select state</option>
-                            <option :value="state" v-for="state in states">{{state}}</option>
+                            <option :value="state.id" v-for="state in states">{{state.name}}</option>
                         </select>
                         <small class="form-text text-muted" v-if="errors.first('personal_guarantor_state')">{{
                                     errors.first('personal_guarantor_state')}}</small>
@@ -1254,13 +1261,13 @@
 
                     <div class="form-group col-md-4 px-md-3 px-1 float-left">
                         <label>Office Branch</label>
-                        <select class="custom-select w-100" v-model="newCustomer.office_branch"
-                                v-validate="'required|max:25'" data-vv-as="office branch" name="office_branch">
+                        <select class="custom-select w-100" v-model="newCustomer.branch_id"
+                                v-validate="'required|max:25'" data-vv-as="office branch" name="branch_id">
                             <option value="">select office branch</option>
-                            <option :value="branch" v-for="branch in branches">{{branch}}</option>
+                            <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
                         </select>
-                        <small class="form-text text-muted" v-if="errors.first('office_branch')">{{
-                                    errors.first('office_branch')}}</small>
+                        <small class="form-text text-muted" v-if="errors.first('branch_id')">{{
+                                    errors.first('branch_id')}}</small>
                         <!--<small class="form-text text-muted" v-if="err('office_branch')">{{error.office_branch[0]}}</small>-->
                     </div>
 
@@ -1286,8 +1293,6 @@
                 emptyForm:{},
                 newCustomer:{},
                 isProcessing:false,
-                //workGuarantor:false,
-                //PersonalGuarantor:false,
                 gender:[
                     'Male','Female'
                 ],
@@ -1312,9 +1317,8 @@
                     'Informal(Business)',
                     'Unemployed',
                 ],
-                branches:[
-                    'Challenge','Dugbe','Iwo Road','Gates','Bodija','Head Quarters(Lagos)'
-                ],
+                states: {},
+                branches:{},
                 highestLevelOfEdu:[
                     'No studies',
                     'Secondary',
@@ -1346,45 +1350,7 @@
                     'more than 10 years',
                     'more than 20 years'
                 ],
-                states: [
-                    "Abia",
-                    "Adamawa",
-                    "Akwa Ibom",
-                    "Anambra",
-                    "Bauchi",
-                    "Bayelsa",
-                    "Benue",
-                    "Borno",
-                    "Cross River",
-                    "Delta",
-                    "Ebonyi",
-                    "Edo",
-                    "Ekiti",
-                    "Enugu",
-                    "Gombe",
-                    "Imo",
-                    "Jigawa",
-                    "Kaduna",
-                    "Kano",
-                    "Katsina",
-                    "Kebbi",
-                    "Kogi",
-                    "Kwara",
-                    "Lagos",
-                    "Nasarawa",
-                    "Niger",
-                    "Ogun",
-                    "Ondo",
-                    "Osun",
-                    "Oyo",
-                    "Plateau",
-                    "Rivers",
-                    "Sokoto",
-                    "Taraba",
-                    "Yobe",
-                    "Zamfara",
-                    "FCT"
-                ]
+
             }
         },
         methods:{
@@ -1399,6 +1365,7 @@
                 let day = toTwoDigits(today.getDate());
                 return `${month}-${day}-${year}`;
             },
+
             register(){
                 this.$validator.validateAll().then((result) => {
                     if (result) {
@@ -1440,14 +1407,16 @@
         created(){
             get('/api/customer/create')
                 .then((res) => {
+                    this.states = res.data.states;
+                    this.branches = res.data.branches;
                     this.newCustomer = res.data.form;
                     this.newCustomer.days_of_work = [];
                     this.newCustomer.Date_of_Registration = this.getDate();
                 });
         },
-        /*beforeCreate(){
+        beforeCreate(){
             if(!localStorage.getItem('api_token'))this.$router.push('/home');
-        }*/
+        }
 
     }
 </script>

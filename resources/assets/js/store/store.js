@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
         ProfileEditAccess:[],
         DSAAccess:[1,2,3,4,9,10,11],
         DVAAccess:[1,2,3,4,6,9,13,14],
-        DCAAccess:[1,2,3,4,6,9,13,14],
+        HRAccess:[1,2,3,5,9,15],
     },
     getters:{
         getDSAAccess:state => {
@@ -20,6 +20,9 @@ export const store = new Vuex.Store({
         },
         getDCAAccess:state => {
             return state.DVAAccess;
+        },
+        getHRAccess:state => {
+            return state.HRAccess;
         },
         getProfileAccess:state => {
             return state.ProfileAccess;

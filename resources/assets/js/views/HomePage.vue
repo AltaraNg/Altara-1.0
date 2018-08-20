@@ -1,8 +1,8 @@
 <template>
     <div class="col-md-12 Flo-Rel px-md-3 p-0">
-        <div class="col-md-4 float-left product py-md-3 py-0 px-md-4 px-3">
+        <div  v-if="role == ('10')" class="col-md-4 float-left product py-md-3 py-0 px-md-4 px-3">
             <!--<router-link class="card" to="/customer-register">-->
-            <router-link class="card" to="dsa/home">
+            <router-link   class="card" to="dsa/home">
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                     <h6 class="text-center">DSA Portal</h6>
                 </ul>
@@ -14,20 +14,34 @@
                 </div>
             </router-link>
         </div>
-        <div class="col-md-4 float-left product py-md-3 py-0 px-md-4 px-3">
+        <div  v-if="role == ('5')" class="col-md-4 float-left product py-md-3 py-0 px-md-4 px-3">
             <router-link to="dva/home" class="card">
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                     <h6 class="text-center">DVA Portal</h6>
                 </ul>
                 <div class="card-body Flo-Rel-FWid">
                     <div class="text-center w-100 float-left">
-                        <i class="fas fa-id-card"></i>
+                        <i class="fas fa-file-signature"></i>
                         <p class="pt-md-3 pt-2">For the DVA Agents.</p>
                     </div>
                 </div>
             </router-link>
         </div>
-        <div class="col-md-4 float-left product py-md-3 py-0 px-md-4 px-3">
+        <div v-if="role == ('1')" class="col-md-4 float-left product py-md-3 py-0 px-md-4 px-3">
+            <router-link to="hrm/home" class="card">
+                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                    <h6 class="text-center">HRM Portal</h6>
+                </ul>
+                <div class="card-body Flo-Rel-FWid">
+                    <div class="text-center w-100 float-left">
+                        <i class="fas fa-female"></i>
+                        <i class="fas fa-male"></i>
+                        <p class="pt-md-3 pt-2">For the HRM officers.</p>
+                    </div>
+                </div>
+            </router-link>
+        </div>
+        <div  class="col-md-4 float-left product py-md-3 py-0 px-md-4 px-3">
             <a href="http://catalog-altara.herokuapp.com/" target="_blank" class="card">
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                     <h6 class="text-center">Altara Catalogue</h6>
@@ -43,7 +57,33 @@
     </div>
 </template>
 <script>
+import Auth from "./../store/auth";
+import Flash from "./../helpers/flash";
     export default{
+components: {
+  },
+  data() {
+    return {
+      flash: Flash.state,
+      authState: Auth.state,
+      user_name: localStorage.getItem("user_name"),
+      isProcessing: false
+    };
+  },
+//   beforeCreate(){
+//             if(!localStorage.getItem('api_token'))this.$router.push('/login');
+//         },
+  computed: {
+    role() {
+      return this.authState.role;
+    },
+  },
+  watch: {
+    
+  },
+  methods: {
+   
+}
+}
 
-    }
 </script>

@@ -9,16 +9,7 @@
                     </ul>
                     <form @submit.prevent="login" class="pt-1 pb-3">
                         <div class="card-body fullWidth floLeft">
-                            <!--<div class="col-sm-12 float-left">
-                                <label class="category">* Email</label>
-                                <div class="input-group">
-                                    <input class="form-control" placeholder="name@example.com"
-                                           v-model="form.email" v-validate="'required|email'" name="email">
-                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
-                                </div>
-                                <small class="error-control" v-if="errors.first('email')">{{ errors.first('email') }}</small>
-                                <small class="error-control" v-if="error.email">{{error.email[0]}}</small>
-                            </div>-->
+
                             <div class="col-sm-12 float-left px-0 px-md-3">
                                 <label class="category">* Staff ID</label>
                                 <div class="input-group">
@@ -29,6 +20,7 @@
                                 <small class="error-control" v-if="errors.first('Staff ID')">{{ errors.first('Staff ID') }}
                                 </small>
                                 <small class="error-control" v-if="error.staff_id">{{error.staff_id[0]}}</small>
+                                <small class="error-control" v-if="error.email">{{error.email[0]}}</small>
                             </div>
                             <div class="col-sm-12 float-left px-0 px-md-3">
                                 <label class="category">* Password</label>
@@ -64,7 +56,6 @@
         data(){
             return {
                 form: {
-                    //email: '',
                     staff_id:'',
                     password: ''
                 },
@@ -76,17 +67,18 @@
             login() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        //validated
-                        this.isProcessing = true;
+                        this.$store.state.loader = this.isProcessing = true;
                         this.error = {};
                         post('api/login', this.form)
                             .then((res) => {
-                                if(res.data.authenticated) {
+                                if(res.data.authenticated){
                                     Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role);
+                                    this.$router.push('/home');
+                                    this.$store.state.loader = this.isProcessing = false;
                                     Flash.setSuccess('You have successfully logged in.');
-                                    this.$router.push('/')
+                                    vm.$forceUpdate();
                                 }
-                                this.isProcessing = false
+                                
                             })
                             .catch((err) => {
                                 if(err.response.status === 422) {
@@ -94,12 +86,15 @@
                                     if(err.response.data.errors){
                                         this.error = err.response.data.errors;
                                     }
+                                    if(err.response.data.email){
+                                        this.error = err.response.data;
+                                    }
                                 }
-                                this.isProcessing = false
+                                 this.$store.state.loader = this.isProcessing = false;
+                                Flash.setError('Check your login details and try again!');
                             });
                     }
                     if(!result){
-                        //not validated
                         console.log('Kindly fill all the fields in the form!');
                     }
                 });

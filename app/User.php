@@ -14,16 +14,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'role_id',
-        'email',
-        'staff_id',
-        'password',
-        'api_token',
-        'staff_phone_number',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,13 +24,46 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'api_token'
+        'api_token',
+        'hr_id',
     ];
+
+    public static function Form(){
+        return [
+            'role_id' => '',
+            'staff_id' => '',
+            'full_name' => '',
+            'date_of_appointment' => '',
+            'date_of_exit' => '',
+            'status' => '',
+            'phone_number' => '',
+
+            'highest_qualification' => '',
+            'branch_id' => '',
+
+            'email' => '',
+            'address' => '',
+            'gender' => '',
+            'referee_1' => '',
+            'referee_2' => '',
+            'referee_1_phone_no' => '',
+            'referee_2_phone_no' => '',
+            'date_of_birth' => '',
+            'nationality' => '',
+            'next_of_kin_name' => '',
+            'next_of_kin_phone_no' => '',
+        ];
+    }
 
     public function customers()
     {
         return $this->hasMany(Customer::class);
     }
 
+    /*user branch relationship*/
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
 }
