@@ -67,7 +67,6 @@ const router = new VueRouter({
 });
 
 
-
 //place the router guard
 router.beforeEach((to, from, next) => {
     //check if the path user is going to is our param path
