@@ -67,17 +67,18 @@
             login() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.isProcessing = true;
+                        this.$store.state.loader = this.isProcessing = true;
                         this.error = {};
                         post('api/login', this.form)
                             .then((res) => {
                                 if(res.data.authenticated){
                                     Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role);
-                                    this.$router.push('/');
+                                    this.$router.push('/home');
+                                    this.$store.state.loader = this.isProcessing = false;
                                     Flash.setSuccess('You have successfully logged in.');
                                     vm.$forceUpdate();
                                 }
-                                this.isProcessing = false
+                                
                             })
                             .catch((err) => {
                                 if(err.response.status === 422) {
@@ -89,7 +90,7 @@
                                         this.error = err.response.data;
                                     }
                                 }
-                                this.isProcessing = false;
+                                 this.$store.state.loader = this.isProcessing = false;
                                 Flash.setError('Check your login details and try again!');
                             });
                     }

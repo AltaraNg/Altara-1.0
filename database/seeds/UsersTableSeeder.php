@@ -44,7 +44,7 @@ class UsersTableSeeder extends Seeder
 
 
         $user = new User();
-        $user->role_id =  1;
+        $user->role_id =  5;
         $user->staff_id = 'clinsmann2';
         $user->full_name = 'ibeanu hillary';
         $user->date_of_appointment =  '02/02/2016';
@@ -76,7 +76,7 @@ class UsersTableSeeder extends Seeder
 
 
         $user = new User();
-        $user->role_id =  1;
+        $user->role_id =  10;
         $user->staff_id = 'clinsmann3';
         $user->full_name = 'ibeanu hillary';
         $user->date_of_appointment =  '02/02/2016';
