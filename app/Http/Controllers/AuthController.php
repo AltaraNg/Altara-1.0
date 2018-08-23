@@ -138,4 +138,49 @@ class AuthController extends Controller
 
     }
 
+    public function search(Request $request){
+
+        $qry = $request->qry;
+
+        $roles = User::select('id','phone_number','staff_id','full_name')->where('full_name','like','%'. $qry .'%')->get();
+
+        return response()->json([
+
+            'result' => $roles,
+
+        ]);
+
+    }
+
+    public function edit($id){
+
+        $roles = Role::select('name','id')->get();
+
+        $branches = Branch::select('name','id')->get();
+
+        $user = User::where('id', $id)->get();
+
+        return response()->json([
+
+            'roles' => $roles,
+
+            'branches' => $branches,
+
+            'user' => $user[0],
+
+        ]);
+
+    }
+
+    public function update(Request $request, $id){
+
+        User::whereId($id)->update($request->all());
+
+        return response()->json([
+
+            'updated' => true,
+
+        ]);
+
+    }
 }

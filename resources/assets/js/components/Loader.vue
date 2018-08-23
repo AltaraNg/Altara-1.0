@@ -30,7 +30,7 @@
         width: 100vw;
         background-color: rgba(0,0,0,0.4);
         position: fixed;
-        z-index: 2;
+        z-index: 1100;
     }
 
     .loader {

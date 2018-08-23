@@ -167,7 +167,7 @@ button,
   cursor: pointer;
 }
 
-.product{
+.product .card{
   @include transition(0.2s);
   &:hover{
     transform: scale(1.02);
@@ -195,7 +195,9 @@ hr {
 }
 
 
-#customerRegister, #employeeRegister{
+#employeeEdit,
+#customerRegister,
+#employeeRegister{
   font-weight:500;
   input , textarea, select{
     border-radius:4px $_v;
@@ -313,6 +315,9 @@ textarea.valid-input{
   }
 }
 
+button.close{
+  font-size: 18px;
+}
 
 
 @media only screen and (max-width: 990px) {

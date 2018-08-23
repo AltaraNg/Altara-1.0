@@ -20,4 +20,7 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 Route::get('/create', 'AuthController@create');
 Route::post('/register', 'AuthController@register');
+Route::post('/search','AuthController@search');
+Route::post('/employee/{id}/edit','AuthController@edit');
+Route::post('/employee/{id}/update','AuthController@update');
 Route::resource('customer','CustomerController');

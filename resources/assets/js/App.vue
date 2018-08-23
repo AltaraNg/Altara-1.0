@@ -54,8 +54,8 @@
             <div class="alert alert-success mr-4 ml-4" role="alert" v-if="flash.success" style="background-color:#00982f;">
                 <div class="container">
                     <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
-                    <strong>Success!</strong>&nbsp;{{flash.success}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <strong class="mr-2">Success!</strong>&nbsp;{{flash.success}}
+                    <button type="button" class="close ml-3" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true"><i class="fas fa-times"></i></span>
                     </button>
                 </div>
@@ -64,8 +64,8 @@
             <div class="alert alert-danger ml-4 mr-4" role="alert" v-if="flash.error">
                 <div class="container">
                     <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
-                    <strong>Oops!</strong>&nbsp;{{flash.error}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <strong class="mr-2">Oops!</strong>&nbsp;{{flash.error}}
+                    <button type="button" class="close ml-3" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true"><i class="fas fa-times"></i></span>
                     </button>
                 </div>
@@ -95,8 +95,9 @@ export default {
     };
   },
   beforeCreate() {
-    if (localStorage.getItem("api_token")) {this.$router.push("/home"); Flash.setSuccess("Welcome Back!");}
-    if (!localStorage.getItem("api_token")) { this.$router.push("/login");  Flash.setError("You have to Login!");}
+        //uncomment the line below before pushing ti develop.
+        //if (localStorage.getItem("api_token")) {this.$router.push("/home"); Flash.setSuccess("Welcome Back!");}
+        if (!localStorage.getItem("api_token")) { this.$router.push("/login");  Flash.setError("You have to Login!");}
   },
   created() {
     interceptors(err => {

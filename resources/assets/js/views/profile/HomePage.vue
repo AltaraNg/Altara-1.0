@@ -1,10 +1,6 @@
 <template>
-
     <div class="profile-page sidebar-collapse">
-
-
-
-        <!--<div class="wrapper">
+        <div class="wrapper">
             <div class="page-header page-header-small" filter-color="orange">
                 <div class="page-header-image" data-parallax="true">
 
@@ -69,7 +65,7 @@
                                 </ul>
                             </div>
                         </div>
-                        &lt;!&ndash; Tab panes &ndash;&gt;
+                        <!-- Tab panes -->
                         <div class="tab-content gallery">
                             <div class="tab-pane active" id="home" role="tabpanel">
                                 <div class="col-md-10 ml-auto mr-auto">
@@ -151,7 +147,7 @@
                     </div>
                 </div>
             </footer>
-        </div>-->
+        </div>
     </div>
 
 </template>

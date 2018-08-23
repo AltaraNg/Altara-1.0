@@ -1,9 +1,6 @@
-
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/HomePage.vue';
-import LandingPage from '../views/Landing.vue';
-//import Register from '../views/auth/Register.vue';
 
 import App from '../App.vue';
 import Login from '../views/auth/Login.vue';
@@ -22,6 +19,7 @@ import ProfileHome from '../views/profile/HomePage.vue';
 
 import HRM from '../views/HRM/index.vue';
 import HRMHome from '../views/HRM/HomePage.vue';
+import EmployeeManager from '../views/HRM/employee/Manager.vue';
 import EmployeeRegister from '../views/HRM/employee/Register.vue';
 
 import Flash from "../helpers/flash";
@@ -59,6 +57,7 @@ const router = new VueRouter({
                 // {path:'/',redirect:{name:'HRMHome'}},
                 {path:'home',component:HRMHome,name:'HRMHome',  alias: '/hrm-home'},
                 {path:'employee/register',component:EmployeeRegister,name:'employeeRegister', alias: '/register-employee'},
+                {path:'employee/manager',component:EmployeeManager,name:'employeeManager', alias: '/manage-employee'},
             ]
         },
         { path: '/not-found', component: NotFound },
@@ -84,8 +83,8 @@ router.beforeEach((to, from, next) => {
 		//	return;
 			next();
 			}
-			}
+    }
 	
-		next()
-	})
+    next();
+});
 export default router
