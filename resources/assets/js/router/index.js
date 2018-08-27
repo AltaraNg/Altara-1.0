@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { routerHistory, writeHistory } from 'vue-router-back-button'
 import Home from '../views/HomePage.vue';
 
 import App from '../App.vue';
@@ -25,9 +26,10 @@ import EmployeeRegister from '../views/HRM/employee/Register.vue';
 import Flash from "../helpers/flash";
 
 Vue.use(VueRouter);
+Vue.use(routerHistory)
 const router = new VueRouter({
     routes:[
-        {path:'/', component:App },
+        {path:'/', component:Home },
         {path:'/home',component:Home,name:'home',meta: { role: localStorage.getItem("role_id") }, alias: '/welcome-home'},
         {path:'/login',component:Login,name:'login'},
         {path:'/user',component:Profile,
@@ -65,7 +67,7 @@ const router = new VueRouter({
     ]
 });
 
-
+router.afterEach(writeHistory)
 //place the router guard
 router.beforeEach((to, from, next) => {
     //check if the path user is going to is our param path

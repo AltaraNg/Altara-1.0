@@ -25,6 +25,7 @@
         "moxios": "^0.4.0",
         "popper.js": "^1.12",
         "vue": "^2.5.16",
+        "vue-router-back-button": "^1.1.1",
         "vue-test-utils": "^1.0.0-beta.11"
     },
     "dependencies": {
