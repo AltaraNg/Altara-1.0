@@ -1,8 +1,7 @@
 <template>
     <transition name="fade">
-        <!--<div class="section section-tabs" id="login">-->
-        <div class="mt-1 mt-sm-5 section-tabs" id="login">
-            <div class="col-md-5 ml-auto mr-auto">
+        <div class="section-tabs" id="login">
+            <div class="col-md-5 ml-auto mr-auto" id="loginCard" v-bind:style="{ marginTop: cardMT+'px'}">
                 <div class="card">
                     <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                         <h6>Staff Login</h6>
@@ -59,11 +58,17 @@
                     staff_id:'',
                     password: ''
                 },
+                cardMT:'',
                 error: {},
                 isProcessing: false
             }
         },
         methods: {
+            watchCardMT(){
+                let winHeight = $(window).height();
+                let cardHeight = $('#loginCard').height();
+                this.cardMT = (winHeight - cardHeight)/2;
+            },
             login() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
@@ -103,7 +108,10 @@
         beforeCreate(){
             if(localStorage.getItem('api_token'))this.$router.push('/home');
         },
-        computed: {}
+        computed: {},
+        mounted(){
+            this.watchCardMT();
+        },
     }
 </script>
 <style></style>

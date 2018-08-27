@@ -1,9 +1,7 @@
-
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { routerHistory, writeHistory } from 'vue-router-back-button'
 import Home from '../views/HomePage.vue';
-import LandingPage from '../views/Landing.vue';
-//import Register from '../views/auth/Register.vue';
 
 import App from '../App.vue';
 import Login from '../views/auth/Login.vue';
@@ -22,14 +20,16 @@ import ProfileHome from '../views/profile/HomePage.vue';
 
 import HRM from '../views/HRM/index.vue';
 import HRMHome from '../views/HRM/HomePage.vue';
+import EmployeeManager from '../views/HRM/employee/Manager.vue';
 import EmployeeRegister from '../views/HRM/employee/Register.vue';
 
 import Flash from "../helpers/flash";
 
 Vue.use(VueRouter);
+Vue.use(routerHistory)
 const router = new VueRouter({
     routes:[
-        {path:'/', component:App },
+        {path:'/', component:Home },
         {path:'/home',component:Home,name:'home',meta: { role: localStorage.getItem("role_id") }, alias: '/welcome-home'},
         {path:'/login',component:Login,name:'login'},
         {path:'/user',component:Profile,
@@ -59,6 +59,7 @@ const router = new VueRouter({
                 // {path:'/',redirect:{name:'HRMHome'}},
                 {path:'home',component:HRMHome,name:'HRMHome',  alias: '/hrm-home'},
                 {path:'employee/register',component:EmployeeRegister,name:'employeeRegister', alias: '/register-employee'},
+                {path:'employee/manager',component:EmployeeManager,name:'employeeManager', alias: '/manage-employee'},
             ]
         },
         { path: '/not-found', component: NotFound },
@@ -66,7 +67,7 @@ const router = new VueRouter({
     ]
 });
 
-
+router.afterEach(writeHistory)
 //place the router guard
 router.beforeEach((to, from, next) => {
     //check if the path user is going to is our param path
@@ -84,8 +85,8 @@ router.beforeEach((to, from, next) => {
 		//	return;
 			next();
 			}
-			}
+    }
 	
-		next()
-	})
+    next();
+});
 export default router

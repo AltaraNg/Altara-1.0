@@ -380,18 +380,18 @@
                 roles:{},
                 form: {},
                 gender:[
-                    'Male','Female'
+                    'male','female'
                 ],
                 statuses:[
                     'married','single','divorced','complicated'
                 ],
                 password:'',
-                countries:['Nigeria','Ghana'],
+                countries:['nigeria','ghana'],
                 qualifications:[
-                    'Bachelors',
-                    'Masters',
-                    'Doctorate',
-                    'Post-graduate',
+                    'bachelors',
+                    'masters',
+                    'doctorate',
+                    'post-graduate',
                 ],
                 branches:{},
                 error: {},
