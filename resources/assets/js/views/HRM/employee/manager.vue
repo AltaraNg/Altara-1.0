@@ -19,24 +19,24 @@
                         <h5 class="category mt-2">Search results</h5>
                         <table class="table table-bordered table-responsive table-sm table-hover table-striped">
                             <thead>
-                                <tr>
-                                    <th scope="col">Full Name</th>
-                                    <th scope="col">Staff ID</th>
-                                    <th scope="col">Phone Number</th>
-                                    <th scope="col">Action</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Staff ID</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Action</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="employee in results">
-                                    <td class="align-middle" scope="row">{{employee.full_name}}</td>
-                                    <td class="align-middle">{{employee.staff_id}}</td>
-                                    <td class="align-middle">{{employee.phone_number}}</td>
-                                    <td>
-                                        <button class="btn btn-danger btn-sm"
-                                                @click="editEmployee(employee.id)">Update
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tr v-for="employee in results">
+                                <td class="align-middle" scope="row">{{employee.full_name}}</td>
+                                <td class="align-middle">{{employee.staff_id}}</td>
+                                <td class="align-middle">{{employee.phone_number}}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" @click="editEmployee(employee.id)">
+                                        Update
+                                    </button>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -47,13 +47,16 @@
                  aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h6 class="modal-title" id="exampleModalLabel" style>Edit Employee</h6>
-                            <a href="javascript:;" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true" style="font-size: 28px;font-weight:500;">&times;</span>
+                        <div class="modal-header py-2">
+                            <h6 class="modal-title py-1" id="exampleModalLabel" style>Update Employee Details</h6>
+                            <a href="javascript:" type="button" class="close py-1" data-dismiss="modal"
+                               aria-label="Close">
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="far fa-times-circle"></i>
+                                </span>
                             </a>
                         </div>
-                        <div class="modal-body mt-3" style="border-top: 1px solid rgba(0,0,0,0.15);">
+                        <div class="modal-body" style="border-top: 1px solid rgba(0,0,0,0.15);">
                             <form class="float-left" @submit.prevent="register">
                                 <h5>Employee Personal Details</h5>
                                 <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -415,27 +418,27 @@
 </template>
 <script>
     import Flash from '../../../helpers/flash';
-    import { get, post } from '../../../helpers/api';
+    import {get, post} from '../../../helpers/api';
     export default{
         data() {
             return {
-                roles:{},
+                roles: {},
                 form: {},
-                gender:[
-                    'male','female'
+                gender: [
+                    'male', 'female'
                 ],
-                statuses:[
-                    'married','single','divorced','complicated'
+                statuses: [
+                    'married', 'single', 'divorced', 'complicated'
                 ],
-                password:'',
-                countries:['nigeria','ghana'],
-                qualifications:[
+                password: '',
+                countries: ['nigeria', 'ghana'],
+                qualifications: [
                     'bachelors',
                     'masters',
                     'doctorate',
                     'post-graduate',
                 ],
-                branches:{},
+                branches: {},
                 error: {},
                 isProcessing: false,
                 qry: "",
@@ -444,18 +447,17 @@
         },
         methods: {
             autoCompleteNow() {
-                if(!($('#search').val().length <= 0)){
-                    console.log(this.qry);
-                    post("api/search", { qry: this.qry }).then((res) => {
+                if (!($('#search').val().length <= 0)) {
+                    post("api/search", {qry: this.qry}).then((res) => {
                         this.results = res.data.result;
                     });
-                }else{
+                } else {
                     this.results = [];
                 }
             },
             editEmployee(id){
                 this.$store.state.loader = this.isProcessing = true;
-                post("api/employee/"+id+"/edit").then((res) => {
+                post("api/employee/" + id + "/edit").then((res) => {
                     this.form = res.data.user;
                     this.roles = res.data.roles;
                     this.branches = res.data.branches;
@@ -469,45 +471,55 @@
                         this.$store.state.loader = this.isProcessing = true;
                         this.error = {};
                         this.results = [];
-                        post("api/employee/"+id+"/update", this.form)
+                        post("api/employee/" + id + "/update", this.form)
                             .then((res) => {
-                                if(res.data.updated) {
+                                if (res.data.updated) {
                                     $('#updateEmployee').modal('toggle');
-                                    $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                                    $("html, body").animate({scrollTop: $('body').offset().top}, 500);
                                     Flash.setSuccess('You have successfully updated the employees data!');
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })
                             .catch((err) => {
-                                if(err.response.status === 422) {
-                                    $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                                if (err.response.status === 422) {
+                                    $("html, body").animate({scrollTop: $('body').offset().top}, 500);
                                     this.error = err.response.data;
-                                    if(err.response.data.errors){
+                                    if (err.response.data.errors) {
                                         this.error = err.response.data.errors;
                                     }
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })
                     }
-                    if(!result){}
+                    if (!result) {
+                    }
                 });
 
             }
         },
         mounted(){
-
+            this.editEmployee(1);
         },
         beforeCreate(){
-            if(!localStorage.getItem('api_token'))this.$router.push('/home');
+            if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }
     }
 </script>
 <style scoped type="scss">
-    label{
-        margin-top: 7px !important;
-        margin-bottom: 0px !important;
+    label {
+        margin-top    : 7px !important;
+        margin-bottom : 0 !important;
     }
+
     .card .card-body {
-        min-height: 120px;
+        min-height : 120px;
+    }
+
+    .modal-header{
+        background-color : rgba(5, 53, 83, 0.07);
+    }
+
+    .modal-close {
+        font-size   : 24px !important;
     }
 </style>

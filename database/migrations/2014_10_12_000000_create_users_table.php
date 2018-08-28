@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('staff_id')->unique();
             $table->string('full_name');
             $table->string('date_of_appointment');
-            $table->string('date_of_exit');
+            $table->string('date_of_exit')->nullable();
             $table->string('status');
             $table->string('phone_number')->unique();
             $table->string('highest_qualification');

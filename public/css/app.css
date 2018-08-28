@@ -445,6 +445,30 @@ button.close {
   background-image: url("../../../public/images/bg5.jpg");
 }
 
+#index i {
+  font-size: 22px;
+}
+
+#index #back {
+  left: 0;
+}
+
+#index #forward {
+  right: 0;
+}
+
+#index a {
+  margin-top: 8px;
+  position: absolute;
+}
+
+#index .forward, #index .back {
+  font-size: 16px;
+  line-height: 24px;
+  margin-top: -2px;
+  font-weight: bold;
+}
+
 @media only screen and (max-width: 600px) {
   body {
     font-size: 80% !important;

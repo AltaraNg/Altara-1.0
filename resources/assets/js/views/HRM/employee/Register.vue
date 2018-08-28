@@ -4,7 +4,6 @@
 
             <div class="custom-notify text-center" v-if="password">
                 The Employee has been registered.
-                NB: This is for testing purpose till we write the mailing and sms feature.
                 The employees password is: <strong> {{password}}</strong>
             </div>
 
@@ -373,29 +372,23 @@
 </template>
 <script>
     import Flash from '../../../helpers/flash';
-    import { get, post } from '../../../helpers/api';
+    import {get, post} from '../../../helpers/api';
+    import {sendWelcomeMessage} from '../../../helpers/sms';
     export default{
         data() {
             return {
-                roles:{},
                 form: {},
-                gender:[
-                    'male','female'
-                ],
-                statuses:[
-                    'married','single','divorced','complicated'
-                ],
-                password:'',
-                countries:['nigeria','ghana'],
-                qualifications:[
-                    'bachelors',
-                    'masters',
-                    'doctorate',
-                    'post-graduate',
-                ],
-                branches:{},
                 error: {},
-                isProcessing: false
+                roles: {},
+                branches: {},
+                password: '',
+                textMessage: 'Welcome to Altara credit. Please keep your login details safe. Your login details are as follows,',
+                isProcessing: false,
+                gender: ['male', 'female'],
+                countries: ['nigeria', 'ghana'],
+                statuses: ['married', 'single', 'divorced', 'complicated'],
+                qualifications: ['bachelors', 'masters', 'doctorate', 'post-graduate'],
+                textDetails: {phone: 'clins', loginPassword: 'clins', loginID: 'clins',}
             }
         },
         methods: {
@@ -404,30 +397,33 @@
                     if (result) {
                         this.$store.state.loader = this.isProcessing = true;
                         this.error = {};
-                        console.log(this.form);
                         post('api/register', this.form)
                             .then((res) => {
-                                if(res.data.registered) {
-                                    $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                                if (res.data.registered) {
+                                    $("html, body").animate({scrollTop: $('body').offset().top}, 500);
                                     Flash.setSuccess('Congratulations! You have successfully registered. Kindly Login to continue..');
-                                    this.password = res.data.password;
+                                    this.textDetails.loginID = String(this.form.staff_id);
+                                    this.textDetails.phone = String(parseInt(this.form.phone_number));
+                                    this.textDetails.loginPassword = this.password = res.data.password;
+                                    sendWelcomeMessage(this.textMessage, this.textDetails);
                                     this.form = res.data.form;
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })
                             .catch((err) => {
-                                if(err.response.status === 422) {
-                                    $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                                if (err.response.status === 422) {
+                                    $("html, body").animate({scrollTop: $('body').offset().top}, 500);
                                     this.error = err.response.data;
-                                    if(err.response.data.errors){
+                                    if (err.response.data.errors) {
                                         this.error = err.response.data.errors;
                                     }
-                                    console.log(this.error );
+                                    console.log(this.error);
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })
                     }
-                    if(!result){
+                    if (!result) {
+                        $("html, body").animate({scrollTop: $('body').offset().top}, 500);
                         console.log('Kindly fill all the fields in the form!');
                     }
                 });
@@ -443,13 +439,13 @@
                 });
         },
         beforeCreate(){
-            if(!localStorage.getItem('api_token'))this.$router.push('/home');
+            if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }
     }
 </script>
 <style scoped type="scss">
-    label{
-        margin-top: 7px !important;
-        margin-bottom: 0px !important;
+    label {
+        margin-top    : 7px !important;
+        margin-bottom : 0 !important;
     }
 </style>

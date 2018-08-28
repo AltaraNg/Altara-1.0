@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import { routerHistory, writeHistory } from 'vue-router-back-button'
 import Home from '../views/HomePage.vue';
 
-import App from '../App.vue';
+//import App from '../App.vue';
 import Login from '../views/auth/Login.vue';
 import NotFound from '../views/NotFound.vue';
 
@@ -26,7 +26,7 @@ import EmployeeRegister from '../views/HRM/employee/Register.vue';
 import Flash from "../helpers/flash";
 
 Vue.use(VueRouter);
-Vue.use(routerHistory)
+Vue.use(routerHistory);
 const router = new VueRouter({
     routes:[
         {path:'/', component:Home },
