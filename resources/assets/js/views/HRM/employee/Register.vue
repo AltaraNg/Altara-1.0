@@ -408,7 +408,7 @@
                                     this.form = res.data.form;
                                     LogAction('newUser', this.textDetails);
                                     Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
-                                    //sendWelcomeMessage(this.textMessage, this.textDetails);
+                                    sendWelcomeMessage(this.textMessage, this.textDetails);
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })
