@@ -60,7 +60,7 @@
                                     v-validate="'required'">
                                 <option value="" selected>Select status</option>
                                 <option v-for="status in statuses" :value="status">
-                                    {{status}}
+                                    {{status | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted" v-if="errors.first('status')">
@@ -76,7 +76,7 @@
                                     v-validate="'required'">
                                 <option value="" selected>Select nationality</option>
                                 <option v-for="country in countries" :value="country">
-                                    {{country}}
+                                    {{country | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted" v-if="errors.first('nationality')">
@@ -147,7 +147,7 @@
                                     data-vv-name="role">
                                 <option value="" selected>Select role</option>
                                 <option v-for="role in roles" :value="role.id">
-                                    {{role.name}}
+                                    {{role.name | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -167,7 +167,7 @@
                                     data-vv-name="qualification">
                                 <option value="" selected>Select qualification</option>
                                 <option v-for="qualification in qualifications" :value="qualification">
-                                    {{qualification}}
+                                    {{qualification | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -185,7 +185,7 @@
                                     data-vv-name="branch">
                                 <option value="" selected>Select branch</option>
                                 <option v-for="branch in branches" :value="branch.id">
-                                    {{branch.name}}
+                                    {{branch.name | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -386,9 +386,9 @@
                 textMessage: 'Welcome to Altara credit. Please keep your login details safe. Your login details are as follows,',
                 isProcessing: false,
                 gender: ['male', 'female'],
-                countries: ['nigeria', 'ghana'],
+                countries: ['nigeria'],
                 statuses: ['married', 'single', 'divorced', 'complicated'],
-                qualifications: ['bachelors', 'masters', 'doctorate', 'post-graduate'],
+                qualifications: ['bachelors', 'masters', 'doctorate'],
                 textDetails: {phone: '', loginPassword: '', loginID: '',}
             }
         },

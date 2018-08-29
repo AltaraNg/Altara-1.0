@@ -39,7 +39,7 @@ class BranchesTableSeeder extends Seeder
         $branch->save();
 
         $branch = new Branch();
-        $branch->name = 'Gates';
+        $branch->name = 'Gate';
         $branch->state_id = $ibadan;
         $branch->save();
 
