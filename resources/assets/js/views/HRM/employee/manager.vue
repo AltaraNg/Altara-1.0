@@ -52,7 +52,7 @@
                             <a href="javascript:" type="button" class="close py-1" data-dismiss="modal"
                                aria-label="Close">
                                 <span aria-hidden="true" class="modal-close text-danger">
-                                    <i class="far fa-times-circle"></i>
+                                    <i class="fas fa-times"></i>
                                 </span>
                             </a>
                         </div>
@@ -497,9 +497,7 @@
 
             }
         },
-        mounted(){
-            this.editEmployee(1);
-        },
+        mounted(){},
         beforeCreate(){
             if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }
@@ -520,6 +518,6 @@
     }
 
     .modal-close {
-        font-size   : 24px !important;
+        font-size   : 22px !important;
     }
 </style>

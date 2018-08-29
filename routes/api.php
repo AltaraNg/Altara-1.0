@@ -23,4 +23,5 @@ Route::post('/register', 'AuthController@register');
 Route::post('/search','AuthController@search');
 Route::post('/employee/{id}/edit','AuthController@edit');
 Route::post('/employee/{id}/update','AuthController@update');
+Route::resource('log','LogController');
 Route::resource('customer','CustomerController');

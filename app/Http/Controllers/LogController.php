@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Log;
 use Illuminate\Http\Request;
 
 class LogController extends Controller
@@ -39,7 +40,19 @@ class LogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $log = new Log();
+
+        $log->user_id = auth('api')->user()->id;
+
+        $log->action = $request->description;
+
+        $log->save();
+
+        return response()->json([
+
+            'logged' => true,
+
+        ]);
     }
 
     /**

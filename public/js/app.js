@@ -45612,50 +45612,9 @@ module.exports = Component.exports
 
 /***/ }),
 /* 100 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(1);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    // beforeCreate(){
-    //     if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&
-    //         !localStorage.getItem('api_token')) {
-    //         Flash.setError('You dont have access to that page!');
-    //         this.$router.push('/login');
-    //     }
-    // },
-});
+throw new Error("Module build failed: SyntaxError: C:/Users/PAUL/Desktop/Altara-1.0/resources/assets/js/views/HRM/index.vue: Unexpected token (32:0)\n\n  30 |     import Flash from '../../helpers/flash';\n  31 |     export default{\n> 32 | <<<<<<< HEAD\n     | ^\n  33 |         // beforeCreate(){\n  34 |         //     if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&\n  35 |         //         !localStorage.getItem('api_token')) {\n");
 
 /***/ }),
 /* 101 */
@@ -46000,7 +45959,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\nlabel[data-v-49110c05] {\n    margin-top    : 7px !important;\n    margin-bottom : 0 !important;\n}\n.card .card-body[data-v-49110c05] {\n    min-height : 120px;\n}\n.modal-header[data-v-49110c05]{\n    background-color : rgba(5, 53, 83, 0.07);\n}\n.modal-close[data-v-49110c05] {\n    font-size   : 24px !important;\n}\n", ""]);
+exports.push([module.i, "\nlabel[data-v-49110c05] {\n    margin-top    : 7px !important;\n    margin-bottom : 0 !important;\n}\n.card .card-body[data-v-49110c05] {\n    min-height : 120px;\n}\n.modal-header[data-v-49110c05]{\n    background-color : rgba(5, 53, 83, 0.07);\n}\n.modal-close[data-v-49110c05] {\n    font-size   : 22px !important;\n}\n", ""]);
 
 // exports
 
@@ -46506,9 +46465,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         }
     },
-    mounted: function mounted() {
-        this.editEmployee(1);
-    },
+    mounted: function mounted() {},
     beforeCreate: function beforeCreate() {
         if (!localStorage.getItem('api_token')) this.$router.push('/home');
     }
@@ -46699,7 +46656,7 @@ var render = function() {
                           staticClass: "modal-close text-danger",
                           attrs: { "aria-hidden": "true" }
                         },
-                        [_c("i", { staticClass: "far fa-times-circle" })]
+                        [_c("i", { staticClass: "fas fa-times" })]
                       )
                     ]
                   )
@@ -48387,7 +48344,8 @@ exports.push([module.i, "\nlabel[data-v-2cb6f77b] {\n    margin-top    : 7px !im
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_api__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_sms__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_logAction__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_sms__ = __webpack_require__(114);
 //
 //
 //
@@ -48760,6 +48718,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -48778,7 +48737,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             countries: ['nigeria', 'ghana'],
             statuses: ['married', 'single', 'divorced', 'complicated'],
             qualifications: ['bachelors', 'masters', 'doctorate', 'post-graduate'],
-            textDetails: { phone: 'clins', loginPassword: 'clins', loginID: 'clins' }
+            textDetails: { phone: '', loginPassword: '', loginID: '' }
         };
     },
 
@@ -48793,12 +48752,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["c" /* post */])('api/register', _this.form).then(function (res) {
                         if (res.data.registered) {
                             $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
-                            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setSuccess('Congratulations! You have successfully registered. Kindly Login to continue..');
                             _this.textDetails.loginID = String(_this.form.staff_id);
                             _this.textDetails.phone = String(parseInt(_this.form.phone_number));
                             _this.textDetails.loginPassword = _this.password = res.data.password;
-                            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_sms__["a" /* sendWelcomeMessage */])(_this.textMessage, _this.textDetails);
                             _this.form = res.data.form;
+                            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_logAction__["a" /* LogAction */])('newUser', _this.textDetails);
+                            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
+                            Object(__WEBPACK_IMPORTED_MODULE_3__helpers_sms__["a" /* sendWelcomeMessage */])(_this.textMessage, _this.textDetails);
                         }
                         _this.$store.state.loader = _this.isProcessing = false;
                     }).catch(function (err) {
@@ -48841,19 +48801,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = sendWelcomeMessage;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__flash__ = __webpack_require__(1);
-
 
 function sendWelcomeMessage(textMessage, textDetails) {
     var message = textMessage + ' Staff ID: ' + textDetails.loginID + ' password: ' + textDetails.loginPassword + "";
-    Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* get */])("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to=" + 234 + textDetails.phone + "&text=" + message + "").then(function (res) {
-        console.log(res);
-        if (res.status === 200) {
-            __WEBPACK_IMPORTED_MODULE_1__flash__["a" /* default */].setSuccess('Welcome Message has been sent to the registered employee with his details!');
-        } else {
-            __WEBPACK_IMPORTED_MODULE_1__flash__["a" /* default */].setError('Sorry! An error was encountered while trying to send the message!');
-        }
-    });
+    Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* get */])("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to=" + 234 + textDetails.phone + "&text=" + message + "").then(function (res) {});
 }
 
 /***/ }),
@@ -59546,6 +59497,32 @@ nowuiKitDemo = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = LogAction;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(6);
+
+
+function LogAction(option, details) {
+
+    var description = void 0;
+
+    if (option === 'newUser') {
+
+        description = "new employee created. Detail, staff id: " + details.loginID + "";
+    }
+    Object(__WEBPACK_IMPORTED_MODULE_0__api__["c" /* post */])('/api/log', { description: description }).then(function (res) {
+
+        console.log(res.data);
+    });
+}
 
 /***/ })
 /******/ ]);
