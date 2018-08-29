@@ -45612,9 +45612,50 @@ module.exports = Component.exports
 
 /***/ }),
 /* 100 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed: SyntaxError: C:/Users/PAUL/Desktop/Altara-1.0/resources/assets/js/views/HRM/index.vue: Unexpected token (32:0)\n\n  30 |     import Flash from '../../helpers/flash';\n  31 |     export default{\n> 32 | <<<<<<< HEAD\n     | ^\n  33 |         // beforeCreate(){\n  34 |         //     if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&\n  35 |         //         !localStorage.getItem('api_token')) {\n");
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(1);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    // beforeCreate(){
+    //     if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&
+    //         !localStorage.getItem('api_token')) {
+    //         Flash.setError('You dont have access to that page!');
+    //         this.$router.push('/login');
+    //     }
+    // },
+});
 
 /***/ }),
 /* 101 */
