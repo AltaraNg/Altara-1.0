@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
         $user->date_of_appointment = '2016-02-02';
         $user->date_of_exit = '2016-02-02';
         $user->status = 'married';
-        $user->phone_number = '08163145041';
+        $user->phone_number = '08163145049';
         $user->password = bcrypt('clinsmann');
         $user->email = 'ibeanuhillary@gmail.com';
         $user->address = 'ibadan';

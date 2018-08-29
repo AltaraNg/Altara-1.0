@@ -373,6 +373,7 @@
 <script>
     import Flash from '../../../helpers/flash';
     import {get, post} from '../../../helpers/api';
+    import {LogAction} from '../../../helpers/logAction';
     import {sendWelcomeMessage} from '../../../helpers/sms';
     export default{
         data() {
@@ -388,7 +389,7 @@
                 countries: ['nigeria', 'ghana'],
                 statuses: ['married', 'single', 'divorced', 'complicated'],
                 qualifications: ['bachelors', 'masters', 'doctorate', 'post-graduate'],
-                textDetails: {phone: 'clins', loginPassword: 'clins', loginID: 'clins',}
+                textDetails: {phone: '', loginPassword: '', loginID: '',}
             }
         },
         methods: {
@@ -401,12 +402,13 @@
                             .then((res) => {
                                 if (res.data.registered) {
                                     $("html, body").animate({scrollTop: $('body').offset().top}, 500);
-                                    Flash.setSuccess('Congratulations! You have successfully registered. Kindly Login to continue..');
                                     this.textDetails.loginID = String(this.form.staff_id);
                                     this.textDetails.phone = String(parseInt(this.form.phone_number));
                                     this.textDetails.loginPassword = this.password = res.data.password;
-                                    sendWelcomeMessage(this.textMessage, this.textDetails);
                                     this.form = res.data.form;
+                                    LogAction('newUser', this.textDetails);
+                                    Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
+                                    //sendWelcomeMessage(this.textMessage, this.textDetails);
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })
