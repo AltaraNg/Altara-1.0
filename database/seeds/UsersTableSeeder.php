@@ -76,7 +76,7 @@ class UsersTableSeeder extends Seeder
 
 
         $user = new User();
-        $user->role_id =  10;
+        $user->role_id =  11;
         $user->staff_id = 'clinsmann3';
         $user->full_name = 'ibeanu hillary';
         $user->date_of_appointment =  '2016-02-02';
