@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
             $table->string('nationality');
             $table->string('next_of_kin_name');
             $table->string('next_of_kin_phone_no');
+            $table->integer('portal_access')->default(1);
             $table->string('api_token')->nullable();
             $table->rememberToken();
             $table->timestamps();

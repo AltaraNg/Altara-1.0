@@ -35,7 +35,6 @@ class User extends Authenticatable
             'staff_id' => '',
             'full_name' => '',
             'date_of_appointment' => '',
-            'date_of_exit' => '',
             'status' => '',
             'phone_number' => '',
             'highest_qualification' => '',

@@ -32,8 +32,12 @@
                                 <td class="align-middle">{{employee.staff_id}}</td>
                                 <td class="align-middle">{{employee.phone_number}}</td>
                                 <td>
-                                    <button class="btn btn-danger btn-sm" @click="editEmployee(employee.id)">
+                                    <button class="btn btn-danger btn-sm float-left" @click="editEmployee(employee.id)">
                                         Update
+                                    </button>
+                                    <button class="btn btn-danger btn-sm float-left"
+                                            @click="editPortalAccess(employee.id)">
+                                        Portal Access
                                     </button>
                                 </td>
                             </tr>
@@ -42,7 +46,7 @@
                     </div>
                 </div>
             </div>
-
+            <!--update employee modal start-->
             <div class="modal fade bd-example-modal-lg" tabindex="-1" id="updateEmployee" role="dialog"
                  aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -57,7 +61,7 @@
                             </a>
                         </div>
                         <div class="modal-body" style="border-top: 1px solid rgba(0,0,0,0.15);">
-                            <form class="float-left" @submit.prevent="register">
+                            <form v-if="updatingEmployee" class="float-left">
                                 <h5>Employee Personal Details</h5>
                                 <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                                     <label class="category">* Full Name</label>
@@ -402,7 +406,7 @@
                             <button type="submit"
                                     class="mx-3 btn btn-primary bg-default"
                                     :disabled="isProcessing"
-                                    @click="updateEmployee(form.id)">
+                                    @click="updateEmployee(form.id, 'updateDetail')">
                                 Update Employee
                                 <i class="far fa-paper-plane ml-1"></i>
                             </button>
@@ -410,7 +414,58 @@
                     </div>
                 </div>
             </div>
+            <!--update employee modal end-->
 
+            <!--edit portal access modal start-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="editPortalAccess">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header py-2 my-0">
+                            <h4 class="modal-title m-0" style="font-size: 14px;font-weight: bold;">
+                                Edit Employee Portal Access
+                            </h4>
+                            <a href="javascript:" type="button" class="close py-1" data-dismiss="modal"
+                               aria-label="Close">
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <form>
+                            <div class="modal-body">
+                                <div class="form-group col-12 float-left mt-4 mb-5">
+                                    <span style="font-size: 14px" class="w-100 float-left pl-1 text-center">
+                                        Please Verify you selected the right access before clicking <br>
+                                        'Save Changes'!
+                                    </span>
+                                    <div class="radio p-0 col-6 float-left text-center" v-for="access in portal_access">
+                                        <input v-model="form.portal_access"
+                                               name="access"
+                                               type="radio"
+                                               :id="access.name"
+                                               :value="access.value"
+                                               v-validate="'required'">
+                                        <label :for="access.name">
+                                            {{access.name | capitalize}} Access
+                                        </label>
+                                    </div>
+                                    <small class="form-text text-muted"
+                                           v-if="errors.first('access')">
+                                        {{errors.first('access')}}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                                <button type="button" class="btn btn-primary" @click="updateEmployee(form.id,
+                                'updateAccess')">
+                                    Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--edit portal access modal end-->
 
         </div>
     </transition>
@@ -443,6 +498,11 @@
                 isProcessing: false,
                 qry: "",
                 results: [],
+                updatingEmployee:true,
+                portal_access: [
+                    {name: 'grant', value: 1},
+                    {name: 'deny', value: 0}
+                ]
             }
         },
         methods: {
@@ -457,7 +517,7 @@
             },
             editEmployee(id){
                 this.$store.state.loader = this.isProcessing = true;
-                post("api/employee/" + id + "/edit").then((res) => {
+                get("api/employee/" + id + "/edit").then((res) => {
                     this.form = res.data.user;
                     this.roles = res.data.roles;
                     this.branches = res.data.branches;
@@ -465,7 +525,8 @@
                     $('#updateEmployee').modal('toggle');
                 });
             },
-            updateEmployee(id) {
+            updateEmployee(id, task) {
+                if(task === 'updateAccess')this.updatingEmployee = false;
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         this.$store.state.loader = this.isProcessing = true;
@@ -474,9 +535,13 @@
                         post("api/employee/" + id + "/update", this.form)
                             .then((res) => {
                                 if (res.data.updated) {
-                                    $('#updateEmployee').modal('toggle');
+                                    Flash.setSuccess('You have successfully updated the employees details!');
                                     $("html, body").animate({scrollTop: $('body').offset().top}, 500);
-                                    Flash.setSuccess('You have successfully updated the employees data!');
+                                    if(task === 'updateAccess'){
+                                        $('#editPortalAccess').modal('toggle');
+                                    }else if(task === 'updateDetail'){
+                                        $('#updateEmployee').modal('toggle');
+                                    }
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })
@@ -495,9 +560,18 @@
                     }
                 });
 
-            }
+            },
+            editPortalAccess(id){
+                this.$store.state.loader = this.isProcessing = true;
+                get("api/employee/" + id + "/editaccess").then((res) => {
+                    this.form = res.data.user;
+                    this.$store.state.loader = this.isProcessing = false;
+                    $('#editPortalAccess').modal('toggle');
+                });
+            },
         },
-        mounted(){},
+        mounted(){
+        },
         beforeCreate(){
             if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }
@@ -513,11 +587,11 @@
         min-height : 120px;
     }
 
-    .modal-header{
+    .modal-header {
         background-color : rgba(5, 53, 83, 0.07);
     }
 
     .modal-close {
-        font-size   : 22px !important;
+        font-size : 22px !important;
     }
 </style>

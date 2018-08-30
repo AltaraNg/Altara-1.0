@@ -19,9 +19,9 @@ class AuthController extends Controller
     {
         $form = User::form();
 
-        $roles = Role::select('name','id')->get();
+        $roles = Role::select('name', 'id')->get();
 
-        $branches = Branch::select('name','id')->get();
+        $branches = Branch::select('name', 'id')->get();
 
         return response()->json([
 
@@ -37,10 +37,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         /***validating the field below in the
-
-        **backend because vue validation
-
-        cant handle the validation**/
+         **backend because vue validation
+         *
+         * cant handle the validation**/
 
         $this->validate($request, [
 
@@ -65,7 +64,6 @@ class AuthController extends Controller
         $form = User::form();
 
         return response()
-
             ->json([
 
                 'registered' => true,
@@ -73,9 +71,7 @@ class AuthController extends Controller
                 'password' => $gen_password,
 
                 'form' => $form,
-
             ]);
-
     }
 
     public function login(Request $request)
@@ -89,17 +85,15 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('staff_id', $request->staff_id)
-
             ->first();
 
-        if($user && Hash::check($request->password, $user->password)){
+        if ($user && Hash::check($request->password, $user->password)) {
 
             $user->api_token = str_random(60);
 
             $user->save();
 
             return response()
-
                 ->json([
 
                     'authenticated' => true,
@@ -112,22 +106,21 @@ class AuthController extends Controller
 
                     'role' => $user->role_id,
 
-                ]);
+                    'portal_access' => $user->portal_access,
 
+                ]);
         }
 
         return response()
-
             ->json([
 
                 'email' => ['Provided staff id and password does not match']
 
             ], 422);
-
     }
 
-    public function logout(Request $request){
-
+    public function logout(Request $request)
+    {
         $user = $request->user();
 
         $user->api_token = null;
@@ -135,14 +128,13 @@ class AuthController extends Controller
         $user->save();
 
         return response()->json(['logged_out' => true]);
-
     }
 
-    public function search(Request $request){
-
+    public function search(Request $request)
+    {
         $qry = $request->qry;
 
-        $roles = User::select('id','phone_number','staff_id','full_name')->where('full_name','like','%'. $qry .'%')->get();
+        $roles = User::select('id', 'phone_number', 'staff_id', 'full_name')->where('full_name', 'like', '%' . $qry . '%')->get();
 
         return response()->json([
 
@@ -152,11 +144,11 @@ class AuthController extends Controller
 
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
+        $roles = Role::select('name', 'id')->get();
 
-        $roles = Role::select('name','id')->get();
-
-        $branches = Branch::select('name','id')->get();
+        $branches = Branch::select('name', 'id')->get();
 
         $user = User::where('id', $id)->get();
 
@@ -172,8 +164,19 @@ class AuthController extends Controller
 
     }
 
-    public function update(Request $request, $id){
+    public function editAccess($id)
+    {
+        $user = User::where('id', $id)->select('id','portal_access')->get();
 
+        return response()->json([
+
+            'user' => $user[0],
+
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
         User::whereId($id)->update($request->all());
 
         return response()->json([

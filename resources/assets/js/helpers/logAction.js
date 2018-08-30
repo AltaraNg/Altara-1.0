@@ -7,12 +7,6 @@ export function LogAction(option, details) {
     if (option === 'newUser') {
 
         description = "new employee created. Detail, staff id: " + details.loginID + "";
-
     }
-    post('/api/log', {description: description})
-
-        .then(function (res) {
-
-            console.log(res.data);
-        })
+    post('/api/log', {description: description});
 }
