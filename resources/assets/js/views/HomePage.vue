@@ -15,7 +15,8 @@
         </div>
         <div  v-if="role ==  ('13') || role ==  ('1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="dva/home" class="card">
-                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
+                    data-background-color="orange">
                     <h6 class="text-center">DVA Portal</h6>
                 </ul>
                 <div class="card-body Flo-Rel-FWid">
@@ -28,7 +29,8 @@
         </div>
         <div v-if="role ==  ('5')  || role ==  ('1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="hrm/home" class="card">
-                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
+                    data-background-color="orange">
                     <h6 class="text-center">HRM Portal</h6>
                 </ul>
                 <div class="card-body Flo-Rel-FWid">
@@ -40,9 +42,10 @@
                 </div>
             </router-link>
         </div>
-        <div  class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
             <a href="http://catalog-altara.herokuapp.com/" target="_blank" class="card">
-                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
+                    data-background-color="orange">
                     <h6 class="text-center">Altara Catalogue</h6>
                 </ul>
                 <div class="card-body Flo-Rel-FWid">
@@ -56,24 +59,27 @@
     </div>
 </template>
 <script>
-import Auth from "./../store/auth";
-import Flash from "./../helpers/flash";
-export default{
-    components: {},
-    data() {
-        return {
-            flash: Flash.state,
-            authState: Auth.state,
-            user_name: localStorage.getItem("user_name"),
-            isProcessing: false
-        };
-    },
-    computed: {
-        role() {
-            return this.authState.role;
+    import Auth from "./../store/auth";
+    import Flash from "./../helpers/flash";
+    export default{
+        components: {},
+        data() {
+            return {
+                flash: Flash.state,
+                authState: Auth.state,
+                user_name: localStorage.getItem("user_name"),
+                isProcessing: false
+            };
         },
-    },
-    watch: {},
-    methods: {}
-}
+        computed: {
+            role() {
+                return this.authState.role;
+            },
+            access() {
+               return this.authState.portal_access;
+            },
+        },
+        watch: {},
+        methods: {}
+    }
 </script>

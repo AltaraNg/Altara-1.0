@@ -1,22 +1,17 @@
 <template>
     <transition name="fade">
         <div class="Flo-Rel-FWid pt-md-3 pt-2" id="employeeRegister">
-
             <div class="custom-notify text-center" v-if="password">
                 The Employee has been registered.
                 The employees password is: <strong> {{password}}</strong>
             </div>
-
             <div class="card">
-
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" data-background-color="orange">
                     <h6>Staff Registration</h6>
                 </ul>
-
                 <div class="card-body pl-4 pr-4 float-left">
                     <form class="float-left" @submit.prevent="register">
                         <h5>Employee Personal Details</h5>
-
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="category">* Full Name</label>
                             <input type="text"
@@ -60,7 +55,7 @@
                                     v-validate="'required'">
                                 <option value="" selected>Select status</option>
                                 <option v-for="status in statuses" :value="status">
-                                    {{status}}
+                                    {{status | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted" v-if="errors.first('status')">
@@ -76,7 +71,7 @@
                                     v-validate="'required'">
                                 <option value="" selected>Select nationality</option>
                                 <option v-for="country in countries" :value="country">
-                                    {{country}}
+                                    {{country | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted" v-if="errors.first('nationality')">
@@ -147,7 +142,7 @@
                                     data-vv-name="role">
                                 <option value="" selected>Select role</option>
                                 <option v-for="role in roles" :value="role.id">
-                                    {{role.name}}
+                                    {{role.name | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -167,7 +162,7 @@
                                     data-vv-name="qualification">
                                 <option value="" selected>Select qualification</option>
                                 <option v-for="qualification in qualifications" :value="qualification">
-                                    {{qualification}}
+                                    {{qualification | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -185,7 +180,7 @@
                                     data-vv-name="branch">
                                 <option value="" selected>Select branch</option>
                                 <option v-for="branch in branches" :value="branch.id">
-                                    {{branch.name}}
+                                    {{branch.name | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -209,28 +204,6 @@
                             </small>
                         </div>
 
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Date of Exit</label>
-                            <input type="date"
-                                   class="form-control"
-                                   v-model="form.date_of_exit">
-                        </div>
-
-                        <div class="spaceBetween  mb-md-2 mb-0"></div>
-
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Describe Location</label>
-                            <textarea class="form-control w-100"
-                                      placeholder="address"
-                                      rows="1"
-                                      v-model="form.address"
-                                      name="address"
-                                      v-validate="'required|max:255'"></textarea>
-                            <small class="form-text text-muted"
-                                   v-if="errors.first('address')">
-                                {{errors.first('address')}}
-                            </small>
-                        </div>
                         <!--gender-->
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="w-100 float-left pl-1">Gender</label>
@@ -250,6 +223,23 @@
                                 {{errors.first('gender')}}
                             </small>
                         </div>
+
+                        <div class="spaceBetween  mb-md-2 mb-0"></div>
+
+                        <div class="form-group col-12 float-left px-0 px-md-3">
+                            <label>Describe Location</label>
+                            <textarea class="form-control w-100"
+                                      placeholder="address"
+                                      rows="1"
+                                      v-model="form.address"
+                                      name="address"
+                                      v-validate="'required|max:255'"></textarea>
+                            <small class="form-text text-muted"
+                                   v-if="errors.first('address')">
+                                {{errors.first('address')}}
+                            </small>
+                        </div>
+
 
                         <div class="spaceAfter"></div>
                         <h5>Referee Details</h5>
@@ -386,9 +376,9 @@
                 textMessage: 'Welcome to Altara credit. Please keep your login details safe. Your login details are as follows,',
                 isProcessing: false,
                 gender: ['male', 'female'],
-                countries: ['nigeria', 'ghana'],
+                countries: ['nigeria'],
                 statuses: ['married', 'single', 'divorced', 'complicated'],
-                qualifications: ['bachelors', 'masters', 'doctorate', 'post-graduate'],
+                qualifications: ['bachelors', 'masters', 'doctorate'],
                 textDetails: {phone: '', loginPassword: '', loginID: '',}
             }
         },
@@ -406,9 +396,9 @@
                                     this.textDetails.phone = String(parseInt(this.form.phone_number));
                                     this.textDetails.loginPassword = this.password = res.data.password;
                                     this.form = res.data.form;
-                                    LogAction('newUser', this.textDetails);
                                     Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
                                     sendWelcomeMessage(this.textMessage, this.textDetails);
+                                    LogAction('newUser', this.textDetails);
                                 }
                                 this.$store.state.loader = this.isProcessing = false;
                             })

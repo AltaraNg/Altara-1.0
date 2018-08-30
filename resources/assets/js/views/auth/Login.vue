@@ -81,7 +81,8 @@
                         post('api/login', this.form)
                             .then((res) => {
                                 if (res.data.authenticated) {
-                                    Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role);
+                                    Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role,
+                                        res.data.portal_access);
                                     this.$router.push('/home');
                                     this.$store.state.loader = this.isProcessing = false;
                                     Flash.setSuccess('You have successfully logged in.');
