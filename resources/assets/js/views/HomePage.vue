@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-12 Flo-Rel px-md-3 p-0">
-        <div  v-if="role == ('11' || '1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div  v-if="role == ('11')  || role ==  ('1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link  class="card" to="dsa/home">
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                     <h6 class="text-center">DSA Portal</h6>
@@ -13,7 +13,7 @@
                 </div>
             </router-link>
         </div>
-        <div  v-if="role ==  ('13' || '1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div  v-if="role ==  ('13') || role ==  ('1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="dva/home" class="card">
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                     <h6 class="text-center">DVA Portal</h6>
@@ -26,7 +26,7 @@
                 </div>
             </router-link>
         </div>
-        <div v-if="role ==  ('5' || '1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div v-if="role ==  ('5')  || role ==  ('1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="hrm/home" class="card">
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                     <h6 class="text-center">HRM Portal</h6>

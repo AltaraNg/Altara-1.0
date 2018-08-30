@@ -92,7 +92,7 @@ router.beforeEach((to, from, next) => {
                 //move to the route
                 next('/home');
                  //prompt for username
-                 Flash.setError("DSAs are not allowed on this route");
+                 Flash.setError("HR are not allowed on this route");
                 }else{
                //prompt for username
                  Flash.setSuccess("Welcome to the Admin");
