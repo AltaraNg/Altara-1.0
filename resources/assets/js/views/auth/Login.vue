@@ -86,7 +86,7 @@
                                     this.$router.push('/home');
                                     this.$store.state.loader = this.isProcessing = false;
                                     Flash.setSuccess('You have successfully logged in.');
-                                    vm.$forceUpdate();
+                                   // vm.$forceUpdate();
                                 }
 
                             })

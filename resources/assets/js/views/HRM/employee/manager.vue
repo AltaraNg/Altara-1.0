@@ -32,12 +32,19 @@
                                 <td class="align-middle">{{employee.staff_id}}</td>
                                 <td class="align-middle">{{employee.phone_number}}</td>
                                 <td>
-                                    <button class="btn btn-danger btn-sm float-left" @click="editEmployee(employee.id)">
-                                        Update
+                                    <button class="text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Edit Employee Detail"
+                                            @click="editEmployee(employee.id)">
+                                        <i class="fas fa-user-edit"></i>
                                     </button>
-                                    <button class="btn btn-danger btn-sm float-left"
+                                    <button class="text-center mr-2 btn btn-dark btn-icon btn-sm float-left btn-round"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Edit Employee Portal Access"
                                             @click="editPortalAccess(employee.id)">
-                                        Portal Access
+                                        <i class="fas fa-unlock-alt"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -433,8 +440,8 @@
                         </div>
                         <form>
                             <div class="modal-body">
-                                <div class="form-group col-12 float-left mt-4 mb-5">
-                                    <span style="font-size: 14px" class="w-100 float-left pl-1 text-center">
+                                <div class="form-group col-12 float-left mt-0 mb-2">
+                                    <span style="font-size: 14px" class="mb-2 w-100 float-left pl-1 text-center">
                                         Please Verify you selected the right access before clicking <br>
                                         'Save Changes'!
                                     </span>
@@ -456,22 +463,27 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                                <button type="button" class="btn btn-primary" @click="updateEmployee(form.id,
-                                'updateAccess')">
-                                    Save changes</button>
+                                <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
+                                    cancel
+                                </button>
+                                <button type="button"
+                                        class="m-2 btn btn-primary bg-default"
+                                        @click="updateEmployee(form.id, 'updateAccess')"
+                                        :disabled="isProcessing">
+                                    Save changes
+                                    <i class="far fa-paper-plane ml-1"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <!--edit portal access modal end-->
-
         </div>
     </transition>
-
 </template>
 <script>
+    import $ from 'jquery';
     import Flash from '../../../helpers/flash';
     import {get, post} from '../../../helpers/api';
     export default{
@@ -498,7 +510,7 @@
                 isProcessing: false,
                 qry: "",
                 results: [],
-                updatingEmployee:true,
+                updatingEmployee: true,
                 portal_access: [
                     {name: 'grant', value: 1},
                     {name: 'deny', value: 0}
@@ -510,6 +522,7 @@
                 if (!($('#search').val().length <= 0)) {
                     post("api/search", {qry: this.qry}).then((res) => {
                         this.results = res.data.result;
+                        this.toolTip();
                     });
                 } else {
                     this.results = [];
@@ -526,7 +539,7 @@
                 });
             },
             updateEmployee(id, task) {
-                if(task === 'updateAccess')this.updatingEmployee = false;
+                if (task === 'updateAccess') this.updatingEmployee = false;
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         this.$store.state.loader = this.isProcessing = true;
@@ -537,9 +550,9 @@
                                 if (res.data.updated) {
                                     Flash.setSuccess('You have successfully updated the employees details!');
                                     $("html, body").animate({scrollTop: $('body').offset().top}, 500);
-                                    if(task === 'updateAccess'){
+                                    if (task === 'updateAccess') {
                                         $('#editPortalAccess').modal('toggle');
-                                    }else if(task === 'updateDetail'){
+                                    } else if (task === 'updateDetail') {
                                         $('#updateEmployee').modal('toggle');
                                     }
                                 }
@@ -569,11 +582,13 @@
                     $('#editPortalAccess').modal('toggle');
                 });
             },
+            toolTip(){
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
+            }
         },
         mounted(){
-        },
-        beforeCreate(){
-            if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }
     }
 </script>
@@ -593,5 +608,10 @@
 
     .modal-close {
         font-size : 22px !important;
+    }
+
+    table button i {
+        font-size   : 13px;
+        line-height : 30px;
     }
 </style>

@@ -188,7 +188,7 @@ module.exports = function normalizeComponent (
         this.state.success = message;
         setTimeout(function () {
             _this.removeSuccess();
-        }, 5000);
+        }, 1500);
     },
     setError: function setError(message) {
         var _this2 = this;
@@ -196,7 +196,7 @@ module.exports = function normalizeComponent (
         this.state.error = message;
         setTimeout(function () {
             _this2.removeError();
-        }, 5000);
+        }, 1500);
     },
     removeSuccess: function removeSuccess() {
         this.state.success = null;
@@ -26321,8 +26321,8 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(20);
-__webpack_require__(121);
-module.exports = __webpack_require__(122);
+__webpack_require__(122);
+module.exports = __webpack_require__(123);
 
 
 /***/ }),
@@ -26338,7 +26338,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(121);
 window.$ = window.jQuery = __webpack_require__(12);
 window.Popper = __webpack_require__(13).default;
 __webpack_require__(21);
@@ -30656,7 +30656,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\nli > .nav-link[data-v-6dd1125c]:hover,\nli > .router-link-active[data-v-6dd1125c],\nli > .router-link-exact-active[data-v-6dd1125c] {\n    background-color : #074a74 !important;\n    border-radius    : 4px;\n    font-weight      : 500;\n    color            : white !important;\n}\n.navbar-brand[data-v-6dd1125c] {\n    font-size      : 26px;\n    font-weight    : 500;\n    color          : #074a74 !important;\n    text-transform : capitalize;\n}\n.alert[data-v-6dd1125c] {\n    position : absolute !important;\n    z-index  : 101 !important;\n}\n.fade-enter-active[data-v-6dd1125c], .fade-leave-active[data-v-6dd1125c] {\n    -webkit-transition : opacity .7s;\n    transition : opacity .7s;\n}\n", ""]);
+exports.push([module.i, "\nli > .nav-link[data-v-6dd1125c]:hover,\nli > .router-link-active[data-v-6dd1125c],\nli > .router-link-exact-active[data-v-6dd1125c] {\n    background-color : #074a74 !important;\n    border-radius    : 4px;\n    font-weight      : 500;\n    color            : white !important;\n}\n.navbar-brand[data-v-6dd1125c] {\n    font-size      : 26px;\n    font-weight    : 500;\n    color          : #074a74 !important;\n    text-transform : capitalize;\n}\n.alert[data-v-6dd1125c] {\n    position : absolute !important;\n    z-index  : 101 !important;\n    border-radius: 5px;\n}\n.fade-enter-active[data-v-6dd1125c], .fade-leave-active[data-v-6dd1125c] {\n    -webkit-transition : opacity .7s;\n    transition : opacity .7s;\n}\n", ""]);
 
 // exports
 
@@ -30806,7 +30806,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             flash: __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].state,
             authState: __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].state,
-            user_name: localStorage.getItem("user_name"),
             isProcessing: false
         };
     },
@@ -32212,8 +32211,11 @@ var render = function() {
                                     staticClass: "now-ui-icons users_circle-08"
                                   }),
                                   _vm._v(
-                                    _vm._s(_vm.user_name) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm._f("capitalize")(
+                                        _vm.authState.user_name
+                                      )
+                                    ) + "\n                            "
                                   )
                                 ]
                               ),
@@ -35709,7 +35711,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             _this.$router.push('/home');
                             _this.$store.state.loader = _this.isProcessing = false;
                             __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully logged in.');
-                            vm.$forceUpdate();
+                            // vm.$forceUpdate();
                         }
                     }).catch(function (err) {
                         if (err.response.status === 422) {
@@ -46006,7 +46008,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\nlabel[data-v-49110c05] {\n    margin-top    : 7px !important;\n    margin-bottom : 0 !important;\n}\n.card .card-body[data-v-49110c05] {\n    min-height : 120px;\n}\n.modal-header[data-v-49110c05] {\n    background-color : rgba(5, 53, 83, 0.07);\n}\n.modal-close[data-v-49110c05] {\n    font-size : 22px !important;\n}\n", ""]);
+exports.push([module.i, "\nlabel[data-v-49110c05] {\n    margin-top    : 7px !important;\n    margin-bottom : 0 !important;\n}\n.card .card-body[data-v-49110c05] {\n    min-height : 120px;\n}\n.modal-header[data-v-49110c05] {\n    background-color : rgba(5, 53, 83, 0.07);\n}\n.modal-close[data-v-49110c05] {\n    font-size : 22px !important;\n}\ntable button i[data-v-49110c05] {\n    font-size   : 13px;\n    line-height : 30px;\n}\n", ""]);
 
 // exports
 
@@ -46017,8 +46019,10 @@ exports.push([module.i, "\nlabel[data-v-49110c05] {\n    margin-top    : 7px !im
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_api__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(3);
 //
 //
 //
@@ -46492,6 +46496,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -46519,9 +46535,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         autoCompleteNow: function autoCompleteNow() {
             var _this = this;
 
-            if (!($('#search').val().length <= 0)) {
-                Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["c" /* post */])("api/search", { qry: this.qry }).then(function (res) {
+            if (!(__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#search').val().length <= 0)) {
+                Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])("api/search", { qry: this.qry }).then(function (res) {
                     _this.results = res.data.result;
+                    _this.toolTip();
                 });
             } else {
                 this.results = [];
@@ -46531,12 +46548,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             this.$store.state.loader = this.isProcessing = true;
-            Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["a" /* get */])("api/employee/" + id + "/edit").then(function (res) {
+            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])("api/employee/" + id + "/edit").then(function (res) {
                 _this2.form = res.data.user;
                 _this2.roles = res.data.roles;
                 _this2.branches = res.data.branches;
                 _this2.$store.state.loader = _this2.isProcessing = false;
-                $('#updateEmployee').modal('toggle');
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#updateEmployee').modal('toggle');
             });
         },
         updateEmployee: function updateEmployee(id, task) {
@@ -46548,20 +46565,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this3.$store.state.loader = _this3.isProcessing = true;
                     _this3.error = {};
                     _this3.results = [];
-                    Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["c" /* post */])("api/employee/" + id + "/update", _this3.form).then(function (res) {
+                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])("api/employee/" + id + "/update", _this3.form).then(function (res) {
                         if (res.data.updated) {
-                            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setSuccess('You have successfully updated the employees details!');
-                            $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully updated the employees details!');
+                            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("html, body").animate({ scrollTop: __WEBPACK_IMPORTED_MODULE_0_jquery___default()('body').offset().top }, 500);
                             if (task === 'updateAccess') {
-                                $('#editPortalAccess').modal('toggle');
+                                __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#editPortalAccess').modal('toggle');
                             } else if (task === 'updateDetail') {
-                                $('#updateEmployee').modal('toggle');
+                                __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#updateEmployee').modal('toggle');
                             }
                         }
                         _this3.$store.state.loader = _this3.isProcessing = false;
                     }).catch(function (err) {
                         if (err.response.status === 422) {
-                            $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("html, body").animate({ scrollTop: __WEBPACK_IMPORTED_MODULE_0_jquery___default()('body').offset().top }, 500);
                             _this3.error = err.response.data;
                             if (err.response.data.errors) {
                                 _this3.error = err.response.data.errors;
@@ -46577,17 +46594,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this4 = this;
 
             this.$store.state.loader = this.isProcessing = true;
-            Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["a" /* get */])("api/employee/" + id + "/editaccess").then(function (res) {
+            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])("api/employee/" + id + "/editaccess").then(function (res) {
                 _this4.form = res.data.user;
                 _this4.$store.state.loader = _this4.isProcessing = false;
-                $('#editPortalAccess').modal('toggle');
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#editPortalAccess').modal('toggle');
+            });
+        },
+        toolTip: function toolTip() {
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()(function () {
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()('[data-toggle="tooltip"]').tooltip();
             });
         }
     },
-    mounted: function mounted() {},
-    beforeCreate: function beforeCreate() {
-        if (!localStorage.getItem('api_token')) this.$router.push('/home');
-    }
+    mounted: function mounted() {}
 });
 
 /***/ }),
@@ -46709,36 +46728,38 @@ var render = function() {
                                 "button",
                                 {
                                   staticClass:
-                                    "btn btn-danger btn-sm float-left",
+                                    "text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round",
+                                  attrs: {
+                                    "data-toggle": "tooltip",
+                                    "data-placement": "top",
+                                    title: "Edit Employee Detail"
+                                  },
                                   on: {
                                     click: function($event) {
                                       _vm.editEmployee(employee.id)
                                     }
                                   }
                                 },
-                                [
-                                  _vm._v(
-                                    "\n                                    Update\n                                "
-                                  )
-                                ]
+                                [_c("i", { staticClass: "fas fa-user-edit" })]
                               ),
                               _vm._v(" "),
                               _c(
                                 "button",
                                 {
                                   staticClass:
-                                    "btn btn-danger btn-sm float-left",
+                                    "text-center mr-2 btn btn-dark btn-icon btn-sm float-left btn-round",
+                                  attrs: {
+                                    "data-toggle": "tooltip",
+                                    "data-placement": "top",
+                                    title: "Edit Employee Portal Access"
+                                  },
                                   on: {
                                     click: function($event) {
                                       _vm.editPortalAccess(employee.id)
                                     }
                                   }
                                 },
-                                [
-                                  _vm._v(
-                                    "\n                                    Portal Access\n                                "
-                                  )
-                                ]
+                                [_c("i", { staticClass: "fas fa-unlock-alt" })]
                               )
                             ])
                           ])
@@ -48453,13 +48474,14 @@ var render = function() {
                       _c(
                         "div",
                         {
-                          staticClass: "form-group col-12 float-left mt-4 mb-5"
+                          staticClass: "form-group col-12 float-left mt-0 mb-2"
                         },
                         [
                           _c(
                             "span",
                             {
-                              staticClass: "w-100 float-left pl-1 text-center",
+                              staticClass:
+                                "mb-2 w-100 float-left pl-1 text-center",
                               staticStyle: { "font-size": "14px" }
                             },
                             [
@@ -48554,17 +48576,21 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-secondary",
+                          staticClass: "m-2 btn btn-secondary",
                           attrs: { type: "button", "data-dismiss": "modal" }
                         },
-                        [_vm._v("cancel")]
+                        [
+                          _vm._v(
+                            "\n                                cancel\n                            "
+                          )
+                        ]
                       ),
                       _vm._v(" "),
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "button" },
+                          staticClass: "m-2 btn btn-primary bg-default",
+                          attrs: { type: "button", disabled: _vm.isProcessing },
                           on: {
                             click: function($event) {
                               _vm.updateEmployee(_vm.form.id, "updateAccess")
@@ -48573,8 +48599,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                                Save changes"
-                          )
+                            "\n                                Save changes\n                                "
+                          ),
+                          _c("i", { staticClass: "far fa-paper-plane ml-1" })
                         ]
                       )
                     ])
@@ -49167,8 +49194,23 @@ function LogAction(option, details) {
 
 function sendWelcomeMessage(textMessage, textDetails) {
     var message = textMessage + ' Staff ID: "' + textDetails.loginID + '" password: "' + textDetails.loginPassword + '"';
-    Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* get */])("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to=" + 234 + textDetails.phone + "&text=" + message + "").then(function (res) {});
+    Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* get */])("http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient=" + 234 + textDetails.phone + "&message=" + message + "")
+    // .then(function (res) {})
+    .then(function (response) {
+        console.log(response);
+    }).catch(function (error) {
+        console.log(error.response);
+    });
 }
+
+// http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient="
+// + 234 + textDetails.phone + "&message=" + message + "
+
+// get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
+// + 234 + textDetails.phone + "&text=" + message + "")
+
+// get("http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient="
+//     + 234 + textDetails.phone + "&message=" + message + "")
 
 /***/ }),
 /* 116 */
@@ -59585,6 +59627,24 @@ var index_esm = {
 
 /***/ }),
 /* 121 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('capitalize', function (value) {
+
+    if (!value) return '';
+
+    value = value.toString();
+
+    return value.charAt(0).toUpperCase() + value.slice(1);
+});
+
+/***/ }),
+/* 122 */
 /***/ (function(module, exports) {
 
 /*!
@@ -59814,31 +59874,10 @@ nowuiKitDemo = {
 };
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('capitalize', function (value) {
-
-    if (!value) return '';
-
-    value = value.toString();
-
-    return value.charAt(0).toUpperCase() + value.slice(1);
-});
 
 /***/ })
 /******/ ]);

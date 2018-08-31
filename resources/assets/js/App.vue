@@ -39,7 +39,7 @@
                             <li class="nav-item dropdown" v-if="auth">
                                 <span class="nav-link dropdown-toggle" id="menu" data-toggle="dropdown"
                                       aria-haspopup="true" aria-expanded="false">
-                                    <i class="now-ui-icons users_circle-08"></i>{{user_name}}
+                                    <i class="now-ui-icons users_circle-08"></i>{{authState.user_name | capitalize}}
                                 </span>
                                 <div class="dropdown-menu" aria-labelledby="menu">
                                     <router-link to="/user/profile" class="dropdown-item">
@@ -97,7 +97,6 @@
             return {
                 flash: Flash.state,
                 authState: Auth.state,
-                user_name: localStorage.getItem("user_name"),
                 isProcessing: false
             };
         },
@@ -172,6 +171,7 @@
     .alert {
         position : absolute !important;
         z-index  : 101 !important;
+        border-radius: 5px;
     }
 
     .fade-enter-active, .fade-leave-active {
