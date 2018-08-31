@@ -81,6 +81,6 @@
             },
         },
         watch: {},
-        methods: {}
+        methods: {},
     }
 </script>
