@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api')->only('logout');
+        $this->middleware('auth:api')->only('logout' );
     }
 
     public function create()
@@ -87,36 +87,50 @@ class AuthController extends Controller
         $user = User::where('staff_id', $request->staff_id)
             ->first();
 
-        if ($user && Hash::check($request->password, $user->password)) {
+        if ($user->portal_access === 1) {
 
-            $user->api_token = str_random(60);
+            if ($user && Hash::check($request->password, $user->password)) {
 
-            $user->save();
+                $user->api_token = str_random(60);
+
+                $user->save();
+
+                return response()
+                    ->json([
+
+                        'authenticated' => true,
+
+                        'api_token' => $user->api_token,
+
+                        'user_id' => $user->id,
+
+                        'user_name' => $user->full_name,
+
+                        'role' => $user->role_id,
+
+                        'portal_access' => $user->portal_access,
+
+                    ]);
+            }
 
             return response()
                 ->json([
 
-                    'authenticated' => true,
+                    'email' => ['Provided staff id and password does not match']
 
-                    'api_token' => $user->api_token,
+                ], 422);
 
-                    'user_id' => $user->id,
+        } else {
 
-                    'user_name' => $user->full_name,
+            return response()
+                ->json([
 
-                    'role' => $user->role_id,
+                    'authenticated' => false,
 
-                    'portal_access' => $user->portal_access,
+                    'message' => 'You are not authorized to access this portal. Please meet the authority to verify your portal access status!'
 
                 ]);
         }
-
-        return response()
-            ->json([
-
-                'email' => ['Provided staff id and password does not match']
-
-            ], 422);
     }
 
     public function logout(Request $request)
@@ -166,7 +180,7 @@ class AuthController extends Controller
 
     public function editAccess($id)
     {
-        $user = User::where('id', $id)->select('id','portal_access')->get();
+        $user = User::where('id', $id)->select('id', 'portal_access')->get();
 
         return response()->json([
 
