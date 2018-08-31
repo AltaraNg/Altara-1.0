@@ -32508,13 +32508,29 @@ router.afterEach(__WEBPACK_IMPORTED_MODULE_2_vue_router_back_button__["writeHist
 //place the router guard
 router.beforeEach(function (to, from, next) {
     //check if the path user is going to is our param path
-    if (from.meta.role == 11 || from.meta.role == 1) {
-        if (to.path != '/dsa' || to.path != '/customer/register' || to.path != '/dsa/home') {
-            //check if the user item is already set
+    // if(from.meta.role == 11 || from.meta.role == 1){
+    // if( to.path != '/dsa' ||  to.path != '/customer/register' ||  to.path != '/dsa/home' ){
+    //     //check if the user item is already set
+    //         //move to the route
+    // 		next('/home');
+    // 		 //prompt for username
+    // 		 Flash.setError("DSAs are not allowed on this route");
+    //         }else{
+    //        //prompt for username
+    // 		 Flash.setSuccess("Welcome to the Admin");
+    //         //return, do not move to the route
+    // 	//	return;
+    // 		next();
+    // 		}
+    // }
+    //check if the path user is going to is our param path
+    if (to.path == '/dsa' || to.path == '/customer/register' || to.path == '/dsa/home') {
+        //check if the user item is already set
+        if (from.meta.role == 11 || from.meta.role == 1) {
             //move to the route
             next('/home');
             //prompt for username
-            __WEBPACK_IMPORTED_MODULE_18__helpers_flash__["a" /* default */].setError("DSAs are not allowed on this route");
+            __WEBPACK_IMPORTED_MODULE_18__helpers_flash__["a" /* default */].setError("Only DSA are allowed on this route");
         } else {
             //prompt for username
             __WEBPACK_IMPORTED_MODULE_18__helpers_flash__["a" /* default */].setSuccess("Welcome to the Admin");
@@ -32523,13 +32539,14 @@ router.beforeEach(function (to, from, next) {
             next();
         }
     }
-    if (from.meta.role == 5 || from.meta.role == 1) {
-        if (to.path != '/hrm' || to.path != '/employee/register' || to.path != '/hrm/home' || to.path != 'employee/manager') {
-            //check if the user item is already set
+
+    if (to.path == '/hrm' || to.path == '/employee/register' || to.path == '/hrm/home' || to.path == 'employee/manager') {
+        //check if the user item is already set
+        if (to.meta.role != 5) {
             //move to the route
             next('/home');
             //prompt for username
-            __WEBPACK_IMPORTED_MODULE_18__helpers_flash__["a" /* default */].setError("HR are not allowed on this route");
+            __WEBPACK_IMPORTED_MODULE_18__helpers_flash__["a" /* default */].setError("Only Hr are allowed on this route");
         } else {
             //prompt for username
             __WEBPACK_IMPORTED_MODULE_18__helpers_flash__["a" /* default */].setSuccess("Welcome to the Admin");
@@ -49194,17 +49211,12 @@ function LogAction(option, details) {
 
 function sendWelcomeMessage(textMessage, textDetails) {
     var message = textMessage + ' Staff ID: "' + textDetails.loginID + '" password: "' + textDetails.loginPassword + '"';
-    Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* get */])("http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient=" + 234 + textDetails.phone + "&message=" + message + "")
-    // .then(function (res) {})
-    .then(function (response) {
+    Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* get */])("http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient=" + 234 + textDetails.phone + "&message=" + message + "").then(function (response) {
         console.log(response);
     }).catch(function (error) {
         console.log(error.response);
     });
 }
-
-// http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient="
-// + 234 + textDetails.phone + "&message=" + message + "
 
 // get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
 // + 234 + textDetails.phone + "&text=" + message + "")
