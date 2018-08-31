@@ -35625,7 +35625,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -35723,12 +35723,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.$store.state.loader = _this.isProcessing = true;
                     _this.error = {};
                     Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('api/login', _this.form).then(function (res) {
-                        if (res.data.authenticated) {
+                        if (res.data.authenticated === true) {
                             __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role, res.data.portal_access);
                             _this.$router.push('/home');
                             _this.$store.state.loader = _this.isProcessing = false;
                             __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully logged in.');
-                            // vm.$forceUpdate();
+                        } else if (res.data.authenticated === false) {
+                            _this.$store.state.loader = _this.isProcessing = false;
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(res.data.message);
                         }
                     }).catch(function (err) {
                         if (err.response.status === 422) {

@@ -80,6 +80,6 @@
             },
         },
         watch: {},
-        methods: {}
+        methods: {},
     }
 </script>

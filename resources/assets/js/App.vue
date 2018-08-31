@@ -107,7 +107,7 @@
             }
             if (!localStorage.getItem("api_token")) {
                 this.$router.push("/login");
-                Flash.setError("You have to Login!");
+                Flash.setError("You have to Login!" );
             }
         },
         created() {

@@ -43,7 +43,7 @@
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Edit Employee Portal Access"
-                                            @click="editPortalAccess(employee.id)">
+                                            @click="editPortalAccess(employee.id)" >
                                         <i class="fas fa-unlock-alt"></i>
                                     </button>
                                 </td>
