@@ -21,7 +21,6 @@
                                        v-if="errors.first('Staff ID')">{{ errors.first('Staff ID') }}
                                 </small>
                                 <small class="error-control" v-if="error.staff_id">{{error.staff_id[0]}}</small>
-                                <small class="error-control" v-if="error.email">{{error.email[0]}}</small>
                             </div>
                             <div class="col-sm-12 float-left px-0 px-md-3">
                                 <label class="category">* Password</label>
@@ -34,7 +33,6 @@
                                 <small class="error-control" v-if="errors.first('password')">{{
                                     errors.first('password') }}
                                 </small>
-                                <small class="error-control" v-if="error.password">{{error.password[0]}}</small>
                             </div>
                             <div class="col-sm-12 mb-3 float-left px-0 px-md-3">
                                 <button class="btn btn-block btn-lg btn-primary" type="submit"
@@ -68,6 +66,9 @@
             }
         },
         methods: {
+            LIPS(s){
+                this.$store.state.loader = this.isProcessing = s;
+            },
             watchCardMT(){
                 let winHeight = $(window).height();
                 let cardHeight = $('#loginCard').height();
@@ -76,7 +77,7 @@
             login() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$store.state.loader = this.isProcessing = true;
+                        this.LIPS(true);
                         this.error = {};
                         post('api/login', this.form)
                             .then((res) => {
@@ -84,29 +85,20 @@
                                     Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role,
                                         res.data.portal_access);
                                     this.$router.push('/home');
-                                    this.$store.state.loader = this.isProcessing = false;
-                                    Flash.setSuccess('You have successfully logged in.' );
-                                } else if (res.data.authenticated === false) {
-                                    this.$store.state.loader = this.isProcessing = false;
-                                    Flash.setError(res.data.message);
-                                }
+                                    Flash.setSuccess('You have successfully logged in.');
+                                } else if (res.data.authenticated === false) Flash.setError(res.data.message);
+                                this.LIPS(false);
                             })
                             .catch((err) => {
                                 if (err.response.status === 422) {
                                     this.error = err.response.data;
-                                    if (err.response.data.errors) {
-                                        this.error = err.response.data.errors;
-                                    }
-                                    if (err.response.data.email) {
-                                        this.error = err.response.data;
-                                    }
+                                    if (err.response.data.errors) this.error = err.response.data.errors;
                                 }
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                                 Flash.setError('Check your login details and try again!');
                             });
                     }
                     if (!result) {
-                        console.log('Kindly fill all the fields in the form!');
                     }
                 });
             }

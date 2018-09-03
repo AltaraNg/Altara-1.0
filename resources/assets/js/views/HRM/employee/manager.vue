@@ -39,12 +39,22 @@
                                             @click="editEmployee(employee.id)">
                                         <i class="fas fa-user-edit"></i>
                                     </button>
-                                    <button class="text-center mr-2 btn btn-dark btn-icon btn-sm float-left btn-round"
+                                    <button class="text-center mr-2 btn btn-icon btn-sm float-left btn-round"
+                                            :class="{ 'btn-success' : accessStatus(employee.portal_access),
+                                            'btn-danger' :  !accessStatus(employee.portal_access)}"
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Edit Employee Portal Access"
-                                            @click="editPortalAccess(employee.id)" >
-                                        <i class="fas fa-unlock-alt"></i>
+                                            @click="editPortalAccess(employee)">
+                                        <i class="fas fa-lock-open" v-if="accessStatus(employee.portal_access)"></i>
+                                        <i class="fas fa-lock" v-if="!accessStatus(employee.portal_access)"></i>
+                                    </button>
+                                    <button class="text-center mr-2 btn btn-warning btn-icon btn-sm float-left btn-round"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Reset Employee Password"
+                                            @click="editPassword(employee)">
+                                        <i class="fas fa-key"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -413,7 +423,7 @@
                             <button type="submit"
                                     class="mx-3 btn btn-primary bg-default"
                                     :disabled="isProcessing"
-                                    @click="updateEmployee(form.id, 'updateDetail')">
+                                    @click="updateEmployee(form.id, 'updatedUserDetails')">
                                 Update Employee
                                 <i class="far fa-paper-plane ml-1"></i>
                             </button>
@@ -443,7 +453,7 @@
                                 <div class="form-group col-12 float-left mt-0 mb-2">
                                     <span style="font-size: 14px" class="mb-2 w-100 float-left pl-1 text-center">
                                         Please Verify you selected the right access before clicking <br>
-                                        'Save Changes'!
+                                        <strong>Save Changes </strong>!
                                     </span>
                                     <div class="radio p-0 col-6 float-left text-center" v-for="access in portal_access">
                                         <input v-model="form.portal_access"
@@ -468,7 +478,7 @@
                                 </button>
                                 <button type="button"
                                         class="m-2 btn btn-primary bg-default"
-                                        @click="updateEmployee(form.id, 'updateAccess')"
+                                        @click="updateEmployee(form.id, 'updatedUserAccess')"
                                         :disabled="isProcessing">
                                     Save changes
                                     <i class="far fa-paper-plane ml-1"></i>
@@ -479,13 +489,59 @@
                 </div>
             </div>
             <!--edit portal access modal end-->
+
+
+            <!--reset employee password modal start-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="editPassword">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header py-2 my-0">
+                            <h4 class="modal-title m-0" style="font-size: 14px;font-weight: bold;">
+                                Reset Employee Password
+                            </h4>
+                            <a href="javascript:" type="button" class="close py-1" data-dismiss="modal"
+                               aria-label="Close">
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <form>
+                            <div class="modal-body">
+                                <div class="form-group col-12 float-left mt-2 mb-4 ">
+                                    <span>A new password will be sent to the employee via <strong>sms</strong>
+                                          on the telephone He/She
+                                        <strong>used for registration</strong>
+                                          on this portal. <br><br>Please Kindly verify that the phone to
+                                        receive the new password is on and active!</span> <br><br>
+                                    <u><em>click the continue and reset password to finish this task!</em></u>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
+                                    cancel
+                                </button>
+                                <button type="button"
+                                        class="m-2 btn btn-primary bg-default"
+                                        @click="resetPassword"
+                                        :disabled="isProcessing">
+                                    continue and reset password
+                                    <i class="far fa-paper-plane ml-1"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--reset employee password modal end-->
         </div>
     </transition>
 </template>
 <script>
-    import $ from 'jquery';
+    import {log} from '../../../helpers/log'
     import Flash from '../../../helpers/flash';
     import {get, post} from '../../../helpers/api';
+    import SMS from '../../../helpers/sms';
     export default{
         data() {
             return {
@@ -497,8 +553,7 @@
                 statuses: [
                     'married', 'single', 'divorced', 'complicated'
                 ],
-                password: '',
-                countries: ['nigeria', 'ghana'],
+                countries: ['nigeria'],
                 qualifications: [
                     'bachelors',
                     'masters',
@@ -518,68 +573,94 @@
             }
         },
         methods: {
+            LIPS(s){
+                //LIPS stands for : Loader isProcessing state. s is state true or false
+                this.$store.state.loader = this.isProcessing = s;
+            },
+            scrollToTop(){
+                $("html, body").animate({scrollTop: 0}, 500);
+            },
+            accessStatus(status){
+                return Boolean(Number(status));
+            },
             autoCompleteNow() {
                 if (!($('#search').val().length <= 0)) {
                     post("api/search", {qry: this.qry}).then((res) => {
                         this.results = res.data.result;
                         this.toolTip();
                     });
-                } else {
-                    this.results = [];
-                }
+                } else this.results = [];
             },
             editEmployee(id){
-                this.$store.state.loader = this.isProcessing = true;
+                this.LIPS(true);
                 get("api/employee/" + id + "/edit").then((res) => {
                     this.form = res.data.user;
                     this.roles = res.data.roles;
                     this.branches = res.data.branches;
-                    this.$store.state.loader = this.isProcessing = false;
                     $('#updateEmployee').modal('toggle');
+                    this.LIPS(false);
                 });
             },
+            editPortalAccess(employee){
+                this.form = employee;
+                $('#editPortalAccess').modal('toggle');
+            },
+            editPassword(employee){
+                this.form = employee;
+                $('#editPassword').modal('toggle');
+            },
+            resetPassword(){
+                this.LIPS(true);
+                get('api/reset-password/' + this.form.id).then((res) => {
+                    this.qry = '';
+                    this.error = {};
+                    this.results = [];
+                    this.scrollToTop();
+                    $('#editPassword').modal('toggle');
+                    log('resetUserPassword', this.form.staff_id);
+                    Flash.setSuccess('The employee password was successfully reset!');
+                    let details = {phone: String(parseInt(this.form.phone_number)), password: res.data.password};
+                    SMS.passwordReset(details);
+                    this.LIPS(false);
+                })
+            },
             updateEmployee(id, task) {
-                if (task === 'updateAccess') this.updatingEmployee = false;
+                //if its for portal access turn updating
+                // to false so validator cant see
+                // the fields inside that form
+                if (task === 'updatedUserAccess') this.updatingEmployee = false;
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$store.state.loader = this.isProcessing = true;
+                        this.LIPS(true);
                         this.error = {};
                         this.results = [];
+                        this.qry = '';
                         post("api/employee/" + id + "/update", this.form)
                             .then((res) => {
                                 if (res.data.updated) {
+                                    this.scrollToTop();
                                     Flash.setSuccess('You have successfully updated the employees details!');
-                                    $("html, body").animate({scrollTop: $('body').offset().top}, 500);
-                                    if (task === 'updateAccess') {
-                                        $('#editPortalAccess').modal('toggle');
-                                    } else if (task === 'updateDetail') {
-                                        $('#updateEmployee').modal('toggle');
-                                    }
+                                    if (task === 'updatedUserAccess') $('#editPortalAccess').modal('toggle');
+                                    if (task === 'updatedUserDetails') $('#updateEmployee').modal('toggle');
+                                    log(String(task), String(this.form.staff_id));
                                 }
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
+                                //if its for portal access turn updating to true
+                                // so validator can see the forms inside that
+                                // form(also for the form to be visible)
+                                if (task === 'updatedUserAccess') this.updatingEmployee = true;
                             })
                             .catch((err) => {
                                 if (err.response.status === 422) {
-                                    $("html, body").animate({scrollTop: $('body').offset().top}, 500);
+                                    this.scrollToTop();
                                     this.error = err.response.data;
-                                    if (err.response.data.errors) {
-                                        this.error = err.response.data.errors;
-                                    }
+                                    if (err.response.data.errors) this.error = err.response.data.errors;
                                 }
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                             })
                     }
                     if (!result) {
                     }
-                });
-
-            },
-            editPortalAccess(id){
-                this.$store.state.loader = this.isProcessing = true;
-                get("api/employee/" + id + "/editaccess").then((res) => {
-                    this.form = res.data.user;
-                    this.$store.state.loader = this.isProcessing = false;
-                    $('#editPortalAccess').modal('toggle');
                 });
             },
             toolTip(){

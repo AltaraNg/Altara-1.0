@@ -41,17 +41,12 @@ class LogController extends Controller
     public function store(Request $request)
     {
         $log = new Log();
-
-        $log->user_id = auth('api')->user()->id;
-
-        $log->action = $request->description;
-
+        $log->staff_id = auth('api')->user()->staff_id;
+        $log->description = $request->description;
+        $log->action = $request->action;
         $log->save();
-
         return response()->json([
-
             'logged' => true,
-
         ]);
     }
 
