@@ -87,38 +87,38 @@ router.beforeEach((to, from, next) => {
 	// 		}
     // }
 //check if the path user is going to is our param path
-if( to.path == '/dsa' ||  to.path == '/customer/register' ||  to.path == '/dsa/home' ){
-    //check if the user item is already set
-        if(from.meta.role == 11 || from.meta.role == 1){
-        //move to the route
-        next('/home');
-         //prompt for username
-         Flash.setError("Only DSA are allowed on this route");
-        }else{
-       //prompt for username
-         Flash.setSuccess("Welcome to the Admin");
-        //return, do not move to the route
-    //	return;
-        next();
-        }
-}
+// if( to.path == '/dsa' ||  to.path == '/customer/register' ||  to.path == '/dsa/home' ){
+//     //check if the user item is already set
+//         if(from.meta.role == 11 || from.meta.role == 1){
+//         //move to the route
+//         next('/home');
+//          //prompt for username
+//          Flash.setError("Only DSA are allowed on this route");
+//         }else{
+//        //prompt for username
+//          Flash.setSuccess("Welcome to the Admin");
+//         //return, do not move to the route
+//     //	return;
+//         next();
+//         }
+// }
 
  
-        if( to.path == '/hrm' ||  to.path == '/employee/register' ||  to.path == '/hrm/home' ||  to.path == 'employee/manager'){
-            //check if the user item is already set
-            if(to.meta.role != 5){
-                //move to the route
-                next('/home');
-                 //prompt for username
-                 Flash.setError("Only Hr are allowed on this route");
-                }else{
-               //prompt for username
-                 Flash.setSuccess("Welcome to the Admin");
-                //return, do not move to the route
-            //	return;
-                next();
-                }
-        }
+        // if( to.path == '/hrm' ||  to.path == '/employee/register' ||  to.path == '/hrm/home' ||  to.path == 'employee/manager'){
+        //     //check if the user item is already set
+        //     if(to.meta.role != 5){
+        //         //move to the route
+        //         next('/home');
+        //          //prompt for username
+        //          Flash.setError("Only Hr are allowed on this route");
+        //         }else{
+        //        //prompt for username
+        //          Flash.setSuccess("Welcome to the Admin");
+        //         //return, do not move to the route
+        //     //	return;
+        //         next();
+        //         }
+        // }
     next();
 });
 export default router

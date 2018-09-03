@@ -13,7 +13,7 @@ export default {
         this.state.error = message;
         setTimeout(() => {
             this.removeError()
-        }, 1500)
+        }, 3000)
     },
     removeSuccess(){
         this.state.success = null
