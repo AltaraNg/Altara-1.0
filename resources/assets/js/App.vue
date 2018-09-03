@@ -1,13 +1,13 @@
 <template>
     <div>
-        <loader></loader>
-        <side-nav v-if="auth"></side-nav>
+        <loader/>
+        <side-nav v-if="auth"/>
         <div class="main" id="main">
             <nav v-if="auth" class="navbar navbar-expand-lg bg-white">
                 <div class="container">
                     <div class="navbar-translate">
-                        <router-link class="navbar-brand p-0" to="/home"><img class="float-left"
-                                                                              :src="`/images/altara_logo.png`">
+                        <router-link class="navbar-brand p-0" to="/home">
+                            <img class="float-left" :src="`/images/altara_logo.png`">
                         </router-link>
                         <button type="button"
                                 aria-expanded="false"
@@ -47,8 +47,8 @@
                                         My Profile
                                     </router-link>
                                     <span class="dropdown-item"><i class="now-ui-icons arrows-1_refresh-69 pr-1"></i>Manage Customers</span>
-                                    <span class="dropdown-item" @click.stop="logout"><i
-                                            class="now-ui-icons media-1_button-power pr-1"></i>Logout</span>
+                                    <span class="dropdown-item" @click.stop="logout">
+                                        <i class="now-ui-icons media-1_button-power pr-1"></i>Logout</span>
                                 </div>
                             </li>
                         </ul>
@@ -101,13 +101,13 @@
             };
         },
         beforeCreate() {
-            if (localStorage.getItem("api_token")) {
+            /*if (localStorage.getItem("api_token")) {
                 this.$router.push("/home");
                 Flash.setSuccess("Welcome Back!");
-            }
+            }*/
             if (!localStorage.getItem("api_token")) {
                 this.$router.push("/login");
-                Flash.setError("You have to Login!" );
+                Flash.setError("You have to Login!");
             }
         },
         created() {
@@ -135,11 +135,14 @@
         },
         watch: {},
         methods: {
+            LIPS(s){
+                this.$store.state.loader = this.isProcessing = s;
+            },
             logout() {
-                this.$store.state.loader = this.isProcessing = true;
+                this.LIPS(true);
                 post("/api/logout").then(res => {
                     if (res.data.logged_out) {
-                        this.$store.state.loader = this.isProcessing = false;
+                        this.LIPS(false);
                         Auth.remove();
                         Flash.setSuccess("You have successfully logged out!");
                         this.$router.push("/login");

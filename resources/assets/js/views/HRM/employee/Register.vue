@@ -358,13 +358,12 @@
             </div>
         </div>
     </transition>
-
 </template>
 <script>
+    import SMS from '../../../helpers/sms';
+    import {log} from '../../../helpers/log';
     import Flash from '../../../helpers/flash';
     import {get, post} from '../../../helpers/api';
-    import {LogAction} from '../../../helpers/logAction';
-    import {sendWelcomeMessage} from '../../../helpers/sms';
     export default{
         data() {
             return {
@@ -373,7 +372,6 @@
                 roles: {},
                 branches: {},
                 password: '',
-                textMessage: 'Welcome to Altara credit. Please keep your login details safe. Your login details are as follows,',
                 isProcessing: false,
                 gender: ['male', 'female'],
                 countries: ['nigeria'],
@@ -383,43 +381,44 @@
             }
         },
         methods: {
+            LIPS(s){
+                this.$store.state.loader = this.isProcessing = s;
+            },
+            scrollToTop(){
+                $("html, body").animate({scrollTop: 0}, 500);
+            },
             register() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$store.state.loader = this.isProcessing = true;
+                        this.LIPS(true);
                         this.error = {};
                         post('api/register', this.form)
                             .then((res) => {
                                 if (res.data.registered) {
-                                    $("html, body").animate({scrollTop: $('body').offset().top}, 500);
+                                    this.scrollToTop();
+                                    log('createdUser', String(this.form.staff_id));
                                     this.textDetails.loginID = String(this.form.staff_id);
                                     this.textDetails.phone = String(parseInt(this.form.phone_number));
                                     this.textDetails.loginPassword = this.password = res.data.password;
                                     this.form = res.data.form;
                                     Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
-                                    sendWelcomeMessage(this.textMessage, this.textDetails);
-                                    LogAction('newUser', this.textDetails);
+                                    SMS.welcome(this.textDetails);
                                 }
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                             })
                             .catch((err) => {
                                 if (err.response.status === 422) {
-                                    $("html, body").animate({scrollTop: $('body').offset().top}, 500);
+                                    this.scrollToTop();
                                     this.error = err.response.data;
-                                    if (err.response.data.errors) {
-                                        this.error = err.response.data.errors;
-                                    }
-                                    console.log(this.error);
+                                    if (err.response.data.errors) this.error = err.response.data.errors;
                                 }
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                             })
                     }
                     if (!result) {
-                        $("html, body").animate({scrollTop: $('body').offset().top}, 500);
-                        console.log('Kindly fill all the fields in the form!');
+                        this.scrollToTop();
                     }
                 });
-
             }
         },
         created(){

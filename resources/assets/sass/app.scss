@@ -107,16 +107,16 @@ html, body {
 .main {
   width              : 100%;
   background-color   : white;
-  float              : left;
+  float              : right;
   position           : relative;
   -webkit-transition : all 0.4s;
   -moz-transition    : all 0.4s;
   -o-transition      : all 0.4s;
   transition         : all 0.4s;
   overflow-x         : hidden;
+  height             : 100%;
   &#main {
-    position : absolute;
-    right    : 0;
+    position : relative;
   }
 }
 
