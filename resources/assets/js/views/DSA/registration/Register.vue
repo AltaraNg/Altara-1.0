@@ -1354,9 +1354,12 @@
             }
         },
         methods:{
-            /*err(field){
-                return this.error[field] && this.newCustomer[field] === '';
-            },*/
+            LIPS(s){
+                this.$store.state.loader = this.isProcessing = s;
+            },
+            scrollToTop(){
+                $("html, body").animate({scrollTop: 0}, 500);
+            },
             getDate(){
                 const toTwoDigits = num => num < 10 ? '0' + num : num;
                 let today = new Date();
@@ -1365,28 +1368,27 @@
                 let day = toTwoDigits(today.getDate());
                 return `${month}-${day}-${year}`;
             },
-
             register(){
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$store.state.loader = this.isProcessing = true;
+                        this.LIPS(true);
                         this.error = {};
                         post('/api/customer', this.newCustomer)
                             .then((res) => {
                                 if(res.data.registered){
-                                    $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                                    this.scrollToTop();
                                     Flash.setSuccess('customer has been added successfully');
                                     this.resetForm();
                                 }
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                             })
                             .catch((err) => {
                                 if(err.response.data.errors)this.error = err.response.data.errors;
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                             })
                     }
                     if(!result){
-                        $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                        this.scrollToTop();
                         Flash.setError('Please Kindly make sure that all the fields in the form are filled correctly!');
                     }
                 });

@@ -1,23 +1,17 @@
 <template>
     <transition name="fade">
         <div class="Flo-Rel-FWid pt-md-3 pt-2" id="employeeRegister">
-
             <div class="custom-notify text-center" v-if="password">
                 The Employee has been registered.
-                NB: This is for testing purpose till we write the mailing and sms feature.
                 The employees password is: <strong> {{password}}</strong>
             </div>
-
             <div class="card">
-
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" data-background-color="orange">
                     <h6>Staff Registration</h6>
                 </ul>
-
                 <div class="card-body pl-4 pr-4 float-left">
                     <form class="float-left" @submit.prevent="register">
                         <h5>Employee Personal Details</h5>
-
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="category">* Full Name</label>
                             <input type="text"
@@ -61,7 +55,7 @@
                                     v-validate="'required'">
                                 <option value="" selected>Select status</option>
                                 <option v-for="status in statuses" :value="status">
-                                    {{status}}
+                                    {{status | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted" v-if="errors.first('status')">
@@ -77,7 +71,7 @@
                                     v-validate="'required'">
                                 <option value="" selected>Select nationality</option>
                                 <option v-for="country in countries" :value="country">
-                                    {{country}}
+                                    {{country | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted" v-if="errors.first('nationality')">
@@ -148,7 +142,7 @@
                                     data-vv-name="role">
                                 <option value="" selected>Select role</option>
                                 <option v-for="role in roles" :value="role.id">
-                                    {{role.name}}
+                                    {{role.name | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -168,7 +162,7 @@
                                     data-vv-name="qualification">
                                 <option value="" selected>Select qualification</option>
                                 <option v-for="qualification in qualifications" :value="qualification">
-                                    {{qualification}}
+                                    {{qualification | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -186,7 +180,7 @@
                                     data-vv-name="branch">
                                 <option value="" selected>Select branch</option>
                                 <option v-for="branch in branches" :value="branch.id">
-                                    {{branch.name}}
+                                    {{branch.name | capitalize}}
                                 </option>
                             </select>
                             <small class="form-text text-muted"
@@ -210,28 +204,6 @@
                             </small>
                         </div>
 
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Date of Exit</label>
-                            <input type="date"
-                                   class="form-control"
-                                   v-model="form.date_of_exit">
-                        </div>
-
-                        <div class="spaceBetween  mb-md-2 mb-0"></div>
-
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Describe Location</label>
-                            <textarea class="form-control w-100"
-                                      placeholder="address"
-                                      rows="1"
-                                      v-model="form.address"
-                                      name="address"
-                                      v-validate="'required|max:255'"></textarea>
-                            <small class="form-text text-muted"
-                                   v-if="errors.first('address')">
-                                {{errors.first('address')}}
-                            </small>
-                        </div>
                         <!--gender-->
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="w-100 float-left pl-1">Gender</label>
@@ -251,6 +223,23 @@
                                 {{errors.first('gender')}}
                             </small>
                         </div>
+
+                        <div class="spaceBetween  mb-md-2 mb-0"></div>
+
+                        <div class="form-group col-12 float-left px-0 px-md-3">
+                            <label>Describe Location</label>
+                            <textarea class="form-control w-100"
+                                      placeholder="address"
+                                      rows="1"
+                                      v-model="form.address"
+                                      name="address"
+                                      v-validate="'required|max:255'"></textarea>
+                            <small class="form-text text-muted"
+                                   v-if="errors.first('address')">
+                                {{errors.first('address')}}
+                            </small>
+                        </div>
+
 
                         <div class="spaceAfter"></div>
                         <h5>Referee Details</h5>
@@ -369,69 +358,67 @@
             </div>
         </div>
     </transition>
-
 </template>
 <script>
+    import SMS from '../../../helpers/sms';
+    import {log} from '../../../helpers/log';
     import Flash from '../../../helpers/flash';
-    import { get, post } from '../../../helpers/api';
+    import {get, post} from '../../../helpers/api';
     export default{
         data() {
             return {
-                roles:{},
                 form: {},
-                gender:[
-                    'male','female'
-                ],
-                statuses:[
-                    'married','single','divorced','complicated'
-                ],
-                password:'',
-                countries:['nigeria','ghana'],
-                qualifications:[
-                    'bachelors',
-                    'masters',
-                    'doctorate',
-                    'post-graduate',
-                ],
-                branches:{},
                 error: {},
-                isProcessing: false
+                roles: {},
+                branches: {},
+                password: '',
+                isProcessing: false,
+                gender: ['male', 'female'],
+                countries: ['nigeria'],
+                statuses: ['married', 'single', 'divorced', 'complicated'],
+                qualifications: ['bachelors', 'masters', 'doctorate'],
+                textDetails: {phone: '', loginPassword: '', loginID: '',}
             }
         },
         methods: {
+            LIPS(s){
+                this.$store.state.loader = this.isProcessing = s;
+            },
+            scrollToTop(){
+                $("html, body").animate({scrollTop: 0}, 500);
+            },
             register() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$store.state.loader = this.isProcessing = true;
+                        this.LIPS(true);
                         this.error = {};
-                        console.log(this.form);
                         post('api/register', this.form)
                             .then((res) => {
-                                if(res.data.registered) {
-                                    $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
-                                    Flash.setSuccess('Congratulations! You have successfully registered. Kindly Login to continue..');
-                                    this.password = res.data.password;
+                                if (res.data.registered) {
+                                    this.scrollToTop();
+                                    log('createdUser', String(this.form.staff_id));
+                                    this.textDetails.loginID = String(this.form.staff_id);
+                                    this.textDetails.phone = String(parseInt(this.form.phone_number));
+                                    this.textDetails.loginPassword = this.password = res.data.password;
                                     this.form = res.data.form;
+                                    Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
+                                    SMS.welcome(this.textDetails);
                                 }
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                             })
                             .catch((err) => {
-                                if(err.response.status === 422) {
-                                    $("html, body").animate({ scrollTop: $('body').offset().top }, 500);
+                                if (err.response.status === 422) {
+                                    this.scrollToTop();
                                     this.error = err.response.data;
-                                    if(err.response.data.errors){
-                                        this.error = err.response.data.errors;
-                                    }
-                                    console.log(this.error );
+                                    if (err.response.data.errors) this.error = err.response.data.errors;
                                 }
-                                this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                             })
                     }
-                    if(!result){
-                        console.log('Kindly fill all the fields in the form!');
+                    if (!result) {
+                        this.scrollToTop();
                     }
                 });
-
             }
         },
         created(){
@@ -443,13 +430,13 @@
                 });
         },
         beforeCreate(){
-            if(!localStorage.getItem('api_token'))this.$router.push('/home');
+            if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }
     }
 </script>
 <style scoped type="scss">
-    label{
-        margin-top: 7px !important;
-        margin-bottom: 0px !important;
+    label {
+        margin-top    : 7px !important;
+        margin-bottom : 0 !important;
     }
 </style>

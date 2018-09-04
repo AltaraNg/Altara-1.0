@@ -3,7 +3,8 @@
         <div class="section-tabs" id="login">
             <div class="col-md-5 ml-auto mr-auto" id="loginCard" v-bind:style="{ marginTop: cardMT+'px'}">
                 <div class="card">
-                    <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                    <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
+                        data-background-color="orange">
                         <h6>Staff Login</h6>
                     </ul>
                     <form @submit.prevent="login" class="pt-1 pb-3">
@@ -16,10 +17,10 @@
                                            v-model="form.staff_id" v-validate="'required'" name="Staff ID">
                                     <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
                                 </div>
-                                <small class="error-control" v-if="errors.first('Staff ID')">{{ errors.first('Staff ID') }}
+                                <small class="error-control"
+                                       v-if="errors.first('Staff ID')">{{ errors.first('Staff ID') }}
                                 </small>
                                 <small class="error-control" v-if="error.staff_id">{{error.staff_id[0]}}</small>
-                                <small class="error-control" v-if="error.email">{{error.email[0]}}</small>
                             </div>
                             <div class="col-sm-12 float-left px-0 px-md-3">
                                 <label class="category">* Password</label>
@@ -30,11 +31,12 @@
                                     <span class="input-group-addon"><i class="fas fa-key"></i></span>
                                 </div>
                                 <small class="error-control" v-if="errors.first('password')">{{
-                                    errors.first('password') }} </small>
-                                <small class="error-control" v-if="error.password">{{error.password[0]}}</small>
+                                    errors.first('password') }}
+                                </small>
                             </div>
                             <div class="col-sm-12 mb-3 float-left px-0 px-md-3">
-                                <button class="btn btn-block btn-lg btn-primary" type="submit" data-background-color="orange">
+                                <button class="btn btn-block btn-lg btn-primary" type="submit"
+                                        data-background-color="orange">
                                     Login! &nbsp; <i class="far fa-paper-plane" :disabled="isProcessing"></i>
                                 </button>
                             </div>
@@ -50,63 +52,59 @@
 <script>
     import Auth from '../../store/auth';
     import Flash from '../../helpers/flash';
-    import { post } from '../../helpers/api';
+    import {post} from '../../helpers/api';
     export default{
         data(){
             return {
                 form: {
-                    staff_id:'',
+                    staff_id: '',
                     password: ''
                 },
-                cardMT:'',
+                cardMT: '',
                 error: {},
                 isProcessing: false
             }
         },
         methods: {
+            LIPS(s){
+                this.$store.state.loader = this.isProcessing = s;
+            },
             watchCardMT(){
                 let winHeight = $(window).height();
                 let cardHeight = $('#loginCard').height();
-                this.cardMT = (winHeight - cardHeight)/2;
+                this.cardMT = (winHeight - cardHeight) / 2;
             },
             login() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$store.state.loader = this.isProcessing = true;
+                        this.LIPS(true);
                         this.error = {};
                         post('api/login', this.form)
                             .then((res) => {
-                                if(res.data.authenticated){
-                                    Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role);
+                                if (res.data.authenticated === true) {
+                                    Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role,
+                                        res.data.portal_access);
                                     this.$router.push('/home');
-                                    this.$store.state.loader = this.isProcessing = false;
                                     Flash.setSuccess('You have successfully logged in.');
-                                    vm.$forceUpdate();
-                                }
-                                
+                                } else if (res.data.authenticated === false) Flash.setError(res.data.message);
+                                this.LIPS(false);
                             })
                             .catch((err) => {
-                                if(err.response.status === 422) {
+                                if (err.response.status === 422) {
                                     this.error = err.response.data;
-                                    if(err.response.data.errors){
-                                        this.error = err.response.data.errors;
-                                    }
-                                    if(err.response.data.email){
-                                        this.error = err.response.data;
-                                    }
+                                    if (err.response.data.errors) this.error = err.response.data.errors;
                                 }
-                                 this.$store.state.loader = this.isProcessing = false;
+                                this.LIPS(false);
                                 Flash.setError('Check your login details and try again!');
                             });
                     }
-                    if(!result){
-                        console.log('Kindly fill all the fields in the form!');
+                    if (!result) {
                     }
                 });
             }
         },
         beforeCreate(){
-            if(localStorage.getItem('api_token'))this.$router.push('/home');
+            if (localStorage.getItem('api_token')) this.$router.push('/home');
         },
         computed: {},
         mounted(){
@@ -115,4 +113,3 @@
     }
 </script>
 <style></style>
-

@@ -28,19 +28,17 @@ class User extends Authenticatable
         'hr_id',
     ];
 
-    public static function Form(){
+    public static function Form()
+    {
         return [
             'role_id' => '',
             'staff_id' => '',
             'full_name' => '',
             'date_of_appointment' => '',
-            'date_of_exit' => '',
             'status' => '',
             'phone_number' => '',
-
             'highest_qualification' => '',
             'branch_id' => '',
-
             'email' => '',
             'address' => '',
             'gender' => '',
@@ -64,6 +62,11 @@ class User extends Authenticatable
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(Log::class);
     }
 
 }
