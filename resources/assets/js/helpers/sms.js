@@ -19,6 +19,3 @@ export default {
         });
     }
 }
-
-// get("http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient="
-//             + 234 + details.phone + "&message=" + this.message + "")

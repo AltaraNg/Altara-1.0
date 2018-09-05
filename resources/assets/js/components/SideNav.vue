@@ -26,13 +26,6 @@
             toggleSideNav(){
                 this.sideNavActive = ((this.sideNavActive == false));
             },
-            /*toggleLoader(){
-                if(this.$store.state.loader === true){
-                    return this.$store.state.loader = false
-                }else{
-                    return this.$store.state.loader = true
-                }
-            }*/
             handleResize() {
                 this.window.width = window.innerWidth;
                 this.window.height = window.innerHeight;

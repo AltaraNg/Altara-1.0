@@ -41,7 +41,7 @@
                                 </button>
                             </div>
                             <span class="text-center float-left w-100 pb-4">Forgot Password? <router-link
-                                    to="/forgotPassword">Click here</router-link></span>
+                                    to="/forgotPassword" class="text-info">Click here</router-link></span>
                         </div>
                     </form>
                 </div>

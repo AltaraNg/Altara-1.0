@@ -11,7 +11,7 @@
             if(!(this.$store.state.DVAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&
                 !localStorage.getItem('api_token')){
                 Flash.setError('You dont have access to that page!');
-                this.$router.push('/login');
+                this.$router.push('/home');
             }
         },
     }

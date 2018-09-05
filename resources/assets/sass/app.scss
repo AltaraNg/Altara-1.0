@@ -420,6 +420,14 @@ button.close {
       font-weight : 500;
     }
   }
+
+  #back, #forward, [data-title="title"] {
+    margin-top    : -5px !important;
+    margin-bottom : 5px !important;
+  }
+  nav {
+    z-index : 10;
+  }
 }
 
 

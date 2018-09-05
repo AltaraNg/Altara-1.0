@@ -18,8 +18,8 @@ class AuthController extends Controller
     public function create()
     {
         $form = User::form();
-        $roles = Role::select('name', 'id')->get();
-        $branches = Branch::select('name', 'id')->get();
+        $roles = Role::select('name', 'id')->orderBy('name','asc')->get();
+        $branches = Branch::select('name', 'id')->orderBy('name','asc')->get();
         return response()->json([
             'form' => $form,
             'roles' => $roles,
@@ -114,8 +114,8 @@ class AuthController extends Controller
 
     public function edit($id)
     {
-        $branches = Branch::select('name', 'id')->get();
-        $roles = Role::select('name', 'id')->get();
+        $branches = Branch::select('name', 'id')->orderBy('name','asc')->get();
+        $roles = Role::select('name', 'id')->orderBy('name','asc')->get();
         $user = User::where('id', $id)->get();
         return response()->json([
             'roles' => $roles,

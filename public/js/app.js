@@ -26356,9 +26356,6 @@ function log(action, description) {
     }
 });
 
-// get("http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient="
-//             + 234 + details.phone + "&message=" + this.message + "")
-
 /***/ }),
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -30699,7 +30696,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\nli > .nav-link[data-v-6dd1125c]:hover,\nli > .router-link-active[data-v-6dd1125c],\nli > .router-link-exact-active[data-v-6dd1125c] {\n    background-color : #074a74 !important;\n    border-radius    : 4px;\n    font-weight      : 500;\n    color            : white !important;\n}\n.navbar-brand[data-v-6dd1125c] {\n    font-size      : 26px;\n    font-weight    : 500;\n    color          : #074a74 !important;\n    text-transform : capitalize;\n}\n.alert[data-v-6dd1125c] {\n    position : absolute !important;\n    z-index  : 101 !important;\n    border-radius: 5px;\n}\n.fade-enter-active[data-v-6dd1125c], .fade-leave-active[data-v-6dd1125c] {\n    -webkit-transition : opacity .7s;\n    transition : opacity .7s;\n}\n", ""]);
+exports.push([module.i, "\nli > .nav-link[data-v-6dd1125c]:hover,\nli > .router-link-active[data-v-6dd1125c],\nli > .router-link-exact-active[data-v-6dd1125c] {\n    background-color : #074a74 !important;\n    border-radius    : 4px;\n    font-weight      : 500;\n    color            : white !important;\n}\n.navbar-brand[data-v-6dd1125c] {\n    font-size      : 26px;\n    font-weight    : 500;\n    color          : #074a74 !important;\n    text-transform : capitalize;\n}\n.alert[data-v-6dd1125c] {\n    position      : absolute !important;\n    z-index       : 101 !important;\n    border-radius : 5px;\n}\n.fade-enter-active[data-v-6dd1125c], .fade-leave-active[data-v-6dd1125c] {\n    -webkit-transition : opacity .7s;\n    transition : opacity .7s;\n}\n", ""]);
 
 // exports
 
@@ -30824,16 +30821,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -30853,10 +30840,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     beforeCreate: function beforeCreate() {
-        /*if (localStorage.getItem("api_token")) {
+        if (localStorage.getItem("api_token")) {
             this.$router.push("/home");
-            Flash.setSuccess("Welcome Back!");
-        }*/
+            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess("Welcome Back!");
+        }
         if (!localStorage.getItem("api_token")) {
             this.$router.push("/login");
             __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError("You have to Login!");
@@ -31153,14 +31140,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         toggleSideNav: function toggleSideNav() {
             this.sideNavActive = this.sideNavActive == false;
         },
-
-        /*toggleLoader(){
-            if(this.$store.state.loader === true){
-                return this.$store.state.loader = false
-            }else{
-                return this.$store.state.loader = true
-            }
-        }*/
         handleResize: function handleResize() {
             this.window.width = window.innerWidth;
             this.window.height = window.innerHeight;
@@ -32205,39 +32184,12 @@ var render = function() {
                               },
                               [
                                 _c("i", { staticClass: "fas fa-home pr-1" }),
-                                _vm._v(
-                                  "\n                                Home\n                            "
-                                )
+                                _vm._v(" Home\n                            ")
                               ]
                             )
                           ],
                           1
                         ),
-                        _vm._v(" "),
-                        _vm.guest
-                          ? _c(
-                              "li",
-                              { staticClass: "nav-item" },
-                              [
-                                _c(
-                                  "router-link",
-                                  {
-                                    staticClass: "nav-link",
-                                    attrs: { to: "/login" }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass: "fas fa-sign-in-alt pr-1"
-                                    }),
-                                    _vm._v(
-                                      "\n                                Login\n                            "
-                                    )
-                                  ]
-                                )
-                              ],
-                              1
-                            )
-                          : _vm._e(),
                         _vm._v(" "),
                         _vm.auth
                           ? _c("li", { staticClass: "nav-item dropdown" }, [
@@ -32257,11 +32209,13 @@ var render = function() {
                                     staticClass: "now-ui-icons users_circle-08"
                                   }),
                                   _vm._v(
-                                    _vm._s(
-                                      _vm._f("capitalize")(
-                                        _vm.authState.user_name
-                                      )
-                                    ) + "\n                            "
+                                    " " +
+                                      _vm._s(
+                                        _vm._f("capitalize")(
+                                          _vm.authState.user_name
+                                        )
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               ),
@@ -32285,7 +32239,7 @@ var render = function() {
                                           "now-ui-icons ui-1_settings-gear-63 pr-1"
                                       }),
                                       _vm._v(
-                                        "\n                                    My Profile\n                                "
+                                        " My Profile\n                                "
                                       )
                                     ]
                                   ),
@@ -32308,7 +32262,9 @@ var render = function() {
                                         staticClass:
                                           "now-ui-icons media-1_button-power pr-1"
                                       }),
-                                      _vm._v("Logout")
+                                      _vm._v(
+                                        " Logout\n                                "
+                                      )
                                     ]
                                   )
                                 ],
@@ -32496,13 +32452,9 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_HRM_employee_Manager_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__views_HRM_employee_Manager_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_HRM_employee_Register_vue__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_HRM_employee_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__views_HRM_employee_Register_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__helpers_flash__ = __webpack_require__(1);
 
 
 
-
-
-//import App from '../App.vue';
 
 
 
@@ -35392,7 +35344,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-md-12 Flo-Rel px-md-3 p-0" }, [
-    _vm.role == "11" || _vm.role == "1"
+    _vm.role == "17" || _vm.role == "1"
       ? _c(
           "div",
           {
@@ -35436,7 +35388,7 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm.role == "13" || _vm.role == "1"
+    _vm.role == "20" || _vm.role == "1"
       ? _c(
           "div",
           {
@@ -35480,7 +35432,7 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm.role == "5" || _vm.role == "1"
+    _vm.role == "6" || _vm.role == "1"
       ? _c(
           "div",
           {
@@ -35995,9 +35947,14 @@ var render = function() {
                     { staticClass: "text-center float-left w-100 pb-4" },
                     [
                       _vm._v("Forgot Password? "),
-                      _c("router-link", { attrs: { to: "/forgotPassword" } }, [
-                        _vm._v("Click here")
-                      ])
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "text-info",
+                          attrs: { to: "/forgotPassword" }
+                        },
+                        [_vm._v("Click here")]
+                      )
                     ],
                     1
                   )
@@ -36176,13 +36133,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     beforeCreate: function beforeCreate() {
         if (!(this.$store.state.DSAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
-            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError("You don't have access to that page!");
-            this.$router.push('/login');
+            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError("You do not have access to that page!");
+            this.$router.push('/home');
         }
     }
 });
@@ -36198,7 +36183,80 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "Flo-Rel-FWid px-md-4 px-2" },
-    [_vm._m(0), _vm._v(" "), _c("router-view")],
+    [
+      _c(
+        "h4",
+        {
+          staticClass: "mx-md-3 mx-0 py-0 my-0 text-center",
+          attrs: { id: "index" }
+        },
+        [
+          _vm.$routerHistory.hasPrevious()
+            ? _c(
+                "router-link",
+                {
+                  staticClass:
+                    "text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3",
+                  attrs: {
+                    to: { path: _vm.$routerHistory.previous().path },
+                    id: "back"
+                  }
+                },
+                [
+                  _c("span", { staticClass: "mr-5 float-left" }, [
+                    _c("i", {
+                      staticClass: "far fa-arrow-alt-circle-left float-left"
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "back float-left ml-2 d-none d-sm-block" },
+                      [_vm._v("Back")]
+                    )
+                  ])
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm.$routerHistory.hasForward()
+            ? _c(
+                "router-link",
+                {
+                  staticClass:
+                    "text-secondary float-right mr-1 pr-2 mr-sm-4 pr-sm-3",
+                  attrs: {
+                    to: { path: _vm.$routerHistory.next().path },
+                    id: "forward"
+                  }
+                },
+                [
+                  _c("span", { staticClass: "ml-5 float-right" }, [
+                    _c("i", {
+                      staticClass: "far fa-arrow-alt-circle-right float-right"
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "forward float-right mr-2 d-none d-sm-block"
+                      },
+                      [_vm._v("Forward")]
+                    )
+                  ])
+                ]
+              )
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("router-view")
+    ],
     1
   )
 }
@@ -36207,9 +36265,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("h4", { staticClass: "mx-md-3 mx-1 py-0 my-0" }, [
-      _c("strong", [_vm._v("Direct Sales Agents(DSA) Portal")])
-    ])
+    return _c(
+      "strong",
+      {
+        staticClass: "mx-auto d-none d-sm-block w-100 float-left",
+        attrs: { "data-title": "title" }
+      },
+      [_c("span", [_vm._v("Direct Sales Agents")]), _vm._v(" Portal\n        ")]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "strong",
+      {
+        staticClass: "mx-auto d-block d-sm-none w-100 float-left",
+        attrs: { "data-title": "title" }
+      },
+      [_c("span", [_vm._v("DSA")]), _vm._v(" Portal\n        ")]
+    )
   }
 ]
 render._withStripped = true
@@ -44592,7 +44668,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     beforeCreate: function beforeCreate() {
         if (!(this.$store.state.DVAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
             __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('You dont have access to that page!');
-            this.$router.push('/login');
+            this.$router.push('/home');
         }
     }
 });
@@ -45657,16 +45733,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    // beforeCreate(){
-    //     if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&
-    //         !localStorage.getItem('api_token')) {
-    //         Flash.setError('You dont have access to that page!');
-    //         this.$router.push('/login');
-    //     }
-    // },
+    beforeCreate: function beforeCreate() {
+        if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
+            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('You do not have access to that page!');
+            this.$router.push('/home');
+        }
+    }
 });
 
 /***/ }),
@@ -45692,7 +45772,8 @@ var render = function() {
             ? _c(
                 "router-link",
                 {
-                  staticClass: "text-secondary float-left ml-4 pl-3",
+                  staticClass:
+                    "text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3",
                   attrs: {
                     to: { path: _vm.$routerHistory.previous().path },
                     id: "back"
@@ -45704,23 +45785,26 @@ var render = function() {
                       staticClass: "far fa-arrow-alt-circle-left float-left"
                     }),
                     _vm._v(" "),
-                    _c("span", { staticClass: "back float-left ml-2" }, [
-                      _vm._v("Back")
-                    ])
+                    _c(
+                      "span",
+                      { staticClass: "back float-left ml-2 d-none d-sm-block" },
+                      [_vm._v("Back")]
+                    )
                   ])
                 ]
               )
             : _vm._e(),
           _vm._v(" "),
-          _c("strong", { staticClass: "mx-auto" }, [
-            _vm._v("Human Resource Management Portal")
-          ]),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
           _vm._v(" "),
           _vm.$routerHistory.hasForward()
             ? _c(
                 "router-link",
                 {
-                  staticClass: "text-secondary float-right mr-4 pr-3",
+                  staticClass:
+                    "text-secondary float-right mr-1 pr-2 mr-sm-4 pr-sm-3",
                   attrs: {
                     to: { path: _vm.$routerHistory.next().path },
                     id: "forward"
@@ -45732,9 +45816,14 @@ var render = function() {
                       staticClass: "far fa-arrow-alt-circle-right float-right"
                     }),
                     _vm._v(" "),
-                    _c("span", { staticClass: "forward float-right mr-2" }, [
-                      _vm._v("Forward")
-                    ])
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "forward float-right mr-2 d-none d-sm-block"
+                      },
+                      [_vm._v("Forward")]
+                    )
                   ])
                 ]
               )
@@ -45748,7 +45837,37 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "strong",
+      {
+        staticClass: "mx-auto d-none d-sm-block w-100 float-left",
+        attrs: { "data-title": "title" }
+      },
+      [
+        _c("span", [_vm._v("Human Resource Management")]),
+        _vm._v(" Portal\n        ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "strong",
+      {
+        staticClass: "mx-auto d-block d-sm-none w-100 float-left",
+        attrs: { "data-title": "title" }
+      },
+      [_c("span", [_vm._v("HRM")]), _vm._v(" Portal\n        ")]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -49401,6 +49520,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     });
                 }
                 if (!result) {
+                    __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('Please check all the fields and make sure they are field correctly!');
                     _this.scrollToTop();
                 }
             });
@@ -49650,7 +49770,7 @@ var render = function() {
                       },
                       [
                         _c("option", { attrs: { value: "", selected: "" } }, [
-                          _vm._v("Select status")
+                          _vm._v("select status")
                         ]),
                         _vm._v(" "),
                         _vm._l(_vm.statuses, function(status) {
@@ -49730,7 +49850,7 @@ var render = function() {
                       },
                       [
                         _c("option", { attrs: { value: "", selected: "" } }, [
-                          _vm._v("Select nationality")
+                          _vm._v("select nationality")
                         ]),
                         _vm._v(" "),
                         _vm._l(_vm.countries, function(country) {
@@ -50008,7 +50128,7 @@ var render = function() {
                       },
                       [
                         _c("option", { attrs: { value: "", selected: "" } }, [
-                          _vm._v("Select role")
+                          _vm._v("select role")
                         ]),
                         _vm._v(" "),
                         _vm._l(_vm.roles, function(role) {
@@ -50097,7 +50217,7 @@ var render = function() {
                       },
                       [
                         _c("option", { attrs: { value: "", selected: "" } }, [
-                          _vm._v("Select qualification")
+                          _vm._v("select qualification")
                         ]),
                         _vm._v(" "),
                         _vm._l(_vm.qualifications, function(qualification) {
@@ -59840,14 +59960,11 @@ var index_esm = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-
+//noinspection JSAnnotator
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('capitalize', function (value) {
-
     if (!value) return '';
-
     value = value.toString();
-
     return value.charAt(0).toUpperCase() + value.slice(1);
 });
 
