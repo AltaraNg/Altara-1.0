@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -174,47 +174,13 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    state: {
-        success: null,
-        error: null
-    },
-    setSuccess: function setSuccess(message) {
-        var _this = this;
-
-        this.state.success = message;
-        setTimeout(function () {
-            _this.removeSuccess();
-        }, 1500);
-    },
-    setError: function setError(message) {
-        var _this2 = this;
-
-        this.state.error = message;
-        setTimeout(function () {
-            _this2.removeError();
-        }, 3000);
-    },
-    removeSuccess: function removeSuccess() {
-        this.state.success = null;
-    },
-    removeError: function removeError() {
-        this.state.error = null;
-    }
-});
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var bind = __webpack_require__(14);
-var isBuffer = __webpack_require__(41);
+var isBuffer = __webpack_require__(42);
 
 /*global toString:true*/
 
@@ -517,6 +483,40 @@ module.exports = {
 
 
 /***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    state: {
+        success: null,
+        error: null
+    },
+    setSuccess: function setSuccess(message) {
+        var _this = this;
+
+        this.state.success = message;
+        setTimeout(function () {
+            _this.removeSuccess();
+        }, 1500);
+    },
+    setError: function setError(message) {
+        var _this2 = this;
+
+        this.state.error = message;
+        setTimeout(function () {
+            _this2.removeError();
+        }, 3000);
+    },
+    removeSuccess: function removeSuccess() {
+        this.state.success = null;
+    },
+    removeError: function removeError() {
+        this.state.error = null;
+    }
+});
+
+/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -525,9 +525,9 @@ module.exports = {
 /* harmony export (immutable) */ __webpack_exports__["c"] = post;
 /* unused harmony export del */
 /* harmony export (immutable) */ __webpack_exports__["b"] = interceptors;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(7);
 
 
 function get(url) {
@@ -570,44 +570,6 @@ function interceptors(cb) {
 
 /***/ }),
 /* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    state: {
-        portal_access: null,
-        api_token: null,
-        user_name: null,
-        user_id: null,
-        role: null
-    },
-    initialize: function initialize() {
-        this.state.portal_access = parseInt(localStorage.getItem('portal_access'));
-        this.state.user_id = parseInt(localStorage.getItem('user_id'));
-        this.state.user_name = localStorage.getItem('user_name');
-        this.state.api_token = localStorage.getItem('api_token');
-        this.state.role = parseInt(localStorage.getItem('role'));
-    },
-    set: function set(api_token, user_id, user_name, role, portal_access) {
-        localStorage.setItem('portal_access', portal_access);
-        localStorage.setItem('user_name', user_name);
-        localStorage.setItem('api_token', api_token);
-        localStorage.setItem('user_id', user_id);
-        localStorage.setItem('role', role);
-        this.initialize();
-    },
-    remove: function remove() {
-        localStorage.removeItem('portal_access');
-        localStorage.removeItem('api_token');
-        localStorage.removeItem('user_name');
-        localStorage.removeItem('user_id');
-        localStorage.removeItem('role');
-        this.initialize();
-    }
-});
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports) {
 
 /*
@@ -689,7 +651,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -708,7 +670,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(29)
+var listToStyles = __webpack_require__(30)
 
 /*
 type StyleObject = {
@@ -917,7 +879,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -942,6 +904,44 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    state: {
+        portal_access: null,
+        api_token: null,
+        user_name: null,
+        user_id: null,
+        role: null
+    },
+    initialize: function initialize() {
+        this.state.portal_access = parseInt(localStorage.getItem('portal_access'));
+        this.state.user_id = parseInt(localStorage.getItem('user_id'));
+        this.state.user_name = localStorage.getItem('user_name');
+        this.state.api_token = localStorage.getItem('api_token');
+        this.state.role = parseInt(localStorage.getItem('role'));
+    },
+    set: function set(api_token, user_id, user_name, role, portal_access) {
+        localStorage.setItem('portal_access', portal_access);
+        localStorage.setItem('user_name', user_name);
+        localStorage.setItem('api_token', api_token);
+        localStorage.setItem('user_id', user_id);
+        localStorage.setItem('role', role);
+        this.initialize();
+    },
+    remove: function remove() {
+        localStorage.removeItem('portal_access');
+        localStorage.removeItem('api_token');
+        localStorage.removeItem('user_name');
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('role');
+        this.initialize();
+    }
+});
 
 /***/ }),
 /* 8 */
@@ -11907,304 +11907,10 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(24).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(25).setImmediate))
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(43);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(15);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(15);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  /**
-   * A timeout in milliseconds to abort a request. If set to 0 (default) a
-   * timeout is not created.
-   */
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
-
-/***/ }),
-/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13147,6 +12853,300 @@ var index_esm = {
 
 /* harmony default export */ __webpack_exports__["a"] = (index_esm);
 
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(1);
+var normalizeHeaderName = __webpack_require__(44);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(15);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(15);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
 /* 12 */
@@ -26046,7 +26046,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 14 */
@@ -26073,13 +26073,13 @@ module.exports = function bind(fn, thisArg) {
 "use strict";
 
 
-var utils = __webpack_require__(2);
-var settle = __webpack_require__(44);
-var buildURL = __webpack_require__(46);
-var parseHeaders = __webpack_require__(47);
-var isURLSameOrigin = __webpack_require__(48);
+var utils = __webpack_require__(1);
+var settle = __webpack_require__(45);
+var buildURL = __webpack_require__(47);
+var parseHeaders = __webpack_require__(48);
+var isURLSameOrigin = __webpack_require__(49);
 var createError = __webpack_require__(16);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(49);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(50);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -26176,7 +26176,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(50);
+      var cookies = __webpack_require__(51);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -26260,7 +26260,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(45);
+var enhanceError = __webpack_require__(46);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -26321,6 +26321,67 @@ module.exports = Cancel;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(9);
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
+var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
+    state: {
+        loader: false,
+        ProfileAccess: [],
+        ProfileEditAccess: [],
+        DSAAccess: [1, 2, 3, 8, 9, 15, 17],
+        DVAAccess: [1, 2, 3, 8, 9, 13, 16, 20, 21],
+        HRMAccess: [1, 2, 3, 6, 7, 8, 9],
+        FSRAccess: [1, 2, 3, 8, 9, 11, 14, 18],
+        authRole: parseInt(localStorage.getItem('role')),
+        api_token: localStorage.getItem('api_token')
+    },
+    getters: {
+        verifyDSAAccess: function verifyDSAAccess(state) {
+            return state.DSAAccess.includes(state.authRole) && state.api_token;
+        },
+        verifyDVAAccess: function verifyDVAAccess(state) {
+            return state.DVAAccess.includes(state.authRole) && state.api_token;
+        },
+        verifyHRMAccess: function verifyHRMAccess(state) {
+            return state.HRMAccess.includes(state.authRole) && state.api_token;
+        },
+        verifyFSRAccess: function verifyFSRAccess(state) {
+            return state.FSRAccess.includes(state.authRole) && state.api_token;
+        },
+
+        getProfileAccess: function getProfileAccess(state) {
+            return state.ProfileAccess;
+        },
+        getProfileEditAccess: function getProfileEditAccess(state) {
+            return state.ProfileEditAccess;
+        }
+    },
+    mutations: {
+        mutateProfileAccess: function mutateProfileAccess(state, payload) {
+            state.ProfileAccess.push(payload);
+        }
+    },
+    actions: {
+        mutateProfileAccess: function mutateProfileAccess(context, payload) {
+            context.commit('mutateProfileAccess', payload);
+        }
+    }
+});
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = log;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
 
@@ -26335,7 +26396,7 @@ function log(action, description) {
 }
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26357,31 +26418,31 @@ function log(action, description) {
 });
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(22);
-__webpack_require__(120);
-module.exports = __webpack_require__(121);
+__webpack_require__(23);
+__webpack_require__(131);
+module.exports = __webpack_require__(132);
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(130);
 window.$ = window.jQuery = __webpack_require__(12);
 window.Popper = __webpack_require__(13).default;
-__webpack_require__(23);
+__webpack_require__(24);
 
 
 
@@ -26398,7 +26459,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 });
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -30348,7 +30409,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -30404,7 +30465,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(25);
+__webpack_require__(26);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -30415,10 +30476,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -30608,22 +30669,22 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(10)))
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(27)
+  __webpack_require__(28)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(30)
+var __vue_script__ = __webpack_require__(31)
 /* template */
-var __vue_template__ = __webpack_require__(58)
+var __vue_template__ = __webpack_require__(59)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -30662,17 +30723,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(28);
+var content = __webpack_require__(29);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("dd64535e", content, false, {});
+var update = __webpack_require__(5)("dd64535e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -30688,10 +30749,10 @@ if(false) {
 }
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(false);
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
@@ -30702,7 +30763,7 @@ exports.push([module.i, "\nli > .nav-link[data-v-6dd1125c]:hover,\nli > .router-
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 /**
@@ -30735,16 +30796,16 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Loader_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Loader_vue__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Loader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Loader_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SideNav_vue__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SideNav_vue__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SideNav_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_SideNav_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__helpers_api__ = __webpack_require__(3);
 //
@@ -30840,10 +30901,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     beforeCreate: function beforeCreate() {
-        if (localStorage.getItem("api_token")) {
+        /*if (localStorage.getItem("api_token")) {
             this.$router.push("/home");
-            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess("Welcome Back!");
-        }
+            Flash.setSuccess("Welcome Back!");
+        }*/
         if (!localStorage.getItem("api_token")) {
             this.$router.push("/login");
             __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError("You have to Login!");
@@ -30898,19 +30959,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(32)
+  __webpack_require__(33)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(34)
+var __vue_script__ = __webpack_require__(35)
 /* template */
-var __vue_template__ = __webpack_require__(35)
+var __vue_template__ = __webpack_require__(36)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -30949,17 +31010,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(33);
+var content = __webpack_require__(34);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("06a9bd92", content, false, {});
+var update = __webpack_require__(5)("06a9bd92", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -30975,10 +31036,10 @@ if(false) {
 }
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(false);
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
@@ -30989,7 +31050,7 @@ exports.push([module.i, "\n.loaderCon[data-v-90dafe6c]{\n    height: 100vh;\n   
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31019,7 +31080,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -31059,15 +31120,15 @@ if (false) {
 }
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(37)
+var __vue_script__ = __webpack_require__(38)
 /* template */
-var __vue_template__ = __webpack_require__(38)
+var __vue_template__ = __webpack_require__(39)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -31106,7 +31167,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31158,7 +31219,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -31231,22 +31292,22 @@ if (false) {
 }
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(40);
+module.exports = __webpack_require__(41);
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(1);
 var bind = __webpack_require__(14);
-var Axios = __webpack_require__(42);
-var defaults = __webpack_require__(10);
+var Axios = __webpack_require__(43);
+var defaults = __webpack_require__(11);
 
 /**
  * Create an instance of Axios
@@ -31280,14 +31341,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(18);
-axios.CancelToken = __webpack_require__(56);
+axios.CancelToken = __webpack_require__(57);
 axios.isCancel = __webpack_require__(17);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(57);
+axios.spread = __webpack_require__(58);
 
 module.exports = axios;
 
@@ -31296,7 +31357,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 /*!
@@ -31323,16 +31384,16 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(10);
-var utils = __webpack_require__(2);
-var InterceptorManager = __webpack_require__(51);
-var dispatchRequest = __webpack_require__(52);
+var defaults = __webpack_require__(11);
+var utils = __webpack_require__(1);
+var InterceptorManager = __webpack_require__(52);
+var dispatchRequest = __webpack_require__(53);
 
 /**
  * Create a new instance of Axios
@@ -31409,13 +31470,13 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(1);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -31428,7 +31489,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31461,7 +31522,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31489,13 +31550,13 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(1);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -31562,13 +31623,13 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(1);
 
 // Headers whose duplicates are ignored by node
 // c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -31622,13 +31683,13 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(1);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -31697,7 +31758,7 @@ module.exports = (
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31740,13 +31801,13 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(1);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -31800,13 +31861,13 @@ module.exports = (
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(1);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -31859,18 +31920,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
-var transformData = __webpack_require__(53);
+var utils = __webpack_require__(1);
+var transformData = __webpack_require__(54);
 var isCancel = __webpack_require__(17);
-var defaults = __webpack_require__(10);
-var isAbsoluteURL = __webpack_require__(54);
-var combineURLs = __webpack_require__(55);
+var defaults = __webpack_require__(11);
+var isAbsoluteURL = __webpack_require__(55);
+var combineURLs = __webpack_require__(56);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -31952,13 +32013,13 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(1);
 
 /**
  * Transform the data for a request or a response
@@ -31979,7 +32040,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32000,7 +32061,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32021,7 +32082,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32085,7 +32146,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32119,7 +32180,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -32413,45 +32474,53 @@ if (false) {
 }
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_router_back_button__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_router_back_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_router_back_button__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_HomePage_vue__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__views_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_auth_Login_vue__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_auth_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__views_auth_Login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_NotFound_vue__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_NotFound_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__views_NotFound_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_DSA_index_vue__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_DSA_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__views_DSA_index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_DSA_HomePage_vue__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_DSA_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__views_DSA_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_DSA_registration_Register_vue__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_DSA_registration_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__views_DSA_registration_Register_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_DVA_index_vue__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_DVA_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__views_DVA_index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_DVA_HomePage_vue__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_DVA_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__views_DVA_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_profile_Index_vue__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_profile_Index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__views_profile_Index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_profile_Edit_vue__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_profile_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__views_profile_Edit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_profile_HomePage_vue__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_profile_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__views_profile_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_HRM_index_vue__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_HRM_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__views_HRM_index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_HRM_HomePage_vue__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_HRM_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__views_HRM_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_HRM_employee_Manager_vue__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_HRM_employee_Manager_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__views_HRM_employee_Manager_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_HRM_employee_Register_vue__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_HRM_employee_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__views_HRM_employee_Register_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_router_back_button__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_router_back_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_router_back_button__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_HomePage_vue__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__views_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_auth_Login_vue__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_auth_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__views_auth_Login_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_NotFound_vue__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_NotFound_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__views_NotFound_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_DSA_index_vue__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_DSA_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__views_DSA_index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_DSA_HomePage_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_DSA_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__views_DSA_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_DSA_registration_Register_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_DSA_registration_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__views_DSA_registration_Register_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_DVA_index_vue__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_DVA_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__views_DVA_index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_DVA_HomePage_vue__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_DVA_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__views_DVA_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_profile_Index_vue__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_profile_Index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__views_profile_Index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_profile_Edit_vue__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_profile_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__views_profile_Edit_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_profile_HomePage_vue__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_profile_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__views_profile_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_HRM_index_vue__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_HRM_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__views_HRM_index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_HRM_HomePage_vue__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_HRM_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__views_HRM_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_HRM_employee_Manager_vue__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_HRM_employee_Manager_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__views_HRM_employee_Manager_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_HRM_employee_Register_vue__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_HRM_employee_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__views_HRM_employee_Register_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_FSR_index_vue__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_FSR_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__views_FSR_index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_FSR_HomePage_vue__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_FSR_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__views_FSR_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_FSR_inventory_view_vue__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_FSR_inventory_view_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__views_FSR_inventory_view_vue__);
 
 
 
@@ -32477,34 +32546,85 @@ if (false) {
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_router_back_button__["routerHistory"]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vue_router_back_button__["routerHistory"]);
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-    routes: [{ path: '/', component: __WEBPACK_IMPORTED_MODULE_3__views_HomePage_vue___default.a }, { path: '/home', component: __WEBPACK_IMPORTED_MODULE_3__views_HomePage_vue___default.a, name: 'home', meta: { role: localStorage.getItem("role_id") }, alias: '/welcome-home' }, { path: '/login', component: __WEBPACK_IMPORTED_MODULE_4__views_auth_Login_vue___default.a, name: 'login' }, { path: '/user', component: __WEBPACK_IMPORTED_MODULE_11__views_profile_Index_vue___default.a,
-        children: [{ path: 'profile', component: __WEBPACK_IMPORTED_MODULE_13__views_profile_HomePage_vue___default.a }, { path: 'profile/edit', component: __WEBPACK_IMPORTED_MODULE_12__views_profile_Edit_vue___default.a }]
-    },
-    //dsa dept
-    { path: '/dsa', component: __WEBPACK_IMPORTED_MODULE_6__views_DSA_index_vue___default.a,
-        children: [
-        // {path:'/',redirect:{name:'DSAHome'}},
-        { path: 'home', component: __WEBPACK_IMPORTED_MODULE_7__views_DSA_HomePage_vue___default.a, name: 'DSAHome', alias: '/dsa-home' }, { path: 'customer/register', component: __WEBPACK_IMPORTED_MODULE_8__views_DSA_registration_Register_vue___default.a, name: 'customerRegister', alias: '/register-customer' }]
-    },
-    //dva dept
-    { path: '/dva', component: __WEBPACK_IMPORTED_MODULE_9__views_DVA_index_vue___default.a,
-        children: [
-        // {path:'/',redirect:{name:'DVAHome'}},
-        { path: 'home', component: __WEBPACK_IMPORTED_MODULE_10__views_DVA_HomePage_vue___default.a, name: 'DVAHome', alias: '/dva-home' }]
-    },
-    //hrm dept
-    { path: '/hrm', component: __WEBPACK_IMPORTED_MODULE_14__views_HRM_index_vue___default.a,
-        children: [
-        // {path:'/',redirect:{name:'HRMHome'}},
-        { path: 'home', component: __WEBPACK_IMPORTED_MODULE_15__views_HRM_HomePage_vue___default.a, name: 'HRMHome', alias: '/hrm-home' }, { path: 'employee/register', component: __WEBPACK_IMPORTED_MODULE_17__views_HRM_employee_Register_vue___default.a, name: 'employeeRegister', alias: '/register-employee' }, { path: 'employee/manager', component: __WEBPACK_IMPORTED_MODULE_16__views_HRM_employee_Manager_vue___default.a, name: 'employeeManager', alias: '/manage-employee' }]
-    }, { path: '/not-found', component: __WEBPACK_IMPORTED_MODULE_5__views_NotFound_vue___default.a }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_5__views_NotFound_vue___default.a }]
+    routes: [{ path: '/', component: __WEBPACK_IMPORTED_MODULE_5__views_HomePage_vue___default.a }, {
+        path: '/home',
+        component: __WEBPACK_IMPORTED_MODULE_5__views_HomePage_vue___default.a,
+        name: 'home',
+        meta: { role: localStorage.getItem("role_id") },
+        alias: '/welcome-home'
+    }, { path: '/login', component: __WEBPACK_IMPORTED_MODULE_6__views_auth_Login_vue___default.a, name: 'login' }, {
+        path: '/user', component: __WEBPACK_IMPORTED_MODULE_13__views_profile_Index_vue___default.a,
+        children: [{ path: 'profile', component: __WEBPACK_IMPORTED_MODULE_15__views_profile_HomePage_vue___default.a }, { path: 'profile/edit', component: __WEBPACK_IMPORTED_MODULE_14__views_profile_Edit_vue___default.a }]
+    }, {
+        path: '/dsa', component: __WEBPACK_IMPORTED_MODULE_8__views_DSA_index_vue___default.a, meta: { DSA: true },
+        children: [{ path: '/', redirect: { name: 'DSAHome' } }, { path: 'home', component: __WEBPACK_IMPORTED_MODULE_9__views_DSA_HomePage_vue___default.a, name: 'DSAHome', alias: '/dsa-home' }, {
+            path: 'customer/register',
+            component: __WEBPACK_IMPORTED_MODULE_10__views_DSA_registration_Register_vue___default.a,
+            name: 'customerRegister',
+            alias: '/register-customer'
+        }]
+    }, {
+        path: '/dva', component: __WEBPACK_IMPORTED_MODULE_11__views_DVA_index_vue___default.a, meta: { DVA: true },
+        children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: __WEBPACK_IMPORTED_MODULE_12__views_DVA_HomePage_vue___default.a, name: 'DVAHome', alias: '/dva-home' }]
+    }, {
+        path: '/hrm', component: __WEBPACK_IMPORTED_MODULE_16__views_HRM_index_vue___default.a, meta: { HRM: true },
+        children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: __WEBPACK_IMPORTED_MODULE_17__views_HRM_HomePage_vue___default.a, name: 'HRMHome', alias: '/hrm-home' }, {
+            path: 'employee/register',
+            component: __WEBPACK_IMPORTED_MODULE_19__views_HRM_employee_Register_vue___default.a,
+            name: 'employeeRegister',
+            alias: '/register-employee'
+        }, {
+            path: 'employee/manager',
+            component: __WEBPACK_IMPORTED_MODULE_18__views_HRM_employee_Manager_vue___default.a,
+            name: 'employeeManager',
+            alias: '/manage-employee'
+        }]
+    }, {
+        path: '/fsr', component: __WEBPACK_IMPORTED_MODULE_20__views_FSR_index_vue___default.a,
+        children: [{ path: 'home', component: __WEBPACK_IMPORTED_MODULE_21__views_FSR_HomePage_vue___default.a, name: 'FSRHome', alias: '/fsr-home' }, { path: 'inventory', component: __WEBPACK_IMPORTED_MODULE_22__views_FSR_inventory_view_vue___default.a, name: 'inventory', alias: '/inventory' }]
+    }, { path: '/not-found', component: __WEBPACK_IMPORTED_MODULE_7__views_NotFound_vue___default.a }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_7__views_NotFound_vue___default.a }]
 });
 
-router.afterEach(__WEBPACK_IMPORTED_MODULE_2_vue_router_back_button__["writeHistory"]);
-//place the router guard
+router.afterEach(__WEBPACK_IMPORTED_MODULE_4_vue_router_back_button__["writeHistory"]);
 router.beforeEach(function (to, from, next) {
+
+    if (to.matched.some(function (m) {
+        return m.meta.DSA;
+    })) {
+        if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].getters.verifyDSAAccess) {
+            next();
+            return;
+        }
+        next({ name: 'home' });
+        __WEBPACK_IMPORTED_MODULE_3__helpers_flash__["a" /* default */].setError("You do not have access to that page!");
+        return;
+    }
+    if (to.matched.some(function (m) {
+        return m.meta.DVA;
+    })) {
+        if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].getters.verifyDVAAccess) {
+            next();
+            return;
+        }
+        next({ name: 'home' });
+        __WEBPACK_IMPORTED_MODULE_3__helpers_flash__["a" /* default */].setError("You do not have access to that page!");
+        return;
+    }
+    if (to.matched.some(function (m) {
+        return m.meta.HRM;
+    })) {
+        if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].getters.verifyHRMAccess) {
+            next();
+            return;
+        }
+        next({ name: 'home' });
+        __WEBPACK_IMPORTED_MODULE_3__helpers_flash__["a" /* default */].setError("You do not have access to that page!");
+        return;
+    }
+    next();
+
     //check if the path user is going to is our param path
     // if(from.meta.role == 11 || from.meta.role == 1){
     // if( to.path != '/dsa' ||  to.path != '/customer/register' ||  to.path != '/dsa/home' ){
@@ -32554,12 +32674,12 @@ router.beforeEach(function (to, from, next) {
     //         next();
     //         }
     // }
-    next();
+    //next();
 });
 /* harmony default export */ __webpack_exports__["a"] = (router);
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35189,21 +35309,1218 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 61 */
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// This file can be required in Browserify and Node.js for automatic polyfill
+// To use it:  require('es6-promise/auto');
+
+module.exports = __webpack_require__(63).polyfill();
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process, global) {/*!
+ * @overview es6-promise - a tiny implementation of Promises/A+.
+ * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
+ * @license   Licensed under MIT license
+ *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
+ * @version   v4.2.4+314e4831
+ */
+
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.ES6Promise = factory());
+}(this, (function () { 'use strict';
+
+function objectOrFunction(x) {
+  var type = typeof x;
+  return x !== null && (type === 'object' || type === 'function');
+}
+
+function isFunction(x) {
+  return typeof x === 'function';
+}
+
+
+
+var _isArray = void 0;
+if (Array.isArray) {
+  _isArray = Array.isArray;
+} else {
+  _isArray = function (x) {
+    return Object.prototype.toString.call(x) === '[object Array]';
+  };
+}
+
+var isArray = _isArray;
+
+var len = 0;
+var vertxNext = void 0;
+var customSchedulerFn = void 0;
+
+var asap = function asap(callback, arg) {
+  queue[len] = callback;
+  queue[len + 1] = arg;
+  len += 2;
+  if (len === 2) {
+    // If len is 2, that means that we need to schedule an async flush.
+    // If additional callbacks are queued before the queue is flushed, they
+    // will be processed by this flush that we are scheduling.
+    if (customSchedulerFn) {
+      customSchedulerFn(flush);
+    } else {
+      scheduleFlush();
+    }
+  }
+};
+
+function setScheduler(scheduleFn) {
+  customSchedulerFn = scheduleFn;
+}
+
+function setAsap(asapFn) {
+  asap = asapFn;
+}
+
+var browserWindow = typeof window !== 'undefined' ? window : undefined;
+var browserGlobal = browserWindow || {};
+var BrowserMutationObserver = browserGlobal.MutationObserver || browserGlobal.WebKitMutationObserver;
+var isNode = typeof self === 'undefined' && typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
+
+// test for web worker but not in IE10
+var isWorker = typeof Uint8ClampedArray !== 'undefined' && typeof importScripts !== 'undefined' && typeof MessageChannel !== 'undefined';
+
+// node
+function useNextTick() {
+  // node version 0.10.x displays a deprecation warning when nextTick is used recursively
+  // see https://github.com/cujojs/when/issues/410 for details
+  return function () {
+    return process.nextTick(flush);
+  };
+}
+
+// vertx
+function useVertxTimer() {
+  if (typeof vertxNext !== 'undefined') {
+    return function () {
+      vertxNext(flush);
+    };
+  }
+
+  return useSetTimeout();
+}
+
+function useMutationObserver() {
+  var iterations = 0;
+  var observer = new BrowserMutationObserver(flush);
+  var node = document.createTextNode('');
+  observer.observe(node, { characterData: true });
+
+  return function () {
+    node.data = iterations = ++iterations % 2;
+  };
+}
+
+// web worker
+function useMessageChannel() {
+  var channel = new MessageChannel();
+  channel.port1.onmessage = flush;
+  return function () {
+    return channel.port2.postMessage(0);
+  };
+}
+
+function useSetTimeout() {
+  // Store setTimeout reference so es6-promise will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+  var globalSetTimeout = setTimeout;
+  return function () {
+    return globalSetTimeout(flush, 1);
+  };
+}
+
+var queue = new Array(1000);
+function flush() {
+  for (var i = 0; i < len; i += 2) {
+    var callback = queue[i];
+    var arg = queue[i + 1];
+
+    callback(arg);
+
+    queue[i] = undefined;
+    queue[i + 1] = undefined;
+  }
+
+  len = 0;
+}
+
+function attemptVertx() {
+  try {
+    var vertx = Function('return this')().require('vertx');
+    vertxNext = vertx.runOnLoop || vertx.runOnContext;
+    return useVertxTimer();
+  } catch (e) {
+    return useSetTimeout();
+  }
+}
+
+var scheduleFlush = void 0;
+// Decide what async method to use to triggering processing of queued callbacks:
+if (isNode) {
+  scheduleFlush = useNextTick();
+} else if (BrowserMutationObserver) {
+  scheduleFlush = useMutationObserver();
+} else if (isWorker) {
+  scheduleFlush = useMessageChannel();
+} else if (browserWindow === undefined && "function" === 'function') {
+  scheduleFlush = attemptVertx();
+} else {
+  scheduleFlush = useSetTimeout();
+}
+
+function then(onFulfillment, onRejection) {
+  var parent = this;
+
+  var child = new this.constructor(noop);
+
+  if (child[PROMISE_ID] === undefined) {
+    makePromise(child);
+  }
+
+  var _state = parent._state;
+
+
+  if (_state) {
+    var callback = arguments[_state - 1];
+    asap(function () {
+      return invokeCallback(_state, child, callback, parent._result);
+    });
+  } else {
+    subscribe(parent, child, onFulfillment, onRejection);
+  }
+
+  return child;
+}
+
+/**
+  `Promise.resolve` returns a promise that will become resolved with the
+  passed `value`. It is shorthand for the following:
+
+  ```javascript
+  let promise = new Promise(function(resolve, reject){
+    resolve(1);
+  });
+
+  promise.then(function(value){
+    // value === 1
+  });
+  ```
+
+  Instead of writing the above, your code now simply becomes the following:
+
+  ```javascript
+  let promise = Promise.resolve(1);
+
+  promise.then(function(value){
+    // value === 1
+  });
+  ```
+
+  @method resolve
+  @static
+  @param {Any} value value that the returned promise will be resolved with
+  Useful for tooling.
+  @return {Promise} a promise that will become fulfilled with the given
+  `value`
+*/
+function resolve$1(object) {
+  /*jshint validthis:true */
+  var Constructor = this;
+
+  if (object && typeof object === 'object' && object.constructor === Constructor) {
+    return object;
+  }
+
+  var promise = new Constructor(noop);
+  resolve(promise, object);
+  return promise;
+}
+
+var PROMISE_ID = Math.random().toString(36).substring(2);
+
+function noop() {}
+
+var PENDING = void 0;
+var FULFILLED = 1;
+var REJECTED = 2;
+
+var TRY_CATCH_ERROR = { error: null };
+
+function selfFulfillment() {
+  return new TypeError("You cannot resolve a promise with itself");
+}
+
+function cannotReturnOwn() {
+  return new TypeError('A promises callback cannot return that same promise.');
+}
+
+function getThen(promise) {
+  try {
+    return promise.then;
+  } catch (error) {
+    TRY_CATCH_ERROR.error = error;
+    return TRY_CATCH_ERROR;
+  }
+}
+
+function tryThen(then$$1, value, fulfillmentHandler, rejectionHandler) {
+  try {
+    then$$1.call(value, fulfillmentHandler, rejectionHandler);
+  } catch (e) {
+    return e;
+  }
+}
+
+function handleForeignThenable(promise, thenable, then$$1) {
+  asap(function (promise) {
+    var sealed = false;
+    var error = tryThen(then$$1, thenable, function (value) {
+      if (sealed) {
+        return;
+      }
+      sealed = true;
+      if (thenable !== value) {
+        resolve(promise, value);
+      } else {
+        fulfill(promise, value);
+      }
+    }, function (reason) {
+      if (sealed) {
+        return;
+      }
+      sealed = true;
+
+      reject(promise, reason);
+    }, 'Settle: ' + (promise._label || ' unknown promise'));
+
+    if (!sealed && error) {
+      sealed = true;
+      reject(promise, error);
+    }
+  }, promise);
+}
+
+function handleOwnThenable(promise, thenable) {
+  if (thenable._state === FULFILLED) {
+    fulfill(promise, thenable._result);
+  } else if (thenable._state === REJECTED) {
+    reject(promise, thenable._result);
+  } else {
+    subscribe(thenable, undefined, function (value) {
+      return resolve(promise, value);
+    }, function (reason) {
+      return reject(promise, reason);
+    });
+  }
+}
+
+function handleMaybeThenable(promise, maybeThenable, then$$1) {
+  if (maybeThenable.constructor === promise.constructor && then$$1 === then && maybeThenable.constructor.resolve === resolve$1) {
+    handleOwnThenable(promise, maybeThenable);
+  } else {
+    if (then$$1 === TRY_CATCH_ERROR) {
+      reject(promise, TRY_CATCH_ERROR.error);
+      TRY_CATCH_ERROR.error = null;
+    } else if (then$$1 === undefined) {
+      fulfill(promise, maybeThenable);
+    } else if (isFunction(then$$1)) {
+      handleForeignThenable(promise, maybeThenable, then$$1);
+    } else {
+      fulfill(promise, maybeThenable);
+    }
+  }
+}
+
+function resolve(promise, value) {
+  if (promise === value) {
+    reject(promise, selfFulfillment());
+  } else if (objectOrFunction(value)) {
+    handleMaybeThenable(promise, value, getThen(value));
+  } else {
+    fulfill(promise, value);
+  }
+}
+
+function publishRejection(promise) {
+  if (promise._onerror) {
+    promise._onerror(promise._result);
+  }
+
+  publish(promise);
+}
+
+function fulfill(promise, value) {
+  if (promise._state !== PENDING) {
+    return;
+  }
+
+  promise._result = value;
+  promise._state = FULFILLED;
+
+  if (promise._subscribers.length !== 0) {
+    asap(publish, promise);
+  }
+}
+
+function reject(promise, reason) {
+  if (promise._state !== PENDING) {
+    return;
+  }
+  promise._state = REJECTED;
+  promise._result = reason;
+
+  asap(publishRejection, promise);
+}
+
+function subscribe(parent, child, onFulfillment, onRejection) {
+  var _subscribers = parent._subscribers;
+  var length = _subscribers.length;
+
+
+  parent._onerror = null;
+
+  _subscribers[length] = child;
+  _subscribers[length + FULFILLED] = onFulfillment;
+  _subscribers[length + REJECTED] = onRejection;
+
+  if (length === 0 && parent._state) {
+    asap(publish, parent);
+  }
+}
+
+function publish(promise) {
+  var subscribers = promise._subscribers;
+  var settled = promise._state;
+
+  if (subscribers.length === 0) {
+    return;
+  }
+
+  var child = void 0,
+      callback = void 0,
+      detail = promise._result;
+
+  for (var i = 0; i < subscribers.length; i += 3) {
+    child = subscribers[i];
+    callback = subscribers[i + settled];
+
+    if (child) {
+      invokeCallback(settled, child, callback, detail);
+    } else {
+      callback(detail);
+    }
+  }
+
+  promise._subscribers.length = 0;
+}
+
+function tryCatch(callback, detail) {
+  try {
+    return callback(detail);
+  } catch (e) {
+    TRY_CATCH_ERROR.error = e;
+    return TRY_CATCH_ERROR;
+  }
+}
+
+function invokeCallback(settled, promise, callback, detail) {
+  var hasCallback = isFunction(callback),
+      value = void 0,
+      error = void 0,
+      succeeded = void 0,
+      failed = void 0;
+
+  if (hasCallback) {
+    value = tryCatch(callback, detail);
+
+    if (value === TRY_CATCH_ERROR) {
+      failed = true;
+      error = value.error;
+      value.error = null;
+    } else {
+      succeeded = true;
+    }
+
+    if (promise === value) {
+      reject(promise, cannotReturnOwn());
+      return;
+    }
+  } else {
+    value = detail;
+    succeeded = true;
+  }
+
+  if (promise._state !== PENDING) {
+    // noop
+  } else if (hasCallback && succeeded) {
+    resolve(promise, value);
+  } else if (failed) {
+    reject(promise, error);
+  } else if (settled === FULFILLED) {
+    fulfill(promise, value);
+  } else if (settled === REJECTED) {
+    reject(promise, value);
+  }
+}
+
+function initializePromise(promise, resolver) {
+  try {
+    resolver(function resolvePromise(value) {
+      resolve(promise, value);
+    }, function rejectPromise(reason) {
+      reject(promise, reason);
+    });
+  } catch (e) {
+    reject(promise, e);
+  }
+}
+
+var id = 0;
+function nextId() {
+  return id++;
+}
+
+function makePromise(promise) {
+  promise[PROMISE_ID] = id++;
+  promise._state = undefined;
+  promise._result = undefined;
+  promise._subscribers = [];
+}
+
+function validationError() {
+  return new Error('Array Methods must be provided an Array');
+}
+
+var Enumerator = function () {
+  function Enumerator(Constructor, input) {
+    this._instanceConstructor = Constructor;
+    this.promise = new Constructor(noop);
+
+    if (!this.promise[PROMISE_ID]) {
+      makePromise(this.promise);
+    }
+
+    if (isArray(input)) {
+      this.length = input.length;
+      this._remaining = input.length;
+
+      this._result = new Array(this.length);
+
+      if (this.length === 0) {
+        fulfill(this.promise, this._result);
+      } else {
+        this.length = this.length || 0;
+        this._enumerate(input);
+        if (this._remaining === 0) {
+          fulfill(this.promise, this._result);
+        }
+      }
+    } else {
+      reject(this.promise, validationError());
+    }
+  }
+
+  Enumerator.prototype._enumerate = function _enumerate(input) {
+    for (var i = 0; this._state === PENDING && i < input.length; i++) {
+      this._eachEntry(input[i], i);
+    }
+  };
+
+  Enumerator.prototype._eachEntry = function _eachEntry(entry, i) {
+    var c = this._instanceConstructor;
+    var resolve$$1 = c.resolve;
+
+
+    if (resolve$$1 === resolve$1) {
+      var _then = getThen(entry);
+
+      if (_then === then && entry._state !== PENDING) {
+        this._settledAt(entry._state, i, entry._result);
+      } else if (typeof _then !== 'function') {
+        this._remaining--;
+        this._result[i] = entry;
+      } else if (c === Promise$1) {
+        var promise = new c(noop);
+        handleMaybeThenable(promise, entry, _then);
+        this._willSettleAt(promise, i);
+      } else {
+        this._willSettleAt(new c(function (resolve$$1) {
+          return resolve$$1(entry);
+        }), i);
+      }
+    } else {
+      this._willSettleAt(resolve$$1(entry), i);
+    }
+  };
+
+  Enumerator.prototype._settledAt = function _settledAt(state, i, value) {
+    var promise = this.promise;
+
+
+    if (promise._state === PENDING) {
+      this._remaining--;
+
+      if (state === REJECTED) {
+        reject(promise, value);
+      } else {
+        this._result[i] = value;
+      }
+    }
+
+    if (this._remaining === 0) {
+      fulfill(promise, this._result);
+    }
+  };
+
+  Enumerator.prototype._willSettleAt = function _willSettleAt(promise, i) {
+    var enumerator = this;
+
+    subscribe(promise, undefined, function (value) {
+      return enumerator._settledAt(FULFILLED, i, value);
+    }, function (reason) {
+      return enumerator._settledAt(REJECTED, i, reason);
+    });
+  };
+
+  return Enumerator;
+}();
+
+/**
+  `Promise.all` accepts an array of promises, and returns a new promise which
+  is fulfilled with an array of fulfillment values for the passed promises, or
+  rejected with the reason of the first passed promise to be rejected. It casts all
+  elements of the passed iterable to promises as it runs this algorithm.
+
+  Example:
+
+  ```javascript
+  let promise1 = resolve(1);
+  let promise2 = resolve(2);
+  let promise3 = resolve(3);
+  let promises = [ promise1, promise2, promise3 ];
+
+  Promise.all(promises).then(function(array){
+    // The array here would be [ 1, 2, 3 ];
+  });
+  ```
+
+  If any of the `promises` given to `all` are rejected, the first promise
+  that is rejected will be given as an argument to the returned promises's
+  rejection handler. For example:
+
+  Example:
+
+  ```javascript
+  let promise1 = resolve(1);
+  let promise2 = reject(new Error("2"));
+  let promise3 = reject(new Error("3"));
+  let promises = [ promise1, promise2, promise3 ];
+
+  Promise.all(promises).then(function(array){
+    // Code here never runs because there are rejected promises!
+  }, function(error) {
+    // error.message === "2"
+  });
+  ```
+
+  @method all
+  @static
+  @param {Array} entries array of promises
+  @param {String} label optional string for labeling the promise.
+  Useful for tooling.
+  @return {Promise} promise that is fulfilled when all `promises` have been
+  fulfilled, or rejected if any of them become rejected.
+  @static
+*/
+function all(entries) {
+  return new Enumerator(this, entries).promise;
+}
+
+/**
+  `Promise.race` returns a new promise which is settled in the same way as the
+  first passed promise to settle.
+
+  Example:
+
+  ```javascript
+  let promise1 = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      resolve('promise 1');
+    }, 200);
+  });
+
+  let promise2 = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      resolve('promise 2');
+    }, 100);
+  });
+
+  Promise.race([promise1, promise2]).then(function(result){
+    // result === 'promise 2' because it was resolved before promise1
+    // was resolved.
+  });
+  ```
+
+  `Promise.race` is deterministic in that only the state of the first
+  settled promise matters. For example, even if other promises given to the
+  `promises` array argument are resolved, but the first settled promise has
+  become rejected before the other promises became fulfilled, the returned
+  promise will become rejected:
+
+  ```javascript
+  let promise1 = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      resolve('promise 1');
+    }, 200);
+  });
+
+  let promise2 = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      reject(new Error('promise 2'));
+    }, 100);
+  });
+
+  Promise.race([promise1, promise2]).then(function(result){
+    // Code here never runs
+  }, function(reason){
+    // reason.message === 'promise 2' because promise 2 became rejected before
+    // promise 1 became fulfilled
+  });
+  ```
+
+  An example real-world use case is implementing timeouts:
+
+  ```javascript
+  Promise.race([ajax('foo.json'), timeout(5000)])
+  ```
+
+  @method race
+  @static
+  @param {Array} promises array of promises to observe
+  Useful for tooling.
+  @return {Promise} a promise which settles in the same way as the first passed
+  promise to settle.
+*/
+function race(entries) {
+  /*jshint validthis:true */
+  var Constructor = this;
+
+  if (!isArray(entries)) {
+    return new Constructor(function (_, reject) {
+      return reject(new TypeError('You must pass an array to race.'));
+    });
+  } else {
+    return new Constructor(function (resolve, reject) {
+      var length = entries.length;
+      for (var i = 0; i < length; i++) {
+        Constructor.resolve(entries[i]).then(resolve, reject);
+      }
+    });
+  }
+}
+
+/**
+  `Promise.reject` returns a promise rejected with the passed `reason`.
+  It is shorthand for the following:
+
+  ```javascript
+  let promise = new Promise(function(resolve, reject){
+    reject(new Error('WHOOPS'));
+  });
+
+  promise.then(function(value){
+    // Code here doesn't run because the promise is rejected!
+  }, function(reason){
+    // reason.message === 'WHOOPS'
+  });
+  ```
+
+  Instead of writing the above, your code now simply becomes the following:
+
+  ```javascript
+  let promise = Promise.reject(new Error('WHOOPS'));
+
+  promise.then(function(value){
+    // Code here doesn't run because the promise is rejected!
+  }, function(reason){
+    // reason.message === 'WHOOPS'
+  });
+  ```
+
+  @method reject
+  @static
+  @param {Any} reason value that the returned promise will be rejected with.
+  Useful for tooling.
+  @return {Promise} a promise rejected with the given `reason`.
+*/
+function reject$1(reason) {
+  /*jshint validthis:true */
+  var Constructor = this;
+  var promise = new Constructor(noop);
+  reject(promise, reason);
+  return promise;
+}
+
+function needsResolver() {
+  throw new TypeError('You must pass a resolver function as the first argument to the promise constructor');
+}
+
+function needsNew() {
+  throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");
+}
+
+/**
+  Promise objects represent the eventual result of an asynchronous operation. The
+  primary way of interacting with a promise is through its `then` method, which
+  registers callbacks to receive either a promise's eventual value or the reason
+  why the promise cannot be fulfilled.
+
+  Terminology
+  -----------
+
+  - `promise` is an object or function with a `then` method whose behavior conforms to this specification.
+  - `thenable` is an object or function that defines a `then` method.
+  - `value` is any legal JavaScript value (including undefined, a thenable, or a promise).
+  - `exception` is a value that is thrown using the throw statement.
+  - `reason` is a value that indicates why a promise was rejected.
+  - `settled` the final resting state of a promise, fulfilled or rejected.
+
+  A promise can be in one of three states: pending, fulfilled, or rejected.
+
+  Promises that are fulfilled have a fulfillment value and are in the fulfilled
+  state.  Promises that are rejected have a rejection reason and are in the
+  rejected state.  A fulfillment value is never a thenable.
+
+  Promises can also be said to *resolve* a value.  If this value is also a
+  promise, then the original promise's settled state will match the value's
+  settled state.  So a promise that *resolves* a promise that rejects will
+  itself reject, and a promise that *resolves* a promise that fulfills will
+  itself fulfill.
+
+
+  Basic Usage:
+  ------------
+
+  ```js
+  let promise = new Promise(function(resolve, reject) {
+    // on success
+    resolve(value);
+
+    // on failure
+    reject(reason);
+  });
+
+  promise.then(function(value) {
+    // on fulfillment
+  }, function(reason) {
+    // on rejection
+  });
+  ```
+
+  Advanced Usage:
+  ---------------
+
+  Promises shine when abstracting away asynchronous interactions such as
+  `XMLHttpRequest`s.
+
+  ```js
+  function getJSON(url) {
+    return new Promise(function(resolve, reject){
+      let xhr = new XMLHttpRequest();
+
+      xhr.open('GET', url);
+      xhr.onreadystatechange = handler;
+      xhr.responseType = 'json';
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.send();
+
+      function handler() {
+        if (this.readyState === this.DONE) {
+          if (this.status === 200) {
+            resolve(this.response);
+          } else {
+            reject(new Error('getJSON: `' + url + '` failed with status: [' + this.status + ']'));
+          }
+        }
+      };
+    });
+  }
+
+  getJSON('/posts.json').then(function(json) {
+    // on fulfillment
+  }, function(reason) {
+    // on rejection
+  });
+  ```
+
+  Unlike callbacks, promises are great composable primitives.
+
+  ```js
+  Promise.all([
+    getJSON('/posts'),
+    getJSON('/comments')
+  ]).then(function(values){
+    values[0] // => postsJSON
+    values[1] // => commentsJSON
+
+    return values;
+  });
+  ```
+
+  @class Promise
+  @param {Function} resolver
+  Useful for tooling.
+  @constructor
+*/
+
+var Promise$1 = function () {
+  function Promise(resolver) {
+    this[PROMISE_ID] = nextId();
+    this._result = this._state = undefined;
+    this._subscribers = [];
+
+    if (noop !== resolver) {
+      typeof resolver !== 'function' && needsResolver();
+      this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+    }
+  }
+
+  /**
+  The primary way of interacting with a promise is through its `then` method,
+  which registers callbacks to receive either a promise's eventual value or the
+  reason why the promise cannot be fulfilled.
+   ```js
+  findUser().then(function(user){
+    // user is available
+  }, function(reason){
+    // user is unavailable, and you are given the reason why
+  });
+  ```
+   Chaining
+  --------
+   The return value of `then` is itself a promise.  This second, 'downstream'
+  promise is resolved with the return value of the first promise's fulfillment
+  or rejection handler, or rejected if the handler throws an exception.
+   ```js
+  findUser().then(function (user) {
+    return user.name;
+  }, function (reason) {
+    return 'default name';
+  }).then(function (userName) {
+    // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
+    // will be `'default name'`
+  });
+   findUser().then(function (user) {
+    throw new Error('Found user, but still unhappy');
+  }, function (reason) {
+    throw new Error('`findUser` rejected and we're unhappy');
+  }).then(function (value) {
+    // never reached
+  }, function (reason) {
+    // if `findUser` fulfilled, `reason` will be 'Found user, but still unhappy'.
+    // If `findUser` rejected, `reason` will be '`findUser` rejected and we're unhappy'.
+  });
+  ```
+  If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
+   ```js
+  findUser().then(function (user) {
+    throw new PedagogicalException('Upstream error');
+  }).then(function (value) {
+    // never reached
+  }).then(function (value) {
+    // never reached
+  }, function (reason) {
+    // The `PedgagocialException` is propagated all the way down to here
+  });
+  ```
+   Assimilation
+  ------------
+   Sometimes the value you want to propagate to a downstream promise can only be
+  retrieved asynchronously. This can be achieved by returning a promise in the
+  fulfillment or rejection handler. The downstream promise will then be pending
+  until the returned promise is settled. This is called *assimilation*.
+   ```js
+  findUser().then(function (user) {
+    return findCommentsByAuthor(user);
+  }).then(function (comments) {
+    // The user's comments are now available
+  });
+  ```
+   If the assimliated promise rejects, then the downstream promise will also reject.
+   ```js
+  findUser().then(function (user) {
+    return findCommentsByAuthor(user);
+  }).then(function (comments) {
+    // If `findCommentsByAuthor` fulfills, we'll have the value here
+  }, function (reason) {
+    // If `findCommentsByAuthor` rejects, we'll have the reason here
+  });
+  ```
+   Simple Example
+  --------------
+   Synchronous Example
+   ```javascript
+  let result;
+   try {
+    result = findResult();
+    // success
+  } catch(reason) {
+    // failure
+  }
+  ```
+   Errback Example
+   ```js
+  findResult(function(result, err){
+    if (err) {
+      // failure
+    } else {
+      // success
+    }
+  });
+  ```
+   Promise Example;
+   ```javascript
+  findResult().then(function(result){
+    // success
+  }, function(reason){
+    // failure
+  });
+  ```
+   Advanced Example
+  --------------
+   Synchronous Example
+   ```javascript
+  let author, books;
+   try {
+    author = findAuthor();
+    books  = findBooksByAuthor(author);
+    // success
+  } catch(reason) {
+    // failure
+  }
+  ```
+   Errback Example
+   ```js
+   function foundBooks(books) {
+   }
+   function failure(reason) {
+   }
+   findAuthor(function(author, err){
+    if (err) {
+      failure(err);
+      // failure
+    } else {
+      try {
+        findBoooksByAuthor(author, function(books, err) {
+          if (err) {
+            failure(err);
+          } else {
+            try {
+              foundBooks(books);
+            } catch(reason) {
+              failure(reason);
+            }
+          }
+        });
+      } catch(error) {
+        failure(err);
+      }
+      // success
+    }
+  });
+  ```
+   Promise Example;
+   ```javascript
+  findAuthor().
+    then(findBooksByAuthor).
+    then(function(books){
+      // found books
+  }).catch(function(reason){
+    // something went wrong
+  });
+  ```
+   @method then
+  @param {Function} onFulfilled
+  @param {Function} onRejected
+  Useful for tooling.
+  @return {Promise}
+  */
+
+  /**
+  `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
+  as the catch block of a try/catch statement.
+  ```js
+  function findAuthor(){
+  throw new Error('couldn't find that author');
+  }
+  // synchronous
+  try {
+  findAuthor();
+  } catch(reason) {
+  // something went wrong
+  }
+  // async with promises
+  findAuthor().catch(function(reason){
+  // something went wrong
+  });
+  ```
+  @method catch
+  @param {Function} onRejection
+  Useful for tooling.
+  @return {Promise}
+  */
+
+
+  Promise.prototype.catch = function _catch(onRejection) {
+    return this.then(null, onRejection);
+  };
+
+  /**
+    `finally` will be invoked regardless of the promise's fate just as native
+    try/catch/finally behaves
+  
+    Synchronous example:
+  
+    ```js
+    findAuthor() {
+      if (Math.random() > 0.5) {
+        throw new Error();
+      }
+      return new Author();
+    }
+  
+    try {
+      return findAuthor(); // succeed or fail
+    } catch(error) {
+      return findOtherAuther();
+    } finally {
+      // always runs
+      // doesn't affect the return value
+    }
+    ```
+  
+    Asynchronous example:
+  
+    ```js
+    findAuthor().catch(function(reason){
+      return findOtherAuther();
+    }).finally(function(){
+      // author was either found, or not
+    });
+    ```
+  
+    @method finally
+    @param {Function} callback
+    @return {Promise}
+  */
+
+
+  Promise.prototype.finally = function _finally(callback) {
+    var promise = this;
+    var constructor = promise.constructor;
+
+    return promise.then(function (value) {
+      return constructor.resolve(callback()).then(function () {
+        return value;
+      });
+    }, function (reason) {
+      return constructor.resolve(callback()).then(function () {
+        throw reason;
+      });
+    });
+  };
+
+  return Promise;
+}();
+
+Promise$1.prototype.then = then;
+Promise$1.all = all;
+Promise$1.race = race;
+Promise$1.resolve = resolve$1;
+Promise$1.reject = reject$1;
+Promise$1._setScheduler = setScheduler;
+Promise$1._setAsap = setAsap;
+Promise$1._asap = asap;
+
+/*global self*/
+function polyfill() {
+  var local = void 0;
+
+  if (typeof global !== 'undefined') {
+    local = global;
+  } else if (typeof self !== 'undefined') {
+    local = self;
+  } else {
+    try {
+      local = Function('return this')();
+    } catch (e) {
+      throw new Error('polyfill failed because global object is unavailable in this environment');
+    }
+  }
+
+  var P = local.Promise;
+
+  if (P) {
+    var promiseToString = null;
+    try {
+      promiseToString = Object.prototype.toString.call(P.resolve());
+    } catch (e) {
+      // silently ignored
+    }
+
+    if (promiseToString === '[object Promise]' && !P.cast) {
+      return;
+    }
+  }
+
+  local.Promise = Promise$1;
+}
+
+// Strange compat..
+Promise$1.polyfill = polyfill;
+Promise$1.Promise = Promise$1;
+
+return Promise$1;
+
+})));
+
+
+
+//# sourceMappingURL=es6-promise.map
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(6)))
+
+/***/ }),
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(t,e){ true?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.VueRouterBackButton=e():t.VueRouterBackButton=e()}(window,function(){return function(t){var e={};function r(n){if(e[n])return e[n].exports;var i=e[n]={i:n,l:!1,exports:{}};return t[n].call(i.exports,i,i.exports,r),i.l=!0,i.exports}return r.m=t,r.c=e,r.d=function(t,e,n){r.o(t,e)||Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:n})},r.r=function(t){Object.defineProperty(t,"__esModule",{value:!0})},r.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return r.d(e,"a",e),e},r.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},r.p="",r(r.s=2)}([function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n={_storageKey:"vue.router.back.button.history",_history:[],_current:-1,useSession:window.sessionStorage?1:0,install:function(t){Object.defineProperty(t.prototype,"$routerHistory",{get:function(){return n}})},reset:function(){this._history=[],this._current=-1,this.save()},getHistory:function(){if(!this.useSession)return this._history;var t=sessionStorage.getItem(this._storageKey);return this._history=t?window.JSON.parse(t).history:[],this._history},getCurrent:function(){if(!this.useSession)return this._current;var t=sessionStorage.getItem(this._storageKey);return this._current=t?window.JSON.parse(t).current:-1,this._current},save:function(){if(this.useSession){var t=window.JSON.stringify({history:this._history,current:this._current});return sessionStorage.setItem(this._storageKey,t),this}},previous:function(){var t=this.getHistory();return t.length>1?{path:t[this._current-1]}:{path:null}},current:function(){var t=this.getHistory();return t.length>1?{path:t[this._current]}:{path:null}},next:function(){var t=this.getHistory();return t.length+1>this._current?{path:t[this._current+1]}:{path:null}},hasHistory:function(){return this.getHistory().length>1},hasPrevious:function(){return this.getCurrent()>0},hasForward:function(){return this.getCurrent()+1<this.getHistory().length},push:function(t){this._history=this.getHistory(),this._current=this.getCurrent(),this._history.splice(this._current+1,this._history.length),this._history[this._history.length-1]!==t&&(this._history.push(t),this._current=this._current+1),this.save()},back:function(t){t<0||(this._current=this.getCurrent(),this._current=this._current-t,this.save())},forward:function(t){t<0||(this._current=this.getCurrent(),this._current=this._current+t,this.save())},getTheRecentFuture:function(){var t=this.getHistory(),e=this.getCurrent();return t.slice(e+1,e+4)},howFarIntheFuture:function(t){return this.getTheRecentFuture().indexOf(t)+1},isInTheFuture:function(t){return this.howFarIntheFuture(t)>0},indexOfRecentHistory:function(t){var e=this.getHistory(),r=this.getCurrent();return e.slice(0,r+1).reverse().indexOf(t)},visitedRecently:function(t){return-1!==this.indexOfRecentHistory(t)}};e.default=n},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n,i=(n=r(0))&&n.__esModule?n:{default:n};e.default=function(t,e){if(i.default.isInTheFuture(t.fullPath)){var r=i.default.howFarIntheFuture(t.fullPath);i.default.forward(r)}else if(i.default.visitedRecently(t.fullPath)){var n=i.default.indexOfRecentHistory(t.fullPath);i.default.back(n)}else i.default.push(t.fullPath)}},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.writeHistory=e.routerHistory=void 0;var n=s(r(0)),i=s(r(1));function s(t){return t&&t.__esModule?t:{default:t}}e.routerHistory=n.default,e.writeHistory=i.default}])});
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(63)
+var __vue_script__ = __webpack_require__(66)
 /* template */
-var __vue_template__ = __webpack_require__(64)
+var __vue_template__ = __webpack_require__(67)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -35242,101 +36559,97 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(1);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(9);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: {},
-    data: function data() {
-        return {
-            flash: __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].state,
-            authState: __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].state,
-            user_name: localStorage.getItem("user_name"),
-            isProcessing: false
-        };
-    },
-
-    computed: {
-        role: function role() {
-            return this.authState.role;
-        },
-        access: function access() {
-            return this.authState.portal_access;
-        }
-    },
-    watch: {},
-    methods: {}
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])(['verifyDSAAccess', 'verifyDVAAccess', 'verifyHRMAccess', 'verifyFSRAccess']))
 });
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -35344,7 +36657,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-md-12 Flo-Rel px-md-3 p-0" }, [
-    _vm.role == "17" || _vm.role == "1"
+    _vm.verifyDSAAccess
       ? _c(
           "div",
           {
@@ -35388,7 +36701,7 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm.role == "20" || _vm.role == "1"
+    _vm.verifyDVAAccess
       ? _c(
           "div",
           {
@@ -35432,7 +36745,7 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm.role == "6" || _vm.role == "1"
+    _vm.verifyHRMAccess
       ? _c(
           "div",
           {
@@ -35468,6 +36781,50 @@ var render = function() {
                     _vm._v(" "),
                     _c("p", { staticClass: "pt-md-3 pt-2" }, [
                       _vm._v("For the HRM officers.")
+                    ])
+                  ])
+                ])
+              ]
+            )
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.verifyFSRAccess
+      ? _c(
+          "div",
+          {
+            staticClass: "col-md-4 float-left product py-md-2 py-0 px-md-4 px-3"
+          },
+          [
+            _c(
+              "router-link",
+              { staticClass: "card", attrs: { to: "fsr/home" } },
+              [
+                _c(
+                  "ul",
+                  {
+                    staticClass:
+                      "nav nav-tabs nav-tabs-neutral justify-content-center",
+                    attrs: {
+                      role: "tablist",
+                      "data-background-color": "orange"
+                    }
+                  },
+                  [
+                    _c("h6", { staticClass: "text-center" }, [
+                      _vm._v("Floor Sales Portal")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body Flo-Rel-FWid" }, [
+                  _c("div", { staticClass: "text-center w-100 float-left" }, [
+                    _c("i", { staticClass: "fas fa-box" }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "pt-md-3 pt-2" }, [
+                      _vm._v("For Floor sales Representatives")
                     ])
                   ])
                 ])
@@ -35539,19 +36896,19 @@ if (false) {
 }
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(66)
+  __webpack_require__(69)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(68)
+var __vue_script__ = __webpack_require__(71)
 /* template */
-var __vue_template__ = __webpack_require__(69)
+var __vue_template__ = __webpack_require__(72)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -35590,17 +36947,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(67);
+var content = __webpack_require__(70);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("c45b7dc6", content, false, {});
+var update = __webpack_require__(5)("c45b7dc6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -35616,27 +36973,27 @@ if(false) {
 }
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(false);
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(3);
 //
 //
@@ -35745,15 +37102,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     beforeCreate: function beforeCreate() {
         if (localStorage.getItem('api_token')) this.$router.push('/home');
     },
-
-    computed: {},
     mounted: function mounted() {
         this.watchCardMT();
     }
 });
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -35910,7 +37265,8 @@ var render = function() {
                       _vm.errors.first("password")
                         ? _c("small", { staticClass: "error-control" }, [
                             _vm._v(
-                              _vm._s(_vm.errors.first("password")) +
+                              "\n                                " +
+                                _vm._s(_vm.errors.first("password")) +
                                 "\n                            "
                             )
                           ])
@@ -35978,15 +37334,15 @@ if (false) {
 }
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(71)
+var __vue_script__ = __webpack_require__(74)
 /* template */
-var __vue_template__ = __webpack_require__(72)
+var __vue_template__ = __webpack_require__(75)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36025,7 +37381,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36041,7 +37397,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36074,15 +37430,15 @@ if (false) {
 }
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(74)
+var __vue_script__ = __webpack_require__(77)
 /* template */
-var __vue_template__ = __webpack_require__(75)
+var __vue_template__ = __webpack_require__(78)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36121,13 +37477,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 74 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(1);
-//
 //
 //
 //
@@ -36162,18 +37516,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    beforeCreate: function beforeCreate() {
-        if (!(this.$store.state.DSAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
-            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError("You do not have access to that page!");
-            this.$router.push('/home');
-        }
-    }
-});
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 75 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36298,15 +37644,15 @@ if (false) {
 }
 
 /***/ }),
-/* 76 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(77)
+var __vue_script__ = __webpack_require__(80)
 /* template */
-var __vue_template__ = __webpack_require__(78)
+var __vue_template__ = __webpack_require__(81)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36345,7 +37691,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 77 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36394,7 +37740,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 78 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36541,19 +37887,19 @@ if (false) {
 }
 
 /***/ }),
-/* 79 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(80)
+  __webpack_require__(83)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(82)
+var __vue_script__ = __webpack_require__(85)
 /* template */
-var __vue_template__ = __webpack_require__(83)
+var __vue_template__ = __webpack_require__(86)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36592,17 +37938,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(81);
+var content = __webpack_require__(84);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("73246d93", content, false, {});
+var update = __webpack_require__(5)("73246d93", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -36618,28 +37964,90 @@ if(false) {
 }
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(false);
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n@media only screen and (max-width: 600px){\nlabel[data-v-a634bac2]{\n        margin-bottom: .15rem;\n}\n}\n", ""]);
+exports.push([module.i, "\n@media only screen and (max-width : 600px) {\nlabel[data-v-a634bac2] {\n        margin-bottom : .15rem;\n}\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 82 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_api__ = __webpack_require__(3);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -37938,7 +39346,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             gender: ['Male', 'Female'],
             noOfRooms: ['One room', 'Two room', 'More than Two room'],
             weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            receiveIncomeMeans: ['Bank Deposit', 'Check', 'Cash'],
+            receiveIncomeMeans: ['Bank Deposit', 'Cheque', 'Cash'],
             paymentPeriod: ['Daily', 'Weekly', 'Monthly'],
             employmentStatus: ['Formal', 'Informal(Business)', 'Unemployed'],
             states: {},
@@ -37950,7 +39358,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             relationshipPG: ['Friend', 'Family', 'Co-worker', 'Employee', 'Other'],
             relationships: ['Spouse', 'Mother', 'Sibling', 'Uncle', 'Nephew', 'In-law', 'Friend', 'Child', 'Father', 'Grandparent', 'Cousin', 'Caretaker', 'Grandchild'],
             durations: ['less than 1 year', '1 year', '2 years', '3 years', 'between 4 - 9 years', 'more than 10 years', 'more than 20 years']
-
         };
     },
 
@@ -37969,7 +39376,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var year = today.getFullYear();
             var month = toTwoDigits(today.getMonth() + 1);
             var day = toTwoDigits(today.getDate());
-            return month + '-' + day + '-' + year;
+            return year + '-' + month + '-' + day;
         },
         register: function register() {
             var _this = this;
@@ -37978,10 +39385,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (result) {
                     _this.LIPS(true);
                     _this.error = {};
-                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('/api/customer', _this.newCustomer).then(function (res) {
+                    Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["c" /* post */])('/api/customer', _this.newCustomer).then(function (res) {
                         if (res.data.registered) {
                             _this.scrollToTop();
-                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('customer has been added successfully');
+                            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setSuccess('customer has been added successfully');
                             _this.resetForm();
                         }
                         _this.LIPS(false);
@@ -37992,7 +39399,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
                 if (!result) {
                     _this.scrollToTop();
-                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Please Kindly make sure that all the fields in the form are filled correctly!');
+                    __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('Please Kindly make sure that all the fields in the form are filled correctly!');
                 }
             });
         },
@@ -38011,7 +39418,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this2 = this;
 
-        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])('/api/customer/create').then(function (res) {
+        Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["a" /* get */])('/api/customer/create').then(function (res) {
             _this2.states = res.data.states;
             _this2.branches = res.data.branches;
             _this2.newCustomer = res.data.form;
@@ -38025,7 +39432,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 83 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -38079,6 +39486,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("emp_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Employee name here",
@@ -38104,7 +39512,8 @@ var render = function() {
                   _vm.errors.first("emp_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("emp_name")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("emp_name")) +
                             "\n                    "
                         )
                       ])
@@ -38134,6 +39543,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("employee_phone_number")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Employee number here",
@@ -38159,7 +39571,9 @@ var render = function() {
                   _vm.errors.first("employee_phone_number")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("employee_phone_number"))
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("employee_phone_number")) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -38188,6 +39602,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("Date_of_Registration")
+                    },
                     attrs: {
                       type: "date",
                       "data-vv-as": "Date of Registration",
@@ -38210,7 +39627,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("Date_of_Registration")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("Date_of_Registration")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("Date_of_Registration")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -38242,6 +39663,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("first_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter First name here..",
@@ -38266,7 +39688,8 @@ var render = function() {
                   _vm.errors.first("first_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("first_name")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("first_name")) +
                             "\n                    "
                         )
                       ])
@@ -38287,20 +39710,12 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.newCustomer.middle_name,
                         expression: "newCustomer.middle_name"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|max:25",
-                        expression: "'required|max:25'"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: {
                       type: "text",
-                      placeholder: "Enter Middle name here..",
-                      name: "middle_name",
-                      "data-vv-as": "middle name"
+                      placeholder: "Enter Middle name here.."
                     },
                     domProps: { value: _vm.newCustomer.middle_name },
                     on: {
@@ -38315,16 +39730,7 @@ var render = function() {
                         )
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("middle_name")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(
-                          _vm._s(_vm.errors.first("middle_name")) +
-                            "\n                    "
-                        )
-                      ])
-                    : _vm._e()
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -38350,6 +39756,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("last_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Last name here..",
@@ -38374,7 +39781,8 @@ var render = function() {
                   _vm.errors.first("last_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("last_name")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("last_name")) +
                             "\n                    "
                         )
                       ])
@@ -38434,7 +39842,8 @@ var render = function() {
                   _vm.errors.first("gender")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("gender")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("gender")) +
                             "\n                    "
                         )
                       ])
@@ -38465,6 +39874,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("telephone") },
                     attrs: {
                       type: "tel",
                       placeholder: "Enter Phone number here..",
@@ -38488,7 +39898,8 @@ var render = function() {
                   _vm.errors.first("telephone")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("telephone")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("telephone")) +
                             "\n                    "
                         )
                       ])
@@ -38522,6 +39933,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("street_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter street name here..",
@@ -38546,7 +39958,8 @@ var render = function() {
                   _vm.errors.first("street_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("street_name")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("street_name")) +
                             "\n                    "
                         )
                       ])
@@ -38576,6 +39989,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("house_number") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter House number here..",
@@ -38600,7 +40014,8 @@ var render = function() {
                   _vm.errors.first("house_number")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("house_number")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("house_number")) +
                             "\n                    "
                         )
                       ])
@@ -38630,6 +40045,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("nearest_bus_stop")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter nearest bus stop here..",
@@ -38654,7 +40072,8 @@ var render = function() {
                   _vm.errors.first("nearest_bus_stop")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("nearest_bus_stop")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("nearest_bus_stop")) +
                             "\n                    "
                         )
                       ])
@@ -38686,6 +40105,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("area") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter area here..",
@@ -38709,7 +40129,8 @@ var render = function() {
                   _vm.errors.first("area")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("area")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("area")) +
                             "\n                    "
                         )
                       ])
@@ -38739,6 +40160,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("city") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter city here..",
@@ -38758,7 +40180,8 @@ var render = function() {
                   _vm.errors.first("city")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("city")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("city")) +
                             "\n                    "
                         )
                       ])
@@ -38790,6 +40213,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "custom-select w-100",
+                      class: { "is-invalid": _vm.errors.first("state") },
                       attrs: { name: "state" },
                       on: {
                         change: function($event) {
@@ -38828,7 +40252,8 @@ var render = function() {
                   _vm.errors.first("state")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("state")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("state")) +
                             "\n                    "
                         )
                       ])
@@ -38851,21 +40276,10 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.newCustomer.add_addinfo_description,
                         expression: "newCustomer.add_addinfo_description"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|max:100",
-                        expression: "'required|max:100'"
                       }
                     ],
                     staticClass: "form-control col-sm-12",
-                    attrs: {
-                      placeholder: "Describe the Location",
-                      rows: "1",
-                      name: "describe_location",
-                      "data-vv-as": "describe location"
-                    },
+                    attrs: { placeholder: "Describe the Location", rows: "1" },
                     domProps: {
                       value: _vm.newCustomer.add_addinfo_description
                     },
@@ -38881,16 +40295,7 @@ var render = function() {
                         )
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("describe_location")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(
-                          _vm._s(_vm.errors.first("describe_location")) +
-                            "\n                    "
-                        )
-                      ])
-                    : _vm._e()
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -38920,6 +40325,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("date_of_birth") },
                     attrs: {
                       type: "date",
                       name: "date_of_birth",
@@ -38943,7 +40349,8 @@ var render = function() {
                   _vm.errors.first("date_of_birth")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("date_of_birth")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("date_of_birth")) +
                             "\n                    "
                         )
                       ])
@@ -39009,7 +40416,8 @@ var render = function() {
                   _vm.errors.first("civil_status")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("civil_status")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("civil_status")) +
                             "\n                    "
                         )
                       ])
@@ -39018,59 +40426,67 @@ var render = function() {
                 2
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "form-group col-md-2 px-md-3 px-1 float-left" },
-                [
-                  _c("label", [_vm._v("Years together")]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.newCustomer.year_together,
-                        expression: "newCustomer.year_together"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|numeric|max:2",
-                        expression: "'required|numeric|max:2'"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "number",
-                      placeholder: "years together..",
-                      name: "years_together",
-                      "data-vv-as": "years together"
+              !(_vm.newCustomer.civil_status == "Single")
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "form-group col-md-2 px-md-3 px-1 float-left"
                     },
-                    domProps: { value: _vm.newCustomer.year_together },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                    [
+                      _c("label", [_vm._v("Years together")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newCustomer.year_together,
+                            expression: "newCustomer.year_together"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required|numeric|max:2",
+                            expression: "'required|numeric|max:2'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.errors.first("years_together")
+                        },
+                        attrs: {
+                          type: "number",
+                          placeholder: "years together..",
+                          name: "years_together",
+                          "data-vv-as": "years together"
+                        },
+                        domProps: { value: _vm.newCustomer.year_together },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.newCustomer,
+                              "year_together",
+                              $event.target.value
+                            )
+                          }
                         }
-                        _vm.$set(
-                          _vm.newCustomer,
-                          "year_together",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("years_together")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(
-                          _vm._s(_vm.errors.first("years_together")) +
-                            "\n                    "
-                        )
-                      ])
-                    : _vm._e()
-                ]
-              ),
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.first("years_together")
+                        ? _c("small", { staticClass: "form-text text-muted" }, [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.errors.first("years_together")) +
+                                "\n                    "
+                            )
+                          ])
+                        : _vm._e()
+                    ]
+                  )
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "spaceAfter" }),
               _vm._v(" "),
@@ -39138,7 +40554,8 @@ var render = function() {
                   _vm.errors.first("typeOfHome")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("typeOfHome")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("typeOfHome")) +
                             "\n                    "
                         )
                       ])
@@ -39205,7 +40622,8 @@ var render = function() {
                   _vm.errors.first("noOfRoom")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("noOfRoom")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("noOfRoom")) +
                             "\n                    "
                         )
                       ])
@@ -39236,6 +40654,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("duration_of_residence")
+                    },
                     attrs: {
                       type: "number",
                       placeholder: "Duration of residence..",
@@ -39260,7 +40681,8 @@ var render = function() {
                   _vm.errors.first("duration_of_residence")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("duration_of_residence")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("duration_of_residence")) +
                             "\n                    "
                         )
                       ])
@@ -39294,6 +40716,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("number_in_household")
+                    },
                     attrs: {
                       type: "number",
                       placeholder: "Enter number here..",
@@ -39318,7 +40743,8 @@ var render = function() {
                   _vm.errors.first("number_in_household")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("number_in_household")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("number_in_household")) +
                             "\n                    "
                         )
                       ])
@@ -39348,6 +40774,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("how_many_work") },
                     attrs: {
                       type: "number",
                       placeholder: "Enter number here..",
@@ -39372,7 +40799,8 @@ var render = function() {
                   _vm.errors.first("how_many_work")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("how_many_work")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("how_many_work")) +
                             "\n                    "
                         )
                       ])
@@ -39402,6 +40830,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("no_depend_on_you")
+                    },
                     attrs: {
                       type: "number",
                       placeholder: "Enter number here..",
@@ -39426,7 +40857,8 @@ var render = function() {
                   _vm.errors.first("no_depend_on_you")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("no_depend_on_you")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("no_depend_on_you")) +
                             "\n                    "
                         )
                       ])
@@ -39456,6 +40888,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("number_of_children")
+                    },
                     attrs: {
                       type: "number",
                       placeholder: "Enter number here..",
@@ -39480,7 +40915,8 @@ var render = function() {
                   _vm.errors.first("number_of_children")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("number_of_children")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("number_of_children")) +
                             "\n                    "
                         )
                       ])
@@ -39554,7 +40990,8 @@ var render = function() {
                   _vm.errors.first("highestLevel")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("highestLevel")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("highestLevel")) +
                             "\n                    "
                         )
                       ])
@@ -39586,6 +41023,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.first("time_from") },
                   attrs: {
                     type: "time",
                     name: "time_from",
@@ -39609,7 +41047,8 @@ var render = function() {
                 _vm.errors.first("time_from")
                   ? _c("small", { staticClass: "form-text text-muted" }, [
                       _vm._v(
-                        _vm._s(_vm.errors.first("time_from")) +
+                        "\n                        " +
+                          _vm._s(_vm.errors.first("time_from")) +
                           "\n                    "
                       )
                     ])
@@ -39635,6 +41074,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.first("time_to") },
                   attrs: {
                     type: "time",
                     name: "time_to",
@@ -39658,7 +41098,8 @@ var render = function() {
                 _vm.errors.first("time_to")
                   ? _c("small", { staticClass: "form-text text-muted" }, [
                       _vm._v(
-                        _vm._s(_vm.errors.first("time_to")) +
+                        "\n                        " +
+                          _vm._s(_vm.errors.first("time_to")) +
                           "\n                    "
                       )
                     ])
@@ -39671,7 +41112,10 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "form-group col-md-4 px-md-3 px-1 float-left" },
+                {
+                  staticClass:
+                    "form-group col-md-3 col-6 px-md-3 px-1 float-left"
+                },
                 [
                   _c("label", { staticClass: "w-100 float-left pl-1" }, [
                     _vm._v("Loan From other Institutions")
@@ -39759,7 +41203,8 @@ var render = function() {
                   _vm.errors.first("otherLoan")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("otherLoan")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("otherLoan")) +
                             "\n                    "
                         )
                       ])
@@ -39767,9 +41212,178 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
+              _c("transition", { attrs: { name: "fade" } }, [
+                _vm.newCustomer.loan_from_institution === "Yes"
+                  ? _c("span", [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c(
+                            "label",
+                            { staticClass: "w-100 float-left pl-1" },
+                            [_vm._v("Did you pay back?")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "radio pl-1 pr-3 float-left" },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.newCustomer.did_you_pay_back,
+                                    expression: "newCustomer.did_you_pay_back"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "payBack",
+                                  id: "payBackYes",
+                                  value: "Yes",
+                                  "data-vv-as": "did you pay back"
+                                },
+                                domProps: {
+                                  checked: _vm._q(
+                                    _vm.newCustomer.did_you_pay_back,
+                                    "Yes"
+                                  )
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.$set(
+                                      _vm.newCustomer,
+                                      "did_you_pay_back",
+                                      "Yes"
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("label", { attrs: { for: "payBackYes" } }, [
+                                _vm._v("Yes")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "radio pl-1 pr-3 float-left" },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.newCustomer.did_you_pay_back,
+                                    expression: "newCustomer.did_you_pay_back"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "payBack",
+                                  id: "payBackNo",
+                                  value: "No"
+                                },
+                                domProps: {
+                                  checked: _vm._q(
+                                    _vm.newCustomer.did_you_pay_back,
+                                    "No"
+                                  )
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.$set(
+                                      _vm.newCustomer,
+                                      "did_you_pay_back",
+                                      "No"
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("label", { attrs: { for: "payBackNo" } }, [
+                                _vm._v("No")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm.errors.first("payBack")
+                            ? _c(
+                                "small",
+                                { staticClass: "form-text text-muted" },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("payBack")) +
+                                      "\n                            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-12 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Loan amount")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.newCustomer.loan_amount,
+                                expression: "newCustomer.loan_amount"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              placeholder: "Enter amount here.."
+                            },
+                            domProps: { value: _vm.newCustomer.loan_amount },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.newCustomer,
+                                  "loan_amount",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]
+                      )
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "form-group col-md-8 px-md-3 px-1 float-left" },
+                {
+                  staticClass:
+                    "form-group col-md-3 col-12 px-md-3 px-1 float-left"
+                },
                 [
                   _c("label", [_vm._v("Email Address")]),
                   _vm._v(" "),
@@ -39780,21 +41394,10 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.newCustomer.email,
                         expression: "newCustomer.email"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|email|max:50",
-                        expression: "'required|email|max:50'"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: {
-                      type: "email",
-                      placeholder: "Enter email here",
-                      name: "email_address",
-                      "data-vv-as": "email address"
-                    },
+                    attrs: { type: "email", placeholder: "Enter email here" },
                     domProps: { value: _vm.newCustomer.email },
                     on: {
                       input: function($event) {
@@ -39804,16 +41407,7 @@ var render = function() {
                         _vm.$set(_vm.newCustomer, "email", $event.target.value)
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("email_address")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(
-                          _vm._s(_vm.errors.first("email_address")) +
-                            "\n                    "
-                        )
-                      ])
-                    : _vm._e()
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -39883,7 +41477,8 @@ var render = function() {
                   _vm.errors.first("status")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("status")) +
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("status")) +
                             "\n                    "
                         )
                       ])
@@ -39927,6 +41522,9 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first("office_phone")
+                            },
                             attrs: {
                               type: "tel",
                               placeholder: "Enter Phone Number here",
@@ -39957,7 +41555,8 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("office_phone")) +
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("office_phone")) +
                                       "\n                            "
                                   )
                                 ]
@@ -39993,6 +41592,9 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first("name_of_firm")
+                            },
                             attrs: {
                               type: "text",
                               placeholder: "Enter name of company here",
@@ -40022,7 +41624,8 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("name_of_firm")) +
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("name_of_firm")) +
                                       "\n                            "
                                   )
                                 ]
@@ -40056,11 +41659,14 @@ var render = function() {
                               {
                                 name: "validate",
                                 rawName: "v-validate",
-                                value: "required|numeric|max:20",
-                                expression: "'required|numeric|max:20'"
+                                value: "required",
+                                expression: "'required'"
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first("current_salary")
+                            },
                             attrs: {
                               type: "number",
                               placeholder: "Current Salary or Monthly income",
@@ -40091,7 +41697,11 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("current_salary"))
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first("current_salary")
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40119,11 +41729,14 @@ var render = function() {
                               {
                                 name: "validate",
                                 rawName: "v-validate",
-                                value: "required|max:20",
-                                expression: "'required|max:20'"
+                                value: "required",
+                                expression: "'required'"
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first("post_in_company")
+                            },
                             attrs: {
                               type: "text",
                               placeholder: "Enter position/post here",
@@ -40153,9 +41766,11 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(
-                                      _vm.errors.first("post_in_company")
-                                    ) + "\n                            "
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first("post_in_company")
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40200,6 +41815,9 @@ var render = function() {
                                       expression: "'required'"
                                     }
                                   ],
+                                  class: {
+                                    "is-invalid": _vm.errors.first("means")
+                                  },
                                   attrs: {
                                     type: "radio",
                                     name: "means",
@@ -40235,7 +41853,13 @@ var render = function() {
                             ? _c(
                                 "small",
                                 { staticClass: "form-text text-muted" },
-                                [_vm._v(_vm._s(_vm.errors.first("means")))]
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("means")) +
+                                      "\n                            "
+                                  )
+                                ]
                               )
                             : _vm._e()
                         ],
@@ -40310,7 +41934,13 @@ var render = function() {
                             ? _c(
                                 "small",
                                 { staticClass: "form-text text-muted" },
-                                [_vm._v(_vm._s(_vm.errors.first("period")))]
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("period")) +
+                                      "\n                            "
+                                  )
+                                ]
                               )
                             : _vm._e()
                         ],
@@ -40349,6 +41979,9 @@ var render = function() {
                                 }
                               ],
                               staticClass: "custom-select w-100",
+                              class: {
+                                "is-invalid": _vm.errors.first("work_duration")
+                              },
                               attrs: {
                                 name: "work_duration",
                                 "data-vv-as": "work duration"
@@ -40396,7 +42029,11 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("work_duration"))
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first("work_duration")
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40431,8 +42068,8 @@ var render = function() {
                                     {
                                       name: "validate",
                                       rawName: "v-validate",
-                                      value: _vm.days_of_work,
-                                      expression: "days_of_work"
+                                      value: "required",
+                                      expression: "'required'"
                                     }
                                   ],
                                   attrs: {
@@ -40501,7 +42138,9 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("days_of_work"))
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("days_of_work")) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40539,6 +42178,11 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first(
+                                "office_street_name"
+                              )
+                            },
                             attrs: {
                               type: "text",
                               placeholder: "Enter Street name here",
@@ -40568,9 +42212,11 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(
-                                      _vm.errors.first("office_street_name")
-                                    )
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first("office_street_name")
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40603,6 +42249,11 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first(
+                                "office_building_number"
+                              )
+                            },
                             attrs: {
                               type: "text",
                               placeholder: "Enter Building Number",
@@ -40630,9 +42281,13 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(
-                                      _vm.errors.first("office_building_number")
-                                    )
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first(
+                                          "office_building_number"
+                                        )
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40665,6 +42320,11 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first(
+                                "office_nearest_bus_stop"
+                              )
+                            },
                             attrs: {
                               type: "text",
                               placeholder: "Enter nearest bus stop",
@@ -40692,11 +42352,13 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "office_nearest_bus_stop"
-                                      )
-                                    )
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first(
+                                          "office_nearest_bus_stop"
+                                        )
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40731,6 +42393,9 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first("company_area")
+                            },
                             attrs: {
                               type: "text",
                               placeholder: "Enter area",
@@ -40758,7 +42423,9 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("company_area"))
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("company_area")) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40791,6 +42458,9 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first("company_city")
+                            },
                             attrs: {
                               type: "text",
                               placeholder: "Enter city",
@@ -40818,7 +42488,9 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("company_city"))
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("company_city")) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40853,6 +42525,9 @@ var render = function() {
                                 }
                               ],
                               staticClass: "custom-select w-100",
+                              class: {
+                                "is-invalid": _vm.errors.first("company_state")
+                              },
                               attrs: {
                                 name: "company_state",
                                 "data-vv-as": "company state"
@@ -40900,7 +42575,11 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("company_state"))
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first("company_state")
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40935,6 +42614,11 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first(
+                                "company_phone_number"
+                              )
+                            },
                             attrs: {
                               type: "tel",
                               placeholder: "Enter city",
@@ -40962,9 +42646,11 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(
-                                      _vm.errors.first("company_phone_number")
-                                    )
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first("company_phone_number")
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -40999,6 +42685,9 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first("available_from")
+                            },
                             attrs: {
                               type: "time",
                               name: "available_from",
@@ -41027,7 +42716,11 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("available_from"))
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.errors.first("available_from")
+                                      ) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -41060,6 +42753,9 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.errors.first("available_to")
+                            },
                             attrs: {
                               type: "time",
                               name: "available_to",
@@ -41086,7 +42782,9 @@ var render = function() {
                                 { staticClass: "form-text text-muted" },
                                 [
                                   _vm._v(
-                                    _vm._s(_vm.errors.first("available_to"))
+                                    "\n                                " +
+                                      _vm._s(_vm.errors.first("available_to")) +
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -41112,20 +42810,12 @@ var render = function() {
                                 rawName: "v-model",
                                 value: _vm.newCustomer.cadd_addinfo,
                                 expression: "newCustomer.cadd_addinfo"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required",
-                                expression: "'required'"
                               }
                             ],
                             staticClass: "form-control col-sm-12",
                             attrs: {
                               placeholder: "Describe the Location",
-                              rows: "1",
-                              "data-vv-as": "describe company location",
-                              name: "describe_company_location"
+                              rows: "1"
                             },
                             domProps: { value: _vm.newCustomer.cadd_addinfo },
                             on: {
@@ -41140,23 +42830,7 @@ var render = function() {
                                 )
                               }
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("describe_company_location")
-                            ? _c(
-                                "small",
-                                { staticClass: "form-text text-muted" },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "describe_company_location"
-                                      )
-                                    ) + "\n                            "
-                                  )
-                                ]
-                              )
-                            : _vm._e()
+                          })
                         ]
                       )
                     ])
@@ -41194,6 +42868,9 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("office_phone")
+                              },
                               attrs: {
                                 type: "tel",
                                 placeholder: "Enter Phone Number here",
@@ -41225,7 +42902,10 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("office_phone")) +
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("office_phone")
+                                        ) +
                                         "\n                            "
                                     )
                                   ]
@@ -41261,6 +42941,9 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("name_of_firm")
+                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter name of company here",
@@ -41291,7 +42974,10 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("name_of_firm")) +
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("name_of_firm")
+                                        ) +
                                         "\n                            "
                                     )
                                   ]
@@ -41301,6 +42987,73 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "spaceBetween" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-6 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Name of Market")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.market_name,
+                                  expression: "newCustomer.market_name"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("market_name")
+                              },
+                              attrs: {
+                                type: "text",
+                                placeholder: "name of market",
+                                "data-vv-as": "name of market",
+                                name: "market_name"
+                              },
+                              domProps: { value: _vm.newCustomer.market_name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "market_name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("market_name")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text text-muted" },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("market_name")
+                                        ) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -41325,11 +43078,14 @@ var render = function() {
                                 {
                                   name: "validate",
                                   rawName: "v-validate",
-                                  value: "required|numeric|max:20",
-                                  expression: "'required|numeric|max:20'"
+                                  value: "required|numeric",
+                                  expression: "'required|numeric'"
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("current_salary")
+                              },
                               attrs: {
                                 type: "number",
                                 placeholder: "Current Salary or Monthly income",
@@ -41360,67 +43116,10 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("current_salary"))
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "form-group col-md-6 px-md-3 px-1 float-left"
-                          },
-                          [
-                            _c("label", [_vm._v("Name of Market")]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.newCustomer.market_name,
-                                  expression: "newCustomer.market_name"
-                                },
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required|max:50",
-                                  expression: "'required|max:50'"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                placeholder: "Enter position/post here",
-                                "data-vv-as": "name of market",
-                                name: "market_name"
-                              },
-                              domProps: { value: _vm.newCustomer.market_name },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.newCustomer,
-                                    "market_name",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.errors.first("market_name")
-                              ? _c(
-                                  "small",
-                                  { staticClass: "form-text text-muted" },
-                                  [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("market_name")) +
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("current_salary")
+                                        ) +
                                         "\n                            "
                                     )
                                   ]
@@ -41435,7 +43134,76 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "form-group col-md-3 px-md-3 px-1 float-left"
+                              "form-group col-md-6 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Monthly Gains")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.monthly_gains,
+                                  expression: "newCustomer.monthly_gains"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required|numeric",
+                                  expression: "'required|numeric'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("monthly_gains")
+                              },
+                              attrs: {
+                                type: "number",
+                                placeholder: "monthly gains",
+                                name: "monthly_gains",
+                                "data-vv-as": "monthly gains"
+                              },
+                              domProps: {
+                                value: _vm.newCustomer.monthly_gains
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "monthly_gains",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("monthly_gains")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text text-muted" },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("monthly_gains")
+                                        ) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-6 px-md-3 px-1 float-left"
                           },
                           [
                             _c("label", [_vm._v("Years of Existence")]),
@@ -41461,9 +43229,14 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
+                                class: {
+                                  "is-invalid": _vm.errors.first(
+                                    "work_duration"
+                                  )
+                                },
                                 attrs: {
                                   name: "work_duration",
-                                  "data-vv-as": "work duration"
+                                  "data-vv-as": "years of existence"
                                 },
                                 on: {
                                   change: function($event) {
@@ -41508,7 +43281,139 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("work_duration"))
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("work_duration")
+                                        ) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spaceBetween" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-3 col-6 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c(
+                              "label",
+                              { staticClass: "w-100 float-left pl-1" },
+                              [_vm._v("Dou you have a bank account?")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "radio pl-1 pr-3 float-left" },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.newCustomer.bank_account,
+                                      expression: "newCustomer.bank_account"
+                                    },
+                                    {
+                                      name: "validate",
+                                      rawName: "v-validate",
+                                      value: "required",
+                                      expression: "'required'"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "radio",
+                                    name: "bank_account",
+                                    id: "bank_account_yes",
+                                    value: "Yes",
+                                    "data-vv-as": "bank account"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(
+                                      _vm.newCustomer.bank_account,
+                                      "Yes"
+                                    )
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      _vm.$set(
+                                        _vm.newCustomer,
+                                        "bank_account",
+                                        "Yes"
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  { attrs: { for: "bank_account_yes" } },
+                                  [_vm._v("Yes")]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "radio pl-1 pr-3 float-left" },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.newCustomer.bank_account,
+                                      expression: "newCustomer.bank_account"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "radio",
+                                    name: "bank_account",
+                                    id: "bank_account_no",
+                                    value: "No"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(
+                                      _vm.newCustomer.bank_account,
+                                      "No"
+                                    )
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      _vm.$set(
+                                        _vm.newCustomer,
+                                        "bank_account",
+                                        "No"
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  { attrs: { for: "bank_account_no" } },
+                                  [_vm._v("No")]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.errors.first("bank_account")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text text-muted" },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("bank_account")
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -41543,8 +43448,8 @@ var render = function() {
                                       {
                                         name: "validate",
                                         rawName: "v-validate",
-                                        value: _vm.days_of_work,
-                                        expression: "days_of_work"
+                                        value: "required",
+                                        expression: "'required'"
                                       }
                                     ],
                                     attrs: {
@@ -41613,7 +43518,11 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("days_of_work"))
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("days_of_work")
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -41651,6 +43560,11 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first(
+                                  "office_street_name"
+                                )
+                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter Street name here",
@@ -41680,9 +43594,11 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(
-                                        _vm.errors.first("office_street_name")
-                                      )
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("office_street_name")
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -41715,6 +43631,11 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first(
+                                  "office_building_number"
+                                )
+                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter Building Number",
@@ -41744,11 +43665,13 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "office_building_number"
-                                        )
-                                      )
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first(
+                                            "office_building_number"
+                                          )
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -41781,6 +43704,11 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first(
+                                  "office_nearest_bus_stop"
+                                )
+                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter nearest bus stop",
@@ -41808,11 +43736,13 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "office_nearest_bus_stop"
-                                        )
-                                      )
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first(
+                                            "office_nearest_bus_stop"
+                                          )
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -41847,6 +43777,9 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("company_area")
+                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter area",
@@ -41874,7 +43807,11 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("company_area"))
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("company_area")
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -41907,6 +43844,9 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("company_city")
+                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter city",
@@ -41934,7 +43874,11 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("company_city"))
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("company_city")
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -41969,6 +43913,11 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
+                                class: {
+                                  "is-invalid": _vm.errors.first(
+                                    "company_state"
+                                  )
+                                },
                                 attrs: {
                                   name: "company_state",
                                   "data-vv-as": "company state"
@@ -42016,7 +43965,11 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("company_state"))
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("company_state")
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -42051,6 +44004,11 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first(
+                                  "company_phone_number"
+                                )
+                              },
                               attrs: {
                                 type: "tel",
                                 placeholder: "Enter city",
@@ -42080,9 +44038,13 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(
-                                        _vm.errors.first("company_phone_number")
-                                      )
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first(
+                                            "company_phone_number"
+                                          )
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -42117,6 +44079,9 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("available_from")
+                              },
                               attrs: {
                                 type: "time",
                                 name: "available_from",
@@ -42145,7 +44110,11 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("available_from"))
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("available_from")
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -42178,6 +44147,9 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.errors.first("available_to")
+                              },
                               attrs: {
                                 type: "time",
                                 name: "available_to",
@@ -42206,7 +44178,11 @@ var render = function() {
                                   { staticClass: "form-text text-muted" },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.errors.first("available_to"))
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.errors.first("available_to")
+                                        ) +
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -42232,20 +44208,12 @@ var render = function() {
                                   rawName: "v-model",
                                   value: _vm.newCustomer.cadd_addinfo,
                                   expression: "newCustomer.cadd_addinfo"
-                                },
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required",
-                                  expression: "'required'"
                                 }
                               ],
                               staticClass: "form-control col-sm-12",
                               attrs: {
                                 placeholder: "Describe the Location",
-                                rows: "1",
-                                "data-vv-as": "describe company location",
-                                name: "describe_company_location"
+                                rows: "1"
                               },
                               domProps: { value: _vm.newCustomer.cadd_addinfo },
                               on: {
@@ -42260,23 +44228,7 @@ var render = function() {
                                   )
                                 }
                               }
-                            }),
-                            _vm._v(" "),
-                            _vm.errors.first("describe_company_location")
-                              ? _c(
-                                  "small",
-                                  { staticClass: "form-text text-muted" },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "describe_company_location"
-                                        )
-                                      ) + "\n                            "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
+                            })
                           ]
                         )
                       ])
@@ -42309,6 +44261,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("NOK_first_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter first name",
@@ -42332,7 +44285,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("NOK_first_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("NOK_first_name")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("NOK_first_name")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -42351,21 +44308,10 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.newCustomer.nextofkin_middle_name,
                         expression: "newCustomer.nextofkin_middle_name"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|max:25",
-                        expression: "'required|max:25'"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      placeholder: "Enter middle name",
-                      "data-vv-as": "next of kin middle name",
-                      name: "NOK_middle_name"
-                    },
+                    attrs: { type: "text", placeholder: "Enter middle name" },
                     domProps: { value: _vm.newCustomer.nextofkin_middle_name },
                     on: {
                       input: function($event) {
@@ -42379,13 +44325,7 @@ var render = function() {
                         )
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("NOK_middle_name")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("NOK_middle_name")))
-                      ])
-                    : _vm._e()
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -42411,6 +44351,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("NOK_last_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter last name",
@@ -42434,7 +44375,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("NOK_last_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("NOK_last_name")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("NOK_last_name")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -42499,7 +44444,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("nokgender")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("nokgender")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("nokgender")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ],
@@ -42528,6 +44477,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("NOK_phone_number")
+                    },
                     attrs: {
                       type: "tel",
                       placeholder: "Enter phone number",
@@ -42551,7 +44503,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("NOK_phone_number")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("NOK_phone_number")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("NOK_phone_number")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -42581,6 +44537,9 @@ var render = function() {
                         }
                       ],
                       staticClass: "custom-select w-100",
+                      class: {
+                        "is-invalid": _vm.errors.first("NOK_work_duration")
+                      },
                       attrs: {
                         "data-vv-as": "next of kin duration of work",
                         name: "NOK_work_duration"
@@ -42621,7 +44580,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("NOK_work_duration")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("NOK_work_duration")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("NOK_work_duration")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -42690,7 +44653,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("relationship")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("relationship")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("relationship")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ],
@@ -42723,6 +44690,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("WG_first_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter first name",
@@ -42748,7 +44716,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("WG_first_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("WG_first_name")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("WG_first_name")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -42767,21 +44739,10 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.newCustomer.work_guarantor_middle_name,
                         expression: "newCustomer.work_guarantor_middle_name"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|max:25",
-                        expression: "'required|max:25'"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      placeholder: "Enter middle name",
-                      "data-vv-as": "work guarantors middle name",
-                      name: "WG_middle_name"
-                    },
+                    attrs: { type: "text", placeholder: "Enter middle name" },
                     domProps: {
                       value: _vm.newCustomer.work_guarantor_middle_name
                     },
@@ -42797,13 +44758,7 @@ var render = function() {
                         )
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("WG_middle_name")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("WG_middle_name")))
-                      ])
-                    : _vm._e()
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -42829,6 +44784,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("WG_last_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter last name",
@@ -42854,7 +44810,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("WG_last_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("WG_last_name")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("WG_last_name")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -42928,7 +44888,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("relationshipwg")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("relationshipwg")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("relationshipwg")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ],
@@ -42999,7 +44963,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("wggender")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("wggender")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("wggender")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ],
@@ -43032,6 +45000,11 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first(
+                        "work_guarantor_street_name"
+                      )
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Street name here",
@@ -43056,7 +45029,11 @@ var render = function() {
                   _vm.errors.first("work_guarantor_street_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("work_guarantor_street_name"))
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("work_guarantor_street_name")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -43085,6 +45062,11 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first(
+                        "work_guarantor_office_building"
+                      )
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Building Number",
@@ -43109,9 +45091,11 @@ var render = function() {
                   _vm.errors.first("work_guarantor_office_building")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(
-                            _vm.errors.first("work_guarantor_office_building")
-                          )
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("work_guarantor_office_building")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -43140,6 +45124,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("work_guarantor_bus_stop")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter nearest bus stop",
@@ -43164,7 +45151,11 @@ var render = function() {
                   _vm.errors.first("work_guarantor_bus_stop")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("work_guarantor_bus_stop"))
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("work_guarantor_bus_stop")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -43195,6 +45186,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("work_guarantor_area")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter area",
@@ -43218,7 +45212,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("work_guarantor_area")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("work_guarantor_area")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("work_guarantor_area")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -43246,6 +45244,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("work_guarantor_city")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter city",
@@ -43269,7 +45270,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("work_guarantor_city")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("work_guarantor_city")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("work_guarantor_city")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -43299,6 +45304,9 @@ var render = function() {
                         }
                       ],
                       staticClass: "custom-select w-100",
+                      class: {
+                        "is-invalid": _vm.errors.first("work_guarantor_state")
+                      },
                       attrs: {
                         "data-vv-as": "work guarantor state",
                         name: "work_guarantor_state"
@@ -43339,7 +45347,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("work_guarantor_state")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("work_guarantor_state")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("work_guarantor_state")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -43369,6 +45381,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("work_guarantor_phone")
+                    },
                     attrs: {
                       type: "tel",
                       placeholder: "Enter city",
@@ -43392,7 +45407,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("work_guarantor_phone")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("work_guarantor_phone")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("work_guarantor_phone")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -43422,6 +45441,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "custom-select w-100",
+                      class: {
+                        "is-invalid": _vm.errors.first(
+                          "work_guarantor_work_duration"
+                        )
+                      },
                       attrs: {
                         "data-vv-as": "work guarantor work duration",
                         name: "work_guarantor_work_duration"
@@ -43463,9 +45487,11 @@ var render = function() {
                   _vm.errors.first("work_guarantor_work_duration")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(
-                            _vm.errors.first("work_guarantor_work_duration")
-                          )
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("work_guarantor_work_duration")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -43485,21 +45511,10 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.newCustomer.guaadd_addinfo,
                         expression: "newCustomer.guaadd_addinfo"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|max:100",
-                        expression: "'required|max:100'"
                       }
                     ],
                     staticClass: "form-control col-sm-12",
-                    attrs: {
-                      placeholder: "Describe the Location",
-                      rows: "1",
-                      "data-vv-as": "work guarantor describe location",
-                      name: "work_guarantor_describe_location"
-                    },
+                    attrs: { placeholder: "Describe the Location", rows: "1" },
                     domProps: { value: _vm.newCustomer.guaadd_addinfo },
                     on: {
                       input: function($event) {
@@ -43513,17 +45528,7 @@ var render = function() {
                         )
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("work_guarantor_describe_location")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.errors.first("work_guarantor_describe_location")
-                          )
-                        )
-                      ])
-                    : _vm._e()
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -43553,6 +45558,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("PG_first_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter first name",
@@ -43578,7 +45584,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("PG_first_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("PG_first_name")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("PG_first_name")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -43597,21 +45607,10 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.newCustomer.personal_guarantor_middle_name,
                         expression: "newCustomer.personal_guarantor_middle_name"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|max:25",
-                        expression: "'required|max:25'"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      placeholder: "Enter middle name",
-                      "data-vv-as": "middle name",
-                      name: "PG_middle_name"
-                    },
+                    attrs: { type: "text", placeholder: "Enter middle name" },
                     domProps: {
                       value: _vm.newCustomer.personal_guarantor_middle_name
                     },
@@ -43627,13 +45626,7 @@ var render = function() {
                         )
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("PG_middle_name")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("PG_middle_name")))
-                      ])
-                    : _vm._e()
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -43659,6 +45652,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("PG_last_name") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter last name",
@@ -43684,7 +45678,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("PG_last_name")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("PG_last_name")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("PG_last_name")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -43758,7 +45756,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("relationshippg")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("relationshippg")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("relationshippg")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ],
@@ -43830,7 +45832,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("pggender")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("pggender")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("pggender")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ],
@@ -43863,6 +45869,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("pguaadd_street") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Street name here",
@@ -43886,7 +45893,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("pguaadd_street")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("pguaadd_street")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("pguaadd_street")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -43914,6 +45925,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("pguaadd_houseno")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Building Number",
@@ -43937,7 +45951,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("pguaadd_houseno")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("pguaadd_houseno")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("pguaadd_houseno")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -43965,6 +45983,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("pguaadd_nbstop") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter nearest bus stop",
@@ -43988,7 +46007,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("pguaadd_nbstop")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("pguaadd_nbstop")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("pguaadd_nbstop")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -44018,6 +46041,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.first("pgua_area") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter area",
@@ -44041,7 +46065,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("pgua_area")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("pgua_area")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("pgua_area")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -44069,6 +46097,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("personal_guarantor_city")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter city",
@@ -44095,7 +46126,11 @@ var render = function() {
                   _vm.errors.first("personal_guarantor_city")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("personal_guarantor_city"))
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("personal_guarantor_city")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -44126,6 +46161,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "custom-select w-100",
+                      class: {
+                        "is-invalid": _vm.errors.first(
+                          "personal_guarantor_state"
+                        )
+                      },
                       attrs: {
                         "data-vv-as": "personal guarantor state",
                         name: "personal_guarantor_state"
@@ -44167,7 +46207,11 @@ var render = function() {
                   _vm.errors.first("personal_guarantor_state")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("personal_guarantor_state"))
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("personal_guarantor_state")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -44198,6 +46242,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("personal_guarantor_telno")
+                    },
                     attrs: {
                       type: "tel",
                       placeholder: "Enter city",
@@ -44224,7 +46271,11 @@ var render = function() {
                   _vm.errors.first("personal_guarantor_telno")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("personal_guarantor_telno"))
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("personal_guarantor_telno")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -44257,6 +46308,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "custom-select w-100",
+                      class: {
+                        "is-invalid": _vm.errors.first(
+                          "personal_guarantor_work_duration"
+                        )
+                      },
                       attrs: {
                         "data-vv-as": "personal guarantor work duration",
                         name: "personal_guarantor_work_duration"
@@ -44298,9 +46354,13 @@ var render = function() {
                   _vm.errors.first("personal_guarantor_work_duration")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(
-                            _vm.errors.first("personal_guarantor_work_duration")
-                          )
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first(
+                                "personal_guarantor_work_duration"
+                              )
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -44320,21 +46380,10 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.newCustomer.pguaadd_addinfo,
                         expression: "newCustomer.pguaadd_addinfo"
-                      },
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|max:100",
-                        expression: "'required|max:100'"
                       }
                     ],
                     staticClass: "form-control col-sm-12",
-                    attrs: {
-                      placeholder: "Describe the Location",
-                      rows: "1",
-                      "data-vv-as": "per. guarantor describe location",
-                      name: "pguaadd_addinfo"
-                    },
+                    attrs: { placeholder: "Describe the Location", rows: "1" },
                     domProps: { value: _vm.newCustomer.pguaadd_addinfo },
                     on: {
                       input: function($event) {
@@ -44348,13 +46397,7 @@ var render = function() {
                         )
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.first("pguaadd_addinfo")
-                    ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("pguaadd_addinfo")))
-                      ])
-                    : _vm._e()
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -44384,6 +46427,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("what_product_do_you_need")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Product name",
@@ -44410,7 +46456,11 @@ var render = function() {
                   _vm.errors.first("what_product_do_you_need")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("what_product_do_you_need"))
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("what_product_do_you_need")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -44439,6 +46489,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: {
+                      "is-invalid": _vm.errors.first("what_do_you_need_it_for")
+                    },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Reason..",
@@ -44465,7 +46518,11 @@ var render = function() {
                   _vm.errors.first("what_do_you_need_it_for")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
                         _vm._v(
-                          _vm._s(_vm.errors.first("what_do_you_need_it_for"))
+                          "\n                        " +
+                            _vm._s(
+                              _vm.errors.first("what_do_you_need_it_for")
+                            ) +
+                            "\n                    "
                         )
                       ])
                     : _vm._e()
@@ -44496,6 +46553,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "custom-select w-100",
+                      class: { "is-invalid": _vm.errors.first("branch_id") },
                       attrs: {
                         "data-vv-as": "office branch",
                         name: "branch_id"
@@ -44538,7 +46596,11 @@ var render = function() {
                   _vm._v(" "),
                   _vm.errors.first("branch_id")
                     ? _c("small", { staticClass: "form-text text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first("branch_id")))
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("branch_id")) +
+                            "\n                    "
+                        )
                       ])
                     : _vm._e()
                 ]
@@ -44603,15 +46665,15 @@ if (false) {
 }
 
 /***/ }),
-/* 84 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(85)
+var __vue_script__ = __webpack_require__(88)
 /* template */
-var __vue_template__ = __webpack_require__(86)
+var __vue_template__ = __webpack_require__(89)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -44650,12 +46712,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 85 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(1);
 //
 //
 //
@@ -44663,18 +46724,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    beforeCreate: function beforeCreate() {
-        if (!(this.$store.state.DVAAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
-            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('You dont have access to that page!');
-            this.$router.push('/home');
-        }
-    }
-});
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 86 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44708,15 +46761,15 @@ if (false) {
 }
 
 /***/ }),
-/* 87 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(88)
+var __vue_script__ = __webpack_require__(91)
 /* template */
-var __vue_template__ = __webpack_require__(89)
+var __vue_template__ = __webpack_require__(92)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -44755,7 +46808,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 88 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44778,7 +46831,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 89 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44829,15 +46882,15 @@ if (false) {
 }
 
 /***/ }),
-/* 90 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(91)
+var __vue_script__ = __webpack_require__(94)
 /* template */
-var __vue_template__ = __webpack_require__(92)
+var __vue_template__ = __webpack_require__(95)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -44876,14 +46929,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 91 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -44917,7 +46970,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 });
 
 /***/ }),
-/* 92 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44937,15 +46990,15 @@ if (false) {
 }
 
 /***/ }),
-/* 93 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(94)
+var __vue_script__ = __webpack_require__(97)
 /* template */
-var __vue_template__ = __webpack_require__(95)
+var __vue_template__ = __webpack_require__(98)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -44984,7 +47037,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 94 */
+/* 97 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44999,7 +47052,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 95 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -45028,15 +47081,15 @@ if (false) {
 }
 
 /***/ }),
-/* 96 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(97)
+var __vue_script__ = __webpack_require__(100)
 /* template */
-var __vue_template__ = __webpack_require__(98)
+var __vue_template__ = __webpack_require__(101)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -45075,13 +47128,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 97 */
+/* 100 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(3);
 //
 //
@@ -45263,7 +47316,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 98 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -45652,15 +47705,15 @@ if (false) {
 }
 
 /***/ }),
-/* 99 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(100)
+var __vue_script__ = __webpack_require__(103)
 /* template */
-var __vue_template__ = __webpack_require__(101)
+var __vue_template__ = __webpack_require__(104)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -45699,12 +47752,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 100 */
+/* 103 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(1);
 //
 //
 //
@@ -45739,18 +47791,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    beforeCreate: function beforeCreate() {
-        if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
-            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('You do not have access to that page!');
-            this.$router.push('/home');
-        }
-    }
-});
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 101 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -45878,15 +47922,15 @@ if (false) {
 }
 
 /***/ }),
-/* 102 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(103)
+var __vue_script__ = __webpack_require__(106)
 /* template */
-var __vue_template__ = __webpack_require__(104)
+var __vue_template__ = __webpack_require__(107)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -45925,7 +47969,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 103 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45956,7 +48000,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 104 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -46046,19 +48090,19 @@ if (false) {
 }
 
 /***/ }),
-/* 105 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(106)
+  __webpack_require__(109)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(108)
+var __vue_script__ = __webpack_require__(111)
 /* template */
-var __vue_template__ = __webpack_require__(109)
+var __vue_template__ = __webpack_require__(112)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -46097,17 +48141,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 106 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(107);
+var content = __webpack_require__(110);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("2e08d278", content, false, {});
+var update = __webpack_require__(5)("2e08d278", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -46123,10 +48167,10 @@ if(false) {
 }
 
 /***/ }),
-/* 107 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(false);
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
@@ -46137,15 +48181,15 @@ exports.push([module.i, "\nlabel[data-v-49110c05] {\n    margin-top    : 7px !im
 
 
 /***/ }),
-/* 108 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_log__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_log__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_sms__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_sms__ = __webpack_require__(21);
 //
 //
 //
@@ -46815,7 +48859,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 109 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47045,7 +49089,6 @@ var render = function() {
                       staticClass: "close py-1",
                       attrs: {
                         href: "javascript:",
-                        type: "button",
                         "data-dismiss": "modal",
                         "aria-label": "Close"
                       }
@@ -47279,7 +49322,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { value: "", selected: "" } },
-                                    [_vm._v("Select status")]
+                                    [_vm._v("select status")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.statuses, function(status) {
@@ -47289,7 +49332,9 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                                        " +
-                                            _vm._s(status) +
+                                            _vm._s(
+                                              _vm._f("capitalize")(status)
+                                            ) +
                                             "\n                                    "
                                         )
                                       ]
@@ -47372,7 +49417,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { value: "", selected: "" } },
-                                    [_vm._v("Select nationality")]
+                                    [_vm._v("select nationality")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.countries, function(nationality) {
@@ -47382,7 +49427,9 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                                        " +
-                                            _vm._s(nationality) +
+                                            _vm._s(
+                                              _vm._f("capitalize")(nationality)
+                                            ) +
                                             "\n                                    "
                                         )
                                       ]
@@ -47698,7 +49745,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { value: "", selected: "" } },
-                                    [_vm._v("Select role")]
+                                    [_vm._v("select role")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.roles, function(role) {
@@ -47708,7 +49755,9 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                                        " +
-                                            _vm._s(role.name) +
+                                            _vm._s(
+                                              _vm._f("capitalize")(role.name)
+                                            ) +
                                             "\n                                    "
                                         )
                                       ]
@@ -47798,7 +49847,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { value: "", selected: "" } },
-                                    [_vm._v("Select qualification")]
+                                    [_vm._v("select qualification")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.qualifications, function(
@@ -47810,7 +49859,11 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                                        " +
-                                            _vm._s(qualification) +
+                                            _vm._s(
+                                              _vm._f("capitalize")(
+                                                qualification
+                                              )
+                                            ) +
                                             "\n                                    "
                                         )
                                       ]
@@ -47898,7 +49951,7 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { value: "", selected: "" } },
-                                    [_vm._v("Select branch")]
+                                    [_vm._v("select branch")]
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.branches, function(branch) {
@@ -47908,7 +49961,9 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                                        " +
-                                            _vm._s(branch.name) +
+                                            _vm._s(
+                                              _vm._f("capitalize")(branch.name)
+                                            ) +
                                             "\n                                    "
                                         )
                                       ]
@@ -48693,7 +50748,6 @@ var render = function() {
                         staticClass: "close py-1",
                         attrs: {
                           href: "javascript:",
-                          type: "button",
                           "data-dismiss": "modal",
                           "aria-label": "Close"
                         }
@@ -48892,7 +50946,6 @@ var render = function() {
                         staticClass: "close py-1",
                         attrs: {
                           href: "javascript:",
-                          type: "button",
                           "data-dismiss": "modal",
                           "aria-label": "Close"
                         }
@@ -49001,19 +51054,19 @@ if (false) {
 }
 
 /***/ }),
-/* 110 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(111)
+  __webpack_require__(114)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(113)
+var __vue_script__ = __webpack_require__(116)
 /* template */
-var __vue_template__ = __webpack_require__(114)
+var __vue_template__ = __webpack_require__(117)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49052,17 +51105,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 111 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(112);
+var content = __webpack_require__(115);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("1162ea1c", content, false, {});
+var update = __webpack_require__(5)("1162ea1c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -49078,10 +51131,10 @@ if(false) {
 }
 
 /***/ }),
-/* 112 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(false);
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
@@ -49092,14 +51145,14 @@ exports.push([module.i, "\nlabel[data-v-2cb6f77b] {\n    margin-top    : 7px !im
 
 
 /***/ }),
-/* 113 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_sms__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_log__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_sms__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_log__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_api__ = __webpack_require__(3);
 //
 //
@@ -49541,7 +51594,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 114 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50301,7 +52354,7 @@ var render = function() {
                       },
                       [
                         _c("option", { attrs: { value: "", selected: "" } }, [
-                          _vm._v("Select branch")
+                          _vm._v("select branch")
                         ]),
                         _vm._v(" "),
                         _vm._l(_vm.branches, function(branch) {
@@ -50924,1260 +52977,584 @@ if (false) {
 }
 
 /***/ }),
-/* 115 */
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(119)
+/* template */
+var __vue_template__ = __webpack_require__(120)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\FSR\\index.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-72ccf684", Component.options)
+  } else {
+    hotAPI.reload("data-v-72ccf684", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(11);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(2);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
-var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
-    state: {
-        loader: false,
-        ProfileAccess: [],
-        ProfileEditAccess: [],
-        DSAAccess: [1, 2, 3, 4, 9, 10, 11],
-        DVAAccess: [1, 2, 3, 4, 6, 9, 13, 14],
-        HRAccess: [1, 2, 3, 5, 9, 15]
-    },
-    getters: {
-        getDSAAccess: function getDSAAccess(state) {
-            return state.DSAAccess;
-        },
-        getDVAAccess: function getDVAAccess(state) {
-            return state.DVAAccess;
-        },
-        getDCAAccess: function getDCAAccess(state) {
-            return state.DVAAccess;
-        },
-        getHRAccess: function getHRAccess(state) {
-            return state.HRAccess;
-        },
-        getProfileAccess: function getProfileAccess(state) {
-            return state.ProfileAccess;
-        },
-        getProfileEditAccess: function getProfileEditAccess(state) {
-            return state.ProfileEditAccess;
-        }
-    },
-    mutations: {
-        mutateProfileAccess: function mutateProfileAccess(state, payload) {
-            state.ProfileAccess.push(payload);
-        }
-    },
-    actions: {
-        mutateProfileAccess: function mutateProfileAccess(context, payload) {
-            context.commit('mutateProfileAccess', payload);
+/* harmony default export */ __webpack_exports__["default"] = ({
+    beforeCreate: function beforeCreate() {
+        if (!(this.$store.state.FSRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) && !localStorage.getItem('api_token')) {
+            __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('You do not have access to that page!');
+            this.$router.push('/home');
         }
     }
 });
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "Flo-Rel-FWid px-md-4 px-2" },
+    [
+      _c(
+        "h4",
+        {
+          staticClass: "mx-md-3 mx-0 py-0 my-0 text-center",
+          attrs: { id: "index" }
+        },
+        [
+          _vm.$routerHistory.hasPrevious()
+            ? _c(
+                "router-link",
+                {
+                  staticClass:
+                    "text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3",
+                  attrs: {
+                    to: { path: _vm.$routerHistory.previous().path },
+                    id: "back"
+                  }
+                },
+                [
+                  _c("span", { staticClass: "mr-5 float-left" }, [
+                    _c("i", {
+                      staticClass: "far fa-arrow-alt-circle-left float-left"
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "back float-left ml-2 d-none d-sm-block" },
+                      [_vm._v("Back")]
+                    )
+                  ])
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm.$routerHistory.hasForward()
+            ? _c(
+                "router-link",
+                {
+                  staticClass:
+                    "text-secondary float-right mr-1 pr-2 mr-sm-4 pr-sm-3",
+                  attrs: {
+                    to: { path: _vm.$routerHistory.next().path },
+                    id: "forward"
+                  }
+                },
+                [
+                  _c("span", { staticClass: "ml-5 float-right" }, [
+                    _c("i", {
+                      staticClass: "far fa-arrow-alt-circle-right float-right"
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "forward float-right mr-2 d-none d-sm-block"
+                      },
+                      [_vm._v("Forward")]
+                    )
+                  ])
+                ]
+              )
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("router-view")
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "strong",
+      {
+        staticClass: "mx-auto d-none d-sm-block w-100 float-left",
+        attrs: { "data-title": "title" }
+      },
+      [
+        _c("span", [_vm._v("Floor Sales and Logistics")]),
+        _vm._v(" Portal\n        ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "strong",
+      {
+        staticClass: "mx-auto d-block d-sm-none w-100 float-left",
+        attrs: { "data-title": "title" }
+      },
+      [_c("span", [_vm._v("FSL")]), _vm._v(" Portal\n        ")]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-72ccf684", module.exports)
+  }
+}
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(122)
+/* template */
+var __vue_template__ = __webpack_require__(123)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\FSR\\HomePage.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b661be1c", Component.options)
+  } else {
+    hotAPI.reload("data-v-b661be1c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 122 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-// This file can be required in Browserify and Node.js for automatic polyfill
-// To use it:  require('es6-promise/auto');
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-module.exports = __webpack_require__(117).polyfill();
-
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 117 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(process, global) {/*!
- * @overview es6-promise - a tiny implementation of Promises/A+.
- * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
- * @license   Licensed under MIT license
- *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   v4.2.4+314e4831
- */
-
-(function (global, factory) {
-	 true ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.ES6Promise = factory());
-}(this, (function () { 'use strict';
-
-function objectOrFunction(x) {
-  var type = typeof x;
-  return x !== null && (type === 'object' || type === 'function');
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "Flo-Rel-FWid" }, [
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-md-4 float-left product py-md-3 pt-md-0 pt-2 pb-3 px-md-3 px-1"
+      },
+      [
+        _c("div", { staticClass: "card Flo-Rel-FWid my-0" }, [
+          _c(
+            "div",
+            { staticClass: "card-body" },
+            [
+              _c("h4", { staticClass: "card-title mt-0" }, [
+                _vm._v("Products Inventory")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("For products inventory and management.")
+              ]),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                { staticClass: "btn bg-default", attrs: { to: "/inventory" } },
+                [_vm._v("View Inventory")]
+              )
+            ],
+            1
+          )
+        ])
+      ]
+    )
+  ])
 }
-
-function isFunction(x) {
-  return typeof x === 'function';
-}
-
-
-
-var _isArray = void 0;
-if (Array.isArray) {
-  _isArray = Array.isArray;
-} else {
-  _isArray = function (x) {
-    return Object.prototype.toString.call(x) === '[object Array]';
-  };
-}
-
-var isArray = _isArray;
-
-var len = 0;
-var vertxNext = void 0;
-var customSchedulerFn = void 0;
-
-var asap = function asap(callback, arg) {
-  queue[len] = callback;
-  queue[len + 1] = arg;
-  len += 2;
-  if (len === 2) {
-    // If len is 2, that means that we need to schedule an async flush.
-    // If additional callbacks are queued before the queue is flushed, they
-    // will be processed by this flush that we are scheduling.
-    if (customSchedulerFn) {
-      customSchedulerFn(flush);
-    } else {
-      scheduleFlush();
-    }
-  }
-};
-
-function setScheduler(scheduleFn) {
-  customSchedulerFn = scheduleFn;
-}
-
-function setAsap(asapFn) {
-  asap = asapFn;
-}
-
-var browserWindow = typeof window !== 'undefined' ? window : undefined;
-var browserGlobal = browserWindow || {};
-var BrowserMutationObserver = browserGlobal.MutationObserver || browserGlobal.WebKitMutationObserver;
-var isNode = typeof self === 'undefined' && typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
-
-// test for web worker but not in IE10
-var isWorker = typeof Uint8ClampedArray !== 'undefined' && typeof importScripts !== 'undefined' && typeof MessageChannel !== 'undefined';
-
-// node
-function useNextTick() {
-  // node version 0.10.x displays a deprecation warning when nextTick is used recursively
-  // see https://github.com/cujojs/when/issues/410 for details
-  return function () {
-    return process.nextTick(flush);
-  };
-}
-
-// vertx
-function useVertxTimer() {
-  if (typeof vertxNext !== 'undefined') {
-    return function () {
-      vertxNext(flush);
-    };
-  }
-
-  return useSetTimeout();
-}
-
-function useMutationObserver() {
-  var iterations = 0;
-  var observer = new BrowserMutationObserver(flush);
-  var node = document.createTextNode('');
-  observer.observe(node, { characterData: true });
-
-  return function () {
-    node.data = iterations = ++iterations % 2;
-  };
-}
-
-// web worker
-function useMessageChannel() {
-  var channel = new MessageChannel();
-  channel.port1.onmessage = flush;
-  return function () {
-    return channel.port2.postMessage(0);
-  };
-}
-
-function useSetTimeout() {
-  // Store setTimeout reference so es6-promise will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
-  var globalSetTimeout = setTimeout;
-  return function () {
-    return globalSetTimeout(flush, 1);
-  };
-}
-
-var queue = new Array(1000);
-function flush() {
-  for (var i = 0; i < len; i += 2) {
-    var callback = queue[i];
-    var arg = queue[i + 1];
-
-    callback(arg);
-
-    queue[i] = undefined;
-    queue[i + 1] = undefined;
-  }
-
-  len = 0;
-}
-
-function attemptVertx() {
-  try {
-    var vertx = Function('return this')().require('vertx');
-    vertxNext = vertx.runOnLoop || vertx.runOnContext;
-    return useVertxTimer();
-  } catch (e) {
-    return useSetTimeout();
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-b661be1c", module.exports)
   }
 }
-
-var scheduleFlush = void 0;
-// Decide what async method to use to triggering processing of queued callbacks:
-if (isNode) {
-  scheduleFlush = useNextTick();
-} else if (BrowserMutationObserver) {
-  scheduleFlush = useMutationObserver();
-} else if (isWorker) {
-  scheduleFlush = useMessageChannel();
-} else if (browserWindow === undefined && "function" === 'function') {
-  scheduleFlush = attemptVertx();
-} else {
-  scheduleFlush = useSetTimeout();
-}
-
-function then(onFulfillment, onRejection) {
-  var parent = this;
-
-  var child = new this.constructor(noop);
-
-  if (child[PROMISE_ID] === undefined) {
-    makePromise(child);
-  }
-
-  var _state = parent._state;
-
-
-  if (_state) {
-    var callback = arguments[_state - 1];
-    asap(function () {
-      return invokeCallback(_state, child, callback, parent._result);
-    });
-  } else {
-    subscribe(parent, child, onFulfillment, onRejection);
-  }
-
-  return child;
-}
-
-/**
-  `Promise.resolve` returns a promise that will become resolved with the
-  passed `value`. It is shorthand for the following:
-
-  ```javascript
-  let promise = new Promise(function(resolve, reject){
-    resolve(1);
-  });
-
-  promise.then(function(value){
-    // value === 1
-  });
-  ```
-
-  Instead of writing the above, your code now simply becomes the following:
-
-  ```javascript
-  let promise = Promise.resolve(1);
-
-  promise.then(function(value){
-    // value === 1
-  });
-  ```
-
-  @method resolve
-  @static
-  @param {Any} value value that the returned promise will be resolved with
-  Useful for tooling.
-  @return {Promise} a promise that will become fulfilled with the given
-  `value`
-*/
-function resolve$1(object) {
-  /*jshint validthis:true */
-  var Constructor = this;
-
-  if (object && typeof object === 'object' && object.constructor === Constructor) {
-    return object;
-  }
-
-  var promise = new Constructor(noop);
-  resolve(promise, object);
-  return promise;
-}
-
-var PROMISE_ID = Math.random().toString(36).substring(2);
-
-function noop() {}
-
-var PENDING = void 0;
-var FULFILLED = 1;
-var REJECTED = 2;
-
-var TRY_CATCH_ERROR = { error: null };
-
-function selfFulfillment() {
-  return new TypeError("You cannot resolve a promise with itself");
-}
-
-function cannotReturnOwn() {
-  return new TypeError('A promises callback cannot return that same promise.');
-}
-
-function getThen(promise) {
-  try {
-    return promise.then;
-  } catch (error) {
-    TRY_CATCH_ERROR.error = error;
-    return TRY_CATCH_ERROR;
-  }
-}
-
-function tryThen(then$$1, value, fulfillmentHandler, rejectionHandler) {
-  try {
-    then$$1.call(value, fulfillmentHandler, rejectionHandler);
-  } catch (e) {
-    return e;
-  }
-}
-
-function handleForeignThenable(promise, thenable, then$$1) {
-  asap(function (promise) {
-    var sealed = false;
-    var error = tryThen(then$$1, thenable, function (value) {
-      if (sealed) {
-        return;
-      }
-      sealed = true;
-      if (thenable !== value) {
-        resolve(promise, value);
-      } else {
-        fulfill(promise, value);
-      }
-    }, function (reason) {
-      if (sealed) {
-        return;
-      }
-      sealed = true;
-
-      reject(promise, reason);
-    }, 'Settle: ' + (promise._label || ' unknown promise'));
-
-    if (!sealed && error) {
-      sealed = true;
-      reject(promise, error);
-    }
-  }, promise);
-}
-
-function handleOwnThenable(promise, thenable) {
-  if (thenable._state === FULFILLED) {
-    fulfill(promise, thenable._result);
-  } else if (thenable._state === REJECTED) {
-    reject(promise, thenable._result);
-  } else {
-    subscribe(thenable, undefined, function (value) {
-      return resolve(promise, value);
-    }, function (reason) {
-      return reject(promise, reason);
-    });
-  }
-}
-
-function handleMaybeThenable(promise, maybeThenable, then$$1) {
-  if (maybeThenable.constructor === promise.constructor && then$$1 === then && maybeThenable.constructor.resolve === resolve$1) {
-    handleOwnThenable(promise, maybeThenable);
-  } else {
-    if (then$$1 === TRY_CATCH_ERROR) {
-      reject(promise, TRY_CATCH_ERROR.error);
-      TRY_CATCH_ERROR.error = null;
-    } else if (then$$1 === undefined) {
-      fulfill(promise, maybeThenable);
-    } else if (isFunction(then$$1)) {
-      handleForeignThenable(promise, maybeThenable, then$$1);
-    } else {
-      fulfill(promise, maybeThenable);
-    }
-  }
-}
-
-function resolve(promise, value) {
-  if (promise === value) {
-    reject(promise, selfFulfillment());
-  } else if (objectOrFunction(value)) {
-    handleMaybeThenable(promise, value, getThen(value));
-  } else {
-    fulfill(promise, value);
-  }
-}
-
-function publishRejection(promise) {
-  if (promise._onerror) {
-    promise._onerror(promise._result);
-  }
-
-  publish(promise);
-}
-
-function fulfill(promise, value) {
-  if (promise._state !== PENDING) {
-    return;
-  }
-
-  promise._result = value;
-  promise._state = FULFILLED;
-
-  if (promise._subscribers.length !== 0) {
-    asap(publish, promise);
-  }
-}
-
-function reject(promise, reason) {
-  if (promise._state !== PENDING) {
-    return;
-  }
-  promise._state = REJECTED;
-  promise._result = reason;
-
-  asap(publishRejection, promise);
-}
-
-function subscribe(parent, child, onFulfillment, onRejection) {
-  var _subscribers = parent._subscribers;
-  var length = _subscribers.length;
-
-
-  parent._onerror = null;
-
-  _subscribers[length] = child;
-  _subscribers[length + FULFILLED] = onFulfillment;
-  _subscribers[length + REJECTED] = onRejection;
-
-  if (length === 0 && parent._state) {
-    asap(publish, parent);
-  }
-}
-
-function publish(promise) {
-  var subscribers = promise._subscribers;
-  var settled = promise._state;
-
-  if (subscribers.length === 0) {
-    return;
-  }
-
-  var child = void 0,
-      callback = void 0,
-      detail = promise._result;
-
-  for (var i = 0; i < subscribers.length; i += 3) {
-    child = subscribers[i];
-    callback = subscribers[i + settled];
-
-    if (child) {
-      invokeCallback(settled, child, callback, detail);
-    } else {
-      callback(detail);
-    }
-  }
-
-  promise._subscribers.length = 0;
-}
-
-function tryCatch(callback, detail) {
-  try {
-    return callback(detail);
-  } catch (e) {
-    TRY_CATCH_ERROR.error = e;
-    return TRY_CATCH_ERROR;
-  }
-}
-
-function invokeCallback(settled, promise, callback, detail) {
-  var hasCallback = isFunction(callback),
-      value = void 0,
-      error = void 0,
-      succeeded = void 0,
-      failed = void 0;
-
-  if (hasCallback) {
-    value = tryCatch(callback, detail);
-
-    if (value === TRY_CATCH_ERROR) {
-      failed = true;
-      error = value.error;
-      value.error = null;
-    } else {
-      succeeded = true;
-    }
-
-    if (promise === value) {
-      reject(promise, cannotReturnOwn());
-      return;
-    }
-  } else {
-    value = detail;
-    succeeded = true;
-  }
-
-  if (promise._state !== PENDING) {
-    // noop
-  } else if (hasCallback && succeeded) {
-    resolve(promise, value);
-  } else if (failed) {
-    reject(promise, error);
-  } else if (settled === FULFILLED) {
-    fulfill(promise, value);
-  } else if (settled === REJECTED) {
-    reject(promise, value);
-  }
-}
-
-function initializePromise(promise, resolver) {
-  try {
-    resolver(function resolvePromise(value) {
-      resolve(promise, value);
-    }, function rejectPromise(reason) {
-      reject(promise, reason);
-    });
-  } catch (e) {
-    reject(promise, e);
-  }
-}
-
-var id = 0;
-function nextId() {
-  return id++;
-}
-
-function makePromise(promise) {
-  promise[PROMISE_ID] = id++;
-  promise._state = undefined;
-  promise._result = undefined;
-  promise._subscribers = [];
-}
-
-function validationError() {
-  return new Error('Array Methods must be provided an Array');
-}
-
-var Enumerator = function () {
-  function Enumerator(Constructor, input) {
-    this._instanceConstructor = Constructor;
-    this.promise = new Constructor(noop);
-
-    if (!this.promise[PROMISE_ID]) {
-      makePromise(this.promise);
-    }
-
-    if (isArray(input)) {
-      this.length = input.length;
-      this._remaining = input.length;
-
-      this._result = new Array(this.length);
-
-      if (this.length === 0) {
-        fulfill(this.promise, this._result);
-      } else {
-        this.length = this.length || 0;
-        this._enumerate(input);
-        if (this._remaining === 0) {
-          fulfill(this.promise, this._result);
-        }
-      }
-    } else {
-      reject(this.promise, validationError());
-    }
-  }
-
-  Enumerator.prototype._enumerate = function _enumerate(input) {
-    for (var i = 0; this._state === PENDING && i < input.length; i++) {
-      this._eachEntry(input[i], i);
-    }
-  };
-
-  Enumerator.prototype._eachEntry = function _eachEntry(entry, i) {
-    var c = this._instanceConstructor;
-    var resolve$$1 = c.resolve;
-
-
-    if (resolve$$1 === resolve$1) {
-      var _then = getThen(entry);
-
-      if (_then === then && entry._state !== PENDING) {
-        this._settledAt(entry._state, i, entry._result);
-      } else if (typeof _then !== 'function') {
-        this._remaining--;
-        this._result[i] = entry;
-      } else if (c === Promise$1) {
-        var promise = new c(noop);
-        handleMaybeThenable(promise, entry, _then);
-        this._willSettleAt(promise, i);
-      } else {
-        this._willSettleAt(new c(function (resolve$$1) {
-          return resolve$$1(entry);
-        }), i);
-      }
-    } else {
-      this._willSettleAt(resolve$$1(entry), i);
-    }
-  };
-
-  Enumerator.prototype._settledAt = function _settledAt(state, i, value) {
-    var promise = this.promise;
-
-
-    if (promise._state === PENDING) {
-      this._remaining--;
-
-      if (state === REJECTED) {
-        reject(promise, value);
-      } else {
-        this._result[i] = value;
-      }
-    }
-
-    if (this._remaining === 0) {
-      fulfill(promise, this._result);
-    }
-  };
-
-  Enumerator.prototype._willSettleAt = function _willSettleAt(promise, i) {
-    var enumerator = this;
-
-    subscribe(promise, undefined, function (value) {
-      return enumerator._settledAt(FULFILLED, i, value);
-    }, function (reason) {
-      return enumerator._settledAt(REJECTED, i, reason);
-    });
-  };
-
-  return Enumerator;
-}();
-
-/**
-  `Promise.all` accepts an array of promises, and returns a new promise which
-  is fulfilled with an array of fulfillment values for the passed promises, or
-  rejected with the reason of the first passed promise to be rejected. It casts all
-  elements of the passed iterable to promises as it runs this algorithm.
-
-  Example:
-
-  ```javascript
-  let promise1 = resolve(1);
-  let promise2 = resolve(2);
-  let promise3 = resolve(3);
-  let promises = [ promise1, promise2, promise3 ];
-
-  Promise.all(promises).then(function(array){
-    // The array here would be [ 1, 2, 3 ];
-  });
-  ```
-
-  If any of the `promises` given to `all` are rejected, the first promise
-  that is rejected will be given as an argument to the returned promises's
-  rejection handler. For example:
-
-  Example:
-
-  ```javascript
-  let promise1 = resolve(1);
-  let promise2 = reject(new Error("2"));
-  let promise3 = reject(new Error("3"));
-  let promises = [ promise1, promise2, promise3 ];
-
-  Promise.all(promises).then(function(array){
-    // Code here never runs because there are rejected promises!
-  }, function(error) {
-    // error.message === "2"
-  });
-  ```
-
-  @method all
-  @static
-  @param {Array} entries array of promises
-  @param {String} label optional string for labeling the promise.
-  Useful for tooling.
-  @return {Promise} promise that is fulfilled when all `promises` have been
-  fulfilled, or rejected if any of them become rejected.
-  @static
-*/
-function all(entries) {
-  return new Enumerator(this, entries).promise;
-}
-
-/**
-  `Promise.race` returns a new promise which is settled in the same way as the
-  first passed promise to settle.
-
-  Example:
-
-  ```javascript
-  let promise1 = new Promise(function(resolve, reject){
-    setTimeout(function(){
-      resolve('promise 1');
-    }, 200);
-  });
-
-  let promise2 = new Promise(function(resolve, reject){
-    setTimeout(function(){
-      resolve('promise 2');
-    }, 100);
-  });
-
-  Promise.race([promise1, promise2]).then(function(result){
-    // result === 'promise 2' because it was resolved before promise1
-    // was resolved.
-  });
-  ```
-
-  `Promise.race` is deterministic in that only the state of the first
-  settled promise matters. For example, even if other promises given to the
-  `promises` array argument are resolved, but the first settled promise has
-  become rejected before the other promises became fulfilled, the returned
-  promise will become rejected:
-
-  ```javascript
-  let promise1 = new Promise(function(resolve, reject){
-    setTimeout(function(){
-      resolve('promise 1');
-    }, 200);
-  });
-
-  let promise2 = new Promise(function(resolve, reject){
-    setTimeout(function(){
-      reject(new Error('promise 2'));
-    }, 100);
-  });
-
-  Promise.race([promise1, promise2]).then(function(result){
-    // Code here never runs
-  }, function(reason){
-    // reason.message === 'promise 2' because promise 2 became rejected before
-    // promise 1 became fulfilled
-  });
-  ```
-
-  An example real-world use case is implementing timeouts:
-
-  ```javascript
-  Promise.race([ajax('foo.json'), timeout(5000)])
-  ```
-
-  @method race
-  @static
-  @param {Array} promises array of promises to observe
-  Useful for tooling.
-  @return {Promise} a promise which settles in the same way as the first passed
-  promise to settle.
-*/
-function race(entries) {
-  /*jshint validthis:true */
-  var Constructor = this;
-
-  if (!isArray(entries)) {
-    return new Constructor(function (_, reject) {
-      return reject(new TypeError('You must pass an array to race.'));
-    });
-  } else {
-    return new Constructor(function (resolve, reject) {
-      var length = entries.length;
-      for (var i = 0; i < length; i++) {
-        Constructor.resolve(entries[i]).then(resolve, reject);
-      }
-    });
-  }
-}
-
-/**
-  `Promise.reject` returns a promise rejected with the passed `reason`.
-  It is shorthand for the following:
-
-  ```javascript
-  let promise = new Promise(function(resolve, reject){
-    reject(new Error('WHOOPS'));
-  });
-
-  promise.then(function(value){
-    // Code here doesn't run because the promise is rejected!
-  }, function(reason){
-    // reason.message === 'WHOOPS'
-  });
-  ```
-
-  Instead of writing the above, your code now simply becomes the following:
-
-  ```javascript
-  let promise = Promise.reject(new Error('WHOOPS'));
-
-  promise.then(function(value){
-    // Code here doesn't run because the promise is rejected!
-  }, function(reason){
-    // reason.message === 'WHOOPS'
-  });
-  ```
-
-  @method reject
-  @static
-  @param {Any} reason value that the returned promise will be rejected with.
-  Useful for tooling.
-  @return {Promise} a promise rejected with the given `reason`.
-*/
-function reject$1(reason) {
-  /*jshint validthis:true */
-  var Constructor = this;
-  var promise = new Constructor(noop);
-  reject(promise, reason);
-  return promise;
-}
-
-function needsResolver() {
-  throw new TypeError('You must pass a resolver function as the first argument to the promise constructor');
-}
-
-function needsNew() {
-  throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");
-}
-
-/**
-  Promise objects represent the eventual result of an asynchronous operation. The
-  primary way of interacting with a promise is through its `then` method, which
-  registers callbacks to receive either a promise's eventual value or the reason
-  why the promise cannot be fulfilled.
-
-  Terminology
-  -----------
-
-  - `promise` is an object or function with a `then` method whose behavior conforms to this specification.
-  - `thenable` is an object or function that defines a `then` method.
-  - `value` is any legal JavaScript value (including undefined, a thenable, or a promise).
-  - `exception` is a value that is thrown using the throw statement.
-  - `reason` is a value that indicates why a promise was rejected.
-  - `settled` the final resting state of a promise, fulfilled or rejected.
-
-  A promise can be in one of three states: pending, fulfilled, or rejected.
-
-  Promises that are fulfilled have a fulfillment value and are in the fulfilled
-  state.  Promises that are rejected have a rejection reason and are in the
-  rejected state.  A fulfillment value is never a thenable.
-
-  Promises can also be said to *resolve* a value.  If this value is also a
-  promise, then the original promise's settled state will match the value's
-  settled state.  So a promise that *resolves* a promise that rejects will
-  itself reject, and a promise that *resolves* a promise that fulfills will
-  itself fulfill.
-
-
-  Basic Usage:
-  ------------
-
-  ```js
-  let promise = new Promise(function(resolve, reject) {
-    // on success
-    resolve(value);
-
-    // on failure
-    reject(reason);
-  });
-
-  promise.then(function(value) {
-    // on fulfillment
-  }, function(reason) {
-    // on rejection
-  });
-  ```
-
-  Advanced Usage:
-  ---------------
-
-  Promises shine when abstracting away asynchronous interactions such as
-  `XMLHttpRequest`s.
-
-  ```js
-  function getJSON(url) {
-    return new Promise(function(resolve, reject){
-      let xhr = new XMLHttpRequest();
-
-      xhr.open('GET', url);
-      xhr.onreadystatechange = handler;
-      xhr.responseType = 'json';
-      xhr.setRequestHeader('Accept', 'application/json');
-      xhr.send();
-
-      function handler() {
-        if (this.readyState === this.DONE) {
-          if (this.status === 200) {
-            resolve(this.response);
-          } else {
-            reject(new Error('getJSON: `' + url + '` failed with status: [' + this.status + ']'));
-          }
-        }
-      };
-    });
-  }
-
-  getJSON('/posts.json').then(function(json) {
-    // on fulfillment
-  }, function(reason) {
-    // on rejection
-  });
-  ```
-
-  Unlike callbacks, promises are great composable primitives.
-
-  ```js
-  Promise.all([
-    getJSON('/posts'),
-    getJSON('/comments')
-  ]).then(function(values){
-    values[0] // => postsJSON
-    values[1] // => commentsJSON
-
-    return values;
-  });
-  ```
-
-  @class Promise
-  @param {Function} resolver
-  Useful for tooling.
-  @constructor
-*/
-
-var Promise$1 = function () {
-  function Promise(resolver) {
-    this[PROMISE_ID] = nextId();
-    this._result = this._state = undefined;
-    this._subscribers = [];
-
-    if (noop !== resolver) {
-      typeof resolver !== 'function' && needsResolver();
-      this instanceof Promise ? initializePromise(this, resolver) : needsNew();
-    }
-  }
-
-  /**
-  The primary way of interacting with a promise is through its `then` method,
-  which registers callbacks to receive either a promise's eventual value or the
-  reason why the promise cannot be fulfilled.
-   ```js
-  findUser().then(function(user){
-    // user is available
-  }, function(reason){
-    // user is unavailable, and you are given the reason why
-  });
-  ```
-   Chaining
-  --------
-   The return value of `then` is itself a promise.  This second, 'downstream'
-  promise is resolved with the return value of the first promise's fulfillment
-  or rejection handler, or rejected if the handler throws an exception.
-   ```js
-  findUser().then(function (user) {
-    return user.name;
-  }, function (reason) {
-    return 'default name';
-  }).then(function (userName) {
-    // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
-    // will be `'default name'`
-  });
-   findUser().then(function (user) {
-    throw new Error('Found user, but still unhappy');
-  }, function (reason) {
-    throw new Error('`findUser` rejected and we're unhappy');
-  }).then(function (value) {
-    // never reached
-  }, function (reason) {
-    // if `findUser` fulfilled, `reason` will be 'Found user, but still unhappy'.
-    // If `findUser` rejected, `reason` will be '`findUser` rejected and we're unhappy'.
-  });
-  ```
-  If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-   ```js
-  findUser().then(function (user) {
-    throw new PedagogicalException('Upstream error');
-  }).then(function (value) {
-    // never reached
-  }).then(function (value) {
-    // never reached
-  }, function (reason) {
-    // The `PedgagocialException` is propagated all the way down to here
-  });
-  ```
-   Assimilation
-  ------------
-   Sometimes the value you want to propagate to a downstream promise can only be
-  retrieved asynchronously. This can be achieved by returning a promise in the
-  fulfillment or rejection handler. The downstream promise will then be pending
-  until the returned promise is settled. This is called *assimilation*.
-   ```js
-  findUser().then(function (user) {
-    return findCommentsByAuthor(user);
-  }).then(function (comments) {
-    // The user's comments are now available
-  });
-  ```
-   If the assimliated promise rejects, then the downstream promise will also reject.
-   ```js
-  findUser().then(function (user) {
-    return findCommentsByAuthor(user);
-  }).then(function (comments) {
-    // If `findCommentsByAuthor` fulfills, we'll have the value here
-  }, function (reason) {
-    // If `findCommentsByAuthor` rejects, we'll have the reason here
-  });
-  ```
-   Simple Example
-  --------------
-   Synchronous Example
-   ```javascript
-  let result;
-   try {
-    result = findResult();
-    // success
-  } catch(reason) {
-    // failure
-  }
-  ```
-   Errback Example
-   ```js
-  findResult(function(result, err){
-    if (err) {
-      // failure
-    } else {
-      // success
-    }
-  });
-  ```
-   Promise Example;
-   ```javascript
-  findResult().then(function(result){
-    // success
-  }, function(reason){
-    // failure
-  });
-  ```
-   Advanced Example
-  --------------
-   Synchronous Example
-   ```javascript
-  let author, books;
-   try {
-    author = findAuthor();
-    books  = findBooksByAuthor(author);
-    // success
-  } catch(reason) {
-    // failure
-  }
-  ```
-   Errback Example
-   ```js
-   function foundBooks(books) {
-   }
-   function failure(reason) {
-   }
-   findAuthor(function(author, err){
-    if (err) {
-      failure(err);
-      // failure
-    } else {
-      try {
-        findBoooksByAuthor(author, function(books, err) {
-          if (err) {
-            failure(err);
-          } else {
-            try {
-              foundBooks(books);
-            } catch(reason) {
-              failure(reason);
-            }
-          }
-        });
-      } catch(error) {
-        failure(err);
-      }
-      // success
-    }
-  });
-  ```
-   Promise Example;
-   ```javascript
-  findAuthor().
-    then(findBooksByAuthor).
-    then(function(books){
-      // found books
-  }).catch(function(reason){
-    // something went wrong
-  });
-  ```
-   @method then
-  @param {Function} onFulfilled
-  @param {Function} onRejected
-  Useful for tooling.
-  @return {Promise}
-  */
-
-  /**
-  `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
-  as the catch block of a try/catch statement.
-  ```js
-  function findAuthor(){
-  throw new Error('couldn't find that author');
-  }
-  // synchronous
-  try {
-  findAuthor();
-  } catch(reason) {
-  // something went wrong
-  }
-  // async with promises
-  findAuthor().catch(function(reason){
-  // something went wrong
-  });
-  ```
-  @method catch
-  @param {Function} onRejection
-  Useful for tooling.
-  @return {Promise}
-  */
-
-
-  Promise.prototype.catch = function _catch(onRejection) {
-    return this.then(null, onRejection);
-  };
-
-  /**
-    `finally` will be invoked regardless of the promise's fate just as native
-    try/catch/finally behaves
-  
-    Synchronous example:
-  
-    ```js
-    findAuthor() {
-      if (Math.random() > 0.5) {
-        throw new Error();
-      }
-      return new Author();
-    }
-  
-    try {
-      return findAuthor(); // succeed or fail
-    } catch(error) {
-      return findOtherAuther();
-    } finally {
-      // always runs
-      // doesn't affect the return value
-    }
-    ```
-  
-    Asynchronous example:
-  
-    ```js
-    findAuthor().catch(function(reason){
-      return findOtherAuther();
-    }).finally(function(){
-      // author was either found, or not
-    });
-    ```
-  
-    @method finally
-    @param {Function} callback
-    @return {Promise}
-  */
-
-
-  Promise.prototype.finally = function _finally(callback) {
-    var promise = this;
-    var constructor = promise.constructor;
-
-    return promise.then(function (value) {
-      return constructor.resolve(callback()).then(function () {
-        return value;
-      });
-    }, function (reason) {
-      return constructor.resolve(callback()).then(function () {
-        throw reason;
-      });
-    });
-  };
-
-  return Promise;
-}();
-
-Promise$1.prototype.then = then;
-Promise$1.all = all;
-Promise$1.race = race;
-Promise$1.resolve = resolve$1;
-Promise$1.reject = reject$1;
-Promise$1._setScheduler = setScheduler;
-Promise$1._setAsap = setAsap;
-Promise$1._asap = asap;
-
-/*global self*/
-function polyfill() {
-  var local = void 0;
-
-  if (typeof global !== 'undefined') {
-    local = global;
-  } else if (typeof self !== 'undefined') {
-    local = self;
-  } else {
-    try {
-      local = Function('return this')();
-    } catch (e) {
-      throw new Error('polyfill failed because global object is unavailable in this environment');
-    }
-  }
-
-  var P = local.Promise;
-
-  if (P) {
-    var promiseToString = null;
-    try {
-      promiseToString = Object.prototype.toString.call(P.resolve());
-    } catch (e) {
-      // silently ignored
-    }
-
-    if (promiseToString === '[object Promise]' && !P.cast) {
-      return;
-    }
-  }
-
-  local.Promise = Promise$1;
-}
-
-// Strange compat..
-Promise$1.polyfill = polyfill;
-Promise$1.Promise = Promise$1;
-
-return Promise$1;
-
-})));
-
-
-
-//# sourceMappingURL=es6-promise.map
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(7)))
 
 /***/ }),
-/* 118 */
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(125)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(127)
+/* template */
+var __vue_template__ = __webpack_require__(128)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-966cbd2e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\FSR\\inventory\\view.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-966cbd2e", Component.options)
+  } else {
+    hotAPI.reload("data-v-966cbd2e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(126);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("bed997e4", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-966cbd2e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-966cbd2e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 127 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_api__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    },
+
+    methods: {
+        LIPS: function LIPS(s) {
+            this.$store.state.loader = this.isProcessing = s;
+        },
+        scrollToTop: function scrollToTop() {
+            $("html, body").animate({ scrollTop: 0 }, 500);
+        }
+    },
+    created: function created() {},
+    beforeCreate: function beforeCreate() {
+        if (!localStorage.getItem('api_token')) this.$router.push('/home');
+    }
+});
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      { staticClass: "Flo-Rel-FWid pt-md-3 pt-2", attrs: { id: "inventory" } },
+      [
+        _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "card card-product" }, [
+            _c("div", { staticClass: "card-header card-header-image" }, [
+              _c("img", {
+                staticClass: "img",
+                attrs: { src: "/images/cool.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("h6", { staticClass: "card-category text-muted" }, [
+                _vm._v("Popular")
+              ]),
+              _vm._v(" "),
+              _c("h5", { staticClass: "card-title" }, [_vm._v("Balmain")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-description" }, [
+                _vm._v(
+                  "\n                        Balmain's mid-rise skinny jeans are cut with stretch to ensure they retain their second-skin fit but move comfortably.\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer justify-content-between" }, [
+              _c("div", { staticClass: "price" }, [_c("h4", [_vm._v("$459")])]),
+              _vm._v(" "),
+              _c("div", { staticClass: "stats" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-just-icon btn-link",
+                    attrs: {
+                      type: "button",
+                      rel: "tooltip",
+                      title: "",
+                      "data-original-title": "Save to Wishlist"
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("favorite")
+                    ])
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-966cbd2e", module.exports)
+  }
+}
+
+/***/ }),
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59954,7 +61331,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 119 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59969,7 +61346,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('capitalize', function (value
 });
 
 /***/ }),
-/* 120 */
+/* 131 */
 /***/ (function(module, exports) {
 
 /*!
@@ -60199,7 +61576,7 @@ nowuiKitDemo = {
 };
 
 /***/ }),
-/* 121 */
+/* 132 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -178,7 +178,7 @@
                                     v-model="form.branch_id"
                                     v-validate="'required'"
                                     data-vv-name="branch">
-                                <option value="" selected>Select branch</option>
+                                <option value="" selected>select branch</option>
                                 <option v-for="branch in branches" :value="branch.id">
                                     {{branch.name | capitalize}}
                                 </option>

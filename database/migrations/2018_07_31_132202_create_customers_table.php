@@ -25,22 +25,22 @@ class CreateCustomersTable extends Migration
             $table->string('Date_of_Registration',20);
             $table->integer('branch_id')->unsigned();
             $table->string('first_name',20);
-            $table->string('middle_name',20);
+            $table->string('middle_name',20)->nullable();
             $table->string('last_name',20);
             $table->string('add_nbstop',100);
             $table->string('add_street',100);
             $table->string('area_address',255);
             //10
             $table->string('add_houseno',20);
-            $table->string('add_addinfo_description',100);
+            $table->string('add_addinfo_description',255)->nullable();
             $table->string('city',20);
             $table->string('state',20);
             $table->string('telephone',20);
-            $table->string('email',100);
+            $table->string('email',100)->nullable();
             $table->string('gender',10);
             $table->string('date_of_birth',20);
             $table->string('civil_status',20);
-            $table->integer('year_together')->unsigned();
+            $table->integer('year_together')->unsigned()->nullable();
             //20
             $table->string('type_of_home',20);
             $table->string('no_of_rooms',20);
@@ -54,13 +54,13 @@ class CreateCustomersTable extends Migration
             $table->string('visit_hour_to',20);
             //30
             $table->string('loan_from_institution',10);
-            //$table->string('loan_amount',50);
+            $table->string('loan_amount',50)->nullable();
             $table->string('did_you_pay_back',10)->nullable();
             $table->string('employment_status',20);
             $table->string('working_individual_Phone_number',20);
             $table->string('name_of_company_or_business',50);
             $table->string('cadd_nbstop',100);
-            $table->string('cadd_addinfo',255);
+            $table->string('cadd_addinfo',255)->nullable();
             $table->string('company_city',20);
             $table->string('company_state',20);
             //40
@@ -71,8 +71,8 @@ class CreateCustomersTable extends Migration
             //$table->string('business_income',100);
             $table->string('days_of_work',255);
             $table->string('market_name',100)->nullable();
-            //$table->string('bank_account',100);
-            //$table->string('monthly_gains',100);
+            $table->string('bank_account',100)->nullable();
+            $table->string('monthly_gains',100)->nullable();
             $table->string('years_of_existence_or_work_duration',100)->nullable();
             //50
             $table->string('comp_street_name',100);
@@ -83,7 +83,7 @@ class CreateCustomersTable extends Migration
             $table->string('cvisit_hour_from',20);
             $table->string('cvisit_hour_to',20);
             $table->string('nextofkin_first_name',20);
-            $table->string('nextofkin_middle_name',20);
+            $table->string('nextofkin_middle_name',20)->nullable();
             $table->string('nextofkin_last_name',20);
             //60
             $table->string('nextofkin_relationship',20);
@@ -91,14 +91,14 @@ class CreateCustomersTable extends Migration
             $table->string('nextofkin_telno',20);
             $table->string('nextofkin_work_duration',20);
             $table->string('work_guarantor_first_name',20);
-            $table->string('work_guarantor_middle_name',20);
+            $table->string('work_guarantor_middle_name',20)->nullable();
             $table->string('work_guarantor_last_name',20);
             $table->string('work_guarantor_relationship',20);
             $table->string('guaadd_nbstop',50);
             $table->string('guaadd_street',50);
             //70
             $table->string('guaadd_houseno',50);
-            $table->string('guaadd_addinfo',50);
+            $table->string('guaadd_addinfo',50)->nullable();
             $table->string('gua_area',20);
             $table->string('work_guarantor_city',20);
             $table->string('work_guarantor_state',10);
@@ -106,7 +106,7 @@ class CreateCustomersTable extends Migration
             $table->string('work_guarantor_telno',20);
             $table->string('work_guarantor_work_duration',20);
             $table->string('personal_guarantor_first_name',20);
-            $table->string('personal_guarantor_middle_name',20);
+            $table->string('personal_guarantor_middle_name',20)->nullable();
             //80
             $table->string('personal_guarantor_last_name',20);
             $table->string('personal_guarantor_relationship',20);
@@ -115,7 +115,7 @@ class CreateCustomersTable extends Migration
             $table->string('pguaadd_nbstop',100);
             $table->string('pguaadd_street',100);
             $table->string('pguaadd_houseno',100);
-            $table->string('pguaadd_addinfo',255);
+            $table->string('pguaadd_addinfo',255)->nullable();
             $table->string('pgua_area',20);
             $table->string('personal_guarantor_gender',10);
             //90

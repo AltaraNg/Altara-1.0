@@ -12,10 +12,10 @@
                 </span>
             </router-link>
             <strong class="mx-auto d-none d-sm-block w-100 float-left" data-title="title">
-                <span>Direct Sales Agents</span> Portal
+                <span>Floor Sales and Logistics</span> Portal
             </strong>
             <strong class="mx-auto d-block d-sm-none w-100 float-left" data-title="title">
-                <span>DSA</span> Portal
+                <span>FSL</span> Portal
             </strong>
             <router-link
                     v-if="$routerHistory.hasForward()"
@@ -32,5 +32,14 @@
     </div>
 </template>
 <script>
-    export default {}
+    import Flash from '../../helpers/flash';
+    export default{
+         beforeCreate(){
+             if (!(this.$store.state.FSRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&
+                 !localStorage.getItem('api_token')) {
+                 Flash.setError('You do not have access to that page!');
+                 this.$router.push('/home');
+             }
+         },
+    }
 </script>

@@ -30,8 +30,8 @@
                                            name="password">
                                     <span class="input-group-addon"><i class="fas fa-key"></i></span>
                                 </div>
-                                <small class="error-control" v-if="errors.first('password')">{{
-                                    errors.first('password') }}
+                                <small class="error-control" v-if="errors.first('password')">
+                                    {{errors.first('password') }}
                                 </small>
                             </div>
                             <div class="col-sm-12 mb-3 float-left px-0 px-md-3">
@@ -53,8 +53,8 @@
     import Auth from '../../store/auth';
     import Flash from '../../helpers/flash';
     import {post} from '../../helpers/api';
-    export default{
-        data(){
+    export default {
+        data() {
             return {
                 form: {
                     staff_id: '',
@@ -66,10 +66,10 @@
             }
         },
         methods: {
-            LIPS(s){
+            LIPS(s) {
                 this.$store.state.loader = this.isProcessing = s;
             },
-            watchCardMT(){
+            watchCardMT() {
                 let winHeight = $(window).height();
                 let cardHeight = $('#loginCard').height();
                 this.cardMT = (winHeight - cardHeight) / 2;
@@ -103,11 +103,10 @@
                 });
             }
         },
-        beforeCreate(){
+        beforeCreate() {
             if (localStorage.getItem('api_token')) this.$router.push('/home');
         },
-        computed: {},
-        mounted(){
+        mounted() {
             this.watchCardMT();
         },
     }

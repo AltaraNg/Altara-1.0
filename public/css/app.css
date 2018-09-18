@@ -397,11 +397,23 @@ textarea.valid-input {
 #navigation .nav-item .nav-link {
   font-weight: 600;
   font-size: 10px;
-  color: #074a74 !important;
+  color: #074a74 !important !important;
 }
 
 button.close {
   font-size: 18px;
+}
+
+.form-control:focus,
+.custom-select:focus {
+  border-color: #80bdff !important;
+}
+
+.form-control.is-invalid,
+.form-control.is-invalid:focus,
+.custom-select.is-invalid,
+.custom-select.is-invalid:focus {
+  border-color: #dc3545 !important;
 }
 
 @media only screen and (max-width: 990px) {

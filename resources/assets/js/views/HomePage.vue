@@ -1,8 +1,9 @@
 <template>
     <div class="col-md-12 Flo-Rel px-md-3 p-0">
-        <div  v-if="role == ('17')  || role ==  ('1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
-            <router-link  class="card" to="dsa/home">
-                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+        <div v-if="verifyDSAAccess" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+            <router-link class="card" to="dsa/home">
+                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
+                    data-background-color="orange">
                     <h6 class="text-center">DSA Portal</h6>
                 </ul>
                 <div class="card-body Flo-Rel-FWid">
@@ -13,7 +14,7 @@
                 </div>
             </router-link>
         </div>
-        <div  v-if="role ==  ('20') || role ==  ('1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div v-if="verifyDVAAccess" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="dva/home" class="card">
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
                     data-background-color="orange">
@@ -27,7 +28,7 @@
                 </div>
             </router-link>
         </div>
-        <div v-if="role ==  ('6')  || role ==  ('1')" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div v-if="verifyHRMAccess" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="hrm/home" class="card">
                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
                     data-background-color="orange">
@@ -38,6 +39,20 @@
                         <i class="fas fa-female"></i>
                         <i class="fas fa-male"></i>
                         <p class="pt-md-3 pt-2">For the HRM officers.</p>
+                    </div>
+                </div>
+            </router-link>
+        </div>
+        <div v-if="verifyFSRAccess" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+            <router-link to="fsr/home" class="card">
+                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
+                    data-background-color="orange">
+                    <h6 class="text-center">Floor Sales Portal</h6>
+                </ul>
+                <div class="card-body Flo-Rel-FWid">
+                    <div class="text-center w-100 float-left">
+                        <i class="fas fa-box"></i>
+                        <p class="pt-md-3 pt-2">For Floor sales Representatives</p>
                     </div>
                 </div>
             </router-link>
@@ -59,27 +74,15 @@
     </div>
 </template>
 <script>
-    import Auth from "./../store/auth";
-    import Flash from "./../helpers/flash";
-    export default{
-        components: {},
-        data() {
-            return {
-                flash: Flash.state,
-                authState: Auth.state,
-                user_name: localStorage.getItem("user_name"),
-                isProcessing: false
-            };
-        },
+    import {mapGetters} from 'vuex';
+    export default {
         computed: {
-            role() {
-                return this.authState.role;
-            },
-            access() {
-               return this.authState.portal_access;
-            },
+            ...mapGetters([
+                'verifyDSAAccess',
+                'verifyDVAAccess',
+                'verifyHRMAccess',
+                'verifyFSRAccess',
+            ]),
         },
-        watch: {},
-        methods: {},
     }
 </script>

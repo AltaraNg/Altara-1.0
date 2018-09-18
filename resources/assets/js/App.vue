@@ -91,10 +91,10 @@
             };
         },
         beforeCreate() {
-            if (localStorage.getItem("api_token")) {
+            /*if (localStorage.getItem("api_token")) {
                 this.$router.push("/home");
                 Flash.setSuccess("Welcome Back!");
-            }
+            }*/
             if (!localStorage.getItem("api_token")) {
                 this.$router.push("/login");
                 Flash.setError("You have to Login!");

@@ -322,6 +322,18 @@ button.close {
   font-size : 18px;
 }
 
+.form-control:focus,
+.custom-select:focus {
+  border-color : #80bdff !important;
+}
+
+.form-control.is-invalid,
+.form-control.is-invalid:focus,
+.custom-select.is-invalid,
+.custom-select.is-invalid:focus {
+  border-color : #dc3545 !important;
+}
+
 @media only screen and (max-width : 990px) {
   body {
     font-size : 90% $_v;

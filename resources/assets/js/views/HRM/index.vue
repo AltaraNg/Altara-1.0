@@ -32,14 +32,5 @@
     </div>
 </template>
 <script>
-    import Flash from '../../helpers/flash';
-    export default{
-         beforeCreate(){
-             if (!(this.$store.state.HRAccess.indexOf(parseInt(localStorage.getItem('role'))) !== -1) &&
-                 !localStorage.getItem('api_token')) {
-                 Flash.setError('You do not have access to that page!');
-                 this.$router.push('/home');
-             }
-         },
-    }
+    export default {}
 </script>
