@@ -35,7 +35,6 @@
                                     <router-link to="/user/profile" class="dropdown-item">
                                         <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i> My Profile
                                     </router-link>
-                                    <span class="dropdown-item"><i class="now-ui-icons arrows-1_refresh-69 pr-1"></i>Manage Customers</span>
                                     <span class="dropdown-item" @click.stop="logout">
                                         <i class="now-ui-icons media-1_button-power pr-1"></i> Logout
                                     </span>
@@ -91,6 +90,7 @@
             };
         },
         beforeCreate() {
+            Auth.initialize();
             /*if (localStorage.getItem("api_token")) {
                 this.$router.push("/home");
                 Flash.setSuccess("Welcome Back!");
@@ -113,7 +113,7 @@
                     this.$router.push("/not-found");
                 }
             });
-            Auth.initialize();
+
         },
         computed: {
             auth() {

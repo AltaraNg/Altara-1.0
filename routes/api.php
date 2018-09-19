@@ -26,3 +26,5 @@ Route::get('/employee/{id}/edit', 'AuthController@edit');
 Route::post('/employee/{id}/update', 'AuthController@update');
 Route::resource('log', 'LogController');
 Route::resource('customer', 'CustomerController');
+
+Route::post('/report', 'ReportController@generateReport');

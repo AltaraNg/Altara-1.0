@@ -416,7 +416,7 @@
                             })
                     }
                     if (!result) {
-                        Flash.setError('Please check all the fields and make sure they are field correctly!')
+                        Flash.setError('Please check all the fields and make sure they are field correctly!');
                         this.scrollToTop();
                     }
                 });

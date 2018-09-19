@@ -8,6 +8,7 @@ import Login from '../views/auth/Login.vue';
 import NotFound from '../views/NotFound.vue';
 import DSA from '../views/DSA/index.vue';
 import DSAHome from '../views/DSA/HomePage.vue';
+import DSAReport from '../views/DSA/report/report.vue';
 import CustomerRegister from '../views/DSA/registration/Register.vue';
 import DVA from '../views/DVA/index.vue';
 import DVAHome from '../views/DVA/HomePage.vue';
@@ -48,6 +49,11 @@ const router = new VueRouter({
                 {path: '/', redirect: {name: 'DSAHome'}},
                 {path: 'home', component: DSAHome, name: 'DSAHome', alias: '/dsa-home'},
                 {
+                    path: 'report',
+                    component: DSAReport,
+                    name: 'DSAReport',
+                    alias: '/dsa-report'
+                }, {
                     path: 'customer/register',
                     component: CustomerRegister,
                     name: 'customerRegister',

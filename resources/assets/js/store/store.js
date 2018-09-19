@@ -17,16 +17,28 @@ export const store = new Vuex.Store({
     },
     getters: {
         verifyDSAAccess: state => {
-            return (state.DSAAccess.includes(state.authRole)) && (state.api_token);
+            if ((state.DSAAccess.includes(state.authRole)) && (state.api_token)) {
+                return true;
+            }
+            return false;
         },
         verifyDVAAccess: state => {
-            return (state.DVAAccess.includes(state.authRole)) && (state.api_token);
+            if ((state.DVAAccess.includes(state.authRole)) && (state.api_token)) {
+                return true;
+            }
+            return false;
         },
         verifyHRMAccess: state => {
-            return (state.HRMAccess.includes(state.authRole)) && (state.api_token);
+            if ((state.HRMAccess.includes(state.authRole)) && (state.api_token)) {
+                return true;
+            }
+            return false;
         },
         verifyFSRAccess: state => {
-            return (state.FSRAccess.includes(state.authRole)) && (state.api_token);
+            if ((state.FSRAccess.includes(state.authRole)) && (state.api_token)) {
+                return true;
+            }
+            return false;
         },
 
         getProfileAccess: state => {
@@ -39,11 +51,19 @@ export const store = new Vuex.Store({
     mutations: {
         mutateProfileAccess: (state, payload) => {
             state.ProfileAccess.push(payload);
+        },
+        mutateAuth: (state) => {
+            state.authRole = parseInt(localStorage.getItem('role'));
+            state.api_token = localStorage.getItem('api_token');
         }
     },
     actions: {
         mutateProfileAccess: (context, payload) => {
             context.commit('mutateProfileAccess', payload);
+        },
+        mutateAuth: (context) => {
+            context.commit('mutateAuth');
         }
+
     }
 });

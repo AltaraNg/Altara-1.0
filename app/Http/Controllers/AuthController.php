@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Hash;
+use App\Branch;
 use App\Role;
 use App\User;
-use App\Branch;
+use Hash;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -18,8 +18,8 @@ class AuthController extends Controller
     public function create()
     {
         $form = User::form();
-        $roles = Role::select('name', 'id')->orderBy('name','asc')->get();
-        $branches = Branch::select('name', 'id')->orderBy('name','asc')->get();
+        $roles = Role::select('name', 'id')->orderBy('name', 'asc')->get();
+        $branches = Branch::select('name', 'id')->orderBy('name', 'asc')->get();
         return response()->json([
             'form' => $form,
             'roles' => $roles,
@@ -114,8 +114,8 @@ class AuthController extends Controller
 
     public function edit($id)
     {
-        $branches = Branch::select('name', 'id')->orderBy('name','asc')->get();
-        $roles = Role::select('name', 'id')->orderBy('name','asc')->get();
+        $branches = Branch::select('name', 'id')->orderBy('name', 'asc')->get();
+        $roles = Role::select('name', 'id')->orderBy('name', 'asc')->get();
         $user = User::where('id', $id)->get();
         return response()->json([
             'roles' => $roles,
@@ -130,7 +130,8 @@ class AuthController extends Controller
         return response()->json(['updated' => true]);
     }
 
-    public function resetPassword($id){
+    public function resetPassword($id)
+    {
         $user = User::where('id', $id)->first();
         $gen_password = str_random(10);
         $user->password = bcrypt($gen_password);

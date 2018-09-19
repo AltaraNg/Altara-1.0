@@ -74,8 +74,14 @@
     </div>
 </template>
 <script>
-    import {mapGetters} from 'vuex';
+    import Auth from '../store/auth'
+    import {mapActions, mapGetters} from 'vuex';
+
     export default {
+        beforeCreate() {
+            Auth.initialize();
+            this.$store.dispatch('mutateAuth');
+        },
         computed: {
             ...mapGetters([
                 'verifyDSAAccess',
@@ -84,5 +90,8 @@
                 'verifyFSRAccess',
             ]),
         },
+        methods: {
+            ...mapActions([]),
+        }
     }
 </script>
