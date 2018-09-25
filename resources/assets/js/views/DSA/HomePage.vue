@@ -12,9 +12,9 @@
         <div class="col-md-4 float-left product py-md-3 pt-0 pb-3 px-md-3 px-1">
             <div class="card Flo-Rel-FWid my-0">
                 <div class="card-body">
-                    <h4 class="card-title mt-0">Customer Update </h4>
-                    <p class="card-text">Update customers informations.</p>
-                    <button class="btn bg-default">Update Customer Info</button>
+                    <h4 class="card-title mt-0">Sales Lead Reporting</h4>
+                    <p class="card-text">For real time DSA reports.</p>
+                    <router-link to="report" class="btn bg-default">Get Reports</router-link>
                 </div>
             </div>
         </div>

@@ -53,7 +53,7 @@
                                     class="custom-select w-100"
                                     v-model="form.status"
                                     v-validate="'required'">
-                                <option value="" selected>Select status</option>
+                                <option value="" selected>select status</option>
                                 <option v-for="status in statuses" :value="status">
                                     {{status | capitalize}}
                                 </option>
@@ -69,7 +69,7 @@
                                     class="custom-select w-100"
                                     v-model="form.nationality"
                                     v-validate="'required'">
-                                <option value="" selected>Select nationality</option>
+                                <option value="" selected>select nationality</option>
                                 <option v-for="country in countries" :value="country">
                                     {{country | capitalize}}
                                 </option>
@@ -140,7 +140,7 @@
                                     v-model="form.role_id"
                                     v-validate="'required'"
                                     data-vv-name="role">
-                                <option value="" selected>Select role</option>
+                                <option value="" selected>select role</option>
                                 <option v-for="role in roles" :value="role.id">
                                     {{role.name | capitalize}}
                                 </option>
@@ -160,7 +160,7 @@
                                     v-model="form.highest_qualification"
                                     v-validate="'required'"
                                     data-vv-name="qualification">
-                                <option value="" selected>Select qualification</option>
+                                <option value="" selected>select qualification</option>
                                 <option v-for="qualification in qualifications" :value="qualification">
                                     {{qualification | capitalize}}
                                 </option>
@@ -178,7 +178,7 @@
                                     v-model="form.branch_id"
                                     v-validate="'required'"
                                     data-vv-name="branch">
-                                <option value="" selected>Select branch</option>
+                                <option value="" selected>select branch</option>
                                 <option v-for="branch in branches" :value="branch.id">
                                     {{branch.name | capitalize}}
                                 </option>
@@ -416,6 +416,7 @@
                             })
                     }
                     if (!result) {
+                        Flash.setError('Please check all the fields and make sure they are field correctly!');
                         this.scrollToTop();
                     }
                 });

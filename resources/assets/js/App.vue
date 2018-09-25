@@ -17,38 +17,27 @@
                                 aria-controls="navigation-index"
                                 class="navbar-toggler navbar-toggler-right">
                             <i class="fas fa-bars"></i>
-                            <!--<span class="navbar-toggler-bar bar1"></span>
-                            <span class="navbar-toggler-bar bar2"></span>
-                            <span class="navbar-toggler-bar bar3"></span>-->
                         </button>
                     </div>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <router-link to="/home" class="nav-link">
-                                    <i class="fas fa-home pr-1"></i>
-                                    Home
-                                </router-link>
-                            </li>
-                            <li class="nav-item" v-if="guest">
-                                <router-link to="/login" class="nav-link">
-                                    <i class="fas fa-sign-in-alt pr-1"></i>
-                                    Login
+                                    <i class="fas fa-home pr-1"></i> Home
                                 </router-link>
                             </li>
                             <li class="nav-item dropdown" v-if="auth">
                                 <span class="nav-link dropdown-toggle" id="menu" data-toggle="dropdown"
                                       aria-haspopup="true" aria-expanded="false">
-                                    <i class="now-ui-icons users_circle-08"></i>{{authState.user_name | capitalize}}
+                                    <i class="now-ui-icons users_circle-08"></i> {{authState.user_name | capitalize}}
                                 </span>
                                 <div class="dropdown-menu" aria-labelledby="menu">
                                     <router-link to="/user/profile" class="dropdown-item">
-                                        <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i>
-                                        My Profile
+                                        <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i> My Profile
                                     </router-link>
-                                    <span class="dropdown-item"><i class="now-ui-icons arrows-1_refresh-69 pr-1"></i>Manage Customers</span>
                                     <span class="dropdown-item" @click.stop="logout">
-                                        <i class="now-ui-icons media-1_button-power pr-1"></i>Logout</span>
+                                        <i class="now-ui-icons media-1_button-power pr-1"></i> Logout
+                                    </span>
                                 </div>
                             </li>
                         </ul>
@@ -101,6 +90,7 @@
             };
         },
         beforeCreate() {
+            Auth.initialize();
             /*if (localStorage.getItem("api_token")) {
                 this.$router.push("/home");
                 Flash.setSuccess("Welcome Back!");
@@ -123,7 +113,7 @@
                     this.$router.push("/not-found");
                 }
             });
-            Auth.initialize();
+
         },
         computed: {
             auth() {
@@ -172,9 +162,9 @@
     }
 
     .alert {
-        position : absolute !important;
-        z-index  : 101 !important;
-        border-radius: 5px;
+        position      : absolute !important;
+        z-index       : 101 !important;
+        border-radius : 5px;
     }
 
     .fade-enter-active, .fade-leave-active {

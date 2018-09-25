@@ -1,5 +1,5 @@
 @import "app/_variables";
-@import "app/_mixins";
+  @import "app/_mixins";
 
 .show {
   opacity    : 1;
@@ -258,8 +258,12 @@ button, input, optgroup, select, textarea, .form-control::placeholder {
   @include transition(0.3s);
   background : linear-gradient(#09588a, #05314d) $_v;
   color      : white $_v;
-  &:hover {
-    background : linear-gradient(#05314d, #09588a) $_v;
+  transform  : translateY(0px);
+  &.btn:hover {
+    background : linear-gradient(rgba(#09588a, 0.9), rgba(#05314d, 0.9)) $_v;
+  }
+  &.btn:active {
+    transform : translateY(2px);
   }
 }
 
@@ -320,6 +324,24 @@ textarea.valid-input {
 
 button.close {
   font-size : 18px;
+}
+
+.form-control:focus,
+.custom-select:focus {
+  border-color : #80bdff !important;
+}
+
+.form-control.is-invalid,
+.form-control.is-invalid:focus,
+.custom-select.is-invalid,
+.custom-select.is-invalid:focus {
+  border-color : #dc3545 !important;
+}
+
+.clear{
+  content: "";
+  display: table;
+  clear: both;
 }
 
 @media only screen and (max-width : 990px) {
@@ -419,6 +441,14 @@ button.close {
       font-size   : 14px !important;
       font-weight : 500;
     }
+  }
+
+  #back, #forward, [data-title="title"] {
+    margin-top    : -5px !important;
+    margin-bottom : 5px !important;
+  }
+  nav {
+    z-index : 10;
   }
 }
 

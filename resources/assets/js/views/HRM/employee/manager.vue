@@ -70,7 +70,7 @@
                     <div class="modal-content">
                         <div class="modal-header py-2">
                             <h6 class="modal-title py-1" id="exampleModalLabel" style>Update Employee Details</h6>
-                            <a href="javascript:" type="button" class="close py-1" data-dismiss="modal"
+                            <a href="javascript:" class="close py-1" data-dismiss="modal"
                                aria-label="Close">
                                 <span aria-hidden="true" class="modal-close text-danger">
                                     <i class="fas fa-times"></i>
@@ -121,9 +121,9 @@
                                             class="custom-select w-100"
                                             v-model="form.status"
                                             v-validate="'required'">
-                                        <option value="" selected>Select status</option>
+                                        <option value="" selected>select status</option>
                                         <option v-for="status in statuses" :value="status">
-                                            {{status}}
+                                            {{status | capitalize}}
                                         </option>
                                     </select>
                                     <small class="form-text text-muted" v-if="errors.first('status')">
@@ -137,9 +137,9 @@
                                             class="custom-select w-100"
                                             v-model="form.nationality"
                                             v-validate="'required'">
-                                        <option value="" selected>Select nationality</option>
+                                        <option value="" selected>select nationality</option>
                                         <option v-for="nationality in countries" :value="nationality">
-                                            {{nationality}}
+                                            {{nationality | capitalize}}
                                         </option>
                                     </select>
                                     <small class="form-text text-muted" v-if="errors.first('nationality')">
@@ -208,9 +208,9 @@
                                             v-model="form.role_id"
                                             v-validate="'required'"
                                             data-vv-name="role">
-                                        <option value="" selected>Select role</option>
+                                        <option value="" selected>select role</option>
                                         <option v-for="role in roles" :value="role.id">
-                                            {{role.name}}
+                                            {{role.name | capitalize}}
                                         </option>
                                     </select>
                                     <small class="form-text text-muted"
@@ -228,9 +228,9 @@
                                             v-model="form.highest_qualification"
                                             v-validate="'required'"
                                             data-vv-name="qualification">
-                                        <option value="" selected>Select qualification</option>
+                                        <option value="" selected>select qualification</option>
                                         <option v-for="qualification in qualifications" :value="qualification">
-                                            {{qualification}}
+                                            {{qualification | capitalize}}
                                         </option>
                                     </select>
                                     <small class="form-text text-muted"
@@ -246,9 +246,9 @@
                                             v-model="form.branch_id"
                                             v-validate="'required'"
                                             data-vv-name="branch">
-                                        <option value="" selected>Select branch</option>
+                                        <option value="" selected>select branch</option>
                                         <option v-for="branch in branches" :value="branch.id">
-                                            {{branch.name}}
+                                            {{branch.name | capitalize}}
                                         </option>
                                     </select>
                                     <small class="form-text text-muted"
@@ -441,7 +441,7 @@
                             <h4 class="modal-title m-0" style="font-size: 14px;font-weight: bold;">
                                 Edit Employee Portal Access
                             </h4>
-                            <a href="javascript:" type="button" class="close py-1" data-dismiss="modal"
+                            <a href="javascript:" class="close py-1" data-dismiss="modal"
                                aria-label="Close">
                                 <span aria-hidden="true" class="modal-close text-danger">
                                     <i class="fas fa-times"></i>
@@ -499,7 +499,7 @@
                             <h4 class="modal-title m-0" style="font-size: 14px;font-weight: bold;">
                                 Reset Employee Password
                             </h4>
-                            <a href="javascript:" type="button" class="close py-1" data-dismiss="modal"
+                            <a href="javascript:" class="close py-1" data-dismiss="modal"
                                aria-label="Close">
                                 <span aria-hidden="true" class="modal-close text-danger">
                                     <i class="fas fa-times"></i>

@@ -1,44 +1,69 @@
 import Vue from 'vue'
 import 'es6-promise/auto'
 import Vuex from 'vuex'
+
 Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
-        loader:false,
-        ProfileAccess:[],
-        ProfileEditAccess:[],
-        DSAAccess:[1,2,3,4,9,10,11],
-        DVAAccess:[1,2,3,4,6,9,13,14],
-        HRAccess:[1,2,3,5,9,15],
+        loader: false,
+        ProfileAccess: [],
+        ProfileEditAccess: [],
+        DSAAccess: [1, 2, 3, 8, 9, 15, 17],
+        DVAAccess: [1, 2, 3, 8, 9, 13, 16, 20, 21],
+        HRMAccess: [1, 2, 3, 6, 7, 8, 9],
+        FSRAccess: [1, 2, 3, 8, 9, 11, 14, 18],
+        authRole: parseInt(localStorage.getItem('role')),
+        api_token: localStorage.getItem('api_token'),
     },
-    getters:{
-        getDSAAccess:state => {
-            return state.DSAAccess;
+    getters: {
+        verifyDSAAccess: state => {
+            if ((state.DSAAccess.includes(state.authRole)) && (state.api_token)) {
+                return true;
+            }
+            return false;
         },
-        getDVAAccess:state => {
-            return state.DVAAccess;
+        verifyDVAAccess: state => {
+            if ((state.DVAAccess.includes(state.authRole)) && (state.api_token)) {
+                return true;
+            }
+            return false;
         },
-        getDCAAccess:state => {
-            return state.DVAAccess;
+        verifyHRMAccess: state => {
+            if ((state.HRMAccess.includes(state.authRole)) && (state.api_token)) {
+                return true;
+            }
+            return false;
         },
-        getHRAccess:state => {
-            return state.HRAccess;
+        verifyFSRAccess: state => {
+            if ((state.FSRAccess.includes(state.authRole)) && (state.api_token)) {
+                return true;
+            }
+            return false;
         },
-        getProfileAccess:state => {
+
+        getProfileAccess: state => {
             return state.ProfileAccess;
         },
-        getProfileEditAccess:state => {
+        getProfileEditAccess: state => {
             return state.ProfileEditAccess;
         }
     },
-    mutations:{
-        mutateProfileAccess:(state, payload) => {
+    mutations: {
+        mutateProfileAccess: (state, payload) => {
             state.ProfileAccess.push(payload);
+        },
+        mutateAuth: (state) => {
+            state.authRole = parseInt(localStorage.getItem('role'));
+            state.api_token = localStorage.getItem('api_token');
         }
     },
-    actions:{
-        mutateProfileAccess:(context, payload) => {
+    actions: {
+        mutateProfileAccess: (context, payload) => {
             context.commit('mutateProfileAccess', payload);
+        },
+        mutateAuth: (context) => {
+            context.commit('mutateAuth');
         }
+
     }
 });
