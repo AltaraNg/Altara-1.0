@@ -1,31 +1,140 @@
+@import "../css/bootstrap.min.css";
+@import "../css/now-ui-kit.css";
 @import "app/_variables";
-  @import "app/_mixins";
+@import "app/_mixins";
+
+*,
+*::before,
+*::after {
+  margin     : 0;
+  padding    : 0;
+  box-sizing : inherit;
+}
+
+html {
+  font-size : 62.5%;
+}
+
+body {
+  box-sizing  : border-box;
+  font-family : $default-font;
+  height      : 100vh;
+  font-size   : $default-font-size;
+}
+
+.loader {
+  height           : 100vh;
+  width            : 100vw;
+  background-color : rgba($color-black, 0.4);
+  position         : fixed;
+  z-index          : 1100;
+  &__box {
+    height    : 1.8rem;
+    width     : 2.2rem;
+    position  : absolute;
+    top       : 0;
+    bottom    : 0;
+    left      : 0;
+    right     : 0;
+    margin    : auto;
+    transform : translateX(-10rem);
+  }
+  &__dot {
+    text-align       : center;
+    animation        : loader ease-in-out 3s infinite;
+    height           : 2.2rem;
+    width            : 2.2rem;
+    border-radius    : 100%;
+    position         : absolute;
+    border           : 1px solid $default-color;
+    font-weight      : bold;
+    color            : $default-color;
+    background-color : $color-white;
+    &:nth-child(1) {
+      animation-delay : .5s;
+    }
+    &:nth-child(2) {
+      animation-delay : .4s;
+    }
+    &:nth-child(3) {
+      animation-delay : .3s;
+    }
+    &:nth-child(4) {
+      animation-delay : .2s;
+    }
+    &:nth-child(5) {
+      animation-delay : .1s;
+    }
+    &:nth-child(6) {
+      animation-delay : 0s;
+    }
+  }
+  &__text {
+    position  : absolute;
+    top       : 200%;
+    left      : 0;
+    right     : 0;
+    width     : 2rem;
+    margin    : auto;
+    transform : translateX(6rem);
+    &:after {
+      content        : "Loading...";
+      font-size      : $default-font-size-icon;
+      letter-spacing : .5rem;
+      color          : $color-white;
+      animation      : loading-text ease-in-out 3s infinite;
+    }
+  }
+}
+
+@keyframes loader {
+  15% {
+    transform : translateX(0);
+  }
+  45% {
+    transform : translateX(23rem);
+  }
+  65% {
+    transform : translateX(23rem);
+  }
+  95% {
+    transform : translateX(0);
+  }
+}
+
+@keyframes loading-text {
+  0% {
+    content : "Loading";
+  }
+  25% {
+    content : "Loading.";
+  }
+  50% {
+    content : "Loading..";
+  }
+  75% {
+    content : "Loading...";
+  }
+}
 
 .show {
-  opacity    : 1;
-  display    : block;
-  visibility : visible;
+  display : block;
 }
 
 .hide {
-  opacity    : 0 $_v;
-  display    : none $_v;
-  visibility : hidden $_v;
+  display : none;
 }
 
-.Flo-Rel {
-  float    : left;
-  position : relative;
-}
-
-.Flo-Rel-FWid {
-  @extend .Flo-Rel;
-  width : 100%;
-}
-
-html, body {
-  font-family : $default-font $_v;
-  font-weight : 500;
+.alert {
+  position      : absolute;
+  z-index       : 900;
+  border-radius : 5px;
+  &.alert-success {
+    background-color : $color-green;
+  }
+  &.alert-danger {
+    background-color : $color-red;
+  }
 }
 
 #appSideNav {
@@ -35,97 +144,59 @@ html, body {
 }
 
 .side-nav {
-  @extend .Flo-Rel;
-  @include transition(0.4s);
-  width            : 240px;
-  height           : 100vh;
-  background-color : #e3e3e3;
+  transition       : all .4s;
+  width            : 22rem;
+  height           : 100%;
+  background-color : darken($color-white, 8%);
   overflow         : hidden;
-
   &-header {
-    text-align    : center;
-    border-bottom : 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom : 1px solid rgba($color-black, .05);
     a {
-      &:nth-child(1) {
-        min-width : 90px;
-      }
-      font-size : 21px;
-      padding   : 15px 0;
-      color     : #074a74 $_v;
-
-      :hover {
-        color : #074a74 $_v;
-      }
-    }
-    img {
-      height : 50px;
+      min-width : 5rem;
+      font-size : $default-font-size-icon;
+      padding   : 1rem 0;
+      color     : $default-color;
     }
   }
   &-link {
-    background-color : inherit;
-
     a {
-      @include border-radius(3px);
-      @include transition(0.2s);
-      color            : inherit $_v;
-      min-width        : 220px;
-      text-decoration  : none $_v;
-      background-color : inherit;
+      border-radius : 3px;
+      transition    : all .2s;
+      min-width     : 20rem;
       .icon {
-        float     : left;
-        position  : relative;
-        color     : #074a74 $_v;
-        font-size : 16px;
-        padding   : 5px 0 5px 0px;
+        color : $default-color;
       }
       .name {
-        font-size   : 14px;
-        font-weight : 600;
-        color       : #074a74 $_v;
-        @extend .show;
-        @include transition(0.2s);
+        color      : $default-color;
+        transition : opacity .4s;
+        opacity    : 1;
         &.hide {
-          @extend .hide;
+          opacity : 0;
         }
       }
       &.router-link-active,
-      &.router-link-exact-active {
-        background-color : #fbfbfb $_v;
-      }
+      &.router-link-exact-active,
       &:hover {
-        background-color : #fbfbfb $_v;
+        background-color : $color-white;
       }
     }
   }
-
-}
-
-.side-nav.active {
-  width : 60px $_v;
-}
-
-.main {
-  width              : 100%;
-  background-color   : white;
-  float              : right;
-  position           : relative;
-  -webkit-transition : all 0.4s;
-  -moz-transition    : all 0.4s;
-  -o-transition      : all 0.4s;
-  transition         : all 0.4s;
-  overflow-x         : hidden;
-  height             : 100%;
-  &#main {
-    position : relative;
+  &.active {
+    width : 5rem;
+    & + div.main {
+      width : calc(100% - 5rem);
+    }
+  }
+  & + div.main {
+    width : calc(100% - 22rem);
   }
 }
 
-.side-nav.active + div.main {
-  width : calc(100% - 60px);
-}
-
-.side-nav + div.main {
-  width : calc(100% - 240px);
+.main {
+  width      : 100%;
+  float      : right;
+  transition : all 0.4s;
+  overflow-x : hidden;
 }
 
 .position- {
@@ -134,24 +205,25 @@ html, body {
   &absolute { position : absolute; }
 }
 
-#login,
-#registration {
+#login {
   .col-md-6,
   .col-md-12,
   .col-sm-6,
   .col-sm-12 {
-    margin-bottom : 20px;
-    label.category {
-      margin-top    : 10px;
-      margin-bottom : 7px;
-      line-height   : 1em;
-    }
-    label.category + .input-group {
-      margin-bottom : 0;
+    margin-bottom : 2rem;
+    label {
+      margin-top    : 1rem;
+      margin-bottom : .1rem;
+      & + .input-group {
+        margin-bottom : 0;
+      }
     }
     small {
-      color     : orangered;
-      font-size : 80%;
+      color     : $color-red;
+      font-size : $default-font-size-small;
+    }
+    i {
+      font-size : $default-font-size-small;
     }
   }
 }
@@ -160,8 +232,8 @@ a,
 button,
 .button,
 .product,
-.dropdown-item,
-[type="button"] {
+.pointer,
+.dropdown-item {
   cursor : pointer;
 }
 
@@ -171,8 +243,9 @@ button,
     transform : scale(1.02);
   }
   i, svg {
-    font-size : 90px;
-    opacity   : 0.1;
+    font-size : 9rem;
+    opacity   : .1;
+    margin    : 1rem auto;
   }
 }
 
@@ -181,62 +254,59 @@ hr.style-two {
   height           : 1px;
   background-image : linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
   width            : 100%;
-  position         : relative;
   float            : left;
   opacity          : 0.6;
-}
-
-hr {
-  margin-top    : 1rem;
-  margin-bottom : 1rem;
-  border        : 0;
-  border-top    : 1px solid rgba(0, 0, 0, .8);
 }
 
 #employeeEdit,
 #customerRegister,
 #employeeRegister {
-  font-weight : 500;
   input, textarea, select {
-    border-radius : 4px $_v;
-    border        : 1px solid #E3E3E3;
-    &:focus {
-      border : 1px solid #f96332;
-    }
+    border-radius : .4rem;
+  }
+  .text-muted {
+    margin-top : .15rem;
   }
   h5 {
-    background-color : rgba(0, 0, 0, 0.07);
-    padding          : 6px 15px;
+    background-color : rgba($color-black, 0.07);
+    padding          : .6rem 1.5rem;
     border-radius    : 3px;
-    font-size        : 16px $_v;
-    font-weight      : 600;
-    box-shadow       : 0 0 5px 0 rgba(0, 0, 0, 0.08) inset;
-    @extend .Flo-Rel-FWid;
-    color            : rgba(0, 0, 0, 0.6);
+    font-size        : $default-font-size-icon-small !important;
+    font-weight      : 700;
+    box-shadow       : 0 0 .5rem 0 rgba($color-black, 0.08) inset;
+    float            : left;
+    width            : 100%;
+    color            : rgba($color-black, 0.6);
+  }
+  .btn-sm {
+    height : 2.8rem;
+    width  : 2.8rem;
   }
 }
 
 .spaceAfter {
-  padding : 10px 0;
-  @extend .Flo-Rel-FWid;
+  padding : 1rem 0;
+  float   : left;
+  width   : 100%;
 }
 
 .spaceBefore {
-  padding : 5px 0;
-  @extend .Flo-Rel-FWid;
+  padding : .5rem 0;
+  float   : left;
+  width   : 100%;
 }
 
 .spaceBetween {
-  padding : 5px 0 0 0;
-  @extend .Flo-Rel-FWid;
+  padding : .5rem 0 0 0;
+  float   : left;
+  width   : 100%;
 }
 
 .form-control::placeholder {
-  color : rgb(142, 151, 160) $_v;
+  color : rgb(142, 151, 160);
 }
 
 button, input, optgroup, select, textarea, .form-control::placeholder {
-  font-family : $default-font $_v;
   font-weight : 500;
 }
 
@@ -244,143 +314,121 @@ button, input, optgroup, select, textarea, .form-control::placeholder {
   transition : opacity .5s;
 }
 
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-{
+.fade-enter, .fade-leave-to {
   opacity : 0;
 }
 
-.side-nav-header a:nth-child(1) {
-  min-width : 60px;
-}
-
-.bg-default,
-[data-background-color="orange"] {
-  @include transition(0.3s);
-  background : linear-gradient(#09588a, #05314d) $_v;
-  color      : white $_v;
-  transform  : translateY(0px);
-  &.btn:hover {
-    background : linear-gradient(rgba(#09588a, 0.9), rgba(#05314d, 0.9)) $_v;
+.bg-default {
+  @include transition(.6s);
+  background : linear-gradient($default-color-lighter, $default-color-darker);
+  color      : $color-white !important;
+  &.btn {
+    border-radius : 3px;
   }
-  &.btn:active {
-    transform : translateY(2px);
+  &.btn:hover {
+    background : linear-gradient(rgba($default-color-lighter, 0.8), rgba($default-color-darker, 0.8)) !important;
   }
 }
 
 a {
-  text-decoration : none $_v;
-  color           : inherit $_v;
+  text-decoration : none;
+  color           : inherit;
+  &:hover, &:active, &:visited {
+    text-decoration : none;
+    color           : inherit;
+  }
 }
 
 small.text-muted {
-  font-size   : 80% $_v;
-  color       : orangered $_v;
-  font-weight : 500;
-  float       : left $_v;
-  width       : 100% $_v;
-}
-
-input.valid-input,
-select.valid-input,
-textarea.valid-input {
-  border-color : #2acc2a $_v;
+  font-size : $default-font-size-small;
+  color     : $color-red !important;
+  float     : left;
+  width     : 100%;
 }
 
 .form-group {
-  & > label {
-    font-weight : 600;
-    color       : rgba(7, 74, 116, 0.9);
+  & label, .category {
+    font-weight   : 600;
+    color         : $default-color;
+    margin-bottom : .2rem;
   }
 }
 
-[data-bg="default"] { background : $defaultBG; }
-
-[data-bg="default2"] { background : $defaultBG2; }
-
-.navbar-brand {
-  img {
-    height : 40px;
-    width  : 120px;
-  }
-}
+[data-bg="default"] { background : $default-color; }
 
 .custom-notify {
-  padding          : 20px;
-  background-color : rgba(0, 0, 0, 0.05);
+  padding          : 2rem 3rem;
+  background-color : rgba($color-black, 0.05);
   border-radius    : 4px;
-  border           : 1px solid rgba(0, 0, 0, 0.1);
-  margin-bottom    : 20px;
+  border           : 1px solid rgba($color-black, 0.1);
+  margin-bottom    : 2rem;
 }
 
-#navigation {
-  .nav-item {
+nav {
+  z-index : 10;
+  .navbar-brand {
+    img {
+      height : 4rem;
+    }
+  }
+  #navigation {
+    li > .nav-link:hover,
+    li > .router-link-active,
+    li > .router-link-exact-active {
+      color            : $color-white !important;
+      background-color : $default-color;
+    }
     .nav-link {
-      font-weight : 600;
-      font-size   : 10px;
-      color       : $defaultBG $_v;
+      padding       : 1rem 2rem;
+      font-weight   : 700;
+      border-radius : .4rem;
+      color         : $default-color !important;
+      & i {
+        float  : left;
+        margin : 0 .4rem 0 0;
+        &.now-ui-icons {
+          top : 0;
+        }
+        &.fas {
+          font-size : 1.2rem;
+        }
+      }
     }
   }
 }
 
-button.close {
-  font-size : 18px;
+.custom-select {
+  height  : unset;
+  padding : 1rem;
+}
+
+textarea.form-control {
+  border : 1px solid rgba($color-black, 0.1) !important;
 }
 
 .form-control:focus,
-.custom-select:focus {
-  border-color : #80bdff !important;
+.custom-select:focus,
+textarea.form-control:focus {
+  border : 1px solid lighten($default-color, 15%) !important;
 }
 
 .form-control.is-invalid,
 .form-control.is-invalid:focus,
 .custom-select.is-invalid,
-.custom-select.is-invalid:focus {
-  border-color : #dc3545 !important;
+.custom-select.is-invalid:focus,
+textarea.form-control.is-invalid,
+textarea.form-control.is-invalid:focus {
+  border : 1px solid $color-red !important;
 }
 
-.clear{
-  content: "";
-  display: table;
-  clear: both;
+.clear {
+  content : "";
+  display : table;
+  clear   : both;
 }
 
-@media only screen and (max-width : 990px) {
-  body {
-    font-size : 90% $_v;
-  }
-  h4 {
-    font-size : 18px $_v;
-  }
-  div.main#main {
-    width : 100% $_v;
-  }
-  .navbar-translate {
-    width : 100%;
-    button {
-      float : right;
-    }
-  }
-  .navbar-brand img {
-    width : auto $_v;
-  }
-  .nav-tabs {
-    padding : 12px 0.7rem 7px $_v;
-  }
-  .btn-lg {
-    padding : 10px 30px $_v;
-  }
-  .nav-item.dropdown {
-    max-height : 42px !important;
-  }
-  .product {
-    i, svg {
-      font-size : 50px;
-    }
-  }
-  .card .card-body {
-    min-height : 80px !important;
-    padding    : 15px 15px !important;
-  }
+[disabled="disabled"] {
+  cursor : not-allowed;
 }
 
 .page-header-image {
@@ -389,86 +437,116 @@ button.close {
 
 #index {
   i {
-    font-size : 22px;
+    font-size : $default-font-size-icon
   }
-
-  #back {
+  a#back {
     left : 0;
   }
 
-  #forward {
+  a#forward {
     right : 0;
   }
-
   a {
-    margin-top : 8px;
+    margin-top : .8rem;
     position   : absolute;
   }
-
   .forward, .back {
-    font-size   : 16px;
-    line-height : 24px;
-    margin-top  : -2px;
+    line-height : 2.4rem;
+    margin-top  : -.2rem;
     font-weight : bold;
   }
 }
 
-@media only screen and (max-width : 600px) {
-  body {
-    font-size : 80% $_v;
-  }
-  h4 {
-    font-size : 16px $_v;
-  }
-  .nav-tabs {
-    padding : 10px 0.7rem 5px $_v;
-  }
-  .product {
-    i, svg {
-      font-size : 30px;
-      opacity   : 0.2;
-    }
-  }
-  .card .card-body {
-    padding : 10px 10px !important;
-  }
-  small.text-muted {
-    font-size : 75% $_v;
-  }
-  #customerRegister {
-    h5 {
-      padding     : 6px 10px;
-      font-size   : 14px !important;
-      font-weight : 500;
-    }
-  }
-
-  #back, #forward, [data-title="title"] {
-    margin-top    : -5px !important;
-    margin-bottom : 5px !important;
-  }
-  nav {
-    z-index : 10;
+.card {
+  border-radius : .4rem;
+  .card-body {
+    min-height : unset;
   }
 }
 
+.modal {
+  &-header {
+    background-color : rgba($color-black, .02);
+  }
+  &-body {
+    border-top : 1px solid rgba($color-black, .15);
+  }
+  &-close {
+    font-size : $default-font-size-icon;
+  }
+  &-title {
+    font-size : $default-font-size;
+  }
+  & small {
+    margin-top : 0;
+  }
 
+  & .form-group {
+    margin-bottom : 2rem;
+  }
 
+}
 
+table button i {
+  font-size : $default-font-size;
+}
 
+.btn-success.btn-round {
+  background : radial-gradient(circle at 0% 0%, #8ef985 0%, #075f10 100%);
+}
 
+.btn-warning.btn-round {
+  background : radial-gradient(circle at 0% 0%, #ffd187 0%, #b57308 100%);
+}
 
+.btn-dark.btn-round {
+  background : radial-gradient(circle at 0% 0%, #d8d8d8 0%, #272727 100%);
+}
 
+.btn-danger.btn-round {
+  background : radial-gradient(circle at 0% 0%, #ffbcbc 0%, #a00e0e 100%);
+}
 
+@media (max-width : 990px) {
+  html {
+    font-size : 59%;
+  }
+  .navbar-translate {
+    width : 100%;
+    button {
+      float : right;
+    }
+  }
+  .nav-item.dropdown {
+    max-height : 4.2rem;
+  }
+  .product {
+    i, svg {
+      font-size : 5rem;
+    }
+  }
+  .table-responsive {
+    display : table;
+  }
+  .modal-dialog {
+    max-width : 64rem;
+  }
+}
 
-
-
-
-
-
-
-
-
-
-
-
+@media (max-width : 600px) {
+  html {
+    font-size : 55%;
+  }
+  .product {
+    i, svg {
+      font-size : 3rem;
+    }
+  }
+  .table-responsive {
+    display : block;
+  }
+  a#back, a#forward, [data-title="title"] {
+    margin-top    : -.5rem;
+    margin-bottom : .5rem;
+  }
+}

@@ -12,6 +12,15 @@
 */
 
 
+use App\Customer;
+use App\Document;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::get('/check', function (){
+   $data = Customer::with(['branch','user','verification','address'])->where('id', '=','1')->first();
+   return $data;
 });

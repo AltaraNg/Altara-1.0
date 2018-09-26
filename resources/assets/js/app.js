@@ -7,6 +7,7 @@ import router from './router';
 import { store } from './store/store';
 import VeeValidate from 'vee-validate';
 import './store/filters.js';
+import './store/globalFunctions.js';
 Vue.use(VeeValidate);
 const app = new Vue({
     el:'#root',

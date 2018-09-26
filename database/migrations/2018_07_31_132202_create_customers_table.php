@@ -16,11 +16,9 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('employee_name',50);
-
-            //----------------------------
-            $table->integer('user_id')->unsigned();//reference the id on user table
-            //----------------------------
-
+            $table->integer('user_id')->unsigned();
+            $table->integer('document_id')->unsigned()->nullable();
+            $table->integer('verification_id')->unsigned()->nullable();
             $table->string('employee_phone_number',15);
             $table->string('Date_of_Registration',20);
             $table->integer('branch_id')->unsigned();
@@ -90,37 +88,37 @@ class CreateCustomersTable extends Migration
             $table->string('nextofkin_gender',20);
             $table->string('nextofkin_telno',20);
             $table->string('nextofkin_work_duration',20);
-            $table->string('work_guarantor_first_name',20);
+            $table->string('work_guarantor_first_name',20)->nullable();
             $table->string('work_guarantor_middle_name',20)->nullable();
-            $table->string('work_guarantor_last_name',20);
-            $table->string('work_guarantor_relationship',20);
-            $table->string('guaadd_nbstop',50);
-            $table->string('guaadd_street',50);
+            $table->string('work_guarantor_last_name',20)->nullable();
+            $table->string('work_guarantor_relationship',20)->nullable();
+            $table->string('guaadd_nbstop',50)->nullable();
+            $table->string('guaadd_street',50)->nullable();
             //70
-            $table->string('guaadd_houseno',50);
+            $table->string('guaadd_houseno',50)->nullable();
             $table->string('guaadd_addinfo',50)->nullable();
-            $table->string('gua_area',20);
-            $table->string('work_guarantor_city',20);
-            $table->string('work_guarantor_state',10);
-            $table->string('work_guarantor_gender',10);
-            $table->string('work_guarantor_telno',20);
-            $table->string('work_guarantor_work_duration',20);
-            $table->string('personal_guarantor_first_name',20);
+            $table->string('gua_area',20)->nullable();
+            $table->string('work_guarantor_city',20)->nullable();
+            $table->string('work_guarantor_state',10)->nullable();
+            $table->string('work_guarantor_gender',10)->nullable();
+            $table->string('work_guarantor_telno',20)->nullable();
+            $table->string('work_guarantor_work_duration',20)->nullable();
+            $table->string('personal_guarantor_first_name',20)->nullable();
             $table->string('personal_guarantor_middle_name',20)->nullable();
             //80
-            $table->string('personal_guarantor_last_name',20);
-            $table->string('personal_guarantor_relationship',20);
-            $table->string('personal_guarantor_city',20);
-            $table->string('personal_guarantor_state',20);
-            $table->string('pguaadd_nbstop',100);
-            $table->string('pguaadd_street',100);
-            $table->string('pguaadd_houseno',100);
+            $table->string('personal_guarantor_last_name',20)->nullable();
+            $table->string('personal_guarantor_relationship',20)->nullable();
+            $table->string('personal_guarantor_city',20)->nullable();
+            $table->string('personal_guarantor_state',20)->nullable();
+            $table->string('pguaadd_nbstop',100)->nullable();
+            $table->string('pguaadd_street',100)->nullable();
+            $table->string('pguaadd_houseno',100)->nullable();
             $table->string('pguaadd_addinfo',255)->nullable();
-            $table->string('pgua_area',20);
-            $table->string('personal_guarantor_gender',10);
+            $table->string('pgua_area',20)->nullable();
+            $table->string('personal_guarantor_gender',10)->nullable();
             //90
-            $table->string('personal_guarantor_telno',20);
-            $table->string('personal_guarantor_work_duration',20);
+            $table->string('personal_guarantor_telno',20)->nullable();
+            $table->string('personal_guarantor_work_duration',20)->nullable();
             $table->string('what_product_do_you_need',255);
             $table->string('what_do_you_need_it_for',255);
             $table->timestamps();

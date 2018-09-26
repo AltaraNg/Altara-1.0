@@ -26,5 +26,8 @@ Route::get('/employee/{id}/edit', 'AuthController@edit');
 Route::post('/employee/{id}/update', 'AuthController@update');
 Route::resource('log', 'LogController');
 Route::resource('customer', 'CustomerController');
-
+Route::resource('document', 'DocumentController');
+Route::resource('verification', 'VerificationController');
+Route::resource('address', 'AddressController');
+///fix the controller below and make resourceful use
 Route::post('/report', 'ReportController@generateReport');

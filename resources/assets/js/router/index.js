@@ -12,6 +12,7 @@ import DSAReport from '../views/DSA/report/report.vue';
 import CustomerRegister from '../views/DSA/registration/Register.vue';
 import DVA from '../views/DVA/index.vue';
 import DVAHome from '../views/DVA/HomePage.vue';
+import DVAVerification from '../views/DVA/verification/verification.vue';
 import Profile from '../views/profile/Index.vue';
 import ProfileEdit from '../views/profile/Edit.vue';
 import ProfileHome from '../views/profile/HomePage.vue';
@@ -19,9 +20,9 @@ import HRM from '../views/HRM/index.vue';
 import HRMHome from '../views/HRM/HomePage.vue';
 import EmployeeManager from '../views/HRM/employee/Manager.vue';
 import EmployeeRegister from '../views/HRM/employee/Register.vue';
-import FSR from '../views/FSR/index.vue';
-import FSRHome from '../views/FSR/HomePage.vue';
-import Inventory from '../views/FSR/inventory/view.vue';
+import FSL from '../views/FSL/index.vue';
+import FSLHome from '../views/FSL/HomePage.vue';
+import Inventory from '../views/FSL/inventory/view.vue';
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -66,6 +67,7 @@ const router = new VueRouter({
             children: [
                 {path: '/', redirect: {name: 'DVAHome'}},
                 {path: 'home', component: DVAHome, name: 'DVAHome', alias: '/dva-home'},
+                {path: 'verification', component: DVAVerification, name: 'DVAVerification', alias: '/dva-verification'},
             ]
         },
         {
@@ -88,9 +90,9 @@ const router = new VueRouter({
             ]
         },
         {
-            path: '/fsr', component: FSR,
+            path: '/fsl', component: FSL, meta: {FSL: true},
             children: [
-                {path: 'home', component: FSRHome, name: 'FSRHome', alias: '/fsr-home'},
+                {path: 'home', component: FSLHome, name: 'FSLHome', alias: '/fsl-home'},
                 {path: 'inventory', component: Inventory, name: 'inventory', alias: '/inventory'},
             ]
         },
@@ -101,7 +103,6 @@ const router = new VueRouter({
 
 router.afterEach(writeHistory);
 router.beforeEach((to, from, next) => {
-
     if (to.matched.some(m => m.meta.DSA)) {
         if (store.getters.verifyDSAAccess) {
             next();
@@ -129,7 +130,17 @@ router.beforeEach((to, from, next) => {
         Flash.setError("You do not have access to that page!");
         return;
     }
+    if (to.matched.some(m => m.meta.FSL)) {
+        if (store.getters.verifyFSLAccess) {
+            next();
+            return;
+        }
+        next({name: 'home'});
+        Flash.setError("You do not have access to that page!");
+        return;
+    }
     next();
+<<<<<<< HEAD
 
 
     //check if the path user is going to is our param path
@@ -148,5 +159,7 @@ router.beforeEach((to, from, next) => {
     // 		next();
     // 		}
     // }
+=======
+>>>>>>> dcb3aebce6e45473af5608d2cc389c49bb9194b2
 });
 export default router

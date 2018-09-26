@@ -1,7 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="Flo-Rel-FWid pt-md-3 pt-2" id="inventory">
-
+        <div class="float-left w-100 pt-md-3 pt-2" id="inventory">
             <div class="col-lg-3 col-md-6">
                 <div class="card card-product">
                     <div class="card-header card-header-image">
@@ -27,34 +26,17 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </transition>
 </template>
 <script>
-    import {get} from '../../../helpers/api';
-    import Flash from '../../../helpers/flash';
-    export default{
+    export default {
         data() {
             return {}
         },
-        methods: {
-            LIPS(s){
-                this.$store.state.loader = this.isProcessing = s;
-            },
-            scrollToTop(){
-                $("html, body").animate({scrollTop: 0}, 500);
-            },
-        },
-        created(){
-
-        },
-        beforeCreate(){
+        methods: {},
+        beforeCreate() {
             if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }
     }
 </script>
-<style scoped type="scss">
-
-</style>

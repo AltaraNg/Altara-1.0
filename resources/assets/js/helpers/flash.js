@@ -3,22 +3,21 @@ export default {
         success: null,
         error: null,
     },
-    setSuccess(message){
+    setSuccess(message) {
+        this.removeMsg();
         this.state.success = message;
         setTimeout(() => {
-            this.removeSuccess()
-        }, 1500)
+            this.removeMsg();
+        }, 3000);
     },
-    setError(message){
+    setError(message) {
+        this.removeMsg();
         this.state.error = message;
         setTimeout(() => {
-            this.removeError()
-        }, 3000)
+            this.removeMsg();
+        }, 3000);
     },
-    removeSuccess(){
-        this.state.success = null
+    removeMsg() {
+        this.state.error = this.state.success = null;
     },
-    removeError(){
-        this.state.error = null
-    }
 }

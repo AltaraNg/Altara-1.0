@@ -12,10 +12,10 @@ export default {
         this.send(details);
     },
     send(details) {
-        get("http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient="
-            + 234 + details.phone + "&message=" + this.message + "")
+        /*get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
+            + 234 + details.phone + "&text=" + this.message + "")
             .then(res => {
             }).catch(err => {
-            });
+        });*/
     }
 }

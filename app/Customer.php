@@ -6,19 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-
     protected $guarded = [];
 
     protected $hidden = [];
 
-    public function user(){
-
-        return $this->belongsTo(User::class);
-
-    }
-
-    public static function form(){
-
+    public static function form()
+    {
         return [
             'employee_name' => '',
             'employee_phone_number' => '',
@@ -112,7 +105,35 @@ class Customer extends Model
             'what_product_do_you_need' => '',
             'what_do_you_need_it_for' => '',
         ];
+    }
 
+    //a customer is registers by a user i.e is attended to/or belongs to a user/employee : customer->user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    //a customer can be verified once/has one verification : customer->verification
+    public function verification()
+    {
+        return $this->hasOne(Verification::class);
+    }
+
+    //customer was attended to or registered on a branch : customer->branch
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    //a customer has a set os document(not more than one) : customer->document
+    public function document()
+    {
+        return $this->hasOne(Document::class);
+    }
+
+    public function address()
+    {
+        return $this->hasOne(Address::class);
     }
 
 }

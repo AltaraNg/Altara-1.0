@@ -1,19 +1,18 @@
 <template>
-    <div class="Flo-Rel-FWid">
-        <div class="col-md-4 float-left product py-md-3 py-0 px-md-3 px-3">
-            <div class="card Flo-Rel-FWid my-0">
-                <div class="card-body">
-                    <h4 class="card-title mt-0">Document Verification</h4>
-                    <p class="card-text">For Registering new customers.</p>
-                    <button class="btn bg-default">Register New Customer</button>
+    <transition name="fade">
+        <div>
+            <div class="col-md-4 float-left product py-md-3 py-0 px-md-3 px-3">
+                <div class="card my-0 px-3 py-2">
+                    <div class="card-body">
+                        <h5 class="card-title mt-0">Document Verification</h5>
+                        <p class="card-text">For Verification of registered customers.</p>
+                        <router-link to="verification" class="btn bg-default">Verify Registered Customer</router-link>
+                    </div>
                 </div>
             </div>
         </div>
-
-    </div>
+    </transition>
 </template>
 <script>
-    export default{
-
-    }
+    export default {}
 </script>
