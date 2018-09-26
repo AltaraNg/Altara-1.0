@@ -3,19 +3,17 @@
         <div class="section-tabs" id="login">
             <div class="col-md-5 ml-auto mr-auto" id="loginCard" v-bind:style="{ marginTop: cardMT+'px'}">
                 <div class="card">
-                    <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist"
-                        data-background-color="orange">
+                    <ul class="nav nav-tabs nav-tabs-neutral justify-content-center bg-default" role="tablist">
                         <h6>Staff Login</h6>
                     </ul>
                     <form @submit.prevent="login" class="pt-1 pb-3">
-                        <div class="card-body fullWidth floLeft">
-
+                        <div class="card-body w-100 float-left">
                             <div class="col-sm-12 float-left px-0 px-md-3">
                                 <label class="category">* Staff ID</label>
                                 <div class="input-group">
                                     <input class="form-control" placeholder="Staff ID"
                                            v-model="form.staff_id" v-validate="'required'" name="Staff ID">
-                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                    <span class="input-group-addon"><i class="ml-2 fa fa-user-circle"></i></span>
                                 </div>
                                 <small class="error-control"
                                        v-if="errors.first('Staff ID')">{{ errors.first('Staff ID') }}
@@ -28,16 +26,15 @@
                                     <input placeholder="Password" type="password" class="form-control"
                                            v-model="form.password" v-validate="'required|min:6|max:25'"
                                            name="password">
-                                    <span class="input-group-addon"><i class="fas fa-key"></i></span>
+                                    <span class="input-group-addon"><i class="ml-2 fas fa-key"></i></span>
                                 </div>
                                 <small class="error-control" v-if="errors.first('password')">
                                     {{errors.first('password') }}
                                 </small>
                             </div>
                             <div class="col-sm-12 mb-3 float-left px-0 px-md-3">
-                                <button class="btn btn-block btn-lg btn-primary" type="submit"
-                                        data-background-color="orange">
-                                    Login! &nbsp; <i class="far fa-paper-plane" :disabled="isProcessing"></i>
+                                <button class="btn btn-block bg-default" :disabled="$isProcessing" type="submit">
+                                    Login! &nbsp; <i class="far fa-paper-plane"></i>
                                 </button>
                             </div>
                             <span class="text-center float-left w-100 pb-4">Forgot Password? <router-link
@@ -53,6 +50,7 @@
     import Auth from '../../store/auth';
     import Flash from '../../helpers/flash';
     import {post} from '../../helpers/api';
+
     export default {
         data() {
             return {
@@ -62,39 +60,34 @@
                 },
                 cardMT: '',
                 error: {},
-                isProcessing: false
             }
         },
         methods: {
-            LIPS(s) {
-                this.$store.state.loader = this.isProcessing = s;
-            },
             watchCardMT() {
-                let winHeight = $(window).height();
-                let cardHeight = $('#loginCard').height();
+                let winHeight = $(window).height(),
+                    cardHeight = $('#loginCard').height();
                 this.cardMT = (winHeight - cardHeight) / 2;
             },
             login() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.LIPS(true);
+                        this.$LIPS(true);
                         this.error = {};
                         post('api/login', this.form)
                             .then((res) => {
-                                if (res.data.authenticated === true) {
-                                    Auth.set(res.data.api_token, res.data.user_id, res.data.user_name, res.data.role,
-                                        res.data.portal_access);
+                                if (res.data.authenticated) {
+                                    Auth.set(res.data);
                                     this.$router.push('/home');
                                     Flash.setSuccess('You have successfully logged in.');
-                                } else if (res.data.authenticated === false) Flash.setError(res.data.message);
-                                this.LIPS(false);
+                                } else if (!res.data.authenticated) Flash.setError(res.data.message);
+                                this.$LIPS(false);
                             })
                             .catch((err) => {
                                 if (err.response.status === 422) {
                                     this.error = err.response.data;
                                     if (err.response.data.errors) this.error = err.response.data.errors;
                                 }
-                                this.LIPS(false);
+                                this.$LIPS(false);
                                 Flash.setError('Check your login details and try again!');
                             });
                     }

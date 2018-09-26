@@ -1,33 +1,33 @@
 <template>
     <transition name="fade">
-        <div class="Flo-Rel-FWid pt-md-3 pt-2" id="employeeRegister">
+        <div class="float-left w-100 pt-md-3 pt-2" id="employeeRegister">
             <div class="custom-notify text-center" v-if="password">
                 The Employee has been registered.
                 The employees password is: <strong> {{password}}</strong>
             </div>
             <div class="card">
-                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" data-background-color="orange">
+                <ul class="nav nav-tabs justify-content-center bg-default">
                     <h6>Staff Registration</h6>
                 </ul>
-                <div class="card-body pl-4 pr-4 float-left">
-                    <form class="float-left" @submit.prevent="register">
+                <div class="card-body pl-4 pr-4">
+                    <form @submit.prevent="register">
                         <h5>Employee Personal Details</h5>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Full Name</label>
+                            <label>Full Name</label>
                             <input type="text"
                                    class="form-control"
                                    placeholder="employee full name"
                                    v-model="form.full_name"
                                    v-validate="'required|max:50'"
                                    name="name">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('name')">
                                 {{ errors.first('name') }}
                             </small>
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Phone Number</label>
+                            <label>Phone Number</label>
                             <input type="tel"
                                    class="form-control"
                                    placeholder="081xxxxxxxx"
@@ -35,11 +35,11 @@
                                    name="phone_number"
                                    v-validate="'required|numeric|max:11|min:11'"
                                    data-vv-as="phone number">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('phone_number')">
                                 {{errors.first('phone_number') }}
                             </small>
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="error.phone_number">
                                 {{error.phone_number[0]}}
                             </small>
@@ -48,7 +48,7 @@
                         <div class="spaceBetween  mb-md-2 mb-0"></div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Marital Status</label>
+                            <label>Marital Status</label>
                             <select name="status"
                                     class="custom-select w-100"
                                     v-model="form.status"
@@ -58,13 +58,13 @@
                                     {{status | capitalize}}
                                 </option>
                             </select>
-                            <small class="form-text text-muted" v-if="errors.first('status')">
+                            <small class="text-muted" v-if="errors.first('status')">
                                 {{errors.first('status') }}
                             </small>
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Nationality</label>
+                            <label>Nationality</label>
                             <select name="nationality"
                                     class="custom-select w-100"
                                     v-model="form.nationality"
@@ -74,7 +74,7 @@
                                     {{country | capitalize}}
                                 </option>
                             </select>
-                            <small class="form-text text-muted" v-if="errors.first('nationality')">
+                            <small class="text-muted" v-if="errors.first('nationality')">
                                 {{errors.first('nationality') }}
                             </small>
                         </div>
@@ -82,32 +82,32 @@
                         <div class="spaceBetween  mb-md-2 mb-0"></div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Date of Birth</label>
+                            <label>Date of Birth</label>
                             <input type="date"
                                    class="form-control"
                                    v-model="form.date_of_birth"
                                    name="date_of_birth"
                                    v-validate="'required'"
                                    data-vv-as="date of birth">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('date_of_birth')">
                                 {{errors.first('date_of_birth')}}
                             </small>
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Email</label>
+                            <label>Email</label>
                             <input type="email"
                                    class="form-control"
                                    placeholder="name@example.com"
                                    v-model="form.email"
                                    name="email"
                                    v-validate="'required|email'">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('email')">
                                 {{errors.first('email')}}
                             </small>
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="error.email">
                                 {{error.email[0]}}
                             </small>
@@ -116,25 +116,25 @@
                         <div class="spaceBetween  mb-md-2 mb-0"></div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Employee ID Number</label>
+                            <label>Employee ID Number</label>
                             <input type="text" class="form-control"
                                    placeholder="AC/C/013/18"
                                    v-model="form.staff_id"
                                    name="staff_id"
                                    v-validate="'required'"
                                    data-vv-as="employee id">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('staff_id')">
                                 {{errors.first('staff_id') }}
                             </small>
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="error.staff_id">
                                 {{error.staff_id[0]}}
                             </small>
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Role in the company</label>
+                            <label>Role in the company</label>
                             <select name="role"
                                     class="custom-select w-100"
                                     v-model="form.role_id"
@@ -145,16 +145,16 @@
                                     {{role.name | capitalize}}
                                 </option>
                             </select>
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('role')">
                                 {{errors.first('role') }}
                             </small>
                         </div>
 
-                        <div class="spaceBetween  mb-md-2 mb-0"></div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Highest Qualification</label>
+                            <label>Highest Qualification</label>
                             <select name="qualification"
                                     class="custom-select w-100"
                                     v-model="form.highest_qualification"
@@ -165,14 +165,14 @@
                                     {{qualification | capitalize}}
                                 </option>
                             </select>
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.has('qualification')">
                                 {{errors.first('qualification') }}
                             </small>
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Operations Branch</label>
+                            <label>Operations Branch</label>
                             <select name="branch"
                                     class="custom-select w-100"
                                     v-model="form.branch_id"
@@ -183,22 +183,22 @@
                                     {{branch.name | capitalize}}
                                 </option>
                             </select>
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.has('branch')">
                                 {{errors.first('branch') }}
                             </small>
                         </div>
 
-                        <div class="spaceBetween  mb-md-2 mb-0"></div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Date of Appointment</label>
+                            <label>Date of Appointment</label>
                             <input type="date" class="form-control"
                                    v-model="form.date_of_appointment"
                                    name="date_of_appointment"
                                    v-validate="'required'"
                                    data-vv-as="date of appointment">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('date_of_appointment')">
                                 {{errors.first('date_of_appointment')}}
                             </small>
@@ -218,13 +218,13 @@
                                     {{sex}}
                                 </label>
                             </div>
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('gender')">
                                 {{errors.first('gender')}}
                             </small>
                         </div>
 
-                        <div class="spaceBetween  mb-md-2 mb-0"></div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
 
                         <div class="form-group col-12 float-left px-0 px-md-3">
                             <label>Describe Location</label>
@@ -234,7 +234,7 @@
                                       v-model="form.address"
                                       name="address"
                                       v-validate="'required|max:255'"></textarea>
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('address')">
                                 {{errors.first('address')}}
                             </small>
@@ -245,7 +245,7 @@
                         <h5>Referee Details</h5>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Referee 1 Full Name</label>
+                            <label>Referee 1 Full Name</label>
                             <input type="text"
                                    class="form-control"
                                    placeholder="enter full name here"
@@ -253,14 +253,14 @@
                                    name="referee_1"
                                    v-validate="'required|max:50'"
                                    data-vv-as="referee 1 full name">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('referee_1')">
                                 {{errors.first('referee_1') }}
                             </small>
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Referee 1 Phone Number</label>
+                            <label>Referee 1 Phone Number</label>
                             <input type="tel"
                                    class="form-control"
                                    placeholder="081xxxxxxxx"
@@ -268,7 +268,7 @@
                                    name="referee_1_phone_no"
                                    v-validate="'required|numeric|max:11|min:11'"
                                    data-vv-as="referee 1 phone number">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('referee_1_phone_no')">
                                 {{errors.first('referee_1_phone_no')}}
                             </small>
@@ -277,7 +277,7 @@
                         <div class="spaceBetween mb-md-2 mb-0"></div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Referee 2 Full Name</label>
+                            <label>Referee 2 Full Name</label>
                             <input type="text"
                                    class="form-control"
                                    placeholder="enter full name here"
@@ -285,14 +285,14 @@
                                    name="referee_2"
                                    v-validate="'required|max:50'"
                                    data-vv-as="referee 2 full name">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('referee_2')">
                                 {{errors.first('referee_2') }}
                             </small>
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Referee 2 Phone Number</label>
+                            <label>Referee 2 Phone Number</label>
                             <input type="tel"
                                    class="form-control"
                                    placeholder="081xxxxxxxx"
@@ -300,7 +300,7 @@
                                    name="referee_2_phone_no"
                                    v-validate="'required|numeric|max:11|min:11'"
                                    data-vv-as="referee 2 phone number">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('referee_2_phone_no')">
                                 {{errors.first('referee_2_phone_no') }}
                             </small>
@@ -311,7 +311,7 @@
                         <h5>Next of Kin Details</h5>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Next of Kin Full Name</label>
+                            <label>Next of Kin Full Name</label>
                             <input type="text"
                                    class="form-control"
                                    placeholder="enter full name here"
@@ -319,14 +319,14 @@
                                    name="next_of_kin_name"
                                    v-validate="'required|max:50'"
                                    data-vv-as="next of kin name">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('next_of_kin_name')">
                                 {{errors.first('next_of_kin_name') }}
                             </small>
                         </div>
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="category">* Next of Kin Phone Number</label>
+                            <label>Next of Kin Phone Number</label>
                             <input type="tel"
                                    class="form-control"
                                    placeholder="081xxxxxxxx"
@@ -334,7 +334,7 @@
                                    name="next_of_kin_phone_no"
                                    v-validate="'required|numeric|max:11|min:11'"
                                    data-vv-as="next of kin phone number">
-                            <small class="form-text text-muted"
+                            <small class="text-muted"
                                    v-if="errors.first('next_of_kin_phone_no')">
                                 {{errors.first('next_of_kin_phone_no')}}
                             </small>
@@ -346,9 +346,8 @@
 
                         <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3 float-right">
                             <button type="submit"
-                                    class="btn btn-block btn-lg btn-primary"
-                                    :disabled="isProcessing"
-                                    data-background-color="orange">
+                                    class="btn btn-block btn-lg bg-default"
+                                    :disabled="$isProcessing">
                                 Register Employee
                                 <i class="far fa-paper-plane ml-1"></i>
                             </button>
@@ -364,7 +363,8 @@
     import {log} from '../../../helpers/log';
     import Flash from '../../../helpers/flash';
     import {get, post} from '../../../helpers/api';
-    export default{
+
+    export default {
         data() {
             return {
                 form: {},
@@ -372,7 +372,6 @@
                 roles: {},
                 branches: {},
                 password: '',
-                isProcessing: false,
                 gender: ['male', 'female'],
                 countries: ['nigeria'],
                 statuses: ['married', 'single', 'divorced', 'complicated'],
@@ -381,22 +380,16 @@
             }
         },
         methods: {
-            LIPS(s){
-                this.$store.state.loader = this.isProcessing = s;
-            },
-            scrollToTop(){
-                $("html, body").animate({scrollTop: 0}, 500);
-            },
             register() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.LIPS(true);
+                        this.$LIPS(true);
                         this.error = {};
                         post('api/register', this.form)
                             .then((res) => {
                                 if (res.data.registered) {
-                                    this.scrollToTop();
-                                    log('createdUser', String(this.form.staff_id));
+                                    this.$scrollToTop();
+                                    log('createdNewEmployee', String(this.form.staff_id));
                                     this.textDetails.loginID = String(this.form.staff_id);
                                     this.textDetails.phone = String(parseInt(this.form.phone_number));
                                     this.textDetails.loginPassword = this.password = res.data.password;
@@ -404,25 +397,25 @@
                                     Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
                                     SMS.welcome(this.textDetails);
                                 }
-                                this.LIPS(false);
+                                this.$LIPS(false);
                             })
                             .catch((err) => {
                                 if (err.response.status === 422) {
-                                    this.scrollToTop();
+                                    this.$scrollToTop();
                                     this.error = err.response.data;
                                     if (err.response.data.errors) this.error = err.response.data.errors;
                                 }
-                                this.LIPS(false);
+                                this.$LIPS(false);
                             })
                     }
                     if (!result) {
                         Flash.setError('Please check all the fields and make sure they are field correctly!');
-                        this.scrollToTop();
+                        this.$scrollToTop();
                     }
                 });
             }
         },
-        created(){
+        created() {
             get('/api/create')
                 .then((res) => {
                     this.form = res.data.form;
@@ -430,14 +423,8 @@
                     this.branches = res.data.branches;
                 });
         },
-        beforeCreate(){
+        beforeCreate() {
             if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }
     }
 </script>
-<style scoped type="scss">
-    label {
-        margin-top    : 7px !important;
-        margin-bottom : 0 !important;
-    }
-</style>

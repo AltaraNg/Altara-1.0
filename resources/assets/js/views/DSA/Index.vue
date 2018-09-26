@@ -1,21 +1,18 @@
 <template>
-    <div class="Flo-Rel-FWid px-md-4 px-2">
+    <div class="px-md-4 px-2">
         <h4 class="mx-md-3 mx-0 py-0 my-0 text-center" id="index">
             <router-link
                     v-if="$routerHistory.hasPrevious()"
                     :to="{ path: $routerHistory.previous().path }"
-                    class="text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3"
-                    id="back">
+                    class="text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3" id="back">
                 <span class="mr-5 float-left">
                     <i class="far fa-arrow-alt-circle-left float-left"></i>
-                    <span class="back float-left ml-2 d-none d-sm-block">Back</span>
+                    <small class="back float-left ml-2 d-none d-sm-block">Back</small>
                 </span>
             </router-link>
-            <strong class="mx-auto d-none d-sm-block w-100 float-left" data-title="title">
-                <span>Direct Sales Agents</span> Portal
-            </strong>
-            <strong class="mx-auto d-block d-sm-none w-100 float-left" data-title="title">
-                <span>DSA</span> Portal
+            <strong class="mx-auto w-100 float-left" data-title="title">
+                <span class="d-none d-sm-block">Direct Sales Agents Portal</span>
+                <span class="d-block d-sm-none"> DSA Portal</span>
             </strong>
             <router-link
                     v-if="$routerHistory.hasForward()"
@@ -24,7 +21,7 @@
                     id="forward">
                 <span class="ml-5 float-right">
                     <i class="far fa-arrow-alt-circle-right float-right"></i>
-                    <span class="forward float-right mr-2 d-none d-sm-block">Forward</span>
+                    <small class="forward float-right mr-2 d-none d-sm-block">Forward</small>
                 </span>
             </router-link>
         </h4>

@@ -8,10 +8,10 @@ export const store = new Vuex.Store({
         loader: false,
         ProfileAccess: [],
         ProfileEditAccess: [],
-        DSAAccess: [1, 2, 3, 8, 9, 15, 17],
-        DVAAccess: [1, 2, 3, 8, 9, 13, 16, 20, 21],
-        HRMAccess: [1, 2, 3, 6, 7, 8, 9],
-        FSRAccess: [1, 2, 3, 8, 9, 11, 14, 18],
+        DSAAccess: [1, 2, 8, 9, 15, 17],
+        DVAAccess: [1, 2, 8, 9, 13, 16, 20, 21],
+        HRMAccess: [1, 2, 6, 7, 8, 9],
+        FSLAccess: [1, 2, 8, 9, 11, 14, 18],
         authRole: parseInt(localStorage.getItem('role')),
         api_token: localStorage.getItem('api_token'),
     },
@@ -34,8 +34,8 @@ export const store = new Vuex.Store({
             }
             return false;
         },
-        verifyFSRAccess: state => {
-            if ((state.FSRAccess.includes(state.authRole)) && (state.api_token)) {
+        verifyFSLAccess: state => {
+            if ((state.FSLAccess.includes(state.authRole)) && (state.api_token)) {
                 return true;
             }
             return false;

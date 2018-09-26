@@ -3096,14 +3096,6 @@ textarea.form-control:active {
     color: #f96332;
 }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-    font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-}
-
 h1,
 h2,
 h3,
@@ -3288,8 +3280,6 @@ p.description {
 
 body {
     color: #2c2c2c;
-    font-size: 14px;
-    font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
 }

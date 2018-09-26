@@ -33,10 +33,12 @@
                 <div class="container">
                     <div class="button-container">
                         <a href="" class="btn btn-primary btn-round btn-lg">Follow</a>
-                        <a href="#" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Follow me on Twitter">
+                        <a href="#" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip"
+                           title="Follow me on Twitter">
                             <i class="fa fa-twitter"></i>
                         </a>
-                        <a href="#" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Follow me on Instagram">
+                        <a href="#" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip"
+                           title="Follow me on Instagram">
                             <i class="fa fa-instagram"></i>
                         </a>
                     </div>
@@ -152,25 +154,23 @@
 
 </template>
 <script>
-import Auth from "../../store/auth";
-import Flash from "../../helpers/flash";
-import { post, get } from "../../helpers/api";
-export default {
-  data() {
-    return {
-      date: new Date().getFullYear(),
-      qry: "",
-      results: []
+    import {post} from "../../helpers/api";
+    export default {
+        data() {
+            return {
+                date: new Date().getFullYear(),
+                qry: "",
+                results: []
+            };
+        },
+        methods: {
+            autoCompleteNow() {
+                this.results = [];
+                post("api/search", {qry: this.qry}).then((res) => {
+                    console.log(res.data);
+                    this.results = res.data.result;
+                });
+            }
+        }
     };
-  },
-  methods: {
-    autoCompleteNow() {
-      this.results = [];
-      post("api/search", { qry: this.qry }).then((res) => {
-        console.log(res.data);
-        this.results = res.data.result;
-      });
-    }
-  }
-};
 </script>

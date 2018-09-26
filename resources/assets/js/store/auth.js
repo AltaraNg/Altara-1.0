@@ -13,20 +13,16 @@ export default {
         this.state.api_token = localStorage.getItem('api_token');
         this.state.role = parseInt(localStorage.getItem('role'));
     },
-    set(api_token, user_id, user_name, role, portal_access) {
-        localStorage.setItem('portal_access', portal_access);
-        localStorage.setItem('user_name', user_name);
-        localStorage.setItem('api_token', api_token);
-        localStorage.setItem('user_id', user_id);
-        localStorage.setItem('role', role);
+    set(data) {
+        localStorage.setItem('portal_access', data.portal_access);
+        localStorage.setItem('user_name', data.user_name);
+        localStorage.setItem('api_token', data.api_token);
+        localStorage.setItem('user_id', data.user_id);
+        localStorage.setItem('role', data.role);
         this.initialize()
     },
     remove() {
-        localStorage.removeItem('portal_access');
-        localStorage.removeItem('api_token');
-        localStorage.removeItem('user_name');
-        localStorage.removeItem('user_id');
-        localStorage.removeItem('role');
+        localStorage.clear();
         this.initialize()
     }
 }
