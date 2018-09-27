@@ -15,9 +15,9 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->unsignedInteger('user_id');
             $table->string('staff_name');
-            $table->integer('customer_id');
+            $table->unsignedInteger('customer_id');
             $table->string('customer_meetup');
             $table->string('what_he_sells');
             $table->string('confirm_address');
@@ -28,6 +28,8 @@ class CreateAddressesTable extends Migration
             $table->string('business_or_work_duration');
             $table->integer('approval_status')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('user');
+            $table->foreign('customer_id')->references('id')->on('customer');
         });
     }
 
