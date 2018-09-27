@@ -108,6 +108,16 @@
                     this.$router.push("/not-found");
                 }
             });
+            window.addEventListener('load', () => {
+                navigator.onLine ? this.showStatus(true) : this.showStatus(false);//uncomment this when u push to production
+                //this.$network() ? this.showStatus(true) : this.showStatus(false);//dis current line should be removed after testing
+                window.addEventListener('online', () => {
+                    this.showStatus(true);
+                });
+                window.addEventListener('offline', () => {
+                    this.showStatus(false);
+                });
+            });
         },
         computed: {
             auth() {
@@ -120,17 +130,25 @@
         watch: {},
         methods: {
             logout() {
-                this.$LIPS(true);
-                post("/api/logout").then(res => {
-                    if (res.data.logged_out) {
-                        this.$LIPS(false);
-                        Auth.remove();
-                        Flash.setSuccess("You have successfully logged out!");
-                        this.$router.push("/login");
-                    }
-                });
-            }
+                if (this.$network()) {
+                    this.$LIPS(true);
+                    post("/api/logout").then(res => {
+                        if (res.data.logged_out) {
+                            this.$LIPS(false);
+                            Auth.remove();
+                            Flash.setSuccess("You have successfully logged out!");
+                            this.$router.push("/login");
+                        }
+                    });
+                } else {
+                    this.$networkErr();
+                }
+            },
+            showStatus(online) {
+                online ? Flash.setSuccess('you are connected to the internet!') : this.$networkErr();
+            },
         },
-        mounted() {}
+        mounted() {
+        }
     };
 </script>

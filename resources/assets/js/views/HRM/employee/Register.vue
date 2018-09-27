@@ -102,7 +102,7 @@
                                    placeholder="name@example.com"
                                    v-model="form.email"
                                    name="email"
-                                   v-validate="'required|email'">
+                                   v-validate="'required|email|min:1'">
                             <small class="text-muted"
                                    v-if="errors.first('email')">
                                 {{errors.first('email')}}
@@ -383,30 +383,34 @@
             register() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$LIPS(true);
-                        this.error = {};
-                        post('api/register', this.form)
-                            .then((res) => {
-                                if (res.data.registered) {
-                                    this.$scrollToTop();
-                                    log('createdNewEmployee', String(this.form.staff_id));
-                                    this.textDetails.loginID = String(this.form.staff_id);
-                                    this.textDetails.phone = String(parseInt(this.form.phone_number));
-                                    this.textDetails.loginPassword = this.password = res.data.password;
-                                    this.form = res.data.form;
-                                    Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
-                                    SMS.welcome(this.textDetails);
-                                }
-                                this.$LIPS(false);
-                            })
-                            .catch((err) => {
-                                if (err.response.status === 422) {
-                                    this.$scrollToTop();
-                                    this.error = err.response.data;
-                                    if (err.response.data.errors) this.error = err.response.data.errors;
-                                }
-                                this.$LIPS(false);
-                            })
+                        if(this.$network()){
+                            this.$LIPS(true);
+                            this.error = {};
+                            post('api/register', this.form)
+                                .then((res) => {
+                                    if (res.data.registered) {
+                                        this.$scrollToTop();
+                                        log('createdNewEmployee', String(this.form.staff_id));
+                                        this.textDetails.loginID = String(this.form.staff_id);
+                                        this.textDetails.phone = String(parseInt(this.form.phone_number));
+                                        this.textDetails.loginPassword = this.password = res.data.password;
+                                        this.form = res.data.form;
+                                        Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
+                                        SMS.welcome(this.textDetails);
+                                    }
+                                    this.$LIPS(false);
+                                })
+                                .catch((err) => {
+                                    if (err.response.status === 422) {
+                                        this.$scrollToTop();
+                                        this.error = err.response.data;
+                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                    }
+                                    this.$LIPS(false);
+                                })
+                        }else{
+                            this.$networkErr();
+                        }
                     }
                     if (!result) {
                         Flash.setError('Please check all the fields and make sure they are field correctly!');

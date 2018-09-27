@@ -30,18 +30,24 @@ class VerificationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $verification = Verification::where([['id', $request->id], ['customer_id', $request->customer_id],])->first();
+        unset($verification['updated_at']);
+        $verification->update($request->all());
+        return response()->json([
+            'success' => true,
+            'verification' => $verification,
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Verification  $verification
+     * @param  \App\Verification $verification
      * @return \Illuminate\Http\Response
      */
     public function show(Verification $verification)
@@ -52,7 +58,7 @@ class VerificationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Verification  $verification
+     * @param  \App\Verification $verification
      * @return \Illuminate\Http\Response
      */
     public function edit(Verification $verification)
@@ -63,8 +69,8 @@ class VerificationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Verification  $verification
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Verification $verification
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Verification $verification)
@@ -75,7 +81,7 @@ class VerificationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Verification  $verification
+     * @param  \App\Verification $verification
      * @return \Illuminate\Http\Response
      */
     public function destroy(Verification $verification)

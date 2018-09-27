@@ -572,22 +572,30 @@
             },
             autoCompleteNow() {
                 if (!($('#search').val().length <= 0)) {
-                    post("api/search", {qry: this.qry}).then((res) => {
-                        this.results = res.data.result;
-                        this.toolTip();
-                    });
+                    if(this.$network()){
+                        post("api/search", {qry: this.qry}).then((res) => {
+                            this.results = res.data.result;
+                            this.toolTip();
+                        });
+                    }else{
+                        this.$networkErr();
+                    }
                 } else this.results = [];
             },
             editEmployee(id) {
-                this.updatingEmployee = true;
-                this.$LIPS(true);
-                get("api/employee/" + id + "/edit").then((res) => {
-                    this.form = res.data.user;
-                    this.roles = res.data.roles;
-                    this.branches = res.data.branches;
-                    $('#updateEmployee').modal('toggle');
-                    this.$LIPS(false);
-                });
+                if(this.$network()){
+                    this.updatingEmployee = true;
+                    this.$LIPS(true);
+                    get("api/employee/" + id + "/edit").then((res) => {
+                        this.form = res.data.user;
+                        this.roles = res.data.roles;
+                        this.branches = res.data.branches;
+                        $('#updateEmployee').modal('toggle');
+                        this.$LIPS(false);
+                    });
+                }else{
+                    this.$networkErr();
+                }
             },
             editPortalAccess(employee) {
                 this.updatingEmployee = false;
@@ -599,19 +607,23 @@
                 $('#editPassword').modal('toggle');
             },
             resetPassword() {
-                this.$LIPS(true);
-                get('api/reset-password/' + this.form.id).then((res) => {
-                    this.qry = '';
-                    this.error = {};
-                    this.results = [];
-                    this.$scrollToTop();
-                    $('#editPassword').modal('toggle');
-                    log('resetUserPassword', this.form.staff_id);
-                    Flash.setSuccess('The employee password was successfully reset!');
-                    let details = {phone: String(parseInt(this.form.phone_number)), password: res.data.password};
-                    SMS.passwordReset(details);
-                    this.$LIPS(false);
-                })
+                if(this.$network()){
+                    this.$LIPS(true);
+                    get('api/reset-password/' + this.form.id).then((res) => {
+                        this.qry = '';
+                        this.error = {};
+                        this.results = [];
+                        this.$scrollToTop();
+                        $('#editPassword').modal('toggle');
+                        log('resetUserPassword', this.form.staff_id);
+                        Flash.setSuccess('The employee password was successfully reset!');
+                        let details = {phone: String(parseInt(this.form.phone_number)), password: res.data.password};
+                        SMS.passwordReset(details);
+                        this.$LIPS(false);
+                    })
+                }else{
+                    this.$networkErr();
+                }
             },
             updateEmployee(id, task) {
                 //if its for portal access turn updating
@@ -620,33 +632,37 @@
                 if (task === 'updatedUserAccess') this.updatingEmployee = false;
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$LIPS(true);
-                        this.error = {};
-                        this.results = [];
-                        this.qry = '';
-                        post("api/employee/" + id + "/update", this.form)
-                            .then((res) => {
-                                if (res.data.updated) {
-                                    this.$scrollToTop();
-                                    Flash.setSuccess('You have successfully updated the employees details!');
-                                    if (task === 'updatedUserAccess') $('#editPortalAccess').modal('toggle');
-                                    if (task === 'updatedUserDetails') $('#updateEmployee').modal('toggle');
-                                    log(String(task), String(this.form.staff_id));
-                                }
-                                this.$LIPS(false);
-                                //if its for portal access turn updating to true
-                                // so validator can see the forms inside that
-                                // form(also for the form to be visible)
-                                if (task === 'updatedUserAccess') this.updatingEmployee = true;
-                            })
-                            .catch((err) => {
-                                if (err.response.status === 422) {
-                                    this.$scrollToTop();
-                                    this.error = err.response.data;
-                                    if (err.response.data.errors) this.error = err.response.data.errors;
-                                }
-                                this.$LIPS(false);
-                            })
+                        if(this.$network()){
+                            this.$LIPS(true);
+                            this.error = {};
+                            this.results = [];
+                            this.qry = '';
+                            post("api/employee/" + id + "/update", this.form)
+                                .then((res) => {
+                                    if (res.data.updated) {
+                                        this.$scrollToTop();
+                                        Flash.setSuccess('You have successfully updated the employees details!');
+                                        if (task === 'updatedUserPortalAccess') $('#editPortalAccess').modal('toggle');
+                                        if (task === 'updatedUserDetails') $('#updateEmployee').modal('toggle');
+                                        log(String(task), String(this.form.staff_id));
+                                    }
+                                    this.$LIPS(false);
+                                    //if its for portal access turn updating to true
+                                    // so validator can see the forms inside that
+                                    // form(also for the form to be visible)
+                                    if (task === 'updatedUserAccess') this.updatingEmployee = true;
+                                })
+                                .catch((err) => {
+                                    if (err.response.status === 422) {
+                                        this.$scrollToTop();
+                                        this.error = err.response.data;
+                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                    }
+                                    this.$LIPS(false);
+                                })
+                        }else{
+                            this.$networkErr();
+                        }
                     }
                     if (!result) {
                         Flash.setError('Please check all the fields and make sure they are field correctly!');

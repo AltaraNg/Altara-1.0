@@ -17,11 +17,11 @@ class CreateVerificationsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('customer_id')->unsigned();
-            $table->integer('passport')->unsigned();
-            $table->integer('id_card')->unsigned();
-            $table->integer('address_status')->unsigned();
-            $table->integer('work_guarantor_status')->unsigned();
-            $table->integer('personal_guarantor_status')->unsigned();
+            $table->integer('passport')->unsigned()->default(0);
+            $table->integer('id_card')->unsigned()->default(0);
+            $table->integer('address_status')->unsigned()->default(0);
+            $table->integer('work_guarantor_status')->unsigned()->default(0);
+            $table->integer('personal_guarantor_status')->unsigned()->default(0);
             $table->timestamps();
         });
     }

@@ -166,10 +166,10 @@
         methods: {
             autoCompleteNow() {
                 this.results = [];
-                post("api/search", {qry: this.qry}).then((res) => {
+               /* post("api/search", {qry: this.qry}).then((res) => {
                     console.log(res.data);
                     this.results = res.data.result;
-                });
+                });*/
             }
         }
     };

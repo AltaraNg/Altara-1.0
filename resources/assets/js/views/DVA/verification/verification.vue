@@ -82,6 +82,8 @@
                     </div>
                     <div>
                         <div class="float-left col-lg-3 col-sm-6">
+                            <!--<div class="card card-stats" :class="{'success': customer.verification['passport'],
+                            'no-success': !customer.verification['passport']}">-->
                             <div class="card card-stats" :class="DivClass('passport')">
                                 <div class="card-body ">
                                     <div class="statistics statistics-horizontal">
@@ -238,11 +240,11 @@
             </transition>
 
             <!--update passportModal start-->
-            <div class="modal fade" tabindex="-1" id="passportModal" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="passportModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">Passport Modal</h6>
+                            <h6 class="modal-title py-1">Passport Verification Status</h6>
                             <a href="javascript:" class="close py-1" data-dismiss="modal"
                                aria-label="Close">
                                 <span aria-hidden="true" class="modal-close text-danger">
@@ -253,13 +255,13 @@
                         <form @submit.prevent="updateVerification" v-if="customer">
                             <div class="modal-body">
                                 <div class="form-group col-12 float-left mt-0 mb-2">
-                                    <span style="font-size: 14px" class="mb-2 w-100 float-left pl-1 text-center">
+                                    <span class="mb-2 w-100 float-left pl-1 text-center">
                                         Please Verify you selected the right option! before you click <br>
                                         <strong>Save Changes </strong>!
                                     </span>
 
                                     <div class="radio p-0 col-6 float-left text-center">
-                                        <input v-model="customer.verification.passport"
+                                        <input v-model="verification.passport"
                                                name="passport"
                                                type="radio"
                                                id="passport_yes"
@@ -270,8 +272,8 @@
                                     </div>
 
                                     <div class="radio p-0 col-6 float-left text-center">
-                                        <input v-model="customer.verification.passport"
-                                               name="access"
+                                        <input v-model="verification.passport"
+                                               name="passport"
                                                type="radio"
                                                id="passport_no"
                                                value="0">
@@ -300,11 +302,11 @@
             <!--update passportModal end-->
 
             <!--update IDCardModal start-->
-            <div class="modal fade" tabindex="-1" id="IDCardModal" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="IDCardModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">ID Card Modal</h6>
+                            <h6 class="modal-title py-1">ID Card Verification Status</h6>
                             <a href="javascript:" class="close py-1" data-dismiss="modal"
                                aria-label="Close">
                                 <span aria-hidden="true" class="modal-close text-danger">
@@ -315,14 +317,13 @@
                         <form @submit.prevent="updateVerification" v-if="customer">
                             <div class="modal-body">
                                 <div class="form-group col-12 float-left mt-0 mb-2">
-                                    <span style="font-size: 14px" class="mb-2 w-100 float-left pl-1 text-center">
+                                    <span class="mb-2 w-100 float-left pl-1 text-center">
                                         Please Verify you selected the right option! before you click <br>
                                         <strong>Save Changes </strong>!
                                     </span>
 
                                     <div class="radio p-0 col-6 float-left text-center">
-                                        <input v-model="customer.verification.id_card"
-                                               name="id_card"
+                                        <input v-model="verification.id_card"
                                                type="radio"
                                                id="id_card_yes"
                                                value="1">
@@ -332,8 +333,7 @@
                                     </div>
 
                                     <div class="radio p-0 col-6 float-left text-center">
-                                        <input v-model="customer.verification.id_card"
-                                               name="id_card"
+                                        <input v-model="verification.id_card"
                                                type="radio"
                                                id="id_card_no"
                                                value="0">
@@ -362,8 +362,7 @@
             <!--update IDCardModal end-->
 
             <!--update addressModal start-->
-            <div class="modal fade bd-example-modal-lg" tabindex="-1" id="addressModal" role="dialog"
-                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addressModal">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header py-2">
@@ -380,13 +379,13 @@
                                     <div class="form-group clearfix">
                                         <label>1. Did you meet the customer?</label>
                                         <span class="radio mx-5">
-                                        <input v-model="addressQuestionnaire.customer_meetup" name="customer meetup"
+                                        <input v-model="addressQuestionnaire.customer_meetup"
                                                type="radio"
                                                id="yes" value="yes" v-validate="'required'">
                                         <label for="yes">Yes</label>
                                     </span>
                                         <span class="radio ml-5">
-                                        <input v-model="addressQuestionnaire.customer_meetup" name="customer meetup"
+                                        <input v-model="addressQuestionnaire.customer_meetup"
                                                type="radio"
                                                id="no" value="no" v-validate="'required'">
                                         <label for="yes">No</label>
@@ -597,12 +596,11 @@
             <!--update addressModal end-->
 
             <!--update WGuarantorModal start-->
-            <div class="modal fade bd-example-modal-lg" tabindex="-1" id="WGuarantorModal" role="dialog"
-                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+            <div class="modal fade" id="WGuarantorModal">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">Work Guarantor Modal</h6>
+                            <h6 class="modal-title py-1">Work Guarantor Verification Status</h6>
                             <a href="javascript:" class="close py-1" data-dismiss="modal"
                                aria-label="Close">
                                 <span aria-hidden="true" class="modal-close text-danger">
@@ -610,32 +608,59 @@
                                 </span>
                             </a>
                         </div>
-                        <div class="modal-body">
-                            <form class="float-left">
-                                <h5>Upload Customer Passport</h5>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="mx-3 btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit"
-                                    class="mx-3 btn btn-primary bg-default"
-                                    :disabled="$isProcessing">
-                                Update Employee
-                                <i class="far fa-paper-plane ml-1"></i>
-                            </button>
-                        </div>
+                        <form @submit.prevent="updateVerification" v-if="customer">
+                            <div class="modal-body">
+                                <div class="form-group col-12 float-left mt-0 mb-2">
+                                    <span class="mb-2 w-100 float-left pl-1 text-center">
+                                        Please Verify you selected the right option! before you click <br>
+                                        <strong>Save Changes </strong>!
+                                    </span>
+
+                                    <div class="radio p-0 col-6 float-left text-center">
+                                        <input v-model="verification.work_guarantor_status"
+                                               type="radio"
+                                               id="wgua_yes"
+                                               value="1">
+                                        <label for="wgua_yes">
+                                            Verify
+                                        </label>
+                                    </div>
+
+                                    <div class="radio p-0 col-6 float-left text-center">
+                                        <input v-model="verification.work_guarantor_status"
+                                               type="radio"
+                                               id="wgua_no"
+                                               value="0">
+                                        <label for="wgua_no">
+                                            Not Verified
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
+                                    cancel
+                                </button>
+                                <button type="submit"
+                                        class="m-2 btn bg-default"
+                                        :disabled="$isProcessing">
+                                    Save changes
+                                    <i class="far fa-paper-plane ml-1"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
             <!--update WGuarantorModal end-->
 
             <!--update PGuarantorModal start-->
-            <div class="modal fade bd-example-modal-lg" tabindex="-1" id="PGuarantorModal" role="dialog"
-                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+            <div class="modal fade" id="PGuarantorModal">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">Personal Guarantor Modal</h6>
+                            <h6 class="modal-title py-1">Personal Guarantor Verification Status</h6>
                             <a href="javascript:" class="close py-1" data-dismiss="modal"
                                aria-label="Close">
                                 <span aria-hidden="true" class="modal-close text-danger">
@@ -643,20 +668,48 @@
                                 </span>
                             </a>
                         </div>
-                        <div class="modal-body">
-                            <form class="float-left">
-                                <h5>Upload Customer Passport</h5>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="mx-3 btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit"
-                                    class="mx-3 btn btn-primary bg-default"
-                                    :disabled="$isProcessing">
-                                Update Employee
-                                <i class="far fa-paper-plane ml-1"></i>
-                            </button>
-                        </div>
+                        <form @submit.prevent="updateVerification" v-if="customer">
+                            <div class="modal-body">
+                                <div class="form-group col-12 float-left mt-0 mb-2">
+                                    <span class="mb-2 w-100 float-left pl-1 text-center">
+                                        Please Verify you selected the right option! before you click <br>
+                                        <strong>Save Changes </strong>!
+                                    </span>
+
+                                    <div class="radio p-0 col-6 float-left text-center">
+                                        <input v-model="verification.personal_guarantor_status"
+                                               type="radio"
+                                               id="pgua_yes"
+                                               value="1">
+                                        <label for="pgua_yes">
+                                            Verify
+                                        </label>
+                                    </div>
+
+                                    <div class="radio p-0 col-6 float-left text-center">
+                                        <input v-model="verification.personal_guarantor_status"
+                                               type="radio"
+                                               id="pgua_no"
+                                               value="0">
+                                        <label for="pgua_no">
+                                            Not Verified
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
+                                    cancel
+                                </button>
+                                <button type="submit"
+                                        class="m-2 btn bg-default"
+                                        :disabled="$isProcessing">
+                                    Save changes
+                                    <i class="far fa-paper-plane ml-1"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -677,14 +730,16 @@
                 showButtons: true,
                 info_from_neighbors: '',
                 addressQuestionnaire: {},
+                verification: {},
             }
         },
         methods: {
-            key(key) {
-                return (!!this.customer.verification[key]);
-            },
             modal(name) {
                 $('#' + name).modal('toggle');
+            },
+            key(key) {
+                if (this.customer.verification[key] == 1) return true;
+                if (this.customer.verification[key] == 0) return false;
             },
             IconClass(key) {
                 return {
@@ -696,8 +751,12 @@
                     'success': this.key(key), 'no-success': !this.key(key)
                 }
             },
+            returnToInitialValues(){
+                this.verification = JSON.parse(JSON.stringify(this.customer.verification));
+            },
             buttonStatus(data) {
                 this.customer = data.customer;
+                this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                 if (!!data.customer.address) {
                     this.addressQuestionnaire = data.customer.address;
                     this.showButtons = false;
@@ -707,57 +766,87 @@
                 }
             },
             fetchCustomer() {
-                this.$LIPS(true);
-                get('api/customer/' + this.customer_id)
-                    .then(res => {
-                        this.buttonStatus(res.data);
-                        this.$LIPS(false);
-                    })
-                    .catch(err => {
-                        this.$LIPS(false);
-                        this.$scrollToTop();
-                        this.customer = null;
-                        if (err.response.status === 422) {
-                            Flash.setError(err.response.data.message);
-                        } else {
-                            Flash.setError('Error trying to get customer details please try again shortly!');
-                        }
-                    })
+                if(this.$network()){
+                    this.$LIPS(true);
+                    get('api/customer/' + this.customer_id)
+                        .then(res => {
+                            this.buttonStatus(res.data);
+                            this.$LIPS(false);
+                        })
+                        .catch(err => {
+                            this.$LIPS(false);
+                            this.$scrollToTop();
+                            this.customer = null;
+                            if (err.response.status === 422) {
+                                Flash.setError(err.response.data.message);
+                            } else {
+                                Flash.setError('Error trying to get customer details please try again shortly!');
+                            }
+                        })
+                }else{
+                    this.$networkErr();
+                }
             },
             validateAddress() {
-                this.$LIPS(true);
-                (this.info_from_neighbors === 'no') ? this.addressQuestionnaire.info_from_neighbors_desc = '' : '';
-                this.addressQuestionnaire.customer_id = this.customer.id;
-                this.addressQuestionnaire.user_id = this.customer.user.id;
-                this.addressQuestionnaire.staff_name = this.customer.user.full_name;
-                post('/api/address/', this.addressQuestionnaire)
-                    .then(res => {
-                        if (res.data.approved) {
-                            this.buttonStatus(res.data);
-                            if (this.addressQuestionnaire.approval_status == 1) {
-                                log('CustomerPassedVerification', 'Customer ID : ' + String(this.customer.id));
-                                Flash.setSuccess('Customer Address Verification Successful!');
-                            } else {
-                                log('CustomerFailedVerification', 'Customer ID : ' + String(this.customer.id));
-                                Flash.setError('Customer Address Questionnaire uploaded but not marked as "NOT VERIFIED!');
+                if(this.$network()){
+                    this.$LIPS(true);
+                    (this.info_from_neighbors === 'no') ? this.addressQuestionnaire.info_from_neighbors_desc = '' : '';
+                    this.addressQuestionnaire.customer_id = this.customer.id;
+                    this.addressQuestionnaire.user_id = this.customer.user.id;
+                    this.addressQuestionnaire.staff_name = this.customer.user.full_name;
+                    post('/api/address/', this.addressQuestionnaire)
+                        .then(res => {
+                            if (res.data.approved) {
+                                this.buttonStatus(res.data);
+                                if (this.addressQuestionnaire.approval_status == 1) {
+                                    log('CustomerPassedVerification', 'Customer ID : ' + String(this.customer.id));
+                                    Flash.setSuccess('Customer Address Verification Successful!');
+                                } else {
+                                    log('CustomerFailedVerification', 'Customer ID : ' + String(this.customer.id));
+                                    Flash.setError('Customer Address Questionnaire uploaded but not marked as "NOT VERIFIED!');
+                                }
                             }
-                        }
-                    })
-                    .catch(err => {
-                        if (err.response.status === 428) Flash.setError(err.response.data.message);
-                    });
-                this.modal('addressModal');
-                this.$LIPS(false);
-                this.$scrollToTop();
+                        })
+                        .catch(err => {
+                            if (err.response.status === 428) Flash.setError(err.response.data.message);
+                        });
+                    this.modal('addressModal');
+                    this.$LIPS(false);
+                    this.$scrollToTop();
+                }else{
+                    this.$networkErr();
+                }
             },
             updateVerification() {
-                console.log(this.customer.verification);
-            }
+                if(this.$network()){
+                    this.$LIPS(true);
+                    post('/api/verification/', this.verification)
+                        .then((res) => {
+                            if (res.data.success) {
+                                this.verification = JSON.parse(JSON.stringify(res.data.verification));
+                                this.customer.verification = JSON.parse(JSON.stringify(res.data.verification));
+                                Flash.setSuccess('Verification Status has been updated!');
+                            }
+                        })
+                        .catch((err) => {
+                            Flash.setError(err.response.data);
+                        });
+                    $('.modal').modal('hide');
+                    this.$LIPS(false);
+                    this.$scrollToTop();
+                }else{
+                    this.$networkErr();
+                }
+            },
         },
         computed: {
             check() {
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
             },
+        },
+        watch:{},
+        mounted(){
+            $(document).on("hidden.bs.modal", '.modal', this.returnToInitialValues);
         },
     }
 </script>

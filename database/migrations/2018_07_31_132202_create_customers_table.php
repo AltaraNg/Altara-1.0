@@ -32,7 +32,7 @@ class CreateCustomersTable extends Migration
             $table->string('add_houseno',20);
             $table->string('add_addinfo_description',255)->nullable();
             $table->string('city',20);
-            $table->string('state',20);
+            $table->string('state',50);
             $table->string('telephone',20);
             $table->string('email',100)->nullable();
             $table->string('gender',10);
@@ -60,7 +60,7 @@ class CreateCustomersTable extends Migration
             $table->string('cadd_nbstop',100);
             $table->string('cadd_addinfo',255)->nullable();
             $table->string('company_city',20);
-            $table->string('company_state',20);
+            $table->string('company_state',50);
             //40
             $table->string('company_telno',20);
             //$table->string('type_of_company',50);
@@ -99,7 +99,7 @@ class CreateCustomersTable extends Migration
             $table->string('guaadd_addinfo',50)->nullable();
             $table->string('gua_area',20)->nullable();
             $table->string('work_guarantor_city',20)->nullable();
-            $table->string('work_guarantor_state',10)->nullable();
+            $table->string('work_guarantor_state',50)->nullable();
             $table->string('work_guarantor_gender',10)->nullable();
             $table->string('work_guarantor_telno',20)->nullable();
             $table->string('work_guarantor_work_duration',20)->nullable();
@@ -109,7 +109,7 @@ class CreateCustomersTable extends Migration
             $table->string('personal_guarantor_last_name',20)->nullable();
             $table->string('personal_guarantor_relationship',20)->nullable();
             $table->string('personal_guarantor_city',20)->nullable();
-            $table->string('personal_guarantor_state',20)->nullable();
+            $table->string('personal_guarantor_state',50)->nullable();
             $table->string('pguaadd_nbstop',100)->nullable();
             $table->string('pguaadd_street',100)->nullable();
             $table->string('pguaadd_houseno',100)->nullable();
