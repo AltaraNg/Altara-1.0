@@ -140,7 +140,6 @@ router.beforeEach((to, from, next) => {
         return;
     }
     next();
-<<<<<<< HEAD
 
 
     //check if the path user is going to is our param path
@@ -159,7 +158,5 @@ router.beforeEach((to, from, next) => {
     // 		next();
     // 		}
     // }
-=======
->>>>>>> dcb3aebce6e45473af5608d2cc389c49bb9194b2
 });
 export default router
