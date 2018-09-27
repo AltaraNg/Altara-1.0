@@ -30863,6 +30863,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.$router.push("/not-found");
             }
         });
+        window.addEventListener('load', function () {
+            navigator.onLine ? _this.showStatus(true) : _this.showStatus(false); //uncomment this when u push to production
+            //this.$network() ? this.showStatus(true) : this.showStatus(false);//dis current line should be removed after testing
+            window.addEventListener('online', function () {
+                _this.showStatus(true);
+            });
+            window.addEventListener('offline', function () {
+                _this.showStatus(false);
+            });
+        });
     },
 
     computed: {
@@ -30878,15 +30888,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         logout: function logout() {
             var _this2 = this;
 
-            this.$LIPS(true);
-            Object(__WEBPACK_IMPORTED_MODULE_4__helpers_api__["c" /* post */])("/api/logout").then(function (res) {
-                if (res.data.logged_out) {
-                    _this2.$LIPS(false);
-                    __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].remove();
-                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess("You have successfully logged out!");
-                    _this2.$router.push("/login");
-                }
-            });
+            if (this.$network()) {
+                this.$LIPS(true);
+                Object(__WEBPACK_IMPORTED_MODULE_4__helpers_api__["c" /* post */])("/api/logout").then(function (res) {
+                    if (res.data.logged_out) {
+                        _this2.$LIPS(false);
+                        __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].remove();
+                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess("You have successfully logged out!");
+                        _this2.$router.push("/login");
+                    }
+                });
+            } else {
+                this.$networkErr();
+            }
+        },
+        showStatus: function showStatus(online) {
+            online ? __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('you are connected to the internet!') : this.$networkErr();
         }
     },
     mounted: function mounted() {}
@@ -36768,7 +36785,7 @@ exports = module.exports = __webpack_require__(19)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -36891,23 +36908,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$validator.validateAll().then(function (result) {
                 if (result) {
-                    _this.$LIPS(true);
-                    _this.error = {};
-                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('api/login', _this.form).then(function (res) {
-                        if (res.data.authenticated) {
-                            __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].set(res.data);
-                            _this.$router.push('/home');
-                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully logged in.');
-                        } else if (!res.data.authenticated) __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(res.data.message);
-                        _this.$LIPS(false);
-                    }).catch(function (err) {
-                        if (err.response.status === 422) {
-                            _this.error = err.response.data;
-                            if (err.response.data.errors) _this.error = err.response.data.errors;
-                        }
-                        _this.$LIPS(false);
-                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Check your login details and try again!');
-                    });
+                    if (_this.$network()) {
+                        _this.$LIPS(true);
+                        _this.error = {};
+                        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('api/login', _this.form).then(function (res) {
+                            if (res.data.authenticated) {
+                                __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].set(res.data);
+                                _this.$router.push('/home');
+                                __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully logged in.');
+                            } else if (!res.data.authenticated) __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(res.data.message);
+                            _this.$LIPS(false);
+                        }).catch(function (err) {
+                            if (err.response.status === 422) {
+                                _this.error = err.response.data;
+                                if (err.response.data.errors) _this.error = err.response.data.errors;
+                            }
+                            _this.$LIPS(false);
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Check your login details and try again!');
+                        });
+                    } else {
+                        _this.$networkErr();
+                    }
                 }
                 if (!result) {}
             });
@@ -37833,15 +37854,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$validator.validateAll().then(function (result) {
                 if (result) {
-                    Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["c" /* post */])('api/report/', _this2.report).then(function (res) {
-                        console.log(res.data);
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
+                    if (_this2.$network()) {
+                        Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["c" /* post */])('api/report/', _this2.report).then(function (res) {
+                            console.log(res.data);
+                        }).catch(function (err) {
+                            console.log(err);
+                        });
+                    } else {
+                        _this2.$networkErr();
+                    }
                 }
                 if (!result) {
-                    __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('Please check all the fields and make sure they are field correctly!');
                     _this2.$scrollToTop();
+                    __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('Please check all the fields and make sure they are field correctly!');
                 }
             });
         },
@@ -39646,7 +39671,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -39684,21 +39708,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$validator.validateAll().then(function (result) {
                 if (result) {
-                    _this.$LIPS(true);
-                    _this.error = {};
-                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('/api/customer', _this.newCustomer).then(function (res) {
-                        if (res.data.registered) {
-                            console.log(res.data);
-                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('Customer has been registered successfully!');
-                            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])('createdNewCustomer : ', 'Customer ID : ' + String(res.data.id));
-                            _this.$scrollToTop();
-                            _this.resetForm();
-                        }
-                        _this.$LIPS(false);
-                    }).catch(function (err) {
-                        if (err.response.data.errors) _this.error = err.response.data.errors;
-                        _this.$LIPS(false);
-                    });
+                    if (_this.newCustomer.employment_status === 'Unemployed') {
+                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('you can only register customer from formal and informal sectors at the moment!');
+                        _this.$scrollToTop();
+                        return;
+                    }
+                    if (_this.$network()) {
+                        _this.$LIPS(true);
+                        _this.error = {};
+                        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('/api/customer', _this.newCustomer).then(function (res) {
+                            if (res.data.registered) {
+                                console.log(res.data);
+                                __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('Customer has been registered successfully!');
+                                Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])('createdNewCustomer : ', 'Customer ID : ' + String(res.data.id));
+                                _this.$scrollToTop();
+                                _this.resetForm();
+                            }
+                            _this.$LIPS(false);
+                        }).catch(function (err) {
+                            if (err.response.data.errors) _this.error = err.response.data.errors;
+                            _this.$LIPS(false);
+                        });
+                    } else {
+                        _this.$networkErr();
+                    }
                 }
                 if (!result) {
                     _this.$scrollToTop();
@@ -40543,9 +40576,11 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _vm._l(_vm.states, function(state) {
-                        return _c("option", { domProps: { value: state.id } }, [
-                          _vm._v(_vm._s(state.name))
-                        ])
+                        return _c(
+                          "option",
+                          { domProps: { value: state.name } },
+                          [_vm._v(_vm._s(state.name))]
+                        )
                       })
                     ],
                     2
@@ -42778,7 +42813,7 @@ var render = function() {
                               _vm._l(_vm.states, function(state) {
                                 return _c(
                                   "option",
-                                  { domProps: { value: state.id } },
+                                  { domProps: { value: state.name } },
                                   [_vm._v(_vm._s(state.name))]
                                 )
                               })
@@ -44082,7 +44117,7 @@ var render = function() {
                                 _vm._l(_vm.states, function(state) {
                                   return _c(
                                     "option",
-                                    { domProps: { value: state.id } },
+                                    { domProps: { value: state.name } },
                                     [_vm._v(_vm._s(state.name))]
                                   )
                                 })
@@ -45566,7 +45601,7 @@ var render = function() {
                               _vm._l(_vm.states, function(state) {
                                 return _c(
                                   "option",
-                                  { domProps: { value: state.id } },
+                                  { domProps: { value: state.name } },
                                   [_vm._v(_vm._s(state.name))]
                                 )
                               })
@@ -46581,7 +46616,7 @@ var render = function() {
                               _vm._l(_vm.states, function(state) {
                                 return _c(
                                   "option",
-                                  { domProps: { value: state.id } },
+                                  { domProps: { value: state.name } },
                                   [_vm._v(_vm._s(state.name))]
                                 )
                               })
@@ -48167,6 +48202,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -48179,16 +48267,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             customer_id: '',
             showButtons: true,
             info_from_neighbors: '',
-            addressQuestionnaire: {}
+            addressQuestionnaire: {},
+            verification: {}
         };
     },
 
     methods: {
-        key: function key(_key) {
-            return !!this.customer.verification[_key];
-        },
         modal: function modal(name) {
             $('#' + name).modal('toggle');
+        },
+        key: function key(_key) {
+            if (this.customer.verification[_key] == 1) return true;
+            if (this.customer.verification[_key] == 0) return false;
         },
         IconClass: function IconClass(key) {
             return {
@@ -48200,8 +48290,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'success': this.key(key), 'no-success': !this.key(key)
             };
         },
+        returnToInitialValues: function returnToInitialValues() {
+            this.verification = JSON.parse(JSON.stringify(this.customer.verification));
+        },
         buttonStatus: function buttonStatus(data) {
             this.customer = data.customer;
+            this.verification = JSON.parse(JSON.stringify(data.customer.verification));
             if (!!data.customer.address) {
                 this.addressQuestionnaire = data.customer.address;
                 this.showButtons = false;
@@ -48213,55 +48307,85 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fetchCustomer: function fetchCustomer() {
             var _this = this;
 
-            this.$LIPS(true);
-            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('api/customer/' + this.customer_id).then(function (res) {
-                _this.buttonStatus(res.data);
-                _this.$LIPS(false);
-            }).catch(function (err) {
-                _this.$LIPS(false);
-                _this.$scrollToTop();
-                _this.customer = null;
-                if (err.response.status === 422) {
-                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data.message);
-                } else {
-                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Error trying to get customer details please try again shortly!');
-                }
-            });
+            if (this.$network()) {
+                this.$LIPS(true);
+                Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('api/customer/' + this.customer_id).then(function (res) {
+                    _this.buttonStatus(res.data);
+                    _this.$LIPS(false);
+                }).catch(function (err) {
+                    _this.$LIPS(false);
+                    _this.$scrollToTop();
+                    _this.customer = null;
+                    if (err.response.status === 422) {
+                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data.message);
+                    } else {
+                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Error trying to get customer details please try again shortly!');
+                    }
+                });
+            } else {
+                this.$networkErr();
+            }
         },
         validateAddress: function validateAddress() {
             var _this2 = this;
 
-            this.$LIPS(true);
-            this.info_from_neighbors === 'no' ? this.addressQuestionnaire.info_from_neighbors_desc = '' : '';
-            this.addressQuestionnaire.customer_id = this.customer.id;
-            this.addressQuestionnaire.user_id = this.customer.user.id;
-            this.addressQuestionnaire.staff_name = this.customer.user.full_name;
-            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["c" /* post */])('/api/address/', this.addressQuestionnaire).then(function (res) {
-                if (res.data.approved) {
-                    _this2.buttonStatus(res.data);
-                    if (_this2.addressQuestionnaire.approval_status == 1) {
-                        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_log__["a" /* log */])('CustomerPassedVerification', 'Customer ID : ' + String(_this2.customer.id));
-                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('Customer Address Verification Successful!');
-                    } else {
-                        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_log__["a" /* log */])('CustomerFailedVerification', 'Customer ID : ' + String(_this2.customer.id));
-                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Customer Address Questionnaire uploaded but not marked as "NOT VERIFIED!');
+            if (this.$network()) {
+                this.$LIPS(true);
+                this.info_from_neighbors === 'no' ? this.addressQuestionnaire.info_from_neighbors_desc = '' : '';
+                this.addressQuestionnaire.customer_id = this.customer.id;
+                this.addressQuestionnaire.user_id = this.customer.user.id;
+                this.addressQuestionnaire.staff_name = this.customer.user.full_name;
+                Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["c" /* post */])('/api/address/', this.addressQuestionnaire).then(function (res) {
+                    if (res.data.approved) {
+                        _this2.buttonStatus(res.data);
+                        if (_this2.addressQuestionnaire.approval_status == 1) {
+                            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_log__["a" /* log */])('CustomerPassedVerification', 'Customer ID : ' + String(_this2.customer.id));
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('Customer Address Verification Successful!');
+                        } else {
+                            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_log__["a" /* log */])('CustomerFailedVerification', 'Customer ID : ' + String(_this2.customer.id));
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Customer Address Questionnaire uploaded but not marked as "NOT VERIFIED!');
+                        }
                     }
-                }
-            }).catch(function (err) {
-                if (err.response.status === 428) __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data.message);
-            });
-            this.modal('addressModal');
-            this.$LIPS(false);
-            this.$scrollToTop();
+                }).catch(function (err) {
+                    if (err.response.status === 428) __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data.message);
+                });
+                this.modal('addressModal');
+                this.$LIPS(false);
+                this.$scrollToTop();
+            } else {
+                this.$networkErr();
+            }
         },
         updateVerification: function updateVerification() {
-            console.log(this.customer.verification);
+            var _this3 = this;
+
+            if (this.$network()) {
+                this.$LIPS(true);
+                Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["c" /* post */])('/api/verification/', this.verification).then(function (res) {
+                    if (res.data.success) {
+                        _this3.verification = JSON.parse(JSON.stringify(res.data.verification));
+                        _this3.customer.verification = JSON.parse(JSON.stringify(res.data.verification));
+                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('Verification Status has been updated!');
+                    }
+                }).catch(function (err) {
+                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data);
+                });
+                $('.modal').modal('hide');
+                this.$LIPS(false);
+                this.$scrollToTop();
+            } else {
+                this.$networkErr();
+            }
         }
     },
     computed: {
         check: function check() {
             return !(!this.$isProcessing && !!this.customer_id);
         }
+    },
+    watch: {},
+    mounted: function mounted() {
+        $(document).on("hidden.bs.modal", '.modal', this.returnToInitialValues);
     }
 });
 
@@ -49074,21 +49198,13 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          {
-            staticClass: "modal fade",
-            attrs: {
-              tabindex: "-1",
-              id: "passportModal",
-              role: "dialog",
-              "aria-hidden": "true"
-            }
-          },
+          { staticClass: "modal fade", attrs: { id: "passportModal" } },
           [
             _c("div", { staticClass: "modal-dialog" }, [
               _c("div", { staticClass: "modal-content" }, [
                 _c("div", { staticClass: "modal-header py-2" }, [
                   _c("h6", { staticClass: "modal-title py-1" }, [
-                    _vm._v("Passport Modal")
+                    _vm._v("Passport Verification Status")
                   ]),
                   _vm._v(" "),
                   _c(
@@ -49138,8 +49254,7 @@ var render = function() {
                                 "span",
                                 {
                                   staticClass:
-                                    "mb-2 w-100 float-left pl-1 text-center",
-                                  staticStyle: { "font-size": "14px" }
+                                    "mb-2 w-100 float-left pl-1 text-center"
                                 },
                                 [
                                   _vm._v(
@@ -49164,10 +49279,8 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value:
-                                          _vm.customer.verification.passport,
-                                        expression:
-                                          "customer.verification.passport"
+                                        value: _vm.verification.passport,
+                                        expression: "verification.passport"
                                       }
                                     ],
                                     attrs: {
@@ -49178,14 +49291,14 @@ var render = function() {
                                     },
                                     domProps: {
                                       checked: _vm._q(
-                                        _vm.customer.verification.passport,
+                                        _vm.verification.passport,
                                         "1"
                                       )
                                     },
                                     on: {
                                       change: function($event) {
                                         _vm.$set(
-                                          _vm.customer.verification,
+                                          _vm.verification,
                                           "passport",
                                           "1"
                                         )
@@ -49217,28 +49330,26 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value:
-                                          _vm.customer.verification.passport,
-                                        expression:
-                                          "customer.verification.passport"
+                                        value: _vm.verification.passport,
+                                        expression: "verification.passport"
                                       }
                                     ],
                                     attrs: {
-                                      name: "access",
+                                      name: "passport",
                                       type: "radio",
                                       id: "passport_no",
                                       value: "0"
                                     },
                                     domProps: {
                                       checked: _vm._q(
-                                        _vm.customer.verification.passport,
+                                        _vm.verification.passport,
                                         "0"
                                       )
                                     },
                                     on: {
                                       change: function($event) {
                                         _vm.$set(
-                                          _vm.customer.verification,
+                                          _vm.verification,
                                           "passport",
                                           "0"
                                         )
@@ -49302,248 +49413,202 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "modal fade",
-            attrs: {
-              tabindex: "-1",
-              id: "IDCardModal",
-              role: "dialog",
-              "aria-hidden": "true"
-            }
-          },
-          [
-            _c("div", { staticClass: "modal-dialog" }, [
-              _c("div", { staticClass: "modal-content" }, [
-                _c("div", { staticClass: "modal-header py-2" }, [
-                  _c("h6", { staticClass: "modal-title py-1" }, [
-                    _vm._v("ID Card Modal")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "a",
+        _c("div", { staticClass: "modal fade", attrs: { id: "IDCardModal" } }, [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header py-2" }, [
+                _c("h6", { staticClass: "modal-title py-1" }, [
+                  _vm._v("ID Card Verification Status")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "close py-1",
+                    attrs: {
+                      href: "javascript:",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "modal-close text-danger",
+                        attrs: { "aria-hidden": "true" }
+                      },
+                      [_c("i", { staticClass: "fas fa-times" })]
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm.customer
+                ? _c(
+                    "form",
                     {
-                      staticClass: "close py-1",
-                      attrs: {
-                        href: "javascript:",
-                        "data-dismiss": "modal",
-                        "aria-label": "Close"
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.updateVerification($event)
+                        }
                       }
                     },
                     [
-                      _c(
-                        "span",
-                        {
-                          staticClass: "modal-close text-danger",
-                          attrs: { "aria-hidden": "true" }
-                        },
-                        [_c("i", { staticClass: "fas fa-times" })]
-                      )
+                      _c("div", { staticClass: "modal-body" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-12 float-left mt-0 mb-2"
+                          },
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "mb-2 w-100 float-left pl-1 text-center"
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    Please Verify you selected the right option! before you click "
+                                ),
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("strong", [_vm._v("Save Changes ")]),
+                                _vm._v("!\n                                ")
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "radio p-0 col-6 float-left text-center"
+                              },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.verification.id_card,
+                                      expression: "verification.id_card"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "radio",
+                                    id: "id_card_yes",
+                                    value: "1"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(
+                                      _vm.verification.id_card,
+                                      "1"
+                                    )
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      _vm.$set(_vm.verification, "id_card", "1")
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("label", { attrs: { for: "id_card_yes" } }, [
+                                  _vm._v(
+                                    "\n                                        Verify\n                                    "
+                                  )
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "radio p-0 col-6 float-left text-center"
+                              },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.verification.id_card,
+                                      expression: "verification.id_card"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "radio",
+                                    id: "id_card_no",
+                                    value: "0"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(
+                                      _vm.verification.id_card,
+                                      "0"
+                                    )
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      _vm.$set(_vm.verification, "id_card", "0")
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("label", { attrs: { for: "id_card_no" } }, [
+                                  _vm._v(
+                                    "\n                                        Not Verified\n                                    "
+                                  )
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "m-2 btn btn-secondary",
+                            attrs: { type: "button", "data-dismiss": "modal" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                cancel\n                            "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "m-2 btn bg-default",
+                            attrs: {
+                              type: "submit",
+                              disabled: _vm.$isProcessing
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                Save changes\n                                "
+                            ),
+                            _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                          ]
+                        )
+                      ])
                     ]
                   )
-                ]),
-                _vm._v(" "),
-                _vm.customer
-                  ? _c(
-                      "form",
-                      {
-                        on: {
-                          submit: function($event) {
-                            $event.preventDefault()
-                            return _vm.updateVerification($event)
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "modal-body" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-12 float-left mt-0 mb-2"
-                            },
-                            [
-                              _c(
-                                "span",
-                                {
-                                  staticClass:
-                                    "mb-2 w-100 float-left pl-1 text-center",
-                                  staticStyle: { "font-size": "14px" }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                    Please Verify you selected the right option! before you click "
-                                  ),
-                                  _c("br"),
-                                  _vm._v(" "),
-                                  _c("strong", [_vm._v("Save Changes ")]),
-                                  _vm._v("!\n                                ")
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "radio p-0 col-6 float-left text-center"
-                                },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value:
-                                          _vm.customer.verification.id_card,
-                                        expression:
-                                          "customer.verification.id_card"
-                                      }
-                                    ],
-                                    attrs: {
-                                      name: "id_card",
-                                      type: "radio",
-                                      id: "id_card_yes",
-                                      value: "1"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(
-                                        _vm.customer.verification.id_card,
-                                        "1"
-                                      )
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.$set(
-                                          _vm.customer.verification,
-                                          "id_card",
-                                          "1"
-                                        )
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "label",
-                                    { attrs: { for: "id_card_yes" } },
-                                    [
-                                      _vm._v(
-                                        "\n                                        Verify\n                                    "
-                                      )
-                                    ]
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "radio p-0 col-6 float-left text-center"
-                                },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value:
-                                          _vm.customer.verification.id_card,
-                                        expression:
-                                          "customer.verification.id_card"
-                                      }
-                                    ],
-                                    attrs: {
-                                      name: "id_card",
-                                      type: "radio",
-                                      id: "id_card_no",
-                                      value: "0"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(
-                                        _vm.customer.verification.id_card,
-                                        "0"
-                                      )
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.$set(
-                                          _vm.customer.verification,
-                                          "id_card",
-                                          "0"
-                                        )
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "label",
-                                    { attrs: { for: "id_card_no" } },
-                                    [
-                                      _vm._v(
-                                        "\n                                        Not Verified\n                                    "
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "modal-footer" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "m-2 btn btn-secondary",
-                              attrs: { type: "button", "data-dismiss": "modal" }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                cancel\n                            "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "m-2 btn bg-default",
-                              attrs: {
-                                type: "submit",
-                                disabled: _vm.$isProcessing
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                Save changes\n                                "
-                              ),
-                              _c("i", {
-                                staticClass: "far fa-paper-plane ml-1"
-                              })
-                            ]
-                          )
-                        ])
-                      ]
-                    )
-                  : _vm._e()
-              ])
+                : _vm._e()
             ])
-          ]
-        ),
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "div",
-          {
-            staticClass: "modal fade bd-example-modal-lg",
-            attrs: {
-              tabindex: "-1",
-              id: "addressModal",
-              role: "dialog",
-              "aria-labelledby": "myLargeModalLabel",
-              "aria-hidden": "true"
-            }
-          },
+          { staticClass: "modal fade", attrs: { id: "addressModal" } },
           [
             _c("div", { staticClass: "modal-dialog modal-lg" }, [
               _c("div", { staticClass: "modal-content" }, [
@@ -49610,12 +49675,7 @@ var render = function() {
                                   expression: "'required'"
                                 }
                               ],
-                              attrs: {
-                                name: "customer meetup",
-                                type: "radio",
-                                id: "yes",
-                                value: "yes"
-                              },
+                              attrs: { type: "radio", id: "yes", value: "yes" },
                               domProps: {
                                 checked: _vm._q(
                                   _vm.addressQuestionnaire.customer_meetup,
@@ -49656,12 +49716,7 @@ var render = function() {
                                   expression: "'required'"
                                 }
                               ],
-                              attrs: {
-                                name: "customer meetup",
-                                type: "radio",
-                                id: "no",
-                                value: "no"
-                              },
+                              attrs: { type: "radio", id: "no", value: "no" },
                               domProps: {
                                 checked: _vm._q(
                                   _vm.addressQuestionnaire.customer_meetup,
@@ -50439,22 +50494,13 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          {
-            staticClass: "modal fade bd-example-modal-lg",
-            attrs: {
-              tabindex: "-1",
-              id: "WGuarantorModal",
-              role: "dialog",
-              "aria-labelledby": "myLargeModalLabel",
-              "aria-hidden": "true"
-            }
-          },
+          { staticClass: "modal fade", attrs: { id: "WGuarantorModal" } },
           [
-            _c("div", { staticClass: "modal-dialog modal-lg" }, [
+            _c("div", { staticClass: "modal-dialog" }, [
               _c("div", { staticClass: "modal-content" }, [
                 _c("div", { staticClass: "modal-header py-2" }, [
                   _c("h6", { staticClass: "modal-title py-1" }, [
-                    _vm._v("Work Guarantor Modal")
+                    _vm._v("Work Guarantor Verification Status")
                   ]),
                   _vm._v(" "),
                   _c(
@@ -50480,36 +50526,180 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _c("form", { staticClass: "float-left" }, [
-                    _c("h5", [_vm._v("Upload Customer Passport")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-footer" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "mx-3 btn btn-secondary",
-                      attrs: { type: "button", "data-dismiss": "modal" }
-                    },
-                    [_vm._v("Cancel")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "mx-3 btn btn-primary bg-default",
-                      attrs: { type: "submit", disabled: _vm.$isProcessing }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            Update Employee\n                            "
-                      ),
-                      _c("i", { staticClass: "far fa-paper-plane ml-1" })
-                    ]
-                  )
-                ])
+                _vm.customer
+                  ? _c(
+                      "form",
+                      {
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                            return _vm.updateVerification($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "modal-body" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "form-group col-12 float-left mt-0 mb-2"
+                            },
+                            [
+                              _c(
+                                "span",
+                                {
+                                  staticClass:
+                                    "mb-2 w-100 float-left pl-1 text-center"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    Please Verify you selected the right option! before you click "
+                                  ),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("strong", [_vm._v("Save Changes ")]),
+                                  _vm._v("!\n                                ")
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "radio p-0 col-6 float-left text-center"
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value:
+                                          _vm.verification
+                                            .work_guarantor_status,
+                                        expression:
+                                          "verification.work_guarantor_status"
+                                      }
+                                    ],
+                                    attrs: {
+                                      type: "radio",
+                                      id: "wgua_yes",
+                                      value: "1"
+                                    },
+                                    domProps: {
+                                      checked: _vm._q(
+                                        _vm.verification.work_guarantor_status,
+                                        "1"
+                                      )
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        _vm.$set(
+                                          _vm.verification,
+                                          "work_guarantor_status",
+                                          "1"
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", { attrs: { for: "wgua_yes" } }, [
+                                    _vm._v(
+                                      "\n                                        Verify\n                                    "
+                                    )
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "radio p-0 col-6 float-left text-center"
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value:
+                                          _vm.verification
+                                            .work_guarantor_status,
+                                        expression:
+                                          "verification.work_guarantor_status"
+                                      }
+                                    ],
+                                    attrs: {
+                                      type: "radio",
+                                      id: "wgua_no",
+                                      value: "0"
+                                    },
+                                    domProps: {
+                                      checked: _vm._q(
+                                        _vm.verification.work_guarantor_status,
+                                        "0"
+                                      )
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        _vm.$set(
+                                          _vm.verification,
+                                          "work_guarantor_status",
+                                          "0"
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", { attrs: { for: "wgua_no" } }, [
+                                    _vm._v(
+                                      "\n                                        Not Verified\n                                    "
+                                    )
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "modal-footer" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "m-2 btn btn-secondary",
+                              attrs: { type: "button", "data-dismiss": "modal" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                cancel\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "m-2 btn bg-default",
+                              attrs: {
+                                type: "submit",
+                                disabled: _vm.$isProcessing
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                Save changes\n                                "
+                              ),
+                              _c("i", {
+                                staticClass: "far fa-paper-plane ml-1"
+                              })
+                            ]
+                          )
+                        ])
+                      ]
+                    )
+                  : _vm._e()
               ])
             ])
           ]
@@ -50517,22 +50707,13 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          {
-            staticClass: "modal fade bd-example-modal-lg",
-            attrs: {
-              tabindex: "-1",
-              id: "PGuarantorModal",
-              role: "dialog",
-              "aria-labelledby": "myLargeModalLabel",
-              "aria-hidden": "true"
-            }
-          },
+          { staticClass: "modal fade", attrs: { id: "PGuarantorModal" } },
           [
-            _c("div", { staticClass: "modal-dialog modal-lg" }, [
+            _c("div", { staticClass: "modal-dialog" }, [
               _c("div", { staticClass: "modal-content" }, [
                 _c("div", { staticClass: "modal-header py-2" }, [
                   _c("h6", { staticClass: "modal-title py-1" }, [
-                    _vm._v("Personal Guarantor Modal")
+                    _vm._v("Personal Guarantor Verification Status")
                   ]),
                   _vm._v(" "),
                   _c(
@@ -50558,36 +50739,182 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _c("form", { staticClass: "float-left" }, [
-                    _c("h5", [_vm._v("Upload Customer Passport")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-footer" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "mx-3 btn btn-secondary",
-                      attrs: { type: "button", "data-dismiss": "modal" }
-                    },
-                    [_vm._v("Cancel")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "mx-3 btn btn-primary bg-default",
-                      attrs: { type: "submit", disabled: _vm.$isProcessing }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            Update Employee\n                            "
-                      ),
-                      _c("i", { staticClass: "far fa-paper-plane ml-1" })
-                    ]
-                  )
-                ])
+                _vm.customer
+                  ? _c(
+                      "form",
+                      {
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                            return _vm.updateVerification($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "modal-body" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "form-group col-12 float-left mt-0 mb-2"
+                            },
+                            [
+                              _c(
+                                "span",
+                                {
+                                  staticClass:
+                                    "mb-2 w-100 float-left pl-1 text-center"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    Please Verify you selected the right option! before you click "
+                                  ),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("strong", [_vm._v("Save Changes ")]),
+                                  _vm._v("!\n                                ")
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "radio p-0 col-6 float-left text-center"
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value:
+                                          _vm.verification
+                                            .personal_guarantor_status,
+                                        expression:
+                                          "verification.personal_guarantor_status"
+                                      }
+                                    ],
+                                    attrs: {
+                                      type: "radio",
+                                      id: "pgua_yes",
+                                      value: "1"
+                                    },
+                                    domProps: {
+                                      checked: _vm._q(
+                                        _vm.verification
+                                          .personal_guarantor_status,
+                                        "1"
+                                      )
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        _vm.$set(
+                                          _vm.verification,
+                                          "personal_guarantor_status",
+                                          "1"
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", { attrs: { for: "pgua_yes" } }, [
+                                    _vm._v(
+                                      "\n                                        Verify\n                                    "
+                                    )
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "radio p-0 col-6 float-left text-center"
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value:
+                                          _vm.verification
+                                            .personal_guarantor_status,
+                                        expression:
+                                          "verification.personal_guarantor_status"
+                                      }
+                                    ],
+                                    attrs: {
+                                      type: "radio",
+                                      id: "pgua_no",
+                                      value: "0"
+                                    },
+                                    domProps: {
+                                      checked: _vm._q(
+                                        _vm.verification
+                                          .personal_guarantor_status,
+                                        "0"
+                                      )
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        _vm.$set(
+                                          _vm.verification,
+                                          "personal_guarantor_status",
+                                          "0"
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", { attrs: { for: "pgua_no" } }, [
+                                    _vm._v(
+                                      "\n                                        Not Verified\n                                    "
+                                    )
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "modal-footer" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "m-2 btn btn-secondary",
+                              attrs: { type: "button", "data-dismiss": "modal" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                cancel\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "m-2 btn bg-default",
+                              attrs: {
+                                type: "submit",
+                                disabled: _vm.$isProcessing
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                Save changes\n                                "
+                              ),
+                              _c("i", {
+                                staticClass: "far fa-paper-plane ml-1"
+                              })
+                            ]
+                          )
+                        ])
+                      ]
+                    )
+                  : _vm._e()
               ])
             ])
           ]
@@ -51028,13 +51355,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         autoCompleteNow: function autoCompleteNow() {
-            var _this = this;
-
             this.results = [];
-            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["c" /* post */])("api/search", { qry: this.qry }).then(function (res) {
-                console.log(res.data);
-                _this.results = res.data.result;
-            });
+            /* post("api/search", {qry: this.qry}).then((res) => {
+                 console.log(res.data);
+                 this.results = res.data.result;
+             });*/
         }
     }
 });
@@ -52425,24 +52750,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             if (!($('#search').val().length <= 0)) {
-                Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])("api/search", { qry: this.qry }).then(function (res) {
-                    _this.results = res.data.result;
-                    _this.toolTip();
-                });
+                if (this.$network()) {
+                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])("api/search", { qry: this.qry }).then(function (res) {
+                        _this.results = res.data.result;
+                        _this.toolTip();
+                    });
+                } else {
+                    this.$networkErr();
+                }
             } else this.results = [];
         },
         editEmployee: function editEmployee(id) {
             var _this2 = this;
 
-            this.updatingEmployee = true;
-            this.$LIPS(true);
-            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])("api/employee/" + id + "/edit").then(function (res) {
-                _this2.form = res.data.user;
-                _this2.roles = res.data.roles;
-                _this2.branches = res.data.branches;
-                $('#updateEmployee').modal('toggle');
-                _this2.$LIPS(false);
-            });
+            if (this.$network()) {
+                this.updatingEmployee = true;
+                this.$LIPS(true);
+                Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])("api/employee/" + id + "/edit").then(function (res) {
+                    _this2.form = res.data.user;
+                    _this2.roles = res.data.roles;
+                    _this2.branches = res.data.branches;
+                    $('#updateEmployee').modal('toggle');
+                    _this2.$LIPS(false);
+                });
+            } else {
+                this.$networkErr();
+            }
         },
         editPortalAccess: function editPortalAccess(employee) {
             this.updatingEmployee = false;
@@ -52456,19 +52789,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         resetPassword: function resetPassword() {
             var _this3 = this;
 
-            this.$LIPS(true);
-            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])('api/reset-password/' + this.form.id).then(function (res) {
-                _this3.qry = '';
-                _this3.error = {};
-                _this3.results = [];
-                _this3.$scrollToTop();
-                $('#editPassword').modal('toggle');
-                Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])('resetUserPassword', _this3.form.staff_id);
-                __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('The employee password was successfully reset!');
-                var details = { phone: String(parseInt(_this3.form.phone_number)), password: res.data.password };
-                __WEBPACK_IMPORTED_MODULE_3__helpers_sms__["a" /* default */].passwordReset(details);
-                _this3.$LIPS(false);
-            });
+            if (this.$network()) {
+                this.$LIPS(true);
+                Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])('api/reset-password/' + this.form.id).then(function (res) {
+                    _this3.qry = '';
+                    _this3.error = {};
+                    _this3.results = [];
+                    _this3.$scrollToTop();
+                    $('#editPassword').modal('toggle');
+                    Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])('resetUserPassword', _this3.form.staff_id);
+                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('The employee password was successfully reset!');
+                    var details = { phone: String(parseInt(_this3.form.phone_number)), password: res.data.password };
+                    __WEBPACK_IMPORTED_MODULE_3__helpers_sms__["a" /* default */].passwordReset(details);
+                    _this3.$LIPS(false);
+                });
+            } else {
+                this.$networkErr();
+            }
         },
         updateEmployee: function updateEmployee(id, task) {
             var _this4 = this;
@@ -52479,31 +52816,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (task === 'updatedUserAccess') this.updatingEmployee = false;
             this.$validator.validateAll().then(function (result) {
                 if (result) {
-                    _this4.$LIPS(true);
-                    _this4.error = {};
-                    _this4.results = [];
-                    _this4.qry = '';
-                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])("api/employee/" + id + "/update", _this4.form).then(function (res) {
-                        if (res.data.updated) {
-                            _this4.$scrollToTop();
-                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully updated the employees details!');
-                            if (task === 'updatedUserAccess') $('#editPortalAccess').modal('toggle');
-                            if (task === 'updatedUserDetails') $('#updateEmployee').modal('toggle');
-                            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])(String(task), String(_this4.form.staff_id));
-                        }
-                        _this4.$LIPS(false);
-                        //if its for portal access turn updating to true
-                        // so validator can see the forms inside that
-                        // form(also for the form to be visible)
-                        if (task === 'updatedUserAccess') _this4.updatingEmployee = true;
-                    }).catch(function (err) {
-                        if (err.response.status === 422) {
-                            _this4.$scrollToTop();
-                            _this4.error = err.response.data;
-                            if (err.response.data.errors) _this4.error = err.response.data.errors;
-                        }
-                        _this4.$LIPS(false);
-                    });
+                    if (_this4.$network()) {
+                        _this4.$LIPS(true);
+                        _this4.error = {};
+                        _this4.results = [];
+                        _this4.qry = '';
+                        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])("api/employee/" + id + "/update", _this4.form).then(function (res) {
+                            if (res.data.updated) {
+                                _this4.$scrollToTop();
+                                __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('You have successfully updated the employees details!');
+                                if (task === 'updatedUserPortalAccess') $('#editPortalAccess').modal('toggle');
+                                if (task === 'updatedUserDetails') $('#updateEmployee').modal('toggle');
+                                Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])(String(task), String(_this4.form.staff_id));
+                            }
+                            _this4.$LIPS(false);
+                            //if its for portal access turn updating to true
+                            // so validator can see the forms inside that
+                            // form(also for the form to be visible)
+                            if (task === 'updatedUserAccess') _this4.updatingEmployee = true;
+                        }).catch(function (err) {
+                            if (err.response.status === 422) {
+                                _this4.$scrollToTop();
+                                _this4.error = err.response.data;
+                                if (err.response.data.errors) _this4.error = err.response.data.errors;
+                            }
+                            _this4.$LIPS(false);
+                        });
+                    } else {
+                        _this4.$networkErr();
+                    }
                 }
                 if (!result) {
                     __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Please check all the fields and make sure they are field correctly!');
@@ -54913,28 +55254,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$validator.validateAll().then(function (result) {
                 if (result) {
-                    _this.$LIPS(true);
-                    _this.error = {};
-                    Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["c" /* post */])('api/register', _this.form).then(function (res) {
-                        if (res.data.registered) {
-                            _this.$scrollToTop();
-                            Object(__WEBPACK_IMPORTED_MODULE_1__helpers_log__["a" /* log */])('createdNewEmployee', String(_this.form.staff_id));
-                            _this.textDetails.loginID = String(_this.form.staff_id);
-                            _this.textDetails.phone = String(parseInt(_this.form.phone_number));
-                            _this.textDetails.loginPassword = _this.password = res.data.password;
-                            _this.form = res.data.form;
-                            __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
-                            __WEBPACK_IMPORTED_MODULE_0__helpers_sms__["a" /* default */].welcome(_this.textDetails);
-                        }
-                        _this.$LIPS(false);
-                    }).catch(function (err) {
-                        if (err.response.status === 422) {
-                            _this.$scrollToTop();
-                            _this.error = err.response.data;
-                            if (err.response.data.errors) _this.error = err.response.data.errors;
-                        }
-                        _this.$LIPS(false);
-                    });
+                    if (_this.$network()) {
+                        _this.$LIPS(true);
+                        _this.error = {};
+                        Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["c" /* post */])('api/register', _this.form).then(function (res) {
+                            if (res.data.registered) {
+                                _this.$scrollToTop();
+                                Object(__WEBPACK_IMPORTED_MODULE_1__helpers_log__["a" /* log */])('createdNewEmployee', String(_this.form.staff_id));
+                                _this.textDetails.loginID = String(_this.form.staff_id);
+                                _this.textDetails.phone = String(parseInt(_this.form.phone_number));
+                                _this.textDetails.loginPassword = _this.password = res.data.password;
+                                _this.form = res.data.form;
+                                __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
+                                __WEBPACK_IMPORTED_MODULE_0__helpers_sms__["a" /* default */].welcome(_this.textDetails);
+                            }
+                            _this.$LIPS(false);
+                        }).catch(function (err) {
+                            if (err.response.status === 422) {
+                                _this.$scrollToTop();
+                                _this.error = err.response.data;
+                                if (err.response.data.errors) _this.error = err.response.data.errors;
+                            }
+                            _this.$LIPS(false);
+                        });
+                    } else {
+                        _this.$networkErr();
+                    }
                 }
                 if (!result) {
                     __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('Please check all the fields and make sure they are field correctly!');
@@ -55365,8 +55710,8 @@ var render = function() {
                         {
                           name: "validate",
                           rawName: "v-validate",
-                          value: "required|email",
-                          expression: "'required|email'"
+                          value: "required|email|min:1",
+                          expression: "'required|email|min:1'"
                         }
                       ],
                       staticClass: "form-control",
@@ -64607,9 +64952,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('slug', function (value) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(3);
+
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$isProcessing = false;
+
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$LIPS = function (s) {
     this.$store.state.loader = this.$isProcessing = s;
 };
@@ -64625,6 +64973,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$getDate = function () {
         month = toTwoDigits(today.getMonth() + 1),
         day = toTwoDigits(today.getDate());
     return year + '-' + month + '-' + day;
+};
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$network = function () {
+    return window.navigator.onLine;
+    //return true;
+};
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$networkErr = function () {
+    this.$scrollToTop();
+    this.$LIPS(false);
+    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Your are not connected to the network please wait till network is back!');
 };
 
 /***/ }),

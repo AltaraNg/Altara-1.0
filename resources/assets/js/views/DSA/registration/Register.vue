@@ -158,7 +158,7 @@
                                 v-validate="'required|max:20'" name="state"
                                 :class="{'is-invalid': errors.first('state')}">
                             <option value="">select state</option>
-                            <option :value="state.id" v-for="state in states">{{state.name}}</option>
+                            <option :value="state.name" v-for="state in states">{{state.name}}</option>
                         </select>
                         <small class="text-muted" v-if="errors.first('state')">
                             {{errors.first('state')}}
@@ -587,7 +587,7 @@
                                         v-validate="'required|max:20'" name="company_state" data-vv-as="company state"
                                         :class="{'is-invalid': errors.first('company_state')}">
                                     <option value="">select state</option>
-                                    <option :value="state.id" v-for="state in states">{{state.name}}</option>
+                                    <option :value="state.name" v-for="state in states">{{state.name}}</option>
                                 </select>
                                 <small class="text-muted" v-if="errors.first('company_state')">
                                     {{errors.first('company_state')}}
@@ -819,7 +819,7 @@
                                         v-validate="'required|max:20'" name="company_state" data-vv-as="company state"
                                         :class="{'is-invalid': errors.first('company_state')}">
                                     <option value="">select state</option>
-                                    <option :value="state.id" v-for="state in states">{{state.name}}</option>
+                                    <option :value="state.name" v-for="state in states">{{state.name}}</option>
                                 </select>
                                 <small class="text-muted" v-if="errors.first('company_state')">
                                     {{errors.first('company_state')}}
@@ -1094,7 +1094,7 @@
                                         name="work_guarantor_state"
                                         :class="{'is-invalid': errors.first('work_guarantor_state')}">
                                     <option value="">select state</option>
-                                    <option :value="state.id" v-for="state in states">{{state.name}}</option>
+                                    <option :value="state.name" v-for="state in states">{{state.name}}</option>
                                 </select>
                                 <small class="text-muted" v-if="errors.first('work_guarantor_state')">
                                     {{errors.first('work_guarantor_state')}}
@@ -1138,7 +1138,6 @@
                             <div class="spaceBetween"></div>
                         </div>
                     </transition>
-
 
 
                     <h5>
@@ -1275,7 +1274,7 @@
                                         name="personal_guarantor_state"
                                         :class="{'is-invalid': errors.first('personal_guarantor_state')}">
                                     <option value="">select state</option>
-                                    <option :value="state.id" v-for="state in states">{{state.name}}</option>
+                                    <option :value="state.name" v-for="state in states">{{state.name}}</option>
                                 </select>
                                 <small class="text-muted" v-if="errors.first('personal_guarantor_state')">
                                     {{errors.first('personal_guarantor_state')}}
@@ -1449,23 +1448,32 @@
             register() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$LIPS(true);
-                        this.error = {};
-                        post('/api/customer', this.newCustomer)
-                            .then((res) => {
-                                if (res.data.registered) {
-                                    console.log(res.data);
-                                    Flash.setSuccess('Customer has been registered successfully!');
-                                    log('createdNewCustomer : ', 'Customer ID : ' + String(res.data.id));
-                                    this.$scrollToTop();
-                                    this.resetForm();
-                                }
-                                this.$LIPS(false);
-                            })
-                            .catch((err) => {
-                                if (err.response.data.errors) this.error = err.response.data.errors;
-                                this.$LIPS(false);
-                            })
+                        if (this.newCustomer.employment_status === 'Unemployed') {
+                            Flash.setError('you can only register customer from formal and informal sectors at the moment!');
+                            this.$scrollToTop();
+                            return;
+                        }
+                        if(this.$network()){
+                            this.$LIPS(true);
+                            this.error = {};
+                            post('/api/customer', this.newCustomer)
+                                .then((res) => {
+                                    if (res.data.registered) {
+                                        console.log(res.data);
+                                        Flash.setSuccess('Customer has been registered successfully!');
+                                        log('createdNewCustomer : ', 'Customer ID : ' + String(res.data.id));
+                                        this.$scrollToTop();
+                                        this.resetForm();
+                                    }
+                                    this.$LIPS(false);
+                                })
+                                .catch((err) => {
+                                    if (err.response.data.errors) this.error = err.response.data.errors;
+                                    this.$LIPS(false);
+                                });
+                        }else{
+                            this.$networkErr();
+                        }
                     }
                     if (!result) {
                         this.$scrollToTop();

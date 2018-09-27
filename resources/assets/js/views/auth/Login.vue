@@ -71,25 +71,29 @@
             login() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$LIPS(true);
-                        this.error = {};
-                        post('api/login', this.form)
-                            .then((res) => {
-                                if (res.data.authenticated) {
-                                    Auth.set(res.data);
-                                    this.$router.push('/home');
-                                    Flash.setSuccess('You have successfully logged in.');
-                                } else if (!res.data.authenticated) Flash.setError(res.data.message);
-                                this.$LIPS(false);
-                            })
-                            .catch((err) => {
-                                if (err.response.status === 422) {
-                                    this.error = err.response.data;
-                                    if (err.response.data.errors) this.error = err.response.data.errors;
-                                }
-                                this.$LIPS(false);
-                                Flash.setError('Check your login details and try again!');
-                            });
+                        if(this.$network()){
+                            this.$LIPS(true);
+                            this.error = {};
+                            post('api/login', this.form)
+                                .then((res) => {
+                                    if (res.data.authenticated) {
+                                        Auth.set(res.data);
+                                        this.$router.push('/home');
+                                        Flash.setSuccess('You have successfully logged in.');
+                                    } else if (!res.data.authenticated) Flash.setError(res.data.message);
+                                    this.$LIPS(false);
+                                })
+                                .catch((err) => {
+                                    if (err.response.status === 422) {
+                                        this.error = err.response.data;
+                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                    }
+                                    this.$LIPS(false);
+                                    Flash.setError('Check your login details and try again!');
+                                });
+                        }else{
+                            this.$networkErr();
+                        }
                     }
                     if (!result) {
                     }

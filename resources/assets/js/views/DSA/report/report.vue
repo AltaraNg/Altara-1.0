@@ -97,17 +97,21 @@
             generateReport() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        post('api/report/', this.report)
-                            .then(res => {
-                                console.log(res.data);
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            })
+                        if(this.$network()){
+                            post('api/report/', this.report)
+                                .then(res => {
+                                    console.log(res.data);
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                })
+                        }else{
+                            this.$networkErr();
+                        }
                     }
                     if (!result) {
-                        Flash.setError('Please check all the fields and make sure they are field correctly!');
                         this.$scrollToTop();
+                        Flash.setError('Please check all the fields and make sure they are field correctly!');
                     }
                 });
             },
