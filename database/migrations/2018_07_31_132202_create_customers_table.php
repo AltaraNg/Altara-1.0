@@ -22,8 +22,7 @@ class CreateCustomersTable extends Migration
             $table->integer('document_id')->unsigned()->nullable();
             $table->integer('verification_id')->unsigned()->nullable();*/
 
-
-            $table->string('employee_phone_number',15);
+            $table->string('employee_id',20);
             $table->string('Date_of_Registration',20);
             $table->unsignedInteger('branch_id');
             $table->string('first_name',20);
