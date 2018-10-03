@@ -371,6 +371,10 @@ nav {
       height : 4rem;
     }
   }
+
+
+
+
   #navigation {
     li > .nav-link:hover,
     li > .router-link-active,
@@ -505,6 +509,15 @@ table button i {
 
 .btn-danger.btn-round {
   background : radial-gradient(circle at 0% 0%, #ffbcbc 0%, #a00e0e 100%);
+}
+
+.nav-tabs {
+  padding: 1.5rem 2rem;
+}
+
+.navbar-toggler{
+  font-size : 2rem;
+  margin-top: .3rem;
 }
 
 @media (max-width : 990px) {

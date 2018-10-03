@@ -136,4 +136,16 @@ class CustomerController extends Controller
     {
         //
     }
+
+
+    public function getData()
+    {
+        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'Date_of_registration')->searchPaginateAndOrder();
+        $columns = Customer::$columns;
+        return response()->json([
+            'model' => $model,
+            'columns' => $columns,
+        ]);
+    }
+
 }

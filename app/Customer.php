@@ -1,14 +1,20 @@
 <?php
 
 namespace App;
-
+use App\Helper\DataViewer;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+    use DataViewer;
+
     protected $guarded = [];
 
     protected $hidden = [];
+
+    public static $columns = [
+        'id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'Date_of_registration'
+    ];
 
     public static function form()
     {

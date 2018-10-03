@@ -1459,7 +1459,6 @@
                             post('/api/customer', this.newCustomer)
                                 .then((res) => {
                                     if (res.data.registered) {
-                                        console.log(res.data);
                                         Flash.setSuccess('Customer has been registered successfully!');
                                         log('createdNewCustomer : ', 'Customer ID : ' + String(res.data.id));
                                         this.$scrollToTop();
@@ -1502,7 +1501,6 @@
                     this.newCustomer = res.data.form;
                     this.newCustomer.days_of_work = [];
                     this.newCustomer.Date_of_Registration = this.$getDate();
-                    console.log(this.newCustomer.employee_id);
                 });
         },
         beforeCreate() {
