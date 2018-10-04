@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <h5 class="card-title mt-0">Customer List</h5>
                         <p class="card-text">View all the registered customers.</p>
-                        <button class="btn bg-default">View Customer List</button>
+                        <router-link to="customer/list" class="btn bg-default">View Customer List</router-link>
                     </div>
                 </div>
             </div>

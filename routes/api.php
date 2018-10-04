@@ -31,3 +31,5 @@ Route::resource('verification', 'VerificationController');
 Route::resource('address', 'AddressController');
 ///fix the controller below and make resourceful use
 Route::post('/report', 'ReportController@generateReport');
+
+Route::get('/customer','CustomerController@getData');
