@@ -39,7 +39,7 @@ class CustomerController extends Controller
         $form = Customer::form();
         $branches = Branch::all();
         $form['employee_name'] = $user->full_name;
-        $form['employee_phone_number'] = $user->phone_number;
+        $form['employee_id'] = $user->staff_id;
         return response()->json([
             'form' => $form,
             'states' => $states,

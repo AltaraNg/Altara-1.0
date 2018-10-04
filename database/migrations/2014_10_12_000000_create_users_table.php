@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('role_id');
+            $table->unsignedInteger('role_id');
             $table->string('staff_id')->unique();
             $table->string('full_name');
             $table->string('date_of_appointment');
@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('status');
             $table->string('phone_number')->unique();
             $table->string('highest_qualification');
-            $table->string('branch_id');
+            $table->unsignedInteger('branch_id');
             $table->string('password');
             $table->string('email')->unique();
             $table->string('address');
@@ -41,6 +41,9 @@ class CreateUsersTable extends Migration
             $table->string('api_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 

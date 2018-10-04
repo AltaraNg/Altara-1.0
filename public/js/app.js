@@ -26414,6 +26414,10 @@ function applyToTag (styleElement, obj) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6341372061269d2c79e031b2e60d2c136254c8f6
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     message: '',
@@ -39763,7 +39767,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
             newestCustomer['employee_name'] = this.newCustomer.employee_name;
             newestCustomer['Date_of_Registration'] = this.newCustomer.Date_of_Registration;
-            newestCustomer['employee_phone_number'] = this.newCustomer.employee_phone_number;
+            newestCustomer['employee_id'] = this.newCustomer.employee_id;
             this.newCustomer = newestCustomer;
         }
     },
@@ -39776,6 +39780,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this2.newCustomer = res.data.form;
             _this2.newCustomer.days_of_work = [];
             _this2.newCustomer.Date_of_Registration = _this2.$getDate();
+            console.log(_this2.newCustomer.employee_id);
         });
     },
     beforeCreate: function beforeCreate() {
@@ -39876,15 +39881,15 @@ var render = function() {
                 "div",
                 { staticClass: "form-group col-md-4 px-md-3 px-1 float-left" },
                 [
-                  _c("label", [_vm._v("Employee phone number")]),
+                  _c("label", [_vm._v("Employee ID(Staff ID)")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.newCustomer.employee_phone_number,
-                        expression: "newCustomer.employee_phone_number"
+                        value: _vm.newCustomer.employee_id,
+                        expression: "newCustomer.employee_id"
                       },
                       {
                         name: "validate",
@@ -39894,17 +39899,15 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    class: {
-                      "is-invalid": _vm.errors.first("employee_phone_number")
-                    },
+                    class: { "is-invalid": _vm.errors.first("employee_id") },
                     attrs: {
                       type: "text",
                       placeholder: "Enter Employee number here",
                       disabled: "",
-                      name: "employee_phone_number",
+                      name: "employee_id",
                       "data-vv-as": "employee phone number"
                     },
-                    domProps: { value: _vm.newCustomer.employee_phone_number },
+                    domProps: { value: _vm.newCustomer.employee_id },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
@@ -39912,18 +39915,18 @@ var render = function() {
                         }
                         _vm.$set(
                           _vm.newCustomer,
-                          "employee_phone_number",
+                          "employee_id",
                           $event.target.value
                         )
                       }
                     }
                   }),
                   _vm._v(" "),
-                  _vm.errors.first("employee_phone_number")
+                  _vm.errors.first("employee_id")
                     ? _c("small", { staticClass: "text-muted" }, [
                         _vm._v(
                           "\n                        " +
-                            _vm._s(_vm.errors.first("employee_phone_number")) +
+                            _vm._s(_vm.errors.first("employee_id")) +
                             "\n                    "
                         )
                       ])

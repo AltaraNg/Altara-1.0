@@ -19,13 +19,13 @@
                     </div>
 
                     <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                        <label>Employee phone number</label>
+                        <label>Employee ID(Staff ID)</label>
                         <input type="text" class="form-control" placeholder="Enter Employee number here"
-                               v-model="newCustomer.employee_phone_number" disabled v-validate="'required'"
-                               name="employee_phone_number" data-vv-as="employee phone number"
-                               :class="{'is-invalid': errors.first('employee_phone_number')}">
-                        <small class="text-muted" v-if="errors.first('employee_phone_number')">
-                            {{errors.first('employee_phone_number')}}
+                               v-model="newCustomer.employee_id" disabled v-validate="'required'"
+                               name="employee_id" data-vv-as="employee phone number"
+                               :class="{'is-invalid': errors.first('employee_id')}">
+                        <small class="text-muted" v-if="errors.first('employee_id')">
+                            {{errors.first('employee_id')}}
                         </small>
                     </div>
 
@@ -1490,7 +1490,7 @@
                 });
                 newestCustomer['employee_name'] = this.newCustomer.employee_name;
                 newestCustomer['Date_of_Registration'] = this.newCustomer.Date_of_Registration;
-                newestCustomer['employee_phone_number'] = this.newCustomer.employee_phone_number;
+                newestCustomer['employee_id'] = this.newCustomer.employee_id;
                 this.newCustomer = newestCustomer;
             }
         },
@@ -1502,6 +1502,7 @@
                     this.newCustomer = res.data.form;
                     this.newCustomer.days_of_work = [];
                     this.newCustomer.Date_of_Registration = this.$getDate();
+                    console.log(this.newCustomer.employee_id);
                 });
         },
         beforeCreate() {

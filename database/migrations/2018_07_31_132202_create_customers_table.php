@@ -16,12 +16,15 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('employee_name',50);
-            $table->integer('user_id')->unsigned();
+            $table->unsignedInteger('user_id');
+
+            /*
             $table->integer('document_id')->unsigned()->nullable();
-            $table->integer('verification_id')->unsigned()->nullable();
-            $table->string('employee_phone_number',15);
+            $table->integer('verification_id')->unsigned()->nullable();*/
+
+            $table->string('employee_id',20);
             $table->string('Date_of_Registration',20);
-            $table->integer('branch_id')->unsigned();
+            $table->unsignedInteger('branch_id');
             $table->string('first_name',20);
             $table->string('middle_name',20)->nullable();
             $table->string('last_name',20);
@@ -122,6 +125,11 @@ class CreateCustomersTable extends Migration
             $table->string('what_product_do_you_need',255);
             $table->string('what_do_you_need_it_for',255);
             $table->timestamps();
+
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('branch_id')->references('id')->on('branches');
+
         });
     }
 

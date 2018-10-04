@@ -14,7 +14,7 @@ class Customer extends Model
     {
         return [
             'employee_name' => '',
-            'employee_phone_number' => '',
+            'employee_id' => '',
             'Date_of_Registration' => '',
             'branch_id' => '',
             'first_name' => '',

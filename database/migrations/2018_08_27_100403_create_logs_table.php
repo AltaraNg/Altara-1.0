@@ -15,10 +15,13 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('staff_id');
+            $table->unsignedInteger('staff_id');
             $table->string('action');
             $table->string('description');
             $table->timestamps();
+
+            $table->foreign('staff_id')->references('staff_id')->on('users');
+
         });
     }
 

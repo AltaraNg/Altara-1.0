@@ -68,7 +68,7 @@ class User extends Authenticatable
     //user performed many actions i.e. a log means and action : user->logs
     public function logs()
     {
-        return $this->hasMany(Log::class);
+        return $this->hasMany(Log::class, 'staff_id', 'staff_id');
     }
 
     //this is to say an employee/user did many verifications : user->verifications
@@ -87,6 +87,11 @@ class User extends Authenticatable
     public function documents()
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
     }
 
 }
