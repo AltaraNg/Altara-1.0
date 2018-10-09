@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Address;
 use App\Branch;
 use App\Customer;
+use App\Document;
 use App\State;
 use App\Verification;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class CustomerController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->except('');
+        $this->middleware('auth:api')->except('getData');
     }
 
     /**
@@ -68,6 +69,18 @@ class CustomerController extends Controller
             'work_guarantor_status' => 0,
             'personal_guarantor_status' => 0,
         ]))->save();
+        (new Document([
+            'user_id' => auth('api')->user()->id,
+            'customer_id' => $customer->id,
+            'id_card' => 0,
+            'id_card_url' => '',
+            'passport' => 0,
+            'passport_url' => '',
+        ]))->save();
+
+
+
+
         return response()->json([
             'registered' => true,
             'form' => Customer::form(),
@@ -90,7 +103,7 @@ class CustomerController extends Controller
             'user' => function ($query) {
                 $query->select('id', 'full_name');
             },
-            'verification', 'address'
+            'verification', 'address','document'
         ])->where('id', $id)->first();
         if ($customer) {
             return response()->json([
