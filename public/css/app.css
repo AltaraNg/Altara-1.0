@@ -16431,7 +16431,10 @@ hr.style-two {
   opacity: 0.6;
 }
 
-#employeeEdit input, #employeeEdit textarea, #employeeEdit select,
+#index input, #index textarea, #index select,
+#employeeEdit input,
+#employeeEdit textarea,
+#employeeEdit select,
 #customerRegister input,
 #customerRegister textarea,
 #customerRegister select,
@@ -16441,12 +16444,14 @@ hr.style-two {
   border-radius: .4rem;
 }
 
+#index .text-muted,
 #employeeEdit .text-muted,
 #customerRegister .text-muted,
 #employeeRegister .text-muted {
   margin-top: .15rem;
 }
 
+#index h5,
 #employeeEdit h5,
 #customerRegister h5,
 #employeeRegister h5 {
@@ -16462,6 +16467,7 @@ hr.style-two {
   color: rgba(0, 0, 0, 0.6);
 }
 
+#index .btn-sm,
 #employeeEdit .btn-sm,
 #customerRegister .btn-sm,
 #employeeRegister .btn-sm {
@@ -16735,6 +16741,33 @@ table button i {
 .navbar-toggler {
   font-size: 2rem;
   margin-top: .3rem;
+}
+
+.upload-image {
+  min-height: 20rem;
+  min-width: 20rem;
+  margin: 0 auto;
+  background: #fafafa;
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.upload-box {
+  padding: 1rem;
+}
+
+.upload-close {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 @media (max-width: 990px) {

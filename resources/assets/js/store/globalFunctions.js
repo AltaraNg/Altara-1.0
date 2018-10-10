@@ -18,8 +18,8 @@ Vue.prototype.$getDate = function () {
     return `${year}-${month}-${day}`;
 };
 Vue.prototype.$network = function () {
-    return window.navigator.onLine;
-    //return true;
+    //return window.navigator.onLine;
+    return true;
 };
 
 Vue.prototype.$networkErr = function () {
