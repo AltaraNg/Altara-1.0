@@ -26414,10 +26414,6 @@ function applyToTag (styleElement, obj) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
-<<<<<<< HEAD
-=======
-
->>>>>>> 6341372061269d2c79e031b2e60d2c136254c8f6
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     message: '',
