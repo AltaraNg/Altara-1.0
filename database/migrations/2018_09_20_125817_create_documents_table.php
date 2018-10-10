@@ -17,9 +17,7 @@ class CreateDocumentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('customer_id');
-            $table->integer('id_card')->unsigned();
             $table->string('id_card_url')->nullable();
-            $table->integer('passport')->unsigned();
             $table->string('passport_url')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('user');

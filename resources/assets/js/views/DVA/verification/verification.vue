@@ -82,8 +82,6 @@
                     </div>
                     <div>
                         <div class="float-left col-lg-3 col-sm-6">
-                            <!--<div class="card card-stats" :class="{'success': customer.verification['passport'],
-                            'no-success': !customer.verification['passport']}">-->
                             <div class="card card-stats" :class="DivClass('passport')">
                                 <div class="card-body ">
                                     <div class="statistics statistics-horizontal">
@@ -104,7 +102,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
                                 <div class="card-footer pointer" @click="modal('passportModal')">
                                     <i class="now-ui-icons ui-1_calendar-60 pr-1"></i>
                                     {{key('passport') ? 'Verified' : 'Not Verified'}}
@@ -134,7 +131,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
                                 <div class="card-footer pointer" @click="modal('IDCardModal')">
                                     <i class="now-ui-icons ui-1_calendar-60 pr-1"></i>
                                     {{key('id_card') ? 'Verified' : 'Not Verified'}}
@@ -164,7 +160,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
                                 <div class="card-footer" @click="modal('addressModal')">
                                     <i class="now-ui-icons ui-1_calendar-60 pr-1"></i>
                                     {{key('address_status') ? 'Verified' : 'Not Verified'}}
@@ -194,7 +189,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
                                 <div class="card-footer pointer" @click="modal('WGuarantorModal')">
                                     <i class="now-ui-icons ui-1_calendar-60 pr-1"></i>
                                     {{key('work_guarantor_status') ? 'Verified' : 'Not Verified'}}
@@ -225,7 +219,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
                                 <div class="card-footer pointer" @click="modal('PGuarantorModal')">
                                     <i class="now-ui-icons ui-1_calendar-60 pr-1"></i>
                                     {{key('work_guarantor_status') ? 'Verified' : 'Not Verified'}}
@@ -252,47 +245,18 @@
                                 </span>
                             </a>
                         </div>
-                        <form @submit.prevent="updateVerification" v-if="customer">
+                        <form @submit.prevent="save('passport','passportModal')" v-if="customer">
                             <div class="modal-body">
-                                <div class="form-group col-12 float-left mt-0 mb-2">
-                                    <span class="mb-2 w-100 float-left pl-1 text-center">
-                                        Please Verify you selected the right option! before you click <br>
-                                        <strong>Save Changes </strong>!
-                                    </span>
-
-                                    <div class="radio p-0 col-6 float-left text-center">
-                                        <input v-model="verification.passport"
-                                               name="passport"
-                                               type="radio"
-                                               id="passport_yes"
-                                               value="1">
-                                        <label for="passport_yes">
-                                            Verify
-                                        </label>
-                                    </div>
-
-                                    <div class="radio p-0 col-6 float-left text-center">
-                                        <input v-model="verification.passport"
-                                               name="passport"
-                                               type="radio"
-                                               id="passport_no"
-                                               value="0">
-                                        <label for="passport_no">
-                                            Not Verified
-                                        </label>
-                                    </div>
-
+                                <div class="upload-image p-2">
+                                    <div class="upload-box"><image-upload v-model="form.passport"/></div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
                                     cancel
                                 </button>
-                                <button type="submit"
-                                        class="m-2 btn bg-default"
-                                        :disabled="$isProcessing">
-                                    Save changes
-                                    <i class="far fa-paper-plane ml-1"></i>
+                                <button type="submit" class="m-2 btn bg-default" :disabled="$isProcessing">
+                                    Save changes <i class="far fa-paper-plane ml-1"></i>
                                 </button>
                             </div>
                         </form>
@@ -314,45 +278,18 @@
                                 </span>
                             </a>
                         </div>
-                        <form @submit.prevent="updateVerification" v-if="customer">
+                        <form @submit.prevent="save('id_card','IDCardModal')" v-if="customer">
                             <div class="modal-body">
-                                <div class="form-group col-12 float-left mt-0 mb-2">
-                                    <span class="mb-2 w-100 float-left pl-1 text-center">
-                                        Please Verify you selected the right option! before you click <br>
-                                        <strong>Save Changes </strong>!
-                                    </span>
-
-                                    <div class="radio p-0 col-6 float-left text-center">
-                                        <input v-model="verification.id_card"
-                                               type="radio"
-                                               id="id_card_yes"
-                                               value="1">
-                                        <label for="id_card_yes">
-                                            Verify
-                                        </label>
-                                    </div>
-
-                                    <div class="radio p-0 col-6 float-left text-center">
-                                        <input v-model="verification.id_card"
-                                               type="radio"
-                                               id="id_card_no"
-                                               value="0">
-                                        <label for="id_card_no">
-                                            Not Verified
-                                        </label>
-                                    </div>
-
+                                <div class="upload-image p-2">
+                                    <div class="upload-box"><image-upload v-model="form.id_card"/></div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
                                     cancel
                                 </button>
-                                <button type="submit"
-                                        class="m-2 btn bg-default"
-                                        :disabled="$isProcessing">
-                                    Save changes
-                                    <i class="far fa-paper-plane ml-1"></i>
+                                <button type="submit" class="m-2 btn bg-default" :disabled="$isProcessing">
+                                    Save changes <i class="far fa-paper-plane ml-1"></i>
                                 </button>
                             </div>
                         </form>
@@ -718,11 +655,16 @@
     </transition>
 </template>
 <script>
-    import {get, post} from '../../../helpers/api';
-    import Flash from '../../../helpers/flash';
     import {log} from '../../../helpers/log';
+    import Flash from '../../../helpers/flash';
+    import {get, post} from '../../../helpers/api';
+    import {toMulipartedForm} from '../../../helpers/form';
+    import ImageUpload from '../../../components/ImageUpload';
 
     export default {
+        components: {
+            ImageUpload
+        },
         data() {
             return {
                 customer: null,
@@ -731,6 +673,13 @@
                 info_from_neighbors: '',
                 addressQuestionnaire: {},
                 verification: {},
+                form: {
+                    id_card:'',
+                    passport:'',
+                    document: '',
+                },
+                error: {},
+                storeURL: '',
             }
         },
         methods: {
@@ -751,7 +700,7 @@
                     'success': this.key(key), 'no-success': !this.key(key)
                 }
             },
-            returnToInitialValues(){
+            returnToInitialValues() {
                 this.verification = JSON.parse(JSON.stringify(this.customer.verification));
             },
             buttonStatus(data) {
@@ -766,12 +715,14 @@
                 }
             },
             fetchCustomer() {
-                if(this.$network()){
+                if (this.$network()) {
                     this.$LIPS(true);
                     get('api/customer/' + this.customer_id)
                         .then(res => {
                             this.buttonStatus(res.data);
                             this.$LIPS(false);
+                            this.form.id_card = res.data.customer.document.id_card_url;
+                            this.form.passport = res.data.customer.document.passport_url;
                         })
                         .catch(err => {
                             this.$LIPS(false);
@@ -783,12 +734,12 @@
                                 Flash.setError('Error trying to get customer details please try again shortly!');
                             }
                         })
-                }else{
+                } else {
                     this.$networkErr();
                 }
             },
             validateAddress() {
-                if(this.$network()){
+                if (this.$network()) {
                     this.$LIPS(true);
                     (this.info_from_neighbors === 'no') ? this.addressQuestionnaire.info_from_neighbors_desc = '' : '';
                     this.addressQuestionnaire.customer_id = this.customer.id;
@@ -813,12 +764,12 @@
                     this.modal('addressModal');
                     this.$LIPS(false);
                     this.$scrollToTop();
-                }else{
+                } else {
                     this.$networkErr();
                 }
             },
             updateVerification() {
-                if(this.$network()){
+                if (this.$network()) {
                     this.$LIPS(true);
                     post('/api/verification/', this.verification)
                         .then((res) => {
@@ -834,9 +785,33 @@
                     $('.modal').modal('hide');
                     this.$LIPS(false);
                     this.$scrollToTop();
-                }else{
+                } else {
                     this.$networkErr();
                 }
+            },
+            save(document, modal) {
+                this.storeURL = `api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
+                this.$LIPS(true);
+                this.form.document = document;
+                const form = toMulipartedForm(this.form, 'edit');
+                post(this.storeURL, form).then((res) => {
+                    if (res.data.saved) {
+                        this.customer.document = res.data.document;
+                        this.customer.verification = res.data.verification;
+                        log('Customer' + this.$options.filters.capitalize(document) + 'Upload',
+                            'Customer ID : ' + String(this.customer.id));
+                        this.modal(modal);
+                        this.$LIPS(false);
+                        this.$scrollToTop();
+                        Flash.setSuccess(res.data.message);
+                    }
+                }).catch((err) => {
+                    if (err.response.status === 422) {
+                        this.error = err.response.data.errors;
+                        this.$LIPS(false);
+                        this.$scrollToTop();
+                    }
+                })
             },
         },
         computed: {
@@ -844,93 +819,30 @@
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
             },
         },
-        watch:{},
-        mounted(){
+        watch: {},
+        mounted() {
             $(document).on("hidden.bs.modal", '.modal', this.returnToInitialValues);
         },
     }
 </script>
 <style scoped type="scss">
-    .card .card-body {
-        min-height : unset !important;
-    }
-
-    .btn-neutral {
-        color      : #09588a !important;
-        border     : 1px solid #09588a !important;
-        transform  : translateY(0px);
-        transition : all .3s;
-        &:hover {
-            color     : lighten(#09588a, 0.9) !important;
-            border    : 1px solid lighten(#09588a, 0.9) !important;
-            transform : translateY(2px);
-        }
-    }
-
     .card-stats .icon {
-        display        : inline-block;
-        vertical-align : top;
-        margin         : 0 15px;
+        margin : 0 15px;
     }
 
     .info .icon.icon-circle {
-        max-width        : 70px;
-        width            : 70px;
-        height           : 70px;
-        margin           : 0 auto;
-        border-radius    : 50%;
-        //box-shadow       : 0 9px 35px -6px rgba(0, 0, 0, .3);
-        font-size        : .7142em;
-        background-color : #fff;
-        position         : relative;
-    }
-
-    .info-horizontal .icon.icon-circle {
-        width      : 65px;
-        height     : 65px;
-        max-width  : 65px;
-        margin-top : 8px;
-    }
-
-    .icon.icon-primary.icon-circle {
-        //box-shadow : 0 9px 30px -6px rgba(249, 99, 50, .5);
+        max-width     : 70px;
+        width         : 70px;
+        height        : 70px;
+        border-radius : 50%;
+        font-size     : .71em;
     }
 
     .info-horizontal .icon.icon-circle i {
         display     : table;
         margin      : 0 auto;
-        line-height : 3.5;
+        line-height : 8rem;
         font-size   : 1.9em;
-    }
-
-    .card .card-body {
-        min-height : 10px;
-    }
-
-    .card-footer {
-        padding          : .75rem 1.25rem;
-        background-color : rgba(0, 0, 0, .03);
-        border-top       : 1px solid rgba(0, 0, 0, .125);
-        & small {
-            font-size : .9rem !important;
-        }
-    }
-
-    .card .card-footer {
-        background-color : transparent;
-        border           : 0;
-    }
-
-    .card-footer:last-child {
-        border-radius : 0 0 calc(.25rem - 1px) calc(.25rem - 1px);
-    }
-
-    .card-contributions hr, .card-stats hr {
-        margin : 5px 15px;
-    }
-
-    hr {
-        margin-bottom : 0 !important;
     }
 
     .stats-title {
@@ -994,5 +906,6 @@
     .modal .form-group {
         margin-bottom : 2rem;
     }
+
 
 </style>

@@ -53,6 +53,6 @@ Route::get('/check', function (){
     //$data = Address::find(17)->customer;
     //$data = Customer::find(1)->address;
 
-    $data = Customer::with(['branch','user','verification','address'])->where('id', '=','1')->first();
+    $data = Customer::with(['branch','user','verification','address','document'])->where('id', '=','1')->first();
     return $data;
 });
