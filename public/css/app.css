@@ -16268,11 +16268,11 @@ body {
 }
 
 .alert.alert-success {
-  background-color: #00982f;
+  background-color: #00a368;
 }
 
 .alert.alert-danger {
-  background-color: orangered;
+  background-color: #c81618;
 }
 
 #appSideNav {
@@ -16392,7 +16392,7 @@ body {
 #login .col-md-12 small,
 #login .col-sm-6 small,
 #login .col-sm-12 small {
-  color: orangered;
+  color: #c81618;
   font-size: 1.1rem;
 }
 
@@ -16570,7 +16570,7 @@ a:hover, a:active, a:visited {
 
 small.text-muted {
   font-size: 1.1rem;
-  color: orangered !important;
+  color: #c81618 !important;
   float: left;
   width: 100%;
 }
@@ -16654,7 +16654,7 @@ textarea.form-control:focus {
 .custom-select.is-invalid:focus,
 textarea.form-control.is-invalid,
 textarea.form-control.is-invalid:focus {
-  border: 1px solid orangered !important;
+  border: 1px solid #c81618 !important;
 }
 
 .clear {

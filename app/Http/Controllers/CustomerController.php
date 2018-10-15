@@ -39,10 +39,6 @@ class CustomerController extends Controller
         $states = State::all();
         $form = Customer::form();
         $branches = Branch::all();
-
-        /*$form = Customer::find(1);
-        unset($form['id']);*/
-
         $form['employee_name'] = $user->full_name;
         $form['employee_id'] = $user->staff_id;
         return response()->json([

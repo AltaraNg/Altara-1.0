@@ -179,7 +179,7 @@ module.exports = function normalizeComponent (
 "use strict";
 
 
-var bind = __webpack_require__(13);
+var bind = __webpack_require__(15);
 var isBuffer = __webpack_require__(37);
 
 /*global toString:true*/
@@ -12769,10 +12769,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(14);
+    adapter = __webpack_require__(16);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(14);
+    adapter = __webpack_require__(16);
   }
   return adapter;
 }
@@ -12851,6 +12851,316 @@ module.exports = defaults;
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(66)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -23221,7 +23531,7 @@ return jQuery;
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25750,7 +26060,7 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25768,7 +26078,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25779,7 +26089,7 @@ var settle = __webpack_require__(40);
 var buildURL = __webpack_require__(42);
 var parseHeaders = __webpack_require__(43);
 var isURLSameOrigin = __webpack_require__(44);
-var createError = __webpack_require__(15);
+var createError = __webpack_require__(17);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(45);
 
 module.exports = function xhrAdapter(config) {
@@ -25955,7 +26265,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25980,7 +26290,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25992,7 +26302,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26018,7 +26328,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26099,316 +26409,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
 });
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(66)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-var options = null
-var ssrIdKey = 'data-vue-ssr-id'
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction, _options) {
-  isProduction = _isProduction
-
-  options = _options || {}
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-  if (options.ssrId) {
-    styleElement.setAttribute(ssrIdKey, obj.id)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
 /* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26440,8 +26440,8 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(23);
-__webpack_require__(141);
-module.exports = __webpack_require__(142);
+__webpack_require__(146);
+module.exports = __webpack_require__(147);
 
 
 /***/ }),
@@ -26455,12 +26455,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store_globalFunctions_js__ = __webpack_require__(140);
-window.$ = window.jQuery = __webpack_require__(11);
-window.Popper = __webpack_require__(12).default;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store_globalFunctions_js__ = __webpack_require__(145);
+window.$ = window.jQuery = __webpack_require__(13);
+window.Popper = __webpack_require__(14).default;
 __webpack_require__(24);
 
 
@@ -26488,7 +26488,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(11), __webpack_require__(12)) :
+   true ? factory(exports, __webpack_require__(13), __webpack_require__(14)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -31217,7 +31217,7 @@ module.exports = __webpack_require__(36);
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(13);
+var bind = __webpack_require__(15);
 var Axios = __webpack_require__(38);
 var defaults = __webpack_require__(10);
 
@@ -31252,9 +31252,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(17);
+axios.Cancel = __webpack_require__(19);
 axios.CancelToken = __webpack_require__(52);
-axios.isCancel = __webpack_require__(16);
+axios.isCancel = __webpack_require__(18);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -31407,7 +31407,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(15);
+var createError = __webpack_require__(17);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -31840,7 +31840,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(49);
-var isCancel = __webpack_require__(16);
+var isCancel = __webpack_require__(18);
 var defaults = __webpack_require__(10);
 var isAbsoluteURL = __webpack_require__(50);
 var combineURLs = __webpack_require__(51);
@@ -32000,7 +32000,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(17);
+var Cancel = __webpack_require__(19);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -32351,7 +32351,7 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_flash__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_router_back_button__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_router_back_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_router_back_button__);
@@ -32377,25 +32377,25 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_DVA_verification_verification_vue__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_DVA_verification_verification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__views_DVA_verification_verification_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_profile_Index_vue__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_profile_Index_vue__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_profile_Index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__views_profile_Index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_profile_Edit_vue__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_profile_Edit_vue__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_profile_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__views_profile_Edit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_profile_HomePage_vue__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_profile_HomePage_vue__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_profile_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__views_profile_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_HRM_index_vue__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_HRM_index_vue__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_HRM_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__views_HRM_index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_HRM_HomePage_vue__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_HRM_HomePage_vue__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_HRM_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__views_HRM_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_HRM_employee_Manager_vue__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_HRM_employee_Manager_vue__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_HRM_employee_Manager_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__views_HRM_employee_Manager_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Register_vue__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Register_vue__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Register_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__views_FSL_index_vue__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__views_FSL_index_vue__ = __webpack_require__(134);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__views_FSL_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__views_FSL_index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_HomePage_vue__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_HomePage_vue__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__views_FSL_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_inventory_view_vue__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_inventory_view_vue__ = __webpack_require__(140);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_inventory_view_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__views_FSL_inventory_view_vue__);
 
 
@@ -36737,7 +36737,7 @@ var content = __webpack_require__(65);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(20)("c45b7dc6", content, false, {});
+var update = __webpack_require__(12)("c45b7dc6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -36756,7 +36756,7 @@ if(false) {
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(19)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -48039,7 +48039,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(99)
 /* template */
-var __vue_template__ = __webpack_require__(107)
+var __vue_template__ = __webpack_require__(112)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48088,7 +48088,7 @@ var content = __webpack_require__(98);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(20)("2ff160b8", content, false, {});
+var update = __webpack_require__(12)("2ff160b8", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -48107,12 +48107,12 @@ if(false) {
 /* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(19)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n.card-stats .icon[data-v-07317a72] {\n    margin : 0 15px;\n}\n.info .icon.icon-circle[data-v-07317a72] {\n    max-width     : 70px;\n    width         : 70px;\n    height        : 70px;\n    border-radius : 50%;\n    font-size     : .71em;\n}\n.info-horizontal .icon.icon-circle i[data-v-07317a72] {\n    display     : table;\n    margin      : 0 auto;\n    line-height : 7.8rem;\n    font-size   : 2.4em;\n    z-index     : 1;\n    position    : relative;\n}\n.stats-title[data-v-07317a72] {\n    font-weight : 300;\n    font-size   : 1.2rem;\n}\n.card-footer[data-v-07317a72]:hover {\n    background-image : -webkit-gradient(linear, left top, left bottom, from(rgb(255, 255, 255)), to(#eeeeee));\n    background-image : linear-gradient(to bottom, rgb(255, 255, 255), #eeeeee);\n}\nh4.info-title[data-v-07317a72] {\n    margin    : 0;\n    font-size : 2.2rem;\n}\n.no-success .icon.icon-warning.icon-circle[data-v-07317a72] {\n    border     : 1px solid #b30000;\n    -webkit-box-shadow : 0 9px 15px -6px rgba(179, 0, 0, 0.5) !important;\n            box-shadow : 0 9px 15px -6px rgba(179, 0, 0, 0.5) !important;\n}\n.success .icon.icon-warning.icon-circle[data-v-07317a72] {\n    border     : 1px solid #488413;\n    -webkit-box-shadow : 0 9px 15px -6px rgba(72, 132, 19, 0.5) !important;\n            box-shadow : 0 9px 15px -6px rgba(72, 132, 19, 0.5) !important;\n}\n.card.card-stats[data-v-07317a72]::before {\n    content  : '';\n    width    : 4px;\n    height   : 100%;\n    position : absolute;\n    left     : 0;\n    top      : 0;\n    float    : right;\n}\n.success[data-v-07317a72]::before {\n    background : linear-gradient(45deg, #8ef985 0%, #01af13 100%);\n}\n.no-success[data-v-07317a72]::before {\n    background : linear-gradient(45deg, #ff9b83 0%, #a40000 100%);\n}\n.success i[data-v-07317a72] {\n    color : #63b61a;\n}\n.no-success i[data-v-07317a72] {\n    color : #c70000;\n}\n.modal label[data-v-07317a72] {\n    font-weight : 600;\n}\n.modal small[data-v-07317a72] {\n    margin-top : 0;\n}\n.modal .form-group[data-v-07317a72] {\n    margin-bottom : 2rem;\n}\n.thumbnail[data-v-07317a72] {\n    z-index             : 0;\n    width               : 100%;\n    height              : 100%;\n    background-size     : cover;\n    background-position : center;\n    position            : absolute;\n    background-repeat   : no-repeat;\n}\n.icon.icon-warning.icon-circle[data-v-07317a72] {\n    overflow : hidden;\n}\n", ""]);
+exports.push([module.i, "\n.card-stats .icon[data-v-07317a72] {\n        margin : 0 15px;\n}\n.info .icon.icon-circle[data-v-07317a72] {\n        max-width     : 70px;\n        width         : 70px;\n        height        : 70px;\n        border-radius : 50%;\n        font-size     : .71em;\n}\n.info-horizontal .icon.icon-circle i[data-v-07317a72] {\n        display     : table;\n        margin      : 0 auto;\n        line-height : 7.8rem;\n        font-size   : 2.4em;\n        z-index     : 1;\n        position    : relative;\n}\n.stats-title[data-v-07317a72] {\n        font-weight : 300;\n        font-size   : 1.2rem;\n}\n.card-footer[data-v-07317a72]:hover {\n        background-image : -webkit-gradient(linear, left top, left bottom, from(rgb(255, 255, 255)), to(#eeeeee));\n        background-image : linear-gradient(to bottom, rgb(255, 255, 255), #eeeeee);\n}\nh4.info-title[data-v-07317a72] {\n        margin    : 0;\n        font-size : 2.2rem;\n}\n.no-success .icon.icon-warning.icon-circle[data-v-07317a72] {\n        border     : 1px solid #b30000;\n        -webkit-box-shadow : 0 9px 15px -6px rgba(179, 0, 0, 0.5) !important;\n                box-shadow : 0 9px 15px -6px rgba(179, 0, 0, 0.5) !important;\n}\n.success .icon.icon-warning.icon-circle[data-v-07317a72] {\n        border     : 1px solid #488413;\n        -webkit-box-shadow : 0 9px 15px -6px rgba(72, 132, 19, 0.5) !important;\n                box-shadow : 0 9px 15px -6px rgba(72, 132, 19, 0.5) !important;\n}\n.card.card-stats[data-v-07317a72]::before {\n        content  : '';\n        width    : 4px;\n        height   : 100%;\n        position : absolute;\n        left     : 0;\n        top      : 0;\n        float    : right;\n}\n.success[data-v-07317a72]::before {\n        background : linear-gradient(45deg, #8ef985 0%, #01af13 100%);\n}\n.no-success[data-v-07317a72]::before {\n        background : linear-gradient(45deg, #ff9b83 0%, #a40000 100%);\n}\n.success i[data-v-07317a72] {\n        color : #63b61a;\n}\n.no-success i[data-v-07317a72] {\n        color : #c70000;\n}\n.modal label[data-v-07317a72] {\n        font-weight : 600;\n}\n.modal small[data-v-07317a72] {\n        margin-top : 0;\n}\n.modal .form-group[data-v-07317a72] {\n        margin-bottom : 2rem;\n}\n\n    /*.thumbnail {\n        z-index             : 0;\n        width               : 100%;\n        height              : 100%;\n        background-size     : cover;\n        background-position : center;\n        position            : absolute;\n        background-repeat   : no-repeat;\n    }\n*/\n.icon.icon-warning.icon-circle[data-v-07317a72] {\n        overflow : hidden;\n}\n", ""]);
 
 // exports
 
@@ -48129,6 +48129,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_form__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customerProfile__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customerProfile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_customerProfile__);
 //
 //
 //
@@ -48795,6 +48797,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -48804,7 +48821,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
-        ImageUpload: __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default.a
+        ImageUpload: __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default.a,
+        CustomerProfile: __WEBPACK_IMPORTED_MODULE_5__components_customerProfile___default.a
     },
     data: function data() {
         return {
@@ -49282,6 +49300,400 @@ if (false) {
 /* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(108)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(110)
+/* template */
+var __vue_template__ = __webpack_require__(111)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\customerProfile.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3b07ec64", Component.options)
+  } else {
+    hotAPI.reload("data-v-3b07ec64", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(109);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(12)("4032e8c9", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b07ec64\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./customerProfile.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b07ec64\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./customerProfile.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(11)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\ntable {\n    margin-top : 1.5rem;\n}\nth {\n    width       : 20%;\n    font-weight : normal;\n}\ntd, .data {\n    font-size   : 1.6rem;\n    font-weight : 400;\n}\n.status {\n    padding       : 1.5rem 4rem;\n    float         : left;\n    margin        : 2rem 4rem;\n    color         : white;\n    border-radius : .5rem;\n    -webkit-box-shadow    : 0px 5px 25px 0px rgba(0, 0, 0, 0.2);\n            box-shadow    : 0px 5px 25px 0px rgba(0, 0, 0, 0.2);\n    font-weight   : 700;\n    font-size     : 1.6rem;\n}\n.status.approved {\n    background-color : rgb(0, 163, 104);\n}\n.status.not-approved {\n    background-color : rgb(200, 22, 24);\n}\n.design {\n    position   : absolute;\n    top        : 15rem;\n    bottom     : 0;\n    left       : 0;\n    width      : 101%;\n    height     : calc(100% - 10.1rem);\n    z-index    : 0;\n    background : linear-gradient(45deg, #dedede 0%, #ffffff 100%);\n}\n.profile-picture {\n    height     : 19rem;\n    width      : 19rem;\n    -webkit-box-shadow : 0px 5px 25px 0px rgba(0, 0, 0, 0.2);\n            box-shadow : 0px 5px 25px 0px rgba(0, 0, 0, 0.2);\n}\n.z-1 {\n    z-index : 1;\n}\n.img-border {\n    padding          : 1.5rem;\n    background-color : white;\n    border-radius    : 50%;\n}\n.separator {\n    position         : absolute;\n    left             : 50%;\n    height           : 70%;\n    width            : 1px;\n    background-color : rgba(0, 0, 0, 0.1);\n    top              : 3%;\n}\n.no-image {\n    height           : 19rem;\n    width            : 19rem;\n    background-color : #e3e3e3;\n    border-radius    : 50%;\n    line-height      : 19rem;\n    text-align       : center;\n    font-size        : 10rem;\n    color            : rgba(0, 0, 0, 0.15);\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 110 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    },
+
+    props: {
+        customer: ''
+    },
+    methods: {},
+    computed: {
+        approved: function approved() {
+            if (this.customer.verification.id_card === 1 && this.customer.verification.passport === 1 && this.customer.verification.address_status === 1 && this.customer.verification.work_guarantor_status === 1 && this.customer.verification.personal_guarantor_status === 1) {
+                return true;
+            } else {
+                return false;
+            };
+        }
+    }
+});
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "px-3" }, [
+    _c("div", { staticClass: "card position-relative" }, [
+      _c("div", { staticClass: "design" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4 col-12 px-0 pb-4 pt-5 float-left" }, [
+        _c("div", { staticClass: "pt-3" }, [
+          _c(
+            "div",
+            {
+              staticClass: "justify-content-center d-flex position-relative z-1"
+            },
+            [
+              _c("span", { staticClass: "img-border" }, [
+                _vm.customer.document.passport_url
+                  ? _c("img", {
+                      staticClass: "profile-picture rounded-circle",
+                      attrs: {
+                        src: "/images/" + _vm.customer.document.passport_url,
+                        alt: "customer profile pic"
+                      }
+                    })
+                  : _c("i", { staticClass: "no-image fas fa-user-alt" })
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "justify-content-center d-flex position-relative z-1 pt-4"
+            },
+            [
+              _c("span", { staticClass: "w-50" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "text-right px-4 py-3 text-light text-muted m-0"
+                  },
+                  [_vm._v("Status")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "data text-right px-4 py-3 m-0" }, [
+                  _vm._v(
+                    _vm._s(_vm._f("capitalize")(_vm.customer.employment_status))
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "separator" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "w-50" }, [
+                _c(
+                  "div",
+                  { staticClass: "px-4 py-3 text-muted text-light m-0" },
+                  [_vm._v("Gender")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "data px-4 py-3 m-0" }, [
+                  _vm._v(_vm._s(_vm._f("capitalize")(_vm.customer.gender)))
+                ])
+              ])
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-8 col-12 px-0 pb-4 pt-5 float-left" }, [
+        _c("div", { staticClass: "pt-4 clearfix" }, [
+          _c("div", { staticClass: "float-left p-0 m-0 col-md-4" }, [
+            _c("h3", { staticClass: "pt-5" }, [
+              _c("strong", [
+                _vm._v(
+                  _vm._s(
+                    _vm._f("capitalize")(
+                      _vm.customer.first_name + " " + _vm.customer.last_name
+                    )
+                  )
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "float-left p-0 m-0 col-md-4" }, [
+            _c(
+              "h3",
+              {
+                staticClass: "pt-5",
+                staticStyle: { color: "rgba(0,0,0,0.5)" }
+              },
+              [
+                _c("strong", [
+                  _vm._v("Customer ID: " + _vm._s(_vm.customer.id))
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "float-left p-0 m-0 col-md-4" }, [
+            _vm.approved
+              ? _c("span", { staticClass: "status approved shadow-sm " }, [
+                  _vm._v("APPROVED\n                        "),
+                  _c("i", { staticClass: "ml-3 fas fa-check" })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.approved
+              ? _c("span", { staticClass: "status not-approved shadow-sm" }, [
+                  _vm._v("NOT APPROVED\n                        "),
+                  _c("i", { staticClass: "ml-3 fas fa-times" })
+                ])
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "pt-5" }, [
+          _c("table", { staticClass: "table" }, [
+            _c("tbody", [
+              _c("tr", [
+                _c("th", { staticClass: "text-muted" }, [
+                  _vm._v("Phone Number")
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.customer.telephone))])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { staticClass: "text-muted" }, [_vm._v("Address")]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(
+                        _vm._f("capitalize")(
+                          _vm.customer.add_houseno +
+                            ", " +
+                            _vm.customer.add_street +
+                            ", " +
+                            _vm.customer.area_address +
+                            ", " +
+                            _vm.customer.city +
+                            ", " +
+                            _vm.customer.state +
+                            ", "
+                        )
+                      ) +
+                      "\n                        "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { staticClass: "text-muted" }, [
+                  _vm._v("Member since")
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.customer.Date_of_Registration))])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("th", { staticClass: "text-muted" }, [
+                  _vm._v("Registered By")
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(_vm._f("capitalize")(_vm.customer.user.full_name))
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3b07ec64", module.exports)
+  }
+}
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -49407,683 +49819,560 @@ var render = function() {
         _vm._v(" "),
         _c("transition", { attrs: { name: "fade" } }, [
           !!_vm.customer
-            ? _c("div", [
-                _c("div", { staticClass: "px-3" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body p-4" }, [
-                      _c("h5", { staticClass: "card-title mb-4" }, [
-                        _c("span", [
-                          _c(
-                            "small",
-                            { staticStyle: { "font-size": "1rem" } },
-                            [_vm._v("Customer's Name :")]
-                          ),
-                          _vm._v(
-                            "\n                                    " +
-                              _vm._s(
-                                _vm._f("capitalize")(
-                                  _vm.customer.first_name +
-                                    " " +
-                                    _vm.customer.last_name
-                                )
-                              ) +
-                              "\n                                "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "float-right" }, [
-                          _c(
-                            "small",
-                            { staticStyle: { "font-size": "1rem" } },
-                            [_vm._v("Registered by: ")]
-                          ),
-                          _vm._v(
-                            "\n                                    " +
-                              _vm._s(
-                                _vm._f("capitalize")(
-                                  _vm.customer.user.full_name
-                                )
-                              ) +
-                              "\n                                "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
+            ? _c(
+                "div",
+                [
+                  _c("customer-profile", { attrs: { customer: _vm.customer } }),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
                       _c(
-                        "table",
-                        { staticClass: "table  table-responsive m-0" },
+                        "div",
+                        {
+                          staticClass: "card card-stats",
+                          class: _vm.DivClass("passport")
+                        },
                         [
-                          _c("thead", [
-                            _c("tr", [
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Customer ID")
-                              ]),
-                              _vm._v(" "),
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Phone Number")
-                              ]),
-                              _vm._v(" "),
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Gender")
-                              ]),
-                              _vm._v(" "),
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Employment Status")
-                              ]),
-                              _vm._v(" "),
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Date Registered")
-                              ]),
-                              _vm._v(" "),
-                              _c("th", { attrs: { scope: "col" } }, [
-                                _vm._v("Address")
-                              ])
-                            ])
+                          _c("div", { staticClass: "card-body " }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "statistics statistics-horizontal"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "info info-horizontal" },
+                                  [
+                                    _c("div", { staticClass: "row" }, [
+                                      _c("div", { staticClass: "col-4" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "icon icon-warning icon-circle position-relative"
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fas",
+                                              class: _vm.IconClass("passport")
+                                            })
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "col-8 text-right" },
+                                        [
+                                          _c(
+                                            "h4",
+                                            {
+                                              staticClass:
+                                                "info-title font-weight-bold mb-0"
+                                            },
+                                            [_vm._v("Passport")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "h6",
+                                            { staticClass: "stats-title" },
+                                            [
+                                              _vm._v(
+                                                "\n                                                    " +
+                                                  _vm._s(
+                                                    _vm.key("passport")
+                                                      ? "Uploaded"
+                                                      : "Not Uploaded"
+                                                  ) +
+                                                  "\n                                                "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  ]
+                                )
+                              ]
+                            )
                           ]),
                           _vm._v(" "),
-                          _c("tbody", [
-                            _c("tr", [
-                              _c("td", [_vm._v(_vm._s(_vm.customer.id))]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(_vm._s(_vm.customer.telephone))
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(
+                          _c(
+                            "div",
+                            {
+                              staticClass: "card-footer pointer",
+                              on: {
+                                click: function($event) {
+                                  _vm.modal("passportModal")
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "now-ui-icons ui-1_calendar-60 pr-1"
+                              }),
+                              _vm._v(
+                                "\n                                " +
                                   _vm._s(
-                                    _vm._f("capitalize")(_vm.customer.gender)
-                                  )
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm._f("capitalize")(
-                                      _vm.customer.employment_status
-                                    )
-                                  )
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(
-                                  _vm._s(_vm.customer.Date_of_Registration)
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(
-                                      _vm._f("capitalize")(
-                                        _vm.customer.add_houseno +
-                                          ", " +
-                                          _vm.customer.add_street +
-                                          ", " +
-                                          _vm.customer.area_address +
-                                          ", " +
-                                          _vm.customer.city +
-                                          ", " +
-                                          _vm.customer.state +
-                                          ", "
-                                      )
-                                    ) +
-                                    "\n                                    "
-                                )
+                                    _vm.key("passport")
+                                      ? "Verified"
+                                      : "Not Verified"
+                                  ) +
+                                  "\n                                "
+                              ),
+                              _c("small", [
+                                _vm._v("(Click here to update status!)")
                               ])
-                            ])
-                          ])
+                            ]
+                          )
                         ]
                       )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card card-stats",
-                        class: _vm.DivClass("passport")
-                      },
-                      [
-                        _c("div", { staticClass: "card-body " }, [
-                          _c(
-                            "div",
-                            { staticClass: "statistics statistics-horizontal" },
-                            [
-                              _c(
-                                "div",
-                                { staticClass: "info info-horizontal" },
-                                [
-                                  _c("div", { staticClass: "row" }, [
-                                    _c("div", { staticClass: "col-4" }, [
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card card-stats",
+                          class: _vm.DivClass("id_card")
+                        },
+                        [
+                          _c("div", { staticClass: "card-body" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "statistics statistics-horizontal"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "info info-horizontal" },
+                                  [
+                                    _c("div", { staticClass: "row" }, [
+                                      _c("div", { staticClass: "col-4" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "icon icon-warning icon-circle"
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fas",
+                                              class: _vm.IconClass("id_card")
+                                            })
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
-                                        {
-                                          staticClass:
-                                            "icon icon-warning icon-circle position-relative"
-                                        },
+                                        { staticClass: "col-8 text-right" },
                                         [
-                                          _vm.form.passport
-                                            ? _c("div", {
-                                                staticClass: "thumbnail",
-                                                style: {
-                                                  backgroundImage:
-                                                    "url(images/" +
-                                                    _vm.form.passport +
-                                                    ")"
-                                                }
-                                              })
-                                            : _vm._e(),
+                                          _c(
+                                            "h4",
+                                            {
+                                              staticClass:
+                                                "info-title font-weight-bold mb-0"
+                                            },
+                                            [_vm._v("ID Card")]
+                                          ),
                                           _vm._v(" "),
-                                          _c("i", {
-                                            staticClass: "fas",
-                                            class: _vm.IconClass("passport")
-                                          })
+                                          _c(
+                                            "h6",
+                                            { staticClass: "stats-title" },
+                                            [
+                                              _vm._v(
+                                                "\n                                                    " +
+                                                  _vm._s(
+                                                    _vm.key("id_card")
+                                                      ? "Uploaded"
+                                                      : "Not Uploaded"
+                                                  ) +
+                                                  "\n                                                "
+                                              )
+                                            ]
+                                          )
                                         ]
                                       )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "col-8 text-right" },
-                                      [
-                                        _c(
-                                          "h4",
-                                          {
-                                            staticClass:
-                                              "info-title font-weight-bold mb-0"
-                                          },
-                                          [_vm._v("Passport")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "h6",
-                                          { staticClass: "stats-title" },
-                                          [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(
-                                                  _vm.key("passport")
-                                                    ? "Uploaded"
-                                                    : "Not Uploaded"
-                                                ) +
-                                                "\n                                                "
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ])
-                                ]
-                              )
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card-footer pointer",
-                            on: {
-                              click: function($event) {
-                                _vm.modal("passportModal")
-                              }
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "now-ui-icons ui-1_calendar-60 pr-1"
-                            }),
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm.key("passport")
-                                    ? "Verified"
-                                    : "Not Verified"
-                                ) +
-                                "\n                                "
-                            ),
-                            _c("small", [
-                              _vm._v("(Click here to update status!)")
-                            ])
-                          ]
-                        )
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card card-stats",
-                        class: _vm.DivClass("id_card")
-                      },
-                      [
-                        _c("div", { staticClass: "card-body" }, [
+                                    ])
+                                  ]
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "statistics statistics-horizontal" },
+                            {
+                              staticClass: "card-footer pointer",
+                              on: {
+                                click: function($event) {
+                                  _vm.modal("IDCardModal")
+                                }
+                              }
+                            },
                             [
-                              _c(
-                                "div",
-                                { staticClass: "info info-horizontal" },
-                                [
-                                  _c("div", { staticClass: "row" }, [
-                                    _c("div", { staticClass: "col-4" }, [
+                              _c("i", {
+                                staticClass:
+                                  "now-ui-icons ui-1_calendar-60 pr-1"
+                              }),
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    _vm.key("id_card")
+                                      ? "Verified"
+                                      : "Not Verified"
+                                  ) +
+                                  "\n                                "
+                              ),
+                              _c("small", [
+                                _vm._v("(Click here to update status!)")
+                              ])
+                            ]
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card card-stats",
+                          class: _vm.DivClass("address_status")
+                        },
+                        [
+                          _c("div", { staticClass: "card-body" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "statistics statistics-horizontal"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "info info-horizontal" },
+                                  [
+                                    _c("div", { staticClass: "row" }, [
+                                      _c("div", { staticClass: "col-4" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "icon icon-warning icon-circle"
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fas",
+                                              class: _vm.IconClass(
+                                                "address_status"
+                                              )
+                                            })
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         {
                                           staticClass:
-                                            "icon icon-warning icon-circle"
+                                            "col-8 text-right pointer"
                                         },
                                         [
-                                          _c("i", {
-                                            staticClass: "fas",
-                                            class: _vm.IconClass("id_card")
-                                          })
+                                          _c(
+                                            "h4",
+                                            {
+                                              staticClass:
+                                                "info-title font-weight-bold mb-0"
+                                            },
+                                            [_vm._v("Address")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "h6",
+                                            { staticClass: "stats-title" },
+                                            [
+                                              _vm._v(
+                                                "\n                                                    " +
+                                                  _vm._s(
+                                                    _vm.key("address_status")
+                                                      ? "Verified"
+                                                      : "Not Verified"
+                                                  ) +
+                                                  "\n                                                "
+                                              )
+                                            ]
+                                          )
                                         ]
                                       )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "col-8 text-right" },
-                                      [
-                                        _c(
-                                          "h4",
-                                          {
-                                            staticClass:
-                                              "info-title font-weight-bold mb-0"
-                                          },
-                                          [_vm._v("ID Card")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "h6",
-                                          { staticClass: "stats-title" },
-                                          [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(
-                                                  _vm.key("id_card")
-                                                    ? "Uploaded"
-                                                    : "Not Uploaded"
-                                                ) +
-                                                "\n                                                "
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ])
-                                ]
-                              )
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card-footer pointer",
-                            on: {
-                              click: function($event) {
-                                _vm.modal("IDCardModal")
-                              }
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "now-ui-icons ui-1_calendar-60 pr-1"
-                            }),
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm.key("id_card")
-                                    ? "Verified"
-                                    : "Not Verified"
-                                ) +
-                                "\n                                "
-                            ),
-                            _c("small", [
-                              _vm._v("(Click here to update status!)")
-                            ])
-                          ]
-                        )
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card card-stats",
-                        class: _vm.DivClass("address_status")
-                      },
-                      [
-                        _c("div", { staticClass: "card-body" }, [
+                                    ])
+                                  ]
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "statistics statistics-horizontal" },
+                            {
+                              staticClass: "card-footer",
+                              on: {
+                                click: function($event) {
+                                  _vm.modal("addressModal")
+                                }
+                              }
+                            },
                             [
-                              _c(
-                                "div",
-                                { staticClass: "info info-horizontal" },
-                                [
-                                  _c("div", { staticClass: "row" }, [
-                                    _c("div", { staticClass: "col-4" }, [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "icon icon-warning icon-circle"
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fas",
-                                            class: _vm.IconClass(
-                                              "address_status"
-                                            )
-                                          })
-                                        ]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass: "col-8 text-right pointer"
-                                      },
-                                      [
-                                        _c(
-                                          "h4",
-                                          {
-                                            staticClass:
-                                              "info-title font-weight-bold mb-0"
-                                          },
-                                          [_vm._v("Address")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "h6",
-                                          { staticClass: "stats-title" },
-                                          [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(
-                                                  _vm.key("address_status")
-                                                    ? "Verified"
-                                                    : "Not Verified"
-                                                ) +
-                                                "\n                                                "
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ])
-                                ]
-                              )
+                              _c("i", {
+                                staticClass:
+                                  "now-ui-icons ui-1_calendar-60 pr-1"
+                              }),
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    _vm.key("address_status")
+                                      ? "Verified"
+                                      : "Not Verified"
+                                  ) +
+                                  "\n                                "
+                              ),
+                              _c("small", [
+                                _vm._v("(Click here to update status!)")
+                              ])
                             ]
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card-footer",
-                            on: {
-                              click: function($event) {
-                                _vm.modal("addressModal")
-                              }
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "now-ui-icons ui-1_calendar-60 pr-1"
-                            }),
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm.key("address_status")
-                                    ? "Verified"
-                                    : "Not Verified"
-                                ) +
-                                "\n                                "
-                            ),
-                            _c("small", [
-                              _vm._v("(Click here to update status!)")
-                            ])
-                          ]
-                        )
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card card-stats",
-                        class: _vm.DivClass("work_guarantor_status")
-                      },
-                      [
-                        _c("div", { staticClass: "card-body " }, [
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card card-stats",
+                          class: _vm.DivClass("work_guarantor_status")
+                        },
+                        [
+                          _c("div", { staticClass: "card-body " }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "statistics statistics-horizontal"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "info info-horizontal" },
+                                  [
+                                    _c("div", { staticClass: "row" }, [
+                                      _c("div", { staticClass: "col-4" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "icon icon-warning icon-circle"
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fas",
+                                              class: _vm.IconClass(
+                                                "work_guarantor_status"
+                                              )
+                                            })
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "col-8 text-right" },
+                                        [
+                                          _c(
+                                            "h4",
+                                            {
+                                              staticClass:
+                                                "info-title font-weight-bold mb-0"
+                                            },
+                                            [_vm._v("W/Guarantor")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "h6",
+                                            { staticClass: "stats-title" },
+                                            [
+                                              _vm._v(
+                                                "\n                                                    " +
+                                                  _vm._s(
+                                                    _vm.key(
+                                                      "work_guarantor_status"
+                                                    )
+                                                      ? "Verified"
+                                                      : "Not Verified"
+                                                  ) +
+                                                  "\n                                                "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  ]
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "statistics statistics-horizontal" },
+                            {
+                              staticClass: "card-footer pointer",
+                              on: {
+                                click: function($event) {
+                                  _vm.modal("WGuarantorModal")
+                                }
+                              }
+                            },
                             [
-                              _c(
-                                "div",
-                                { staticClass: "info info-horizontal" },
-                                [
-                                  _c("div", { staticClass: "row" }, [
-                                    _c("div", { staticClass: "col-4" }, [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "icon icon-warning icon-circle"
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fas",
-                                            class: _vm.IconClass(
-                                              "work_guarantor_status"
-                                            )
-                                          })
-                                        ]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "col-8 text-right" },
-                                      [
-                                        _c(
-                                          "h4",
-                                          {
-                                            staticClass:
-                                              "info-title font-weight-bold mb-0"
-                                          },
-                                          [_vm._v("W/Guarantor")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "h6",
-                                          { staticClass: "stats-title" },
-                                          [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(
-                                                  _vm.key(
-                                                    "work_guarantor_status"
-                                                  )
-                                                    ? "Verified"
-                                                    : "Not Verified"
-                                                ) +
-                                                "\n                                                "
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ])
-                                ]
-                              )
+                              _c("i", {
+                                staticClass:
+                                  "now-ui-icons ui-1_calendar-60 pr-1"
+                              }),
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    _vm.key("work_guarantor_status")
+                                      ? "Verified"
+                                      : "Not Verified"
+                                  ) +
+                                  "\n                                "
+                              ),
+                              _c("small", [
+                                _vm._v("(Click here to update status!)")
+                              ])
                             ]
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card-footer pointer",
-                            on: {
-                              click: function($event) {
-                                _vm.modal("WGuarantorModal")
-                              }
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "now-ui-icons ui-1_calendar-60 pr-1"
-                            }),
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm.key("work_guarantor_status")
-                                    ? "Verified"
-                                    : "Not Verified"
-                                ) +
-                                "\n                                "
-                            ),
-                            _c("small", [
-                              _vm._v("(Click here to update status!)")
-                            ])
-                          ]
-                        )
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card card-stats",
-                        class: _vm.DivClass("personal_guarantor_status")
-                      },
-                      [
-                        _c("div", { staticClass: "card-body " }, [
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "float-left col-lg-3 col-sm-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card card-stats",
+                          class: _vm.DivClass("personal_guarantor_status")
+                        },
+                        [
+                          _c("div", { staticClass: "card-body " }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "statistics statistics-horizontal"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "info info-horizontal" },
+                                  [
+                                    _c("div", { staticClass: "row" }, [
+                                      _c("div", { staticClass: "col-4" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "icon icon-warning icon-circle"
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fas",
+                                              class: _vm.IconClass(
+                                                "personal_guarantor_status"
+                                              )
+                                            })
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "col-8 text-right" },
+                                        [
+                                          _c(
+                                            "h4",
+                                            {
+                                              staticClass:
+                                                "info-title font-weight-bold mb-0"
+                                            },
+                                            [_vm._v("P/Guarantor")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "h6",
+                                            { staticClass: "stats-title" },
+                                            [
+                                              _vm._v(
+                                                "\n                                                    " +
+                                                  _vm._s(
+                                                    _vm.key(
+                                                      "personal_guarantor_status"
+                                                    )
+                                                      ? "Verified"
+                                                      : "Not Verified"
+                                                  ) +
+                                                  "\n                                                "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  ]
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "statistics statistics-horizontal" },
+                            {
+                              staticClass: "card-footer pointer",
+                              on: {
+                                click: function($event) {
+                                  _vm.modal("PGuarantorModal")
+                                }
+                              }
+                            },
                             [
-                              _c(
-                                "div",
-                                { staticClass: "info info-horizontal" },
-                                [
-                                  _c("div", { staticClass: "row" }, [
-                                    _c("div", { staticClass: "col-4" }, [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "icon icon-warning icon-circle"
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fas",
-                                            class: _vm.IconClass(
-                                              "personal_guarantor_status"
-                                            )
-                                          })
-                                        ]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "col-8 text-right" },
-                                      [
-                                        _c(
-                                          "h4",
-                                          {
-                                            staticClass:
-                                              "info-title font-weight-bold mb-0"
-                                          },
-                                          [_vm._v("P/Guarantor")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "h6",
-                                          { staticClass: "stats-title" },
-                                          [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(
-                                                  _vm.key(
-                                                    "personal_guarantor_status"
-                                                  )
-                                                    ? "Verified"
-                                                    : "Not Verified"
-                                                ) +
-                                                "\n                                                "
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ])
-                                ]
-                              )
+                              _c("i", {
+                                staticClass:
+                                  "now-ui-icons ui-1_calendar-60 pr-1"
+                              }),
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    _vm.key("work_guarantor_status")
+                                      ? "Verified"
+                                      : "Not Verified"
+                                  ) +
+                                  "\n                                "
+                              ),
+                              _c("small", [
+                                _vm._v("(Click here to update status!)")
+                              ])
                             ]
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card-footer pointer",
-                            on: {
-                              click: function($event) {
-                                _vm.modal("PGuarantorModal")
-                              }
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "now-ui-icons ui-1_calendar-60 pr-1"
-                            }),
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm.key("work_guarantor_status")
-                                    ? "Verified"
-                                    : "Not Verified"
-                                ) +
-                                "\n                                "
-                            ),
-                            _c("small", [
-                              _vm._v("(Click here to update status!)")
-                            ])
-                          ]
-                        )
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("hr", { staticClass: "style-two" })
-                ])
-              ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("hr", { staticClass: "style-two" })
+                  ])
+                ],
+                1
+              )
             : _vm._e()
         ]),
         _vm._v(" "),
@@ -51626,15 +51915,15 @@ if (false) {
 }
 
 /***/ }),
-/* 108 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(109)
+var __vue_script__ = __webpack_require__(114)
 /* template */
-var __vue_template__ = __webpack_require__(110)
+var __vue_template__ = __webpack_require__(115)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51673,7 +51962,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 109 */
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51714,7 +52003,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 });
 
 /***/ }),
-/* 110 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51734,15 +52023,15 @@ if (false) {
 }
 
 /***/ }),
-/* 111 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(112)
+var __vue_script__ = __webpack_require__(117)
 /* template */
-var __vue_template__ = __webpack_require__(113)
+var __vue_template__ = __webpack_require__(118)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51781,7 +52070,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 112 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51796,7 +52085,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 113 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51825,15 +52114,15 @@ if (false) {
 }
 
 /***/ }),
-/* 114 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(115)
+var __vue_script__ = __webpack_require__(120)
 /* template */
-var __vue_template__ = __webpack_require__(116)
+var __vue_template__ = __webpack_require__(121)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51872,7 +52161,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 115 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52056,7 +52345,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 116 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52445,15 +52734,15 @@ if (false) {
 }
 
 /***/ }),
-/* 117 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(118)
+var __vue_script__ = __webpack_require__(123)
 /* template */
-var __vue_template__ = __webpack_require__(119)
+var __vue_template__ = __webpack_require__(124)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52492,7 +52781,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 118 */
+/* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52532,7 +52821,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 119 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52648,15 +52937,15 @@ if (false) {
 }
 
 /***/ }),
-/* 120 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(121)
+var __vue_script__ = __webpack_require__(126)
 /* template */
-var __vue_template__ = __webpack_require__(122)
+var __vue_template__ = __webpack_require__(127)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52695,7 +52984,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 121 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52728,7 +53017,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 122 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52820,15 +53109,15 @@ if (false) {
 }
 
 /***/ }),
-/* 123 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(124)
+var __vue_script__ = __webpack_require__(129)
 /* template */
-var __vue_template__ = __webpack_require__(125)
+var __vue_template__ = __webpack_require__(130)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52867,7 +53156,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 124 */
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53553,7 +53842,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 125 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55501,15 +55790,15 @@ if (false) {
 }
 
 /***/ }),
-/* 126 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(127)
+var __vue_script__ = __webpack_require__(132)
 /* template */
-var __vue_template__ = __webpack_require__(128)
+var __vue_template__ = __webpack_require__(133)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55548,7 +55837,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 127 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55994,7 +56283,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 128 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57334,15 +57623,15 @@ if (false) {
 }
 
 /***/ }),
-/* 129 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(130)
+var __vue_script__ = __webpack_require__(135)
 /* template */
-var __vue_template__ = __webpack_require__(131)
+var __vue_template__ = __webpack_require__(136)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57381,7 +57670,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 130 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57421,7 +57710,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 131 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57537,15 +57826,15 @@ if (false) {
 }
 
 /***/ }),
-/* 132 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(133)
+var __vue_script__ = __webpack_require__(138)
 /* template */
-var __vue_template__ = __webpack_require__(134)
+var __vue_template__ = __webpack_require__(139)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57584,7 +57873,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 133 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57608,7 +57897,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 134 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57665,15 +57954,15 @@ if (false) {
 }
 
 /***/ }),
-/* 135 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(136)
+var __vue_script__ = __webpack_require__(141)
 /* template */
-var __vue_template__ = __webpack_require__(137)
+var __vue_template__ = __webpack_require__(142)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57712,7 +58001,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 136 */
+/* 141 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57761,7 +58050,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 137 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57839,7 +58128,7 @@ if (false) {
 }
 
 /***/ }),
-/* 138 */
+/* 143 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65616,7 +65905,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 139 */
+/* 144 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65640,7 +65929,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('slug', function (value) {
 });
 
 /***/ }),
-/* 140 */
+/* 145 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65680,7 +65969,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$networkErr = function () 
 };
 
 /***/ }),
-/* 141 */
+/* 146 */
 /***/ (function(module, exports) {
 
 /*!
@@ -65910,7 +66199,7 @@ nowuiKitDemo = {
 };
 
 /***/ }),
-/* 142 */
+/* 147 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

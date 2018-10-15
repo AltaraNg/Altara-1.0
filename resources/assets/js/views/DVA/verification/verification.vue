@@ -33,9 +33,23 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+
             <transition name="fade">
                 <div v-if="!!customer">
-                    <div class="px-3">
+
+
+
+                    <!--customer profile starts here-->
+                    <customer-profile :customer="customer"/>
+                    <!--customer profile stops here-->
+
+
+
+                    <!--<div class="px-3">
                         <div class="card">
                             <div class="card-body p-4">
                                 <h5 class="card-title mb-4">
@@ -79,7 +93,7 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div>
                         <div class="float-left col-lg-3 col-sm-6">
                             <div class="card card-stats" :class="DivClass('passport')">
@@ -90,11 +104,11 @@
                                                 <div class="col-4">
                                                     <div class="icon icon-warning icon-circle position-relative">
 
-                                                        <div class="thumbnail" v-if="form.passport"
+                                                        <!--<div class="thumbnail" v-if="form.passport"
                                                              v-bind:style="{ backgroundImage: 'url(images/' +
-                                                         form.passport + ')' }">
+                                                         form.passport + ')' }">-->
 
-                                                        </div>
+                                                        <!--</div>-->
                                                         <i class="fas" :class="IconClass('passport')"></i>
                                                     </div>
                                                 </div>
@@ -670,10 +684,12 @@
     import {get, post} from '../../../helpers/api';
     import {toMulipartedForm} from '../../../helpers/form';
     import ImageUpload from '../../../components/ImageUpload';
+    import CustomerProfile from '../../../components/customerProfile';
 
     export default {
         components: {
-            ImageUpload
+            ImageUpload,
+            CustomerProfile,
         },
         data() {
             return {
@@ -921,7 +937,7 @@
         margin-bottom : 2rem;
     }
 
-    .thumbnail {
+    /*.thumbnail {
         z-index             : 0;
         width               : 100%;
         height              : 100%;
@@ -930,7 +946,7 @@
         position            : absolute;
         background-repeat   : no-repeat;
     }
-
+*/
     .icon.icon-warning.icon-circle {
         overflow : hidden;
     }
