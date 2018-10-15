@@ -16381,6 +16381,13 @@ body {
   margin-bottom: 0;
 }
 
+#login .col-md-6 input,
+#login .col-md-12 input,
+#login .col-sm-6 input,
+#login .col-sm-12 input {
+  border-right: 0 !important;
+}
+
 #login .col-md-6 small,
 #login .col-md-12 small,
 #login .col-sm-6 small,
@@ -16636,6 +16643,11 @@ textarea.form-control:focus {
   border: 1px solid #0b78bc !important;
 }
 
+#login .form-control:focus + .input-group-addon,
+#login .form-control:focus ~ .input-group-addon {
+  border-color: #0b78bc !important;
+}
+
 .form-control.is-invalid,
 .form-control.is-invalid:focus,
 .custom-select.is-invalid,
@@ -16659,10 +16671,6 @@ textarea.form-control.is-invalid:focus {
   background-image: url("../../../public/images/bg5.jpg");
 }
 
-#index i {
-  font-size: 2rem;
-}
-
 #index a#back {
   left: 0;
 }
@@ -16671,9 +16679,13 @@ textarea.form-control.is-invalid:focus {
   right: 0;
 }
 
-#index a {
+#index a#back, #index a#forward {
   margin-top: .8rem;
   position: absolute;
+}
+
+#index a#back i, #index a#forward i {
+  font-size: 2rem;
 }
 
 #index .forward, #index .back {
@@ -16792,6 +16804,9 @@ table button i {
   .modal-dialog {
     max-width: 64rem;
   }
+  #index a#back i, #index a#forward i {
+    font-size: 2.6rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -16804,8 +16819,8 @@ table button i {
   .table-responsive {
     display: block;
   }
-  a#back, a#forward, [data-title="title"] {
-    margin-top: -.5rem;
-    margin-bottom: .5rem;
+  #index a#back, #index a#forward, #index [data-title="title"] {
+    margin-top: -.3rem;
+    margin-bottom: .3rem;
   }
 }

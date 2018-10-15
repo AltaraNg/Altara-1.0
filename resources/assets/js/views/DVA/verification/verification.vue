@@ -88,7 +88,13 @@
                                         <div class="info info-horizontal">
                                             <div class="row">
                                                 <div class="col-4">
-                                                    <div class="icon icon-warning icon-circle">
+                                                    <div class="icon icon-warning icon-circle position-relative">
+
+                                                        <div class="thumbnail" v-if="form.passport"
+                                                             v-bind:style="{ backgroundImage: 'url(images/' +
+                                                         form.passport + ')' }">
+
+                                                        </div>
                                                         <i class="fas" :class="IconClass('passport')"></i>
                                                     </div>
                                                 </div>
@@ -248,7 +254,9 @@
                         <form @submit.prevent="save('passport','passportModal')" v-if="customer">
                             <div class="modal-body">
                                 <div class="upload-image p-2">
-                                    <div class="upload-box"><image-upload v-model="form.passport"/></div>
+                                    <div class="upload-box">
+                                        <image-upload v-model="form.passport"/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -281,7 +289,9 @@
                         <form @submit.prevent="save('id_card','IDCardModal')" v-if="customer">
                             <div class="modal-body">
                                 <div class="upload-image p-2">
-                                    <div class="upload-box"><image-upload v-model="form.id_card"/></div>
+                                    <div class="upload-box">
+                                        <image-upload v-model="form.id_card"/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -674,8 +684,8 @@
                 addressQuestionnaire: {},
                 verification: {},
                 form: {
-                    id_card:'',
-                    passport:'',
+                    id_card: '',
+                    passport: '',
                     document: '',
                 },
                 error: {},
@@ -798,6 +808,8 @@
                     if (res.data.saved) {
                         this.customer.document = res.data.document;
                         this.customer.verification = res.data.verification;
+                        this.form.id_card = res.data.document.id_card_url;
+                        this.form.passport = res.data.document.passport_url;
                         log('Customer' + this.$options.filters.capitalize(document) + 'Upload',
                             'Customer ID : ' + String(this.customer.id));
                         this.modal(modal);
@@ -841,13 +853,15 @@
     .info-horizontal .icon.icon-circle i {
         display     : table;
         margin      : 0 auto;
-        line-height : 8rem;
-        font-size   : 1.9em;
+        line-height : 7.8rem;
+        font-size   : 2.4em;
+        z-index     : 1;
+        position    : relative;
     }
 
     .stats-title {
         font-weight : 300;
-        font-size   : .9rem;
+        font-size   : 1.2rem;
     }
 
     .card-footer:hover {
@@ -856,7 +870,7 @@
 
     h4.info-title {
         margin    : 0;
-        font-size : 1.6rem;
+        font-size : 2.2rem;
     }
 
     .no-success .icon.icon-warning.icon-circle {
@@ -907,5 +921,17 @@
         margin-bottom : 2rem;
     }
 
+    .thumbnail {
+        z-index             : 0;
+        width               : 100%;
+        height              : 100%;
+        background-size     : cover;
+        background-position : center;
+        position            : absolute;
+        background-repeat   : no-repeat;
+    }
 
+    .icon.icon-warning.icon-circle {
+        overflow : hidden;
+    }
 </style>

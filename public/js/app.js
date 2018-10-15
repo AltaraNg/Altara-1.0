@@ -26440,8 +26440,8 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(23);
-__webpack_require__(137);
-module.exports = __webpack_require__(138);
+__webpack_require__(141);
+module.exports = __webpack_require__(142);
 
 
 /***/ }),
@@ -26456,9 +26456,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(134);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store_globalFunctions_js__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store_globalFunctions_js__ = __webpack_require__(140);
 window.$ = window.jQuery = __webpack_require__(11);
 window.Popper = __webpack_require__(12).default;
 __webpack_require__(24);
@@ -32221,7 +32221,7 @@ var render = function() {
                                     _c(
                                       "router-link",
                                       {
-                                        staticClass: "dropdown-item",
+                                        staticClass: "dropdown-item p-4",
                                         attrs: { to: "/user/profile" }
                                       },
                                       [
@@ -32238,7 +32238,7 @@ var render = function() {
                                     _c(
                                       "span",
                                       {
-                                        staticClass: "dropdown-item",
+                                        staticClass: "dropdown-item p-4",
                                         on: {
                                           click: function($event) {
                                             $event.stopPropagation()
@@ -32375,27 +32375,27 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_DVA_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__views_DVA_index_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue__ = __webpack_require__(93);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_DVA_verification_verification_vue__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_DVA_verification_verification_vue__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_DVA_verification_verification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__views_DVA_verification_verification_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_profile_Index_vue__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_profile_Index_vue__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_profile_Index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__views_profile_Index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_profile_Edit_vue__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_profile_Edit_vue__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_profile_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__views_profile_Edit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_profile_HomePage_vue__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_profile_HomePage_vue__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_profile_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__views_profile_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_HRM_index_vue__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_HRM_index_vue__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_HRM_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__views_HRM_index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_HRM_HomePage_vue__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_HRM_HomePage_vue__ = __webpack_require__(120);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_HRM_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__views_HRM_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_HRM_employee_Manager_vue__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_HRM_employee_Manager_vue__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_HRM_employee_Manager_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__views_HRM_employee_Manager_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Register_vue__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Register_vue__ = __webpack_require__(126);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Register_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__views_FSL_index_vue__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__views_FSL_index_vue__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__views_FSL_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__views_FSL_index_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_HomePage_vue__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_HomePage_vue__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__views_FSL_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_inventory_view_vue__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_inventory_view_vue__ = __webpack_require__(135);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_inventory_view_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__views_FSL_inventory_view_vue__);
 
 
@@ -38197,7 +38197,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn btn-block bg-default",
+                        staticClass: "btn btn-block btn-lg bg-default",
                         attrs: { type: "submit", disabled: _vm.$isProcessing }
                       },
                       [
@@ -38432,6 +38432,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -38509,7 +38511,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "card-body p-5" }, [
+    _c("div", { staticClass: "card-body p-4 p-md-5" }, [
       _c("div", { staticClass: "clearfix w-100" }, [
         _c(
           "div",
@@ -38650,13 +38652,13 @@ var render = function() {
           "div",
           {
             staticClass:
-              "form-group col-md-2 col-sm-6 px-md-3 px-1 pt-2 float-left"
+              "form-group col-md-2 col-sm-6 px-md-3 px-1 pt-md-2 pt-0 float-left"
           },
           [
             _c(
               "button",
               {
-                staticClass: "btn btn-block bg-default mb-0 mt-4",
+                staticClass: "btn btn-block bg-default mb-0 mt-3 mt-md-4",
                 on: {
                   click: function($event) {
                     _vm.fetchIndexData()
@@ -38669,7 +38671,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "px-3 mt-3 table-responsive" }, [
+      _c("div", { staticClass: "px-0 px-md-3 mt-3 table-responsive" }, [
         _c("table", { staticClass: "table m-0  table-bordered table-hover" }, [
           _c("thead", { staticClass: "thead-light" }, [
             _c(
@@ -38718,101 +38720,110 @@ var render = function() {
       _c(
         "nav",
         {
-          staticClass: "clearfix mx-3 mt-4 py-3",
+          staticClass: "clearfix pt-5",
           attrs: { "aria-label": "Page navigation example" }
         },
         [
-          _c("span", { staticClass: "float-left py-1" }, [
-            _vm._v(
-              "\n                Displaying " +
-                _vm._s(_vm.model.from) +
-                " - " +
-                _vm._s(_vm.model.to) +
-                " of " +
-                _vm._s(_vm.model.total) +
-                " Customer(s)\n            "
-            )
-          ]),
-          _vm._v(" "),
           _c(
-            "ul",
-            { staticClass: "pagination justify-content-end float-right m-0" },
+            "span",
+            { staticClass: "float-left col-md-6 col-12 px-0 mb-5 mb-md-0" },
             [
-              _c("li", { staticClass: "page-item" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "page-link",
-                    on: {
-                      click: function($event) {
-                        _vm.prev()
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "fas fa-arrow-circle-left" })]
-                )
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item" }, [
-                _c("span", { staticClass: "page-link" }, [
-                  _vm._v("Current Page: " + _vm._s(_vm.model.current_page))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "page-link",
-                    on: {
-                      click: function($event) {
-                        _vm.next()
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "fas fa-arrow-circle-right" })]
-                )
-              ])
+              _vm._v(
+                "\n                Displaying " +
+                  _vm._s(_vm.model.from) +
+                  " - " +
+                  _vm._s(_vm.model.to) +
+                  " of " +
+                  _vm._s(_vm.model.total) +
+                  " Customer(s)\n            "
+              )
             ]
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "float-right mr-5" }, [
-            _c("span", { staticClass: "float-left py-2 px-2" }, [
-              _vm._v("Rows Per Page ")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.query.per_page,
-                  expression: "query.per_page"
-                }
-              ],
-              staticClass: "form-control float-left",
-              staticStyle: { width: "50px" },
-              attrs: { type: "text", placeholder: "search..." },
-              domProps: { value: _vm.query.per_page },
-              on: {
-                keyup: function($event) {
-                  if (
-                    !("button" in $event) &&
-                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                  ) {
-                    return null
+          _c(
+            "span",
+            {
+              staticClass:
+                "justify-content-end float-right col-md-6 col-12 px-0 mb-5 mb-md-0"
+            },
+            [
+              _c("ul", { staticClass: "pagination m-0 float-right" }, [
+                _c("li", { staticClass: "page-item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      on: {
+                        click: function($event) {
+                          _vm.prev()
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-arrow-circle-left" })]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "page-item" }, [
+                  _c("span", { staticClass: "page-link" }, [
+                    _vm._v("Current Page: " + _vm._s(_vm.model.current_page))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "page-item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      on: {
+                        click: function($event) {
+                          _vm.next()
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-arrow-circle-right" })]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "float-left" }, [
+                _c("span", { staticClass: "py-2 pr-3 float-left" }, [
+                  _vm._v("Rows Per Page ")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query.per_page,
+                      expression: "query.per_page"
+                    }
+                  ],
+                  staticClass: "form-control float-left",
+                  staticStyle: { width: "50px" },
+                  attrs: { type: "text", placeholder: "search..." },
+                  domProps: { value: _vm.query.per_page },
+                  on: {
+                    keyup: function($event) {
+                      if (
+                        !("button" in $event) &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      _vm.fetchIndexData()
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.query, "per_page", $event.target.value)
+                    }
                   }
-                  _vm.fetchIndexData()
-                },
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.query, "per_page", $event.target.value)
-                }
-              }
-            })
-          ])
+                })
+              ])
+            ]
+          )
         ]
       )
     ])
@@ -40299,11 +40310,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -40390,7 +40396,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this2.states = res.data.states;
             _this2.branches = res.data.branches;
             _this2.newCustomer = res.data.form;
-            _this2.newCustomer.days_of_work = [];
+            _this2.newCustomer.days_of_work = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
             _this2.newCustomer.Date_of_Registration = _this2.$getDate();
         });
     },
@@ -40492,7 +40498,7 @@ var render = function() {
                 "div",
                 { staticClass: "form-group col-md-4 px-md-3 px-1 float-left" },
                 [
-                  _c("label", [_vm._v("Employee ID(Staff ID)")]),
+                  _c("label", [_vm._v("Employee ID (Staff ID)")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -45486,978 +45492,962 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("transition", { attrs: { name: "fade" } }, [
-                _vm.fillWorkGuarantor
-                  ? _c("div", [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("First Name")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.newCustomer.work_guarantor_first_name,
-                                expression:
-                                  "newCustomer.work_guarantor_first_name"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first("WG_first_name")
+              _vm.fillWorkGuarantor
+                ? _c("div", [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("First Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.work_guarantor_first_name,
+                              expression:
+                                "newCustomer.work_guarantor_first_name"
                             },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter first name",
-                              "data-vv-as": "work guarantors first name",
-                              name: "WG_first_name"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.work_guarantor_first_name
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "work_guarantor_first_name",
-                                  $event.target.value
-                                )
-                              }
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("WG_first_name")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("WG_first_name")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Middle Name")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.newCustomer.work_guarantor_middle_name,
-                                expression:
-                                  "newCustomer.work_guarantor_middle_name"
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first("WG_first_name")
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter first name",
+                            "data-vv-as": "work guarantors first name",
+                            name: "WG_first_name"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.work_guarantor_first_name
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
                               }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter middle name"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.work_guarantor_middle_name
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "work_guarantor_middle_name",
-                                  $event.target.value
-                                )
-                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "work_guarantor_first_name",
+                                $event.target.value
+                              )
                             }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Last Name")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.work_guarantor_last_name,
-                                expression:
-                                  "newCustomer.work_guarantor_last_name"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first("WG_last_name")
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter last name",
-                              "data-vv-as": "work guarantors last name",
-                              name: "WG_last_name"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.work_guarantor_last_name
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "work_guarantor_last_name",
-                                  $event.target.value
-                                )
-                              }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("WG_first_name")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("WG_first_name")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Middle Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.work_guarantor_middle_name,
+                              expression:
+                                "newCustomer.work_guarantor_middle_name"
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("WG_last_name")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("WG_last_name")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceBetween" }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-9 col-sm-12 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c(
-                            "label",
-                            { staticClass: "w-100 float-left pl-1" },
-                            [_vm._v("Relationship")]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.relationshipWG, function(rela) {
-                            return _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "radio p-0 col-md-3 col-6 float-left"
-                              },
-                              [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.newCustomer
-                                          .work_guarantor_relationship,
-                                      expression:
-                                        "newCustomer.work_guarantor_relationship"
-                                    },
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  attrs: {
-                                    type: "radio",
-                                    name: "relationshipwg",
-                                    id: rela + "wg",
-                                    "data-vv-as": "work guarantor relationship"
-                                  },
-                                  domProps: {
-                                    value: rela,
-                                    checked: _vm._q(
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter middle name"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.work_guarantor_middle_name
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "work_guarantor_middle_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Last Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.work_guarantor_last_name,
+                              expression: "newCustomer.work_guarantor_last_name"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first("WG_last_name")
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter last name",
+                            "data-vv-as": "work guarantors last name",
+                            name: "WG_last_name"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.work_guarantor_last_name
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "work_guarantor_last_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("WG_last_name")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("WG_last_name")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceBetween" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-9 col-sm-12 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", { staticClass: "w-100 float-left pl-1" }, [
+                          _vm._v("Relationship")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.relationshipWG, function(rela) {
+                          return _c(
+                            "div",
+                            {
+                              staticClass: "radio p-0 col-md-3 col-6 float-left"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value:
                                       _vm.newCustomer
                                         .work_guarantor_relationship,
+                                    expression:
+                                      "newCustomer.work_guarantor_relationship"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "relationshipwg",
+                                  id: rela + "wg",
+                                  "data-vv-as": "work guarantor relationship"
+                                },
+                                domProps: {
+                                  value: rela,
+                                  checked: _vm._q(
+                                    _vm.newCustomer.work_guarantor_relationship,
+                                    rela
+                                  )
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.$set(
+                                      _vm.newCustomer,
+                                      "work_guarantor_relationship",
                                       rela
                                     )
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      _vm.$set(
-                                        _vm.newCustomer,
-                                        "work_guarantor_relationship",
-                                        rela
-                                      )
-                                    }
                                   }
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: rela + "wg" } }, [
-                                  _vm._v(_vm._s(rela))
-                                ])
-                              ]
-                            )
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("relationshipwg")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("relationshipwg")) +
-                                    "\n                            "
-                                )
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("label", { attrs: { for: rela + "wg" } }, [
+                                _vm._v(_vm._s(rela))
                               ])
-                            : _vm._e()
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c(
-                            "label",
-                            { staticClass: "w-100 float-left pl-1" },
-                            [_vm._v("Gender")]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.gender, function(sex) {
-                            return _c(
-                              "div",
-                              { staticClass: "radio p-0 col-6 float-left" },
-                              [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.newCustomer.work_guarantor_gender,
-                                      expression:
-                                        "newCustomer.work_guarantor_gender"
-                                    },
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  attrs: {
-                                    name: "wggender",
-                                    type: "radio",
-                                    id: "gua" + sex,
-                                    "data-vv-as": "work guanrantor gender"
-                                  },
-                                  domProps: {
-                                    value: sex,
-                                    checked: _vm._q(
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("relationshipwg")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("relationshipwg")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", { staticClass: "w-100 float-left pl-1" }, [
+                          _vm._v("Gender")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.gender, function(sex) {
+                          return _c(
+                            "div",
+                            { staticClass: "radio p-0 col-6 float-left" },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value:
                                       _vm.newCustomer.work_guarantor_gender,
+                                    expression:
+                                      "newCustomer.work_guarantor_gender"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                attrs: {
+                                  name: "wggender",
+                                  type: "radio",
+                                  id: "gua" + sex,
+                                  "data-vv-as": "work guanrantor gender"
+                                },
+                                domProps: {
+                                  value: sex,
+                                  checked: _vm._q(
+                                    _vm.newCustomer.work_guarantor_gender,
+                                    sex
+                                  )
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.$set(
+                                      _vm.newCustomer,
+                                      "work_guarantor_gender",
                                       sex
                                     )
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      _vm.$set(
-                                        _vm.newCustomer,
-                                        "work_guarantor_gender",
-                                        sex
-                                      )
-                                    }
                                   }
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: "gua" + sex } }, [
-                                  _vm._v(_vm._s(sex))
-                                ])
-                              ]
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("label", { attrs: { for: "gua" + sex } }, [
+                                _vm._v(_vm._s(sex))
+                              ])
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("wggender")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("wggender")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceAfter" }),
+                    _vm._v(" "),
+                    _c("h5", [_vm._v("Work Guarantor office Details")]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Street Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.guaadd_street,
+                              expression: "newCustomer.guaadd_street"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first(
+                              "work_guarantor_street_name"
                             )
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("wggender")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("wggender")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceAfter" }),
-                      _vm._v(" "),
-                      _c("h5", [_vm._v("Work Guarantor office Details")]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Street Name")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.guaadd_street,
-                                expression: "newCustomer.guaadd_street"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter Street name here",
+                            "data-vv-as": "work guarantor street",
+                            name: "work_guarantor_street_name"
+                          },
+                          domProps: { value: _vm.newCustomer.guaadd_street },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
                               }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first(
-                                "work_guarantor_street_name"
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "guaadd_street",
+                                $event.target.value
                               )
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter Street name here",
-                              "data-vv-as": "work guarantor street",
-                              name: "work_guarantor_street_name"
-                            },
-                            domProps: { value: _vm.newCustomer.guaadd_street },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "guaadd_street",
-                                  $event.target.value
-                                )
-                              }
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("work_guarantor_street_name")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "work_guarantor_street_name"
-                                      )
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Office Building Number")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.guaadd_houseno,
-                                expression: "newCustomer.guaadd_houseno"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first(
-                                "work_guarantor_office_building"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("work_guarantor_street_name")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first(
+                                      "work_guarantor_street_name"
+                                    )
+                                  ) +
+                                  "\n                        "
                               )
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter Building Number",
-                              "data-vv-as": "work guarantor office building",
-                              name: "work_guarantor_office_building"
-                            },
-                            domProps: { value: _vm.newCustomer.guaadd_houseno },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "guaadd_houseno",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("work_guarantor_office_building")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "work_guarantor_office_building"
-                                      )
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Nearest Bus Stop")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.guaadd_nbstop,
-                                expression: "newCustomer.guaadd_nbstop"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first(
-                                "work_guarantor_bus_stop"
-                              )
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter nearest bus stop",
-                              "data-vv-as": "work guarantor bus stop",
-                              name: "work_guarantor_bus_stop"
-                            },
-                            domProps: { value: _vm.newCustomer.guaadd_nbstop },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "guaadd_nbstop",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("work_guarantor_bus_stop")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "work_guarantor_bus_stop"
-                                      )
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceBetween" }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Area")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.gua_area,
-                                expression: "newCustomer.gua_area"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first(
-                                "work_guarantor_area"
-                              )
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter area",
-                              "data-vv-as": "work guarantor area",
-                              name: "work_guarantor_area"
-                            },
-                            domProps: { value: _vm.newCustomer.gua_area },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "gua_area",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("work_guarantor_area")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first("work_guarantor_area")
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("City")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.work_guarantor_city,
-                                expression: "newCustomer.work_guarantor_city"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first(
-                                "work_guarantor_city"
-                              )
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter city",
-                              "data-vv-as": "work guarantor city",
-                              name: "work_guarantor_city"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.work_guarantor_city
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "work_guarantor_city",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("work_guarantor_city")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first("work_guarantor_city")
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("State")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Office Building Number")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
                             {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.newCustomer.work_guarantor_state,
-                                  expression: "newCustomer.work_guarantor_state"
-                                },
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required|max:25",
-                                  expression: "'required|max:25'"
-                                }
-                              ],
-                              staticClass: "custom-select w-100",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "work_guarantor_state"
-                                )
-                              },
-                              attrs: {
-                                "data-vv-as": "work guarantor state",
-                                name: "work_guarantor_state"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.newCustomer,
-                                    "work_guarantor_state",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.guaadd_houseno,
+                              expression: "newCustomer.guaadd_houseno"
                             },
-                            [
-                              _c("option", { attrs: { value: "" } }, [
-                                _vm._v("select state")
-                              ]),
-                              _vm._v(" "),
-                              _vm._l(_vm.states, function(state) {
-                                return _c(
-                                  "option",
-                                  { domProps: { value: state.name } },
-                                  [_vm._v(_vm._s(state.name))]
-                                )
-                              })
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _vm.errors.first("work_guarantor_state")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first("work_guarantor_state")
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceBetween" }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Phone Number")]),
-                          _vm._v(" "),
-                          _c("input", {
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first(
+                              "work_guarantor_office_building"
+                            )
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter Building Number",
+                            "data-vv-as": "work guarantor office building",
+                            name: "work_guarantor_office_building"
+                          },
+                          domProps: { value: _vm.newCustomer.guaadd_houseno },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "guaadd_houseno",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("work_guarantor_office_building")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first(
+                                      "work_guarantor_office_building"
+                                    )
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Nearest Bus Stop")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.guaadd_nbstop,
+                              expression: "newCustomer.guaadd_nbstop"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first(
+                              "work_guarantor_bus_stop"
+                            )
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter nearest bus stop",
+                            "data-vv-as": "work guarantor bus stop",
+                            name: "work_guarantor_bus_stop"
+                          },
+                          domProps: { value: _vm.newCustomer.guaadd_nbstop },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "guaadd_nbstop",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("work_guarantor_bus_stop")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first("work_guarantor_bus_stop")
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceBetween" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Area")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.gua_area,
+                              expression: "newCustomer.gua_area"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first(
+                              "work_guarantor_area"
+                            )
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter area",
+                            "data-vv-as": "work guarantor area",
+                            name: "work_guarantor_area"
+                          },
+                          domProps: { value: _vm.newCustomer.gua_area },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "gua_area",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("work_guarantor_area")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first("work_guarantor_area")
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("City")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.work_guarantor_city,
+                              expression: "newCustomer.work_guarantor_city"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first(
+                              "work_guarantor_city"
+                            )
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter city",
+                            "data-vv-as": "work guarantor city",
+                            name: "work_guarantor_city"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.work_guarantor_city
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "work_guarantor_city",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("work_guarantor_city")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first("work_guarantor_city")
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("State")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.newCustomer.work_guarantor_telno,
-                                expression: "newCustomer.work_guarantor_telno"
+                                value: _vm.newCustomer.work_guarantor_state,
+                                expression: "newCustomer.work_guarantor_state"
                               },
                               {
                                 name: "validate",
                                 rawName: "v-validate",
-                                value: "required|numeric|max:11|min:11",
-                                expression: "'required|numeric|max:11|min:11'"
+                                value: "required|max:25",
+                                expression: "'required|max:25'"
                               }
                             ],
-                            staticClass: "form-control",
+                            staticClass: "custom-select w-100",
                             class: {
                               "is-invalid": _vm.errors.first(
-                                "work_guarantor_phone"
+                                "work_guarantor_state"
                               )
                             },
                             attrs: {
-                              type: "tel",
-                              placeholder: "Enter city",
-                              "data-vv-as": "work guarantor phone",
-                              name: "work_guarantor_phone"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.work_guarantor_telno
+                              "data-vv-as": "work guarantor state",
+                              name: "work_guarantor_state"
                             },
                             on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
                                 _vm.$set(
                                   _vm.newCustomer,
-                                  "work_guarantor_telno",
-                                  $event.target.value
+                                  "work_guarantor_state",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
                                 )
                               }
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("work_guarantor_phone")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first("work_guarantor_phone")
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Duration in Current work")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("select state")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.states, function(state) {
+                              return _c(
+                                "option",
+                                { domProps: { value: state.name } },
+                                [_vm._v(_vm._s(state.name))]
+                              )
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _vm.errors.first("work_guarantor_state")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first("work_guarantor_state")
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceBetween" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Phone Number")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
                             {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value:
-                                    _vm.newCustomer
-                                      .work_guarantor_work_duration,
-                                  expression:
-                                    "newCustomer.work_guarantor_work_duration"
-                                },
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required",
-                                  expression: "'required'"
-                                }
-                              ],
-                              staticClass: "custom-select w-100",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "work_guarantor_work_duration"
-                                )
-                              },
-                              attrs: {
-                                "data-vv-as": "work guarantor work duration",
-                                name: "work_guarantor_work_duration"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.newCustomer,
-                                    "work_guarantor_work_duration",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.work_guarantor_telno,
+                              expression: "newCustomer.work_guarantor_telno"
                             },
-                            [
-                              _c("option", { attrs: { value: "" } }, [
-                                _vm._v("select duration")
-                              ]),
-                              _vm._v(" "),
-                              _vm._l(_vm.durations, function(duration) {
-                                return _c(
-                                  "option",
-                                  { domProps: { value: duration } },
-                                  [_vm._v(_vm._s(duration))]
-                                )
-                              })
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _vm.errors.first("work_guarantor_work_duration")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "work_guarantor_work_duration"
-                                      )
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Describe Location")]),
-                          _vm._v(" "),
-                          _c("textarea", {
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|numeric|max:11|min:11",
+                              expression: "'required|numeric|max:11|min:11'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first(
+                              "work_guarantor_phone"
+                            )
+                          },
+                          attrs: {
+                            type: "tel",
+                            placeholder: "Enter city",
+                            "data-vv-as": "work guarantor phone",
+                            name: "work_guarantor_phone"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.work_guarantor_telno
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "work_guarantor_telno",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("work_guarantor_phone")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first("work_guarantor_phone")
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Duration in Current work")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.newCustomer.guaadd_addinfo,
-                                expression: "newCustomer.guaadd_addinfo"
+                                value:
+                                  _vm.newCustomer.work_guarantor_work_duration,
+                                expression:
+                                  "newCustomer.work_guarantor_work_duration"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required",
+                                expression: "'required'"
                               }
                             ],
-                            staticClass: "form-control col-sm-12",
-                            attrs: {
-                              placeholder: "Describe the Location",
-                              rows: "1"
+                            staticClass: "custom-select w-100",
+                            class: {
+                              "is-invalid": _vm.errors.first(
+                                "work_guarantor_work_duration"
+                              )
                             },
-                            domProps: { value: _vm.newCustomer.guaadd_addinfo },
+                            attrs: {
+                              "data-vv-as": "work guarantor work duration",
+                              name: "work_guarantor_work_duration"
+                            },
                             on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
                                 _vm.$set(
                                   _vm.newCustomer,
-                                  "guaadd_addinfo",
-                                  $event.target.value
+                                  "work_guarantor_work_duration",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
                                 )
                               }
                             }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceBetween" })
-                    ])
-                  : _vm._e()
-              ]),
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("select duration")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.durations, function(duration) {
+                              return _c(
+                                "option",
+                                { domProps: { value: duration } },
+                                [_vm._v(_vm._s(duration))]
+                              )
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _vm.errors.first("work_guarantor_work_duration")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first(
+                                      "work_guarantor_work_duration"
+                                    )
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Describe Location")]),
+                        _vm._v(" "),
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.guaadd_addinfo,
+                              expression: "newCustomer.guaadd_addinfo"
+                            }
+                          ],
+                          staticClass: "form-control col-sm-12",
+                          attrs: {
+                            placeholder: "Describe the Location",
+                            rows: "1"
+                          },
+                          domProps: { value: _vm.newCustomer.guaadd_addinfo },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "guaadd_addinfo",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceBetween" })
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("h5", [
                 _c("input", {
@@ -46504,27 +46494,682 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("transition", { attrs: { name: "fade" } }, [
-                _vm.fillPersonalGuarantor
-                  ? _c("div", [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("First Name")]),
-                          _vm._v(" "),
-                          _c("input", {
+              _vm.fillPersonalGuarantor
+                ? _c("div", [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("First Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value:
+                                _vm.newCustomer.personal_guarantor_first_name,
+                              expression:
+                                "newCustomer.personal_guarantor_first_name"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first("PG_first_name")
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter first name",
+                            "data-vv-as": "first name",
+                            name: "PG_first_name"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.personal_guarantor_first_name
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "personal_guarantor_first_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("PG_first_name")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("PG_first_name")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Middle Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value:
+                                _vm.newCustomer.personal_guarantor_middle_name,
+                              expression:
+                                "newCustomer.personal_guarantor_middle_name"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter middle name"
+                          },
+                          domProps: {
+                            value:
+                              _vm.newCustomer.personal_guarantor_middle_name
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "personal_guarantor_middle_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Last Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value:
+                                _vm.newCustomer.personal_guarantor_last_name,
+                              expression:
+                                "newCustomer.personal_guarantor_last_name"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first("PG_last_name")
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter last name",
+                            "data-vv-as": "last name",
+                            name: "PG_last_name"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.personal_guarantor_last_name
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "personal_guarantor_last_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("PG_last_name")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("PG_last_name")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceBetween" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-9 col-sm-12 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", { staticClass: "w-100 float-left pl-1" }, [
+                          _vm._v("Relationship")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.relationshipPG, function(rela) {
+                          return _c(
+                            "div",
+                            {
+                              staticClass: "radio p-0 col-md-3 col-6 float-left"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value:
+                                      _vm.newCustomer
+                                        .personal_guarantor_relationship,
+                                    expression:
+                                      "newCustomer.personal_guarantor_relationship"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "relationshippg",
+                                  id: rela + "pg",
+                                  "data-vv-as":
+                                    "personal guarantor relationship"
+                                },
+                                domProps: {
+                                  value: rela,
+                                  checked: _vm._q(
+                                    _vm.newCustomer
+                                      .personal_guarantor_relationship,
+                                    rela
+                                  )
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.$set(
+                                      _vm.newCustomer,
+                                      "personal_guarantor_relationship",
+                                      rela
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("label", { attrs: { for: rela + "pg" } }, [
+                                _vm._v(_vm._s(rela))
+                              ])
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("relationshippg")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("relationshippg")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", { staticClass: "w-100 float-left pl-1" }, [
+                          _vm._v("Gender")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.gender, function(sex) {
+                          return _c(
+                            "div",
+                            {
+                              staticClass: "radio p-0 col-md-6 col-6 float-left"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value:
+                                      _vm.newCustomer.personal_guarantor_gender,
+                                    expression:
+                                      "newCustomer.personal_guarantor_gender"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                attrs: {
+                                  name: "pggender",
+                                  type: "radio",
+                                  id: "pg" + sex,
+                                  "data-vv-as": "personal guarantor gender"
+                                },
+                                domProps: {
+                                  value: sex,
+                                  checked: _vm._q(
+                                    _vm.newCustomer.personal_guarantor_gender,
+                                    sex
+                                  )
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.$set(
+                                      _vm.newCustomer,
+                                      "personal_guarantor_gender",
+                                      sex
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("label", { attrs: { for: "pg" + sex } }, [
+                                _vm._v(_vm._s(sex))
+                              ])
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("pggender")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("pggender")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceAfter" }),
+                    _vm._v(" "),
+                    _c("h5", [_vm._v("Personal Guarantor office Details")]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Street Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.pguaadd_street,
+                              expression: "newCustomer.pguaadd_street"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first("pguaadd_street")
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter Street name here",
+                            "data-vv-as": "street number",
+                            name: "pguaadd_street"
+                          },
+                          domProps: { value: _vm.newCustomer.pguaadd_street },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "pguaadd_street",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("pguaadd_street")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("pguaadd_street")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Office Building Number")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.pguaadd_houseno,
+                              expression: "newCustomer.pguaadd_houseno"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first("pguaadd_houseno")
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter Building Number",
+                            "data-vv-as": "office building address",
+                            name: "pguaadd_houseno"
+                          },
+                          domProps: { value: _vm.newCustomer.pguaadd_houseno },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "pguaadd_houseno",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("pguaadd_houseno")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("pguaadd_houseno")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Nearest Bus Stop")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.pguaadd_nbstop,
+                              expression: "newCustomer.pguaadd_nbstop"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first("pguaadd_nbstop")
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter nearest bus stop",
+                            "data-vv-as": "per. guarantor nearest stop",
+                            name: "pguaadd_nbstop"
+                          },
+                          domProps: { value: _vm.newCustomer.pguaadd_nbstop },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "pguaadd_nbstop",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("pguaadd_nbstop")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("pguaadd_nbstop")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceBetween" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Area")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.pgua_area,
+                              expression: "newCustomer.pgua_area"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first("pgua_area")
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter area",
+                            "data-vv-as": "personal guarantor area",
+                            name: "pgua_area"
+                          },
+                          domProps: { value: _vm.newCustomer.pgua_area },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "pgua_area",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("pgua_area")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.errors.first("pgua_area")) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("City")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.personal_guarantor_city,
+                              expression: "newCustomer.personal_guarantor_city"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|max:25",
+                              expression: "'required|max:25'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first(
+                              "personal_guarantor_city"
+                            )
+                          },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Enter city",
+                            "data-vv-as": "personal guarantor city",
+                            name: "personal_guarantor_city"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.personal_guarantor_city
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "personal_guarantor_city",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("personal_guarantor_city")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first("personal_guarantor_city")
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("State")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value:
-                                  _vm.newCustomer.personal_guarantor_first_name,
+                                value: _vm.newCustomer.personal_guarantor_state,
                                 expression:
-                                  "newCustomer.personal_guarantor_first_name"
+                                  "newCustomer.personal_guarantor_state"
                               },
                               {
                                 name: "validate",
@@ -46533,954 +47178,269 @@ var render = function() {
                                 expression: "'required|max:25'"
                               }
                             ],
-                            staticClass: "form-control",
+                            staticClass: "custom-select w-100",
                             class: {
-                              "is-invalid": _vm.errors.first("PG_first_name")
+                              "is-invalid": _vm.errors.first(
+                                "personal_guarantor_state"
+                              )
                             },
                             attrs: {
-                              type: "text",
-                              placeholder: "Enter first name",
-                              "data-vv-as": "first name",
-                              name: "PG_first_name"
-                            },
-                            domProps: {
-                              value:
-                                _vm.newCustomer.personal_guarantor_first_name
+                              "data-vv-as": "personal guarantor state",
+                              name: "personal_guarantor_state"
                             },
                             on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
                                 _vm.$set(
                                   _vm.newCustomer,
-                                  "personal_guarantor_first_name",
-                                  $event.target.value
+                                  "personal_guarantor_state",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
                                 )
                               }
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("PG_first_name")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("PG_first_name")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Middle Name")]),
-                          _vm._v(" "),
-                          _c("input", {
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("select state")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.states, function(state) {
+                              return _c(
+                                "option",
+                                { domProps: { value: state.name } },
+                                [_vm._v(_vm._s(state.name))]
+                              )
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _vm.errors.first("personal_guarantor_state")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first("personal_guarantor_state")
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceBetween" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Phone Number")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.personal_guarantor_telno,
+                              expression: "newCustomer.personal_guarantor_telno"
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|numeric|max:11|min:11",
+                              expression: "'required|numeric|max:11|min:11'"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.errors.first(
+                              "personal_guarantor_telno"
+                            )
+                          },
+                          attrs: {
+                            type: "tel",
+                            placeholder: "Enter city",
+                            "data-vv-as": "per. guarantor phone",
+                            name: "personal_guarantor_telno"
+                          },
+                          domProps: {
+                            value: _vm.newCustomer.personal_guarantor_telno
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "personal_guarantor_telno",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("personal_guarantor_telno")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first("personal_guarantor_telno")
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Duration in Current work")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
                                 value:
                                   _vm.newCustomer
-                                    .personal_guarantor_middle_name,
+                                    .personal_guarantor_work_duration,
                                 expression:
-                                  "newCustomer.personal_guarantor_middle_name"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter middle name"
-                            },
-                            domProps: {
-                              value:
-                                _vm.newCustomer.personal_guarantor_middle_name
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "personal_guarantor_middle_name",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Last Name")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.newCustomer.personal_guarantor_last_name,
-                                expression:
-                                  "newCustomer.personal_guarantor_last_name"
+                                  "newCustomer.personal_guarantor_work_duration"
                               },
                               {
                                 name: "validate",
                                 rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
+                                value: "required",
+                                expression: "'required'"
                               }
                             ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first("PG_last_name")
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter last name",
-                              "data-vv-as": "last name",
-                              name: "PG_last_name"
-                            },
-                            domProps: {
-                              value:
-                                _vm.newCustomer.personal_guarantor_last_name
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "personal_guarantor_last_name",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("PG_last_name")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("PG_last_name")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceBetween" }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-9 col-sm-12 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c(
-                            "label",
-                            { staticClass: "w-100 float-left pl-1" },
-                            [_vm._v("Relationship")]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.relationshipPG, function(rela) {
-                            return _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "radio p-0 col-md-3 col-6 float-left"
-                              },
-                              [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.newCustomer
-                                          .personal_guarantor_relationship,
-                                      expression:
-                                        "newCustomer.personal_guarantor_relationship"
-                                    },
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  attrs: {
-                                    type: "radio",
-                                    name: "relationshippg",
-                                    id: rela + "pg",
-                                    "data-vv-as":
-                                      "personal guarantor relationship"
-                                  },
-                                  domProps: {
-                                    value: rela,
-                                    checked: _vm._q(
-                                      _vm.newCustomer
-                                        .personal_guarantor_relationship,
-                                      rela
-                                    )
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      _vm.$set(
-                                        _vm.newCustomer,
-                                        "personal_guarantor_relationship",
-                                        rela
-                                      )
-                                    }
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: rela + "pg" } }, [
-                                  _vm._v(_vm._s(rela))
-                                ])
-                              ]
-                            )
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("relationshippg")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("relationshippg")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c(
-                            "label",
-                            { staticClass: "w-100 float-left pl-1" },
-                            [_vm._v("Gender")]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.gender, function(sex) {
-                            return _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "radio p-0 col-md-6 col-6 float-left"
-                              },
-                              [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.newCustomer
-                                          .personal_guarantor_gender,
-                                      expression:
-                                        "newCustomer.personal_guarantor_gender"
-                                    },
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  attrs: {
-                                    name: "pggender",
-                                    type: "radio",
-                                    id: "pg" + sex,
-                                    "data-vv-as": "personal guarantor gender"
-                                  },
-                                  domProps: {
-                                    value: sex,
-                                    checked: _vm._q(
-                                      _vm.newCustomer.personal_guarantor_gender,
-                                      sex
-                                    )
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      _vm.$set(
-                                        _vm.newCustomer,
-                                        "personal_guarantor_gender",
-                                        sex
-                                      )
-                                    }
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: "pg" + sex } }, [
-                                  _vm._v(_vm._s(sex))
-                                ])
-                              ]
-                            )
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("pggender")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("pggender")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceAfter" }),
-                      _vm._v(" "),
-                      _c("h5", [_vm._v("Personal Guarantor office Details")]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Street Name")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.pguaadd_street,
-                                expression: "newCustomer.pguaadd_street"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first("pguaadd_street")
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter Street name here",
-                              "data-vv-as": "street number",
-                              name: "pguaadd_street"
-                            },
-                            domProps: { value: _vm.newCustomer.pguaadd_street },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "pguaadd_street",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("pguaadd_street")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("pguaadd_street")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Office Building Number")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.pguaadd_houseno,
-                                expression: "newCustomer.pguaadd_houseno"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first("pguaadd_houseno")
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter Building Number",
-                              "data-vv-as": "office building address",
-                              name: "pguaadd_houseno"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.pguaadd_houseno
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "pguaadd_houseno",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("pguaadd_houseno")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first("pguaadd_houseno")
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Nearest Bus Stop")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.pguaadd_nbstop,
-                                expression: "newCustomer.pguaadd_nbstop"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first("pguaadd_nbstop")
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter nearest bus stop",
-                              "data-vv-as": "per. guarantor nearest stop",
-                              name: "pguaadd_nbstop"
-                            },
-                            domProps: { value: _vm.newCustomer.pguaadd_nbstop },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "pguaadd_nbstop",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("pguaadd_nbstop")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("pguaadd_nbstop")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceBetween" }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Area")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.pgua_area,
-                                expression: "newCustomer.pgua_area"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first("pgua_area")
-                            },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Enter area",
-                              "data-vv-as": "personal guarantor area",
-                              name: "pgua_area"
-                            },
-                            domProps: { value: _vm.newCustomer.pgua_area },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "pgua_area",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("pgua_area")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.errors.first("pgua_area")) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("City")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.personal_guarantor_city,
-                                expression:
-                                  "newCustomer.personal_guarantor_city"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:25",
-                                expression: "'required|max:25'"
-                              }
-                            ],
-                            staticClass: "form-control",
+                            staticClass: "custom-select w-100",
                             class: {
                               "is-invalid": _vm.errors.first(
-                                "personal_guarantor_city"
+                                "personal_guarantor_work_duration"
                               )
                             },
                             attrs: {
-                              type: "text",
-                              placeholder: "Enter city",
-                              "data-vv-as": "personal guarantor city",
-                              name: "personal_guarantor_city"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.personal_guarantor_city
+                              "data-vv-as": "personal guarantor work duration",
+                              name: "personal_guarantor_work_duration"
                             },
                             on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
                                 _vm.$set(
                                   _vm.newCustomer,
-                                  "personal_guarantor_city",
-                                  $event.target.value
+                                  "personal_guarantor_work_duration",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
                                 )
                               }
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("personal_guarantor_city")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "personal_guarantor_city"
-                                      )
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("State")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value:
-                                    _vm.newCustomer.personal_guarantor_state,
-                                  expression:
-                                    "newCustomer.personal_guarantor_state"
-                                },
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required|max:25",
-                                  expression: "'required|max:25'"
-                                }
-                              ],
-                              staticClass: "custom-select w-100",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "personal_guarantor_state"
-                                )
-                              },
-                              attrs: {
-                                "data-vv-as": "personal guarantor state",
-                                name: "personal_guarantor_state"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.newCustomer,
-                                    "personal_guarantor_state",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { value: "" } }, [
-                                _vm._v("select state")
-                              ]),
-                              _vm._v(" "),
-                              _vm._l(_vm.states, function(state) {
-                                return _c(
-                                  "option",
-                                  { domProps: { value: state.name } },
-                                  [_vm._v(_vm._s(state.name))]
-                                )
-                              })
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _vm.errors.first("personal_guarantor_state")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "personal_guarantor_state"
-                                      )
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceBetween" }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Phone Number")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.personal_guarantor_telno,
-                                expression:
-                                  "newCustomer.personal_guarantor_telno"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|numeric|max:11|min:11",
-                                expression: "'required|numeric|max:11|min:11'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.errors.first(
-                                "personal_guarantor_telno"
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("select duration")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.durations, function(duration) {
+                              return _c(
+                                "option",
+                                { domProps: { value: duration } },
+                                [_vm._v(_vm._s(duration))]
                               )
-                            },
-                            attrs: {
-                              type: "tel",
-                              placeholder: "Enter city",
-                              "data-vv-as": "per. guarantor phone",
-                              name: "personal_guarantor_telno"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.personal_guarantor_telno
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "personal_guarantor_telno",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("personal_guarantor_telno")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "personal_guarantor_telno"
-                                      )
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Duration in Current work")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _vm.errors.first("personal_guarantor_work_duration")
+                          ? _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm.errors.first(
+                                      "personal_guarantor_work_duration"
+                                    )
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-4 px-md-3 px-1 float-left"
+                      },
+                      [
+                        _c("label", [_vm._v("Describe Location")]),
+                        _vm._v(" "),
+                        _c("textarea", {
+                          directives: [
                             {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value:
-                                    _vm.newCustomer
-                                      .personal_guarantor_work_duration,
-                                  expression:
-                                    "newCustomer.personal_guarantor_work_duration"
-                                },
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required",
-                                  expression: "'required'"
-                                }
-                              ],
-                              staticClass: "custom-select w-100",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "personal_guarantor_work_duration"
-                                )
-                              },
-                              attrs: {
-                                "data-vv-as":
-                                  "personal guarantor work duration",
-                                name: "personal_guarantor_work_duration"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.newCustomer,
-                                    "personal_guarantor_work_duration",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { value: "" } }, [
-                                _vm._v("select duration")
-                              ]),
-                              _vm._v(" "),
-                              _vm._l(_vm.durations, function(duration) {
-                                return _c(
-                                  "option",
-                                  { domProps: { value: duration } },
-                                  [_vm._v(_vm._s(duration))]
-                                )
-                              })
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _vm.errors.first("personal_guarantor_work_duration")
-                            ? _c("small", { staticClass: "text-muted" }, [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(
-                                      _vm.errors.first(
-                                        "personal_guarantor_work_duration"
-                                      )
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-4 px-md-3 px-1 float-left"
-                        },
-                        [
-                          _c("label", [_vm._v("Describe Location")]),
-                          _vm._v(" "),
-                          _c("textarea", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.newCustomer.pguaadd_addinfo,
-                                expression: "newCustomer.pguaadd_addinfo"
-                              }
-                            ],
-                            staticClass: "form-control col-sm-12",
-                            attrs: {
-                              placeholder: "Describe the Location",
-                              rows: "1"
-                            },
-                            domProps: {
-                              value: _vm.newCustomer.pguaadd_addinfo
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.newCustomer,
-                                  "pguaadd_addinfo",
-                                  $event.target.value
-                                )
-                              }
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newCustomer.pguaadd_addinfo,
+                              expression: "newCustomer.pguaadd_addinfo"
                             }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "spaceAfter" })
-                    ])
-                  : _vm._e()
-              ]),
+                          ],
+                          staticClass: "form-control col-sm-12",
+                          attrs: {
+                            placeholder: "Describe the Location",
+                            rows: "1"
+                          },
+                          domProps: { value: _vm.newCustomer.pguaadd_addinfo },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.newCustomer,
+                                "pguaadd_addinfo",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceAfter" })
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("h5", [_vm._v("Other Questions")]),
               _vm._v(" "),
@@ -48067,22 +48027,19 @@ if (false) {
 }
 
 /***/ }),
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(100)
+  __webpack_require__(97)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(102)
+var __vue_script__ = __webpack_require__(99)
 /* template */
-var __vue_template__ = __webpack_require__(103)
+var __vue_template__ = __webpack_require__(107)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48121,13 +48078,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 100 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(101);
+var content = __webpack_require__(98);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -48147,7 +48104,7 @@ if(false) {
 }
 
 /***/ }),
-/* 101 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(19)(false);
@@ -48155,13 +48112,13 @@ exports = module.exports = __webpack_require__(19)(false);
 
 
 // module
-exports.push([module.i, "\n.card-stats .icon[data-v-07317a72] {\n    margin : 0 15px;\n}\n.info .icon.icon-circle[data-v-07317a72] {\n    max-width     : 70px;\n    width         : 70px;\n    height        : 70px;\n    border-radius : 50%;\n    font-size     : .71em;\n}\n.info-horizontal .icon.icon-circle i[data-v-07317a72] {\n    display     : table;\n    margin      : 0 auto;\n    line-height : 8rem;\n    font-size   : 1.9em;\n}\n.stats-title[data-v-07317a72] {\n    font-weight : 300;\n    font-size   : .9rem;\n}\n.card-footer[data-v-07317a72]:hover {\n    background-image : -webkit-gradient(linear, left top, left bottom, from(rgb(255, 255, 255)), to(#eeeeee));\n    background-image : linear-gradient(to bottom, rgb(255, 255, 255), #eeeeee);\n}\nh4.info-title[data-v-07317a72] {\n    margin    : 0;\n    font-size : 1.6rem;\n}\n.no-success .icon.icon-warning.icon-circle[data-v-07317a72] {\n    border     : 1px solid #b30000;\n    -webkit-box-shadow : 0 9px 15px -6px rgba(179, 0, 0, 0.5) !important;\n            box-shadow : 0 9px 15px -6px rgba(179, 0, 0, 0.5) !important;\n}\n.success .icon.icon-warning.icon-circle[data-v-07317a72] {\n    border     : 1px solid #488413;\n    -webkit-box-shadow : 0 9px 15px -6px rgba(72, 132, 19, 0.5) !important;\n            box-shadow : 0 9px 15px -6px rgba(72, 132, 19, 0.5) !important;\n}\n.card.card-stats[data-v-07317a72]::before {\n    content  : '';\n    width    : 4px;\n    height   : 100%;\n    position : absolute;\n    left     : 0;\n    top      : 0;\n    float    : right;\n}\n.success[data-v-07317a72]::before {\n    background : linear-gradient(45deg, #8ef985 0%, #01af13 100%);\n}\n.no-success[data-v-07317a72]::before {\n    background : linear-gradient(45deg, #ff9b83 0%, #a40000 100%);\n}\n.success i[data-v-07317a72] {\n    color : #63b61a;\n}\n.no-success i[data-v-07317a72] {\n    color : #c70000;\n}\n.modal label[data-v-07317a72] {\n    font-weight : 600;\n}\n.modal small[data-v-07317a72] {\n    margin-top : 0;\n}\n.modal .form-group[data-v-07317a72] {\n    margin-bottom : 2rem;\n}\n\n\n", ""]);
+exports.push([module.i, "\n.card-stats .icon[data-v-07317a72] {\n    margin : 0 15px;\n}\n.info .icon.icon-circle[data-v-07317a72] {\n    max-width     : 70px;\n    width         : 70px;\n    height        : 70px;\n    border-radius : 50%;\n    font-size     : .71em;\n}\n.info-horizontal .icon.icon-circle i[data-v-07317a72] {\n    display     : table;\n    margin      : 0 auto;\n    line-height : 7.8rem;\n    font-size   : 2.4em;\n    z-index     : 1;\n    position    : relative;\n}\n.stats-title[data-v-07317a72] {\n    font-weight : 300;\n    font-size   : 1.2rem;\n}\n.card-footer[data-v-07317a72]:hover {\n    background-image : -webkit-gradient(linear, left top, left bottom, from(rgb(255, 255, 255)), to(#eeeeee));\n    background-image : linear-gradient(to bottom, rgb(255, 255, 255), #eeeeee);\n}\nh4.info-title[data-v-07317a72] {\n    margin    : 0;\n    font-size : 2.2rem;\n}\n.no-success .icon.icon-warning.icon-circle[data-v-07317a72] {\n    border     : 1px solid #b30000;\n    -webkit-box-shadow : 0 9px 15px -6px rgba(179, 0, 0, 0.5) !important;\n            box-shadow : 0 9px 15px -6px rgba(179, 0, 0, 0.5) !important;\n}\n.success .icon.icon-warning.icon-circle[data-v-07317a72] {\n    border     : 1px solid #488413;\n    -webkit-box-shadow : 0 9px 15px -6px rgba(72, 132, 19, 0.5) !important;\n            box-shadow : 0 9px 15px -6px rgba(72, 132, 19, 0.5) !important;\n}\n.card.card-stats[data-v-07317a72]::before {\n    content  : '';\n    width    : 4px;\n    height   : 100%;\n    position : absolute;\n    left     : 0;\n    top      : 0;\n    float    : right;\n}\n.success[data-v-07317a72]::before {\n    background : linear-gradient(45deg, #8ef985 0%, #01af13 100%);\n}\n.no-success[data-v-07317a72]::before {\n    background : linear-gradient(45deg, #ff9b83 0%, #a40000 100%);\n}\n.success i[data-v-07317a72] {\n    color : #63b61a;\n}\n.no-success i[data-v-07317a72] {\n    color : #c70000;\n}\n.modal label[data-v-07317a72] {\n    font-weight : 600;\n}\n.modal small[data-v-07317a72] {\n    margin-top : 0;\n}\n.modal .form-group[data-v-07317a72] {\n    margin-bottom : 2rem;\n}\n.thumbnail[data-v-07317a72] {\n    z-index             : 0;\n    width               : 100%;\n    height              : 100%;\n    background-size     : cover;\n    background-position : center;\n    position            : absolute;\n    background-repeat   : no-repeat;\n}\n.icon.icon-warning.icon-circle[data-v-07317a72] {\n    overflow : hidden;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 102 */
+/* 99 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48169,9 +48126,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_log__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_form__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_form__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -48975,6 +48942,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (res.data.saved) {
                     _this4.customer.document = res.data.document;
                     _this4.customer.verification = res.data.verification;
+                    _this4.form.id_card = res.data.document.id_card_url;
+                    _this4.form.passport = res.data.document.passport_url;
                     Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])('Customer' + _this4.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + String(_this4.customer.id));
                     _this4.modal(modal);
                     _this4.$LIPS(false);
@@ -49002,7 +48971,315 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+/* 100 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = toMulipartedForm;
+/* unused harmony export objectToFormData */
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function toMulipartedForm(form, mode) {
+    if (mode === 'edit' && typeof form.image === 'string') {
+        //remove reactivity
+        var temp = JSON.parse(JSON.stringify(form));
+        delete temp.image;
+        return temp;
+    } else {
+        return objectToFormData(form);
+    }
+}
+
+function objectToFormData(obj, form, namespace) {
+    var fd = form || new FormData();
+    var formKey = void 0;
+    for (var property in obj) {
+        if (obj.hasOwnProperty(property)) {
+            if (namespace) {
+                formKey = namespace + '[' + property + ']';
+            } else {
+                formKey = property;
+            }
+            if (obj[property] instanceof Array) {
+                for (var i = 0; i < obj[property].length; i++) {
+                    objectToFormData(obj[property][i], fd, property + '[' + i + ']');
+                }
+            } else if (_typeof(obj[property]) === 'object' && !(obj[property] instanceof File)) {
+                objectToFormData(obj[property], fd, property);
+            } else {
+                fd.append(formKey, obj[property]);
+            }
+        }
+    }
+    return fd;
+}
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(102)
+/* template */
+var __vue_template__ = __webpack_require__(106)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ImageUpload.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7e5db395", Component.options)
+  } else {
+    hotAPI.reload("data-v-7e5db395", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePreview__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePreview___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ImagePreview__);
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        ImagePreview: __WEBPACK_IMPORTED_MODULE_0__ImagePreview___default.a
+    },
+    props: {
+        value: {
+            type: [String, File],
+            default: null
+        }
+    },
+    methods: {
+        upload: function upload(e) {
+            var files = e.target.files;
+            if (files && files.length > 0) {
+                this.$emit('input', files[0]);
+            }
+        }
+    }
+});
+
+/***/ }),
 /* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(104)
+/* template */
+var __vue_template__ = __webpack_require__(105)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ImagePreview.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-78eff338", Component.options)
+  } else {
+    hotAPI.reload("data-v-78eff338", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 104 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        preview: {
+            type: [String, File],
+            default: null
+        }
+    },
+    data: function data() {
+        return {
+            image: null
+        };
+    },
+    created: function created() {
+        this.setPreview();
+    },
+
+    watch: {
+        'preview': 'setPreview'
+    },
+    methods: {
+        setPreview: function setPreview() {
+            var _this = this;
+
+            if (this.preview instanceof File) {
+                var fileReader = new FileReader();
+                fileReader.onload = function (event) {
+                    _this.image = event.target.result;
+                };
+                fileReader.readAsDataURL(this.preview);
+            } else if (typeof this.preview === 'string') {
+                this.image = '/images/' + this.preview;
+            } else {
+                this.image = null;
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.image
+    ? _c("div", { staticClass: "position-relative" }, [
+        _c("img", { attrs: { src: _vm.image } }),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-danger upload-close m-0 px-3 py-2",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.$emit("close")
+              }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-times text-white" })]
+        )
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-78eff338", module.exports)
+  }
+}
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "image" },
+    [
+      _vm.value
+        ? _c("image-preview", {
+            attrs: { preview: _vm.value },
+            on: {
+              close: function($event) {
+                _vm.$emit("input", null)
+              }
+            }
+          })
+        : _c("div", [
+            _c("input", {
+              attrs: { type: "file", accept: "images/*" },
+              on: { change: _vm.upload }
+            })
+          ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7e5db395", module.exports)
+  }
+}
+
+/***/ }),
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49288,9 +49565,21 @@ var render = function() {
                                         "div",
                                         {
                                           staticClass:
-                                            "icon icon-warning icon-circle"
+                                            "icon icon-warning icon-circle position-relative"
                                         },
                                         [
+                                          _vm.form.passport
+                                            ? _c("div", {
+                                                staticClass: "thumbnail",
+                                                style: {
+                                                  backgroundImage:
+                                                    "url(images/" +
+                                                    _vm.form.passport +
+                                                    ")"
+                                                }
+                                              })
+                                            : _vm._e(),
+                                          _vm._v(" "),
                                           _c("i", {
                                             staticClass: "fas",
                                             class: _vm.IconClass("passport")
@@ -51337,15 +51626,15 @@ if (false) {
 }
 
 /***/ }),
-/* 104 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(105)
+var __vue_script__ = __webpack_require__(109)
 /* template */
-var __vue_template__ = __webpack_require__(106)
+var __vue_template__ = __webpack_require__(110)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51384,7 +51673,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 105 */
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51425,7 +51714,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 });
 
 /***/ }),
-/* 106 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51445,15 +51734,15 @@ if (false) {
 }
 
 /***/ }),
-/* 107 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(108)
+var __vue_script__ = __webpack_require__(112)
 /* template */
-var __vue_template__ = __webpack_require__(109)
+var __vue_template__ = __webpack_require__(113)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51492,7 +51781,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 108 */
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51507,7 +51796,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 109 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51536,15 +51825,15 @@ if (false) {
 }
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(111)
+var __vue_script__ = __webpack_require__(115)
 /* template */
-var __vue_template__ = __webpack_require__(112)
+var __vue_template__ = __webpack_require__(116)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51583,7 +51872,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 111 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51767,7 +52056,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52156,15 +52445,15 @@ if (false) {
 }
 
 /***/ }),
-/* 113 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(114)
+var __vue_script__ = __webpack_require__(118)
 /* template */
-var __vue_template__ = __webpack_require__(115)
+var __vue_template__ = __webpack_require__(119)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52203,7 +52492,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 114 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52243,7 +52532,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 115 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52359,15 +52648,15 @@ if (false) {
 }
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(117)
+var __vue_script__ = __webpack_require__(121)
 /* template */
-var __vue_template__ = __webpack_require__(118)
+var __vue_template__ = __webpack_require__(122)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52406,7 +52695,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 117 */
+/* 121 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52439,7 +52728,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 118 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52531,15 +52820,15 @@ if (false) {
 }
 
 /***/ }),
-/* 119 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(120)
+var __vue_script__ = __webpack_require__(124)
 /* template */
-var __vue_template__ = __webpack_require__(121)
+var __vue_template__ = __webpack_require__(125)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52578,7 +52867,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 120 */
+/* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53264,7 +53553,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 121 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55212,15 +55501,15 @@ if (false) {
 }
 
 /***/ }),
-/* 122 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(123)
+var __vue_script__ = __webpack_require__(127)
 /* template */
-var __vue_template__ = __webpack_require__(124)
+var __vue_template__ = __webpack_require__(128)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55259,7 +55548,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 123 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55705,7 +55994,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 124 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57045,15 +57334,15 @@ if (false) {
 }
 
 /***/ }),
-/* 125 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(126)
+var __vue_script__ = __webpack_require__(130)
 /* template */
-var __vue_template__ = __webpack_require__(127)
+var __vue_template__ = __webpack_require__(131)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57092,7 +57381,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 126 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57132,7 +57421,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 127 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57248,15 +57537,15 @@ if (false) {
 }
 
 /***/ }),
-/* 128 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(129)
+var __vue_script__ = __webpack_require__(133)
 /* template */
-var __vue_template__ = __webpack_require__(130)
+var __vue_template__ = __webpack_require__(134)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57295,7 +57584,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 129 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57319,7 +57608,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 130 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57376,15 +57665,15 @@ if (false) {
 }
 
 /***/ }),
-/* 131 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(132)
+var __vue_script__ = __webpack_require__(136)
 /* template */
-var __vue_template__ = __webpack_require__(133)
+var __vue_template__ = __webpack_require__(137)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57423,7 +57712,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 132 */
+/* 136 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57472,7 +57761,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 133 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57550,7 +57839,7 @@ if (false) {
 }
 
 /***/ }),
-/* 134 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65327,7 +65616,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 135 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65351,7 +65640,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('slug', function (value) {
 });
 
 /***/ }),
-/* 136 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65391,7 +65680,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$networkErr = function () 
 };
 
 /***/ }),
-/* 137 */
+/* 141 */
 /***/ (function(module, exports) {
 
 /*!
@@ -65621,326 +65910,10 @@ nowuiKitDemo = {
 };
 
 /***/ }),
-/* 138 */
+/* 142 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = toMulipartedForm;
-/* unused harmony export objectToFormData */
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-function toMulipartedForm(form, mode) {
-    if (mode === 'edit' && typeof form.image === 'string') {
-        //remove reactivity
-        var temp = JSON.parse(JSON.stringify(form));
-        delete temp.image;
-        return temp;
-    } else {
-        return objectToFormData(form);
-    }
-}
-
-function objectToFormData(obj, form, namespace) {
-    var fd = form || new FormData();
-    var formKey = void 0;
-    for (var property in obj) {
-        if (obj.hasOwnProperty(property)) {
-            if (namespace) {
-                formKey = namespace + '[' + property + ']';
-            } else {
-                formKey = property;
-            }
-            if (obj[property] instanceof Array) {
-                for (var i = 0; i < obj[property].length; i++) {
-                    objectToFormData(obj[property][i], fd, property + '[' + i + ']');
-                }
-            } else if (_typeof(obj[property]) === 'object' && !(obj[property] instanceof File)) {
-                objectToFormData(obj[property], fd, property);
-            } else {
-                fd.append(formKey, obj[property]);
-            }
-        }
-    }
-    return fd;
-}
-
-/***/ }),
-/* 148 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(149)
-/* template */
-var __vue_template__ = __webpack_require__(153)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\ImageUpload.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7e5db395", Component.options)
-  } else {
-    hotAPI.reload("data-v-7e5db395", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 149 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePreview__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePreview___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ImagePreview__);
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        ImagePreview: __WEBPACK_IMPORTED_MODULE_0__ImagePreview___default.a
-    },
-    props: {
-        value: {
-            type: [String, File],
-            default: null
-        }
-    },
-    methods: {
-        upload: function upload(e) {
-            var files = e.target.files;
-            if (files && files.length > 0) {
-                this.$emit('input', files[0]);
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 150 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(151)
-/* template */
-var __vue_template__ = __webpack_require__(152)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\ImagePreview.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-78eff338", Component.options)
-  } else {
-    hotAPI.reload("data-v-78eff338", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 151 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        preview: {
-            type: [String, File],
-            default: null
-        }
-    },
-    data: function data() {
-        return {
-            image: null
-        };
-    },
-    created: function created() {
-        this.setPreview();
-    },
-
-    watch: {
-        'preview': 'setPreview'
-    },
-    methods: {
-        setPreview: function setPreview() {
-            var _this = this;
-
-            if (this.preview instanceof File) {
-                var fileReader = new FileReader();
-                fileReader.onload = function (event) {
-                    _this.image = event.target.result;
-                };
-                fileReader.readAsDataURL(this.preview);
-            } else if (typeof this.preview === 'string') {
-                this.image = '/images/' + this.preview;
-            } else {
-                this.image = null;
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 152 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.image
-    ? _c("div", { staticClass: "position-relative" }, [
-        _c("img", { attrs: { src: _vm.image } }),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-danger upload-close m-0 px-3 py-2",
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                _vm.$emit("close")
-              }
-            }
-          },
-          [_c("i", { staticClass: "fas fa-times text-white" })]
-        )
-      ])
-    : _vm._e()
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-78eff338", module.exports)
-  }
-}
-
-/***/ }),
-/* 153 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "image" },
-    [
-      _vm.value
-        ? _c("image-preview", {
-            attrs: { preview: _vm.value },
-            on: {
-              close: function($event) {
-                _vm.$emit("input", null)
-              }
-            }
-          })
-        : _c("div", [
-            _c("input", {
-              attrs: { type: "file", accept: "images/*" },
-              on: { change: _vm.upload }
-            })
-          ])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7e5db395", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

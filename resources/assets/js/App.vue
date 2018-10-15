@@ -33,10 +33,10 @@
                                         <i class="now-ui-icons users_circle-08"></i> {{authState.user_name | capitalize}}
                                     </span>
                                     <div class="dropdown-menu" aria-labelledby="menu">
-                                        <router-link to="/user/profile" class="dropdown-item">
+                                        <router-link to="/user/profile" class="dropdown-item p-4">
                                             <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i> My Profile
                                         </router-link>
-                                        <span class="dropdown-item" @click.stop="logout">
+                                        <span class="dropdown-item p-4" @click.stop="logout">
                                         <i class="now-ui-icons media-1_button-power pr-1"></i> Logout
                                     </span>
                                     </div>

@@ -39,6 +39,10 @@ class CustomerController extends Controller
         $states = State::all();
         $form = Customer::form();
         $branches = Branch::all();
+
+        /*$form = Customer::find(1);
+        unset($form['id']);*/
+
         $form['employee_name'] = $user->full_name;
         $form['employee_id'] = $user->staff_id;
         return response()->json([
@@ -72,15 +76,9 @@ class CustomerController extends Controller
         (new Document([
             'user_id' => auth('api')->user()->id,
             'customer_id' => $customer->id,
-            'id_card' => 0,
             'id_card_url' => '',
-            'passport' => 0,
             'passport_url' => '',
         ]))->save();
-
-
-
-
         return response()->json([
             'registered' => true,
             'form' => Customer::form(),

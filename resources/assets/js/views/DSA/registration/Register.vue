@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                        <label>Employee ID(Staff ID)</label>
+                        <label>Employee ID (Staff ID)</label>
                         <input type="text" class="form-control" placeholder="Enter Employee number here"
                                v-model="newCustomer.employee_id" disabled v-validate="'required'"
                                name="employee_id" data-vv-as="employee phone number"
@@ -963,181 +963,180 @@
                         Work Guarantor Personal Info
                     </h5>
 
-                    <transition name="fade">
-                        <div v-if="fillWorkGuarantor">
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>First Name</label>
-                                <input v-model="newCustomer.work_guarantor_first_name" type="text" class="form-control"
-                                       placeholder="Enter first name" v-validate="'required|max:25'"
-                                       data-vv-as="work guarantors first name" name="WG_first_name"
-                                       :class="{'is-invalid': errors.first('WG_first_name')}">
-                                <small class="text-muted" v-if="errors.first('WG_first_name')">
-                                    {{errors.first('WG_first_name')}}
-                                </small>
-                            </div>
 
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Middle Name</label>
-                                <input v-model="newCustomer.work_guarantor_middle_name" type="text" class="form-control"
-                                       placeholder="Enter middle name">
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Last Name</label>
-                                <input v-model="newCustomer.work_guarantor_last_name" type="text" class="form-control"
-                                       placeholder="Enter last name" v-validate="'required|max:25'"
-                                       data-vv-as="work guarantors last name" name="WG_last_name"
-                                       :class="{'is-invalid': errors.first('WG_last_name')}">
-                                <small class="text-muted" v-if="errors.first('WG_last_name')">
-                                    {{errors.first('WG_last_name')}}
-                                </small>
-                            </div>
-
-                            <div class="spaceBetween"></div>
-
-                            <div class="form-group col-md-9 col-sm-12 px-md-3 px-1 float-left">
-                                <label class="w-100 float-left pl-1">Relationship</label>
-                                <div class="radio p-0 col-md-3 col-6 float-left" v-for="rela in relationshipWG">
-                                    <input v-model="newCustomer.work_guarantor_relationship" type="radio"
-                                           name="relationshipwg" :id="rela+'wg'" :value="rela" v-validate="'required'"
-                                           data-vv-as="work guarantor relationship">
-                                    <label :for="rela+'wg'">{{rela}}</label>
-                                </div>
-                                <small class="text-muted" v-if="errors.first('relationshipwg')">
-                                    {{errors.first('relationshipwg')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
-                                <label class="w-100 float-left pl-1">Gender</label>
-                                <div class="radio p-0 col-6 float-left" v-for="sex in gender">
-                                    <input v-model="newCustomer.work_guarantor_gender" name="wggender" :value="sex"
-                                           type="radio" :id="'gua'+sex" v-validate="'required'"
-                                           data-vv-as="work guanrantor gender">
-                                    <label :for="'gua'+sex">{{sex}}</label>
-                                </div>
-                                <small class="text-muted" v-if="errors.first('wggender')">
-                                    {{errors.first('wggender')}}
-                                </small>
-                            </div>
-
-                            <div class="spaceAfter"></div>
-                            <h5>Work Guarantor office Details</h5>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Street Name</label>
-                                <input v-model="newCustomer.guaadd_street" type="text" class="form-control"
-                                       placeholder="Enter Street name here" v-validate="'required|max:25'"
-                                       data-vv-as="work guarantor street"
-                                       name="work_guarantor_street_name"
-                                       :class="{'is-invalid': errors.first('work_guarantor_street_name')}">
-                                <small class="text-muted" v-if="errors.first('work_guarantor_street_name')">
-                                    {{errors.first('work_guarantor_street_name')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Office Building Number</label>
-                                <input v-model="newCustomer.guaadd_houseno" type="text" class="form-control"
-                                       placeholder="Enter Building Number" v-validate="'required|max:25'"
-                                       data-vv-as="work guarantor office building"
-                                       name="work_guarantor_office_building"
-                                       :class="{'is-invalid': errors.first('work_guarantor_office_building')}">
-                                <small class="text-muted"
-                                       v-if="errors.first('work_guarantor_office_building')">
-                                    {{errors.first('work_guarantor_office_building')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Nearest Bus Stop</label>
-                                <input v-model="newCustomer.guaadd_nbstop" type="text" class="form-control"
-                                       placeholder="Enter nearest bus stop" v-validate="'required|max:25'"
-                                       data-vv-as="work guarantor bus stop"
-                                       name="work_guarantor_bus_stop"
-                                       :class="{'is-invalid': errors.first('work_guarantor_bus_stop')}">
-                                <small class="text-muted" v-if="errors.first('work_guarantor_bus_stop')">
-                                    {{errors.first('work_guarantor_bus_stop')}}
-                                </small>
-                            </div>
-
-                            <div class="spaceBetween"></div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Area</label>
-                                <input v-model="newCustomer.gua_area" type="text" class="form-control"
-                                       placeholder="Enter area" v-validate="'required|max:25'"
-                                       data-vv-as="work guarantor area"
-                                       name="work_guarantor_area"
-                                       :class="{'is-invalid': errors.first('work_guarantor_area')}">
-                                <small class="text-muted" v-if="errors.first('work_guarantor_area')">
-                                    {{errors.first('work_guarantor_area')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>City</label>
-                                <input v-model="newCustomer.work_guarantor_city" type="text" class="form-control"
-                                       placeholder="Enter city" v-validate="'required|max:25'"
-                                       data-vv-as="work guarantor city"
-                                       name="work_guarantor_city"
-                                       :class="{'is-invalid': errors.first('work_guarantor_city')}">
-                                <small class="text-muted" v-if="errors.first('work_guarantor_city')">
-                                    {{errors.first('work_guarantor_city')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>State</label>
-                                <select class="custom-select w-100" v-model="newCustomer.work_guarantor_state"
-                                        v-validate="'required|max:25'" data-vv-as="work guarantor state"
-                                        name="work_guarantor_state"
-                                        :class="{'is-invalid': errors.first('work_guarantor_state')}">
-                                    <option value="">select state</option>
-                                    <option :value="state.name" v-for="state in states">{{state.name}}</option>
-                                </select>
-                                <small class="text-muted" v-if="errors.first('work_guarantor_state')">
-                                    {{errors.first('work_guarantor_state')}}
-                                </small>
-                            </div>
-
-                            <div class="spaceBetween"></div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Phone Number</label>
-                                <input v-model="newCustomer.work_guarantor_telno" type="tel" class="form-control"
-                                       placeholder="Enter city" v-validate="'required|numeric|max:11|min:11'"
-                                       data-vv-as="work guarantor phone"
-                                       name="work_guarantor_phone"
-                                       :class="{'is-invalid': errors.first('work_guarantor_phone')}">
-                                <small class="text-muted" v-if="errors.first('work_guarantor_phone')">
-                                    {{errors.first('work_guarantor_phone')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Duration in Current work</label>
-                                <select class="custom-select w-100" v-model="newCustomer.work_guarantor_work_duration"
-                                        v-validate="'required'" data-vv-as="work guarantor work duration"
-                                        name="work_guarantor_work_duration"
-                                        :class="{'is-invalid': errors.first('work_guarantor_work_duration')}">
-                                    <option value="">select duration</option>
-                                    <option :value="duration" v-for="duration in durations">{{duration}}</option>
-                                </select>
-                                <small class="text-muted" v-if="errors.first('work_guarantor_work_duration')">
-                                    {{errors.first('work_guarantor_work_duration')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Describe Location</label>
-                                <textarea class="form-control col-sm-12" placeholder="Describe the Location" rows="1"
-                                          v-model="newCustomer.guaadd_addinfo"></textarea>
-                            </div>
-
-                            <div class="spaceBetween"></div>
+                    <div v-if="fillWorkGuarantor">
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>First Name</label>
+                            <input v-model="newCustomer.work_guarantor_first_name" type="text" class="form-control"
+                                   placeholder="Enter first name" v-validate="'required|max:25'"
+                                   data-vv-as="work guarantors first name" name="WG_first_name"
+                                   :class="{'is-invalid': errors.first('WG_first_name')}">
+                            <small class="text-muted" v-if="errors.first('WG_first_name')">
+                                {{errors.first('WG_first_name')}}
+                            </small>
                         </div>
-                    </transition>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Middle Name</label>
+                            <input v-model="newCustomer.work_guarantor_middle_name" type="text" class="form-control"
+                                   placeholder="Enter middle name">
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Last Name</label>
+                            <input v-model="newCustomer.work_guarantor_last_name" type="text" class="form-control"
+                                   placeholder="Enter last name" v-validate="'required|max:25'"
+                                   data-vv-as="work guarantors last name" name="WG_last_name"
+                                   :class="{'is-invalid': errors.first('WG_last_name')}">
+                            <small class="text-muted" v-if="errors.first('WG_last_name')">
+                                {{errors.first('WG_last_name')}}
+                            </small>
+                        </div>
+
+                        <div class="spaceBetween"></div>
+
+                        <div class="form-group col-md-9 col-sm-12 px-md-3 px-1 float-left">
+                            <label class="w-100 float-left pl-1">Relationship</label>
+                            <div class="radio p-0 col-md-3 col-6 float-left" v-for="rela in relationshipWG">
+                                <input v-model="newCustomer.work_guarantor_relationship" type="radio"
+                                       name="relationshipwg" :id="rela+'wg'" :value="rela" v-validate="'required'"
+                                       data-vv-as="work guarantor relationship">
+                                <label :for="rela+'wg'">{{rela}}</label>
+                            </div>
+                            <small class="text-muted" v-if="errors.first('relationshipwg')">
+                                {{errors.first('relationshipwg')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                            <label class="w-100 float-left pl-1">Gender</label>
+                            <div class="radio p-0 col-6 float-left" v-for="sex in gender">
+                                <input v-model="newCustomer.work_guarantor_gender" name="wggender" :value="sex"
+                                       type="radio" :id="'gua'+sex" v-validate="'required'"
+                                       data-vv-as="work guanrantor gender">
+                                <label :for="'gua'+sex">{{sex}}</label>
+                            </div>
+                            <small class="text-muted" v-if="errors.first('wggender')">
+                                {{errors.first('wggender')}}
+                            </small>
+                        </div>
+
+                        <div class="spaceAfter"></div>
+                        <h5>Work Guarantor office Details</h5>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Street Name</label>
+                            <input v-model="newCustomer.guaadd_street" type="text" class="form-control"
+                                   placeholder="Enter Street name here" v-validate="'required|max:25'"
+                                   data-vv-as="work guarantor street"
+                                   name="work_guarantor_street_name"
+                                   :class="{'is-invalid': errors.first('work_guarantor_street_name')}">
+                            <small class="text-muted" v-if="errors.first('work_guarantor_street_name')">
+                                {{errors.first('work_guarantor_street_name')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Office Building Number</label>
+                            <input v-model="newCustomer.guaadd_houseno" type="text" class="form-control"
+                                   placeholder="Enter Building Number" v-validate="'required|max:25'"
+                                   data-vv-as="work guarantor office building"
+                                   name="work_guarantor_office_building"
+                                   :class="{'is-invalid': errors.first('work_guarantor_office_building')}">
+                            <small class="text-muted"
+                                   v-if="errors.first('work_guarantor_office_building')">
+                                {{errors.first('work_guarantor_office_building')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Nearest Bus Stop</label>
+                            <input v-model="newCustomer.guaadd_nbstop" type="text" class="form-control"
+                                   placeholder="Enter nearest bus stop" v-validate="'required|max:25'"
+                                   data-vv-as="work guarantor bus stop"
+                                   name="work_guarantor_bus_stop"
+                                   :class="{'is-invalid': errors.first('work_guarantor_bus_stop')}">
+                            <small class="text-muted" v-if="errors.first('work_guarantor_bus_stop')">
+                                {{errors.first('work_guarantor_bus_stop')}}
+                            </small>
+                        </div>
+
+                        <div class="spaceBetween"></div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Area</label>
+                            <input v-model="newCustomer.gua_area" type="text" class="form-control"
+                                   placeholder="Enter area" v-validate="'required|max:25'"
+                                   data-vv-as="work guarantor area"
+                                   name="work_guarantor_area"
+                                   :class="{'is-invalid': errors.first('work_guarantor_area')}">
+                            <small class="text-muted" v-if="errors.first('work_guarantor_area')">
+                                {{errors.first('work_guarantor_area')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>City</label>
+                            <input v-model="newCustomer.work_guarantor_city" type="text" class="form-control"
+                                   placeholder="Enter city" v-validate="'required|max:25'"
+                                   data-vv-as="work guarantor city"
+                                   name="work_guarantor_city"
+                                   :class="{'is-invalid': errors.first('work_guarantor_city')}">
+                            <small class="text-muted" v-if="errors.first('work_guarantor_city')">
+                                {{errors.first('work_guarantor_city')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>State</label>
+                            <select class="custom-select w-100" v-model="newCustomer.work_guarantor_state"
+                                    v-validate="'required|max:25'" data-vv-as="work guarantor state"
+                                    name="work_guarantor_state"
+                                    :class="{'is-invalid': errors.first('work_guarantor_state')}">
+                                <option value="">select state</option>
+                                <option :value="state.name" v-for="state in states">{{state.name}}</option>
+                            </select>
+                            <small class="text-muted" v-if="errors.first('work_guarantor_state')">
+                                {{errors.first('work_guarantor_state')}}
+                            </small>
+                        </div>
+
+                        <div class="spaceBetween"></div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Phone Number</label>
+                            <input v-model="newCustomer.work_guarantor_telno" type="tel" class="form-control"
+                                   placeholder="Enter city" v-validate="'required|numeric|max:11|min:11'"
+                                   data-vv-as="work guarantor phone"
+                                   name="work_guarantor_phone"
+                                   :class="{'is-invalid': errors.first('work_guarantor_phone')}">
+                            <small class="text-muted" v-if="errors.first('work_guarantor_phone')">
+                                {{errors.first('work_guarantor_phone')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Duration in Current work</label>
+                            <select class="custom-select w-100" v-model="newCustomer.work_guarantor_work_duration"
+                                    v-validate="'required'" data-vv-as="work guarantor work duration"
+                                    name="work_guarantor_work_duration"
+                                    :class="{'is-invalid': errors.first('work_guarantor_work_duration')}">
+                                <option value="">select duration</option>
+                                <option :value="duration" v-for="duration in durations">{{duration}}</option>
+                            </select>
+                            <small class="text-muted" v-if="errors.first('work_guarantor_work_duration')">
+                                {{errors.first('work_guarantor_work_duration')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Describe Location</label>
+                            <textarea class="form-control col-sm-12" placeholder="Describe the Location" rows="1"
+                                      v-model="newCustomer.guaadd_addinfo"></textarea>
+                        </div>
+
+                        <div class="spaceBetween"></div>
+                    </div>
 
 
                     <h5>
@@ -1146,182 +1145,178 @@
                         Personal Guarantor Personal Info
                     </h5>
 
-                    <transition name="fade">
-                        <div v-if="fillPersonalGuarantor">
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>First Name</label>
-                                <input v-model="newCustomer.personal_guarantor_first_name" type="text"
-                                       class="form-control"
-                                       placeholder="Enter first name" v-validate="'required|max:25'"
-                                       data-vv-as="first name"
-                                       name="PG_first_name" :class="{'is-invalid': errors.first('PG_first_name')}">
-                                <small class="text-muted" v-if="errors.first('PG_first_name')">
-                                    {{errors.first('PG_first_name')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Middle Name</label>
-                                <input v-model="newCustomer.personal_guarantor_middle_name" type="text"
-                                       class="form-control"
-                                       placeholder="Enter middle name">
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Last Name</label>
-                                <input v-model="newCustomer.personal_guarantor_last_name" type="text"
-                                       class="form-control"
-                                       placeholder="Enter last name" v-validate="'required|max:25'"
-                                       data-vv-as="last name"
-                                       name="PG_last_name" :class="{'is-invalid': errors.first('PG_last_name')}">
-                                <small class="text-muted" v-if="errors.first('PG_last_name')">
-                                    {{errors.first('PG_last_name')}}
-                                </small>
-                            </div>
-
-                            <div class="spaceBetween"></div>
-
-                            <div class="form-group col-md-9 col-sm-12 px-md-3 px-1 float-left">
-                                <label class="w-100 float-left pl-1">Relationship</label>
-                                <div class="radio p-0 col-md-3 col-6 float-left" v-for="rela in relationshipPG">
-                                    <input v-model="newCustomer.personal_guarantor_relationship" type="radio"
-                                           name="relationshippg" :id="rela+'pg'" :value="rela" v-validate="'required'"
-                                           data-vv-as="personal guarantor relationship">
-                                    <label :for="rela+'pg'">{{rela}}</label>
-                                </div>
-                                <small class="text-muted" v-if="errors.first('relationshippg')">
-                                    {{errors.first('relationshippg')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
-                                <label class="w-100 float-left pl-1">Gender</label>
-                                <div class="radio p-0 col-md-6 col-6 float-left" v-for="sex in gender">
-                                    <input v-model="newCustomer.personal_guarantor_gender" name="pggender" :value="sex"
-                                           type="radio" :id="'pg'+sex" v-validate="'required'"
-                                           data-vv-as="personal guarantor gender">
-                                    <label :for="'pg'+sex">{{sex}}</label>
-                                </div>
-                                <small class="text-muted" v-if="errors.first('pggender')">
-                                    {{errors.first('pggender')}}
-                                </small>
-                            </div>
-
-                            <div class="spaceAfter"></div>
-                            <h5>Personal Guarantor office Details</h5>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Street Name</label>
-                                <input v-model="newCustomer.pguaadd_street" type="text" class="form-control"
-                                       placeholder="Enter Street name here" v-validate="'required|max:25'"
-                                       data-vv-as="street number" name="pguaadd_street"
-                                       :class="{'is-invalid': errors.first('pguaadd_street')}">
-                                <small class="text-muted" v-if="errors.first('pguaadd_street')">
-                                    {{errors.first('pguaadd_street')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Office Building Number</label>
-                                <input v-model="newCustomer.pguaadd_houseno" type="text" class="form-control"
-                                       placeholder="Enter Building Number" v-validate="'required|max:25'"
-                                       data-vv-as="office building address" name="pguaadd_houseno"
-                                       :class="{'is-invalid': errors.first('pguaadd_houseno')}">
-                                <small class="text-muted" v-if="errors.first('pguaadd_houseno')">
-                                    {{errors.first('pguaadd_houseno')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Nearest Bus Stop</label>
-                                <input v-model="newCustomer.pguaadd_nbstop" type="text" class="form-control"
-                                       placeholder="Enter nearest bus stop" v-validate="'required|max:25'"
-                                       data-vv-as="per. guarantor nearest stop"
-                                       name="pguaadd_nbstop" :class="{'is-invalid': errors.first('pguaadd_nbstop')}">
-                                <small class="text-muted" v-if="errors.first('pguaadd_nbstop')">
-                                    {{errors.first('pguaadd_nbstop')}}
-                                </small>
-                            </div>
-
-                            <div class="spaceBetween"></div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Area</label>
-                                <input v-model="newCustomer.pgua_area" type="text" class="form-control"
-                                       placeholder="Enter area" v-validate="'required|max:25'"
-                                       data-vv-as="personal guarantor area" name="pgua_area"
-                                       :class="{'is-invalid': errors.first('pgua_area')}">
-                                <small class="text-muted" v-if="errors.first('pgua_area')">
-                                    {{errors.first('pgua_area')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>City</label>
-                                <input v-model="newCustomer.personal_guarantor_city" type="text" class="form-control"
-                                       placeholder="Enter city" v-validate="'required|max:25'"
-                                       data-vv-as="personal guarantor city" name="personal_guarantor_city"
-                                       :class="{'is-invalid': errors.first('personal_guarantor_city')}">
-                                <small class="text-muted" v-if="errors.first('personal_guarantor_city')">
-                                    {{errors.first('personal_guarantor_city')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>State</label>
-                                <select class="custom-select w-100" v-model="newCustomer.personal_guarantor_state"
-                                        v-validate="'required|max:25'" data-vv-as="personal guarantor state"
-                                        name="personal_guarantor_state"
-                                        :class="{'is-invalid': errors.first('personal_guarantor_state')}">
-                                    <option value="">select state</option>
-                                    <option :value="state.name" v-for="state in states">{{state.name}}</option>
-                                </select>
-                                <small class="text-muted" v-if="errors.first('personal_guarantor_state')">
-                                    {{errors.first('personal_guarantor_state')}}
-                                </small>
-                            </div>
-
-                            <div class="spaceBetween"></div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Phone Number</label>
-                                <input v-model="newCustomer.personal_guarantor_telno" type="tel" class="form-control"
-                                       placeholder="Enter city" v-validate="'required|numeric|max:11|min:11'"
-                                       data-vv-as="per. guarantor phone"
-                                       name="personal_guarantor_telno"
-                                       :class="{'is-invalid': errors.first('personal_guarantor_telno')}">
-                                <small class="text-muted" v-if="errors.first('personal_guarantor_telno')">
-                                    {{errors.first('personal_guarantor_telno')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Duration in Current work</label>
-                                <select class="custom-select w-100"
-                                        v-model="newCustomer.personal_guarantor_work_duration"
-                                        v-validate="'required'" data-vv-as="personal guarantor work duration"
-                                        name="personal_guarantor_work_duration"
-                                        :class="{'is-invalid': errors.first('personal_guarantor_work_duration')}">
-                                    <option value="">select duration</option>
-                                    <option :value="duration" v-for="duration in durations">{{duration}}</option>
-                                </select>
-                                <small class="text-muted"
-                                       v-if="errors.first('personal_guarantor_work_duration')">
-                                    {{errors.first('personal_guarantor_work_duration')}}
-                                </small>
-                            </div>
-
-                            <div class="form-group col-md-4 px-md-3 px-1 float-left">
-                                <label>Describe Location</label>
-                                <textarea class="form-control col-sm-12" placeholder="Describe the Location" rows="1"
-                                          v-model="newCustomer.pguaadd_addinfo"></textarea>
-                            </div>
-
-                            <div class="spaceAfter"></div>
+                    <div v-if="fillPersonalGuarantor">
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>First Name</label>
+                            <input v-model="newCustomer.personal_guarantor_first_name" type="text"
+                                   class="form-control"
+                                   placeholder="Enter first name" v-validate="'required|max:25'"
+                                   data-vv-as="first name"
+                                   name="PG_first_name" :class="{'is-invalid': errors.first('PG_first_name')}">
+                            <small class="text-muted" v-if="errors.first('PG_first_name')">
+                                {{errors.first('PG_first_name')}}
+                            </small>
                         </div>
 
-                    </transition>
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Middle Name</label>
+                            <input v-model="newCustomer.personal_guarantor_middle_name" type="text"
+                                   class="form-control"
+                                   placeholder="Enter middle name">
+                        </div>
 
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Last Name</label>
+                            <input v-model="newCustomer.personal_guarantor_last_name" type="text"
+                                   class="form-control"
+                                   placeholder="Enter last name" v-validate="'required|max:25'"
+                                   data-vv-as="last name"
+                                   name="PG_last_name" :class="{'is-invalid': errors.first('PG_last_name')}">
+                            <small class="text-muted" v-if="errors.first('PG_last_name')">
+                                {{errors.first('PG_last_name')}}
+                            </small>
+                        </div>
+
+                        <div class="spaceBetween"></div>
+
+                        <div class="form-group col-md-9 col-sm-12 px-md-3 px-1 float-left">
+                            <label class="w-100 float-left pl-1">Relationship</label>
+                            <div class="radio p-0 col-md-3 col-6 float-left" v-for="rela in relationshipPG">
+                                <input v-model="newCustomer.personal_guarantor_relationship" type="radio"
+                                       name="relationshippg" :id="rela+'pg'" :value="rela" v-validate="'required'"
+                                       data-vv-as="personal guarantor relationship">
+                                <label :for="rela+'pg'">{{rela}}</label>
+                            </div>
+                            <small class="text-muted" v-if="errors.first('relationshippg')">
+                                {{errors.first('relationshippg')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                            <label class="w-100 float-left pl-1">Gender</label>
+                            <div class="radio p-0 col-md-6 col-6 float-left" v-for="sex in gender">
+                                <input v-model="newCustomer.personal_guarantor_gender" name="pggender" :value="sex"
+                                       type="radio" :id="'pg'+sex" v-validate="'required'"
+                                       data-vv-as="personal guarantor gender">
+                                <label :for="'pg'+sex">{{sex}}</label>
+                            </div>
+                            <small class="text-muted" v-if="errors.first('pggender')">
+                                {{errors.first('pggender')}}
+                            </small>
+                        </div>
+
+                        <div class="spaceAfter"></div>
+                        <h5>Personal Guarantor office Details</h5>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Street Name</label>
+                            <input v-model="newCustomer.pguaadd_street" type="text" class="form-control"
+                                   placeholder="Enter Street name here" v-validate="'required|max:25'"
+                                   data-vv-as="street number" name="pguaadd_street"
+                                   :class="{'is-invalid': errors.first('pguaadd_street')}">
+                            <small class="text-muted" v-if="errors.first('pguaadd_street')">
+                                {{errors.first('pguaadd_street')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Office Building Number</label>
+                            <input v-model="newCustomer.pguaadd_houseno" type="text" class="form-control"
+                                   placeholder="Enter Building Number" v-validate="'required|max:25'"
+                                   data-vv-as="office building address" name="pguaadd_houseno"
+                                   :class="{'is-invalid': errors.first('pguaadd_houseno')}">
+                            <small class="text-muted" v-if="errors.first('pguaadd_houseno')">
+                                {{errors.first('pguaadd_houseno')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Nearest Bus Stop</label>
+                            <input v-model="newCustomer.pguaadd_nbstop" type="text" class="form-control"
+                                   placeholder="Enter nearest bus stop" v-validate="'required|max:25'"
+                                   data-vv-as="per. guarantor nearest stop"
+                                   name="pguaadd_nbstop" :class="{'is-invalid': errors.first('pguaadd_nbstop')}">
+                            <small class="text-muted" v-if="errors.first('pguaadd_nbstop')">
+                                {{errors.first('pguaadd_nbstop')}}
+                            </small>
+                        </div>
+
+                        <div class="spaceBetween"></div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Area</label>
+                            <input v-model="newCustomer.pgua_area" type="text" class="form-control"
+                                   placeholder="Enter area" v-validate="'required|max:25'"
+                                   data-vv-as="personal guarantor area" name="pgua_area"
+                                   :class="{'is-invalid': errors.first('pgua_area')}">
+                            <small class="text-muted" v-if="errors.first('pgua_area')">
+                                {{errors.first('pgua_area')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>City</label>
+                            <input v-model="newCustomer.personal_guarantor_city" type="text" class="form-control"
+                                   placeholder="Enter city" v-validate="'required|max:25'"
+                                   data-vv-as="personal guarantor city" name="personal_guarantor_city"
+                                   :class="{'is-invalid': errors.first('personal_guarantor_city')}">
+                            <small class="text-muted" v-if="errors.first('personal_guarantor_city')">
+                                {{errors.first('personal_guarantor_city')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>State</label>
+                            <select class="custom-select w-100" v-model="newCustomer.personal_guarantor_state"
+                                    v-validate="'required|max:25'" data-vv-as="personal guarantor state"
+                                    name="personal_guarantor_state"
+                                    :class="{'is-invalid': errors.first('personal_guarantor_state')}">
+                                <option value="">select state</option>
+                                <option :value="state.name" v-for="state in states">{{state.name}}</option>
+                            </select>
+                            <small class="text-muted" v-if="errors.first('personal_guarantor_state')">
+                                {{errors.first('personal_guarantor_state')}}
+                            </small>
+                        </div>
+
+                        <div class="spaceBetween"></div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Phone Number</label>
+                            <input v-model="newCustomer.personal_guarantor_telno" type="tel" class="form-control"
+                                   placeholder="Enter city" v-validate="'required|numeric|max:11|min:11'"
+                                   data-vv-as="per. guarantor phone"
+                                   name="personal_guarantor_telno"
+                                   :class="{'is-invalid': errors.first('personal_guarantor_telno')}">
+                            <small class="text-muted" v-if="errors.first('personal_guarantor_telno')">
+                                {{errors.first('personal_guarantor_telno')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Duration in Current work</label>
+                            <select class="custom-select w-100"
+                                    v-model="newCustomer.personal_guarantor_work_duration"
+                                    v-validate="'required'" data-vv-as="personal guarantor work duration"
+                                    name="personal_guarantor_work_duration"
+                                    :class="{'is-invalid': errors.first('personal_guarantor_work_duration')}">
+                                <option value="">select duration</option>
+                                <option :value="duration" v-for="duration in durations">{{duration}}</option>
+                            </select>
+                            <small class="text-muted"
+                                   v-if="errors.first('personal_guarantor_work_duration')">
+                                {{errors.first('personal_guarantor_work_duration')}}
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label>Describe Location</label>
+                            <textarea class="form-control col-sm-12" placeholder="Describe the Location" rows="1"
+                                      v-model="newCustomer.pguaadd_addinfo"></textarea>
+                        </div>
+
+                        <div class="spaceAfter"></div>
+                    </div>
 
                     <h5>Other Questions</h5>
 
@@ -1453,7 +1448,7 @@
                             this.$scrollToTop();
                             return;
                         }
-                        if(this.$network()){
+                        if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
                             post('/api/customer', this.newCustomer)
@@ -1470,7 +1465,7 @@
                                     if (err.response.data.errors) this.error = err.response.data.errors;
                                     this.$LIPS(false);
                                 });
-                        }else{
+                        } else {
                             this.$networkErr();
                         }
                     }
@@ -1499,7 +1494,7 @@
                     this.states = res.data.states;
                     this.branches = res.data.branches;
                     this.newCustomer = res.data.form;
-                    this.newCustomer.days_of_work = [];
+                    this.newCustomer.days_of_work = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
                     this.newCustomer.Date_of_Registration = this.$getDate();
                 });
         },

@@ -54,5 +54,13 @@ Route::get('/check', function (){
     //$data = Customer::find(1)->address;
 
     $data = Customer::with(['branch','user','verification','address','document'])->where('id', '=','1')->first();
-    return $data;
+
+    $lagos = State::where('name', 'Lagos')->select('id')->first();
+    $lagos = $lagos->id;
+    $ibadan = State::where('name', 'Oyo')->select('id')->first();
+    $ibadan = $ibadan->id;
+
+    return ($lagos." -- ".$ibadan);
+
+    //return $data;
 });

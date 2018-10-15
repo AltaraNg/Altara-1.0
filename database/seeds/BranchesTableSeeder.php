@@ -1,6 +1,7 @@
 <?php
 
 use App\Branch;
+use App\State;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,10 +14,10 @@ class BranchesTableSeeder extends Seeder
      */
     public function run()
     {
-        $lagos = DB::table('states')->where('name','=', 'Lagos')->select('id')->get();
-        $lagos = $lagos[0]->id;
-        $ibadan = DB::table('states')->where('name','=', 'Oyo')->select('id')->get();
-        $ibadan = $ibadan[0]->id;
+        $lagos = State::where('name', 'Lagos')->select('id')->first();
+        $lagos = $lagos->id;
+        $ibadan = State::where('name', 'Oyo')->select('id')->first();
+        $ibadan = $ibadan->id;
 
         $branch = new Branch();
         $branch->name = 'Ikoyi';

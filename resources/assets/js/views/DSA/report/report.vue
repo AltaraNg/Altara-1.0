@@ -56,7 +56,7 @@
                         </div>
                         <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-4 float-right">
                             <button type="submit"
-                                    class="btn btn-block bg-default"
+                                    class="btn btn-block btn-lg bg-default"
                                     :disabled="$isProcessing">
                                 Generate Report
                                 <i class="far fa-paper-plane ml-1"></i>

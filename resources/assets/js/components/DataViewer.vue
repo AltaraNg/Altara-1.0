@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="card-body p-5">
+        <div class="card-body p-4 p-md-5">
             <div class="clearfix w-100">
                 <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
                     <label>Search Column</label>
@@ -22,11 +22,11 @@
                            v-model="query.search_input"
                            @keyup.enter="fetchIndexData()">
                 </div>
-                <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 pt-2 float-left">
-                    <button class="btn btn-block bg-default mb-0 mt-4" @click="fetchIndexData()">Filter</button>
+                <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 pt-md-2 pt-0 float-left">
+                    <button class="btn btn-block bg-default mb-0 mt-3 mt-md-4" @click="fetchIndexData()">Filter</button>
                 </div>
             </div>
-            <div class="px-3 mt-3 table-responsive">
+            <div class="px-0 px-md-3 mt-3 table-responsive">
                 <table class="table m-0  table-bordered table-hover">
                     <thead class="thead-light">
                     <tr>
@@ -46,29 +46,31 @@
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="Page navigation example" class="clearfix mx-3 mt-4 py-3">
-                <span class="float-left py-1">
+            <nav aria-label="Page navigation example" class="clearfix pt-5">
+                <span class="float-left col-md-6 col-12 px-0 mb-5 mb-md-0">
                     Displaying {{model.from}} - {{model.to}} of {{model.total}} Customer(s)
                 </span>
-                <ul class="pagination justify-content-end float-right m-0">
-                    <li class="page-item">
-                        <a class="page-link" @click="prev()"><i class="fas fa-arrow-circle-left"></i></a>
-                    </li>
 
-                    <!--<input type="text" v-model="query.page" class="form-control"
-                           @keyup.enter="fetchIndexData()">-->
-                    <!--<li class="page-item"><a class="page-link active" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-                    <li class="page-item"><span class="page-link">Current Page: {{model.current_page}}</span></li>
-                    <li class="page-item">
-                        <a class="page-link" @click="next()"><i class="fas fa-arrow-circle-right"></i></a>
-                    </li>
-                </ul>
-                <div class="float-right mr-5">
-                    <span class="float-left py-2 px-2">Rows Per Page </span>
-                    <input type="text" class="form-control float-left" placeholder="search..." v-model="query.per_page"
-                           @keyup.enter="fetchIndexData()" style="width:50px">
-                </div>
+                <span class="justify-content-end float-right col-md-6 col-12 px-0 mb-5 mb-md-0">
+
+                    <ul class="pagination m-0 float-right">
+                        <li class="page-item">
+                            <a class="page-link" @click="prev()"><i class="fas fa-arrow-circle-left"></i></a>
+                        </li>
+                        <li class="page-item"><span class="page-link">Current Page: {{model.current_page}}</span></li>
+                        <li class="page-item">
+                            <a class="page-link" @click="next()"><i class="fas fa-arrow-circle-right"></i></a>
+                        </li>
+                    </ul>
+
+                    <span class="float-left">
+                        <span class="py-2 pr-3 float-left">Rows Per Page </span>
+                        <input type="text" class="form-control float-left" placeholder="search..." v-model="query.per_page"
+                               @keyup.enter="fetchIndexData()" style="width:50px">
+                    </span>
+
+                </span>
+
             </nav>
         </div>
     </div>
