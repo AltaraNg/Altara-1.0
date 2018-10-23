@@ -31,12 +31,12 @@
 
                     <div class="form-group col-md-4 px-md-3 px-1 float-left">
                         <label>Date</label>
-                        <input type="date" class="form-control" v-model="newCustomer.Date_of_Registration"
+                        <input type="date" class="form-control" v-model="newCustomer.date_of_registration"
                                v-validate="'required|date_format:MM/DD/YYYY'" data-vv-as="Date of Registration"
-                               name="Date_of_Registration"
-                               :class="{'is-invalid': errors.first('Date_of_Registration')}">
-                        <small class="text-muted" v-if="errors.first('Date_of_Registration')">
-                            {{errors.first('Date_of_Registration')}}
+                               name="date_of_registration"
+                               :class="{'is-invalid': errors.first('date_of_registration')}">
+                        <small class="text-muted" v-if="errors.first('date_of_registration')">
+                            {{errors.first('date_of_registration')}}
                         </small>
                     </div>
 
@@ -1346,7 +1346,7 @@
                     <div class="form-group col-md-4 px-md-3 px-1 float-left">
                         <label>Office Branch</label>
                         <select class="custom-select w-100" v-model="newCustomer.branch_id"
-                                v-validate="'required|max:25'" data-vv-as="office branch" name="branch_id"
+                                v-validate="'required|max:25'" disabled data-vv-as="office branch" name="branch_id"
                                 :class="{'is-invalid': errors.first('branch_id')}">
                             <option value="">select office branch</option>
                             <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
@@ -1483,7 +1483,7 @@
                     if (($.type(value) === 'array')) newestCustomer[key] = [];
                 });
                 newestCustomer['employee_name'] = this.newCustomer.employee_name;
-                newestCustomer['Date_of_Registration'] = this.newCustomer.Date_of_Registration;
+                newestCustomer['date_of_registration'] = this.newCustomer.date_of_registration;
                 newestCustomer['employee_id'] = this.newCustomer.employee_id;
                 this.newCustomer = newestCustomer;
             }
@@ -1495,7 +1495,7 @@
                     this.branches = res.data.branches;
                     this.newCustomer = res.data.form;
                     this.newCustomer.days_of_work = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-                    this.newCustomer.Date_of_Registration = this.$getDate();
+                    this.newCustomer.date_of_registration = this.$getDate();
                 });
         },
         beforeCreate() {

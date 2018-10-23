@@ -14,10 +14,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StatesTableSeeder::class,
             BranchesTableSeeder::class,
-            DocumentTableSeeder::class,
             RolesTableSeeder::class,
             UsersTableSeeder::class,
-            VerificationTableSeeder::class,
+            CustomerTableSeeder::class,
         ]);
     }
 }

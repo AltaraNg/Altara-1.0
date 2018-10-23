@@ -15,7 +15,7 @@ class CustomerController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->except('getData');
+        $this->middleware('auth:api')->except('');
     }
 
     /**
@@ -41,6 +41,7 @@ class CustomerController extends Controller
         $branches = Branch::all();
         $form['employee_name'] = $user->full_name;
         $form['employee_id'] = $user->staff_id;
+        $form['branch_id'] = $user->branch_id;
         return response()->json([
             'form' => $form,
             'states' => $states,
@@ -103,6 +104,7 @@ class CustomerController extends Controller
             return response()->json([
                 'customer' => $customer,
                 'emptyForm' => Address::form(),
+                'success' => true
             ]);
         }
         return response()->json([
@@ -147,7 +149,7 @@ class CustomerController extends Controller
 
     public function getData()
     {
-        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'Date_of_registration')->searchPaginateAndOrder();
+        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration')->searchPaginateAndOrder();
         $columns = Customer::$columns;
         return response()->json([
             'model' => $model,

@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-12 px-md-3 p-0">
-        <div v-if="verifyDSAAccess" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div v-if="verifyDSAAccess" class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link class="card" to="dsa/home">
                 <ul class="nav nav-tabs bg-default justify-content-center">
                     <h6>DSA Portal</h6>
@@ -13,7 +13,7 @@
                 </div>
             </router-link>
         </div>
-        <div v-if="verifyDVAAccess" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div v-if="verifyDVAAccess" class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="dva/home" class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center">
                     <h6>DVA Portal</h6>
@@ -26,7 +26,7 @@
                 </div>
             </router-link>
         </div>
-        <div v-if="verifyHRMAccess" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div v-if="verifyHRMAccess" class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="hrm/home" class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center">
                     <h6>HRM Portal</h6>
@@ -40,7 +40,7 @@
                 </div>
             </router-link>
         </div>
-        <div v-if="verifyFSLAccess" class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div v-if="verifyFSLAccess" class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link to="fsl/home" class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center">
                     <h6>Floor Sales Portal</h6>
@@ -53,7 +53,7 @@
                 </div>
             </router-link>
         </div>
-        <div class="col-md-4 float-left product py-md-2 py-0 px-md-4 px-3">
+        <div class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
             <a href="http://catalog-altara.herokuapp.com/" target="_blank" class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center">
                     <h6>Altara Catalogue</h6>

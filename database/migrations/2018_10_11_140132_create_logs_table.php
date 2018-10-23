@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateLogsTable extends Migration
 {
@@ -22,7 +22,7 @@ class CreateLogsTable extends Migration
             $table->timestamps();
         });
         Schema::table('logs', function ($table) {
-           // $table->foreign('staff_id')->references('staff_id')->on('users');
+            $table->foreign('staff_id')->references('staff_id')->on('users');
         });
     }
 

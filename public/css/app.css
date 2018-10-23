@@ -16551,6 +16551,8 @@ button, input, optgroup, select, textarea, .form-control::placeholder {
 
 .bg-default.btn {
   border-radius: 3px;
+  -webkit-box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .bg-default.btn:hover {
@@ -16807,6 +16809,10 @@ table button i {
   #index a#back i, #index a#forward i {
     font-size: 2.6rem;
   }
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
 }
 
 @media (max-width: 600px) {

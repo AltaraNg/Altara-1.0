@@ -328,6 +328,7 @@ button, input, optgroup, select, textarea, .form-control::placeholder {
   color      : $color-white !important;
   &.btn {
     border-radius : 3px;
+    box-shadow: 0 7px 15px rgba(0,0,0,0.15), 0 4px 4px rgba(0,0,0,0.2);
   }
   &.btn:hover {
     background : linear-gradient(rgba($default-color-lighter, 0.8), rgba($default-color-darker, 0.8)) !important;
@@ -579,6 +580,10 @@ table button i {
       }
     }
   }
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
 }
 
 @media (max-width : 600px) {

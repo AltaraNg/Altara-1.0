@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAddressesTable extends Migration
 {
@@ -20,6 +20,8 @@ class CreateAddressesTable extends Migration
             $table->string('staff_name');
             $table->unsignedInteger('customer_id')->index()->nullable();
             $table->string('customer_meetup');
+            $table->string('date_of_visit');
+            $table->string('time_of_visit');
             $table->string('what_he_sells');
             $table->string('confirm_address');
             $table->text('business_info');

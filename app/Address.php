@@ -25,6 +25,8 @@ class Address extends Model
         return [
             'user_id' => '',
             'staff_name' => '',
+            'date_of_visit' => '',
+            'time_of_visit' => '',
             'customer_id' => '',
             'customer_meetup' => '',
             'what_he_sells' => '',

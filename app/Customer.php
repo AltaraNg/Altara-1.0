@@ -13,7 +13,7 @@ class Customer extends Model
     protected $hidden = [];
 
     public static $columns = [
-        'id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'Date_of_registration'
+        'id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration'
     ];
 
     public static function form()
@@ -21,7 +21,7 @@ class Customer extends Model
         return [
             'employee_name' => '',
             'employee_id' => '',
-            'Date_of_Registration' => '',
+            'date_of_registration' => '',
             'branch_id' => '',
             'first_name' => '',
             'middle_name' => '',

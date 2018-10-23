@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helper\DataViewer;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -9,23 +10,19 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    use DataViewer;
+
     protected $guarded = [];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
         'api_token',
         'hr_id',
+    ];
+
+    public static $columns = [
+        'id', 'full_name','staff_id', 'phone_number','portal_access','email', 'date_of_appointment'
     ];
 
     public static function Form()

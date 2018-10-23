@@ -20,7 +20,6 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 Route::get('/create', 'AuthController@create');
 Route::post('/register', 'AuthController@register');
-Route::post('/search', 'AuthController@search');
 Route::get('/reset-password/{id}', 'AuthController@resetPassword');
 Route::get('/employee/{id}/edit', 'AuthController@edit');
 Route::post('/employee/{id}/update', 'AuthController@update');
@@ -31,5 +30,5 @@ Route::resource('verification', 'VerificationController');
 Route::resource('address', 'AddressController');
 ///fix the controller below and make resourceful use
 Route::post('/report', 'ReportController@generateReport');
-
 Route::get('/customer','CustomerController@getData');
+Route::get('/user','UserController@getData');

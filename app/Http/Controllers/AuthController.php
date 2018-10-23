@@ -103,29 +103,21 @@ class AuthController extends Controller
         return response()->json(['logged_out' => true]);
     }
 
-    public function search(Request $request)
-    {
-        $qry = $request->qry;
-        $roles = User::select('id', 'phone_number', 'staff_id', 'full_name', 'portal_access')
-            ->where('full_name', 'like', '%' . $qry . '%')
-            ->get();
-        return response()->json(['result' => $roles]);
-    }
-
     public function edit($id)
     {
         $branches = Branch::select('name', 'id')->orderBy('name', 'asc')->get();
         $roles = Role::select('name', 'id')->orderBy('name', 'asc')->get();
-        $user = User::where('id', $id)->get();
+        $user = User::find($id);
         return response()->json([
             'roles' => $roles,
-            'user' => $user[0],
+            'user' => $user,
             'branches' => $branches,
         ]);
     }
 
     public function update(Request $request, $id)
     {
+        ($request->date_of_exit) ? $request['portal_access'] = 0 : '';
         User::whereId($id)->update($request->all());
         return response()->json(['updated' => true]);
     }

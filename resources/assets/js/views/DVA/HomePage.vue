@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div>
-            <div class="col-md-4 float-left product py-md-3 py-0 px-md-3 px-3">
+            <div class="col-md-4 col-sm-6 float-left product p-3">
                 <div class="card my-0 px-3 py-2">
                     <div class="card-body">
                         <h5 class="card-title mt-0">Document Verification</h5>

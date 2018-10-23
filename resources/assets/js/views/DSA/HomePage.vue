@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div>
-            <div class="col-md-4 float-left product py-md-3 pt-md-0 pt-2 pb-3 px-md-3 px-1">
+            <div class="col-md-4 col-sm-6 float-left product p-3">
                 <div class="card my-0 px-3 py-2">
                     <div class="card-body">
                         <h5 class="card-title mt-0">Customer Registration</h5>
@@ -10,7 +10,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 float-left product py-md-3 pt-0 pb-3 px-md-3 px-1">
+            <div class="col-md-4 col-sm-6 float-left product p-3" v-if="salesLead">
                 <div class="card my-0 px-3 py-2">
                     <div class="card-body">
                         <h5 class="card-title mt-0">Sales Lead Reporting</h5>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 float-left product py-md-3 pt-0 pb-3 px-md-3 px-1">
+            <div class="col-md-4 col-sm-6 float-left product p-3">
                 <div class="card my-0 px-3 py-2">
                     <div class="card-body">
                         <h5 class="card-title mt-0">Customer List</h5>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 float-left product py-md-3 pt-0 pb-3 px-md-3 px-1">
+            <div class="col-md-4 col-sm-6 float-left product p-3">
                 <div class="card my-0 px-3 py-2">
                     <div class="card-body">
                         <h5 class="card-title mt-0">DSA Logs</h5>
@@ -41,5 +41,13 @@
     </transition>
 </template>
 <script>
-    export default {}
+    export default {
+        computed: {
+            salesLead() {
+                if (this.$store.state.DSALead.includes(this.$store.state.authRole)) {
+                    return true;
+                } return false;
+            }
+        }
+    }
 </script>

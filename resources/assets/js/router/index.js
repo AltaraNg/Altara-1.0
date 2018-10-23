@@ -29,7 +29,7 @@ Vue.use(VueRouter);
 Vue.use(routerHistory);
 const router = new VueRouter({
     routes: [
-        {path: '/', redirect:{name:'home'}},
+        {path: '/', redirect: {name: 'home'}},
         {
             path: '/home',
             component: Home,
