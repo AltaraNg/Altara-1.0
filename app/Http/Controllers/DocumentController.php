@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
 use App\Document;
 use App\Verification;
 use File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
@@ -15,6 +13,7 @@ class DocumentController extends Controller
     {
         $this->middleware('auth:api')->except('');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -93,24 +92,6 @@ class DocumentController extends Controller
         return response()->json([
             'response' => app('App\Http\Controllers\CustomerController')->show($document->customer_id)->original
         ]);
-
-        /*$customer = Customer::with([
-            'branch' => function ($query) {
-                $query->select('id', 'name');
-            },
-            'user' => function ($query) {
-                $query->select('id', 'full_name');
-            },
-            'verification', 'address','document'
-        ])->where('id', $document->customer_id)->first();*/
-
-        /*return response()->json([
-            'saved' => true,
-            'document' => $document,
-            'verification' => $verification,
-            'customer' => $customer,
-            'message' => 'Document Updated Successfully!',
-        ]);*/
     }
 
     protected function getFileName($file)

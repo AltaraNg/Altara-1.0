@@ -101,12 +101,8 @@
                     Auth.remove();
                     this.$router.push("/login");
                 }
-                if (err.response.status === 500) {
-                    Flash.setError(err.response.statusText);
-                }
-                if (err.response.status === 404) {
-                    this.$router.push("/not-found");
-                }
+                if (err.response.status === 500) Flash.setError(err.response.statusText);
+                if (err.response.status === 404) this.$router.push("/not-found");
             });
             window.addEventListener('load', () => {
                 navigator.onLine ? this.showStatus(true) : this.showStatus(false);//uncomment this when u push to production
@@ -127,7 +123,6 @@
                 return !this.auth;
             },
         },
-        watch: {},
         methods: {
             logout() {
                 if (this.$network()) {
@@ -140,15 +135,11 @@
                             this.$router.push("/login");
                         }
                     });
-                } else {
-                    this.$networkErr();
-                }
+                } else this.$networkErr();
             },
             showStatus(online) {
                 online ? Flash.setSuccess('you are connected to the internet!') : this.$networkErr();
             },
         },
-        mounted() {
-        }
     };
 </script>

@@ -6,8 +6,10 @@ use App\Address;
 use App\Branch;
 use App\Customer;
 use App\Document;
+use App\PersonalGuarantor;
 use App\State;
 use App\Verification;
+use App\WorkGuarantor;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -98,12 +100,14 @@ class CustomerController extends Controller
             'user' => function ($query) {
                 $query->select('id', 'full_name');
             },
-            'verification', 'address','document'
+            'verification', 'address','workGuarantor','personalGuarantor','document'
         ])->where('id', $id)->first();
         if ($customer) {
             return response()->json([
                 'customer' => $customer,
-                'emptyForm' => Address::form(),
+                'empty_address' => Address::form(),
+                'empty_work_guarantor' => WorkGuarantor::form(),
+                'empty_personal_guarantor' => PersonalGuarantor::form(),
                 'success' => true
             ]);
         }

@@ -8,7 +8,7 @@ export const store = new Vuex.Store({
         loader: false,
         ProfileAccess: [],
         ProfileEditAccess: [],
-        DSALead: [8, 9, 15],
+        DSALead: [1, 8, 9, 15],
         DSAAccess: [1, 2, 8, 9, 15, 17],
         DVAAccess: [1, 2, 8, 9, 13, 16, 20, 21],
         HRMAccess: [1, 2, 6, 7, 8, 9],

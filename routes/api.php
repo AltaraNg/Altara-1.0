@@ -28,6 +28,8 @@ Route::resource('customer', 'CustomerController');
 Route::resource('document', 'DocumentController');
 Route::resource('verification', 'VerificationController');
 Route::resource('address', 'AddressController');
+Route::resource('work_guarantor', 'WorkGuarantorController');
+Route::resource('personal_guarantor', 'PersonalGuarantorController');
 ///fix the controller below and make resourceful use
 Route::post('/report', 'ReportController@generateReport');
 Route::get('/customer','CustomerController@getData');

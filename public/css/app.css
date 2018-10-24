@@ -16428,6 +16428,23 @@ button,
   margin: 1rem auto;
 }
 
+.card.portal {
+  border-left: 2px solid #00a368;
+}
+
+.card.portal a {
+  border-radius: 50%;
+  padding: 2rem;
+  background-color: orange;
+  color: white;
+}
+
+.card.portal i, .card.portal svg {
+  font-size: 9rem;
+  opacity: .1;
+  margin: 1rem auto;
+}
+
 hr.style-two {
   border: 0;
   height: 1px;
@@ -16466,7 +16483,7 @@ hr.style-two {
   padding: .6rem 1.5rem;
   border-radius: 3px;
   font-size: 1.6rem !important;
-  font-weight: 700;
+  font-weight: 600;
   -webkit-box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.08) inset;
           box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.08) inset;
   float: left;

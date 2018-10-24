@@ -241,10 +241,30 @@ button,
 }
 
 .product .card {
-  @include transition(0.2s);
+  @include transition(.2s);
   &:hover {
     transform : scale(1.02);
   }
+  i, svg {
+    font-size : 9rem;
+    opacity   : .1;
+    margin    : 1rem auto;
+  }
+}
+
+
+
+.card.portal {
+
+  border-left:2px solid rgb(0, 163, 104);
+
+  a{
+    border-radius: 50%;
+    padding: 2rem;
+    background-color: orange;
+    color: white;
+  }
+
   i, svg {
     font-size : 9rem;
     opacity   : .1;
@@ -276,7 +296,7 @@ hr.style-two {
     padding          : .6rem 1.5rem;
     border-radius    : 3px;
     font-size        : $default-font-size-icon-small !important;
-    font-weight      : 700;
+    font-weight      : 600;
     box-shadow       : 0 0 .5rem 0 rgba($color-black, 0.08) inset;
     float            : left;
     width            : 100%;

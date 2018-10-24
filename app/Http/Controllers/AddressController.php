@@ -49,7 +49,7 @@ class AddressController extends Controller
                 'message' => 'Sorry this users has already been declined!'
             ], 428);
         } else (new Address($request->all()))->save();
-        Verification::where('customer_id', '=', $request->customer_id)->update(['address_status' => $request->approval_status]);
+        Verification::where('customer_id', '=', $request->customer_id)->update(['address' => $request->approval_status]);
         return response()->json([
             'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
         ]);

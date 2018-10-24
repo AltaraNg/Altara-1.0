@@ -1,54 +1,13 @@
 <template>
     <div class="col-md-12 px-md-3 p-0">
-        <div v-if="verifyDSAAccess" class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
-            <router-link class="card" to="dsa/home">
-                <ul class="nav nav-tabs bg-default justify-content-center">
-                    <h6>DSA Portal</h6>
-                </ul>
+        <div v-for="dept in cards" v-if="$store.getters['verify'+dept.name+'Access']"
+             class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
+            <router-link class="card" :to="dept.url">
+                <ul class="nav nav-tabs bg-default justify-content-center"><h6>{{dept.name}} Portal</h6></ul>
                 <div class="card-body float-left w-100">
                     <div class="text-center w-100 float-left">
-                        <i class="fas fa-id-card"></i>
-                        <p class="pt-md-3 pt-2">For the DSA Agents.</p>
-                    </div>
-                </div>
-            </router-link>
-        </div>
-        <div v-if="verifyDVAAccess" class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
-            <router-link to="dva/home" class="card">
-                <ul class="nav nav-tabs bg-default justify-content-center">
-                    <h6>DVA Portal</h6>
-                </ul>
-                <div class="card-body float-left w-100">
-                    <div class="text-center w-100 float-left">
-                        <i class="fas fa-file-signature"></i>
-                        <p class="pt-md-3 pt-2">For the DVA Agents.</p>
-                    </div>
-                </div>
-            </router-link>
-        </div>
-        <div v-if="verifyHRMAccess" class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
-            <router-link to="hrm/home" class="card">
-                <ul class="nav nav-tabs bg-default justify-content-center">
-                    <h6>HRM Portal</h6>
-                </ul>
-                <div class="card-body float-left w-100">
-                    <div class="text-center w-100 float-left">
-                        <i class="fas fa-female"></i>
-                        <i class="fas fa-male"></i>
-                        <p class="pt-md-3 pt-2">For the HRM officers.</p>
-                    </div>
-                </div>
-            </router-link>
-        </div>
-        <div v-if="verifyFSLAccess" class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
-            <router-link to="fsl/home" class="card">
-                <ul class="nav nav-tabs bg-default justify-content-center">
-                    <h6>Floor Sales Portal</h6>
-                </ul>
-                <div class="card-body float-left w-100">
-                    <div class="text-center w-100 float-left">
-                        <i class="fas fa-box"></i>
-                        <p class="pt-md-3 pt-2">For Floor sales Representatives</p>
+                        <i class="fas" :class="icon" v-for="icon in dept.icon"></i>
+                        <p class="pt-md-3 pt-2">For the {{dept.name}} Agents.</p>
                     </div>
                 </div>
             </router-link>
@@ -70,23 +29,21 @@
 </template>
 <script>
     import Auth from '../store/auth'
-    import {mapActions, mapGetters} from 'vuex';
 
     export default {
+        data() {
+            return {
+                cards: [
+                    {name: 'DSA', url: 'dsa/home', icon: ['fa-id-card']},
+                    {name: 'DVA', url: 'dva/home', icon: ['fa-file-signature']},
+                    {name: 'HRM', url: 'hrm/home', icon: ['fa-female', 'fa-male']},
+                    {name: 'FSL', url: 'fsl/home', icon: ['fa-box']}
+                ]
+            }
+        },
         beforeCreate() {
             Auth.initialize();
             this.$store.dispatch('mutateAuth');
         },
-        computed: {
-            ...mapGetters([
-                'verifyDSAAccess',
-                'verifyDVAAccess',
-                'verifyHRMAccess',
-                'verifyFSLAccess',
-            ]),
-        },
-        methods: {
-            ...mapActions([]),
-        }
     }
 </script>

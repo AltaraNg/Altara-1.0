@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class CreateVerificationsTable extends Migration
+class CreatePersonalGuarantorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,19 @@ class CreateVerificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('verifications', function (Blueprint $table) {
+        Schema::create('personal_guarantors', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('user_id')->index()->nullable();
+            $table->string('staff_name');
             $table->unsignedInteger('customer_id')->index()->nullable();
-            $table->unsignedInteger('passport')->default(0);
-            $table->unsignedInteger('id_card')->default(0);
-            $table->unsignedInteger('address')->default(0);
-            $table->unsignedInteger('work_guarantor')->default(0);
-            $table->unsignedInteger('personal_guarantor')->default(0);
+            $table->integer('consent');
+            $table->string('date_of_call');
+            $table->string('time_of_call');
+            $table->text('report');
             $table->timestamps();
         });
-        Schema::table('verifications', function ($table) {
+        Schema::table('personal_guarantors', function ($table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('customer_id')->references('id')->on('customers');
         });
@@ -38,6 +38,6 @@ class CreateVerificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('verifications');
+        Schema::dropIfExists('personal_guarantors');
     }
 }

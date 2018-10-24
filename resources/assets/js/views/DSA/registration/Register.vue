@@ -1465,9 +1465,7 @@
                                     if (err.response.data.errors) this.error = err.response.data.errors;
                                     this.$LIPS(false);
                                 });
-                        } else {
-                            this.$networkErr();
-                        }
+                        } else this.$networkErr();
                     }
                     if (!result) {
                         this.$scrollToTop();

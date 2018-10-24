@@ -1,27 +1,26 @@
 <template>
     <div class="image">
         <image-preview :preview="value" @close="$emit('input', null)" v-if="value"/>
-        <div v-else>
-            <input type="file" accept="images/*" @change="upload">
-        </div>
+        <div v-else><input type="file" accept="images/*" @change="upload"></div>
     </div>
 </template>
 <script>
     import ImagePreview from './ImagePreview'
+
     export default {
-        components:{
+        components: {
             ImagePreview
         },
-        props:{
-            value:{
-                type:[String, File],
+        props: {
+            value: {
+                type: [String, File],
                 default: null
             }
         },
-        methods:{
-            upload(e){
+        methods: {
+            upload(e) {
                 const files = e.target.files;
-                if(files && files.length > 0){
+                if (files && files.length > 0) {
                     this.$emit('input', files[0])
                 }
             }

@@ -408,9 +408,7 @@
                                     }
                                     this.$LIPS(false);
                                 })
-                        }else{
-                            this.$networkErr();
-                        }
+                        }else this.$networkErr();
                     }
                     if (!result) {
                         Flash.setError('Please check all the fields and make sure they are field correctly!');

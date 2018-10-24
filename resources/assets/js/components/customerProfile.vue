@@ -7,8 +7,7 @@
                     <div class="justify-content-center d-flex position-relative z-1">
                         <span class="img-border">
                             <img v-if="customer.document.passport_url" :src="'/images/'+customer.document.passport_url"
-                                 class="profile-picture rounded-circle"
-                                 alt="customer profile pic">
+                                 class="profile-picture rounded-circle" alt="customer profile pic">
                             <i v-else class="no-image fas fa-user-alt"></i>
                         </span>
                     </div>
@@ -43,10 +42,10 @@
                         </h4>
                     </div>
                     <div class="float-left p-0 m-0 col-md-4 col-12 d-flex justify-content-center">
-                        <span v-if="approved" class="status mt-md-5 my-sm-2 mt-0 approved shadow-sm ">
+                        <span v-if="approved" class="status mt-md-5 my-sm-2 mt-0 approved shadow-sm">
                             APPROVED<i class="ml-3 fas fa-check"></i>
                         </span>
-                        <span v-if="!approved" class="status mt-md-5 my-sm-2 mt-0 not-approved shadow-sm">
+                        <span v-else class="status mt-md-5 my-sm-2 mt-0 not-approved shadow-sm">
                             NOT APPROVED<i class="ml-3 fas fa-times"></i>
                         </span>
                     </div>
@@ -86,24 +85,16 @@
 </template>
 <script>
     export default {
-        data() {
-            return {}
-        },
-        props: {
-            customer: '',
-        },
-        methods: {},
+        props: ['customer'],
         computed: {
             approved() {
                 if (this.customer.verification.id_card === 1 &&
                     this.customer.verification.passport === 1 &&
-                    this.customer.verification.address_status === 1 &&
-                    this.customer.verification.work_guarantor_status === 1 &&
-                    this.customer.verification.personal_guarantor_status === 1) {
+                    this.customer.verification.address === 1 &&
+                    this.customer.verification.work_guarantor === 1 &&
+                    this.customer.verification.personal_guarantor === 1) {
                     return true
-                } else {
-                    return false
-                }
+                } else return false;
             }
         }
     }
@@ -187,7 +178,7 @@
             background : linear-gradient(180deg, #dedede 0%, #ffffff 100%);
         }
 
-        .separator[data-v-3b07ec64] {
+        .separator {
             top : -11%;
         }
 

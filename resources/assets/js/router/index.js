@@ -111,13 +111,9 @@ router.afterEach(writeHistory);
 router.beforeEach((to, from, next) => {
     let home = (((to.path).split("/")).filter(Boolean)[0]).toUpperCase();
     if (to.matched.some(m => m.meta[home])) {
-        if (store.getters['verify' + home + 'Access']) {
-            next();
-            return;
-        }
-        next({name: 'home'});
+        if (store.getters['verify' + home + 'Access']) return next();
         Flash.setError("You do not have access to that page!");
-        return;
+        return next({name: 'home'});
     }
     next();
 });

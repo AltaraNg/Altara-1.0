@@ -142,4 +142,14 @@ class Customer extends Model
         return $this->hasOne(Address::class);
     }
 
+    public function workGuarantor()
+    {
+        return $this->hasOne(WorkGuarantor::class);
+    }
+
+    public function personalGuarantor()
+    {
+        return $this->hasOne(PersonalGuarantor::class);
+    }
+
 }

@@ -124,9 +124,9 @@ class CustomerTableSeeder extends Seeder
                 'customer_id' => $customer->id,
                 'passport' => 0,
                 'id_card' => 0,
-                'address_status' => 0,
-                'work_guarantor_status' => 0,
-                'personal_guarantor_status' => 0,
+                'address' => 0,
+                'work_guarantor' => 0,
+                'personal_guarantor' => 0,
             ]);
             Document::create([
                 'user_id' => $customer->user_id,

@@ -9,8 +9,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        //remove the getData from the except when done with development
-        $this->middleware('auth:api')->except('getData');
+        $this->middleware('auth:api')->except('');
     }
 
     public function getData()

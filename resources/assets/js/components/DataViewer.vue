@@ -16,10 +16,7 @@
                 </div>
                 <div class="form-group col-md-6 col-sm-6 px-md-3 px-1 float-left">
                     <label>Search Input</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="search..."
-                           v-model="query.search_input"
+                    <input type="text" class="form-control" placeholder="search..." v-model="query.search_input"
                            @keyup.enter="fetchIndexData()">
                 </div>
                 <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 pt-md-2 pt-0 float-left">
@@ -37,9 +34,7 @@
                                 <span v-else>&darr;</span>
                             </span>
                         </th>
-                        <th v-if="user" scope="col">
-                            <span>Action</span>
-                        </th>
+                        <th v-if="user" scope="col"><span>Action</span></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -56,9 +51,7 @@
                             <button class="text-center mr-2 btn btn-icon btn-sm float-left btn-round"
                                     :class="{ 'btn-success' : accessStatus(employee.portal_access),
                                             'btn-danger' :  !accessStatus(employee.portal_access)}"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Edit Employee Portal Access"
+                                    data-toggle="tooltip" data-placement="top" title="Edit Employee Portal Access"
                                     @click="editPortalAccess(employee)">
                                 <i class="fas fa-lock-open" v-if="accessStatus(employee.portal_access)"></i>
                                 <i class="fas fa-lock" v-else></i>
@@ -689,9 +682,7 @@
                         $('#updateEmployee').modal('toggle');
                         this.$LIPS(false);
                     });
-                } else {
-                    this.$networkErr();
-                }
+                } else this.$networkErr();
             },
             resetPassword() {
                 if (this.$network()) {
@@ -706,9 +697,7 @@
                         SMS.passwordReset(details);
                         this.$LIPS(false);
                     })
-                } else {
-                    this.$networkErr();
-                }
+                } else this.$networkErr();
             },
             updateEmployee(id, task) {
                 if (task === 'updatedUserPortalAccess') this.updatingEmployee = false;
@@ -738,9 +727,7 @@
                                     }
                                     this.$LIPS(false);
                                 })
-                        } else {
-                            this.$networkErr();
-                        }
+                        } else this.$networkErr();
                     }
                     if (!result) {
                         Flash.setError('Please check all the fields and make sure they are field correctly!');
