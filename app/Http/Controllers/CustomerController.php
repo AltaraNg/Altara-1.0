@@ -7,10 +7,12 @@ use App\Branch;
 use App\Customer;
 use App\Document;
 use App\PersonalGuarantor;
+use App\ProcessingFee;
 use App\State;
 use App\Verification;
 use App\WorkGuarantor;
 use Illuminate\Http\Request;
+use Symfony\Component\Process\Process;
 
 class CustomerController extends Controller
 {
@@ -64,16 +66,14 @@ class CustomerController extends Controller
         $customer->user_id = auth('api')->user()->id;
         $customer->save();
         (new Verification([
-            'user_id' => auth('api')->user()->id,
             'customer_id' => $customer->id,
             'passport' => 0,
             'id_card' => 0,
-            'address_status' => 0,
-            'work_guarantor_status' => 0,
-            'personal_guarantor_status' => 0,
+            'address' => 0,
+            'work_guarantor' => 0,
+            'personal_guarantor' => 0,
         ]))->save();
         (new Document([
-            'user_id' => auth('api')->user()->id,
             'customer_id' => $customer->id,
             'id_card_url' => '',
             'passport_url' => '',
@@ -100,14 +100,16 @@ class CustomerController extends Controller
             'user' => function ($query) {
                 $query->select('id', 'full_name');
             },
-            'verification', 'address','workGuarantor','personalGuarantor','document'
-        ])->where('id', $id)->first();
+            'verification', 'address','workGuarantor','personalGuarantor','document','processingFee'
+        ])->whereId($id)->first();
         if ($customer) {
             return response()->json([
                 'customer' => $customer,
                 'empty_address' => Address::form(),
                 'empty_work_guarantor' => WorkGuarantor::form(),
                 'empty_personal_guarantor' => PersonalGuarantor::form(),
+                'empty_processing_fee' => ProcessingFee::form(),
+                'user' => auth('api')->user()->only(['full_name','id']),
                 'success' => true
             ]);
         }

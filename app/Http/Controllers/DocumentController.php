@@ -6,6 +6,7 @@ use App\Document;
 use App\Verification;
 use File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
@@ -80,15 +81,18 @@ class DocumentController extends Controller
         $this->validate($request, [$request['document'] => 'image']);
         $document = Document::findOrFail($id);
         if ($request->hasFile($request['document']) && $request->file($request['document'])->isValid()) {
-            $filename = $this->getFileName($request[$request['document']]);
-            $request[$request['document']]->move(base_path('public/images'), $filename);
+            $image = $request->file($request['document']);
+            $filename = $request['document'] . '/' . $this->getFileName($request[$request['document']]);
+            $s3 = Storage::disk('s3');
+            $s3->put($filename, file_get_contents($image), 'public');
             $document[$request['document'] . '_url'] = $filename;
+            $document->user_id= auth('api')->user()->id;
+            $document->staff_name= auth('api')->user()->full_name;
+            $document->save();
+            $verification = Verification::where('customer_id', $document->customer_id)->first();
+            $verification[$request['document']] = 1;
+            $verification->save();
         }
-        $document->save();
-        $verification = Verification::where('customer_id', $document->customer_id)->first();
-        $verification[$request['document']] = 1;
-        $verification->save();
-
         return response()->json([
             'response' => app('App\Http\Controllers\CustomerController')->show($document->customer_id)->original
         ]);

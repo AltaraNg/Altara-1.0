@@ -152,4 +152,9 @@ class Customer extends Model
         return $this->hasOne(PersonalGuarantor::class);
     }
 
+    public function processingFee()
+    {
+        return $this->hasOne(ProcessingFee::class);
+    }
+
 }

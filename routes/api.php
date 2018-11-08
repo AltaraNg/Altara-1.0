@@ -11,26 +11,24 @@
 |
 */
 
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
-
 Route::post('/login', 'AuthController@login');
-Route::post('/logout', 'AuthController@logout');
 Route::get('/create', 'AuthController@create');
+Route::post('/logout', 'AuthController@logout');
 Route::post('/register', 'AuthController@register');
-Route::get('/reset-password/{id}', 'AuthController@resetPassword');
 Route::get('/employee/{id}/edit', 'AuthController@edit');
+Route::get('/customer/create', 'CustomerController@create');
 Route::post('/employee/{id}/update', 'AuthController@update');
-Route::resource('log', 'LogController');
-Route::resource('customer', 'CustomerController');
-Route::resource('document', 'DocumentController');
-Route::resource('verification', 'VerificationController');
-Route::resource('address', 'AddressController');
-Route::resource('work_guarantor', 'WorkGuarantorController');
-Route::resource('personal_guarantor', 'PersonalGuarantorController');
-///fix the controller below and make resourceful use
+Route::get('/reset-password/{id}', 'AuthController@resetPassword');
+Route::apiResources([
+    'log' => 'LogController',
+    'address' => 'AddressController',
+    'customer' => 'CustomerController',
+    'document' => 'DocumentController',
+    'verification' => 'VerificationController',
+    'work_guarantor' => 'WorkGuarantorController',
+    'processing_fee' => 'ProcessingFeeController',
+    'personal_guarantor' => 'PersonalGuarantorController',
+]);
+Route::get('/user', 'UserController@getData');
+Route::get('/customer', 'CustomerController@getData');
 Route::post('/report', 'ReportController@generateReport');
-Route::get('/customer','CustomerController@getData');
-Route::get('/user','UserController@getData');

@@ -13,10 +13,10 @@ export default {
         this.send(details);
     },
     send(details) {
-        /*get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
+        get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
             + 234 + details.phone + "&text=" + this.message + "")
             .then(res => {
             }).catch(err => {
-        });*/
+        });
     }
 }

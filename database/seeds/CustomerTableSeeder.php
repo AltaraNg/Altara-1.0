@@ -120,16 +120,15 @@ class CustomerTableSeeder extends Seeder
                 'what_do_you_need_it_for' => $faker->sentence,
             ]);
             Verification::create([
-                'user_id' => $customer->user_id,
                 'customer_id' => $customer->id,
                 'passport' => 0,
                 'id_card' => 0,
                 'address' => 0,
                 'work_guarantor' => 0,
                 'personal_guarantor' => 0,
+                'processing_fee' => 0,
             ]);
             Document::create([
-                'user_id' => $customer->user_id,
                 'customer_id' => $customer->id,
                 'id_card_url' => '',
                 'passport_url' => '',

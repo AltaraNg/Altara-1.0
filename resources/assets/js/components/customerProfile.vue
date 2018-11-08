@@ -6,7 +6,8 @@
                 <div class="pt-md-3 pt-sm-2 pt-1">
                     <div class="justify-content-center d-flex position-relative z-1">
                         <span class="img-border">
-                            <img v-if="customer.document.passport_url" :src="'/images/'+customer.document.passport_url"
+                            <img v-if="customer.document.passport_url"
+                                 :src="'https://s3.eu-west-2.amazonaws.com/altara-one/'+customer.document.passport_url"
                                  class="profile-picture rounded-circle" alt="customer profile pic">
                             <i v-else class="no-image fas fa-user-alt"></i>
                         </span>
@@ -69,7 +70,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th class="text-muted"><i class="mr-3 fas fa-gift"></i>Member since</th>
+                            <th class="text-muted"><i class="mr-3 fas fa-gift"></i>Registered On</th>
                             <td>{{customer.date_of_registration}}</td>
                         </tr>
                         <tr>
@@ -88,9 +89,10 @@
         props: ['customer'],
         computed: {
             approved() {
-                if (this.customer.verification.id_card === 1 &&
+                if (this.customer.verification.address === 1 &&
+                    this.customer.verification.id_card === 1 &&
                     this.customer.verification.passport === 1 &&
-                    this.customer.verification.address === 1 &&
+                    this.customer.verification.processing_fee === 1 &&
                     this.customer.verification.work_guarantor === 1 &&
                     this.customer.verification.personal_guarantor === 1) {
                     return true

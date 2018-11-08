@@ -26585,11 +26585,7 @@ module.exports = Component.exports
         this.send(details);
     },
     send: function send(details) {
-        /*get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
-            + 234 + details.phone + "&text=" + this.message + "")
-            .then(res => {
-            }).catch(err => {
-        });*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* get */])("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to=" + 234 + details.phone + "&text=" + this.message + "").then(function (res) {}).catch(function (err) {});
     }
 });
 
@@ -30998,10 +30994,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     beforeCreate: function beforeCreate() {
         __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].initialize();
-        /*if (localStorage.getItem("api_token")) {
+        if (localStorage.getItem("api_token")) {
             this.$router.push("/home");
-            Flash.setSuccess("Welcome Back!");
-        }*/
+            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess("Welcome Back!");
+        }
         if (!localStorage.getItem("api_token")) {
             this.$router.push("/login");
             __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError("You have to Login!");
@@ -50852,6 +50848,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -50872,18 +50893,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             addressBtns: true,
             work_guarantorBtns: true,
             personal_guarantorBtns: true,
+            processing_feeBtns: true,
             info_from_neighbors: '',
             address: {},
             work_guarantor: {},
             personal_guarantor: {},
+            processing_fee: {},
             picsView: ['id_card', 'passport'],
-            veriView: ['work_guarantor', 'personal_guarantor'],
-            veriData: ['address', 'work_guarantor', 'personal_guarantor'],
-            cardView: ['passport', 'id_card', 'address', 'work_guarantor', 'personal_guarantor'],
+            veriView: ['work_guarantor', 'personal_guarantor', 'processing_fee'],
+            veriData: ['address', 'work_guarantor', 'personal_guarantor', 'processing_fee'],
+            cardView: ['passport', 'id_card', 'address', 'work_guarantor', 'personal_guarantor', 'processing_fee'],
             verification: {},
             form: { id_card: '', passport: '', document: '' },
             error: {},
-            storeURL: ''
+            storeURL: '',
+            user: {}
         };
     },
 
@@ -50909,12 +50933,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.verification = JSON.parse(JSON.stringify(this.customer.verification));
         },
         buttonStatus: function buttonStatus(data) {
+            this.user = data.user;
             this.customer = data.customer;
             this.verification = JSON.parse(JSON.stringify(data.customer.verification));
             this.form.id_card = data.customer.document.id_card_url;
             this.form.passport = data.customer.document.passport_url;
+
             for (var i = 0; i < this.veriData.length; i++) {
                 var type = this.veriData[i];
+                /*this[type].user_id = data.user.id;
+                this[type].staff_name = data.user.full_name;*/
                 if (!!data.customer[type]) {
                     this[type] = data.customer[type];
                     this[type + 'Btns'] = false;
@@ -50947,8 +50975,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.$LIPS(true);
                 this.info_from_neighbors === 'no' ? this.address.info_from_neighbors_desc = '' : '';
                 this[type].customer_id = this.customer.id;
-                this[type].user_id = this.customer.user.id;
-                this[type].staff_name = this.customer.user.full_name;
+                this[type].user_id = this.user.id;
+                this[type].staff_name = this.user.full_name;
                 Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('/api/' + type, this[type]).then(function (res) {
                     _this2.buttonStatus(res.data.response);
                     var id = 'Customer ID : ' + String(_this2.customer.id),
@@ -51218,7 +51246,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 };
                 fileReader.readAsDataURL(this.preview);
             } else if (typeof this.preview === 'string') {
-                this.image = '/images/' + this.preview;
+                this.image = 'https://s3.eu-west-2.amazonaws.com/altara-one/' + this.preview;
             } else {
                 this.image = null;
             }
@@ -51487,12 +51515,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['customer'],
     computed: {
         approved: function approved() {
-            if (this.customer.verification.id_card === 1 && this.customer.verification.passport === 1 && this.customer.verification.address === 1 && this.customer.verification.work_guarantor === 1 && this.customer.verification.personal_guarantor === 1) {
+            if (this.customer.verification.address === 1 && this.customer.verification.id_card === 1 && this.customer.verification.passport === 1 && this.customer.verification.processing_fee === 1 && this.customer.verification.work_guarantor === 1 && this.customer.verification.personal_guarantor === 1) {
                 return true;
             } else return false;
         }
@@ -51531,7 +51560,9 @@ var render = function() {
                     ? _c("img", {
                         staticClass: "profile-picture rounded-circle",
                         attrs: {
-                          src: "/images/" + _vm.customer.document.passport_url,
+                          src:
+                            "https://s3.eu-west-2.amazonaws.com/altara-one/" +
+                            _vm.customer.document.passport_url,
                           alt: "customer profile pic"
                         }
                       })
@@ -51773,7 +51804,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("th", { staticClass: "text-muted" }, [
       _c("i", { staticClass: "mr-3 fas fa-gift" }),
-      _vm._v("Member since")
+      _vm._v("Registered On")
     ])
   },
   function() {
@@ -52010,8 +52041,8 @@ var render = function() {
                                                       "\n                                                    " +
                                                         _vm._s(
                                                           _vm.key(type)
-                                                            ? "Uploaded"
-                                                            : "Not Uploaded"
+                                                            ? "Verified"
+                                                            : "Not Verified"
                                                         ) +
                                                         "\n                                                "
                                                     )
@@ -52954,8 +52985,13 @@ var render = function() {
                   _c("div", { staticClass: "modal-header py-2" }, [
                     _c("h6", { staticClass: "modal-title py-1" }, [
                       _vm._v(
-                        _vm._s(_vm._f("capitalize")(type)) +
-                          " Verification Status"
+                        "\n                            " +
+                          _vm._s(_vm._f("capitalize")(type)) +
+                          "\n                            " +
+                          _vm._s(
+                            type !== "processing_fee" ? "Verification" : ""
+                          ) +
+                          "\n                            Status\n                        "
                       )
                     ]),
                     _vm._v(" "),
@@ -53006,37 +53042,79 @@ var render = function() {
                                     },
                                     [
                                       _c("label", [
-                                        _vm._v("Date of Visitation")
+                                        _vm._v(
+                                          "\n                                            Date " +
+                                            _vm._s(
+                                              type !== "processing_fee"
+                                                ? "of Call"
+                                                : "Collected"
+                                            ) +
+                                            "\n                                        "
+                                        )
                                       ]),
                                       _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.$data[type].date_of_call,
-                                            expression:
-                                              "$data[type].date_of_call"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: { type: "date" },
-                                        domProps: {
-                                          value: _vm.$data[type].date_of_call
-                                        },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
+                                      type !== "processing_fee"
+                                        ? _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.$data[type].date_of_call,
+                                                expression:
+                                                  "$data[type].date_of_call"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: { type: "date" },
+                                            domProps: {
+                                              value:
+                                                _vm.$data[type].date_of_call
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.$data[type],
+                                                  "date_of_call",
+                                                  $event.target.value
+                                                )
+                                              }
                                             }
-                                            _vm.$set(
-                                              _vm.$data[type],
-                                              "date_of_call",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      })
+                                          })
+                                        : _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.$data[type]
+                                                    .date_collected,
+                                                expression:
+                                                  "$data[type].date_collected"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: { type: "date" },
+                                            domProps: {
+                                              value:
+                                                _vm.$data[type].date_collected
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.$data[type],
+                                                  "date_collected",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
                                     ]
                                   ),
                                   _vm._v(" "),
@@ -53047,36 +53125,80 @@ var render = function() {
                                         "form-group float-left col-md-6 col-12 pl-md-3 pl-0 pr-0"
                                     },
                                     [
-                                      _c("label", [_vm._v("Time of Visit")]),
+                                      _c("label", [
+                                        _vm._v(
+                                          "\n                                            Time " +
+                                            _vm._s(
+                                              type !== "processing_fee"
+                                                ? "of Call"
+                                                : "Collected"
+                                            ) +
+                                            "\n                                        "
+                                        )
+                                      ]),
                                       _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.$data[type].time_of_call,
-                                            expression:
-                                              "$data[type].time_of_call"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: { type: "time" },
-                                        domProps: {
-                                          value: _vm.$data[type].time_of_call
-                                        },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
+                                      type !== "processing_fee"
+                                        ? _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.$data[type].time_of_call,
+                                                expression:
+                                                  "$data[type].time_of_call"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: { type: "time" },
+                                            domProps: {
+                                              value:
+                                                _vm.$data[type].time_of_call
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.$data[type],
+                                                  "time_of_call",
+                                                  $event.target.value
+                                                )
+                                              }
                                             }
-                                            _vm.$set(
-                                              _vm.$data[type],
-                                              "time_of_call",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      })
+                                          })
+                                        : _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.$data[type]
+                                                    .time_collected,
+                                                expression:
+                                                  "$data[type].time_collected"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: { type: "time" },
+                                            domProps: {
+                                              value:
+                                                _vm.$data[type].time_collected
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.$data[type],
+                                                  "time_collected",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
                                     ]
                                   )
                                 ]),
@@ -53084,102 +53206,160 @@ var render = function() {
                                 _c("div", { staticClass: "clearfix" }, [
                                   _c("label", { staticClass: "w-100" }, [
                                     _vm._v(
-                                      _vm._s(_vm._f("capitalize")(type)) +
-                                        " Consent"
+                                      "\n                                        " +
+                                        _vm._s(_vm._f("capitalize")(type)) +
+                                        "\n                                        " +
+                                        _vm._s(
+                                          type !== "processing_fee"
+                                            ? "Consent"
+                                            : "Amount(Naira)"
+                                        ) +
+                                        "\n                                    "
                                     )
                                   ]),
                                   _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "radio p-0 col-6 float-left"
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
+                                  type !== "processing_fee"
+                                    ? _c("div", [
+                                        _c(
+                                          "div",
                                           {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.$data[type].consent,
-                                            expression: "$data[type].consent"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "radio",
-                                          id: type + "_yes",
-                                          value: "1",
-                                          name: type
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.$data[type].consent,
-                                            "1"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.$set(
-                                              _vm.$data[type],
-                                              "consent",
-                                              "1"
+                                            staticClass:
+                                              "radio p-0 col-6 float-left"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value:
+                                                    _vm.$data[type].consent,
+                                                  expression:
+                                                    "$data[type].consent"
+                                                }
+                                              ],
+                                              attrs: {
+                                                type: "radio",
+                                                id: type + "_yes",
+                                                value: "1",
+                                                name: type
+                                              },
+                                              domProps: {
+                                                checked: _vm._q(
+                                                  _vm.$data[type].consent,
+                                                  "1"
+                                                )
+                                              },
+                                              on: {
+                                                change: function($event) {
+                                                  _vm.$set(
+                                                    _vm.$data[type],
+                                                    "consent",
+                                                    "1"
+                                                  )
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "label",
+                                              { attrs: { for: type + "_yes" } },
+                                              [_vm._v("Gave Consent")]
                                             )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        { attrs: { for: type + "_yes" } },
-                                        [_vm._v("Gave Consent")]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "radio p-0 col-6 float-left"
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
                                           {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.$data[type].consent,
-                                            expression: "$data[type].consent"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "radio",
-                                          id: type + "_no",
-                                          value: "0",
-                                          name: type
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.$data[type].consent,
-                                            "0"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.$set(
-                                              _vm.$data[type],
-                                              "consent",
-                                              "0"
+                                            staticClass:
+                                              "radio p-0 col-6 float-left"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value:
+                                                    _vm.$data[type].consent,
+                                                  expression:
+                                                    "$data[type].consent"
+                                                }
+                                              ],
+                                              attrs: {
+                                                type: "radio",
+                                                id: type + "_no",
+                                                value: "0",
+                                                name: type
+                                              },
+                                              domProps: {
+                                                checked: _vm._q(
+                                                  _vm.$data[type].consent,
+                                                  "0"
+                                                )
+                                              },
+                                              on: {
+                                                change: function($event) {
+                                                  _vm.$set(
+                                                    _vm.$data[type],
+                                                    "consent",
+                                                    "0"
+                                                  )
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "label",
+                                              { attrs: { for: type + "_no" } },
+                                              [_vm._v("Did not Give Consent")]
                                             )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        { attrs: { for: type + "_no" } },
-                                        [_vm._v("Did not Give Consent")]
-                                      )
-                                    ]
-                                  )
+                                          ]
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "radio p-0 col-6 float-left"
+                                          },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.$data[type].amount,
+                                                  expression:
+                                                    "$data[type].amount"
+                                                }
+                                              ],
+                                              staticClass: "form-control",
+                                              attrs: {
+                                                type: "number",
+                                                disabled: ""
+                                              },
+                                              domProps: {
+                                                value: _vm.$data[type].amount
+                                              },
+                                              on: {
+                                                input: function($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.$set(
+                                                    _vm.$data[type],
+                                                    "amount",
+                                                    $event.target.value
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      ])
                                 ]),
                                 _vm._v(" "),
                                 _c(
@@ -63992,8 +64172,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$getDate = function () {
     return year + '-' + month + '-' + day;
 };
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$network = function () {
-    //return window.navigator.onLine;
-    return true;
+    return window.navigator.onLine;
+    //return true;
 };
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$networkErr = function () {

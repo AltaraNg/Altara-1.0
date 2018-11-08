@@ -52,7 +52,7 @@
                                                 <div class="col-8 text-right">
                                                     <h4 class="info-title font-weight-bold mb-0">{{type | capitalize}}</h4>
                                                     <h6 class="stats-title">
-                                                        {{key(type) ? 'Uploaded' : 'Not Uploaded'}}
+                                                        {{key(type) ? 'Verified' : 'Not Verified'}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -297,7 +297,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">{{type | capitalize }} Verification Status</h6>
+                            <h6 class="modal-title py-1">
+                                {{type | capitalize }}
+                                {{(type !== 'processing_fee') ? 'Verification' : ''}}
+                                Status
+                            </h6>
                             <a href="javascript:" class="close py-1" data-dismiss="modal" aria-label="Close">
                                 <span class="modal-close text-danger"><i class="fas fa-times"></i></span>
                             </a>
@@ -307,25 +311,46 @@
                                 <div class="form-group col-12 px-2 float-left mt-0 mb-2">
                                     <div class="clearfix">
                                         <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
-                                            <label>Date of Visitation</label>
-                                            <input type="date" class="form-control" v-model="$data[type].date_of_call">
+                                            <label>
+                                                Date {{(type !== 'processing_fee') ? 'of Call' : 'Collected'}}
+                                            </label>
+                                            <input v-if="type !== 'processing_fee'" type="date" class="form-control"
+                                                   v-model="$data[type].date_of_call">
+                                            <input v-else type="date" class="form-control"
+                                                   v-model="$data[type].date_collected">
                                         </div>
                                         <div class="form-group float-left col-md-6 col-12 pl-md-3 pl-0 pr-0">
-                                            <label>Time of Visit</label>
-                                            <input type="time" class="form-control" v-model="$data[type].time_of_call">
+                                            <label>
+                                                Time {{(type !== 'processing_fee') ? 'of Call' : 'Collected'}}
+                                            </label>
+                                            <input v-if="type !== 'processing_fee'" type="time" class="form-control"
+                                                   v-model="$data[type].time_of_call">
+                                            <input v-else type="time" class="form-control"
+                                                   v-model="$data[type].time_collected">
                                         </div>
                                     </div>
                                     <div class="clearfix">
-                                        <label class="w-100">{{type | capitalize }} Consent</label>
-                                        <div class="radio p-0 col-6 float-left">
-                                            <input v-model="$data[type].consent" type="radio" :id="type+'_yes'"
-                                                   value="1" :name="type">
-                                            <label :for="type+'_yes'">Gave Consent</label>
+                                        <label class="w-100">
+                                            {{type | capitalize }}
+                                            {{(type !== 'processing_fee') ? 'Consent' : 'Amount(Naira)'}}
+                                        </label>
+                                        <div v-if="type !== 'processing_fee'">
+                                            <div class="radio p-0 col-6 float-left">
+                                                <input v-model="$data[type].consent" type="radio" :id="type+'_yes'"
+                                                       value="1" :name="type">
+                                                <label :for="type+'_yes'">Gave Consent</label>
+                                            </div>
+                                            <div class="radio p-0 col-6 float-left">
+                                                <input v-model="$data[type].consent" type="radio" :id="type+'_no'"
+                                                       value="0" :name="type">
+                                                <label :for="type+'_no'">Did not Give Consent</label>
+                                            </div>
                                         </div>
-                                        <div class="radio p-0 col-6 float-left">
-                                            <input v-model="$data[type].consent" type="radio" :id="type+'_no'"
-                                                   value="0" :name="type">
-                                            <label :for="type+'_no'">Did not Give Consent</label>
+                                        <div v-else>
+                                            <div class="radio p-0 col-6 float-left">
+                                                <input v-model="$data[type].amount" class="form-control"
+                                                       type="number" disabled>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group clearfix">
@@ -371,18 +396,21 @@
                 addressBtns: true,
                 work_guarantorBtns: true,
                 personal_guarantorBtns: true,
+                processing_feeBtns: true,
                 info_from_neighbors: '',
                 address: {},
                 work_guarantor: {},
                 personal_guarantor: {},
+                processing_fee: {},
                 picsView: ['id_card', 'passport'],
-                veriView: ['work_guarantor', 'personal_guarantor'],
-                veriData: ['address', 'work_guarantor', 'personal_guarantor'],
-                cardView: ['passport', 'id_card', 'address', 'work_guarantor', 'personal_guarantor'],
+                veriView: ['work_guarantor', 'personal_guarantor', 'processing_fee'],
+                veriData: ['address', 'work_guarantor', 'personal_guarantor', 'processing_fee'],
+                cardView: ['passport', 'id_card', 'address', 'work_guarantor', 'personal_guarantor', 'processing_fee'],
                 verification: {},
                 form: {id_card: '', passport: '', document: ''},
                 error: {},
                 storeURL: '',
+                user:{}
             }
         },
         methods: {
@@ -407,12 +435,18 @@
                 this.verification = JSON.parse(JSON.stringify(this.customer.verification));
             },
             buttonStatus(data) {
+                this.user = data.user;
                 this.customer = data.customer;
                 this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                 this.form.id_card = data.customer.document.id_card_url;
                 this.form.passport = data.customer.document.passport_url;
+
+
+
                 for (let i = 0; i < this.veriData.length; i++) {
                     let type = this.veriData[i];
+                    /*this[type].user_id = data.user.id;
+                    this[type].staff_name = data.user.full_name;*/
                     if (!!data.customer[type]) {
                         this[type] = data.customer[type];
                         this[type + 'Btns'] = false;
@@ -444,8 +478,8 @@
                     this.$LIPS(true);
                     (this.info_from_neighbors === 'no') ? this.address.info_from_neighbors_desc = '' : '';
                     this[type].customer_id = this.customer.id;
-                    this[type].user_id = this.customer.user.id;
-                    this[type].staff_name = this.customer.user.full_name;
+                    this[type].user_id = this.user.id;
+                    this[type].staff_name = this.user.full_name;
                     post('/api/' + type, this[type])
                         .then(res => {
                             this.buttonStatus(res.data.response);
