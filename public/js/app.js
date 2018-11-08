@@ -26458,7 +26458,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
         loader: false,
         ProfileAccess: [],
         ProfileEditAccess: [],
-        DSALead: [1, 8, 9, 15],
+        DSALead: [1, 2, 8, 9, 15],
         DSAAccess: [1, 2, 8, 9, 15, 17],
         DVAAccess: [1, 2, 8, 9, 13, 16, 20, 21],
         HRMAccess: [1, 2, 6, 7, 8, 9],
