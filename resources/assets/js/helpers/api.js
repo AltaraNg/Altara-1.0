@@ -19,6 +19,17 @@ export function post(url, payload) {
         }
     });
 }
+export function postD(url, payload) {
+    return axios({
+        method: 'POST',
+        url:url,
+        responseType: 'blob',
+        data:payload,
+        headers: {
+            'Authorization': `Bearer ${Auth.state.api_token}`
+        }
+    });
+}
 export function del(url) {
     return axios({
         method: 'DELETE',

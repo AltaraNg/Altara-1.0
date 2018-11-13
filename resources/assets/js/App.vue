@@ -33,10 +33,10 @@
                                         <i class="now-ui-icons users_circle-08"></i> {{authState.user_name | capitalize}}
                                     </span>
                                     <div class="dropdown-menu" aria-labelledby="menu">
-                                        <router-link to="/user/profile" class="dropdown-item">
+                                        <router-link to="/user/profile" class="dropdown-item p-4">
                                             <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i> My Profile
                                         </router-link>
-                                        <span class="dropdown-item" @click.stop="logout">
+                                        <span class="dropdown-item p-4" @click.stop="logout">
                                         <i class="now-ui-icons media-1_button-power pr-1"></i> Logout
                                     </span>
                                     </div>
@@ -50,6 +50,11 @@
                         <div class="container">
                             <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
                             <strong class="mr-2">Success!</strong>&nbsp;{{flash.success}}
+                            <button type="button" @click="clearFlash" class="close" aria-label="Close">
+                                <span aria-hidden="true">
+                                    <i class="now-ui-icons ui-1_simple-remove ml-4" style="font-size: 16px"></i>
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </transition>
@@ -58,6 +63,11 @@
                         <div class="container">
                             <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
                             <strong class="mr-2">Oops!</strong>&nbsp;{{flash.error}}
+                            <button type="button" @click="clearFlash" class="close" aria-label="Close">
+                                <span aria-hidden="true">
+                                    <i class="now-ui-icons ui-1_simple-remove ml-4" style="font-size: 16px"></i>
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </transition>
@@ -101,12 +111,8 @@
                     Auth.remove();
                     this.$router.push("/login");
                 }
-                if (err.response.status === 500) {
-                    Flash.setError(err.response.statusText);
-                }
-                if (err.response.status === 404) {
-                    this.$router.push("/not-found");
-                }
+                if (err.response.status === 500) Flash.setError(err.response.statusText);
+                if (err.response.status === 404) this.$router.push("/not-found");
             });
             window.addEventListener('load', () => {
                 navigator.onLine ? this.showStatus(true) : this.showStatus(false);//uncomment this when u push to production
@@ -127,7 +133,6 @@
                 return !this.auth;
             },
         },
-        watch: {},
         methods: {
             logout() {
                 if (this.$network()) {
@@ -140,15 +145,14 @@
                             this.$router.push("/login");
                         }
                     });
-                } else {
-                    this.$networkErr();
-                }
+                } else this.$networkErr();
             },
             showStatus(online) {
                 online ? Flash.setSuccess('you are connected to the internet!') : this.$networkErr();
             },
+            clearFlash(){
+                Flash.removeMsg();
+            }
         },
-        mounted() {
-        }
     };
 </script>

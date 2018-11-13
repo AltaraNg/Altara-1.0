@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Address;
-use App\Customer;
 use App\Verification;
 use Illuminate\Http\Request;
 
@@ -49,25 +48,10 @@ class AddressController extends Controller
             return response()->json([
                 'message' => 'Sorry this users has already been declined!'
             ], 428);
-        } else {
-            (new Address($request->all()))->save();
-        }
-        Verification::where('customer_id', '=', $request->customer_id)->update([
-            'address_status' => $request->approval_status,
-        ]);
-        $customer = Customer::with([
-            'branch' => function ($query) {
-                $query->select('id', 'name');
-            },
-            'user' => function ($query) {
-                $query->select('id', 'full_name');
-            },
-            'verification', 'address'
-        ])->where('id', $request->customer_id)->first();
+        } else (new Address($request->all()))->save();
+        Verification::where('customer_id', '=', $request->customer_id)->update(['address' => $request->approval_status]);
         return response()->json([
-            'approved' => true,
-            'customer' => $customer,
-            'emptyForm' => Address::form(),
+            'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
         ]);
     }
 

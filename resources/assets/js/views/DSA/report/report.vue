@@ -15,7 +15,7 @@
                                         name="report_type"
                                         :class="{'is-invalid': errors.first('report_type')}">
                                     <option value="">select type</option>
-                                    <option :value="type | slug" v-for="type in types">{{type | capitalize}}</option>
+                                    <option :value="type.slug" v-for="type in types">{{type.name | capitalize}}</option>
                                 </select>
                                 <small class="text-muted" v-if="errors.first('report_type')">
                                     {{errors.first('report_type')}}
@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                                 <label>Branch</label>
-                                <select class="custom-select w-100" v-model="report.branch"
+                                <select class="custom-select w-100" v-model="report.branch.id"
                                         v-validate="'required|max:25'" data-vv-as="office branch" name="branch_id"
                                         :class="{'is-invalid': errors.first('branch_id')}">
                                     <option value="">select branch</option>
@@ -56,7 +56,7 @@
                         </div>
                         <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-4 float-right">
                             <button type="submit"
-                                    class="btn btn-block bg-default"
+                                    class="btn btn-block btn-lg bg-default"
                                     :disabled="$isProcessing">
                                 Generate Report
                                 <i class="far fa-paper-plane ml-1"></i>
@@ -70,19 +70,39 @@
 </template>
 <script>
     import Flash from '../../../helpers/flash';
-    import {get, post} from '../../../helpers/api';
+    import {get, postD} from '../../../helpers/api';
 
     export default {
+        beforeCreate(){
+            if (!this.$store.state.DSALead.includes(this.$store.state.authRole)) {
+                Flash.setError("You do not have access to that page!");
+                this.$router.push('/home');
+            }
+        },
         data() {
             return {
                 branches: {},
-                types: ['sales report', 'score card', 'weekly operations'],
+                types: [
+                    {
+                        name: "sales report",
+                        slug: "sales_report"
+                    }, {
+                        name: "score card",
+                        slug: "score_card"
+                    }, {
+                        name: "weekly operations",
+                        slug: "weekly_operations"
+                    }
+                ],
                 report: {
                     to: '',
                     from: '',
-                    branch: '',
+                    branch: {
+                        id: '',
+                        name: ''
+                    },
                     employee: '',
-                    type: '',
+                    type: ''
                 },
             }
         },
@@ -97,17 +117,18 @@
             generateReport() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        if(this.$network()){
-                            post('api/report/', this.report)
-                                .then(res => {
-                                    console.log(res.data);
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                })
-                        }else{
-                            this.$networkErr();
-                        }
+                        if (this.$network()) {
+                            let branch = this.branches.find(obj => obj.id == this.report.branch.id);
+                            this.report.branch = branch;
+                            postD('/api/report', this.report).then((response) => {
+                                const url = window.URL.createObjectURL(new Blob([response.data]));
+                                const link = document.createElement('a');
+                                link.href = url;
+                                link.setAttribute('download', this.report.type + '_for_' + branch.name + '.xlsx');
+                                document.body.appendChild(link);
+                                link.click();
+                            });
+                        } else this.$networkErr();
                     }
                     if (!result) {
                         this.$scrollToTop();

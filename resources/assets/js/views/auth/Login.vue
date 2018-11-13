@@ -91,11 +91,7 @@
                                     this.$LIPS(false);
                                     Flash.setError('Check your login details and try again!');
                                 });
-                        }else{
-                            this.$networkErr();
-                        }
-                    }
-                    if (!result) {
+                        }else this.$networkErr();
                     }
                 });
             }

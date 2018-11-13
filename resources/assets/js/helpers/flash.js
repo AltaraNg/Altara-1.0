@@ -3,19 +3,19 @@ export default {
         success: null,
         error: null,
     },
-    setSuccess(message) {
+    setSuccess(message, time = 3000) {
         this.removeMsg();
         this.state.success = message;
         setTimeout(() => {
             this.removeMsg();
-        }, 3000);
+        }, time);
     },
-    setError(message) {
+    setError(message, time = 3000) {
         this.removeMsg();
         this.state.error = message;
         setTimeout(() => {
             this.removeMsg();
-        }, 3000);
+        }, time);
     },
     removeMsg() {
         this.state.error = this.state.success = null;

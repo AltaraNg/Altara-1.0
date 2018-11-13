@@ -10,6 +10,7 @@ import DSA from '../views/DSA/index.vue';
 import DSAHome from '../views/DSA/HomePage.vue';
 import DSAReport from '../views/DSA/report/report.vue';
 import CustomerList from '../views/DSA/list/list.vue';
+import CustomerUpdate from '../views/DSA/update/update.vue';
 import CustomerRegister from '../views/DSA/registration/Register.vue';
 import DVA from '../views/DVA/index.vue';
 import DVAHome from '../views/DVA/HomePage.vue';
@@ -29,7 +30,7 @@ Vue.use(VueRouter);
 Vue.use(routerHistory);
 const router = new VueRouter({
     routes: [
-        {path: '/', redirect:{name:'home'}},
+        {path: '/', redirect: {name: 'home'}},
         {
             path: '/home',
             component: Home,
@@ -60,6 +61,11 @@ const router = new VueRouter({
                     component: CustomerRegister,
                     name: 'customerRegister',
                     alias: '/register-customer'
+                },{
+                    path: 'customer/update',
+                    component: CustomerUpdate,
+                    name: 'customerUpdate',
+                    alias: '/update-customer'
                 }, {
                     path: 'customer/list',
                     component: CustomerList,
@@ -111,13 +117,9 @@ router.afterEach(writeHistory);
 router.beforeEach((to, from, next) => {
     let home = (((to.path).split("/")).filter(Boolean)[0]).toUpperCase();
     if (to.matched.some(m => m.meta[home])) {
-        if (store.getters['verify' + home + 'Access']) {
-            next();
-            return;
-        }
-        next({name: 'home'});
+        if (store.getters['verify' + home + 'Access']) return next();
         Flash.setError("You do not have access to that page!");
-        return;
+        return next({name: 'home'});
     }
     next();
 

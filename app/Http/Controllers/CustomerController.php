@@ -6,8 +6,11 @@ use App\Address;
 use App\Branch;
 use App\Customer;
 use App\Document;
+use App\PersonalGuarantor;
+use App\ProcessingFee;
 use App\State;
 use App\Verification;
+use App\WorkGuarantor;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -15,7 +18,7 @@ class CustomerController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->except('getData');
+        $this->middleware('auth:api')->except('');
     }
 
     /**
@@ -35,12 +38,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $user = auth('api')->user();
         $states = State::all();
         $form = Customer::form();
         $branches = Branch::all();
-        $form['employee_name'] = $user->full_name;
-        $form['employee_id'] = $user->staff_id;
         return response()->json([
             'form' => $form,
             'states' => $states,
@@ -58,33 +58,24 @@ class CustomerController extends Controller
     {
         $customer = new Customer($request->all());
         $customer->days_of_work = implode(' ', $request['days_of_work']);
-        $customer->user_id = auth('api')->user()->id;
         $customer->save();
         (new Verification([
-            'user_id' => auth('api')->user()->id,
             'customer_id' => $customer->id,
             'passport' => 0,
             'id_card' => 0,
-            'address_status' => 0,
-            'work_guarantor_status' => 0,
-            'personal_guarantor_status' => 0,
+            'address' => 0,
+            'work_guarantor' => 0,
+            'personal_guarantor' => 0,
         ]))->save();
         (new Document([
-            'user_id' => auth('api')->user()->id,
             'customer_id' => $customer->id,
-            'id_card' => 0,
             'id_card_url' => '',
-            'passport' => 0,
             'passport_url' => '',
         ]))->save();
-
-
-
-
         return response()->json([
             'registered' => true,
-            'form' => Customer::form(),
-            'id' => $customer->id,
+            'customer' => $this->show($customer->id)->original['customer'],
+            'prepareForm' => $this->create()->original,
         ]);
     }
 
@@ -97,22 +88,25 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::with([
-            'branch' => function ($query) {
-                $query->select('id', 'name');
-            },
             'user' => function ($query) {
                 $query->select('id', 'full_name');
             },
-            'verification', 'address','document'
-        ])->where('id', $id)->first();
+            'branch','verification', 'address', 'workGuarantor', 'personalGuarantor', 'document', 'processingFee'
+        ])->whereId($id)->first();
         if ($customer) {
             return response()->json([
                 'customer' => $customer,
-                'emptyForm' => Address::form(),
+                'empty_address' => Address::form(),
+                'empty_work_guarantor' => WorkGuarantor::form(),
+                'empty_personal_guarantor' => PersonalGuarantor::form(),
+                'empty_processing_fee' => ProcessingFee::form(),
+                'user' => auth('api')->user()->only(['full_name', 'id']),
+                'success' => true
             ]);
         }
         return response()->json([
             'message' => 'The Customer ID did not match any customer in our records!',
+            'customer' => '',
         ], 422);
     }
 
@@ -136,7 +130,20 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        unset($request['address']);
+        unset($request['branch']);
+        unset($request['document']);
+        unset($request['personal_guarantor']);
+        unset($request['processing_fee']);
+        unset($request['user']);
+        unset($request['verification']);
+        unset($request['work_guarantor']);
+        Customer::whereId($id)->update($request->all());
+        return response()->json([
+            'updated' => true,
+            'customer' => $this->show($id)->original['customer'],
+            'prepareForm' => $this->create()->original,
+        ]);
     }
 
     /**
@@ -153,7 +160,7 @@ class CustomerController extends Controller
 
     public function getData()
     {
-        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'Date_of_registration')->searchPaginateAndOrder();
+        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration')->searchPaginateAndOrder();
         $columns = Customer::$columns;
         return response()->json([
             'model' => $model,

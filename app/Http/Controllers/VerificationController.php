@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except('');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,8 +44,7 @@ class VerificationController extends Controller
         unset($verification['updated_at']);
         $verification->update($request->all());
         return response()->json([
-            'success' => true,
-            'verification' => $verification,
+            'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
         ]);
     }
 

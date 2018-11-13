@@ -13,16 +13,18 @@ class Customer extends Model
     protected $hidden = [];
 
     public static $columns = [
-        'id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'Date_of_registration'
+        'id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration'
     ];
 
     public static function form()
     {
+        $user = auth('api')->user();
         return [
-            'employee_name' => '',
-            'employee_id' => '',
-            'Date_of_Registration' => '',
-            'branch_id' => '',
+            'employee_name' => $user->full_name,
+            'employee_id' => $user->staff_id,
+            'user_id' => $user->id,
+            'date_of_registration' => date('Y-m-d'),
+            'branch_id' => $user->branch_id,
             'first_name' => '',
             'middle_name' => '',
             'last_name' => '',
@@ -62,7 +64,7 @@ class Customer extends Model
             'company_telno' => '',
             'receive_income_means' => '',
             'post_in_company' => '',
-            'days_of_work' => '',
+            'days_of_work' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
             'market_name' => '',
             'monthly_gains' => '',
             'years_of_existence_or_work_duration' => '',
@@ -140,6 +142,21 @@ class Customer extends Model
     public function address()
     {
         return $this->hasOne(Address::class);
+    }
+
+    public function workGuarantor()
+    {
+        return $this->hasOne(WorkGuarantor::class);
+    }
+
+    public function personalGuarantor()
+    {
+        return $this->hasOne(PersonalGuarantor::class);
+    }
+
+    public function processingFee()
+    {
+        return $this->hasOne(ProcessingFee::class);
     }
 
 }
