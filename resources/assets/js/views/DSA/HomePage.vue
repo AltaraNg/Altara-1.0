@@ -22,6 +22,11 @@
                         url_c: 'Register new customer now!',
                         desc: 'For Registering new customers',
                     }, {
+                        url: 'customer/update',
+                        title: 'Customer Update',
+                        url_c: 'Update customers details!',
+                        desc: 'For Updating existing customers details',
+                    }, {
                         url: 'report/',
                         title: 'Sales Lead Reporting',
                         url_c: 'Get Reports',
@@ -38,7 +43,7 @@
         },
         created() {
             if (this.$store.state.DSALead.includes(this.$store.state.authRole))
-                this.portals[1].aces = true; else this.portals[1].aces = false;
+                this.portals[2].aces = true; else this.portals[2].aces = false;
         }
     }
 </script>

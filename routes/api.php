@@ -29,6 +29,7 @@ Route::apiResources([
     'processing_fee' => 'ProcessingFeeController',
     'personal_guarantor' => 'PersonalGuarantorController',
 ]);
+Route::post('/customer/{customer}', 'CustomerController@update');
 Route::get('/user', 'UserController@getData');
 Route::get('/customer', 'CustomerController@getData');
 Route::post('/report', 'ReportController@generateReport');

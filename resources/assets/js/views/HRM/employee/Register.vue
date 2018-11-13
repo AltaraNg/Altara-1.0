@@ -1,12 +1,8 @@
 <template>
     <transition name="fade">
         <div class="float-left w-100 pt-md-3 pt-2" id="employeeRegister">
-            <div class="custom-notify text-center" v-if="password">
-                The Employee has been registered.
-                The employees password is: <strong> {{password}}</strong>
-            </div>
             <div class="card">
-                <ul class="nav nav-tabs justify-content-center bg-default">
+                <!--<ul class="nav nav-tabs justify-content-center bg-default">
                     <h6>Staff Registration</h6>
                 </ul>
                 <div class="card-body pl-4 pr-4">
@@ -18,7 +14,8 @@
                                    class="form-control"
                                    placeholder="employee full name"
                                    v-model="form.full_name"
-                                   v-validate="'required|max:50'"
+                                   v-validate="'required|max:100'"
+                                   :class="{'is-invalid': errors.first('name')}"
                                    name="name">
                             <small class="text-muted"
                                    v-if="errors.first('name')">
@@ -34,6 +31,7 @@
                                    v-model="form.phone_number"
                                    name="phone_number"
                                    v-validate="'required|numeric|max:11|min:11'"
+                                   :class="{'is-invalid': errors.first('phone_number') || error.phone_number }"
                                    data-vv-as="phone number">
                             <small class="text-muted"
                                    v-if="errors.first('phone_number')">
@@ -52,6 +50,7 @@
                             <select name="status"
                                     class="custom-select w-100"
                                     v-model="form.status"
+                                    :class="{'is-invalid': errors.first('status')}"
                                     v-validate="'required'">
                                 <option value="" selected>select status</option>
                                 <option v-for="status in statuses" :value="status">
@@ -68,6 +67,7 @@
                             <select name="nationality"
                                     class="custom-select w-100"
                                     v-model="form.nationality"
+                                    :class="{'is-invalid': errors.first('nationality')}"
                                     v-validate="'required'">
                                 <option value="" selected>select nationality</option>
                                 <option v-for="country in countries" :value="country">
@@ -87,7 +87,8 @@
                                    class="form-control"
                                    v-model="form.date_of_birth"
                                    name="date_of_birth"
-                                   v-validate="'required'"
+                                   v-validate="'required|date_between:2018-11-01,2018-11-30'"
+                                   :class="{'is-invalid': errors.first('date_of_birth')}"
                                    data-vv-as="date of birth">
                             <small class="text-muted"
                                    v-if="errors.first('date_of_birth')">
@@ -102,6 +103,7 @@
                                    placeholder="name@example.com"
                                    v-model="form.email"
                                    name="email"
+                                   :class="{'is-invalid': errors.first('email') || error.email}"
                                    v-validate="'required|email|min:1'">
                             <small class="text-muted"
                                    v-if="errors.first('email')">
@@ -122,6 +124,7 @@
                                    v-model="form.staff_id"
                                    name="staff_id"
                                    v-validate="'required'"
+                                   :class="{'is-invalid': errors.first('staff_id')  || error.staff_id}"
                                    data-vv-as="employee id">
                             <small class="text-muted"
                                    v-if="errors.first('staff_id')">
@@ -139,6 +142,7 @@
                                     class="custom-select w-100"
                                     v-model="form.role_id"
                                     v-validate="'required'"
+                                    :class="{'is-invalid': errors.first('role')}"
                                     data-vv-name="role">
                                 <option value="" selected>select role</option>
                                 <option v-for="role in roles" :value="role.id">
@@ -158,6 +162,7 @@
                             <select name="qualification"
                                     class="custom-select w-100"
                                     v-model="form.highest_qualification"
+                                    :class="{'is-invalid': errors.first('qualification')}"
                                     v-validate="'required'"
                                     data-vv-name="qualification">
                                 <option value="" selected>select qualification</option>
@@ -177,6 +182,7 @@
                                     class="custom-select w-100"
                                     v-model="form.branch_id"
                                     v-validate="'required'"
+                                    :class="{'is-invalid': errors.first('branch')}"
                                     data-vv-name="branch">
                                 <option value="" selected>select branch</option>
                                 <option v-for="branch in branches" :value="branch.id">
@@ -197,6 +203,7 @@
                                    v-model="form.date_of_appointment"
                                    name="date_of_appointment"
                                    v-validate="'required'"
+                                   :class="{'is-invalid': errors.first('date_of_appointment')}"
                                    data-vv-as="date of appointment">
                             <small class="text-muted"
                                    v-if="errors.first('date_of_appointment')">
@@ -204,7 +211,28 @@
                             </small>
                         </div>
 
-                        <!--gender-->
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Staff Category</label>
+                            <select name="qualification"
+                                    class="custom-select w-100"
+                                    v-model="form.category"
+                                    v-validate="'required'"
+                                    :class="{'is-invalid': errors.first('category')}"
+                                    data-vv-name="category">
+                                <option value="" selected>select category</option>
+                                <option v-for="category in categories" :value="category">
+                                    {{category | capitalize}}
+                                </option>
+                            </select>
+                            <small class="text-muted"
+                                   v-if="errors.has('category')">
+                                {{errors.first('category') }}
+                            </small>
+                        </div>
+
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
+
+                        &lt;!&ndash;gender&ndash;&gt;
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="w-100 float-left pl-1">Gender</label>
                             <div class="radio p-0 col-md-6 col-6 float-left" v-for="sex in gender">
@@ -224,14 +252,13 @@
                             </small>
                         </div>
 
-                        <div class="spaceBetween mb-md-2 mb-0"></div>
-
-                        <div class="form-group col-12 float-left px-0 px-md-3">
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Describe Location</label>
                             <textarea class="form-control w-100"
                                       placeholder="address"
                                       rows="1"
                                       v-model="form.address"
+                                      :class="{'is-invalid': errors.first('address')}"
                                       name="address"
                                       v-validate="'required|max:255'"></textarea>
                             <small class="text-muted"
@@ -252,6 +279,7 @@
                                    v-model="form.referee_1"
                                    name="referee_1"
                                    v-validate="'required|max:50'"
+                                   :class="{'is-invalid': errors.first('referee_1')}"
                                    data-vv-as="referee 1 full name">
                             <small class="text-muted"
                                    v-if="errors.first('referee_1')">
@@ -267,6 +295,7 @@
                                    v-model="form.referee_1_phone_no"
                                    name="referee_1_phone_no"
                                    v-validate="'required|numeric|max:11|min:11'"
+                                   :class="{'is-invalid': errors.first('referee_1_phone_no')}"
                                    data-vv-as="referee 1 phone number">
                             <small class="text-muted"
                                    v-if="errors.first('referee_1_phone_no')">
@@ -284,6 +313,7 @@
                                    v-model="form.referee_2"
                                    name="referee_2"
                                    v-validate="'required|max:50'"
+                                   :class="{'is-invalid': errors.first('referee_2')}"
                                    data-vv-as="referee 2 full name">
                             <small class="text-muted"
                                    v-if="errors.first('referee_2')">
@@ -299,6 +329,7 @@
                                    v-model="form.referee_2_phone_no"
                                    name="referee_2_phone_no"
                                    v-validate="'required|numeric|max:11|min:11'"
+                                   :class="{'is-invalid': errors.first('referee_2_phone_no')}"
                                    data-vv-as="referee 2 phone number">
                             <small class="text-muted"
                                    v-if="errors.first('referee_2_phone_no')">
@@ -318,6 +349,7 @@
                                    v-model="form.next_of_kin_name"
                                    name="next_of_kin_name"
                                    v-validate="'required|max:50'"
+                                   :class="{'is-invalid': errors.first('next_of_kin_name')}"
                                    data-vv-as="next of kin name">
                             <small class="text-muted"
                                    v-if="errors.first('next_of_kin_name')">
@@ -333,6 +365,7 @@
                                    v-model="form.next_of_kin_phone_no"
                                    name="next_of_kin_phone_no"
                                    v-validate="'required|numeric|max:11|min:11'"
+                                   :class="{'is-invalid': errors.first('next_of_kin_phone_no')}"
                                    data-vv-as="next of kin phone number">
                             <small class="text-muted"
                                    v-if="errors.first('next_of_kin_phone_no')">
@@ -353,19 +386,34 @@
                             </button>
                         </div>
                     </form>
+                </div>-->
+
+                <ul class="nav nav-tabs justify-content-center bg-default">
+                    <h6>Staff Registration</h6>
+                </ul>
+                <div class="card-body pl-4 pr-4">
+
+                    <utility-form action="register"/>
                 </div>
+
             </div>
         </div>
     </transition>
 </template>
 <script>
-    import SMS from '../../../helpers/sms';
+    /*import SMS from '../../../helpers/sms';
     import {log} from '../../../helpers/log';
     import Flash from '../../../helpers/flash';
-    import {get, post} from '../../../helpers/api';
+    import {get, post} from '../../../helpers/api';*/
+
+    import UtilityForm from '../utility/form';
 
     export default {
-        data() {
+        components:{
+            UtilityForm
+        },
+
+        /*data() {
             return {
                 form: {},
                 error: {},
@@ -375,7 +423,8 @@
                 gender: ['male', 'female'],
                 countries: ['nigeria'],
                 statuses: ['married', 'single', 'divorced', 'complicated'],
-                qualifications: ['bachelors', 'masters', 'doctorate'],
+                qualifications: ['HND','OND','bachelors', 'masters', 'doctorate'],
+                categories: ['permanent', 'contract'],
                 textDetails: {phone: '', loginPassword: '', loginID: '',}
             }
         },
@@ -395,8 +444,8 @@
                                         this.textDetails.phone = String(parseInt(this.form.phone_number));
                                         this.textDetails.loginPassword = this.password = res.data.password;
                                         this.form = res.data.form;
-                                        Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!");
-                                        SMS.welcome(this.textDetails);
+                                        Flash.setSuccess("Registration Successful! Welcome Message has been sent to the registered employee with his Login details!", 20000);
+                                        //SMS.welcome(this.textDetails);
                                     }
                                     this.$LIPS(false);
                                 })
@@ -424,7 +473,7 @@
                     this.roles = res.data.roles;
                     this.branches = res.data.branches;
                 });
-        },
+        },*/
         beforeCreate() {
             if (!localStorage.getItem('api_token')) this.$router.push('/home');
         }

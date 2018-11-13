@@ -33,6 +33,7 @@ class User extends Authenticatable
             'full_name' => '',
             'date_of_appointment' => '',
             'status' => '',
+            'category' => '',
             'phone_number' => '',
             'highest_qualification' => '',
             'branch_id' => '',

@@ -10,6 +10,7 @@ import DSA from '../views/DSA/index.vue';
 import DSAHome from '../views/DSA/HomePage.vue';
 import DSAReport from '../views/DSA/report/report.vue';
 import CustomerList from '../views/DSA/list/list.vue';
+import CustomerUpdate from '../views/DSA/update/update.vue';
 import CustomerRegister from '../views/DSA/registration/Register.vue';
 import DVA from '../views/DVA/index.vue';
 import DVAHome from '../views/DVA/HomePage.vue';
@@ -60,6 +61,11 @@ const router = new VueRouter({
                     component: CustomerRegister,
                     name: 'customerRegister',
                     alias: '/register-customer'
+                },{
+                    path: 'customer/update',
+                    component: CustomerUpdate,
+                    name: 'customerUpdate',
+                    alias: '/update-customer'
                 }, {
                     path: 'customer/list',
                     component: CustomerList,

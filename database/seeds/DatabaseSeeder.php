@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             BranchesTableSeeder::class,
             RolesTableSeeder::class,
             UsersTableSeeder::class,
-            CustomerTableSeeder::class,
+            //CustomerTableSeeder::class,
         ]);
     }
 }

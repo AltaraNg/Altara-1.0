@@ -54,7 +54,7 @@ class CreateCustomersTable extends Migration
             $table->string('loan_amount', 50)->nullable();
             $table->string('did_you_pay_back', 10)->nullable();
             $table->string('employment_status', 50);
-            $table->string('working_individual_Phone_number', 30);
+            $table->string('working_individual_Phone_number', 30)->nullable();
             $table->string('name_of_company_or_business', 50);
             $table->string('cadd_nbstop', 100);
             $table->string('cadd_addinfo', 255)->nullable();
@@ -87,6 +87,8 @@ class CreateCustomersTable extends Migration
             $table->string('nextofkin_gender', 50);
             $table->string('nextofkin_telno', 30);
             $table->string('nextofkin_work_duration', 50);
+
+
             $table->string('work_guarantor_first_name', 50)->nullable();
             $table->string('work_guarantor_middle_name', 50)->nullable();
             $table->string('work_guarantor_last_name', 50)->nullable();
@@ -118,6 +120,8 @@ class CreateCustomersTable extends Migration
             //90
             $table->string('personal_guarantor_telno', 30)->nullable();
             $table->string('personal_guarantor_work_duration', 50)->nullable();
+
+
             $table->string('what_product_do_you_need', 255);
             $table->string('what_do_you_need_it_for', 255);
             $table->timestamps();

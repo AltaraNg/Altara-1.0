@@ -50,6 +50,11 @@
                         <div class="container">
                             <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
                             <strong class="mr-2">Success!</strong>&nbsp;{{flash.success}}
+                            <button type="button" @click="clearFlash" class="close" aria-label="Close">
+                                <span aria-hidden="true">
+                                    <i class="now-ui-icons ui-1_simple-remove ml-4" style="font-size: 16px"></i>
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </transition>
@@ -58,6 +63,11 @@
                         <div class="container">
                             <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
                             <strong class="mr-2">Oops!</strong>&nbsp;{{flash.error}}
+                            <button type="button" @click="clearFlash" class="close" aria-label="Close">
+                                <span aria-hidden="true">
+                                    <i class="now-ui-icons ui-1_simple-remove ml-4" style="font-size: 16px"></i>
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </transition>
@@ -86,10 +96,10 @@
         },
         beforeCreate() {
             Auth.initialize();
-            if (localStorage.getItem("api_token")) {
+            /*if (localStorage.getItem("api_token")) {
                 this.$router.push("/home");
                 Flash.setSuccess("Welcome Back!");
-            }
+            }*/
             if (!localStorage.getItem("api_token")) {
                 this.$router.push("/login");
                 Flash.setError("You have to Login!");
@@ -140,6 +150,9 @@
             showStatus(online) {
                 online ? Flash.setSuccess('you are connected to the internet!') : this.$networkErr();
             },
+            clearFlash(){
+                Flash.removeMsg();
+            }
         },
     };
 </script>

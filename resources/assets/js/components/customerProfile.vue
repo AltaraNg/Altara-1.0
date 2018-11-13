@@ -1,6 +1,5 @@
 <template>
-    <div class="px-3">
-        <div class="card position-relative">
+    <div class="card position-relative">
             <div class="design"></div>
             <div class="col-md-4 col-sm-4 col-12 px-0 pb-md-4 pb-sm-3 pb-0 pt-md-5 pt-4 float-left">
                 <div class="pt-md-3 pt-sm-2 pt-1">
@@ -82,7 +81,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 <script>
     export default {

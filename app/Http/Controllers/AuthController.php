@@ -29,9 +29,6 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        /***validating the field below in the
-         **backend because vue validation
-         * cant handle the validation**/
         $this->validate($request, [
             'email' => 'unique:users',
             'staff_id' => 'unique:users',
@@ -53,19 +50,10 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $this->validate($request, [
-            'staff_id' => 'required',
-            'password' => 'required|between:6,25'
-        ]);
-
-        $user = User::where('staff_id', $request->staff_id)
-            ->first();
+        $user = User::where('staff_id', $request->staff_id)->first();
 
         if (!$user) {
-            return response()
-                ->json([
-                    'staff_id' => ['The combination does not exist in our record!']
-                ], 422);
+            return response()->json(['staff_id' => ['The combination does not exist in our record!']], 422);
         }
 
         if ($user->portal_access === 1) {
@@ -82,10 +70,7 @@ class AuthController extends Controller
                         'portal_access' => $user->portal_access,
                     ]);
             }
-            return response()
-                ->json([
-                    'staff_id' => ['Provided staff id and password does not match']
-                ], 422);
+            return response()->json(['staff_id' => ['Provided staff id and password does not match']], 422);
         } else {
             return response()
                 ->json([
@@ -110,16 +95,34 @@ class AuthController extends Controller
         $user = User::find($id);
         return response()->json([
             'roles' => $roles,
-            'user' => $user,
+            'form' => $user,
             'branches' => $branches,
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        ($request->date_of_exit) ? $request['portal_access'] = 0 : '';
+        $this->validate($request, [
+            'email' => 'unique:users,email,' . $id,
+            'staff_id' => 'unique:users,staff_id,'.$id,
+            'phone_number' => 'unique:users,phone_number,'.$id,
+        ]);
+
+        $user = User::find($id);
+        if($request->portal_access == 1 && isset($user->date_of_exit)){
+            return response()->json([
+                'message' => 'Staff exited! Access cant be granted!',
+            ], 422);
+        }
+        if(isset($user->date_of_exit) || isset($request->date_of_exit)) {
+            $request['portal_access'] = 0 ;
+            $request->request->add(['api_token' => null]);
+        }
+
         User::whereId($id)->update($request->all());
-        return response()->json(['updated' => true]);
+        return response()->json([
+            'updated' => true,
+        ]);
     }
 
     public function resetPassword($id)
@@ -127,6 +130,7 @@ class AuthController extends Controller
         $user = User::where('id', $id)->first();
         $gen_password = str_random(10);
         $user->password = bcrypt($gen_password);
+        $user->api_token = null;
         $user->save();
         return response()->json([
             'reset' => true,

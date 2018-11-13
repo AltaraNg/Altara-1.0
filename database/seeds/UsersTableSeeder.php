@@ -22,8 +22,8 @@ class UsersTableSeeder extends Seeder
         $user->staff_id = 'AC/IT/2018/0001';
         $user->full_name = 'ibeanu hillary Arinze';
         $user->date_of_appointment = '2016-02-02';
-        $user->date_of_exit = '2016-02-02';
         $user->status = 'married';
+        $user->category = 'permanent';
         $user->phone_number = '08163145041';
         $user->password = bcrypt('clinsmann');
         $user->email = 'ibeanuhillary@gmail.com';
@@ -45,12 +45,12 @@ class UsersTableSeeder extends Seeder
         $user = new User();
         $user->role_id = 2;
         $user->staff_id = 'AC/IT/2018/0002';
-        $user->full_name = 'ibeanu hillary GM';
+        $user->full_name = 'Paul 0luyege';
         $user->date_of_appointment = '2016-02-02';
-        $user->date_of_exit = '2016-02-02';
         $user->status = 'married';
+        $user->category = 'permanent';
         $user->phone_number = '08163145042';
-        $user->password = bcrypt('clinsmann');
+        $user->password = bcrypt('password');
         $user->email = 'ibeanuhillary2@gmail.com';
         $user->address = 'ibadan';
         $user->gender = 'male';
@@ -68,14 +68,14 @@ class UsersTableSeeder extends Seeder
         $user->save();
 
         $user = new User();
-        $user->role_id = 3;
+        $user->role_id = 7;
         $user->staff_id = 'AC/IT/2018/0003';
-        $user->full_name = 'ibeanu hillary PM';
+        $user->full_name = 'Taiwo Aneniyi';
         $user->date_of_appointment = '2016-02-02';
-        $user->date_of_exit = '2016-02-02';
         $user->status = 'married';
+        $user->category = 'permanent';
         $user->phone_number = '08163145043';
-        $user->password = bcrypt('clinsmann');
+        $user->password = bcrypt('password');
         $user->email = 'ibeanuhillary3@gmail.com';
         $user->address = 'ibadan';
         $user->gender = 'male';
@@ -93,14 +93,14 @@ class UsersTableSeeder extends Seeder
         $user->save();
 
         $user = new User();
-        $user->role_id = 8;
+        $user->role_id = 7;
         $user->staff_id = 'AC/IT/2018/0004';
         $user->full_name = 'ibeanu hillary SEL';
         $user->date_of_appointment = '2016-02-02';
-        $user->date_of_exit = '2016-02-02';
         $user->status = 'married';
+        $user->category = 'permanent';
         $user->phone_number = '08163145044';
-        $user->password = bcrypt('clinsmann');
+        $user->password = bcrypt('password');
         $user->email = 'ibeanuhillary4@gmail.com';
         $user->address = 'ibadan';
         $user->gender = 'male';
@@ -123,7 +123,7 @@ class UsersTableSeeder extends Seeder
         $statuses = ['married', 'single', 'divorced', 'complicated'];
         $faker = Factory::create();
 
-        foreach (range(5, 50) as $i) {
+        /*foreach (range(5, 50) as $i) {
             $rand = rand(5, 23);
             $role = Role::find($rand);
             User::create([
@@ -149,7 +149,7 @@ class UsersTableSeeder extends Seeder
                 'next_of_kin_name' => $faker->firstName . ' ' . $faker->lastName,
                 'next_of_kin_phone_no' => $faker->phoneNumber
             ]);
-        }
+        }*/
     }
 
     public function getDay()

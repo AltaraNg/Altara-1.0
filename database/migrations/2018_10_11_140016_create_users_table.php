@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('date_of_appointment');
             $table->string('date_of_exit')->nullable();
             $table->string('status');
+            $table->string('category');
             $table->string('phone_number')->unique();
             $table->string('highest_qualification');
             $table->unsignedInteger('branch_id')->index()->nullable();

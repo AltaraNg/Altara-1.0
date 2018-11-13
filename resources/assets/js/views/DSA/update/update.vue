@@ -1,5 +1,5 @@
 <template>
-    <utility-form action="register"/>
+    <utility-form action="update"/>
 </template>
 <script>
     import UtilityForm from '../utility/form';

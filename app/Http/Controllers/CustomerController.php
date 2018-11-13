@@ -12,7 +12,6 @@ use App\State;
 use App\Verification;
 use App\WorkGuarantor;
 use Illuminate\Http\Request;
-use Symfony\Component\Process\Process;
 
 class CustomerController extends Controller
 {
@@ -39,13 +38,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $user = auth('api')->user();
         $states = State::all();
         $form = Customer::form();
         $branches = Branch::all();
-        $form['employee_name'] = $user->full_name;
-        $form['employee_id'] = $user->staff_id;
-        $form['branch_id'] = $user->branch_id;
         return response()->json([
             'form' => $form,
             'states' => $states,
@@ -63,7 +58,6 @@ class CustomerController extends Controller
     {
         $customer = new Customer($request->all());
         $customer->days_of_work = implode(' ', $request['days_of_work']);
-        $customer->user_id = auth('api')->user()->id;
         $customer->save();
         (new Verification([
             'customer_id' => $customer->id,
@@ -80,8 +74,8 @@ class CustomerController extends Controller
         ]))->save();
         return response()->json([
             'registered' => true,
-            'form' => Customer::form(),
-            'id' => $customer->id,
+            'customer' => $this->show($customer->id)->original['customer'],
+            'prepareForm' => $this->create()->original,
         ]);
     }
 
@@ -94,13 +88,10 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::with([
-            'branch' => function ($query) {
-                $query->select('id', 'name');
-            },
             'user' => function ($query) {
                 $query->select('id', 'full_name');
             },
-            'verification', 'address','workGuarantor','personalGuarantor','document','processingFee'
+            'branch','verification', 'address', 'workGuarantor', 'personalGuarantor', 'document', 'processingFee'
         ])->whereId($id)->first();
         if ($customer) {
             return response()->json([
@@ -109,12 +100,13 @@ class CustomerController extends Controller
                 'empty_work_guarantor' => WorkGuarantor::form(),
                 'empty_personal_guarantor' => PersonalGuarantor::form(),
                 'empty_processing_fee' => ProcessingFee::form(),
-                'user' => auth('api')->user()->only(['full_name','id']),
+                'user' => auth('api')->user()->only(['full_name', 'id']),
                 'success' => true
             ]);
         }
         return response()->json([
             'message' => 'The Customer ID did not match any customer in our records!',
+            'customer' => '',
         ], 422);
     }
 
@@ -138,7 +130,20 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        unset($request['address']);
+        unset($request['branch']);
+        unset($request['document']);
+        unset($request['personal_guarantor']);
+        unset($request['processing_fee']);
+        unset($request['user']);
+        unset($request['verification']);
+        unset($request['work_guarantor']);
+        Customer::whereId($id)->update($request->all());
+        return response()->json([
+            'updated' => true,
+            'customer' => $this->show($id)->original['customer'],
+            'prepareForm' => $this->create()->original,
+        ]);
     }
 
     /**

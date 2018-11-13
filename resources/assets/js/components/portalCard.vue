@@ -8,23 +8,16 @@
             </div>
         </div>
     </div>-->
-
     <div class="col-md-4 col-sm-6 float-left product p-4" v-if="aces">
-
         <div class="portal-card clearfix">
-
             <span class="portal-icon"> <i class="fas fa-file-invoice"></i> </span>
-
             <div class="clearfix">
                 <h4 class="font-weight-bold float-left mt-2 mb-2">{{title | capitalize}}</h4>
-
                 <hr class="float-left w-100">
             </div>
-
             <div class="clearfix">
                 <p class="text-muted float-left">{{ desc | capitalize}}</p>
             </div>
-
             <div class="clearfix">
                 <router-link :to="url" class="btn bg-default">
                     {{url_c | capitalize}}
@@ -32,22 +25,11 @@
                 </router-link>
             </div>
         </div>
-
     </div>
-
-
 </template>
 <script>
     export default {
         props: {title: '', desc: '', url: '', url_c: '', aces: {default: true}},
-        methods: {
-            onLoad() {
-
-            }
-        },
-        mounted() {
-            this.onLoad();
-        }
     }
 </script>
 
