@@ -122,5 +122,23 @@ router.beforeEach((to, from, next) => {
         return next({name: 'home'});
     }
     next();
+
+
+    //check if the path user is going to is our param path
+    // if(from.meta.role == 11 || from.meta.role == 1){
+    // if( to.path != '/dsa' ||  to.path != '/customer/register' ||  to.path != '/dsa/home' ){
+    //     //check if the user item is already set
+    //         //move to the route
+    // 		next('/home');
+    // 		 //prompt for username
+    // 		 Flash.setError("DSAs are not allowed on this route");
+    //         }else{
+    //        //prompt for username
+    // 		 Flash.setSuccess("Welcome to the Admin");
+    //         //return, do not move to the route
+    // 	//	return;
+    // 		next();
+    // 		}
+    // }
 });
 export default router

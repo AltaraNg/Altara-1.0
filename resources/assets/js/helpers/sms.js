@@ -1,5 +1,4 @@
-import {get} from './api';
-
+import { get } from './api';
 export default {
     message: '',
     welcome(details) {
