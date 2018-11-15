@@ -1,6 +1,6 @@
 <template>
     <div class="float-left w-100 pt-md-3 pt-2" id="customerRegister">
-        <verification-part v-if="ifUp(action)" :action="action" @update="updateCustomer"/>
+        <verification v-if="ifUp(action)" :action="action" @update="updateCustomer"/>
         <div class="card" v-if="(newCustomer.id && ifUp(action)) || ifReg(action)">
             <ul class="nav nav-tabs justify-content-center bg-default"><h6>{{action | capitalize}} Customer</h6></ul>
             <div class="card-body pl-4 pr-4 clearfix">
@@ -1381,11 +1381,11 @@
     import {log} from '../../../helpers/log';
     import Flash from '../../../helpers/flash';
     import {get, post} from '../../../helpers/api';
-    import VerificationPart from '../../../views/DVA/verification/verification'
+    import Verification from '../../../views/DVA/verification/verification'
 
     export default {
-        components: {VerificationPart},
-        props: {action: ''},
+        components: {Verification},
+        props: {action: {default:'update'}},
         data() {
             return {
                 newCustomer: {},

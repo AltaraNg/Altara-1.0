@@ -22,7 +22,7 @@ class User extends Authenticatable
     ];
 
     public static $columns = [
-        'id', 'full_name','staff_id', 'phone_number','portal_access','email', 'date_of_appointment'
+        'id', 'full_name', 'staff_id', 'phone_number', 'portal_access', 'email', 'date_of_appointment'
     ];
 
     public static function Form()
@@ -89,6 +89,11 @@ class User extends Authenticatable
     public function processingFees()
     {
         return $this->hasMany(ProcessingFee::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 
 }
