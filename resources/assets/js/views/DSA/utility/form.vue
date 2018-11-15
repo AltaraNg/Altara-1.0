@@ -1462,10 +1462,10 @@
                         }
                         if (this.$network()) {
                             this.$LIPS(true);
-                            let newUrl = '/api/customer/';
+                            let newUrl = '/api/customer';
                             var logMsg = 'createdNew';
                             if (this.action === 'update'){
-                                newUrl = newUrl + this.newCustomer.id;
+                                newUrl = newUrl + '/' +this.newCustomer.id;
                                 logMsg = 'updated'
                             }
                             post(newUrl, this.newCustomer)
