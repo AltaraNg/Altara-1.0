@@ -72,49 +72,11 @@ class CustomerController extends Controller
             'id_card_url' => '',
             'passport_url' => '',
         ]))->save();
-
-
-        $customer = Customer::with([
-            'user' => function ($query) {
-                $query->select('id', 'full_name');
-            },
-            'branch','verification', 'address', 'workGuarantor', 'personalGuarantor', 'document', 'processingFee'
-        ])->whereId($customer->id)->first();
-
-
-        $states = State::all();
-        $form = Customer::form();
-        $branches = Branch::all();
-        /*return response()->json([
-            'form' => $form,
-            'states' => $states,
-            'branches' => $branches,
-        ]);*/
-
-        if ($customer) {
-            return response()->json([
-                'customer' => $customer,
-                'empty_address' => Address::form(),
-                'empty_work_guarantor' => WorkGuarantor::form(),
-                'empty_personal_guarantor' => PersonalGuarantor::form(),
-                'empty_processing_fee' => ProcessingFee::form(),
-                'user' => auth('api')->user()->only(['full_name', 'id']),
-                'registered' => true,
-                'prepareForm' => [
-                    'form' => $form,
-                    'states' => $states,
-                    'branches' => $branches,
-                ]
-            ]);
-        }
-
-
-       /* return response()->json([
-
-//            'customer' => $this->show($customer->id)->original['customer'],
-            'customer' => $customer,
+        return response()->json([
+            'registered' => true,
+            'customer' => $this->show($customer->id)->original['customer'],
             'prepareForm' => $this->create()->original,
-        ]);*/
+        ]);
     }
 
     /**
