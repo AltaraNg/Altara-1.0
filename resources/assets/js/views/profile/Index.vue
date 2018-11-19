@@ -30,7 +30,5 @@
                 this.$router.push('/login');
             }
         },
-        created(){
-        }
     }
 </script>

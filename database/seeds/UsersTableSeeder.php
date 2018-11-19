@@ -75,7 +75,7 @@ class UsersTableSeeder extends Seeder
         $user->status = 'married';
         $user->category = 'permanent';
         $user->phone_number = '08163145043';
-        $user->password = bcrypt('password');
+            $user->password = bcrypt('password');
         $user->email = 'ibeanuhillary3@gmail.com';
         $user->address = 'ibadan';
         $user->gender = 'male';

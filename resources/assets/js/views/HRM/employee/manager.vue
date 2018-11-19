@@ -1,10 +1,8 @@
 <template>
     <transition name="fade">
-        <div class="float-left w-100 pt-md-3 pt-2" id="employeeEdit">
+        <div class="pt-md-3 pt-2" id="employeeEdit">
             <div class="card">
-                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center bg-default">
-                    <h6>Staff Management</h6>
-                </ul>
+                <ul class="nav nav-tabs justify-content-center bg-default"><h6>Staff Management</h6></ul>
                 <data-viewer source="/api/user" title="User Data" appModel="user"/>
             </div>
         </div>

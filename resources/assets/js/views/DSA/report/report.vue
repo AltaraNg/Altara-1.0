@@ -1,17 +1,15 @@
 <template>
     <transition name="fade">
-        <div class="float-left w-100 pt-md-3 pt-2" id="employeeRegister">
+        <div class="pt-md-3 pt-2" id="employeeRegister">
             <div class="card">
-                <ul class="nav nav-tabs nav-tabs-neutral justify-content-center bg-default">
-                    <h6>Report Generation</h6>
-                </ul>
-                <div class="card-body pl-4 pr-4">
+                <ul class="nav nav-tabs justify-content-center bg-default"><h6>Report Generation</h6></ul>
+                <div class="card-body px-4">
                     <form @submit.prevent="generateReport">
-                        <div class="mb-3 mt-4 clear w-100">
+                        <div class="my-4 clearfix">
                             <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                                 <label>Report Type</label>
                                 <select class="custom-select w-100" v-model="report.type"
-                                        v-validate="'required|max:25'" data-vv-as="report type"
+                                        v-validate="'required|max:25|not_in:Choose'" data-vv-as="report type"
                                         name="report_type"
                                         :class="{'is-invalid': errors.first('report_type')}">
                                     <option value="">select type</option>
@@ -24,7 +22,7 @@
                             <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                                 <label>Branch</label>
                                 <select class="custom-select w-100" v-model="report.branch.id"
-                                        v-validate="'required|max:25'" data-vv-as="office branch" name="branch_id"
+                                        v-validate="'required|max:25|not_in:Choose'" data-vv-as="office branch" name="branch_id"
                                         :class="{'is-invalid': errors.first('branch_id')}">
                                     <option value="">select branch</option>
                                     <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
@@ -54,12 +52,9 @@
                                 </small>
                             </div>
                         </div>
-                        <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-4 float-right">
-                            <button type="submit"
-                                    class="btn btn-block btn-lg bg-default"
-                                    :disabled="$isProcessing">
-                                Generate Report
-                                <i class="far fa-paper-plane ml-1"></i>
+                        <div class="col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4">
+                            <button type="submit" class="btn btn-block btn-lg bg-default" :disabled="$isProcessing">
+                                Generate Report <i class="far fa-paper-plane ml-1"></i>
                             </button>
                         </div>
                     </form>
@@ -69,13 +64,15 @@
     </transition>
 </template>
 <script>
-    import Flash from '../../../helpers/flash';
     import {get, postD} from '../../../helpers/api';
 
     export default {
         beforeCreate(){
             if (!this.$store.state.DSALead.includes(this.$store.state.authRole)) {
-                Flash.setError("You do not have access to that page!");
+                /*this component can only be accessed by the dsa lead hence this route guard
+                * if the role of the dsa agent logged in is contained in the
+                * array of the dsa lead then access will be granted*/
+                this.$networkErr('page');
                 this.$router.push('/home');
             }
         },
@@ -110,7 +107,10 @@
             get('/api/create')
                 .then((res) => {
                     this.setDates();
+                    /*set dates*/
                     this.branches = res.data.branches;
+                    /*fetch the list of states and
+                    prepare the form with it*/
                 });
         },
         methods: {
@@ -130,10 +130,7 @@
                             });
                         } else this.$networkErr();
                     }
-                    if (!result) {
-                        this.$scrollToTop();
-                        Flash.setError('Please check all the fields and make sure they are field correctly!');
-                    }
+                    if (!result) this.$networkErr('form');
                 });
             },
             setDates() {
@@ -148,6 +145,9 @@
                 f.setDate(m.getDate() + 4);
                 this.report.from = m = reformatDate(m);
                 this.report.to = f = reformatDate(f);
+                /*this function returns the monday ie this.report.from
+                * and the friday of the : this.report.to of the
+                * current week*/
             },
         }
     }

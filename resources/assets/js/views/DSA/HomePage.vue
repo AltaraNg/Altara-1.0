@@ -2,8 +2,8 @@
     <transition name="fade">
         <div>
             <div v-for="portal in portals">
-                <portal-card :url="portal.url" :title="portal.title" :url_c="portal.url_c" :desc="portal.desc"
-                             :aces="portal.aces"/>
+                <portal-card :url="portal.url" :title="portal.title" :url_c="portal.url_c"
+                             :desc="portal.desc" :aces="portal.aces"/>
             </div>
         </div>
     </transition>
@@ -44,6 +44,7 @@
         created() {
             if (this.$store.state.DSALead.includes(this.$store.state.authRole))
                 this.portals[2].aces = true; else this.portals[2].aces = false;
+                /*only the dsa lead can access the report portal hence the method*/
         }
     }
 </script>

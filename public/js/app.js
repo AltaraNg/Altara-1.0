@@ -60,7 +60,11 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 28);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 26);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -179,8 +183,13 @@ module.exports = function normalizeComponent (
 "use strict";
 
 
+<<<<<<< HEAD
 var bind = __webpack_require__(18);
 var isBuffer = __webpack_require__(43);
+=======
+var bind = __webpack_require__(16);
+var isBuffer = __webpack_require__(41);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /*global toString:true*/
 
@@ -502,6 +511,10 @@ module.exports = {
         setTimeout(function () {
             _this.removeMsg();
         }, time);
+<<<<<<< HEAD
+=======
+        //sets success message for the app
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     },
     setError: function setError(message) {
         var _this2 = this;
@@ -513,6 +526,10 @@ module.exports = {
         setTimeout(function () {
             _this2.removeMsg();
         }, time);
+<<<<<<< HEAD
+=======
+        //sets error message for the app
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     },
     removeMsg: function removeMsg() {
         this.state.error = this.state.success = null;
@@ -529,7 +546,11 @@ module.exports = {
 /* harmony export (immutable) */ __webpack_exports__["d"] = postD;
 /* unused harmony export del */
 /* harmony export (immutable) */ __webpack_exports__["b"] = interceptors;
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(41);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(39);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(6);
 
@@ -582,6 +603,12 @@ function interceptors(cb) {
         return Promise.reject(err);
     });
 }
+<<<<<<< HEAD
+=======
+/*helper functions for easier calls use of
+* axios includes the api_token for every
+* api call to the backend.*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /***/ }),
 /* 4 */
@@ -11547,7 +11574,11 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
+<<<<<<< HEAD
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(31).setImmediate))
+=======
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(29).setImmediate))
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /***/ }),
 /* 5 */
@@ -11612,6 +11643,7 @@ module.exports = g;
 
 /***/ }),
 /* 7 */
+<<<<<<< HEAD
 /***/ (function(module, exports) {
 
 /*
@@ -11922,6 +11954,8 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 /* 9 */
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -11968,6 +12002,7 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11987,6 +12022,23 @@ var __vue_template_functional__ = false
 var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = "data-v-28781233"
+=======
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(85)
+/* template */
+var __vue_template__ = __webpack_require__(86)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -12019,7 +12071,46 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 11 */
+=======
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__flash__ = __webpack_require__(2);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    message: '',
+    welcome: function welcome(details) {
+        this.message = 'Welcome to Altara credit. Please keep your login details safe. Your login details are as follows,' + ' Staff ID: "' + details.loginID + '" password: "' + details.loginPassword + '"';
+        this.send(details);
+    },
+    customerReg: function customerReg(details) {
+        this.message = "Dear " + details.first_name + ' ' + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact : " + details.branch.phone_yoruba + '. Your customer id is: ' + details.id;
+        this.send({ phone: details.telephone.substr(1) });
+    },
+    passwordReset: function passwordReset(details) {
+        this.message = 'Password reset successful! if your did not request for a new password kindly report back immediately,' + ' new password : "' + details.password + '"';
+        this.send(details);
+    },
+    dvaMessage: function dvaMessage(details) {
+        this.message = details.message;
+        this.send(details);
+    },
+    send: function send(details) {
+
+        /*get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
+            + 234 + details.phone + "&text=" + this.message + "").then(res => Flash.setSuccess('SMS sent Successfully'))*/
+    }
+});
+
+/***/ }),
+/* 10 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12028,6 +12119,7 @@ module.exports = Component.exports
 
 
 function log(action, description) {
+<<<<<<< HEAD
     action = action.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
         return str.toUpperCase();
     });
@@ -12036,6 +12128,20 @@ function log(action, description) {
 
 /***/ }),
 /* 12 */
+=======
+    /*actions is the action performed
+    * description is reference of the data the action was taken on*/
+    action = action.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
+        return str.toUpperCase();
+    });
+    //formats and capitalize the action performed
+    Object(__WEBPACK_IMPORTED_MODULE_0__api__["c" /* post */])('/api/log', { action: action, description: description });
+    //and logs then on the log table;
+}
+
+/***/ }),
+/* 11 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -12225,14 +12331,22 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 13 */
+=======
+/* 12 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(1);
+<<<<<<< HEAD
 var normalizeHeaderName = __webpack_require__(45);
+=======
+var normalizeHeaderName = __webpack_require__(43);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -12248,10 +12362,17 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
+<<<<<<< HEAD
     adapter = __webpack_require__(19);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
     adapter = __webpack_require__(19);
+=======
+    adapter = __webpack_require__(17);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(17);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
   }
   return adapter;
 }
@@ -12326,10 +12447,17 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
+<<<<<<< HEAD
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ }),
 /* 14 */
+=======
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+
+/***/ }),
+/* 13 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13274,6 +13402,7 @@ var index_esm = {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -13305,6 +13434,9 @@ var index_esm = {
 
 /***/ }),
 /* 16 */
+=======
+/* 14 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -23675,7 +23807,11 @@ return jQuery;
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 17 */
+=======
+/* 15 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26204,7 +26340,11 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
 
 /***/ }),
+<<<<<<< HEAD
 /* 18 */
+=======
+/* 16 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26222,19 +26362,32 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 19 */
+=======
+/* 17 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
+<<<<<<< HEAD
 var settle = __webpack_require__(46);
 var buildURL = __webpack_require__(48);
 var parseHeaders = __webpack_require__(49);
 var isURLSameOrigin = __webpack_require__(50);
 var createError = __webpack_require__(20);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(51);
+=======
+var settle = __webpack_require__(44);
+var buildURL = __webpack_require__(46);
+var parseHeaders = __webpack_require__(47);
+var isURLSameOrigin = __webpack_require__(48);
+var createError = __webpack_require__(18);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(49);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -26331,7 +26484,11 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
+<<<<<<< HEAD
       var cookies = __webpack_require__(52);
+=======
+      var cookies = __webpack_require__(50);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -26409,13 +26566,21 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 20 */
+=======
+/* 18 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+<<<<<<< HEAD
 var enhanceError = __webpack_require__(47);
+=======
+var enhanceError = __webpack_require__(45);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -26434,7 +26599,11 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 21 */
+=======
+/* 19 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26446,7 +26615,11 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 22 */
+=======
+/* 20 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26472,16 +26645,26 @@ module.exports = Cancel;
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 23 */
+=======
+/* 21 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(14);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(13);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -26525,7 +26708,10 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
             }
             return false;
         },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         getProfileAccess: function getProfileAccess(state) {
             return state.ProfileAccess;
         },
@@ -26549,20 +26735,33 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
         mutateAuth: function mutateAuth(context) {
             context.commit('mutateAuth');
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     }
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 24 */
+=======
+/* 22 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(95)
 /* template */
 var __vue_template__ = __webpack_require__(98)
+=======
+var __vue_script__ = __webpack_require__(93)
+/* template */
+var __vue_template__ = __webpack_require__(96)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -26601,15 +26800,25 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 25 */
+=======
+/* 23 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(96)
 /* template */
 var __vue_template__ = __webpack_require__(97)
+=======
+var __vue_script__ = __webpack_require__(94)
+/* template */
+var __vue_template__ = __webpack_require__(95)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -26648,15 +26857,25 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 26 */
+=======
+/* 24 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(102)
 /* template */
 var __vue_template__ = __webpack_require__(119)
+=======
+var __vue_script__ = __webpack_require__(98)
+/* template */
+var __vue_template__ = __webpack_require__(111)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -26695,6 +26914,7 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26714,6 +26934,23 @@ var __vue_template_functional__ = false
 var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = "data-v-07317a72"
+=======
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(99)
+/* template */
+var __vue_template__ = __webpack_require__(110)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -26746,6 +26983,7 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26756,12 +26994,25 @@ module.exports = __webpack_require__(164);
 
 /***/ }),
 /* 29 */
+=======
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(27);
+__webpack_require__(157);
+module.exports = __webpack_require__(158);
+
+
+/***/ }),
+/* 27 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(61);
@@ -26772,6 +27023,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 window.$ = window.jQuery = __webpack_require__(16);
 window.Popper = __webpack_require__(17).default;
 __webpack_require__(30);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store_globalFunctions_js__ = __webpack_require__(156);
+window.$ = window.jQuery = __webpack_require__(14);
+window.Popper = __webpack_require__(15).default;
+__webpack_require__(28);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -26790,7 +27053,11 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 30 */
+=======
+/* 28 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -26799,7 +27066,11 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
+<<<<<<< HEAD
    true ? factory(exports, __webpack_require__(16), __webpack_require__(17)) :
+=======
+   true ? factory(exports, __webpack_require__(14), __webpack_require__(15)) :
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -30740,7 +31011,11 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 31 */
+=======
+/* 29 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -30796,7 +31071,11 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
+<<<<<<< HEAD
 __webpack_require__(32);
+=======
+__webpack_require__(30);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -30810,7 +31089,11 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
+<<<<<<< HEAD
 /* 32 */
+=======
+/* 30 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -31000,7 +31283,234 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
+<<<<<<< HEAD
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(12)))
+=======
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(11)))
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(32)
+/* template */
+var __vue_template__ = __webpack_require__(58)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\App.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6dd1125c", Component.options)
+  } else {
+    hotAPI.reload("data-v-6dd1125c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_auth__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Loader_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Loader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Loader_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SideNav_vue__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SideNav_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_SideNav_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__helpers_api__ = __webpack_require__(3);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        SideNav: __WEBPACK_IMPORTED_MODULE_3__components_SideNav_vue___default.a,
+        Loader: __WEBPACK_IMPORTED_MODULE_2__components_Loader_vue___default.a
+    },
+    data: function data() {
+        return {
+            flash: __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].state,
+            authState: __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].state
+        };
+    },
+    beforeCreate: function beforeCreate() {
+        __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].initialize();
+        /*if (localStorage.getItem("api_token")) {
+            this.$router.push("/home");
+            Flash.setSuccess("Welcome Back!");
+        }*/
+        if (!localStorage.getItem("api_token")) {
+            this.$router.push("/login");
+            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError("You have to Login!");
+        }
+    },
+    created: function created() {
+        var _this = this;
+
+        Object(__WEBPACK_IMPORTED_MODULE_4__helpers_api__["b" /* interceptors */])(function (err) {
+            if (err.response.status === 401) {
+                __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].remove();
+                _this.$router.push("/login");
+            }
+            if (err.response.status === 500) __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.statusText);
+            if (err.response.status === 404) _this.$router.push("/not-found");
+        });
+        window.addEventListener('load', function () {
+            navigator.onLine ? _this.showStatus(true) : _this.showStatus(false); //uncomment this when u push to production
+            //this.$network() ? this.showStatus(true) : this.showStatus(false);//dis current line should be removed after testing
+            window.addEventListener('online', function () {
+                _this.showStatus(true);
+            });
+            window.addEventListener('offline', function () {
+                _this.showStatus(false);
+            });
+        });
+    },
+
+    computed: {
+        auth: function auth() {
+            return this.authState.api_token && this.authState.user_id;
+        },
+        guest: function guest() {
+            return !this.auth;
+        }
+    },
+    methods: {
+        logout: function logout() {
+            var _this2 = this;
+
+            if (this.$network()) {
+                this.$LIPS(true);
+                Object(__WEBPACK_IMPORTED_MODULE_4__helpers_api__["c" /* post */])("/api/logout").then(function (res) {
+                    if (res.data.logged_out) {
+                        _this2.$LIPS(false);
+                        __WEBPACK_IMPORTED_MODULE_0__store_auth__["a" /* default */].remove();
+                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess("You have successfully logged out!");
+                        _this2.$router.push("/login");
+                    }
+                });
+            } else this.$networkErr();
+        },
+        showStatus: function showStatus(online) {
+            online ? __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('you are connected to the internet!') : this.$networkErr();
+        },
+        clearFlash: function clearFlash() {
+            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].removeMsg();
+        }
+    }
+});
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /***/ }),
 /* 33 */
@@ -31011,6 +31521,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(34)
 /* template */
+<<<<<<< HEAD
 var __vue_template__ = __webpack_require__(60)
 /* template functional */
 var __vue_template_functional__ = false
@@ -31235,6 +31746,9 @@ var normalizeComponent = __webpack_require__(0)
 var __vue_script__ = __webpack_require__(36)
 /* template */
 var __vue_template__ = __webpack_require__(37)
+=======
+var __vue_template__ = __webpack_require__(35)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -31273,7 +31787,11 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 36 */
+=======
+/* 34 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31304,7 +31822,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 37 */
+=======
+/* 35 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -31343,15 +31865,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 38 */
+=======
+/* 36 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(39)
 /* template */
 var __vue_template__ = __webpack_require__(40)
+=======
+var __vue_script__ = __webpack_require__(37)
+/* template */
+var __vue_template__ = __webpack_require__(38)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -31390,7 +31922,11 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 39 */
+=======
+/* 37 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31408,9 +31944,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -31444,7 +31983,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 40 */
+=======
+/* 38 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -31520,6 +32063,7 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31527,15 +32071,30 @@ module.exports = __webpack_require__(42);
 
 /***/ }),
 /* 42 */
+=======
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(40);
+
+/***/ }),
+/* 40 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
+<<<<<<< HEAD
 var bind = __webpack_require__(18);
 var Axios = __webpack_require__(44);
 var defaults = __webpack_require__(13);
+=======
+var bind = __webpack_require__(16);
+var Axios = __webpack_require__(42);
+var defaults = __webpack_require__(12);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /**
  * Create an instance of Axios
@@ -31568,15 +32127,25 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
+<<<<<<< HEAD
 axios.Cancel = __webpack_require__(22);
 axios.CancelToken = __webpack_require__(58);
 axios.isCancel = __webpack_require__(21);
+=======
+axios.Cancel = __webpack_require__(20);
+axios.CancelToken = __webpack_require__(56);
+axios.isCancel = __webpack_require__(19);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
+<<<<<<< HEAD
 axios.spread = __webpack_require__(59);
+=======
+axios.spread = __webpack_require__(57);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 module.exports = axios;
 
@@ -31585,7 +32154,11 @@ module.exports.default = axios;
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 43 */
+=======
+/* 41 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports) {
 
 /*!
@@ -31612,16 +32185,27 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 44 */
+=======
+/* 42 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+<<<<<<< HEAD
 var defaults = __webpack_require__(13);
 var utils = __webpack_require__(1);
 var InterceptorManager = __webpack_require__(53);
 var dispatchRequest = __webpack_require__(54);
+=======
+var defaults = __webpack_require__(12);
+var utils = __webpack_require__(1);
+var InterceptorManager = __webpack_require__(51);
+var dispatchRequest = __webpack_require__(52);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /**
  * Create a new instance of Axios
@@ -31698,7 +32282,11 @@ module.exports = Axios;
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 45 */
+=======
+/* 43 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31717,13 +32305,21 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 46 */
+=======
+/* 44 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+<<<<<<< HEAD
 var createError = __webpack_require__(20);
+=======
+var createError = __webpack_require__(18);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -31750,7 +32346,11 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 47 */
+=======
+/* 45 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31778,7 +32378,11 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 48 */
+=======
+/* 46 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31851,7 +32455,11 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 49 */
+=======
+/* 47 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31911,7 +32519,11 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 50 */
+=======
+/* 48 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31986,7 +32598,11 @@ module.exports = (
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 51 */
+=======
+/* 49 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32029,7 +32645,11 @@ module.exports = btoa;
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 52 */
+=======
+/* 50 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32089,7 +32709,11 @@ module.exports = (
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 53 */
+=======
+/* 51 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32148,18 +32772,30 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 54 */
+=======
+/* 52 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
+<<<<<<< HEAD
 var transformData = __webpack_require__(55);
 var isCancel = __webpack_require__(21);
 var defaults = __webpack_require__(13);
 var isAbsoluteURL = __webpack_require__(56);
 var combineURLs = __webpack_require__(57);
+=======
+var transformData = __webpack_require__(53);
+var isCancel = __webpack_require__(19);
+var defaults = __webpack_require__(12);
+var isAbsoluteURL = __webpack_require__(54);
+var combineURLs = __webpack_require__(55);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -32241,7 +32877,11 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 55 */
+=======
+/* 53 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32268,7 +32908,11 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 56 */
+=======
+/* 54 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32289,7 +32933,11 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 57 */
+=======
+/* 55 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32310,13 +32958,21 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 58 */
+=======
+/* 56 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+<<<<<<< HEAD
 var Cancel = __webpack_require__(22);
+=======
+var Cancel = __webpack_require__(20);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -32374,7 +33030,11 @@ module.exports = CancelToken;
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 59 */
+=======
+/* 57 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32408,7 +33068,11 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 60 */
+=======
+/* 58 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -32694,12 +33358,17 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 61 */
+=======
+/* 59 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_flash__ = __webpack_require__(2);
@@ -32749,6 +33418,60 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_view_vue__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_view_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_view_vue__);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router_back_button__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router_back_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_router_back_button__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_HomePage_vue__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__views_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_auth_Login_vue__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_auth_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__views_auth_Login_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_NotFound_vue__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_NotFound_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__views_NotFound_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_DSA_index_vue__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_DSA_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__views_DSA_index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_DSA_HomePage_vue__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_DSA_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__views_DSA_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_DSA_report_report_vue__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_DSA_report_report_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__views_DSA_report_report_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_DSA_list_list_vue__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_DSA_list_list_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__views_DSA_list_list_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_DSA_utility_form_vue__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_DSA_utility_form_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__views_DSA_utility_form_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_DSA_registration_Register_vue__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_DSA_registration_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__views_DSA_registration_Register_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_DVA_index_vue__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_DVA_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__views_DVA_index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_DVA_messaging_message_vue__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__views_DVA_messaging_message_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__views_DVA_messaging_message_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_DVA_verification_verification_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__views_DVA_verification_verification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__views_DVA_verification_verification_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_profile_Index_vue__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__views_profile_Index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__views_profile_Index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_profile_Edit_vue__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__views_profile_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__views_profile_Edit_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_profile_HomePage_vue__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__views_profile_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__views_profile_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_HRM_index_vue__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__views_HRM_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__views_HRM_index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_HRM_HomePage_vue__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__views_HRM_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__views_HRM_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Manager_vue__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Manager_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__views_HRM_employee_Manager_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__views_HRM_employee_Register_vue__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__views_HRM_employee_Register_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__views_HRM_employee_Register_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_index_vue__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__views_FSL_index_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_inventory_vue__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_inventory_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_inventory_vue__);
+var _this = this;
+
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -32778,6 +33501,7 @@ if (false) {
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
+<<<<<<< HEAD
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vue_router_back_button__["routerHistory"]);
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     routes: [{ path: '/', redirect: { name: 'home' } }, {
@@ -32799,22 +33523,59 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
         }, {
             path: 'customer/register',
             component: __WEBPACK_IMPORTED_MODULE_13__views_DSA_registration_Register_vue___default.a,
+=======
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_vue_router_back_button__["routerHistory"]);
+var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
+    routes: [{ path: '/', redirect: { name: 'home' } }, {
+        path: '/home',
+        component: __WEBPACK_IMPORTED_MODULE_4__views_HomePage_vue___default.a,
+        name: 'home',
+        meta: { role: localStorage.getItem("role_id") },
+        alias: '/welcome-home'
+    }, { path: '/login', component: __WEBPACK_IMPORTED_MODULE_5__views_auth_Login_vue___default.a, name: 'login' }, {
+        path: '/user', component: __WEBPACK_IMPORTED_MODULE_17__views_profile_Index_vue___default.a,
+        children: [{ path: 'profile', component: __WEBPACK_IMPORTED_MODULE_19__views_profile_HomePage_vue___default.a }, { path: 'profile/edit', component: __WEBPACK_IMPORTED_MODULE_18__views_profile_Edit_vue___default.a }]
+    }, {
+        path: '/dsa', component: __WEBPACK_IMPORTED_MODULE_7__views_DSA_index_vue___default.a, meta: { DSA: true },
+        children: [{ path: '/', redirect: { name: 'DSAHome' } }, { path: 'home', component: __WEBPACK_IMPORTED_MODULE_8__views_DSA_HomePage_vue___default.a, name: 'DSAHome', alias: '/dsa-home' }, { path: 'report', component: __WEBPACK_IMPORTED_MODULE_9__views_DSA_report_report_vue___default.a, name: 'DSAReport', alias: '/dsa-report' }, {
+            path: 'customer/register',
+            component: __WEBPACK_IMPORTED_MODULE_12__views_DSA_registration_Register_vue___default.a,
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             name: 'customerRegister',
             alias: '/register-customer'
         }, {
             path: 'customer/update',
+<<<<<<< HEAD
             component: __WEBPACK_IMPORTED_MODULE_12__views_DSA_update_update_vue___default.a,
             name: 'customerUpdate',
             alias: '/update-customer'
         }, {
             path: 'customer/list',
             component: __WEBPACK_IMPORTED_MODULE_11__views_DSA_list_list_vue___default.a,
+=======
+            component: __WEBPACK_IMPORTED_MODULE_11__views_DSA_utility_form_vue___default.a,
+            name: 'DSACustomerUpdate',
+            alias: '/dsa-update-customer'
+        }, {
+            path: 'customer/list',
+            component: __WEBPACK_IMPORTED_MODULE_10__views_DSA_list_list_vue___default.a,
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             name: 'customerList',
             alias: '/register-list'
         }]
     }, {
+<<<<<<< HEAD
         path: '/dva', component: __WEBPACK_IMPORTED_MODULE_14__views_DVA_index_vue___default.a, meta: { DVA: true },
         children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: __WEBPACK_IMPORTED_MODULE_15__views_DVA_HomePage_vue___default.a, name: 'DVAHome', alias: '/dva-home' }, { path: 'verification', component: __WEBPACK_IMPORTED_MODULE_16__views_DVA_verification_verification_vue___default.a, name: 'DVAVerification', alias: '/dva-verification' }]
+=======
+        path: '/dva', component: __WEBPACK_IMPORTED_MODULE_13__views_DVA_index_vue___default.a, meta: { DVA: true },
+        children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: __WEBPACK_IMPORTED_MODULE_14__views_DVA_HomePage_vue___default.a, name: 'DVAHome', alias: '/dva-home' }, { path: 'message', component: __WEBPACK_IMPORTED_MODULE_15__views_DVA_messaging_message_vue___default.a, name: 'DVAMessage', alias: '/dva-message' }, {
+            path: 'customer/update',
+            component: __WEBPACK_IMPORTED_MODULE_11__views_DSA_utility_form_vue___default.a,
+            name: 'DVACustomerUpdate',
+            alias: '/dva-update-customer'
+        }, { path: 'verification', component: __WEBPACK_IMPORTED_MODULE_16__views_DVA_verification_verification_vue___default.a, name: 'DVAVerification', alias: '/dva-verification' }]
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     }, {
         path: '/hrm', component: __WEBPACK_IMPORTED_MODULE_20__views_HRM_index_vue___default.a, meta: { HRM: true },
         children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: __WEBPACK_IMPORTED_MODULE_21__views_HRM_HomePage_vue___default.a, name: 'HRMHome', alias: '/hrm-home' }, {
@@ -32830,6 +33591,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
         }]
     }, {
         path: '/fsl', component: __WEBPACK_IMPORTED_MODULE_24__views_FSL_index_vue___default.a, meta: { FSL: true },
+<<<<<<< HEAD
         children: [{ path: 'home', component: __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue___default.a, name: 'FSLHome', alias: '/fsl-home' }, { path: 'inventory', component: __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_view_vue___default.a, name: 'inventory', alias: '/inventory' }]
     }, { path: '/not-found', component: __WEBPACK_IMPORTED_MODULE_7__views_NotFound_vue___default.a }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_7__views_NotFound_vue___default.a }]
 });
@@ -32862,11 +33624,42 @@ router.beforeEach(function (to, from, next) {
     // 		next();
     // 		}
     // }
+=======
+        children: [{ path: 'home', component: __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue___default.a, name: 'FSLHome', alias: '/fsl-home' }, { path: 'inventory', component: __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_inventory_vue___default.a, name: 'inventory', alias: '/inventory' }]
+    }, { path: '/not-found', component: __WEBPACK_IMPORTED_MODULE_6__views_NotFound_vue___default.a }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_6__views_NotFound_vue___default.a }]
+});
+
+router.afterEach(__WEBPACK_IMPORTED_MODULE_3_vue_router_back_button__["writeHistory"]);
+router.beforeEach(function (to, from, next) {
+    /*route access control*/
+    var home = to.path.split("/").filter(Boolean)[0].toUpperCase();
+    /* get the base for every route eg.
+    * :route : '/dsa/customer/register'
+    * : home will return 'DSA*/
+    if (to.matched.some(function (m) {
+        return m.meta[home];
+    })) {
+        /*if home ('DSA in this case is matched')*/
+        if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].getters['verify' + home + 'Access']) return next();
+        /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
+        * the method in store will return true if a user has access to the portal hence next();
+        * and false is a user don't have access hence error message and redirect to home*/
+        _this.$networkErr('page');
+        return next({ name: 'home' });
+    }
+    /*else next will call the route for the all unknown path
+    * : the : 'NotFound'*/
+    next();
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 });
 /* harmony default export */ __webpack_exports__["a"] = (router);
 
 /***/ }),
+<<<<<<< HEAD
 /* 62 */
+=======
+/* 60 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35496,18 +36289,30 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 63 */
+=======
+/* 61 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 // This file can be required in Browserify and Node.js for automatic polyfill
 // To use it:  require('es6-promise/auto');
 
+<<<<<<< HEAD
 module.exports = __webpack_require__(64).polyfill();
 
 
 /***/ }),
 /* 64 */
+=======
+module.exports = __webpack_require__(62).polyfill();
+
+
+/***/ }),
+/* 62 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {/*!
@@ -36690,24 +37495,41 @@ return Promise$1;
 
 //# sourceMappingURL=es6-promise.map
 
+<<<<<<< HEAD
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(5)))
 
 /***/ }),
 /* 65 */
+=======
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(5)))
+
+/***/ }),
+/* 63 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(t,e){ true?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.VueRouterBackButton=e():t.VueRouterBackButton=e()}(window,function(){return function(t){var e={};function r(n){if(e[n])return e[n].exports;var i=e[n]={i:n,l:!1,exports:{}};return t[n].call(i.exports,i,i.exports,r),i.l=!0,i.exports}return r.m=t,r.c=e,r.d=function(t,e,n){r.o(t,e)||Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:n})},r.r=function(t){Object.defineProperty(t,"__esModule",{value:!0})},r.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return r.d(e,"a",e),e},r.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},r.p="",r(r.s=2)}([function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n={_storageKey:"vue.router.back.button.history",_history:[],_current:-1,useSession:window.sessionStorage?1:0,install:function(t){Object.defineProperty(t.prototype,"$routerHistory",{get:function(){return n}})},reset:function(){this._history=[],this._current=-1,this.save()},getHistory:function(){if(!this.useSession)return this._history;var t=sessionStorage.getItem(this._storageKey);return this._history=t?window.JSON.parse(t).history:[],this._history},getCurrent:function(){if(!this.useSession)return this._current;var t=sessionStorage.getItem(this._storageKey);return this._current=t?window.JSON.parse(t).current:-1,this._current},save:function(){if(this.useSession){var t=window.JSON.stringify({history:this._history,current:this._current});return sessionStorage.setItem(this._storageKey,t),this}},previous:function(){var t=this.getHistory();return t.length>1?{path:t[this._current-1]}:{path:null}},current:function(){var t=this.getHistory();return t.length>1?{path:t[this._current]}:{path:null}},next:function(){var t=this.getHistory();return t.length+1>this._current?{path:t[this._current+1]}:{path:null}},hasHistory:function(){return this.getHistory().length>1},hasPrevious:function(){return this.getCurrent()>0},hasForward:function(){return this.getCurrent()+1<this.getHistory().length},push:function(t){this._history=this.getHistory(),this._current=this.getCurrent(),this._history.splice(this._current+1,this._history.length),this._history[this._history.length-1]!==t&&(this._history.push(t),this._current=this._current+1),this.save()},back:function(t){t<0||(this._current=this.getCurrent(),this._current=this._current-t,this.save())},forward:function(t){t<0||(this._current=this.getCurrent(),this._current=this._current+t,this.save())},getTheRecentFuture:function(){var t=this.getHistory(),e=this.getCurrent();return t.slice(e+1,e+4)},howFarIntheFuture:function(t){return this.getTheRecentFuture().indexOf(t)+1},isInTheFuture:function(t){return this.howFarIntheFuture(t)>0},indexOfRecentHistory:function(t){var e=this.getHistory(),r=this.getCurrent();return e.slice(0,r+1).reverse().indexOf(t)},visitedRecently:function(t){return-1!==this.indexOfRecentHistory(t)}};e.default=n},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n,i=(n=r(0))&&n.__esModule?n:{default:n};e.default=function(t,e){if(i.default.isInTheFuture(t.fullPath)){var r=i.default.howFarIntheFuture(t.fullPath);i.default.forward(r)}else if(i.default.visitedRecently(t.fullPath)){var n=i.default.indexOfRecentHistory(t.fullPath);i.default.back(n)}else i.default.push(t.fullPath)}},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.writeHistory=e.routerHistory=void 0;var n=s(r(0)),i=s(r(1));function s(t){return t&&t.__esModule?t:{default:t}}e.routerHistory=n.default,e.writeHistory=i.default}])});
 
 /***/ }),
+<<<<<<< HEAD
 /* 66 */
+=======
+/* 64 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(67)
 /* template */
 var __vue_template__ = __webpack_require__(68)
+=======
+var __vue_script__ = __webpack_require__(65)
+/* template */
+var __vue_template__ = __webpack_require__(66)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -36746,7 +37568,11 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 67 */
+=======
+/* 65 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36797,7 +37623,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 68 */
+=======
+/* 66 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -36912,13 +37742,21 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 69 */
+=======
+/* 67 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
+<<<<<<< HEAD
   __webpack_require__(70)
+=======
+  __webpack_require__(68)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -36963,17 +37801,29 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 70 */
+=======
+/* 68 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
+<<<<<<< HEAD
 var content = __webpack_require__(71);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var update = __webpack_require__(8)("c45b7dc6", content, false, {});
+=======
+var content = __webpack_require__(69);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(71)("c45b7dc6", content, false, {});
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -36989,20 +37839,344 @@ if(false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(7)(false);
+=======
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(70)(false);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 // imports
 
 
 // module
+<<<<<<< HEAD
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+=======
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 // exports
 
 
 /***/ }),
+<<<<<<< HEAD
+=======
+/* 70 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(72)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* 72 */
 /***/ (function(module, exports) {
 
@@ -37090,8 +38264,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -37160,11 +38337,19 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
+<<<<<<< HEAD
     _c("div", { staticClass: "section-tabs", attrs: { id: "login" } }, [
       _c(
         "div",
         {
           staticClass: "col-md-5 ml-auto mr-auto",
+=======
+    _c("div", { attrs: { id: "login" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "col-md-5 mx-auto",
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
           style: { marginTop: _vm.cardMT + "px" },
           attrs: { id: "loginCard" }
         },
@@ -37172,11 +38357,15 @@ var render = function() {
           _c("div", { staticClass: "card" }, [
             _c(
               "ul",
+<<<<<<< HEAD
               {
                 staticClass:
                   "nav nav-tabs nav-tabs-neutral justify-content-center bg-default",
                 attrs: { role: "tablist" }
               },
+=======
+              { staticClass: "nav nav-tabs justify-content-center bg-default" },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
               [_c("h6", [_vm._v("Staff Login")])]
             ),
             _vm._v(" "),
@@ -37192,6 +38381,7 @@ var render = function() {
                 }
               },
               [
+<<<<<<< HEAD
                 _c("div", { staticClass: "card-body w-100 float-left" }, [
                   _c(
                     "div",
@@ -37335,6 +38525,131 @@ var render = function() {
                       )
                     ]
                   ),
+=======
+                _c("div", { staticClass: "card-body clearfix" }, [
+                  _c("div", { staticClass: "col-sm-12 px-0 px-md-3" }, [
+                    _c("label", { staticClass: "category" }, [
+                      _vm._v("* Staff ID")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.staff_id,
+                            expression: "form.staff_id"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { placeholder: "Staff ID", name: "Staff ID" },
+                        domProps: { value: _vm.form.staff_id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "staff_id", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "input-group-addon" }, [
+                        _c("i", { staticClass: "ml-2 fa fa-user-circle" })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm.errors.first("Staff ID")
+                      ? _c("small", { staticClass: "error-control" }, [
+                          _vm._v(
+                            _vm._s(_vm.errors.first("Staff ID")) +
+                              "\n                            "
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.error.staff_id
+                      ? _c("small", { staticClass: "error-control" }, [
+                          _vm._v(_vm._s(_vm.error.staff_id[0]))
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-12 px-0 px-md-3" }, [
+                    _c("label", { staticClass: "category" }, [
+                      _vm._v("* Password")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.password,
+                            expression: "form.password"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required|min:6|max:25",
+                            expression: "'required|min:6|max:25'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          placeholder: "Password",
+                          type: "password",
+                          name: "password"
+                        },
+                        domProps: { value: _vm.form.password },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "password", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "input-group-addon" }, [
+                        _c("i", { staticClass: "ml-2 fas fa-key" })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm.errors.first("password")
+                      ? _c("small", { staticClass: "error-control" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.first("password")) +
+                              "\n                            "
+                          )
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-12 mb-4 px-0 px-md-3" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-block bg-default",
+                        attrs: { disabled: _vm.$isProcessing, type: "submit" }
+                      },
+                      [
+                        _vm._v("\n                                Login!   "),
+                        _c("i", { staticClass: "far fa-paper-plane" })
+                      ]
+                    )
+                  ]),
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   _vm._v(" "),
                   _c(
                     "span",
@@ -37446,7 +38761,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
     _c("div", { staticClass: "container" }, [
+<<<<<<< HEAD
       _c("h3", { staticClass: "w-100 text-center text-secondary" }, [
+=======
+      _c("h3", { staticClass: "text-center text-secondary" }, [
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         _vm._v(
           "\n            Error 404! Sorry the page you are looking for could not be found!\n        "
         )
@@ -37517,7 +38836,11 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(9);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(7);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__);
 //
 //
@@ -37562,6 +38885,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -37570,6 +38894,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+=======
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    /*router navigation is used in the entire app for in app navigaton(basically previous and next)
+    * the : pageTitle is the title of the page where this navigation component is used
+    * the : pageTitleSmall is the minimized title for the small screen view
+    * the previous is the this.$routerHistory.previous().path sent from the parent component
+    * the forward is the this.$routerHistory.next().path sent from the parent component*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     props: ['pageTitle', 'pageTitleSmall', 'previous', 'forward']
 });
 
@@ -37584,7 +38917,11 @@ var render = function() {
   return _c(
     "h4",
     {
+<<<<<<< HEAD
       staticClass: "mx-md-3 mx-0 py-0 my-0 text-center",
+=======
+      staticClass: "mx-md-3 mx-0 py-0 my-0 text-center clearfix",
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
       attrs: { id: "index" }
     },
     [
@@ -37711,7 +39048,11 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(84)
 /* template */
+<<<<<<< HEAD
 var __vue_template__ = __webpack_require__(89)
+=======
+var __vue_template__ = __webpack_require__(87)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -37755,7 +39096,11 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard__ = __webpack_require__(10);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard__ = __webpack_require__(8);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_portalCard__);
 //
 //
@@ -37800,11 +39145,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {
         if (this.$store.state.DSALead.includes(this.$store.state.authRole)) this.portals[2].aces = true;else this.portals[2].aces = false;
+<<<<<<< HEAD
+=======
+        /*only the dsa lead can access the report portal hence the method*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     }
 });
 
 /***/ }),
 /* 85 */
+<<<<<<< HEAD
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -37845,6 +39195,8 @@ exports.push([module.i, "\n.portal-card h4[data-v-28781233] {\n    font-weight :
 
 /***/ }),
 /* 87 */
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37869,6 +39221,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -37885,6 +39238,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 88 */
+=======
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: { title: '', desc: '', url: '', url_c: '', aces: { default: true } }
+    /*title is the card title also mean the portal title.
+    * desc is a few word description of the portal
+    * url is the link to the portal
+    * url_c is the caption for the link
+    * aces is used in situations when a particular portal is accessible to only few person in a
+    * department hence from the parent component the aces will be set to false is want
+    * only few people to access it. true means everyone in that dept can access it.*/
+});
+
+/***/ }),
+/* 86 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -37894,6 +39263,7 @@ var render = function() {
   return _vm.aces
     ? _c("div", { staticClass: "col-md-4 col-sm-6 float-left product p-4" }, [
         _c("div", { staticClass: "portal-card clearfix" }, [
+<<<<<<< HEAD
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "clearfix" }, [
@@ -37929,10 +39299,52 @@ var render = function() {
             ],
             1
           )
+=======
+          _c("div", { staticClass: "first portion clearfix" }, [
+            _c("span", { staticClass: "deco" }),
+            _c("span", { staticClass: "deco second" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "portal-title" }, [
+              _vm._v(_vm._s(_vm._f("capitalize")(_vm.title)))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "portion clearfix" }, [
+            _c("p", [_vm._v(_vm._s(_vm._f("capitalize")(_vm.desc)))]),
+            _vm._v(" "),
+            _c("h6", { staticStyle: { "margin-top": "2rem" } }, [
+              _vm._v(_vm._s(_vm._f("capitalize")(_vm.url_c)))
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "deco-down first" }),
+            _vm._v(" "),
+            _c(
+              "span",
+              { staticClass: "deco-down second" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn bg-default btn-round m-0",
+                    attrs: { to: _vm.url }
+                  },
+                  [
+                    _vm._v("\n                   continue "),
+                    _c("span", { staticClass: "custom-icon ml-2" }, [
+                      _c("i", { staticClass: "now-ui-icons ui-1_send" })
+                    ])
+                  ]
+                )
+              ],
+              1
+            )
+          ])
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         ])
       ])
     : _vm._e()
 }
+<<<<<<< HEAD
 var staticRenderFns = [
   function() {
     var _vm = this
@@ -37943,6 +39355,9 @@ var staticRenderFns = [
     ])
   }
 ]
+=======
+var staticRenderFns = []
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -37953,7 +39368,11 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 89 */
+=======
+/* 87 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -37994,15 +39413,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 90 */
+=======
+/* 88 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(91)
 /* template */
 var __vue_template__ = __webpack_require__(92)
+=======
+var __vue_script__ = __webpack_require__(89)
+/* template */
+var __vue_template__ = __webpack_require__(90)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -38041,15 +39470,23 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 91 */
+=======
+/* 89 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_api__ = __webpack_require__(3);
 //
 //
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_api__ = __webpack_require__(3);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 //
 //
 //
@@ -38115,17 +39552,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
 
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     beforeCreate: function beforeCreate() {
         if (!this.$store.state.DSALead.includes(this.$store.state.authRole)) {
+<<<<<<< HEAD
             __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError("You do not have access to that page!");
+=======
+            /*this component can only be accessed by the dsa lead hence this route guard
+            * if the role of the dsa agent logged in is contained in the
+            * array of the dsa lead then access will be granted*/
+            this.$networkErr('page');
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             this.$router.push('/home');
         }
     },
@@ -38157,9 +39604,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
+<<<<<<< HEAD
         Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["a" /* get */])('/api/create').then(function (res) {
             _this.setDates();
             _this.branches = res.data.branches;
+=======
+        Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/create').then(function (res) {
+            _this.setDates();
+            /*set dates*/
+            _this.branches = res.data.branches;
+            /*fetch the list of states and
+            prepare the form with it*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         });
     },
 
@@ -38174,7 +39630,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             return obj.id == _this2.report.branch.id;
                         });
                         _this2.report.branch = branch;
+<<<<<<< HEAD
                         Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["d" /* postD */])('/api/report', _this2.report).then(function (response) {
+=======
+                        Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["d" /* postD */])('/api/report', _this2.report).then(function (response) {
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                             var url = window.URL.createObjectURL(new Blob([response.data]));
                             var link = document.createElement('a');
                             link.href = url;
@@ -38184,10 +39644,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         });
                     } else _this2.$networkErr();
                 }
+<<<<<<< HEAD
                 if (!result) {
                     _this2.$scrollToTop();
                     __WEBPACK_IMPORTED_MODULE_0__helpers_flash__["a" /* default */].setError('Please check all the fields and make sure they are field correctly!');
                 }
+=======
+                if (!result) _this2.$networkErr('form');
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             });
         },
         setDates: function setDates() {
@@ -38205,12 +39669,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             f.setDate(m.getDate() + 4);
             this.report.from = m = reformatDate(m);
             this.report.to = f = reformatDate(f);
+<<<<<<< HEAD
+=======
+            /*this function returns the monday ie this.report.from
+            * and the friday of the : this.report.to of the
+            * current week*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         }
     }
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 92 */
+=======
+/* 90 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -38220,14 +39694,19 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
+<<<<<<< HEAD
       {
         staticClass: "float-left w-100 pt-md-3 pt-2",
         attrs: { id: "employeeRegister" }
       },
+=======
+      { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
       [
         _c("div", { staticClass: "card" }, [
           _c(
             "ul",
+<<<<<<< HEAD
             {
               staticClass:
                 "nav nav-tabs nav-tabs-neutral justify-content-center bg-default"
@@ -38236,6 +39715,13 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("div", { staticClass: "card-body pl-4 pr-4" }, [
+=======
+            { staticClass: "nav nav-tabs justify-content-center bg-default" },
+            [_c("h6", [_vm._v("Report Generation")])]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body px-4" }, [
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             _c(
               "form",
               {
@@ -38247,7 +39733,11 @@ var render = function() {
                 }
               },
               [
+<<<<<<< HEAD
                 _c("div", { staticClass: "mb-3 mt-4 clear w-100" }, [
+=======
+                _c("div", { staticClass: "my-4 clearfix" }, [
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   _c(
                     "div",
                     {
@@ -38270,8 +39760,13 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
+<<<<<<< HEAD
                               value: "required|max:25",
                               expression: "'required|max:25'"
+=======
+                              value: "required|max:25|not_in:Choose",
+                              expression: "'required|max:25|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                             }
                           ],
                           staticClass: "custom-select w-100",
@@ -38352,8 +39847,13 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
+<<<<<<< HEAD
                               value: "required|max:25",
                               expression: "'required|max:25'"
+=======
+                              value: "required|max:25|not_in:Choose",
+                              expression: "'required|max:25|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                             }
                           ],
                           staticClass: "custom-select w-100",
@@ -38525,7 +40025,11 @@ var render = function() {
                   "div",
                   {
                     staticClass:
+<<<<<<< HEAD
                       "col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-4 float-right"
+=======
+                      "col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   },
                   [
                     _c(
@@ -38536,7 +40040,11 @@ var render = function() {
                       },
                       [
                         _vm._v(
+<<<<<<< HEAD
                           "\n                            Generate Report\n                            "
+=======
+                          "\n                            Generate Report "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
@@ -38562,15 +40070,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 93 */
+=======
+/* 91 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(94)
 /* template */
 var __vue_template__ = __webpack_require__(99)
+=======
+var __vue_script__ = __webpack_require__(92)
+/* template */
+var __vue_template__ = __webpack_require__(97)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -38609,12 +40127,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 94 */
+=======
+/* 92 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DataViewer__ = __webpack_require__(24);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DataViewer__ = __webpack_require__(22);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DataViewer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_DataViewer__);
 //
 //
@@ -38626,8 +40152,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -38635,18 +40164,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 95 */
+=======
+/* 93 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_sms__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_log__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__helpers_api__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form__ = __webpack_require__(25);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_sms__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_log__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_api__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form__ = __webpack_require__(23);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form__);
 //
 //
@@ -38833,6 +40374,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -38853,6 +40395,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -38867,6 +40411,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
+<<<<<<< HEAD
+=======
+            /*data generic to data viewer starts here*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             model: {},
             columns: {},
             query: {
@@ -38888,12 +40436,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 in: 'IN',
                 like: 'LIKE'
             },
+<<<<<<< HEAD
             // the data below are not generic to the data viewer component
             form: {},
             error: {},
             portal_access_temp: '',
             portal_access: [{ name: 'grant', value: 1 }, { name: 'deny', value: 0 }],
             sentData: {}
+=======
+            /*data generic to data viewer stops here*/
+
+            /*data peculiar to hrm portal data viewer*/
+            bus: new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(),
+            form: {},
+            portal_access: [{ name: 'grant', value: 1 }, { name: 'deny', value: 0 }],
+            sentData: {}
+            /*data peculiar to hrm portal data viewer*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         };
     },
 
@@ -38901,8 +40460,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         this.fetchIndexData();
     },
+<<<<<<< HEAD
 
     methods: {
+=======
+    updated: function updated() {
+        $('[data-toggle="tooltip"]').tooltip();
+    },
+
+    methods: {
+        /*methods exclusive to data viewer starts here*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         next: function next() {
             if (this.model.next_page_url) {
                 this.query.page++;
@@ -38925,6 +40493,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.fetchIndexData();
         },
         fetchIndexData: function fetchIndexData() {
+<<<<<<< HEAD
             var vm = this;
             Object(__WEBPACK_IMPORTED_MODULE_4__helpers_api__["a" /* get */])('' + this.source + ('?page=' + this.query.page) + ('&column=' + this.query.column) + ('&per_page=' + this.query.per_page) + ('&direction=' + this.query.direction) + ('&search_input=' + this.query.search_input) + ('&search_column=' + this.query.search_column) + ('&search_operator=' + this.query.search_operator)).then(function (response) {
                 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(vm.$data, 'model', response.data.model);
@@ -38991,10 +40560,78 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
         },
+=======
+            var _this = this;
+
+            Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('' + this.source + ('?page=' + this.query.page) + ('&column=' + this.query.column) + ('&per_page=' + this.query.per_page) + ('&direction=' + this.query.direction) + ('&search_input=' + this.query.search_input) + ('&search_column=' + this.query.search_column) + ('&search_operator=' + this.query.search_operator)).then(function (res) {
+                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(_this.$data, 'model', res.data.model);
+                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(_this.$data, 'columns', res.data.columns);
+                _this.$scrollToTop();
+                $('.modal').modal('hide');
+                _this.$LIPS(false);
+            });
+        },
+
+        /*methods exclusive to data viewer stop here*/
+
+        /*methods exclusive to hrm data viewer stop here*/
+        accessStatus: function accessStatus(status) {
+            return Boolean(Number(status));
+            /*returns true or false for the portal
+            access status for each staff
+            (1 or 0 respectively)*/
+        },
+        update: function update(emp, mod) {
+            var _this2 = this;
+
+            var up = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
+            /*emp is the employer you want to carry an action on
+            * mod is the modal id that carries the form for the process
+            * up is tentative if 0*/
+            if (up === 0) {
+                this.form = emp;
+                $('#' + mod).modal('toggle');
+                /*then action is for password reset or portal access update
+                * the corresponding modal is triggered as above*/
+            } else if (up === 1) {
+                /*if up is 1 then its for details update*/
+                if (this.$network()) {
+                    this.$LIPS(true);
+                    Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])("api/employee/" + emp.id + "/edit").then(function (res) {
+                        /*the full employee details are fetched to populate
+                        the form for editing ie the utility form*/
+                        _this2.sentData = res.data;
+                        /*the data sent to the utility form is updated*/
+                        $('#' + mod).modal('toggle');
+                        /*corresponding modal is toggled*/
+                        _this2.$LIPS(false);
+                    });
+                } else this.$networkErr();
+            }
+        },
+        resetPassword: function resetPassword() {
+            var _this3 = this;
+
+            if (this.$network()) {
+                this.$LIPS(true);
+                Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('api/reset-password/' + this.form.id).then(function (res) {
+                    _this3.$scrollToTop();
+                    $('#editPassword').modal('toggle');
+                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_log__["a" /* log */])('resetUserPassword', _this3.form.staff_id);
+                    __WEBPACK_IMPORTED_MODULE_4__helpers_flash__["a" /* default */].setSuccess('The employee password was successfully reset!');
+                    var details = { phone: String(parseInt(_this3.form.phone_number)), password: res.data.password };
+                    __WEBPACK_IMPORTED_MODULE_1__helpers_sms__["a" /* default */].passwordReset(details);
+                    _this3.$LIPS(false);
+                });
+            } else this.$networkErr();
+        },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         complete: function complete(msg) {
             var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
 
             this.fetchIndexData();
+<<<<<<< HEAD
             this.$scrollToTop();
             $('#editPortalAccess').modal('toggle');
             this.$LIPS(false);
@@ -39008,10 +40645,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         doneUpdating: function doneUpdating() {
             this.fetchIndexData();
             $('.modal').modal('hide');
+=======
+            type == 'err' ? __WEBPACK_IMPORTED_MODULE_4__helpers_flash__["a" /* default */].setError(msg, 10000) : __WEBPACK_IMPORTED_MODULE_4__helpers_flash__["a" /* default */].setSuccess(msg);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         }
     },
     computed: {
         user: function user() {
+<<<<<<< HEAD
             if (this.appModel == 'user') {
                 return true;
             }
@@ -39020,17 +40661,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.toolTip();
+=======
+            return !!(this.appModel == 'user');
+            /*return true of the context
+            * of the data viewer is
+            * for employees*/
+        }
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     }
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 96 */
+=======
+/* 94 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_sms__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_log__ = __webpack_require__(11);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_sms__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_log__ = __webpack_require__(10);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_api__ = __webpack_require__(3);
 //
@@ -39425,10 +41082,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -39437,7 +41097,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
+<<<<<<< HEAD
         action: '', receivedData: { default: '' }
+=======
+        //the component is never called exclusively its
+        //is called by another parent component.
+        //the action is purpose or the context
+        action: '',
+        receivedData: { default: '' },
+        bus: { default: '' }
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     },
     data: function data() {
         return {
@@ -39446,23 +41115,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             roles: {},
             branches: {},
             password: '',
+<<<<<<< HEAD
             gender: ['male', 'female'],
             countries: ['nigeria'],
             statuses: ['married', 'single', 'divorced', 'complicated'],
             qualifications: ['HND', 'OND', 'bachelors', 'masters', 'doctorate'],
             categories: ['permanent', 'contract'],
             textDetails: { phone: '', loginPassword: '', loginID: '' }
+=======
+            countries: ['nigeria'],
+            gender: ['male', 'female'],
+            categories: ['permanent', 'contract'],
+            textDetails: { phone: '', loginPassword: '', loginID: '' },
+            statuses: ['married', 'single', 'divorced', 'complicated'],
+            qualifications: ['HND', 'OND', 'bachelors', 'masters', 'doctorate']
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         };
     },
 
     methods: {
         ifReg: function ifReg(a) {
+<<<<<<< HEAD
             return !!(a === 'register');
         },
         ifUp: function ifUp(a) {
             return !!(a === 'update');
         },
         prepareForm: function prepareForm(data) {
+=======
+            //a is the action for which the form is called or the context
+            //the form is used this function return true if the
+            //action : a is === register else else
+            return !!(a === 'register');
+        },
+        ifUp: function ifUp(a) {
+            //a is the action for which the form is called or the context
+            //the form is used this function return true if the
+            //action : a is === update else else
+            return !!(a === 'update');
+        },
+        prepareForm: function prepareForm(data) {
+            //this function is used when a data is sent to this component
+            //or this component makes a request to backend the
+            //data received is used to prepare the form
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             this.error = {};
             this.form = data.form;
             this.roles = data.roles;
@@ -39471,7 +41167,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         register: function register() {
             var _this = this;
 
+<<<<<<< HEAD
             this.$validator.validateAll().then(function (result) {
+=======
+            var emp = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+            var AC = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+            //NB: this function is used by the employee register, employee update and for portal access update.
+            //the AC means: if the function is called to updated the access control or not.
+            //by default it set to 1, but when it is called from the register
+            //form it is set to 0 to show that it is not for access
+            //control update rather for registration.
+
+            //emp for context :registration is the form, ie a new user hences uses
+            //the default url 'api/register' for registration
+            //emp for context :details update and portal access
+            //update are the staff details to be updated
+            if (AC === 1) this.updatingPortalAccess = true;
+            this.$validator.validateAll().then(function (result) {
+                if (AC === 1) {
+                    //AC means the context : access control, by default its set to true i.e 1 because this function
+                    //was called as a callback on a this.$emit process and cant pass two params to the function
+                    //the employee register call the function in this manner : register(form,0) to show
+                    //its not for access control context again;
+                    _this.errors.clear();
+                    result = true;
+                    //This process doesn't need validation because the form has only one field
+                    //ref: DataViewer.vue => id="editPortalAccess"
+                }
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 if (result) {
                     if (_this.$network()) {
                         _this.$LIPS(true);
@@ -39479,11 +41203,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         var newUrl = 'api/register',
                             message = void 0,
                             logMsg = void 0;
+<<<<<<< HEAD
                         if (_this.action === 'update') {
                             newUrl = "api/employee/" + _this.form.id + "/update";
                         }
                         Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["c" /* post */])(newUrl, _this.form).then(function (res) {
                             if (res.data.hasOwnProperty('registered')) {
+=======
+                        //for registration the url is used
+                        if (_this.action === 'update') newUrl = "api/employee/" + emp.id + "/update";
+                        //else f the form action is not registration den its update
+                        //hence the url "api/employee/{id}/update"
+                        Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["c" /* post */])(newUrl, emp).then(function (res) {
+                            if (res.data.hasOwnProperty('registered')) {
+                                //if the response is from 'api/register'
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                 logMsg = 'Registered';
                                 _this.textDetails.loginID = String(_this.form.staff_id);
                                 _this.textDetails.phone = String(parseInt(_this.form.phone_number));
@@ -39491,14 +41225,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 message = "Staff registered! An sms has been sent to the employee with his Login details!";
                                 __WEBPACK_IMPORTED_MODULE_0__helpers_sms__["a" /* default */].welcome(_this.textDetails);
                             } else if (res.data.hasOwnProperty('updated')) {
+<<<<<<< HEAD
                                 logMsg = 'Updated';
                                 message = 'Staff details updated!';
                                 _this.$emit('done');
+=======
+                                //if the response is from "api/employee/{id}/update"
+                                logMsg = 'Updated';
+                                message = 'Staff details updated!';
+                                _this.$emit('done');
+                                //it emits an event to the parent(dataviewer.vue)
+                                // since its for update
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                             }
                             _this.$scrollToTop();
                             Object(__WEBPACK_IMPORTED_MODULE_1__helpers_log__["a" /* log */])('Staff' + logMsg, String(_this.form.staff_id));
                             __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setSuccess(message, 20000);
                             if (_this.ifReg(_this.action)) _this.form = res.data.form;
+<<<<<<< HEAD
                             _this.$LIPS(false);
                         }).catch(function (err) {
                             if (err.response.status === 422) {
@@ -39506,15 +41250,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 _this.error = err.response.data;
                                 if (err.response.data.errors) _this.error = err.response.data.errors;
                                 __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('Your details contains a unique field that already exixts in our record change it and try again!', 10000);
+=======
+                            //the line above is there so as to allow the log
+                            // method use its data before reseting
+                            _this.$LIPS(false);
+                            _this.errors.clear();
+                        }).catch(function (err) {
+                            if (err.response.status === 422) {
+                                //catch error thrown by laravel validation;
+                                _this.$scrollToTop();
+                                _this.error = err.response.data;
+                                if (err.response.data.errors) _this.error = err.response.data.errors;
+                                __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                             }
                             _this.$LIPS(false);
                         });
                     } else _this.$networkErr();
                 }
+<<<<<<< HEAD
                 if (!result) {
                     __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('Please check all the fields and make sure they are field correctly!');
                     _this.$scrollToTop();
                 }
+=======
+                if (!result) _this.$networkErr('form');
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             });
         }
     },
@@ -39522,19 +41283,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this2 = this;
 
         if (this.ifReg(this.action)) Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('/api/create').then(function (res) {
+<<<<<<< HEAD
             _this2.prepareForm(res.data);
         });
+=======
+            return _this2.prepareForm(res.data);
+        });
+        //if registration fetch data for new customer registration and prepare form
+        if (this.action == 'update') this.bus.$on('submit', this.register);
+        //this.bus is a (vue instance and )prop received from dataviewer to track when the access portal form(ref: DataViewer.vue
+        //=> id="editPortalAccess") is submitted from the data viewer. this is because we want to use the 'register'
+        //function to process both (1)registration, (2)update details and (3)update portal access
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     },
 
     watch: {
         receivedData: function receivedData(newVal) {
+<<<<<<< HEAD
             this.prepareForm(newVal);
+=======
+            //watches when a data is sent from the parent (dataviewer)
+            this.prepareForm(newVal);
+            //prepares the form with the data received
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         }
     }
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 97 */
+=======
+/* 95 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -39547,7 +41328,11 @@ var render = function() {
       on: {
         submit: function($event) {
           $event.preventDefault()
+<<<<<<< HEAD
           return _vm.register($event)
+=======
+          _vm.register(_vm.form, 0)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         }
       }
     },
@@ -39691,8 +41476,13 @@ var render = function() {
                 {
                   name: "validate",
                   rawName: "v-validate",
+<<<<<<< HEAD
                   value: "required",
                   expression: "'required'"
+=======
+                  value: "required|not_in:Choose",
+                  expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 }
               ],
               staticClass: "custom-select w-100",
@@ -39765,8 +41555,13 @@ var render = function() {
                 {
                   name: "validate",
                   rawName: "v-validate",
+<<<<<<< HEAD
                   value: "required",
                   expression: "'required'"
+=======
+                  value: "required|not_in:Choose",
+                  expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 }
               ],
               staticClass: "custom-select w-100",
@@ -40019,8 +41814,13 @@ var render = function() {
                 {
                   name: "validate",
                   rawName: "v-validate",
+<<<<<<< HEAD
                   value: "required",
                   expression: "'required'"
+=======
+                  value: "required|not_in:Choose",
+                  expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 }
               ],
               staticClass: "custom-select w-100",
@@ -40095,8 +41895,13 @@ var render = function() {
                 {
                   name: "validate",
                   rawName: "v-validate",
+<<<<<<< HEAD
                   value: "required",
                   expression: "'required'"
+=======
+                  value: "required|not_in:Choose",
+                  expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 }
               ],
               staticClass: "custom-select w-100",
@@ -40169,8 +41974,13 @@ var render = function() {
                 {
                   name: "validate",
                   rawName: "v-validate",
+<<<<<<< HEAD
                   value: "required",
                   expression: "'required'"
+=======
+                  value: "required|not_in:Choose",
+                  expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 }
               ],
               staticClass: "custom-select w-100",
@@ -40330,8 +42140,13 @@ var render = function() {
                 {
                   name: "validate",
                   rawName: "v-validate",
+<<<<<<< HEAD
                   value: "required",
                   expression: "'required'"
+=======
+                  value: "required|not_in:Choose",
+                  expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 }
               ],
               staticClass: "custom-select w-100",
@@ -40883,7 +42698,11 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 98 */
+=======
+/* 96 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -41118,7 +42937,11 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
+<<<<<<< HEAD
                                 _vm.editEmployee(employee.id)
+=======
+                                _vm.update(employee, "updateEmployee", 1)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                               }
                             }
                           },
@@ -41145,7 +42968,11 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
+<<<<<<< HEAD
                                 _vm.editPortalAccess(employee)
+=======
+                                _vm.update(employee, "editPortalAccess")
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                               }
                             }
                           },
@@ -41168,7 +42995,11 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
+<<<<<<< HEAD
                                 _vm.editPassword(employee)
+=======
+                                _vm.update(employee, "editPassword")
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                               }
                             }
                           },
@@ -41313,8 +43144,21 @@ var render = function() {
               { staticClass: "modal-body" },
               [
                 _c("utility-form", {
+<<<<<<< HEAD
                   attrs: { receivedData: _vm.sentData, action: "update" },
                   on: { done: _vm.doneUpdating }
+=======
+                  attrs: {
+                    bus: _vm.bus,
+                    receivedData: _vm.sentData,
+                    action: "update"
+                  },
+                  on: {
+                    done: function($event) {
+                      _vm.fetchIndexData()
+                    }
+                  }
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 })
               ],
               1
@@ -41358,12 +43202,15 @@ var render = function() {
                                   rawName: "v-model",
                                   value: _vm.form.portal_access,
                                   expression: "form.portal_access"
+<<<<<<< HEAD
                                 },
                                 {
                                   name: "validate",
                                   rawName: "v-validate",
                                   value: "required",
                                   expression: "'required'"
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                 }
                               ],
                               attrs: {
@@ -41391,13 +43238,19 @@ var render = function() {
                             _vm._v(" "),
                             _c("label", { attrs: { for: access.name } }, [
                               _vm._v(
+<<<<<<< HEAD
                                 "\n                                    " +
                                   _vm._s(_vm._f("capitalize")(access.name)) +
                                   " Access\n                                "
+=======
+                                _vm._s(_vm._f("capitalize")(access.name)) +
+                                  " Access"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                               )
                             ])
                           ]
                         )
+<<<<<<< HEAD
                       }),
                       _vm._v(" "),
                       _vm.errors.first("access")
@@ -41409,6 +43262,9 @@ var render = function() {
                             )
                           ])
                         : _vm._e()
+=======
+                      })
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                     ],
                     2
                   )
@@ -41421,11 +43277,15 @@ var render = function() {
                       staticClass: "m-2 btn btn-secondary",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
+<<<<<<< HEAD
                     [
                       _vm._v(
                         "\n                            cancel\n                        "
                       )
                     ]
+=======
+                    [_vm._v("cancel")]
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   ),
                   _vm._v(" "),
                   _c(
@@ -41435,14 +43295,22 @@ var render = function() {
                       attrs: { type: "button", disabled: _vm.$isProcessing },
                       on: {
                         click: function($event) {
+<<<<<<< HEAD
                           _vm.updateEmployee(_vm.form.id)
+=======
+                          _vm.bus.$emit("submit", _vm.form)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                         }
                       }
                     },
                     [
+<<<<<<< HEAD
                       _vm._v(
                         "\n                            Save changes\n                            "
                       ),
+=======
+                      _vm._v(" Save changes "),
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                       _c("i", { staticClass: "far fa-paper-plane ml-1" })
                     ]
                   )
@@ -41469,11 +43337,15 @@ var render = function() {
                   staticClass: "m-2 btn btn-secondary",
                   attrs: { type: "button", "data-dismiss": "modal" }
                 },
+<<<<<<< HEAD
                 [
                   _vm._v(
                     "\n                            cancel\n                        "
                   )
                 ]
+=======
+                [_vm._v("cancel")]
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
               ),
               _vm._v(" "),
               _c(
@@ -41485,7 +43357,11 @@ var render = function() {
                 },
                 [
                   _vm._v(
+<<<<<<< HEAD
                     "\n                            continue and reset password\n                            "
+=======
+                    "\n                            continue and reset password "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   ),
                   _c("i", { staticClass: "far fa-paper-plane ml-1" })
                 ]
@@ -41613,6 +43489,7 @@ var staticRenderFns = [
           _vm._v("A new password will be sent to the employee via "),
           _c("strong", [_vm._v("sms")]),
           _vm._v(
+<<<<<<< HEAD
             "\n                                      on the telephone He/She\n                                    "
           ),
           _c("strong", [_vm._v("used for registration")]),
@@ -41624,6 +43501,18 @@ var staticRenderFns = [
           )
         ]),
         _vm._v(" "),
+=======
+            " on the\n                                  telephone He/She "
+          ),
+          _c("strong", [_vm._v("used for registration")]),
+          _vm._v(" on this portal.\n                                "),
+          _c("br"),
+          _c("br"),
+          _vm._v(
+            "Please Kindly verify that the phone to receive the new password is on and active!\n                            "
+          )
+        ]),
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         _c("br"),
         _c("br"),
         _vm._v(" "),
@@ -41646,7 +43535,11 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 99 */
+=======
+/* 97 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -41656,7 +43549,14 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
+<<<<<<< HEAD
       { staticClass: "float-left w-100 pt-md-3 pt-2", attrs: { id: "index" } },
+=======
+      {
+        staticClass: "float-left w-100 pt-md-3 pt-2 clearfix",
+        attrs: { id: "index" }
+      },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
       [
         _c(
           "div",
@@ -41664,10 +43564,14 @@ var render = function() {
           [
             _c(
               "ul",
+<<<<<<< HEAD
               {
                 staticClass:
                   "nav nav-tabs nav-tabs-neutral justify-content-center bg-default"
               },
+=======
+              { staticClass: "nav nav-tabs justify-content-center bg-default" },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
               [_c("h6", [_vm._v("Customer List")])]
             ),
             _vm._v(" "),
@@ -41696,6 +43600,7 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41762,15 +43667,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 102 */
+=======
+/* 98 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_sms__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_log__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_api__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_DVA_verification_verification__ = __webpack_require__(27);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_sms__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_log__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_api__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_DVA_verification_verification__ = __webpack_require__(25);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_DVA_verification_verification___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__views_DVA_verification_verification__);
 //
 //
@@ -43146,9 +45062,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -43157,11 +45076,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+<<<<<<< HEAD
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: { VerificationPart: __WEBPACK_IMPORTED_MODULE_4__views_DVA_verification_verification___default.a },
     props: { action: '' },
     data: function data() {
         return {
+=======
+// import VSelect from 'vue-select';
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: { Verification: __WEBPACK_IMPORTED_MODULE_4__views_DVA_verification_verification___default.a /*,
+                                             VSelect*/ },
+    props: { action: { default: 'update' } },
+    data: function data() {
+        return {
+            item: { label: 'a', value: 1 },
+            options: [{ label: 'a', value: 1 }, { label: 'b', value: 2 }, { label: 'c', value: 3 }, { label: 'd', value: 4 }, { label: 'e', value: 5 }],
+
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             newCustomer: {},
             fillWorkGuarantor: false,
             fillPersonalGuarantor: false,
@@ -43196,10 +45129,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                     if (_this.$network()) {
                         _this.$LIPS(true);
+<<<<<<< HEAD
                         var newUrl = '/api/customer/';
                         var logMsg = 'createdNew';
                         if (_this.action === 'update') {
                             newUrl = newUrl + _this.newCustomer.id;
+=======
+                        var newUrl = '/api/customer';
+                        var logMsg = 'createdNew';
+                        if (_this.action === 'update') {
+                            newUrl = newUrl + '/' + _this.newCustomer.id;
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                             logMsg = 'updated';
                         }
                         Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["c" /* post */])(newUrl, _this.newCustomer).then(function (res) {
@@ -43216,6 +45156,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         });
                     } else _this.$networkErr();
                 }
+<<<<<<< HEAD
                 if (!result) {
                     _this.$scrollToTop();
                     __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('Please Kindly make sure that all the fields in the form are filled correctly!');
@@ -43227,11 +45168,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.states = data.states;
             this.branches = data.branches;
             this.newCustomer = data.form;
+=======
+                if (!result) _this.$networkErr('form');
+            });
+        },
+        prepareForm: function prepareForm(data) {
+            this.states = data.states;
+            this.branches = data.branches;
+            this.newCustomer = data.form;
+            /*prepare form for customer
+            * registration*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         },
         updateCustomer: function updateCustomer(customer) {
             if (this.ifUp('update')) {
                 this.fillWorkGuarantor = true;
                 this.fillPersonalGuarantor = true;
+<<<<<<< HEAD
+=======
+                /*if the form context is update set the
+                guarantor details to automatic.*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             }
             this.newCustomer = customer;
         },
@@ -43248,13 +45205,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('/api/customer/create').then(function (res) {
             return _this2.prepareForm(res.data);
         });
+<<<<<<< HEAD
     },
     beforeCreate: function beforeCreate() {
         if (!localStorage.getItem('api_token')) this.$router.push('/home');
+=======
+        /*on create of the component fetch the data required to prepare the form
+        * states, branches and the currently logged in dsa details*/
+
+        $('select').change(function () {
+            if (/Android/.test(navigator.userAgent)) {
+                $(this).blur();
+            }
+        });
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     }
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -43296,10 +45265,14 @@ exports.push([module.i, "\n.card-stats .icon[data-v-07317a72] {\n    margin : 0 
 
 /***/ }),
 /* 105 */
+=======
+/* 99 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_log__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(3);
@@ -43307,6 +45280,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customerProfile__ = __webpack_require__(113);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_log__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_form__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customerProfile__ = __webpack_require__(107);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customerProfile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_customerProfile__);
 //
 //
@@ -43683,6 +45665,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -43693,10 +45718,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
+<<<<<<< HEAD
         action: { default: 'verifiy' }
     },
     components: {
         ImageUpload: __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default.a,
+=======
+        action: { default: 'verify' }
+        /*by default this component is used for dva verifications purposed but its customer search feature and
+        * customer profile display feature is borrowed by other component to avoid duplication of
+        * features hence the props: action is 'verify by default.'*/
+    },
+    components: {
+        ImageUpload: __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default.a,
+        /*the image upload is used for the customer id and passport upload.
+        * its a separate component on its own and can be called
+        * anywhere on the application*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         CustomerProfile: __WEBPACK_IMPORTED_MODULE_5__components_customerProfile___default.a
     },
     data: function data() {
@@ -43720,30 +45758,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form: { id_card: '', passport: '', document: '' },
             error: {},
             storeURL: '',
+<<<<<<< HEAD
             user: {}
+=======
+            user: {},
+            customerAddress: '',
+            work_guarantor_address: '',
+            personal_guarantor_address: ''
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         };
     },
 
     methods: {
         modal: function modal(name) {
             $('#' + name).modal('toggle');
+<<<<<<< HEAD
+=======
+            /*this method is used to automatically
+            * toggle the modal with the id of
+            * "name passed to it"*/
+            this.errors.clear(name);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         },
         key: function key(_key) {
             if (this.customer.verification[_key] == 1) return true;
             if (this.customer.verification[_key] == 0) return false;
+<<<<<<< HEAD
+=======
+            /*the 'key' is a value that exists in the cardView array. anytime its called it checks the the customer
+            * to know the status of that particular parameter eg. is the passport have not been uploaded
+            * it will be 0 else 1 if uploaded with will return true */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         },
         IconClass: function IconClass(key) {
             return {
                 'fa-check': this.key(key), 'fa-times': !this.key(key)
+<<<<<<< HEAD
+=======
+                /*return the 'fa-check' css class is that particular
+                * card param is set to 1 else the 'fa-times'
+                * css class ie false */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             };
         },
         DivClass: function DivClass(key) {
             return {
                 'success': this.key(key), 'no-success': !this.key(key)
+<<<<<<< HEAD
+=======
+                /*this is similar to the DivClass method only
+                * that it return a different class
+                * success and no-success*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             };
         },
         returnToInitialValues: function returnToInitialValues() {
             this.verification = JSON.parse(JSON.stringify(this.customer.verification));
+<<<<<<< HEAD
         },
         buttonStatus: function buttonStatus(data) {
             this.$emit('update', data.customer);
@@ -43753,6 +45824,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                 this.form.id_card = data.customer.document.id_card_url;
                 this.form.passport = data.customer.document.passport_url;
+=======
+            /*this.verification holds a copy of the this.customer.verification. this.verification is what is used to style
+            * the card. this.customer.verification on the other hand is used to calculate the approval status, when
+            * changing the status on the front end the this.verification is what is changed but when it is
+            * reflected in the backend then the changes will be reflected on this.customer.verification
+            * after going to database and returning the data again. NB: the purpose of this method
+            * is revert the values of the this.verification to this.customer.verification
+            * values, when a user selects a different option but doesn't submit
+            * it after opening and closing the modal responsible for that
+            * particular action*/
+        },
+        buttonStatus: function buttonStatus(data) {
+            this.$emit('update', data.customer);
+            /*$emit update event is used to send data to the parent component where this serves as a child
+            * component. eg. dsa utility form. NB: The customer registration component(form)
+            * is used as the customer update form for both dsa and dva portal.*/
+            data.hasOwnProperty('user') ? this.user = data.user : this.user = null;
+            this.customer = data.customer;
+            if (data.customer != '') {
+                console.log(data.customer);
+                this.verification = JSON.parse(JSON.stringify(data.customer.verification));
+                this.form.id_card = data.customer.document.id_card_url;
+                this.form.passport = data.customer.document.passport_url;
+                this.customerAddress = this.customer.add_houseno + ', ' + this.customer.add_street + ', ' + this.customer.area_address + ', ' + this.customer.city + ', ' + this.customer.state + ', ';
+
+                this.work_guarantor_address = this.customer.guaadd_houseno + ', ' + this.customer.guaadd_street + ', ' + this.customer.gua_area + ', ' + this.customer.work_guarantor_city + ', ' + this.customer.work_guarantor_state + ', ';
+
+                this.personal_guarantor_address = this.customer.pguaadd_houseno + ', ' + this.customer.pguaadd_street + ', ' + this.customer.pgua_area + ', ' + this.customer.personal_guarantor_city + ', ' + this.customer.personal_guarantor_state + ', ';
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 for (var i = 0; i < this.veriData.length; i++) {
                     var type = this.veriData[i];
                     if (!!data.customer[type]) {
@@ -43788,10 +45888,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (this.$network()) {
                 this.$LIPS(true);
+<<<<<<< HEAD
+=======
+                if (this.veriView.includes(type) && !this.customer.work_guarantor_first_name) {
+                    this.modal(type + '_modal');
+                    this.$LIPS(false);
+                    this.$scrollToTop();
+                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
+                    return;
+                }
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 this.info_from_neighbors === 'no' ? this.address.info_from_neighbors_desc = '' : '';
                 this[type].customer_id = this.customer.id;
                 this[type].user_id = this.user.id;
                 this[type].staff_name = this.user.full_name;
+<<<<<<< HEAD
                 Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('/api/' + type, this[type]).then(function (res) {
                     _this2.buttonStatus(res.data.response);
                     var id = 'Customer ID : ' + String(_this2.customer.id),
@@ -43807,6 +45918,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this2.$LIPS(false);
                     _this2.$scrollToTop();
                     __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data.message);
+=======
+                this.$validator.validateAll(type).then(function (result) {
+                    if (result) {
+                        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('/api/' + type, _this2[type]).then(function (res) {
+                            _this2.buttonStatus(res.data.response);
+                            var id = 'Customer ID : ' + String(_this2.customer.id),
+                                typeCaps = _this2.$options.filters.capitalize(type),
+                                action = 'Customer' + typeCaps + 'Verification';
+                            if (type === 'address') _this2.address.approval_status === 1 ? action += 'Passed' : action += 'NotPassed';
+                            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])(action, id);
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess(typeCaps + ' status updated!');
+                            _this2.modal(type + '_modal');
+                            _this2.$LIPS(false);
+                            _this2.$scrollToTop();
+                        }).catch(function (err) {
+                            _this2.$LIPS(false);
+                            _this2.$scrollToTop();
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data.message);
+                        });
+                    }
+                    if (!result) _this2.$networkErr('form');
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 });
             } else this.$networkErr();
         },
@@ -43842,7 +45975,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 106 */
+=======
+/* 100 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43886,15 +46023,25 @@ function objectToFormData(obj, form, namespace) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 107 */
+=======
+/* 101 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(108)
 /* template */
 var __vue_template__ = __webpack_require__(112)
+=======
+var __vue_script__ = __webpack_require__(102)
+/* template */
+var __vue_template__ = __webpack_require__(106)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -43933,12 +46080,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 108 */
+=======
+/* 102 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePreview__ = __webpack_require__(109);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePreview__ = __webpack_require__(103);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ImagePreview___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ImagePreview__);
 //
 //
@@ -43970,15 +46125,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 109 */
+=======
+/* 103 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(110)
 /* template */
 var __vue_template__ = __webpack_require__(111)
+=======
+var __vue_script__ = __webpack_require__(104)
+/* template */
+var __vue_template__ = __webpack_require__(105)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -44017,7 +46182,11 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 110 */
+=======
+/* 104 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44070,7 +46239,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 111 */
+=======
+/* 105 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44108,7 +46281,11 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 112 */
+=======
+/* 106 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44149,6 +46326,7 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -44168,6 +46346,23 @@ var __vue_template_functional__ = false
 var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = "data-v-3b07ec64"
+=======
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(108)
+/* template */
+var __vue_template__ = __webpack_require__(109)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -44200,6 +46395,7 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -44241,6 +46437,9 @@ exports.push([module.i, "\nth[data-v-3b07ec64] {\n    width       : auto;\n    f
 
 /***/ }),
 /* 116 */
+=======
+/* 108 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44323,12 +46522,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
 //
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['customer'],
@@ -44337,19 +46539,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.customer.verification.address === 1 && this.customer.verification.id_card === 1 && this.customer.verification.passport === 1 && this.customer.verification.processing_fee === 1 && this.customer.verification.work_guarantor === 1 && this.customer.verification.personal_guarantor === 1) {
                 return true;
             } else return false;
+<<<<<<< HEAD
+=======
+            /*This component is the customer profile proper. for optimal result.
+            * The data passed to this should be a response
+            * from the CustomerController@show
+            * this method is used to check the approval
+            * status for any customer details
+            * supplied to it.
+            * NB all the params above must be
+            * 1 for a customer t be approved*/
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         }
     }
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 117 */
+=======
+/* 109 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+<<<<<<< HEAD
   return _c("div", { staticClass: "card position-relative" }, [
+=======
+  return _c("div", { staticClass: "customer-profile card position-relative" }, [
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     _c("div", { staticClass: "design" }),
     _vm._v(" "),
     _c(
@@ -44520,6 +46741,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [
                   _vm._v(
+<<<<<<< HEAD
                     "\n                            " +
                       _vm._s(
                         _vm._f("capitalize")(
@@ -44536,6 +46758,22 @@ var render = function() {
                         )
                       ) +
                       "\n                        "
+=======
+                    _vm._s(
+                      _vm._f("capitalize")(
+                        _vm.customer.add_houseno +
+                          ", " +
+                          _vm.customer.add_street +
+                          ", " +
+                          _vm.customer.area_address +
+                          ", " +
+                          _vm.customer.city +
+                          ", " +
+                          _vm.customer.state +
+                          ", "
+                      )
+                    )
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   )
                 ])
               ]),
@@ -44632,7 +46870,11 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 118 */
+=======
+/* 110 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44643,7 +46885,11 @@ var render = function() {
     _c(
       "div",
       {
+<<<<<<< HEAD
         staticClass: "float-left w-100 pt-md-3 pt-2",
+=======
+        staticClass: "pt-md-3 pt-2 verification",
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
         attrs: { id: "employeeRegister" }
       },
       [
@@ -44658,11 +46904,18 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
+<<<<<<< HEAD
           _c("div", { staticClass: "card-body p-4 clear w-100" }, [
             _c(
               "form",
               {
                 staticClass: "w-100 clear",
+=======
+          _c("div", { staticClass: "card-body p-4" }, [
+            _c(
+              "form",
+              {
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                 on: {
                   submit: function($event) {
                     $event.preventDefault()
@@ -44673,7 +46926,11 @@ var render = function() {
               [
                 _c(
                   "div",
+<<<<<<< HEAD
                   { staticClass: "m-0 p-0 col-12 form-group float-left" },
+=======
+                  { staticClass: "m-0 p-0 col-12 form-group clearfix" },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   [
                     _c("label", { staticClass: "w-100" }, [
                       _vm._v("Customer ID")
@@ -45100,6 +47357,11 @@ var render = function() {
                           },
                           [
                             _c("div", { staticClass: "modal-body p-5" }, [
+<<<<<<< HEAD
+=======
+                              _c("h5", [_vm._v(_vm._s(_vm.customerAddress))]),
+                              _vm._v(" "),
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                               _c("div", { staticClass: "w-100 p-3" }, [
                                 _c("div", { staticClass: "clearfix" }, [
                                   _c(
@@ -45904,6 +48166,7 @@ var render = function() {
                                     ])
                                   : _c("h5", [
                                       _vm._v(
+<<<<<<< HEAD
                                         "\n                                        This Customer's\n                                        " +
                                           _vm._s(
                                             _vm.key("address_status")
@@ -45911,6 +48174,9 @@ var render = function() {
                                               : "Failed "
                                           ) +
                                           " Address Verification!\n                                    "
+=======
+                                        "\n                                        This customers details has already been updated once and cannot be changed!\n                                    "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       )
                                     ])
                               ])
@@ -45971,6 +48237,10 @@ var render = function() {
                             ? _c(
                                 "form",
                                 {
+<<<<<<< HEAD
+=======
+                                  attrs: { "data-vv-scope": type },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   on: {
                                     submit: function($event) {
                                       $event.preventDefault()
@@ -45980,6 +48250,17 @@ var render = function() {
                                 },
                                 [
                                   _c("div", { staticClass: "modal-body" }, [
+<<<<<<< HEAD
+=======
+                                    type !== "processing_fee"
+                                      ? _c("h5", [
+                                          _vm._v(
+                                            _vm._s(_vm.$data[type + "_address"])
+                                          )
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     _c(
                                       "div",
                                       {
@@ -46018,10 +48299,31 @@ var render = function() {
                                                             .date_of_call,
                                                         expression:
                                                           "$data[type].date_of_call"
+<<<<<<< HEAD
                                                       }
                                                     ],
                                                     staticClass: "form-control",
                                                     attrs: { type: "date" },
+=======
+                                                      },
+                                                      {
+                                                        name: "validate",
+                                                        rawName: "v-validate",
+                                                        value: "required",
+                                                        expression: "'required'"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    class: {
+                                                      "is-invalid": _vm.errors.first(
+                                                        type + ".date_of_call"
+                                                      )
+                                                    },
+                                                    attrs: {
+                                                      type: "date",
+                                                      name: "date_of_call"
+                                                    },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     domProps: {
                                                       value:
                                                         _vm.$data[type]
@@ -46053,10 +48355,31 @@ var render = function() {
                                                             .date_collected,
                                                         expression:
                                                           "$data[type].date_collected"
+<<<<<<< HEAD
                                                       }
                                                     ],
                                                     staticClass: "form-control",
                                                     attrs: { type: "date" },
+=======
+                                                      },
+                                                      {
+                                                        name: "validate",
+                                                        rawName: "v-validate",
+                                                        value: "required",
+                                                        expression: "'required'"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    class: {
+                                                      "is-invalid": _vm.errors.first(
+                                                        type + ".date_collected"
+                                                      )
+                                                    },
+                                                    attrs: {
+                                                      type: "date",
+                                                      name: "date_of_call"
+                                                    },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     domProps: {
                                                       value:
                                                         _vm.$data[type]
@@ -46077,7 +48400,57 @@ var render = function() {
                                                         )
                                                       }
                                                     }
+<<<<<<< HEAD
                                                   })
+=======
+                                                  }),
+                                              _vm._v(" "),
+                                              _vm.errors.first(
+                                                type + ".date_of_call"
+                                              )
+                                                ? _c(
+                                                    "small",
+                                                    {
+                                                      staticClass: "text-muted"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            _vm.errors.first(
+                                                              type +
+                                                                ".date_of_call"
+                                                            )
+                                                          ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ]
+                                                  )
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              _vm.errors.first(
+                                                type + ".date_collected"
+                                              )
+                                                ? _c(
+                                                    "small",
+                                                    {
+                                                      staticClass: "text-muted"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            _vm.errors.first(
+                                                              type +
+                                                                ".date_collected"
+                                                            )
+                                                          ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ]
+                                                  )
+                                                : _vm._e()
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                             ]
                                           ),
                                           _vm._v(" "),
@@ -46111,10 +48484,31 @@ var render = function() {
                                                             .time_of_call,
                                                         expression:
                                                           "$data[type].time_of_call"
+<<<<<<< HEAD
                                                       }
                                                     ],
                                                     staticClass: "form-control",
                                                     attrs: { type: "time" },
+=======
+                                                      },
+                                                      {
+                                                        name: "validate",
+                                                        rawName: "v-validate",
+                                                        value: "required",
+                                                        expression: "'required'"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    class: {
+                                                      "is-invalid": _vm.errors.first(
+                                                        type + ".time_of_call"
+                                                      )
+                                                    },
+                                                    attrs: {
+                                                      type: "time",
+                                                      name: "time_of_call"
+                                                    },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     domProps: {
                                                       value:
                                                         _vm.$data[type]
@@ -46146,10 +48540,31 @@ var render = function() {
                                                             .time_collected,
                                                         expression:
                                                           "$data[type].time_collected"
+<<<<<<< HEAD
                                                       }
                                                     ],
                                                     staticClass: "form-control",
                                                     attrs: { type: "time" },
+=======
+                                                      },
+                                                      {
+                                                        name: "validate",
+                                                        rawName: "v-validate",
+                                                        value: "required",
+                                                        expression: "'required'"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    class: {
+                                                      "is-invalid": _vm.errors.first(
+                                                        type + ".time_collected"
+                                                      )
+                                                    },
+                                                    attrs: {
+                                                      type: "time",
+                                                      name: "time_collected"
+                                                    },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     domProps: {
                                                       value:
                                                         _vm.$data[type]
@@ -46170,7 +48585,57 @@ var render = function() {
                                                         )
                                                       }
                                                     }
+<<<<<<< HEAD
                                                   })
+=======
+                                                  }),
+                                              _vm._v(" "),
+                                              _vm.errors.first(
+                                                type + ".time_of_call"
+                                              )
+                                                ? _c(
+                                                    "small",
+                                                    {
+                                                      staticClass: "text-muted"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            _vm.errors.first(
+                                                              type +
+                                                                ".time_of_call"
+                                                            )
+                                                          ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ]
+                                                  )
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              _vm.errors.first(
+                                                type + ".time_collected"
+                                              )
+                                                ? _c(
+                                                    "small",
+                                                    {
+                                                      staticClass: "text-muted"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            _vm.errors.first(
+                                                              type +
+                                                                ".time_collected"
+                                                            )
+                                                          ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ]
+                                                  )
+                                                : _vm._e()
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                             ]
                                           )
                                         ]),
@@ -46215,13 +48680,27 @@ var render = function() {
                                                               .consent,
                                                           expression:
                                                             "$data[type].consent"
+<<<<<<< HEAD
+=======
+                                                        },
+                                                        {
+                                                          name: "validate",
+                                                          rawName: "v-validate",
+                                                          value: "required",
+                                                          expression:
+                                                            "'required'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                         }
                                                       ],
                                                       attrs: {
                                                         type: "radio",
                                                         id: type + "_yes",
                                                         value: "1",
+<<<<<<< HEAD
                                                         name: type
+=======
+                                                        name: "consent"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                       },
                                                       domProps: {
                                                         checked: _vm._q(
@@ -46278,7 +48757,11 @@ var render = function() {
                                                         type: "radio",
                                                         id: type + "_no",
                                                         value: "0",
+<<<<<<< HEAD
                                                         name: type
+=======
+                                                        name: "consent"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                       },
                                                       domProps: {
                                                         checked: _vm._q(
@@ -46314,7 +48797,35 @@ var render = function() {
                                                       ]
                                                     )
                                                   ]
+<<<<<<< HEAD
                                                 )
+=======
+                                                ),
+                                                _vm._v(" "),
+                                                _vm.errors.first(
+                                                  type + ".consent"
+                                                )
+                                                  ? _c(
+                                                      "small",
+                                                      {
+                                                        staticClass:
+                                                          "text-muted"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                                " +
+                                                            _vm._s(
+                                                              _vm.errors.first(
+                                                                type +
+                                                                  ".consent"
+                                                              )
+                                                            ) +
+                                                            "\n                                            "
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e()
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               ])
                                             : _c("div", [
                                                 _c(
@@ -46334,13 +48845,28 @@ var render = function() {
                                                               .amount,
                                                           expression:
                                                             "$data[type].amount"
+<<<<<<< HEAD
+=======
+                                                        },
+                                                        {
+                                                          name: "validate",
+                                                          rawName: "v-validate",
+                                                          value: "required",
+                                                          expression:
+                                                            "'required'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                         }
                                                       ],
                                                       staticClass:
                                                         "form-control",
                                                       attrs: {
                                                         type: "number",
+<<<<<<< HEAD
                                                         disabled: ""
+=======
+                                                        disabled: "",
+                                                        name: "amount"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                       },
                                                       domProps: {
                                                         value:
@@ -46365,7 +48891,34 @@ var render = function() {
                                                       }
                                                     })
                                                   ]
+<<<<<<< HEAD
                                                 )
+=======
+                                                ),
+                                                _vm._v(" "),
+                                                _vm.errors.first(
+                                                  type + ".amount"
+                                                )
+                                                  ? _c(
+                                                      "small",
+                                                      {
+                                                        staticClass:
+                                                          "text-muted"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                                " +
+                                                            _vm._s(
+                                                              _vm.errors.first(
+                                                                type + ".amount"
+                                                              )
+                                                            ) +
+                                                            "\n                                            "
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e()
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               ])
                                         ]),
                                         _vm._v(" "),
@@ -46385,12 +48938,26 @@ var render = function() {
                                                   value: _vm.$data[type].report,
                                                   expression:
                                                     "$data[type].report"
+<<<<<<< HEAD
+=======
+                                                },
+                                                {
+                                                  name: "validate",
+                                                  rawName: "v-validate",
+                                                  value: "required",
+                                                  expression: "'required'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 }
                                               ],
                                               staticClass: "form-control w-100",
                                               attrs: {
                                                 placeholder: "comment here...",
+<<<<<<< HEAD
                                                 rows: "3"
+=======
+                                                rows: "3",
+                                                name: "report"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               },
                                               domProps: {
                                                 value: _vm.$data[type].report
@@ -46407,7 +48974,29 @@ var render = function() {
                                                   )
                                                 }
                                               }
+<<<<<<< HEAD
                                             })
+=======
+                                            }),
+                                            _vm._v(" "),
+                                            _vm.errors.first(type + ".report")
+                                              ? _c(
+                                                  "small",
+                                                  { staticClass: "text-muted" },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                            " +
+                                                        _vm._s(
+                                                          _vm.errors.first(
+                                                            type + ".report"
+                                                          )
+                                                        ) +
+                                                        "\n                                        "
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                           ]
                                         )
                                       ]
@@ -46496,7 +49085,11 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 119 */
+=======
+/* 111 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -46505,6 +49098,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+<<<<<<< HEAD
     {
       staticClass: "float-left w-100 pt-md-3 pt-2",
       attrs: { id: "customerRegister" }
@@ -46512,6 +49106,12 @@ var render = function() {
     [
       _vm.ifUp(_vm.action)
         ? _c("verification-part", {
+=======
+    { staticClass: "clearfix pt-md-3 pt-2", attrs: { id: "customerRegister" } },
+    [
+      _vm.ifUp(_vm.action)
+        ? _c("verification", {
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             attrs: { action: _vm.action },
             on: { update: _vm.updateCustomer }
           })
@@ -46602,9 +49202,15 @@ var render = function() {
                               _vm.errors.first("emp_name")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("emp_name")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("emp_name")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -46666,11 +49272,19 @@ var render = function() {
                               _vm.errors.first("employee_id")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("employee_id")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("employee_id")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -46734,13 +49348,21 @@ var render = function() {
                               _vm.errors.first("date_of_registration")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
+=======
+                                      "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                         _vm._s(
                                           _vm.errors.first(
                                             "date_of_registration"
                                           )
                                         ) +
+<<<<<<< HEAD
                                         "\n                            "
+=======
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -46803,9 +49425,15 @@ var render = function() {
                               _vm.errors.first("first_name")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("first_name")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("first_name")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -46906,9 +49534,15 @@ var render = function() {
                               _vm.errors.first("last_name")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("last_name")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("last_name")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -46984,9 +49618,15 @@ var render = function() {
                               _vm.errors.first("gender")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("gender")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("gender")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47046,9 +49686,15 @@ var render = function() {
                               _vm.errors.first("telephone")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("telephone")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("telephone")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47111,11 +49757,19 @@ var render = function() {
                               _vm.errors.first("street_name")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("street_name")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("street_name")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47176,11 +49830,19 @@ var render = function() {
                               _vm.errors.first("house_number")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("house_number")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("house_number")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47241,11 +49903,19 @@ var render = function() {
                               _vm.errors.first("nearest_bus_stop")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("nearest_bus_stop")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("nearest_bus_stop")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47307,9 +49977,15 @@ var render = function() {
                               _vm.errors.first("area")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("area")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("area")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47367,9 +50043,15 @@ var render = function() {
                               _vm.errors.first("city")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("city")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("city")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47380,7 +50062,12 @@ var render = function() {
                             "div",
                             {
                               staticClass:
+<<<<<<< HEAD
                                 "form-group col-md-4 px-md-3 px-1 float-left"
+=======
+                                "form-group col-md-4 px-md-3 px-1 float-left",
+                              attrs: { "data-tap-disabled": "true" }
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                             },
                             [
                               _c("label", [_vm._v("State")]),
@@ -47398,8 +50085,13 @@ var render = function() {
                                     {
                                       name: "validate",
                                       rawName: "v-validate",
+<<<<<<< HEAD
                                       value: "required|max:20",
                                       expression: "'required|max:20'"
+=======
+                                      value: "required|not_in:Choose",
+                                      expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     }
                                   ],
                                   staticClass: "custom-select w-100",
@@ -47431,9 +50123,17 @@ var render = function() {
                                   }
                                 },
                                 [
+<<<<<<< HEAD
                                   _c("option", { attrs: { value: "" } }, [
                                     _vm._v("select state")
                                   ]),
+=======
+                                  _c(
+                                    "option",
+                                    { attrs: { disabled: "", value: "" } },
+                                    [_vm._v("select state")]
+                                  ),
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   _vm._v(" "),
                                   _vm._l(_vm.states, function(state) {
                                     return _c(
@@ -47448,11 +50148,15 @@ var render = function() {
                               _vm._v(" "),
                               _vm.errors.first("state")
                                 ? _c("small", { staticClass: "text-muted" }, [
+<<<<<<< HEAD
                                     _vm._v(
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("state")) +
                                         "\n                            "
                                     )
+=======
+                                    _vm._v(_vm._s(_vm.errors.first("state")))
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   ])
                                 : _vm._e()
                             ]
@@ -47564,11 +50268,19 @@ var render = function() {
                               _vm.errors.first("date_of_birth")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("date_of_birth")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("date_of_birth")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47642,11 +50354,19 @@ var render = function() {
                               _vm.errors.first("civil_status")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("civil_status")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("civil_status")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47714,13 +50434,21 @@ var render = function() {
                                         { staticClass: "text-muted" },
                                         [
                                           _vm._v(
+<<<<<<< HEAD
                                             "\n                                " +
+=======
+                                            "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               _vm._s(
                                                 _vm.errors.first(
                                                   "years_together"
                                                 )
                                               ) +
+<<<<<<< HEAD
                                               "\n                            "
+=======
+                                              "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                           )
                                         ]
                                       )
@@ -47802,9 +50530,15 @@ var render = function() {
                               _vm.errors.first("typeOfHome")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("typeOfHome")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("typeOfHome")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47879,9 +50613,15 @@ var render = function() {
                               _vm.errors.first("noOfRoom")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("noOfRoom")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("noOfRoom")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -47947,13 +50687,21 @@ var render = function() {
                               _vm.errors.first("duration_of_residence")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
+=======
+                                      "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                         _vm._s(
                                           _vm.errors.first(
                                             "duration_of_residence"
                                           )
                                         ) +
+<<<<<<< HEAD
                                         "\n                            "
+=======
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48023,13 +50771,21 @@ var render = function() {
                               _vm.errors.first("number_in_household")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
+=======
+                                      "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                         _vm._s(
                                           _vm.errors.first(
                                             "number_in_household"
                                           )
                                         ) +
+<<<<<<< HEAD
                                         "\n                            "
+=======
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48092,11 +50848,19 @@ var render = function() {
                               _vm.errors.first("how_many_work")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("how_many_work")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("how_many_work")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48161,11 +50925,19 @@ var render = function() {
                               _vm.errors.first("no_depend_on_you")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("no_depend_on_you")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("no_depend_on_you")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48228,11 +51000,19 @@ var render = function() {
                               _vm.errors.first("number_of_children")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("number_of_children")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("number_of_children")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48317,11 +51097,19 @@ var render = function() {
                               _vm.errors.first("highestLevel")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("highestLevel")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("highestLevel")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48383,9 +51171,15 @@ var render = function() {
                               _vm.errors.first("time_from")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("time_from")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("time_from")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48442,9 +51236,15 @@ var render = function() {
                               _vm.errors.first("time_to")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("time_to")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("time_to")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48566,9 +51366,15 @@ var render = function() {
                               _vm.errors.first("otherLoan")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("otherLoan")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("otherLoan")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48708,11 +51514,19 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                    " +
                                                   _vm._s(
                                                     _vm.errors.first("payBack")
                                                   ) +
                                                   "\n                                "
+=======
+                                                "\n                                " +
+                                                  _vm._s(
+                                                    _vm.errors.first("payBack")
+                                                  ) +
+                                                  "\n                            "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -48879,9 +51693,15 @@ var render = function() {
                               _vm.errors.first("status")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("status")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("status")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -48963,13 +51783,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "office_phone"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49044,13 +51872,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "name_of_firm"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49125,13 +51961,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "current_salary"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49276,11 +52120,19 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
                                                   _vm._s(
                                                     _vm.errors.first("means")
                                                   ) +
                                                   "\n                                    "
+=======
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first("means")
+                                                  ) +
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49372,11 +52224,19 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
                                                   _vm._s(
                                                     _vm.errors.first("period")
                                                   ) +
                                                   "\n                                    "
+=======
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first("period")
+                                                  ) +
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49414,8 +52274,14 @@ var render = function() {
                                             {
                                               name: "validate",
                                               rawName: "v-validate",
+<<<<<<< HEAD
                                               value: "required",
                                               expression: "'required'"
+=======
+                                              value: "required|not_in:Choose",
+                                              expression:
+                                                "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                             }
                                           ],
                                           staticClass: "custom-select w-100",
@@ -49480,13 +52346,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "work_duration"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49608,13 +52482,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "days_of_work"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49689,13 +52571,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "office_street_name"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49766,13 +52656,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "office_building_number"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49843,13 +52741,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "office_nearest_bus_stop"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49918,13 +52824,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "company_area"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -49992,13 +52906,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "company_city"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -50030,8 +52952,15 @@ var render = function() {
                                             {
                                               name: "validate",
                                               rawName: "v-validate",
+<<<<<<< HEAD
                                               value: "required|max:20",
                                               expression: "'required|max:20'"
+=======
+                                              value:
+                                                "required|max:20|not_in:Choose",
+                                              expression:
+                                                "'required|max:20|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                             }
                                           ],
                                           staticClass: "custom-select w-100",
@@ -50096,13 +53025,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "company_state"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -50175,13 +53112,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "company_phone_number"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -50252,13 +53197,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "available_from"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -50326,13 +53279,21 @@ var render = function() {
                                             { staticClass: "text-muted" },
                                             [
                                               _vm._v(
+<<<<<<< HEAD
                                                 "\n                                        " +
+=======
+                                                "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "available_to"
                                                     )
                                                   ) +
+<<<<<<< HEAD
                                                   "\n                                    "
+=======
+                                                  "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               )
                                             ]
                                           )
@@ -50461,13 +53422,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "office_phone"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -50542,13 +53511,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "name_of_firm"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -50619,13 +53596,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "market_name"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -50700,13 +53685,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "current_salary"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -50777,13 +53770,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "monthly_gains"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -50818,8 +53819,14 @@ var render = function() {
                                               {
                                                 name: "validate",
                                                 rawName: "v-validate",
+<<<<<<< HEAD
                                                 value: "required",
                                                 expression: "'required'"
+=======
+                                                value: "required|not_in:Choose",
+                                                expression:
+                                                  "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               }
                                             ],
                                             staticClass: "custom-select w-100",
@@ -50886,13 +53893,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "work_duration"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51042,13 +54057,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "bank_account"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51173,13 +54196,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "days_of_work"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51256,13 +54287,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "office_street_name"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51335,13 +54374,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "office_building_number"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51416,13 +54463,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "office_nearest_bus_stop"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51492,13 +54547,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "company_area"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51567,13 +54630,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "company_city"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51605,8 +54676,15 @@ var render = function() {
                                               {
                                                 name: "validate",
                                                 rawName: "v-validate",
+<<<<<<< HEAD
                                                 value: "required|max:20",
                                                 expression: "'required|max:20'"
+=======
+                                                value:
+                                                  "required|max:20|not_in:Choose",
+                                                expression:
+                                                  "'required|max:20|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                               }
                                             ],
                                             staticClass: "custom-select w-100",
@@ -51673,13 +54751,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "company_state"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51752,13 +54838,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "company_phone_number"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51832,13 +54926,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "available_from"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -51907,13 +55009,21 @@ var render = function() {
                                               { staticClass: "text-muted" },
                                               [
                                                 _vm._v(
+<<<<<<< HEAD
                                                   "\n                                        " +
+=======
+                                                  "\n                                    " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                     _vm._s(
                                                       _vm.errors.first(
                                                         "available_to"
                                                       )
                                                     ) +
+<<<<<<< HEAD
                                                     "\n                                    "
+=======
+                                                    "\n                                "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                                 )
                                               ]
                                             )
@@ -52034,11 +55144,19 @@ var render = function() {
                               _vm.errors.first("NOK_first_name")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("NOK_first_name")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("NOK_first_name")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -52146,11 +55264,19 @@ var render = function() {
                               _vm.errors.first("NOK_last_name")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("NOK_last_name")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("NOK_last_name")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -52233,9 +55359,15 @@ var render = function() {
                               _vm.errors.first("nokgender")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(_vm.errors.first("nokgender")) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(_vm.errors.first("nokgender")) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -52300,11 +55432,19 @@ var render = function() {
                               _vm.errors.first("NOK_phone_number")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("NOK_phone_number")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("NOK_phone_number")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -52335,8 +55475,13 @@ var render = function() {
                                     {
                                       name: "validate",
                                       rawName: "v-validate",
+<<<<<<< HEAD
                                       value: "required",
                                       expression: "'required'"
+=======
+                                      value: "required|not_in:Choose",
+                                      expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     }
                                   ],
                                   staticClass: "custom-select w-100",
@@ -52392,11 +55537,19 @@ var render = function() {
                               _vm.errors.first("NOK_work_duration")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("NOK_work_duration")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("NOK_work_duration")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -52479,11 +55632,19 @@ var render = function() {
                               _vm.errors.first("relationship")
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
+<<<<<<< HEAD
                                       "\n                                " +
                                         _vm._s(
                                           _vm.errors.first("relationship")
                                         ) +
                                         "\n                            "
+=======
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.errors.first("relationship")
+                                        ) +
+                                        "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                     )
                                   ])
                                 : _vm._e()
@@ -52537,7 +55698,11 @@ var render = function() {
                         }
                       }
                     }),
+<<<<<<< HEAD
                     _vm._v("Work Guarantor Personal Info\n                    ")
+=======
+                    _vm._v("Work Guarantor Personal Info\n                ")
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   ]),
                   _vm._v(" "),
                   _vm.fillWorkGuarantor
@@ -52598,11 +55763,19 @@ var render = function() {
                             _vm.errors.first("WG_first_name")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("WG_first_name")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("WG_first_name")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -52710,9 +55883,15 @@ var render = function() {
                             _vm.errors.first("WG_last_name")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(_vm.errors.first("WG_last_name")) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("WG_last_name")) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -52796,11 +55975,19 @@ var render = function() {
                             _vm.errors.first("relationshipwg")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("relationshipwg")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("relationshipwg")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -52877,9 +56064,15 @@ var render = function() {
                             _vm.errors.first("wggender")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(_vm.errors.first("wggender")) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("wggender")) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -52947,13 +56140,21 @@ var render = function() {
                             _vm.errors.first("work_guarantor_street_name")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "work_guarantor_street_name"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53016,13 +56217,21 @@ var render = function() {
                             _vm.errors.first("work_guarantor_office_building")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "work_guarantor_office_building"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53085,13 +56294,21 @@ var render = function() {
                             _vm.errors.first("work_guarantor_bus_stop")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "work_guarantor_bus_stop"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53154,11 +56371,19 @@ var render = function() {
                             _vm.errors.first("work_guarantor_area")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("work_guarantor_area")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("work_guarantor_area")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53221,11 +56446,19 @@ var render = function() {
                             _vm.errors.first("work_guarantor_city")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("work_guarantor_city")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("work_guarantor_city")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53255,8 +56488,14 @@ var render = function() {
                                   {
                                     name: "validate",
                                     rawName: "v-validate",
+<<<<<<< HEAD
                                     value: "required|max:25",
                                     expression: "'required|max:25'"
+=======
+                                    value: "required|max:25|not_in:Choose",
+                                    expression:
+                                      "'required|max:25|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
@@ -53309,11 +56548,19 @@ var render = function() {
                             _vm.errors.first("work_guarantor_state")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("work_guarantor_state")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("work_guarantor_state")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53378,11 +56625,19 @@ var render = function() {
                             _vm.errors.first("work_guarantor_phone")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("work_guarantor_phone")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("work_guarantor_phone")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53414,8 +56669,13 @@ var render = function() {
                                   {
                                     name: "validate",
                                     rawName: "v-validate",
+<<<<<<< HEAD
                                     value: "required",
                                     expression: "'required'"
+=======
+                                    value: "required|not_in:Choose",
+                                    expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
@@ -53468,13 +56728,21 @@ var render = function() {
                             _vm.errors.first("work_guarantor_work_duration")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "work_guarantor_work_duration"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53567,9 +56835,13 @@ var render = function() {
                         }
                       }
                     }),
+<<<<<<< HEAD
                     _vm._v(
                       "Personal Guarantor Personal Info\n                    "
                     )
+=======
+                    _vm._v("Personal Guarantor Personal Info\n                ")
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                   ]),
                   _vm._v(" "),
                   _vm.fillPersonalGuarantor
@@ -53632,11 +56904,19 @@ var render = function() {
                             _vm.errors.first("PG_first_name")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("PG_first_name")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("PG_first_name")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53747,9 +57027,15 @@ var render = function() {
                             _vm.errors.first("PG_last_name")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(_vm.errors.first("PG_last_name")) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("PG_last_name")) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53833,11 +57119,19 @@ var render = function() {
                             _vm.errors.first("relationshippg")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("relationshippg")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("relationshippg")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53919,9 +57213,15 @@ var render = function() {
                             _vm.errors.first("pggender")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(_vm.errors.first("pggender")) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("pggender")) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -53987,11 +57287,19 @@ var render = function() {
                             _vm.errors.first("pguaadd_street")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("pguaadd_street")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("pguaadd_street")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54054,11 +57362,19 @@ var render = function() {
                             _vm.errors.first("pguaadd_houseno")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("pguaadd_houseno")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("pguaadd_houseno")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54119,11 +57435,19 @@ var render = function() {
                             _vm.errors.first("pguaadd_nbstop")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(
                                         _vm.errors.first("pguaadd_nbstop")
                                       ) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("pguaadd_nbstop")
+                                      ) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54184,9 +57508,15 @@ var render = function() {
                             _vm.errors.first("pgua_area")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(_vm.errors.first("pgua_area")) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("pgua_area")) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54251,13 +57581,21 @@ var render = function() {
                             _vm.errors.first("personal_guarantor_city")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "personal_guarantor_city"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54288,8 +57626,14 @@ var render = function() {
                                   {
                                     name: "validate",
                                     rawName: "v-validate",
+<<<<<<< HEAD
                                     value: "required|max:25",
                                     expression: "'required|max:25'"
+=======
+                                    value: "required|max:25|not_in:Choose",
+                                    expression:
+                                      "'required|max:25|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
@@ -54342,13 +57686,21 @@ var render = function() {
                             _vm.errors.first("personal_guarantor_state")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "personal_guarantor_state"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54415,13 +57767,21 @@ var render = function() {
                             _vm.errors.first("personal_guarantor_telno")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "personal_guarantor_telno"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54453,8 +57813,13 @@ var render = function() {
                                   {
                                     name: "validate",
                                     rawName: "v-validate",
+<<<<<<< HEAD
                                     value: "required",
                                     expression: "'required'"
+=======
+                                    value: "required|not_in:Choose",
+                                    expression: "'required|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
@@ -54508,13 +57873,21 @@ var render = function() {
                             _vm.errors.first("personal_guarantor_work_duration")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "personal_guarantor_work_duration"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54629,13 +58002,21 @@ var render = function() {
                             _vm.errors.first("what_product_do_you_need")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "what_product_do_you_need"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54700,13 +58081,21 @@ var render = function() {
                             _vm.errors.first("what_do_you_need_it_for")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
+=======
+                                    "\n                            " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                       _vm._s(
                                         _vm.errors.first(
                                           "what_do_you_need_it_for"
                                         )
                                       ) +
+<<<<<<< HEAD
                                       "\n                            "
+=======
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54735,8 +58124,14 @@ var render = function() {
                                   {
                                     name: "validate",
                                     rawName: "v-validate",
+<<<<<<< HEAD
                                     value: "required|max:25",
                                     expression: "'required|max:25'"
+=======
+                                    value: "required|max:25|not_in:Choose",
+                                    expression:
+                                      "'required|max:25|not_in:Choose'"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
@@ -54788,9 +58183,15 @@ var render = function() {
                             _vm.errors.first("branch_id")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
+<<<<<<< HEAD
                                     "\n                                " +
                                       _vm._s(_vm.errors.first("branch_id")) +
                                       "\n                            "
+=======
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("branch_id")) +
+                                      "\n                        "
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                                   )
                                 ])
                               : _vm._e()
@@ -54816,7 +58217,11 @@ var render = function() {
                         },
                         [
                           _vm._v(
+<<<<<<< HEAD
                             "\n                            " +
+=======
+                            "\n                        " +
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
                               _vm._s(_vm._f("capitalize")(_vm.action)) +
                               " Customer "
                           ),
@@ -54845,6 +58250,7 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -54866,14 +58272,23 @@ if (false) {
 
 /***/ }),
 /* 121 */
+=======
+/* 112 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(122)
 /* template */
 var __vue_template__ = __webpack_require__(123)
+=======
+var __vue_script__ = __webpack_require__(113)
+/* template */
+var __vue_template__ = __webpack_require__(114)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -54912,12 +58327,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 122 */
+=======
+/* 113 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_form__ = __webpack_require__(26);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_form__ = __webpack_require__(24);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utility_form__);
 //
 //
@@ -54930,7 +58353,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 123 */
+=======
+/* 114 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -54950,15 +58377,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 124 */
+=======
+/* 115 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(125)
 /* template */
 var __vue_template__ = __webpack_require__(126)
+=======
+var __vue_script__ = __webpack_require__(116)
+/* template */
+var __vue_template__ = __webpack_require__(117)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -54997,12 +58434,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 125 */
+=======
+/* 116 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(9);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(7);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__);
 //
 //
@@ -55020,7 +58465,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 126 */
+=======
+/* 117 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55056,15 +58505,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 127 */
+=======
+/* 118 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(128)
 /* template */
 var __vue_template__ = __webpack_require__(129)
+=======
+var __vue_script__ = __webpack_require__(119)
+/* template */
+var __vue_template__ = __webpack_require__(120)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55103,12 +58562,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 128 */
+=======
+/* 119 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard__ = __webpack_require__(10);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard__ = __webpack_require__(8);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_portalCard__);
 //
 //
@@ -55129,13 +58596,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             portals: [{
                 url: 'verification', title: 'Document Verification', url_c: 'Verify Registered Customer!',
                 desc: 'For Verification of registered customers'
+<<<<<<< HEAD
+=======
+            }, {
+                url: 'customer/update', title: 'Customer Update', url_c: 'Update customers details!',
+                desc: 'For Updating existing customers details'
+            }, {
+                url: 'message', title: 'Messaging', url_c: 'Send messages!',
+                desc: 'For sending messages to customers'
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
             }]
         };
     }
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 129 */
+=======
+/* 120 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55175,15 +58655,354 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 130 */
+=======
+/* 121 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(131)
 /* template */
 var __vue_template__ = __webpack_require__(132)
+=======
+var __vue_script__ = __webpack_require__(122)
+/* template */
+var __vue_template__ = __webpack_require__(123)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\DVA\\messaging\\message.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7f0e0036", Component.options)
+  } else {
+    hotAPI.reload("data-v-7f0e0036", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 122 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_sms__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_api__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            contacts: '',
+            sentData: '',
+            form: ''
+        };
+    },
+
+    methods: {
+        sendMessage: function sendMessage() {
+            var _this = this;
+
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this.$network()) {
+                        _this.$LIPS(true);
+                        var contacts = _this.contacts.split(";").filter(function (str) {
+                            return (/\S/.test(str)
+                            );
+                        });
+                        for (var i = 0; i < contacts.length; i++) {
+                            _this.sentData.phone = contacts[i].trim().substr(1);
+                            __WEBPACK_IMPORTED_MODULE_0__helpers_sms__["a" /* default */].dvaMessage(_this.sentData);
+                            if (contacts.length - 1 === i) _this.done(contacts);
+                        }
+                    } else _this.$networkErr();
+                }
+                if (!result) _this.$networkErr('form');
+            });
+        },
+        done: function done(contacts) {
+            var _this2 = this;
+
+            this.$LIPS(false);
+            __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setSuccess('Messages sent!');
+            this.form.contacts = contacts;
+            this.form.contact_count = contacts.length;
+            this.form.message = this.sentData.message;
+            this.form.pages = Math.ceil(this.form.message.length / 160);
+            var remaining = this.form.message.length % 160;
+            if (remaining > 0) this.form.pages += 1;
+            Object(__WEBPACK_IMPORTED_MODULE_1__helpers_api__["c" /* post */])('/api/message', this.form).then(function (res) {
+                return _this2.resetData();
+            });
+        },
+        resetData: function resetData() {
+            this.contacts = '';
+            this.sentData = { message: '', phone: '' };
+            this.form = { pages: 0, user_id: '', message: '', contacts: [], contact_count: 0 };
+        }
+    },
+    created: function created() {
+        this.resetData();
+    }
+});
+
+/***/ }),
+/* 123 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
+      [
+        _c("div", { staticClass: "card" }, [
+          _c(
+            "ul",
+            { staticClass: "nav nav-tabs bg-default justify-content-center" },
+            [_c("h6", [_vm._v("Messaging")])]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body p-4 " }, [
+            _c(
+              "form",
+              {
+                staticClass: "clearfix",
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.sendMessage($event)
+                  }
+                }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group col-md-12 px-md-3 px-1 float-left"
+                  },
+                  [
+                    _c("label", [_vm._v("Phone Numbers")]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
+                        },
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.contacts,
+                          expression: "contacts"
+                        }
+                      ],
+                      staticClass: "form-control col-sm-12",
+                      class: { "is-invalid": _vm.errors.first("contacts") },
+                      attrs: {
+                        placeholder:
+                          "Kindly add the number and seperate each with a semi-colon ';' ",
+                        rows: "3",
+                        name: "contacts"
+                      },
+                      domProps: { value: _vm.contacts },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.contacts = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.first("contacts")
+                      ? _c("small", { staticClass: "text-muted" }, [
+                          _vm._v(
+                            _vm._s(_vm.errors.first("contacts")) +
+                              "\n                        "
+                          )
+                        ])
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group col-md-12 px-md-3 px-1 float-left"
+                  },
+                  [
+                    _c("label", [_vm._v("Message Body")]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
+                        },
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.sentData.message,
+                          expression: "sentData.message"
+                        }
+                      ],
+                      staticClass: "form-control col-sm-12",
+                      class: { "is-invalid": _vm.errors.first("message") },
+                      attrs: {
+                        placeholder: "the content of the message goes here",
+                        rows: "3",
+                        name: "message"
+                      },
+                      domProps: { value: _vm.sentData.message },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.sentData, "message", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.first("message")
+                      ? _c("small", { staticClass: "text-muted" }, [
+                          _vm._v(_vm._s(_vm.errors.first("message")))
+                        ])
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _c("hr", { staticClass: "style-two" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3 float-right"
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-block btn-lg bg-default",
+                        attrs: { type: "submit", disabled: _vm.$isProcessing }
+                      },
+                      [
+                        _vm._v("\n                            Send messages "),
+                        _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                      ]
+                    )
+                  ]
+                )
+              ]
+            )
+          ])
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7f0e0036", module.exports)
+  }
+}
+
+/***/ }),
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(125)
+/* template */
+var __vue_template__ = __webpack_require__(126)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55222,12 +59041,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 131 */
+=======
+/* 125 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(14);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(13);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -55258,12 +59085,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('You do not have access to that page!');
             this.$router.push('/login');
         }
+<<<<<<< HEAD
     },
     created: function created() {}
 });
 
 /***/ }),
 /* 132 */
+=======
+    }
+});
+
+/***/ }),
+/* 126 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55283,15 +59118,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 133 */
+=======
+/* 127 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(134)
 /* template */
 var __vue_template__ = __webpack_require__(135)
+=======
+var __vue_script__ = __webpack_require__(128)
+/* template */
+var __vue_template__ = __webpack_require__(129)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55330,7 +59175,11 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 134 */
+=======
+/* 128 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55345,7 +59194,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
+<<<<<<< HEAD
 /* 135 */
+=======
+/* 129 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55374,15 +59227,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 136 */
+=======
+/* 130 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(137)
 /* template */
 var __vue_template__ = __webpack_require__(138)
+=======
+var __vue_script__ = __webpack_require__(131)
+/* template */
+var __vue_template__ = __webpack_require__(132)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55421,7 +59284,11 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 137 */
+=======
+/* 131 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55435,7 +59302,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
+<<<<<<< HEAD
 /* 138 */
+=======
+/* 132 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55464,15 +59335,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 139 */
+=======
+/* 133 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(140)
 /* template */
 var __vue_template__ = __webpack_require__(141)
+=======
+var __vue_script__ = __webpack_require__(134)
+/* template */
+var __vue_template__ = __webpack_require__(135)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55511,12 +59392,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 140 */
+=======
+/* 134 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(9);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(7);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__);
 //
 //
@@ -55534,7 +59423,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 141 */
+=======
+/* 135 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55570,15 +59463,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 142 */
+=======
+/* 136 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(143)
 /* template */
 var __vue_template__ = __webpack_require__(144)
+=======
+var __vue_script__ = __webpack_require__(137)
+/* template */
+var __vue_template__ = __webpack_require__(138)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55617,12 +59520,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 143 */
+=======
+/* 137 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard__ = __webpack_require__(10);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard__ = __webpack_require__(8);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_portalCard__);
 //
 //
@@ -55652,7 +59563,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 144 */
+=======
+/* 138 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55692,15 +59607,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 145 */
+=======
+/* 139 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(146)
 /* template */
 var __vue_template__ = __webpack_require__(147)
+=======
+var __vue_script__ = __webpack_require__(140)
+/* template */
+var __vue_template__ = __webpack_require__(141)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55739,12 +59664,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 146 */
+=======
+/* 140 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DataViewer__ = __webpack_require__(24);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DataViewer__ = __webpack_require__(22);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DataViewer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_DataViewer__);
 //
 //
@@ -55756,8 +59689,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
@@ -55766,7 +59702,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 147 */
+=======
+/* 141 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55774,6 +59714,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
+<<<<<<< HEAD
     _c(
       "div",
       {
@@ -55806,6 +59747,26 @@ var render = function() {
         )
       ]
     )
+=======
+    _c("div", { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeEdit" } }, [
+      _c(
+        "div",
+        { staticClass: "card" },
+        [
+          _c(
+            "ul",
+            { staticClass: "nav nav-tabs justify-content-center bg-default" },
+            [_c("h6", [_vm._v("Staff Management")])]
+          ),
+          _vm._v(" "),
+          _c("data-viewer", {
+            attrs: { source: "/api/user", title: "User Data", appModel: "user" }
+          })
+        ],
+        1
+      )
+    ])
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
   ])
 }
 var staticRenderFns = []
@@ -55819,15 +59780,25 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 148 */
+=======
+/* 142 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(149)
 /* template */
 var __vue_template__ = __webpack_require__(150)
+=======
+var __vue_script__ = __webpack_require__(143)
+/* template */
+var __vue_template__ = __webpack_require__(144)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55866,12 +59837,20 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 149 */
+=======
+/* 143 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_form__ = __webpack_require__(25);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_form__ = __webpack_require__(23);
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utility_form__);
 //
 //
@@ -55885,6 +59864,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -56280,12 +60260,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 import {log} from '../../../helpers/log';
 import Flash from '../../../helpers/flash';
 import {get, post} from '../../../helpers/api';*/
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
         UtilityForm: __WEBPACK_IMPORTED_MODULE_0__utility_form___default.a
+<<<<<<< HEAD
     },
 
     /*data() {
@@ -56351,11 +60334,17 @@ import {get, post} from '../../../helpers/api';*/
     },*/
     beforeCreate: function beforeCreate() {
         if (!localStorage.getItem('api_token')) this.$router.push('/home');
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     }
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 150 */
+=======
+/* 144 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -56365,10 +60354,14 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
+<<<<<<< HEAD
       {
         staticClass: "float-left w-100 pt-md-3 pt-2",
         attrs: { id: "employeeRegister" }
       },
+=======
+      { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
       [
         _c("div", { staticClass: "card" }, [
           _c(
@@ -56399,15 +60392,17 @@ if (false) {
 }
 
 /***/ }),
-/* 151 */
+<<<<<<< HEAD
+=======
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(152)
+var __vue_script__ = __webpack_require__(146)
 /* template */
-var __vue_template__ = __webpack_require__(153)
+var __vue_template__ = __webpack_require__(147)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -56446,12 +60441,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 152 */
+/* 146 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__);
 //
 //
@@ -56461,6 +60456,246 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: { AppNavigation: __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation___default.a }
+});
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "px-md-4 px-2" },
+    [
+      _c("app-navigation", {
+        attrs: {
+          pageTitle: "Floor Sales and Logistics",
+          pageTitleSmall: "FSL",
+          previous: { path: _vm.$routerHistory.previous().path },
+          forward: { path: _vm.$routerHistory.next().path }
+        }
+      }),
+      _vm._v(" "),
+      _c("router-view")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-493d5438", module.exports)
+  }
+}
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(149)
+/* template */
+var __vue_template__ = __webpack_require__(150)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\HomePage.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-599c6738", Component.options)
+  } else {
+    hotAPI.reload("data-v-599c6738", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 149 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_portalCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_portalCard__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: { PortalCard: __WEBPACK_IMPORTED_MODULE_0__components_portalCard___default.a },
+    data: function data() {
+        return {
+            portals: [{
+                url: 'inventory', title: 'Products Inventory', url_c: 'View Inventory!',
+                desc: 'For products inventory and management'
+            }]
+        };
+    }
+});
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      _vm._l(_vm.portals, function(portal) {
+        return _c(
+          "div",
+          [
+            _c("portal-card", {
+              attrs: {
+                url: portal.url,
+                title: portal.title,
+                url_c: portal.url_c,
+                desc: portal.desc
+              }
+            })
+          ],
+          1
+        )
+      })
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-599c6738", module.exports)
+  }
+}
+
+/***/ }),
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(152)
+/* template */
+var __vue_template__ = __webpack_require__(153)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+<<<<<<< HEAD
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\index.vue"
+=======
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\inventory\\inventory.vue"
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+<<<<<<< HEAD
+    hotAPI.createRecord("data-v-493d5438", Component.options)
+  } else {
+    hotAPI.reload("data-v-493d5438", Component.options)
+=======
+    hotAPI.createRecord("data-v-17d7acc2", Component.options)
+  } else {
+    hotAPI.reload("data-v-17d7acc2", Component.options)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 152 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppNavigation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_AppNavigation__);
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
+//
+//
+//
+//
+//
+//
+//
+//
+<<<<<<< HEAD
 
 
 
@@ -56683,6 +60918,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+=======
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 //
 //
 //
@@ -56713,6 +60950,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {};
     },
 
+<<<<<<< HEAD
     methods: {},
     beforeCreate: function beforeCreate() {
         if (!localStorage.getItem('api_token')) this.$router.push('/home');
@@ -56721,6 +60959,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 159 */
+=======
+    methods: {}
+});
+
+/***/ }),
+/* 153 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -56728,6 +60973,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
+<<<<<<< HEAD
     _c(
       "div",
       {
@@ -56785,6 +61031,11 @@ var render = function() {
         ])
       ]
     )
+=======
+    _c("div", { staticClass: "pt-md-3 pt-2", attrs: { id: "inventory" } }, [
+      _c("h2", [_vm._v("Inventory")])
+    ])
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
   ])
 }
 var staticRenderFns = []
@@ -56793,12 +61044,20 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
+<<<<<<< HEAD
     require("vue-hot-reload-api")      .rerender("data-v-46fe9b2f", module.exports)
+=======
+    require("vue-hot-reload-api")      .rerender("data-v-17d7acc2", module.exports)
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
   }
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 160 */
+=======
+/* 154 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64575,7 +68834,11 @@ var index_esm = {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 161 */
+=======
+/* 155 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64599,7 +68862,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('slug', function (value) {
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 162 */
+=======
+/* 156 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64608,6 +68875,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('slug', function (value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
 
 
+<<<<<<< HEAD
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$isProcessing = false;
 
@@ -64616,6 +68884,25 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$LIPS = function (s) {
 };
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$scrollToTop = function () {
     $("html, body").animate({ scrollTop: 0 }, 500);
+=======
+//NB functions her can be accessed anywhere
+// on the project(vue components)
+// by using this.$functionName
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$isProcessing = false;
+//this is basically used in any form to avoid submitting
+// forms more than once or repeatedly
+// while processing already
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$LIPS = function (s) {
+    this.$store.state.loader = this.$isProcessing = s;
+    //sets loader to true(show) or false(hide); isProcessing
+    // if true (disables the button its called on)
+    // or disables is if true
+};
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$scrollToTop = function () {
+    $("html, body").animate({ scrollTop: 0 }, 500);
+    //scrolls the page (with animation) to the top
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 };
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$getDate = function () {
     var toTwoDigits = function toTwoDigits(num) {
@@ -64626,13 +68913,23 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$getDate = function () {
         month = toTwoDigits(today.getMonth() + 1),
         day = toTwoDigits(today.getDate());
     return year + '-' + month + '-' + day;
+<<<<<<< HEAD
 };
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$network = function () {
+=======
+    //return the current date; format : yyyy-mm-dd;
+};
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$network = function () {
+    //return the network status(true | false) of the system if connected to a
+    // network not NB: this doesn't work with internet access. it only
+    //detects the system is connected to a network
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
     return window.navigator.onLine;
     //return true;
 };
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$networkErr = function () {
+<<<<<<< HEAD
     this.$scrollToTop();
     this.$LIPS(false);
     __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Your are not connected to the network please wait till network is back!');
@@ -64640,6 +68937,22 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$networkErr = function () 
 
 /***/ }),
 /* 163 */
+=======
+    var err = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+    this.$scrollToTop();
+    this.$LIPS(false);
+    var msg = 'Your are not connected to the network please wait till network is back!';
+    if (err == 'form') msg = 'Please ensure all the fields are filled correctly!';
+    if (err == 'page') msg = 'You do not have access to that page!!';
+    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(msg);
+    //custom message for network "no network connection" and
+    //form field validation error
+};
+
+/***/ }),
+/* 157 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports) {
 
 /*!
@@ -64869,7 +69182,11 @@ nowuiKitDemo = {
 };
 
 /***/ }),
+<<<<<<< HEAD
 /* 164 */
+=======
+/* 158 */
+>>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
