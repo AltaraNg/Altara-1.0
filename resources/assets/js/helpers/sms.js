@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-import { get } from './api';
-=======
 import {get} from './api';
 import Flash from './flash';
 
->>>>>>> 76381fa20af0a5cd2d22ec879da18e84bbeeaab7
 export default {
     message: '',
     welcome(details) {
