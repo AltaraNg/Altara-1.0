@@ -41,7 +41,6 @@ export const store = new Vuex.Store({
             }
             return false;
         },
-
         getProfileAccess: state => {
             return state.ProfileAccess;
         },
@@ -65,6 +64,5 @@ export const store = new Vuex.Store({
         mutateAuth: (context) => {
             context.commit('mutateAuth');
         }
-
     }
 });

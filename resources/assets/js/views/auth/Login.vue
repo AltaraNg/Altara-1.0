@@ -1,14 +1,12 @@
 <template>
     <transition name="fade">
-        <div class="section-tabs" id="login">
-            <div class="col-md-5 ml-auto mr-auto" id="loginCard" v-bind:style="{ marginTop: cardMT+'px'}">
+        <div id="login">
+            <div class="col-md-5 mx-auto" id="loginCard" v-bind:style="{ marginTop: cardMT+'px'}">
                 <div class="card">
-                    <ul class="nav nav-tabs nav-tabs-neutral justify-content-center bg-default" role="tablist">
-                        <h6>Staff Login</h6>
-                    </ul>
+                    <ul class="nav nav-tabs justify-content-center bg-default"><h6>Staff Login</h6></ul>
                     <form @submit.prevent="login" class="pt-1 pb-3">
-                        <div class="card-body w-100 float-left">
-                            <div class="col-sm-12 float-left px-0 px-md-3">
+                        <div class="card-body clearfix">
+                            <div class="col-sm-12 px-0 px-md-3">
                                 <label class="category">* Staff ID</label>
                                 <div class="input-group">
                                     <input class="form-control" placeholder="Staff ID"
@@ -20,7 +18,7 @@
                                 </small>
                                 <small class="error-control" v-if="error.staff_id">{{error.staff_id[0]}}</small>
                             </div>
-                            <div class="col-sm-12 float-left px-0 px-md-3">
+                            <div class="col-sm-12 px-0 px-md-3">
                                 <label class="category">* Password</label>
                                 <div class="input-group">
                                     <input placeholder="Password" type="password" class="form-control"
@@ -32,7 +30,7 @@
                                     {{errors.first('password') }}
                                 </small>
                             </div>
-                            <div class="col-sm-12 mb-3 float-left px-0 px-md-3">
+                            <div class="col-sm-12 mb-4 px-0 px-md-3">
                                 <button class="btn btn-block bg-default" :disabled="$isProcessing" type="submit">
                                     Login! &nbsp; <i class="far fa-paper-plane"></i>
                                 </button>

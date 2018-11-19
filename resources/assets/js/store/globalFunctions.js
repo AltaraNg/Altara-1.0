@@ -40,6 +40,7 @@ Vue.prototype.$networkErr = function (err = '') {
     this.$LIPS(false);
     let msg = 'Your are not connected to the network please wait till network is back!';
     if (err == 'form') msg = 'Please ensure all the fields are filled correctly!';
+    if (err == 'page') msg = 'You do not have access to that page!!';
     Flash.setError(msg);
     //custom message for network "no network connection" and
     //form field validation error

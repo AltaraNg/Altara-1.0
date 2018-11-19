@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {store} from '../store/store';
-import Flash from '../helpers/flash';
 import {routerHistory, writeHistory} from 'vue-router-back-button'
 import Home from '../views/HomePage.vue';
 import Login from '../views/auth/Login.vue';
@@ -25,7 +24,7 @@ import EmployeeManager from '../views/HRM/employee/Manager.vue';
 import EmployeeRegister from '../views/HRM/employee/Register.vue';
 import FSL from '../views/FSL/index.vue';
 import FSLHome from '../views/FSL/HomePage.vue';
-import Inventory from '../views/FSL/inventory/view.vue';
+import Inventory from '../views/FSL/inventory/inventory.vue';
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -128,7 +127,7 @@ router.beforeEach((to, from, next) => {
         /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
         * the method in store will return true if a user has access to the portal hence next();
         * and false is a user don't have access hence error message and redirect to home*/
-        Flash.setError("You do not have access to that page!");
+        this.$networkErr('page');
         return next({name: 'home'});
     }
     /*else next will call the route for the all unknown path

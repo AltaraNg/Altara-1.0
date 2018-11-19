@@ -21,10 +21,10 @@
                     },{
                         url: 'customer/update', title: 'Customer Update', url_c: 'Update customers details!',
                         desc: 'For Updating existing customers details'
-                    }/*,{
+                    },{
                         url: 'message', title: 'Messaging', url_c: 'Send messages!',
                         desc: 'For sending messages to customers'
-                    }*/
+                    }
                 ]
             }
         }

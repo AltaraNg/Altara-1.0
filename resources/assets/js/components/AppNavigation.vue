@@ -1,5 +1,5 @@
 <template>
-    <h4 class="mx-md-3 mx-0 py-0 my-0 text-center" id="index">
+    <h4 class="mx-md-3 mx-0 py-0 my-0 text-center clearfix" id="index">
         <router-link v-if="$routerHistory.hasPrevious()" :to="previous"
                 class="text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3" id="back">
                 <span class="mr-5 float-left">

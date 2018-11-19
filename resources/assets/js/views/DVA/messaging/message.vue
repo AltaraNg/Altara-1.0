@@ -1,10 +1,10 @@
 <template>
     <transition name="fade">
-        <div class="float-left w-100 pt-md-3 pt-2" id="employeeRegister">
+        <div class="pt-md-3 pt-2" id="employeeRegister">
             <div class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center"><h6>Messaging</h6></ul>
-                <div class="card-body p-4 clear w-100">
-                    <form @submit.prevent="sendMessage" class="w-100 clear">
+                <div class="card-body p-4 ">
+                    <form @submit.prevent="sendMessage" class="clearfix">
                         <div class="form-group col-md-12 px-md-3 px-1 float-left">
                             <label>Phone Numbers</label>
                             <textarea class="form-control col-sm-12"
