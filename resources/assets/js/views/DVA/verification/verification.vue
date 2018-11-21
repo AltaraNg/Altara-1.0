@@ -108,7 +108,7 @@
                             </div>
                             <form @submit.prevent="validate('address')">
                                 <div class="modal-body p-5">
-                                    <h5>{{customerAddress}}</h5>
+                                    <h5><i class="fas fa-map-marker-alt mr-4"></i>{{customerAddress}}</h5>
                                     <div class="w-100 p-3">
                                         <div class="clearfix">
                                             <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
@@ -303,7 +303,31 @@
                             </div>
                             <form @submit.prevent="validate(type)" v-if="customer" :data-vv-scope="type">
                                 <div class="modal-body">
-                                    <h5 v-if="type !== 'processing_fee'">{{$data[type+'_address']}}</h5>
+                                    <h5 v-if="type !== 'processing_fee'">
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <th><i class="mr-3 fas fa-map-marker-alt"></i></th>
+                                                <td>{{$data[type+'_address']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th><i class="mr-3 fas fa-mobile-alt"></i></th>
+                                                <td>{{customer[type+'_telno']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th><i class="mr-3 fas fa-user-circle"></i></th>
+                                                <td>{{customer[type+'_first_name']+ ' '
+                                                    + customer[type+'_middle_name']+ ' '
+                                                    + customer[type+'_last_name']}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th><i class="mr-3 fas fa-user-circle"></i></th>
+                                                <td>{{customer[type+'_relationship'] | capitalize}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </h5>
                                     <div class="form-group col-12 px-2 float-left mt-0 mb-2">
                                         <div class="clearfix">
                                             <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
@@ -517,15 +541,15 @@
                     this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                     this.form.id_card = data.customer.document.id_card_url;
                     this.form.passport = data.customer.document.passport_url;
-                    this.customerAddress = this.customer.add_houseno + ', ' + this.customer.add_street + ', ' + this.customer.area_address + ', ' + this.customer.city + ', ' + this.customer.state + ', ';
+                    this.customerAddress = this.customer.add_houseno + ', ' + this.customer.add_street + ', ' + this.customer.area_address + ', ' + this.customer.city + ', ' + this.customer.state;
 
                     this.work_guarantor_address = this.customer.guaadd_houseno + ', ' + this.customer.guaadd_street + ', ' +
                         this.customer.gua_area + ', ' + this.customer.work_guarantor_city + ', ' +
-                        this.customer.work_guarantor_state + ', ';
+                        this.customer.work_guarantor_state;
 
                     this.personal_guarantor_address = this.customer.pguaadd_houseno + ', ' + this.customer.pguaadd_street +
                         ', ' + this.customer.pgua_area + ', ' + this.customer.personal_guarantor_city + ', ' +
-                        this.customer.personal_guarantor_state + ', ';
+                        this.customer.personal_guarantor_state;
                     for (let i = 0; i < this.veriData.length; i++) {
                         let type = this.veriData[i];
                         if (!!data.customer[type]) {
@@ -626,3 +650,15 @@
         },
     }
 </script>
+<style scoped>
+    tr{
+        margin-bottom: 1rem;
+        float: left;
+        width: 100%;
+        font-weight: 500;
+    }
+    tbody tr th {
+        width: 2em;
+        text-align:center;
+    }
+</style>
