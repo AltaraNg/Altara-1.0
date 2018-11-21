@@ -70,6 +70,10 @@
                             <th class="text-muted"><i class="mr-3 far fa-user-circle"></i>Registered By</th>
                             <td>{{customer.user.full_name | capitalize}}</td>
                         </tr>
+                        <tr>
+                            <th class="text-muted"><i class="mr-3 far fa-building"></i>Branch</th>
+                            <td>{{customer.branch.name | capitalize}}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

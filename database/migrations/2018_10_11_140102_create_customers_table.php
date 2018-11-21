@@ -32,7 +32,7 @@ class CreateCustomersTable extends Migration
             $table->string('add_addinfo_description', 255)->nullable();
             $table->string('city', 30);
             $table->string('state', 50);
-            $table->string('telephone', 30);
+            $table->string('telephone', 30)->unique();
             $table->string('email', 100)->nullable();
             $table->string('gender', 10);
             $table->string('date_of_birth', 50);

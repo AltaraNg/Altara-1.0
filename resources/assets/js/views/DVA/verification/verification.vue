@@ -108,7 +108,12 @@
                             </div>
                             <form @submit.prevent="validate('address')">
                                 <div class="modal-body p-5">
-                                    <h5><i class="fas fa-map-marker-alt mr-4"></i>{{customerAddress}}</h5>
+                                    <h5>
+                                        <tr class="m-0">
+                                            <th><i class="fas fa-map-marker-alt mr-4"></i></th>
+                                            <td>{{customerAddress}}</td>
+                                        </tr>
+                                    </h5>
                                     <div class="w-100 p-3">
                                         <div class="clearfix">
                                             <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
@@ -308,22 +313,26 @@
                                             <tbody>
                                             <tr>
                                                 <th><i class="mr-3 fas fa-map-marker-alt"></i></th>
-                                                <td>{{$data[type+'_address']}}</td>
+                                                <td v-if="customer[type+'_state']">{{$data[type+'_address']}}</td>
+                                                <td v-else>please update customer details!</td>
                                             </tr>
                                             <tr>
                                                 <th><i class="mr-3 fas fa-mobile-alt"></i></th>
-                                                <td>{{customer[type+'_telno']}}</td>
+                                                <td v-if="customer[type+'_telno']">{{customer[type+'_telno']}}</td>
+                                                <td v-else>please update customer details!</td>
                                             </tr>
                                             <tr>
                                                 <th><i class="mr-3 fas fa-user-circle"></i></th>
-                                                <td>{{customer[type+'_first_name']+ ' '
+                                                <td v-if="customer[type+'_first_name']">{{customer[type+'_first_name']+ ' '
                                                     + customer[type+'_middle_name']+ ' '
                                                     + customer[type+'_last_name']}}
                                                 </td>
+                                                <td v-else>please update customer details!</td>
                                             </tr>
                                             <tr>
                                                 <th><i class="mr-3 fas fa-user-circle"></i></th>
-                                                <td>{{customer[type+'_relationship'] | capitalize}}</td>
+                                                <td v-if="customer[type+'_relationship']">{{customer[type+'_relationship'] | capitalize}}</td>
+                                                <td v-else>please update customer details!</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -655,7 +664,7 @@
         margin-bottom: 1rem;
         float: left;
         width: 100%;
-        font-weight: 500;
+        font-weight: 400;
     }
     tbody tr th {
         width: 2em;
