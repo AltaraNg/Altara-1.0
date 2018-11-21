@@ -256,24 +256,6 @@ button,
   }
 }
 
-/*.card.portal {
-
-  border-left:2px solid rgb(0, 163, 104);
-
-  a{
-    border-radius: 50%;
-    padding: 2rem;
-    background-color: orange;
-    color: white;
-  }
-
-  i, svg {
-    font-size : 9rem;
-    opacity   : .1;
-    margin    : 1rem auto;
-  }
-}*/
-
 hr.style-two {
   border           : 0;
   height           : 1px;
@@ -294,15 +276,15 @@ hr.style-two {
     margin-top : .15rem;
   }
   h5 {
-    background-color : rgba($color-black, 0.07);
+    background-color : rgba($default-color, 0.07);
     padding          : .6rem 1.5rem;
     border-radius    : 3px;
     font-size        : $default-font-size-icon-small !important;
     font-weight      : 600;
-    box-shadow       : 0 0 .5rem 0 rgba($color-black, 0.08) inset;
+    box-shadow       : 0 0 .5rem 0 rgba($default-color, 0.08) inset;
     float            : left;
     width            : 100%;
-    color            : rgba($color-black, 0.6);
+    color            : rgba($default-color, 0.8);
   }
   .btn-sm {
     height : 2.8rem;
@@ -466,9 +448,6 @@ textarea.form-control.is-invalid:focus {
   cursor : not-allowed;
 }
 
-/*.page-header-image {
-  background-image : url('../../../public/images/bg5.jpg')
-}*/
 
 #index {
   a#back {
