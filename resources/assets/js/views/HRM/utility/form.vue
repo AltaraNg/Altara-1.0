@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="register">
+    <form @submit.prevent="register(form,0)">
         <h5>Employee Personal Details</h5>
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
             <label>Full Name</label>
@@ -44,7 +44,7 @@
                     class="custom-select w-100"
                     v-model="form.status"
                     :class="{'is-invalid': errors.first('status')}"
-                    v-validate="'required'">
+                    v-validate="'required'" data-vv-validate-on="blur">
                 <option value="" selected>select status</option>
                 <option v-for="status in statuses" :value="status">
                     {{status | capitalize}}
@@ -61,7 +61,7 @@
                     class="custom-select w-100"
                     v-model="form.nationality"
                     :class="{'is-invalid': errors.first('nationality')}"
-                    v-validate="'required'">
+                    v-validate="'required'" data-vv-validate-on="blur">
                 <option value="" selected>select nationality</option>
                 <option v-for="country in countries" :value="country">
                     {{country | capitalize}}
@@ -81,10 +81,8 @@
                    v-model="form.date_of_birth"
                    name="date_of_birth"
                    v-validate="'required'"
-
                    :class="{'is-invalid': errors.first('date_of_birth')}"
                    data-vv-as="date of birth">
-            <!-- v-validate="'required|date_between:2018-11-01,2018-11-30'"-->
             <small class="text-muted"
                    v-if="errors.first('date_of_birth')">
                 {{errors.first('date_of_birth')}}
@@ -136,7 +134,7 @@
             <select name="role"
                     class="custom-select w-100"
                     v-model="form.role_id"
-                    v-validate="'required'"
+                    v-validate="'required'" data-vv-validate-on="blur"
                     :class="{'is-invalid': errors.first('role')}"
                     data-vv-name="role">
                 <option value="" selected>select role</option>
@@ -158,7 +156,7 @@
                     class="custom-select w-100"
                     v-model="form.highest_qualification"
                     :class="{'is-invalid': errors.first('qualification')}"
-                    v-validate="'required'"
+                    v-validate="'required'" data-vv-validate-on="blur"
                     data-vv-name="qualification">
                 <option value="" selected>select qualification</option>
                 <option v-for="qualification in qualifications" :value="qualification">
@@ -176,7 +174,7 @@
             <select name="branch"
                     class="custom-select w-100"
                     v-model="form.branch_id"
-                    v-validate="'required'"
+                    v-validate="'required'" data-vv-validate-on="blur"
                     :class="{'is-invalid': errors.first('branch')}"
                     data-vv-name="branch">
                 <option value="" selected>select branch</option>
@@ -206,7 +204,6 @@
             </small>
         </div>
 
-
         <div v-if="ifUp(action)" class="form-group col-md-6 col-12 float-left px-0 px-md-3">
             <label>Date of Exit</label>
             <input type="date" class="form-control" v-model="form.date_of_exit">
@@ -217,7 +214,7 @@
             <select name="qualification"
                     class="custom-select w-100"
                     v-model="form.category"
-                    v-validate="'required'"
+                    v-validate="'required'" data-vv-validate-on="blur"
                     :class="{'is-invalid': errors.first('category')}"
                     data-vv-name="category">
                 <option value="" selected>select category</option>
@@ -267,7 +264,6 @@
                 {{errors.first('address')}}
             </small>
         </div>
-
 
         <div class="spaceAfter"></div>
         <h5>Referee Details</h5>
@@ -402,7 +398,12 @@
 
     export default {
         props: {
-            action: '', receivedData: {default: ''},
+            //the component is never called exclusively its
+            //is called by another parent component.
+            //the action is purpose or the context
+            action: '',
+            receivedData: {default: ''},
+            bus: {default: ''},
         },
         data() {
             return {
@@ -411,40 +412,72 @@
                 roles: {},
                 branches: {},
                 password: '',
-                gender: ['male', 'female'],
                 countries: ['nigeria'],
+                gender: ['male', 'female'],
+                categories: ['permanent', 'contract'],
+                textDetails: {phone: '', loginPassword: '', loginID: '',},
                 statuses: ['married', 'single', 'divorced', 'complicated'],
                 qualifications: ['HND', 'OND', 'bachelors', 'masters', 'doctorate'],
-                categories: ['permanent', 'contract'],
-                textDetails: {phone: '', loginPassword: '', loginID: '',}
             }
         },
         methods: {
             ifReg(a) {
+                //a is the action for which the form is called or the context
+                //the form is used this function return true if the
+                //action : a is === register else else
                 return !!(a === 'register');
             },
             ifUp(a) {
+                //a is the action for which the form is called or the context
+                //the form is used this function return true if the
+                //action : a is === update else else
                 return !!(a === 'update');
             },
             prepareForm(data) {
+                //this function is used when a data is sent to this component
+                //or this component makes a request to backend the
+                //data received is used to prepare the form
                 this.error = {};
                 this.form = data.form;
                 this.roles = data.roles;
                 this.branches = data.branches;
             },
-            register() {
+            register(emp = null, AC = 1) {
+                //NB: this function is used by the employee register, employee update and for portal access update.
+                //the AC means: if the function is called to updated the access control or not.
+                //by default it set to 1, but when it is called from the register
+                //form it is set to 0 to show that it is not for access
+                //control update rather for registration.
+
+                //emp for context :registration is the form, ie a new user hences uses
+                //the default url 'api/register' for registration
+                //emp for context :details update and portal access
+                //update are the staff details to be updated
+                if(AC === 1) this.updatingPortalAccess = true;
                 this.$validator.validateAll().then((result) => {
+                    if(AC === 1){
+                        //AC means the context : access control, by default its set to true i.e 1 because this function
+                        //was called as a callback on a this.$emit process and cant pass two params to the function
+                        //the employee register call the function in this manner : register(form,0) to show
+                        //its not for access control context again;
+                        this.errors.clear();
+                        result = true;
+                        //This process doesn't need validation because the form has only one field
+                        //ref: DataViewer.vue => id="editPortalAccess"
+                    }
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
                             let newUrl = 'api/register', message, logMsg;
-                            if (this.action === 'update') {
-                                newUrl = "api/employee/" + this.form.id + "/update";
-                            }
-                            post(newUrl, this.form)
+                            //for registration the url is used
+                            if (this.action === 'update') newUrl = "api/employee/" + emp.id + "/update";
+                            //else f the form action is not registration den its update
+                            //hence the url "api/employee/{id}/update"
+                            post(newUrl, emp)
                                 .then((res) => {
                                     if (res.data.hasOwnProperty('registered')) {
+                                        //if the response is from 'api/register'
                                         logMsg = 'Registered';
                                         this.textDetails.loginID = String(this.form.staff_id);
                                         this.textDetails.phone = String(parseInt(this.form.phone_number));
@@ -452,42 +485,51 @@
                                         message = "Staff registered! An sms has been sent to the employee with his Login details!";
                                         SMS.welcome(this.textDetails);
                                     } else if (res.data.hasOwnProperty('updated')) {
+                                        //if the response is from "api/employee/{id}/update"
                                         logMsg = 'Updated';
                                         message = 'Staff details updated!';
                                         this.$emit('done');
+                                        //it emits an event to the parent(dataviewer.vue)
+                                        // since its for update
                                     }
                                     this.$scrollToTop();
                                     log('Staff' + logMsg, String(this.form.staff_id));
                                     Flash.setSuccess(message, 20000);
                                     if (this.ifReg(this.action)) this.form = res.data.form;
+                                    //the line above is there so as to allow the log
+                                    // method use its data before reseting
                                     this.$LIPS(false);
+                                    this.errors.clear();
                                 })
                                 .catch((err) => {
                                     if (err.response.status === 422) {
+                                        //catch error thrown by laravel validation;
                                         this.$scrollToTop();
                                         this.error = err.response.data;
                                         if (err.response.data.errors) this.error = err.response.data.errors;
-                                        Flash.setError('Your details contains a unique field that already exixts in our record change it and try again!', 10000);
+                                        Flash.setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
                                     }
                                     this.$LIPS(false);
                                 })
                         } else this.$networkErr();
                     }
-                    if (!result) {
-                        Flash.setError('Please check all the fields and make sure they are field correctly!');
-                        this.$scrollToTop();
-                    }
+                    if (!result) this.$networkErr('form');
                 });
-            }
+            },
         },
         created() {
-            if (this.ifReg(this.action)) get('/api/create').then(res => {
-                this.prepareForm(res.data);
-            });
+            if (this.ifReg(this.action)) get('/api/create').then(res => this.prepareForm(res.data));
+            //if registration fetch data for new customer registration and prepare form
+            if (this.action == 'update') this.bus.$on('submit', this.register);
+            //this.bus is a (vue instance and )prop received from dataviewer to track when the access portal form(ref: DataViewer.vue
+            //=> id="editPortalAccess") is submitted from the data viewer. this is because we want to use the 'register'
+            //function to process both (1)registration, (2)update details and (3)update portal access
         },
         watch: {
             receivedData: function (newVal) {
+                //watches when a data is sent from the parent (dataviewer)
                 this.prepareForm(newVal);
+                //prepares the form with the data received
             }
         }
     }

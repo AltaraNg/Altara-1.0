@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!--data viewer starts here-->
         <div class="card-body p-4 p-md-5">
             <div class="clearfix w-100">
                 <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
@@ -45,14 +46,14 @@
                                     data-toggle="tooltip"
                                     data-placement="top"
                                     title="Edit Employee Detail"
-                                    @click="editEmployee(employee.id)">
+                                    @click="update(employee,'updateEmployee',1)">
                                 <i class="fas fa-user-edit"></i>
                             </button>
                             <button class="text-center mr-2 btn btn-icon btn-sm float-left btn-round"
                                     :class="{ 'btn-success' : accessStatus(employee.portal_access),
                                             'btn-danger' :  !accessStatus(employee.portal_access)}"
                                     data-toggle="tooltip" data-placement="top" title="Edit Employee Portal Access"
-                                    @click="editPortalAccess(employee)">
+                                    @click="update(employee,'editPortalAccess')">
                                 <i class="fas fa-lock-open" v-if="accessStatus(employee.portal_access)"></i>
                                 <i class="fas fa-lock" v-else></i>
                             </button>
@@ -60,7 +61,7 @@
                                     data-toggle="tooltip"
                                     data-placement="top"
                                     title="Reset Employee Password"
-                                    @click="editPassword(employee)">
+                                    @click="update(employee,'editPassword')">
                                 <i class="fas fa-key"></i>
                             </button>
                         </td>
@@ -91,34 +92,35 @@
                 </span>
             </nav>
         </div>
+        <!--data viewer stops here-->
 
+        <!--employee details update modal start here-->
         <div class="modal fade bd-example-modal-lg" id="updateEmployee">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header py-2">
                         <h6 class="modal-title py-1">Update Employee Details</h6>
                         <a class="close py-1" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="modal-close text-danger">
-                                <i class="fas fa-times"></i>
-                            </span>
+                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
                         </a>
                     </div>
                     <div class="modal-body">
-                        <utility-form @done="doneUpdating" :receivedData="sentData" action="update"/>
+                        <utility-form @done="fetchIndexData()" :bus="bus" :receivedData="sentData" action="update"/>
+                        <!--call for the same form used for staff/employee registration-->
                     </div>
                 </div>
             </div>
         </div>
+        <!--employee details update modal stops here-->
 
+        <!--employ portal access update modal starts here-->
         <div class="modal fade" id="editPortalAccess">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header py-2">
                         <h6 class="modal-title py-1">Edit Employee Portal Access</h6>
                         <a class="close py-1" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="modal-close text-danger">
-                                <i class="fas fa-times"></i>
-                            </span>
+                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
                         </a>
                     </div>
                     <form>
@@ -129,86 +131,64 @@
                                     <strong>Save Changes </strong>!
                                 </span>
                                 <div class="radio p-0 col-6 float-left text-center" v-for="access in portal_access">
-                                    <input v-model="form.portal_access"
-                                           name="access"
-                                           type="radio"
-                                           :id="access.name"
-                                           :value="access.value"
-                                           v-validate="'required'">
-                                    <label :for="access.name">
-                                        {{access.name | capitalize}} Access
-                                    </label>
+                                    <input v-model="form.portal_access" name="access" type="radio" :id="access.name"
+                                           :value="access.value">
+                                    <label :for="access.name">{{access.name | capitalize}} Access</label>
                                 </div>
-                                <small class="text-muted"
-                                       v-if="errors.first('access')">
-                                    {{errors.first('access')}}
-                                </small>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
-                                cancel
-                            </button>
-                            <button type="button"
-                                    class="m-2 btn bg-default"
-                                    @click="updateEmployee(form.id)"
-                                    :disabled="$isProcessing">
-                                Save changes
-                                <i class="far fa-paper-plane ml-1"></i>
+                            <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">cancel</button>
+                            <button type="button" class="m-2 btn bg-default" @click="bus.$emit('submit',form)"
+                                    :disabled="$isProcessing"> Save changes <i class="far fa-paper-plane ml-1"></i>
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <!--employ portal access update modal stops here-->
 
+        <!--employee password reset modal starts here-->
         <div class="modal fade" id="editPassword">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header py-2">
                         <h6 class="modal-title py-1">Reset Employee Password</h6>
-                        <a class="close py-1" data-dismiss="modal"
-                           aria-label="Close">
-                            <span aria-hidden="true" class="modal-close text-danger">
-                                <i class="fas fa-times"></i>
-                            </span>
+                        <a class="close py-1" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
                         </a>
                     </div>
                     <form>
                         <div class="modal-body">
                             <div class="form-group col-12 float-left mt-2 mb-4 ">
-                                    <span>A new password will be sent to the employee via <strong>sms</strong>
-                                          on the telephone He/She
-                                        <strong>used for registration</strong>
-                                          on this portal. <br><br>Please Kindly verify that the phone to
-                                        receive the new password is on and active!</span> <br><br>
+                                <span>A new password will be sent to the employee via <strong>sms</strong> on the
+                                      telephone He/She <strong>used for registration</strong> on this portal.
+                                    <br><br>Please Kindly verify that the phone to receive the new password is on and active!
+                                </span><br><br>
                                 <u><em>click the continue and reset password to finish this task!</em></u>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
-                                cancel
-                            </button>
-                            <button type="button"
-                                    class="m-2 btn bg-default"
-                                    @click="resetPassword"
+                            <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">cancel</button>
+                            <button type="button" class="m-2 btn bg-default" @click="resetPassword"
                                     :disabled="$isProcessing">
-                                continue and reset password
-                                <i class="far fa-paper-plane ml-1"></i>
+                                continue and reset password <i class="far fa-paper-plane ml-1"></i>
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <!--employee password reset modal stops here-->
     </div>
 </template>
 <script>
     import Vue from 'vue';
     import SMS from '../helpers/sms';
     import {log} from "../helpers/log";
+    import {get} from '../helpers/api';
     import Flash from '../helpers/flash';
-    import {get, post} from '../helpers/api';
     import UtilityForm from '../views/HRM/utility/form';
 
     export default {
@@ -217,6 +197,7 @@
         },
         data() {
             return {
+                /*data generic to data viewer starts here*/
                 model: {},
                 columns: {},
                 query: {
@@ -238,22 +219,28 @@
                     in: 'IN',
                     like: 'LIKE',
                 },
-                // the data below are not generic to the data viewer component
+                /*data generic to data viewer stops here*/
+
+                /*data peculiar to hrm portal data viewer*/
+                bus: new Vue(),
                 form: {},
-                error: {},
-                portal_access_temp: '',
                 portal_access: [
                     {name: 'grant', value: 1},
                     {name: 'deny', value: 0}
                 ],
                 sentData: {},
+                /*data peculiar to hrm portal data viewer*/
             }
         },
         props: ['source', 'title', 'appModel'],
         created() {
             this.fetchIndexData();
         },
+        updated() {
+            $('[data-toggle="tooltip"]').tooltip();
+        },
         methods: {
+            /*methods exclusive to data viewer starts here*/
             next() {
                 if (this.model.next_page_url) {
                     this.query.page++;
@@ -276,7 +263,6 @@
                 this.fetchIndexData();
             },
             fetchIndexData() {
-                var vm = this;
                 get(
                     `${this.source}` +
                     `?page=${this.query.page}` +
@@ -286,40 +272,52 @@
                     `&search_input=${this.query.search_input}` +
                     `&search_column=${this.query.search_column}` +
                     `&search_operator=${this.query.search_operator}`)
-                    .then(function (response) {
-                        Vue.set(vm.$data, 'model', response.data.model);
-                        Vue.set(vm.$data, 'columns', response.data.columns);
+                    .then(res => {
+                        Vue.set(this.$data, 'model', res.data.model);
+                        Vue.set(this.$data, 'columns', res.data.columns);
+                        this.$scrollToTop();
+                        $('.modal').modal('hide');
+                        this.$LIPS(false);
                     })
-                    .catch(function (error) {
-                    });
             },
-            // the methods below are not generic to the data viewer component
-            editPassword(employee) {
-                this.form = employee;
-                $('#editPassword').modal('toggle');
-            },
+            /*methods exclusive to data viewer stop here*/
+
+            /*methods exclusive to hrm data viewer stop here*/
             accessStatus(status) {
                 return Boolean(Number(status));
+                /*returns true or false for the portal
+                access status for each staff
+                (1 or 0 respectively)*/
             },
-            editPortalAccess(employee) {
-                this.form = employee;
-                $('#editPortalAccess').modal('toggle');
-            },
-            editEmployee(id) {
-                if (this.$network()) {
-                    this.$LIPS(true);
-                    get("api/employee/" + id + "/edit").then((res) => {
-                        this.sentData = res.data;
-                        $('#updateEmployee').modal('toggle');
-                        this.$LIPS(false);
-                    });
-                } else this.$networkErr();
+            update(emp, mod, up = 0) {
+                /*emp is the employer you want to carry an action on
+                * mod is the modal id that carries the form for the process
+                * up is tentative if 0*/
+                if (up === 0) {
+                    this.form = emp;
+                    $('#' + mod).modal('toggle');
+                    /*then action is for password reset or portal access update
+                    * the corresponding modal is triggered as above*/
+                } else if (up === 1) {
+                    /*if up is 1 then its for details update*/
+                    if (this.$network()) {
+                        this.$LIPS(true);
+                        get("api/employee/" + emp.id + "/edit").then((res) => {
+                            /*the full employee details are fetched to populate
+                            the form for editing ie the utility form*/
+                            this.sentData = res.data;
+                            /*the data sent to the utility form is updated*/
+                            $('#' + mod).modal('toggle');
+                            /*corresponding modal is toggled*/
+                            this.$LIPS(false);
+                        });
+                    } else this.$networkErr();
+                }
             },
             resetPassword() {
                 if (this.$network()) {
                     this.$LIPS(true);
                     get('api/reset-password/' + this.form.id).then((res) => {
-                        this.error = {};
                         this.$scrollToTop();
                         $('#editPassword').modal('toggle');
                         log('resetUserPassword', this.form.staff_id);
@@ -330,51 +328,19 @@
                     })
                 } else this.$networkErr();
             },
-            updateEmployee(id) {
-                this.$validator.validateAll().then((result) => {
-                    if (result) {
-                        if (this.$network()) {
-                            this.$LIPS(true);
-                            this.error = {};
-                            post("api/employee/" + id + "/update", this.form)
-                                .then(res => {
-                                    this.complete('Staff details updated!');
-                                    log('updatedUserPortalAccess', String(this.form.staff_id));
-                                })
-                                .catch(err => {
-                                    this.complete(err.response.data.message, 'err');
-                                })
-                        } else this.$networkErr();
-                    }
-                });
-            },
-            complete(msg,type = 'success') {
+
+            complete(msg, type = 'success') {
                 this.fetchIndexData();
-                this.$scrollToTop();
-                $('#editPortalAccess').modal('toggle');
-                this.$LIPS(false);
-                (type == 'err') ? Flash.setError(msg, 1000) : Flash.setSuccess(msg);
+                (type == 'err') ? Flash.setError(msg, 10000) : Flash.setSuccess(msg);
             },
-            toolTip() {
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
-            },
-            doneUpdating() {
-                this.fetchIndexData();
-                $('.modal').modal('hide');
-            }
         },
         computed: {
             user() {
-                if (this.appModel == 'user') {
-                    return true
-                }
-                return false;
+                return !!(this.appModel == 'user');
+                /*return true of the context
+                * of the data viewer is
+                * for employees*/
             }
         },
-        mounted() {
-            this.toolTip();
-        }
     }
 </script>

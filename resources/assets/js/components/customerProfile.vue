@@ -1,5 +1,5 @@
 <template>
-    <div class="card position-relative">
+    <div class="customer-profile card position-relative">
             <div class="design"></div>
             <div class="col-md-4 col-sm-4 col-12 px-0 pb-md-4 pb-sm-3 pb-0 pt-md-5 pt-4 float-left">
                 <div class="pt-md-3 pt-sm-2 pt-1">
@@ -59,14 +59,8 @@
                         </tr>
                         <tr>
                             <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Address</th>
-                            <td>
-                                {{customer.add_houseno + ', ' +
-                                customer.add_street + ', ' +
-                                customer.area_address + ', ' +
-                                customer.city + ', ' +
-                                customer.state + ', ' | capitalize
-                                }}
-                            </td>
+                            <td>{{customer.add_houseno + ', ' + customer.add_street + ', ' + customer.area_address +
+                                ', ' + customer.city + ', ' + customer.state + ', ' | capitalize }}</td>
                         </tr>
                         <tr>
                             <th class="text-muted"><i class="mr-3 fas fa-gift"></i>Registered On</th>
@@ -75,6 +69,10 @@
                         <tr>
                             <th class="text-muted"><i class="mr-3 far fa-user-circle"></i>Registered By</th>
                             <td>{{customer.user.full_name | capitalize}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-muted"><i class="mr-3 far fa-building"></i>Branch</th>
+                            <td>{{customer.branch.name | capitalize}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -95,104 +93,15 @@
                     this.customer.verification.personal_guarantor === 1) {
                     return true
                 } else return false;
+                /*This component is the customer profile proper. for optimal result.
+                * The data passed to this should be a response
+                * from the CustomerController@show
+                * this method is used to check the approval
+                * status for any customer details
+                * supplied to it.
+                * NB all the params above must be
+                * 1 for a customer t be approved*/
             }
         }
     }
 </script>
-<style scoped>
-    th {
-        width       : auto;
-        font-weight : normal;
-    }
-
-    td, .data {
-        font-size   : 1.5rem;
-        font-weight : 500;
-    }
-
-    .status {
-        padding       : 1.2rem 3rem;
-        float         : left;
-        color         : white;
-        border-radius : .5rem;
-        box-shadow    : 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
-        font-weight   : 700;
-        font-size     : 1.3rem;
-    }
-
-    .status.approved {
-        background-color : rgb(0, 163, 104);
-    }
-
-    .status.not-approved {
-        background-color : rgb(200, 22, 24);
-    }
-
-    .design {
-        position   : absolute;
-        top        : 13rem;
-        bottom     : 0;
-        left       : 0;
-        width      : 101%;
-        height     : calc(100% - 8.1rem);
-        z-index    : 0;
-        background : linear-gradient(45deg, #dedede 0%, #ffffff 100%);
-    }
-
-    .profile-picture, .no-image {
-        height     : 16rem;
-        width      : 16rem;
-        box-shadow : 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .no-image {
-        background-color : #e3e3e3;
-        border-radius    : 50%;
-        line-height      : 16rem;
-        text-align       : center;
-        font-size        : 8rem;
-        color            : rgba(0, 0, 0, 0.15);
-    }
-
-    .z-1 {
-        z-index : 1;
-    }
-
-    .img-border {
-        padding          : 1.1rem;
-        background-color : white;
-        border-radius    : 50%;
-    }
-
-    .separator {
-        position         : absolute;
-        left             : 50%;
-        height           : 70%;
-        width            : 1px;
-        background-color : rgba(0, 0, 0, 0.1);
-        top              : 3%;
-    }
-
-    @media (max-width : 600px) {
-        .design {
-            background : linear-gradient(180deg, #dedede 0%, #ffffff 100%);
-        }
-
-        .separator {
-            top : -11%;
-        }
-
-        .small-center {
-            text-align : center;
-        }
-
-        th {
-            width : 35%;
-        }
-
-        tbody {
-            padding : 1rem 1rem 0;
-            float   : left;
-        }
-    }
-</style>

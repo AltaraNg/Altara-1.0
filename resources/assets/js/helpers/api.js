@@ -48,3 +48,6 @@ export function interceptors(cb) {
         return Promise.reject(err)
     })
 }
+/*helper functions for easier calls use of
+* axios includes the api_token for every
+* api call to the backend.*/

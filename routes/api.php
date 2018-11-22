@@ -22,6 +22,7 @@ Route::get('/reset-password/{id}', 'AuthController@resetPassword');
 Route::apiResources([
     'log' => 'LogController',
     'address' => 'AddressController',
+    'message' => 'MessageController',
     'customer' => 'CustomerController',
     'document' => 'DocumentController',
     'verification' => 'VerificationController',

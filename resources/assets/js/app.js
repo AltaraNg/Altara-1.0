@@ -9,7 +9,9 @@ import VeeValidate from 'vee-validate';
 import './store/filters.js';
 import './store/globalFunctions.js';
 
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {
+    events: 'input|blur'
+});
 const app = new Vue({
     el: '#root',
     template: `<app></app>`,

@@ -1,4 +1,6 @@
-import { get } from './api';
+import {get} from './api';
+import Flash from './flash';
+
 export default {
     message: '',
     welcome(details) {
@@ -15,11 +17,13 @@ export default {
             + ' new password : "' + details.password + '"';
         this.send(details);
     },
+    dvaMessage(details) {
+        this.message = details.message;
+        this.send(details)
+    },
     send(details) {
+
         /*get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
-            + 234 + details.phone + "&text=" + this.message + "")
-            .then(res => {
-            }).catch(err => {
-        });*/
+            + 234 + details.phone + "&text=" + this.message + "").then(res => Flash.setSuccess('SMS sent Successfully'))*/
     }
 }

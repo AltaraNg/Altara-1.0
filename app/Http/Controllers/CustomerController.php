@@ -56,6 +56,9 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'telephone' => 'unique:customers',
+        ]);
         $customer = new Customer($request->all());
         $customer->days_of_work = implode(' ', $request['days_of_work']);
         $customer->save();
