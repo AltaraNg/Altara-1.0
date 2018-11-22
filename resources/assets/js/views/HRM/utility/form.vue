@@ -44,7 +44,7 @@
                     class="custom-select w-100"
                     v-model="form.status"
                     :class="{'is-invalid': errors.first('status')}"
-                    v-validate="'required|not_in:Choose'">
+                    v-validate="'required'" data-vv-validate-on="blur">
                 <option value="" selected>select status</option>
                 <option v-for="status in statuses" :value="status">
                     {{status | capitalize}}
@@ -61,7 +61,7 @@
                     class="custom-select w-100"
                     v-model="form.nationality"
                     :class="{'is-invalid': errors.first('nationality')}"
-                    v-validate="'required|not_in:Choose'">
+                    v-validate="'required'" data-vv-validate-on="blur">
                 <option value="" selected>select nationality</option>
                 <option v-for="country in countries" :value="country">
                     {{country | capitalize}}
@@ -134,7 +134,7 @@
             <select name="role"
                     class="custom-select w-100"
                     v-model="form.role_id"
-                    v-validate="'required|not_in:Choose'"
+                    v-validate="'required'" data-vv-validate-on="blur"
                     :class="{'is-invalid': errors.first('role')}"
                     data-vv-name="role">
                 <option value="" selected>select role</option>
@@ -156,7 +156,7 @@
                     class="custom-select w-100"
                     v-model="form.highest_qualification"
                     :class="{'is-invalid': errors.first('qualification')}"
-                    v-validate="'required|not_in:Choose'"
+                    v-validate="'required'" data-vv-validate-on="blur"
                     data-vv-name="qualification">
                 <option value="" selected>select qualification</option>
                 <option v-for="qualification in qualifications" :value="qualification">
@@ -174,7 +174,7 @@
             <select name="branch"
                     class="custom-select w-100"
                     v-model="form.branch_id"
-                    v-validate="'required|not_in:Choose'"
+                    v-validate="'required'" data-vv-validate-on="blur"
                     :class="{'is-invalid': errors.first('branch')}"
                     data-vv-name="branch">
                 <option value="" selected>select branch</option>
@@ -214,7 +214,7 @@
             <select name="qualification"
                     class="custom-select w-100"
                     v-model="form.category"
-                    v-validate="'required|not_in:Choose'"
+                    v-validate="'required'" data-vv-validate-on="blur"
                     :class="{'is-invalid': errors.first('category')}"
                     data-vv-name="category">
                 <option value="" selected>select category</option>

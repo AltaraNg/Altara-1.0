@@ -20,23 +20,23 @@
                         url: 'customer/register',
                         title: 'Customer Registration',
                         url_c: 'Register new customer now!',
-                        desc: 'For Registering new customers',
+                        desc: 'Registering new customers',
                     }, {
                         url: 'customer/update',
                         title: 'Customer Update',
                         url_c: 'Update customers details!',
-                        desc: 'For Updating existing customers details',
+                        desc: 'Updating customers details',
                     }, {
                         url: 'report/',
                         title: 'Sales Lead Reporting',
                         url_c: 'Get Reports',
-                        desc: 'For real time DSA reports!',
+                        desc: 'Real time DSA reports!',
                         aces: false,
                     }, {
                         url: 'customer/list',
                         title: 'Customer List',
                         url_c: 'View Customer List',
-                        desc: 'View all the registered customers!',
+                        desc: 'View all registered customers!',
                     }
                 ]
             }

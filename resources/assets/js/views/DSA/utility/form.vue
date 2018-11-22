@@ -92,6 +92,11 @@
                             <small class="text-muted" v-if="errors.first('telephone')">
                                 {{errors.first('telephone')}}
                             </small>
+
+                            <small class="text-muted" v-if="error.telephone">
+                                {{error.telephone[0]}}
+                            </small>
+
                         </div>
 
                         <div class="spaceAfter"></div>
@@ -152,15 +157,15 @@
                             </small>
                         </div>
 
-                        <div class="form-group col-md-4 px-md-3 px-1 float-left" data-tap-disabled="true">
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left" >
                             <label>State</label>
-                            <select class="custom-select w-100" v-model="newCustomer.state"
-                                    v-validate="'required|not_in:Choose'" name="state"
+                            <select class="custom-select w-100" v-model="newCustomer.state" name="state" data-vv-validate-on="blur"
+                                    v-validate="'required'"
                                     :class="{'is-invalid': errors.first('state')}">
-                                <option disabled value="">select state</option>
+                                <option value="">select state</option>
                                 <option v-bind:value="state.name" v-for="state in states">{{state.name}}</option>
                             </select>
-                            <small class="text-muted" v-if="errors.first('state')">{{errors.first('state')}}</small>
+                            <small class="text-muted" v-if="error.state">{{errors.state}}</small>
                         </div>
 
                         <div class="spaceBetween"></div>
@@ -496,8 +501,8 @@
                                 <div class="form-group col-md-3 px-md-3 px-1 float-left">
                                     <label>Duration in Current work</label>
                                     <select class="custom-select w-100"
-                                            v-model="newCustomer.years_of_existence_or_work_duration"
-                                            v-validate="'required|not_in:Choose'" name="work_duration" data-vv-as="work duration"
+                                            v-model="newCustomer.years_of_existence_or_work_duration" data-vv-validate-on="blur"
+                                            v-validate="'required'" name="work_duration" data-vv-as="work duration"
                                             :class="{'is-invalid': errors.first('work_duration')}">
                                         <option value="">select duration</option>
                                         <option :value="duration" v-for="duration in durations">{{duration}}</option>
@@ -585,7 +590,7 @@
                                 <div class="form-group col-md-4 px-md-3 px-1 float-left">
                                     <label>State</label>
                                     <select class="custom-select w-100" v-model="newCustomer.company_state"
-                                            v-validate="'required|max:20|not_in:Choose'" name="company_state"
+                                            v-validate="'required'" name="company_state" data-vv-validate-on="blur"
                                             data-vv-as="company state"
                                             :class="{'is-invalid': errors.first('company_state')}">
                                         <option value="">select state</option>
@@ -710,8 +715,8 @@
                                 <div class="form-group col-md-6 px-md-3 px-1 float-left">
                                     <label>Years of Existence</label>
                                     <select class="custom-select w-100"
-                                            v-model="newCustomer.years_of_existence_or_work_duration"
-                                            v-validate="'required|not_in:Choose'" name="work_duration" data-vv-as="years of existence"
+                                            v-model="newCustomer.years_of_existence_or_work_duration" data-vv-validate-on="blur"
+                                            v-validate="'required'" name="work_duration" data-vv-as="years of existence"
                                             :class="{'is-invalid': errors.first('work_duration')}">
                                         <option value="">select duration</option>
                                         <option :value="duration" v-for="duration in durations">{{duration}}</option>
@@ -820,7 +825,7 @@
                                 <div class="form-group col-md-4 px-md-3 px-1 float-left">
                                     <label>State</label>
                                     <select class="custom-select w-100" v-model="newCustomer.company_state"
-                                            v-validate="'required|max:20|not_in:Choose'" name="company_state"
+                                            v-validate="'required'" name="company_state" data-vv-validate-on="blur"
                                             data-vv-as="company state"
                                             :class="{'is-invalid': errors.first('company_state')}">
                                         <option value="">select state</option>
@@ -937,7 +942,7 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Duration in Current work</label>
                             <select class="custom-select w-100" v-model="newCustomer.nextofkin_work_duration"
-                                    v-validate="'required|not_in:Choose'" data-vv-as="next of kin duration of work"
+                                    v-validate="'required'" data-vv-as="next of kin duration of work" data-vv-validate-on="blur"
                                     name="NOK_work_duration" :class="{'is-invalid': errors.first('NOK_work_duration')}">
                                 <option value="">select duration</option>
                                 <option :value="duration" v-for="duration in durations">{{duration}}</option>
@@ -1096,7 +1101,7 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>State</label>
                             <select class="custom-select w-100" v-model="newCustomer.work_guarantor_state"
-                                    v-validate="'required|max:25|not_in:Choose'" data-vv-as="work guarantor state"
+                                    v-validate="'required'" data-vv-as="work guarantor state" data-vv-validate-on="blur"
                                     name="work_guarantor_state"
                                     :class="{'is-invalid': errors.first('work_guarantor_state')}">
                                 <option value="">select state</option>
@@ -1124,7 +1129,7 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Duration in Current work</label>
                             <select class="custom-select w-100" v-model="newCustomer.work_guarantor_work_duration"
-                                    v-validate="'required|not_in:Choose'" data-vv-as="work guarantor work duration"
+                                    v-validate="'required'" data-vv-as="work guarantor work duration" data-vv-validate-on="blur"
                                     name="work_guarantor_work_duration"
                                     :class="{'is-invalid': errors.first('work_guarantor_work_duration')}">
                                 <option value="">select duration</option>
@@ -1271,7 +1276,7 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>State</label>
                             <select class="custom-select w-100" v-model="newCustomer.personal_guarantor_state"
-                                    v-validate="'required|max:25|not_in:Choose'" data-vv-as="personal guarantor state"
+                                    v-validate="'required'" data-vv-as="personal guarantor state" data-vv-validate-on="blur"
                                     name="personal_guarantor_state"
                                     :class="{'is-invalid': errors.first('personal_guarantor_state')}">
                                 <option value="">select state</option>
@@ -1300,7 +1305,7 @@
                             <label>Duration in Current work</label>
                             <select class="custom-select w-100"
                                     v-model="newCustomer.personal_guarantor_work_duration"
-                                    v-validate="'required|not_in:Choose'" data-vv-as="personal guarantor work duration"
+                                    v-validate="'required'" data-vv-as="personal guarantor work duration" data-vv-validate-on="blur"
                                     name="personal_guarantor_work_duration"
                                     :class="{'is-invalid': errors.first('personal_guarantor_work_duration')}">
                                 <option value="">select duration</option>
@@ -1349,7 +1354,7 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Office Branch</label>
                             <select class="custom-select w-100" v-model="newCustomer.branch_id"
-                                    v-validate="'required|max:25|not_in:Choose'" disabled data-vv-as="office branch" name="branch_id"
+                                    v-validate="'required'" disabled data-vv-as="office branch" name="branch_id" data-vv-validate-on="blur"
                                     :class="{'is-invalid': errors.first('branch_id')}">
                                 <option value="">select office branch</option>
                                 <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
@@ -1380,24 +1385,12 @@
     import {get, post} from '../../../helpers/api';
     import Verification from '../../../views/DVA/verification/verification'
 
-    // import VSelect from 'vue-select';
-
     export default {
-        components: {Verification/*,
-            VSelect*/},
+        components: {Verification},
         props: {action: {default:'update'}},
         data() {
             return {
-                item: { label: 'a', value: 1},
-                options: [
-                    { label: 'a', value: 1},
-                    { label: 'b', value: 2},
-                    { label: 'c', value: 3},
-                    { label: 'd', value: 4},
-                    { label: 'e', value: 5}
-                ],
-
-
+                error:{},
                 newCustomer: {},
                 fillWorkGuarantor: false,
                 fillPersonalGuarantor: false,
@@ -1472,6 +1465,7 @@
                         }
                         if (this.$network()) {
                             this.$LIPS(true);
+                            this.error = {}
                             let newUrl = '/api/customer';
                             var logMsg = 'createdNew';
                             if (this.action === 'update'){
@@ -1489,7 +1483,16 @@
                                         this.prepareForm(res.data.prepareForm);
                                     }
                                     this.$LIPS(false);
-                                }).catch(err => this.$LIPS(false))
+                                }).catch((err) => {
+                                    if (err.response.status === 422) {
+                                        //catch error thrown by laravel validation;
+                                        this.$scrollToTop();
+                                        this.error = err.response.data;
+                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                        Flash.setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
+                                    }
+                                    this.$LIPS(false)
+                                })
                         } else this.$networkErr();
                     }
                     if (!result) this.$networkErr('form');
@@ -1522,13 +1525,6 @@
             get('/api/customer/create').then(res => this.prepareForm(res.data));
             /*on create of the component fetch the data required to prepare the form
             * states, branches and the currently logged in dsa details*/
-
-            $('select').change(function(){
-                if (/Android/.test(navigator.userAgent)){
-                    $(this).blur();
-                }
-            });
-
         }
     }
 </script>

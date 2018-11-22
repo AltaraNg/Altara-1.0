@@ -284,7 +284,7 @@ hr.style-two {
     box-shadow       : 0 0 .5rem 0 rgba($default-color, 0.08) inset;
     float            : left;
     width            : 100%;
-    color            : rgba($default-color, 0.8);
+    color            : rgba($default-color, 0.9);
   }
   .btn-sm {
     height : 2.8rem;
@@ -447,7 +447,6 @@ textarea.form-control.is-invalid:focus {
 [disabled="disabled"] {
   cursor : not-allowed;
 }
-
 
 #index {
   a#back {
@@ -654,6 +653,7 @@ table button i {
     width            : 7rem;
     height           : .3rem;
     left             : 3rem;
+    border-radius    : 4rem;
     background-color : #074a74;
     &.second {
       left             : 10.5rem;
@@ -685,7 +685,7 @@ table button i {
   }
 }
 
-.verification{
+.verification {
   .card-stats .icon {
     margin : 0 1.5rem;
   }
@@ -768,7 +768,7 @@ table button i {
   }
   .product {
     i, svg {
-      font-size : 5rem;
+      font-size : 1.2rem;
     }
   }
   .table-responsive {
@@ -784,6 +784,27 @@ table button i {
       }
     }
   }
+
+  .portal-card {
+    .portion {
+      padding : 2rem 2.5rem;
+    }
+    .deco {
+      top      : 3rem;
+      height   : .2rem;
+      left     : 2.5rem;
+      &.second {
+        left : 10rem;
+      }
+    }
+    .deco-down.second {
+      padding : .8rem .5rem;
+    }
+    a {
+      padding: 8px 16px;
+      transform: translateX(14%) skewX(35deg);
+    }
+  }
 }
 
 @media (max-width : 600px) {
@@ -792,7 +813,7 @@ table button i {
   }
   .product {
     i, svg {
-      font-size : 3rem;
+      font-size : 1rem;
     }
   }
   .table-responsive {
@@ -822,8 +843,13 @@ table button i {
       float   : left;
     }
   }
-}
-
-.dropdown-menu[role="listbox"] {
-  z-index: 400;
+  .portal-card {
+    .deco-down.second {
+      padding : .9rem .5rem;
+    }
+    a {
+      padding: 9px 16px;
+      transform: translateX(25%) skewX(35deg);
+    }
+  }
 }
