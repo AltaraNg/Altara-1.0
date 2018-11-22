@@ -16432,23 +16432,6 @@ button,
   margin: 1rem auto;
 }
 
-/*.card.portal {
-
-  border-left:2px solid rgb(0, 163, 104);
-
-  a{
-    border-radius: 50%;
-    padding: 2rem;
-    background-color: orange;
-    color: white;
-  }
-
-  i, svg {
-    font-size : 9rem;
-    opacity   : .1;
-    margin    : 1rem auto;
-  }
-}*/
 hr.style-two {
   border: 0;
   height: 1px;
@@ -16483,16 +16466,16 @@ hr.style-two {
 #employeeEdit h5,
 #customerRegister h5,
 #employeeRegister h5 {
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: rgba(7, 74, 116, 0.07);
   padding: .6rem 1.5rem;
   border-radius: 3px;
   font-size: 1.6rem !important;
   font-weight: 600;
-  -webkit-box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.08) inset;
-          box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.08) inset;
+  -webkit-box-shadow: 0 0 0.5rem 0 rgba(7, 74, 116, 0.08) inset;
+          box-shadow: 0 0 0.5rem 0 rgba(7, 74, 116, 0.08) inset;
   float: left;
   width: 100%;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(7, 74, 116, 0.9);
 }
 
 #index .btn-sm,
@@ -16690,9 +16673,6 @@ textarea.form-control.is-invalid:focus {
   cursor: not-allowed;
 }
 
-/*.page-header-image {
-  background-image : url('../../../public/images/bg5.jpg')
-}*/
 #index a#back {
   left: 0;
 }
@@ -16919,6 +16899,7 @@ table button i {
   width: 7rem;
   height: .3rem;
   left: 3rem;
+  border-radius: 4rem;
   background-color: #074a74;
 }
 
@@ -17039,7 +17020,7 @@ table button i {
     max-height: 4.2rem;
   }
   .product i, .product svg {
-    font-size: 5rem;
+    font-size: 1.2rem;
   }
   .table-responsive {
     display: table;
@@ -17050,6 +17031,25 @@ table button i {
   #index a#back i, #index a#forward i {
     font-size: 2.6rem;
   }
+  .portal-card .portion {
+    padding: 2rem 2.5rem;
+  }
+  .portal-card .deco {
+    top: 3rem;
+    height: .2rem;
+    left: 2.5rem;
+  }
+  .portal-card .deco.second {
+    left: 10rem;
+  }
+  .portal-card .deco-down.second {
+    padding: .8rem .5rem;
+  }
+  .portal-card a {
+    padding: 8px 16px;
+    -webkit-transform: translateX(14%) skewX(35deg);
+            transform: translateX(14%) skewX(35deg);
+  }
 }
 
 @media (max-width: 600px) {
@@ -17057,7 +17057,7 @@ table button i {
     font-size: 55%;
   }
   .product i, .product svg {
-    font-size: 3rem;
+    font-size: 1rem;
   }
   .table-responsive {
     display: block;
@@ -17083,8 +17083,12 @@ table button i {
     padding: 1rem 1rem 0;
     float: left;
   }
-}
-
-.dropdown-menu[role="listbox"] {
-  z-index: 400;
+  .portal-card .deco-down.second {
+    padding: .9rem .5rem;
+  }
+  .portal-card a {
+    padding: 9px 16px;
+    -webkit-transform: translateX(25%) skewX(35deg);
+            transform: translateX(25%) skewX(35deg);
+  }
 }

@@ -309,33 +309,35 @@
                             <form @submit.prevent="validate(type)" v-if="customer" :data-vv-scope="type">
                                 <div class="modal-body">
                                     <h5 v-if="type !== 'processing_fee'">
-                                        <table>
+                                        <table v-if="customer[type+'_first_name']">
                                             <tbody>
-                                            <tr>
-                                                <th><i class="mr-3 fas fa-map-marker-alt"></i></th>
-                                                <td v-if="customer[type+'_state']">{{$data[type+'_address']}}</td>
-                                                <td v-else>please update customer details!</td>
-                                            </tr>
-                                            <tr>
-                                                <th><i class="mr-3 fas fa-mobile-alt"></i></th>
-                                                <td v-if="customer[type+'_telno']">{{customer[type+'_telno']}}</td>
-                                                <td v-else>please update customer details!</td>
-                                            </tr>
-                                            <tr>
+                                                <tr>
                                                 <th><i class="mr-3 fas fa-user-circle"></i></th>
-                                                <td v-if="customer[type+'_first_name']">{{customer[type+'_first_name']+ ' '
+                                                <td><strong>Full Name : </strong> {{customer[type+'_first_name']+ ' '
                                                     + customer[type+'_middle_name']+ ' '
                                                     + customer[type+'_last_name']}}
                                                 </td>
-                                                <td v-else>please update customer details!</td>
                                             </tr>
                                             <tr>
+                                                <th><i class="mr-3 fas fa-map-marker-alt"></i></th>
+                                                <td><strong>Address : </strong> {{$data[type+'_address']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th><i class="mr-3 fas fa-mobile-alt"></i></th>
+                                                <td><strong>Phone No. : </strong>{{customer[type+'_telno']}}</td>
+                                            </tr>
+                                            
+                                            <tr>
                                                 <th><i class="mr-3 fas fa-user-circle"></i></th>
-                                                <td v-if="customer[type+'_relationship']">{{customer[type+'_relationship'] | capitalize}}</td>
-                                                <td v-else>please update customer details!</td>
+                                                <td><strong>Relationship : </strong>{{customer[type+'_relationship'] | capitalize}}</td>
                                             </tr>
                                             </tbody>
                                         </table>
+                                       <table v-else>
+                                           <tbody>
+                                               <td style="color:red">Please Update!</td>
+                                           </tbody>
+                                       </table>
                                     </h5>
                                     <div class="form-group col-12 px-2 float-left mt-0 mb-2">
                                         <div class="clearfix">
