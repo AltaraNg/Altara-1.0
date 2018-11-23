@@ -9,18 +9,16 @@
                             <label>Phone Numbers</label>
                             <textarea class="form-control col-sm-12"
                                       placeholder="Kindly add the number and seperate each with a semi-colon ';' "
-                                      rows="3" v-validate="'required'" name="contacts"
-                                      :class="{'is-invalid': errors.first('contacts')}" v-model="contacts"></textarea>
-                            <small class="text-muted" v-if="errors.first('contacts')">{{errors.first('contacts')}}
+                                      rows="3" v-validate="'required'" name="contacts" v-model="contacts"></textarea>
+                            <small v-if="errors.first('contacts')">{{errors.first('contacts')}}
                             </small>
                         </div>
                         <div class="form-group col-md-12 px-md-3 px-1 float-left">
                             <label>Message Body</label>
                             <textarea class="form-control col-sm-12" placeholder="the content of the message goes here"
                                       rows="3" v-validate="'required'" name="message"
-                                      :class="{'is-invalid': errors.first('message')}"
                                       v-model="sentData.message"></textarea>
-                            <small class="text-muted" v-if="errors.first('message')">{{errors.first('message')}}</small>
+                            <small v-if="errors.first('message')">{{errors.first('message')}}</small>
                         </div>
                         <hr class="style-two">
                         <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3 float-right">

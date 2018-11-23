@@ -123,8 +123,8 @@ class UsersTableSeeder extends Seeder
         $statuses = ['married', 'single', 'divorced', 'complicated'];
         $faker = Factory::create();
 
-        /*foreach (range(5, 50) as $i) {
-            $rand = rand(5, 23);
+        foreach (range(5, 50) as $i) {
+            $rand = rand(5, 25);
             $role = Role::find($rand);
             User::create([
                 'role_id' => $role->id,
@@ -149,7 +149,7 @@ class UsersTableSeeder extends Seeder
                 'next_of_kin_name' => $faker->firstName . ' ' . $faker->lastName,
                 'next_of_kin_phone_no' => $faker->phoneNumber
             ]);
-        }*/
+        }
     }
 
     public function getDay()
