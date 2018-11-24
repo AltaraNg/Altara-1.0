@@ -179,7 +179,7 @@ module.exports = function normalizeComponent (
 "use strict";
 
 
-var bind = __webpack_require__(16);
+var bind = __webpack_require__(17);
 var isBuffer = __webpack_require__(43);
 
 /*global toString:true*/
@@ -11720,17 +11720,17 @@ module.exports = Component.exports
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    message: '',
+    message: "",
     welcome: function welcome(details) {
-        this.message = 'Welcome to Altara credit. Please keep your login details safe. Your login details are as follows,' + ' Staff ID: "' + details.loginID + '" password: "' + details.loginPassword + '"';
+        this.message = "Welcome to Altara credit. Please keep your login details safe. Your login details are as follows," + ' Staff ID: "' + details.loginID + '" password: "' + details.loginPassword + '"';
         this.send(details);
     },
     customerReg: function customerReg(details) {
-        this.message = "Dear " + details.first_name + ' ' + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact : " + details.branch.phone_yoruba + '. Your customer id is: ' + details.id;
+        this.message = "Dear " + details.first_name + " " + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact : " + details.branch.phone_yoruba + ". Your customer id is: " + details.id;
         this.send({ phone: details.telephone.substr(1) });
     },
     passwordReset: function passwordReset(details) {
-        this.message = 'Password reset successful! if your did not request for a new password kindly report back immediately,' + ' new password : "' + details.password + '"';
+        this.message = "Password reset successful! if your did not request for a new password kindly report back immediately," + ' new password : "' + details.password + '"';
         this.send(details);
     },
     dvaMessage: function dvaMessage(details) {
@@ -11738,7 +11738,6 @@ module.exports = Component.exports
         this.send(details);
     },
     send: function send(details) {
-
         /*get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
             + 234 + details.phone + "&text=" + this.message + "").then(res => Flash.setSuccess('SMS sent Successfully'))*/
     }
@@ -11978,10 +11977,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(17);
+    adapter = __webpack_require__(18);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(17);
+    adapter = __webpack_require__(18);
   }
   return adapter;
 }
@@ -12060,6 +12059,89 @@ module.exports = defaults;
 
 /***/ }),
 /* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(14);
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
+var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
+    state: {
+        loader: false,
+        ProfileAccess: [],
+        ProfileEditAccess: [],
+        DSALead: [1, 2, 8, 9, 15],
+        DSACaptain: [1, 2, 8, 9, 15, 17],
+        DSAAccess: [1, 2, 8, 9, 15, 17, 18],
+        DVALead: [1, 2, 8, 9, 13, 16],
+        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
+        HRMAccess: [1, 2, 6, 7, 8, 9],
+        FSLLead: [1, 2, 8, 9, 11],
+        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
+        authRole: parseInt(localStorage.getItem('role')),
+        api_token: localStorage.getItem('api_token')
+    },
+    getters: {
+        verifyDSAAccess: function verifyDSAAccess(state) {
+            if (state.DSAAccess.includes(state.authRole) && state.api_token) {
+                return true;
+            }
+            return false;
+        },
+        verifyDVAAccess: function verifyDVAAccess(state) {
+            if (state.DVAAccess.includes(state.authRole) && state.api_token) {
+                return true;
+            }
+            return false;
+        },
+        verifyHRMAccess: function verifyHRMAccess(state) {
+            if (state.HRMAccess.includes(state.authRole) && state.api_token) {
+                return true;
+            }
+            return false;
+        },
+        verifyFSLAccess: function verifyFSLAccess(state) {
+            if (state.FSLAccess.includes(state.authRole) && state.api_token) {
+                return true;
+            }
+            return false;
+        },
+        getProfileAccess: function getProfileAccess(state) {
+            return state.ProfileAccess;
+        },
+        getProfileEditAccess: function getProfileEditAccess(state) {
+            return state.ProfileEditAccess;
+        }
+    },
+    mutations: {
+        mutateProfileAccess: function mutateProfileAccess(state, payload) {
+            state.ProfileAccess.push(payload);
+        },
+        mutateAuth: function mutateAuth(state) {
+            state.authRole = parseInt(localStorage.getItem('role'));
+            state.api_token = localStorage.getItem('api_token');
+        }
+    },
+    actions: {
+        mutateProfileAccess: function mutateProfileAccess(context, payload) {
+            context.commit('mutateProfileAccess', payload);
+        },
+        mutateAuth: function mutateAuth(context) {
+            context.commit('mutateAuth');
+        }
+    }
+});
+
+/***/ }),
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13004,7 +13086,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -23375,7 +23457,7 @@ return jQuery;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25904,7 +25986,7 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25922,7 +26004,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25933,7 +26015,7 @@ var settle = __webpack_require__(46);
 var buildURL = __webpack_require__(48);
 var parseHeaders = __webpack_require__(49);
 var isURLSameOrigin = __webpack_require__(50);
-var createError = __webpack_require__(18);
+var createError = __webpack_require__(19);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(51);
 
 module.exports = function xhrAdapter(config) {
@@ -26109,7 +26191,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26134,7 +26216,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26146,7 +26228,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26170,88 +26252,6 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(13);
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
-var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
-    state: {
-        loader: false,
-        ProfileAccess: [],
-        ProfileEditAccess: [],
-        DSALead: [1, 2, 8, 9, 15],
-        DSACaptain: [1, 2, 8, 9, 15, 17],
-        DSAAccess: [1, 2, 8, 9, 15, 17, 18],
-        DVALead: [1, 2, 8, 9, 13, 16],
-        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
-        HRMAccess: [1, 2, 6, 7, 8, 9],
-        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
-        authRole: parseInt(localStorage.getItem('role')),
-        api_token: localStorage.getItem('api_token')
-    },
-    getters: {
-        verifyDSAAccess: function verifyDSAAccess(state) {
-            if (state.DSAAccess.includes(state.authRole) && state.api_token) {
-                return true;
-            }
-            return false;
-        },
-        verifyDVAAccess: function verifyDVAAccess(state) {
-            if (state.DVAAccess.includes(state.authRole) && state.api_token) {
-                return true;
-            }
-            return false;
-        },
-        verifyHRMAccess: function verifyHRMAccess(state) {
-            if (state.HRMAccess.includes(state.authRole) && state.api_token) {
-                return true;
-            }
-            return false;
-        },
-        verifyFSLAccess: function verifyFSLAccess(state) {
-            if (state.FSLAccess.includes(state.authRole) && state.api_token) {
-                return true;
-            }
-            return false;
-        },
-        getProfileAccess: function getProfileAccess(state) {
-            return state.ProfileAccess;
-        },
-        getProfileEditAccess: function getProfileEditAccess(state) {
-            return state.ProfileEditAccess;
-        }
-    },
-    mutations: {
-        mutateProfileAccess: function mutateProfileAccess(state, payload) {
-            state.ProfileAccess.push(payload);
-        },
-        mutateAuth: function mutateAuth(state) {
-            state.authRole = parseInt(localStorage.getItem('role'));
-            state.api_token = localStorage.getItem('api_token');
-        }
-    },
-    actions: {
-        mutateProfileAccess: function mutateProfileAccess(context, payload) {
-            context.commit('mutateProfileAccess', payload);
-        },
-        mutateAuth: function mutateAuth(context) {
-            context.commit('mutateAuth');
-        }
-    }
-});
 
 /***/ }),
 /* 22 */
@@ -26775,12 +26775,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store_globalFunctions_js__ = __webpack_require__(158);
-window.$ = window.jQuery = __webpack_require__(14);
-window.Popper = __webpack_require__(15).default;
+window.$ = window.jQuery = __webpack_require__(15);
+window.Popper = __webpack_require__(16).default;
 __webpack_require__(30);
 
 
@@ -26813,7 +26813,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(14), __webpack_require__(15)) :
+   true ? factory(exports, __webpack_require__(15), __webpack_require__(16)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -31544,7 +31544,7 @@ module.exports = __webpack_require__(42);
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(16);
+var bind = __webpack_require__(17);
 var Axios = __webpack_require__(44);
 var defaults = __webpack_require__(12);
 
@@ -31579,9 +31579,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(20);
+axios.Cancel = __webpack_require__(21);
 axios.CancelToken = __webpack_require__(58);
-axios.isCancel = __webpack_require__(19);
+axios.isCancel = __webpack_require__(20);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -31734,7 +31734,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(18);
+var createError = __webpack_require__(19);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -32167,7 +32167,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(55);
-var isCancel = __webpack_require__(19);
+var isCancel = __webpack_require__(20);
 var defaults = __webpack_require__(12);
 var isAbsoluteURL = __webpack_require__(56);
 var combineURLs = __webpack_require__(57);
@@ -32327,7 +32327,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(20);
+var Cancel = __webpack_require__(21);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -32712,7 +32712,7 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router_back_button__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router_back_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_router_back_button__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_HomePage_vue__ = __webpack_require__(66);
@@ -32759,9 +32759,15 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__views_FSL_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__views_FSL_index_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_inventory_vue__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_inventory_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_inventory_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__views_FSL_branch_create_vue__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__views_FSL_branch_create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__views_FSL_branch_create_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__views_FSL_branch_update_vue__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__views_FSL_branch_update_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27__views_FSL_branch_update_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__views_FSL_inventory_inventory_vue__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__views_FSL_inventory_inventory_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_28__views_FSL_inventory_inventory_vue__);
 var _this = this;
+
+
 
 
 
@@ -32844,7 +32850,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
         }]
     }, {
         path: '/fsl', component: __WEBPACK_IMPORTED_MODULE_24__views_FSL_index_vue___default.a, meta: { FSL: true },
-        children: [{ path: 'home', component: __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue___default.a, name: 'FSLHome', alias: '/fsl-home' }, { path: 'inventory', component: __WEBPACK_IMPORTED_MODULE_26__views_FSL_inventory_inventory_vue___default.a, name: 'inventory', alias: '/inventory' }]
+        children: [{ path: 'home', component: __WEBPACK_IMPORTED_MODULE_25__views_FSL_HomePage_vue___default.a, name: 'FSLHome', alias: '/fsl-home' }, { path: 'inventory', component: __WEBPACK_IMPORTED_MODULE_28__views_FSL_inventory_inventory_vue___default.a, name: 'inventory', alias: '/inventory' }, { path: 'branch/create', component: __WEBPACK_IMPORTED_MODULE_26__views_FSL_branch_create_vue___default.a, name: 'branchCreate', alias: '/branch-create' }, { path: 'branch/update', component: __WEBPACK_IMPORTED_MODULE_27__views_FSL_branch_update_vue___default.a, name: 'branchUpdate', alias: '/branch-update' }]
     }, { path: '/not-found', component: __WEBPACK_IMPORTED_MODULE_6__views_NotFound_vue___default.a }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_6__views_NotFound_vue___default.a }]
 });
 
@@ -37779,7 +37785,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     created: function created() {
-        if (this.$store.state.DSALead.includes(this.$store.state.authRole)) this.portals[2].aces = true;else this.portals[2].aces = false;
+        this.$store.state.DSALead.includes(this.$store.state.authRole) ? this.portals[2].aces = true : this.portals[2].aces = false;
         /*only the dsa lead can access the report portal hence the method*/
     }
 });
@@ -38563,6 +38569,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__helpers_flash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_FSL_utility_branchForm__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_FSL_utility_branchForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__views_FSL_utility_branchForm__);
 //
 //
 //
@@ -38748,6 +38756,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -38758,7 +38795,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
-        UtilityForm: __WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form___default.a
+        UtilityForm: __WEBPACK_IMPORTED_MODULE_5__views_HRM_utility_form___default.a,
+        BranchForm: __WEBPACK_IMPORTED_MODULE_6__views_FSL_utility_branchForm___default.a
     },
     data: function data() {
         return {
@@ -38786,17 +38824,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             /*data generic to data viewer stops here*/
 
-            /*data peculiar to hrm portal data viewer*/
+            /*data peculiar to hrm portal data viewer starts here*/
             bus: new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(),
             form: {},
             portal_access: [{ name: 'grant', value: 1 }, { name: 'deny', value: 0 }],
-            sentData: {}
-            /*data peculiar to hrm portal data viewer*/
+            sentData: {},
+            /*data peculiar to hrm portal data viewer stops here*/
+
+            /*data peculiar to fsl branch portal data viewer starts here*/
+
+            states: {},
+            branchToUpdate: {}
+
+            /*data peculiar to fsl branch portal data viewer stops here*/
         };
     },
 
     props: ['source', 'title', 'appModel'],
     created: function created() {
+        var _this = this;
+
+        if (this.appModel === 'branch') Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('/api/state').then(function (res) {
+            return _this.states = res.data.states;
+        });
         this.fetchIndexData();
     },
     updated: function updated() {
@@ -38827,20 +38877,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.fetchIndexData();
         },
         fetchIndexData: function fetchIndexData() {
-            var _this = this;
+            var _this2 = this;
 
+            this.$LIPS(true);
+            $('.modal').modal('hide');
             Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('' + this.source + ('?page=' + this.query.page) + ('&column=' + this.query.column) + ('&per_page=' + this.query.per_page) + ('&direction=' + this.query.direction) + ('&search_input=' + this.query.search_input) + ('&search_column=' + this.query.search_column) + ('&search_operator=' + this.query.search_operator)).then(function (res) {
-                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(_this.$data, 'model', res.data.model);
-                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(_this.$data, 'columns', res.data.columns);
-                _this.$scrollToTop();
-                $('.modal').modal('hide');
-                _this.$LIPS(false);
+                var data = res.data.model.data;
+                /*the state id for the branch fetched from the db is a number
+                * hence the code below is used to get the state name
+                * corresponding to the state id and display it
+                * instead of showing state id as a number*/
+                if (data[0].state_id) {
+                    var _loop = function _loop(i) {
+                        data[i].state_id = _this2.states.find(function (obj) {
+                            return obj.id === data[i].state_id;
+                        }).name;
+                    };
+
+                    for (var i = 0; i < data.length; i++) {
+                        _loop(i);
+                    }
+                }
+                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(_this2.$data, 'model', res.data.model);
+                __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(_this2.$data, 'columns', res.data.columns);
+                _this2.$scrollToTop();
+                _this2.$LIPS(false);
             });
         },
 
         /*methods exclusive to data viewer stop here*/
 
-        /*methods exclusive to hrm data viewer stop here*/
+        /*methods exclusive to hrm data viewer starts here*/
         accessStatus: function accessStatus(status) {
             return Boolean(Number(status));
             /*returns true or false for the portal
@@ -38848,7 +38915,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             (1 or 0 respectively)*/
         },
         update: function update(emp, mod) {
-            var _this2 = this;
+            var _this3 = this;
 
             var up = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
@@ -38867,28 +38934,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])("api/employee/" + emp.id + "/edit").then(function (res) {
                         /*the full employee details are fetched to populate
                         the form for editing ie the utility form*/
-                        _this2.sentData = res.data;
+                        _this3.sentData = res.data;
                         /*the data sent to the utility form is updated*/
                         $('#' + mod).modal('toggle');
                         /*corresponding modal is toggled*/
-                        _this2.$LIPS(false);
+                        _this3.$LIPS(false);
                     });
                 } else this.$networkErr();
             }
         },
         resetPassword: function resetPassword() {
-            var _this3 = this;
+            var _this4 = this;
 
             if (this.$network()) {
                 this.$LIPS(true);
                 Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('api/reset-password/' + this.form.id).then(function (res) {
-                    _this3.$scrollToTop();
+                    _this4.$scrollToTop();
                     $('#editPassword').modal('toggle');
-                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_log__["a" /* log */])('resetUserPassword', _this3.form.staff_id);
+                    Object(__WEBPACK_IMPORTED_MODULE_2__helpers_log__["a" /* log */])('resetUserPassword', _this4.form.staff_id);
                     __WEBPACK_IMPORTED_MODULE_4__helpers_flash__["a" /* default */].setSuccess('The employee password was successfully reset!');
-                    var details = { phone: String(parseInt(_this3.form.phone_number)), password: res.data.password };
+                    var details = { phone: String(parseInt(_this4.form.phone_number)), password: res.data.password };
                     __WEBPACK_IMPORTED_MODULE_1__helpers_sms__["a" /* default */].passwordReset(details);
-                    _this3.$LIPS(false);
+                    _this4.$LIPS(false);
                 });
             } else this.$networkErr();
         },
@@ -38897,14 +38964,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.fetchIndexData();
             type == 'err' ? __WEBPACK_IMPORTED_MODULE_4__helpers_flash__["a" /* default */].setError(msg, 10000) : __WEBPACK_IMPORTED_MODULE_4__helpers_flash__["a" /* default */].setSuccess(msg);
+        },
+
+        /*methods exclusive to hrm data viewer stops here*/
+
+        /*methods exclusive to branch on  fsl portal*/
+        updateBranch: function updateBranch(id) {
+            var _this5 = this;
+
+            /*id id the id of the branch as fetched from the data view*/
+            if (this.$network()) {
+                this.$LIPS(true);
+                Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('/api/branch/' + id).then(function (res) {
+                    /*the branch details with that id is fetched and prepared to be
+                    * sent to the for for branch update
+                    * NB same form is used both for
+                    * update and creating branch*/
+                    _this5.branchToUpdate = res.data.branch;
+                    $('#updateBranch').modal('toggle');
+                });
+            } else this.$networkErr();
         }
+        /*methods exclusive to branch on  fsl portal*/
+
     },
     computed: {
         user: function user() {
             return !!(this.appModel == 'user');
-            /*return true of the context
+            /*return true if the context
             * of the data viewer is
             * for employees*/
+        },
+        branch: function branch() {
+            return !!(this.appModel == 'branch');
+            /*return true if the context
+            * of the data viewer is
+            * for branch*/
         }
     }
 });
@@ -39416,7 +39511,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 _this.$scrollToTop();
                                 _this.error = err.response.data;
                                 if (err.response.data.errors) _this.error = err.response.data.errors;
-                                __WEBPACK_IMPORTED_MODULE_2__helpers_flash__["a" /* default */].setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
+                                _this.$networkErr('unique');
                             }
                             _this.$LIPS(false);
                         });
@@ -40990,7 +41085,7 @@ var render = function() {
                   )
                 }),
                 _vm._v(" "),
-                _vm.user
+                _vm.user || _vm.branch
                   ? _c("th", { attrs: { scope: "col" } }, [
                       _c("span", [_vm._v("Action")])
                     ])
@@ -41002,11 +41097,11 @@ var render = function() {
           _vm._v(" "),
           _c(
             "tbody",
-            _vm._l(_vm.model.data, function(employee) {
+            _vm._l(_vm.model.data, function(model) {
               return _c(
                 "tr",
                 [
-                  _vm._l(employee, function(value, key) {
+                  _vm._l(model, function(value, key) {
                     return _c("td", [_vm._v(_vm._s(value))])
                   }),
                   _vm._v(" "),
@@ -41024,7 +41119,7 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
-                                _vm.update(employee, "updateEmployee", 1)
+                                _vm.update(model, "updateEmployee", 1)
                               }
                             }
                           },
@@ -41038,10 +41133,10 @@ var render = function() {
                               "text-center mr-2 btn btn-icon btn-sm float-left btn-round",
                             class: {
                               "btn-success": _vm.accessStatus(
-                                employee.portal_access
+                                model.portal_access
                               ),
                               "btn-danger": !_vm.accessStatus(
-                                employee.portal_access
+                                model.portal_access
                               )
                             },
                             attrs: {
@@ -41051,12 +41146,12 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
-                                _vm.update(employee, "editPortalAccess")
+                                _vm.update(model, "editPortalAccess")
                               }
                             }
                           },
                           [
-                            _vm.accessStatus(employee.portal_access)
+                            _vm.accessStatus(model.portal_access)
                               ? _c("i", { staticClass: "fas fa-lock-open" })
                               : _c("i", { staticClass: "fas fa-lock" })
                           ]
@@ -41074,7 +41169,30 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
-                                _vm.update(employee, "editPassword")
+                                _vm.update(model, "editPassword")
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fas fa-key" })]
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.branch
+                    ? _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round",
+                            attrs: {
+                              "data-toggle": "tooltip",
+                              "data-placement": "top",
+                              title: "update branch details"
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.updateBranch(model.id)
                               }
                             }
                           },
@@ -41381,7 +41499,37 @@ var render = function() {
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: { id: "updateBranch" }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "modal-body" },
+              [
+                _c("branch-form", {
+                  attrs: {
+                    action: "update",
+                    branchToUpdate: _vm.branchToUpdate
+                  },
+                  on: { done: _vm.fetchIndexData }
+                })
+              ],
+              1
+            )
+          ])
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -41519,6 +41667,34 @@ var staticRenderFns = [
           ])
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Update Branch Details")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "data-dismiss": "modal", "aria-label": "Close" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
     ])
   }
 ]
@@ -42987,11 +43163,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         /*on create of the component fetch the data required to prepare the form
         * states, branches and the currently logged in dsa details*/
-    },
-    mounted: function mounted() {
-        /*$('input').each(function(){
-            $(this).addClass('form-control');
-        })*/
     }
 });
 
@@ -43030,7 +43201,7 @@ exports = module.exports = __webpack_require__(22)(false);
 
 
 // module
-exports.push([module.i, "\ntr[data-v-07317a72] {\n    margin-bottom : 1rem;\n    float         : left;\n    width         : 100%;\n    font-weight   : 400;\n}\ntbody tr th[data-v-07317a72] {\n    width      : 2em;\n    text-align : center;\n}\n", ""]);
+exports.push([module.i, "\ntr[data-v-07317a72] {\n    margin-bottom    : .4rem;\n    float            : left;\n    width            : 100%;\n    font-weight      : 400;\n    background-color : rgba(7, 74, 116, .1);\n}\ntbody tr th[data-v-07317a72] {\n    width        : 4rem;\n    text-align   : center;\n    border-right : .4rem solid white;\n    border-left  : .3rem solid rgba(7, 74, 116, .7);\n}\ntbody tr td[data-v-07317a72] {\n    padding : .4rem 1.5rem;\n}\n\n", ""]);
 
 // exports
 
@@ -43049,6 +43220,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ImageUpload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_ImageUpload__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customerProfile__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customerProfile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_customerProfile__);
+//
+//
 //
 //
 //
@@ -43723,8 +43896,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     });
                 } else this.$networkErr();
             } else {
-                this.$networkErr('edit');$('.modal').modal('hide');
-            };
+                this.$networkErr('edit');
+                $('.modal').modal('hide');
+            }
+            ;
         },
         save: function save(document, modal) {
             var _this3 = this;
@@ -43748,8 +43923,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this3.$scrollToTop();
                 });
             } else {
-                this.$networkErr('edit');$('.modal').modal('hide');
-            };
+                this.$networkErr('edit');
+                $('.modal').modal('hide');
+            }
+            ;
         }
     },
     computed: {
@@ -45032,16 +45209,19 @@ var render = function() {
                           },
                           [
                             _c("div", { staticClass: "modal-body p-5" }, [
-                              _c("h5", [
-                                _c("tr", { staticClass: "m-0" }, [
-                                  _c("th", [
-                                    _c("i", {
-                                      staticClass: "fas fa-map-marker-alt mr-4"
-                                    })
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(_vm._s(_vm.customerAddress))
+                              _c("table", { staticClass: "mb-3 w-100" }, [
+                                _c("tbody", { staticClass: "px-3" }, [
+                                  _c("tr", [
+                                    _c("th", [
+                                      _c("i", {
+                                        staticClass:
+                                          "fas fa-map-marker-alt mx-4"
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm._v(_vm._s(_vm.customerAddress))
+                                    ])
                                   ])
                                 ])
                               ]),
@@ -46138,126 +46318,121 @@ var render = function() {
                                 [
                                   _c("div", { staticClass: "modal-body" }, [
                                     type !== "processing_fee"
-                                      ? _c("h5", [
-                                          _c("table", [
-                                            _c("tbody", [
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "mr-3 fas fa-map-marker-alt"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[type + "_state"]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.$data[
-                                                            type + "_address"
-                                                          ]
-                                                        )
-                                                      )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
+                                      ? _c("table", { staticClass: "mb-3" }, [
+                                          _c("tbody", [
+                                            _c("tr", [
+                                              _c("th", [
+                                                _c("i", {
+                                                  staticClass:
+                                                    "fas fa-map-marker-alt"
+                                                })
                                               ]),
                                               _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "mr-3 fas fa-mobile-alt"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[type + "_telno"]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.customer[
-                                                            type + "_telno"
-                                                          ]
-                                                        )
+                                              _vm.customer[type + "_state"]
+                                                ? _c("td", [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.$data[
+                                                          type + "_address"
+                                                        ]
                                                       )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
+                                                    )
+                                                  ])
+                                                : _c("td", [
+                                                    _vm._v(
+                                                      "please update customer details!"
+                                                    )
+                                                  ])
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("tr", [
+                                              _c("th", [
+                                                _c("i", {
+                                                  staticClass:
+                                                    "fas fa-mobile-alt"
+                                                })
                                               ]),
                                               _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "mr-3 fas fa-user-circle"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[
-                                                  type + "_first_name"
-                                                ]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
+                                              _vm.customer[type + "_telno"]
+                                                ? _c("td", [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.customer[
+                                                          type + "_telno"
+                                                        ]
+                                                      )
+                                                    )
+                                                  ])
+                                                : _c("td", [
+                                                    _vm._v(
+                                                      "please update customer details!"
+                                                    )
+                                                  ])
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("tr", [
+                                              _c("th", [
+                                                _c("i", {
+                                                  staticClass:
+                                                    " fas fa-user-circle"
+                                                })
+                                              ]),
+                                              _vm._v(" "),
+                                              _vm.customer[type + "_first_name"]
+                                                ? _c("td", [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.customer[
+                                                          type + "_first_name"
+                                                        ] +
+                                                          " " +
                                                           _vm.customer[
-                                                            type + "_first_name"
+                                                            type +
+                                                              "_middle_name"
                                                           ] +
-                                                            " " +
-                                                            _vm.customer[
-                                                              type +
-                                                                "_middle_name"
-                                                            ] +
-                                                            " " +
-                                                            _vm.customer[
-                                                              type +
-                                                                "_last_name"
-                                                            ]
-                                                        ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
+                                                          " " +
+                                                          _vm.customer[
+                                                            type + "_last_name"
+                                                          ]
+                                                      ) +
+                                                        "\n                                        "
+                                                    )
+                                                  ])
+                                                : _c("td", [
+                                                    _vm._v(
+                                                      "please update customer details!"
+                                                    )
+                                                  ])
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("tr", [
+                                              _c("th", [
+                                                _c("i", {
+                                                  staticClass:
+                                                    "fas fa-user-circle"
+                                                })
                                               ]),
                                               _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "mr-3 fas fa-user-circle"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[
-                                                  type + "_relationship"
-                                                ]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm._f("capitalize")(
-                                                            _vm.customer[
-                                                              type +
-                                                                "_relationship"
-                                                            ]
-                                                          )
+                                              _vm.customer[
+                                                type + "_relationship"
+                                              ]
+                                                ? _c("td", [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm._f("capitalize")(
+                                                          _vm.customer[
+                                                            type +
+                                                              "_relationship"
+                                                          ]
                                                         )
                                                       )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ])
+                                                    )
+                                                  ])
+                                                : _c("td", [
+                                                    _vm._v(
+                                                      "please update customer details!"
+                                                    )
+                                                  ])
                                             ])
                                           ])
                                         ])
@@ -46267,7 +46442,7 @@ var render = function() {
                                       "div",
                                       {
                                         staticClass:
-                                          "form-group col-12 px-2 float-left mt-0 mb-2"
+                                          "form-group col-12 px-2 clearfix my-0"
                                       },
                                       [
                                         _c("div", { staticClass: "clearfix" }, [
@@ -46803,68 +46978,61 @@ var render = function() {
                                               ])
                                         ]),
                                         _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass: "form-group clearfix"
-                                          },
-                                          [
-                                            _c("label", [_vm._v("Report")]),
-                                            _vm._v(" "),
-                                            _c("textarea", {
-                                              directives: [
-                                                {
-                                                  name: "model",
-                                                  rawName: "v-model",
-                                                  value: _vm.$data[type].report,
-                                                  expression:
-                                                    "$data[type].report"
-                                                },
-                                                {
-                                                  name: "validate",
-                                                  rawName: "v-validate",
-                                                  value: "required",
-                                                  expression: "'required'"
-                                                }
-                                              ],
-                                              staticClass: "form-control w-100",
-                                              attrs: {
-                                                placeholder: "comment here...",
-                                                rows: "3",
-                                                name: "report"
+                                        _c("div", { staticClass: "clearfix" }, [
+                                          _c("label", [_vm._v("Report")]),
+                                          _vm._v(" "),
+                                          _c("textarea", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.$data[type].report,
+                                                expression: "$data[type].report"
                                               },
-                                              domProps: {
-                                                value: _vm.$data[type].report
-                                              },
-                                              on: {
-                                                input: function($event) {
-                                                  if ($event.target.composing) {
-                                                    return
-                                                  }
-                                                  _vm.$set(
-                                                    _vm.$data[type],
-                                                    "report",
-                                                    $event.target.value
-                                                  )
-                                                }
+                                              {
+                                                name: "validate",
+                                                rawName: "v-validate",
+                                                value: "required",
+                                                expression: "'required'"
                                               }
-                                            }),
-                                            _vm._v(" "),
-                                            _vm.errors.first(type + ".report")
-                                              ? _c("small", [
-                                                  _vm._v(
-                                                    "\n                                            " +
-                                                      _vm._s(
-                                                        _vm.errors.first(
-                                                          type + ".report"
-                                                        )
-                                                      ) +
-                                                      "\n                                        "
-                                                  )
-                                                ])
-                                              : _vm._e()
-                                          ]
-                                        )
+                                            ],
+                                            staticClass: "form-control w-100",
+                                            attrs: {
+                                              placeholder: "comment here...",
+                                              rows: "3",
+                                              name: "report"
+                                            },
+                                            domProps: {
+                                              value: _vm.$data[type].report
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.$data[type],
+                                                  "report",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _vm.errors.first(type + ".report")
+                                            ? _c("small", [
+                                                _vm._v(
+                                                  "\n                                            " +
+                                                    _vm._s(
+                                                      _vm.errors.first(
+                                                        type + ".report"
+                                                      )
+                                                    ) +
+                                                    "\n                                        "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ])
                                       ]
                                     )
                                   ]),
@@ -55512,7 +55680,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -56383,8 +56551,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             portals: [{
                 url: 'inventory', title: 'Products Inventory', url_c: 'View Inventory!',
                 desc: 'For products inventory and management'
+            }, {
+                url: 'branch/create', title: 'Create Branch', url_c: 'Create Branch now!',
+                desc: 'Create a new Branch office', aces: false
+            }, {
+                url: 'branch/update', title: 'Update Branch', url_c: 'Update Branch now!',
+                desc: 'Update a Branch office', aces: false
             }]
         };
+    },
+    created: function created() {
+        if (this.$store.state.FSLLead.includes(this.$store.state.authRole)) {
+            this.portals[1].aces = true;
+            this.portals[2].aces = true;
+        } else {
+            this.portals[1].aces = false;
+            this.portals[2].aces = false;
+        }
+        /*only the dsa lead can access the report portal hence the method*/
     }
 });
 
@@ -56408,7 +56592,8 @@ var render = function() {
                 url: portal.url,
                 title: portal.title,
                 url_c: portal.url_c,
-                desc: portal.desc
+                desc: portal.desc,
+                aces: portal.aces
               }
             })
           ],
@@ -64355,7 +64540,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('slug', function (value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(13);
 
 
 
@@ -64405,6 +64590,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$networkErr = function () 
     if (err == 'form') msg = 'Please ensure all the fields are filled correctly!';
     if (err == 'page') msg = 'You do not have access to that page!';
     if (err == 'edit') msg = 'You do not have access to edit details because it is out of your jurisdiction!';
+    if (err == 'unique') msg = 'Your details contains a unique field that already exists in our record change it and try again!';
     __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(msg, 10000);
     //custom message for network "no network connection" and
     //form field validation error
@@ -64676,6 +64862,1124 @@ nowuiKitDemo = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(168)
+/* template */
+var __vue_template__ = __webpack_require__(169)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\branch\\create.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0fbe97dc", Component.options)
+  } else {
+    hotAPI.reload("data-v-0fbe97dc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(170)
+/* template */
+var __vue_template__ = __webpack_require__(171)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\branch\\update.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a702fdae", Component.options)
+  } else {
+    hotAPI.reload("data-v-a702fdae", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 168 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_branchForm__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_branchForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utility_branchForm__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: { BranchForm: __WEBPACK_IMPORTED_MODULE_0__utility_branchForm___default.a }
+});
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c("div", { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeEdit" } }, [
+      _c("div", { staticClass: "card" }, [
+        _c(
+          "ul",
+          { staticClass: "nav nav-tabs justify-content-center bg-default" },
+          [_c("h6", [_vm._v("Create Branch")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body pl-4 pr-4" },
+          [_c("branch-form", { attrs: { action: "create" } })],
+          1
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0fbe97dc", module.exports)
+  }
+}
+
+/***/ }),
+/* 170 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DataViewer__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DataViewer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_DataViewer__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: { DataViewer: __WEBPACK_IMPORTED_MODULE_0__components_DataViewer___default.a }
+});
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c("div", { staticClass: "pt-md-3 pt-2", attrs: { id: "index" } }, [
+      _c(
+        "div",
+        { staticClass: "card" },
+        [
+          _c(
+            "ul",
+            { staticClass: "nav nav-tabs justify-content-center bg-default" },
+            [_c("h6", [_vm._v("Manage Branches")])]
+          ),
+          _vm._v(" "),
+          _c("data-viewer", {
+            attrs: {
+              source: "/api/branch",
+              title: "Branch(s)",
+              appModel: "branch"
+            }
+          })
+        ],
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a702fdae", module.exports)
+  }
+}
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(173)
+/* template */
+var __vue_template__ = __webpack_require__(174)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\utility\\branchForm.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-01f74a80", Component.options)
+  } else {
+    hotAPI.reload("data-v-01f74a80", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 173 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_log__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_api__ = __webpack_require__(3);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        //the component is never called exclusively its
+        //is called by another parent component.
+        //the action is purpose or the context
+        action: '',
+        branchToUpdate: { default: {} }
+    },
+    data: function data() {
+        return {
+            form: {},
+            banks: {},
+            error: {},
+            states: {}
+        };
+    },
+
+    methods: {
+        ifCreate: function ifCreate(a) {
+            //a is the action for which the form is called or the context
+            //the form is used this function return true if the
+            //action : a is === create else else
+            return !!(a === 'create');
+        },
+        ifUpdate: function ifUpdate(a) {
+            //a is the action for which the form is called or the context
+            //the form is used this function return true if the
+            //action : a is === update else else
+            return !!(a === 'update');
+        },
+        prepareForm: function prepareForm(data) {
+            //this function is used when a data is sent to this component
+            //or this component makes a request to backend the
+            //data received is used to prepare the form
+            this.error = {};
+            this.errors.clear();
+            this.form = data.form;
+            this.banks = data.banks;
+            this.states = data.states;
+        },
+        processBranch: function processBranch() {
+            var _this = this;
+
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this.$network()) {
+                        _this.$LIPS(true);
+                        _this.error = {};
+                        var url = 'api/branch',
+                            action = _this.$options.filters.capitalize(_this.action);
+                        //for creating a branch the url above is used
+                        if (_this.action === 'update') url = "api/branch/" + _this.branchToUpdate.id;
+                        //else if the form action is not create den its update
+                        //hence the url "api/branch/{id}"
+                        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])(url, _this.form).then(function (res) {
+                            _this.$scrollToTop();
+                            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])('Branch' + action, String(_this.form.employee_id));
+                            if (_this.ifCreate(_this.action)) {
+                                _this.prepareForm(res.data.prepareForm);
+                                _this.$LIPS(false);
+                            }
+                            if (_this.ifUpdate(_this.action)) _this.$emit('done');
+                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('Branch ' + _this.action + 'd successfully!', 20000);
+                        }).catch(function (err) {
+                            if (err.response.status === 422) {
+                                //catch error thrown by laravel validation;
+                                _this.$scrollToTop();
+                                _this.error = err.response.data;
+                                if (err.response.data.errors) _this.error = err.response.data.errors;
+                                _this.$networkErr('unique');
+                            }
+                            _this.$LIPS(false);
+                        });
+                    } else _this.$networkErr();
+                }
+                if (!result) _this.$networkErr('form');
+            });
+        }
+    },
+    created: function created() {
+        var _this2 = this;
+
+        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])('/api/branch/create').then(function (res) {
+            return _this2.prepareForm(res.data);
+        });
+        // fetch data for new branch registration and prepare form
+    },
+
+    watch: {
+        branchToUpdate: function branchToUpdate(newVal) {
+            /*watches when a data is sent from the parent (dataviewer)
+            * to this component*/
+            this.form = newVal;
+            this.$LIPS(false);
+        }
+    }
+});
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    {
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.processBranch($event)
+        }
+      }
+    },
+    [
+      _c("h5", [_vm._v("Branch Details")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("Branch Name")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required",
+                expression: "'required'"
+              },
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.name,
+                expression: "form.name"
+              }
+            ],
+            staticClass: "form-control",
+            class: { "is-invalid": _vm.error.email },
+            attrs: {
+              type: "text",
+              placeholder: "branch name",
+              name: "branch_name",
+              "data-vv-as": "branch name"
+            },
+            domProps: { value: _vm.form.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "name", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.first("branch_name")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("branch_name")))])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.error.name
+            ? _c("small", [_vm._v(_vm._s(_vm.error.name[0]))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("State")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.state_id,
+                  expression: "form.state_id"
+                },
+                {
+                  name: "validate",
+                  rawName: "v-validate",
+                  value: "required",
+                  expression: "'required'"
+                }
+              ],
+              staticClass: "custom-select w-100",
+              attrs: { name: "state", "data-vv-validate-on": "blur" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.form,
+                    "state_id",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "", selected: "" } }, [
+                _vm._v("select state")
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.states, function(state) {
+                return _c("option", { domProps: { value: state.id } }, [
+                  _vm._v(_vm._s(_vm._f("capitalize")(state.name)))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm.errors.first("state")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("state")))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "spaceBetween  mb-md-2 mb-0" }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("Phone (English)")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.phone_english,
+                expression: "form.phone_english"
+              },
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required|numeric|max:11|min:11",
+                expression: "'required|numeric|max:11|min:11'"
+              }
+            ],
+            staticClass: "form-control",
+            class: { "is-invalid": _vm.error.email },
+            attrs: {
+              type: "tel",
+              placeholder: "081xxxxxxxx",
+              name: "phone_english",
+              "data-vv-as": "phone english"
+            },
+            domProps: { value: _vm.form.phone_english },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "phone_english", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.first("phone_english")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("phone_english")))])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.error.phone_english
+            ? _c("small", [_vm._v(_vm._s(_vm.error.phone_english[0]))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("Phone (Yoruba)")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.phone_yoruba,
+                expression: "form.phone_yoruba"
+              },
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required|numeric|max:11|min:11",
+                expression: "'required|numeric|max:11|min:11'"
+              }
+            ],
+            staticClass: "form-control",
+            class: { "is-invalid": _vm.error.email },
+            attrs: {
+              type: "tel",
+              placeholder: "081xxxxxxxx",
+              name: "phone_yoruba",
+              "data-vv-as": "phone yoruba"
+            },
+            domProps: { value: _vm.form.phone_yoruba },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "phone_yoruba", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.first("phone_yoruba")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("phone_yoruba")))])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.error.phone_yoruba
+            ? _c("small", [_vm._v(_vm._s(_vm.error.phone_yoruba[0]))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "spaceBetween  mb-md-2 mb-0" }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", { staticClass: "w-100 float-left pl-1" }, [
+            _vm._v("Status")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "radio pl-1 w-50 pr-3 float-left" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.status,
+                  expression: "form.status"
+                },
+                {
+                  name: "validate",
+                  rawName: "v-validate",
+                  value: "required",
+                  expression: "'required'"
+                }
+              ],
+              attrs: {
+                type: "radio",
+                name: "status",
+                id: "active",
+                value: "active"
+              },
+              domProps: { checked: _vm._q(_vm.form.status, "active") },
+              on: {
+                change: function($event) {
+                  _vm.$set(_vm.form, "status", "active")
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "active" } }, [_vm._v("Active")])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "radio pl-1 w-50 pr-3 float-left" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.status,
+                  expression: "form.status"
+                }
+              ],
+              attrs: {
+                type: "radio",
+                name: "status",
+                id: "passive",
+                value: "passive"
+              },
+              domProps: { checked: _vm._q(_vm.form.status, "passive") },
+              on: {
+                change: function($event) {
+                  _vm.$set(_vm.form, "status", "passive")
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "passive" } }, [_vm._v("Passive")])
+          ]),
+          _vm._v(" "),
+          _vm.errors.first("status")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("status")))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("Describe Location")]),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.description,
+                expression: "form.description"
+              },
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required|max:255",
+                expression: "'required|max:255'"
+              }
+            ],
+            staticClass: "form-control w-100",
+            attrs: {
+              placeholder: "address description",
+              name: "description",
+              rows: "1"
+            },
+            domProps: { value: _vm.form.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "description", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.first("description")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("description")))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "spaceAfter" }),
+      _vm._v(" "),
+      _c("h5", [_vm._v("Account Details")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("Email")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.email,
+                expression: "form.email"
+              },
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required|email",
+                expression: "'required|email'"
+              }
+            ],
+            staticClass: "form-control",
+            class: { "is-invalid": _vm.error.email },
+            attrs: {
+              type: "email",
+              placeholder: "name@example.com",
+              name: "email"
+            },
+            domProps: { value: _vm.form.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "email", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.first("email")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("email")))])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.error.email
+            ? _c("small", [_vm._v(_vm._s(_vm.error.email[0]))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("Bank")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.bank,
+                  expression: "form.bank"
+                },
+                {
+                  name: "validate",
+                  rawName: "v-validate",
+                  value: "required",
+                  expression: "'required'"
+                }
+              ],
+              staticClass: "custom-select w-100",
+              attrs: { name: "bank", "data-vv-validate-on": "blur" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.form,
+                    "bank",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "", selected: "" } }, [
+                _vm._v("select bank")
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.banks, function(bank) {
+                return _c("option", { domProps: { value: bank.id } }, [
+                  _vm._v(_vm._s(_vm._f("capitalize")(bank.name)))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm.errors.first("bank")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("bank")))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "spaceBetween  mb-md-2 mb-0" }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("Account Name")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required",
+                expression: "'required'"
+              },
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.account_name,
+                expression: "form.account_name"
+              }
+            ],
+            staticClass: "form-control",
+            class: { "is-invalid": _vm.error.email },
+            attrs: {
+              type: "text",
+              placeholder: "branch name",
+              name: "account_name",
+              "data-vv-as": "account name"
+            },
+            domProps: { value: _vm.form.account_name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "account_name", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.first("account_name")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("account_name")))])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.error.account_name
+            ? _c("small", [_vm._v(_vm._s(_vm.error.account_name[0]))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
+        [
+          _c("label", [_vm._v("Account Number")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.account_number,
+                expression: "form.account_number"
+              },
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required|numeric|max:10|min:10",
+                expression: "'required|numeric|max:10|min:10'"
+              }
+            ],
+            staticClass: "form-control",
+            class: { "is-invalid": _vm.error.email },
+            attrs: {
+              type: "tel",
+              placeholder: "01xxxxxxxx",
+              name: "account_number",
+              "data-vv-as": "account number"
+            },
+            domProps: { value: _vm.form.account_number },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "account_number", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.first("account_number")
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("account_number")))])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.error.account_number
+            ? _c("small", [_vm._v(_vm._s(_vm.error.account_number[0]))])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c("hr", { staticClass: "style-two" }),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3 float-right"
+        },
+        [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-block btn-lg bg-default",
+              attrs: { type: "submit", disabled: _vm.$isProcessing }
+            },
+            [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm._f("capitalize")(_vm.action)) +
+                  " Branch "
+              ),
+              _c("i", { staticClass: "far fa-paper-plane ml-1" })
+            ]
+          )
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-01f74a80", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

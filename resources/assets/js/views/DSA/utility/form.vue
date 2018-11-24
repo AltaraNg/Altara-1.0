@@ -1434,10 +1434,5 @@
             /*on create of the component fetch the data required to prepare the form
             * states, branches and the currently logged in dsa details*/
         },
-        mounted(){
-            /*$('input').each(function(){
-                $(this).addClass('form-control');
-            })*/
-        }
     }
 </script>

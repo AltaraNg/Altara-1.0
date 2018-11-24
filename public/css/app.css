@@ -16432,23 +16432,6 @@ button,
   margin: 1rem auto;
 }
 
-/*.card.portal {
-
-  border-left:2px solid rgb(0, 163, 104);
-
-  a{
-    border-radius: 50%;
-    padding: 2rem;
-    background-color: orange;
-    color: white;
-  }
-
-  i, svg {
-    font-size : 9rem;
-    opacity   : .1;
-    margin    : 1rem auto;
-  }
-}*/
 hr.style-two {
   border: 0;
   height: 1px;
@@ -16483,13 +16466,13 @@ hr.style-two {
 #employeeEdit h5,
 #customerRegister h5,
 #employeeRegister h5 {
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: rgba(7, 74, 116, 0.07);
   padding: .6rem 1.5rem;
   border-radius: 3px;
   font-size: 1.6rem !important;
   font-weight: 600;
-  -webkit-box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.08) inset;
-          box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.08) inset;
+  -webkit-box-shadow: 0 0 0.5rem 0 rgba(7, 74, 116, 0.08) inset;
+          box-shadow: 0 0 0.5rem 0 rgba(7, 74, 116, 0.08) inset;
   float: left;
   width: 100%;
   color: rgba(7, 74, 116, 0.9);

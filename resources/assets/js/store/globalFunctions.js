@@ -43,6 +43,7 @@ Vue.prototype.$networkErr = function (err = '') {
     if (err == 'form') msg = 'Please ensure all the fields are filled correctly!';
     if (err == 'page') msg = 'You do not have access to that page!';
     if (err == 'edit') msg = 'You do not have access to edit details because it is out of your jurisdiction!';
+    if (err == 'unique') msg = 'Your details contains a unique field that already exists in our record change it and try again!';
     Flash.setError(msg, 10000);
     //custom message for network "no network connection" and
     //form field validation error

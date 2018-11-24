@@ -16,17 +16,23 @@ class CreateBranchesTable extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name');
-            $table->string('phone_english');
-            $table->string('phone_yoruba');
-            $table->string('account_name')->nullable();
-            $table->string('account_number')->nullable();
+            $table->string('employee_name', 50);
+            $table->unsignedInteger('user_id')->index()->nullable();
+            $table->string('employee_id', 30);
+            $table->string('name')->unique();
+            $table->string('status');
+            $table->string('phone_english')->unique();
+            $table->string('phone_yoruba')->unique();
+            $table->string('account_name')->nullable()->unique();
+            $table->string('account_number')->nullable()->unique();
+            $table->string('email')->nullable()->unique();
             $table->string('bank')->nullable();
             $table->unsignedInteger('state_id')->index()->nullable();
             $table->text('description');
             $table->timestamps();
         });
         Schema::table('branches', function ($table) {
+//            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('state_id')->references('id')->on('states');
         });
     }

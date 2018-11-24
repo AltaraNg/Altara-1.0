@@ -489,7 +489,7 @@
                                         this.$scrollToTop();
                                         this.error = err.response.data;
                                         if (err.response.data.errors) this.error = err.response.data.errors;
-                                        Flash.setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
+                                        this.$networkErr('unique');
                                     }
                                     this.$LIPS(false);
                                 })
