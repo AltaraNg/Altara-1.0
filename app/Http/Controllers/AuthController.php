@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Branch;
 use App\Role;
 use App\User;
+use DateTime;
 use Hash;
 use Illuminate\Http\Request;
+use Validator;
 
 class AuthController extends Controller
 {
@@ -29,10 +31,17 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        Validator::extend('older_than', function($attribute, $value, $parameters)
+        {
+            $minAge = ( ! empty($parameters)) ? (int) $parameters[0] : 18;
+            return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
+        });
+
         $this->validate($request, [
             'email' => 'unique:users',
             'staff_id' => 'unique:users',
             'phone_number' => 'unique:users',
+            'date_of_birth' => 'older_than:18',
         ]);
         $user = new User($request->all());
         $gen_password = str_random(10);

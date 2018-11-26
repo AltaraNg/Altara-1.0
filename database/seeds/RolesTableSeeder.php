@@ -93,6 +93,11 @@ class RolesTableSeeder extends Seeder
         $role->save();
 
         $role = new Role();
+        $role->name = 'Direct Sales Agent Captain';
+        $role->description = 'DSAC';
+        $role->save();
+
+        $role = new Role();
         $role->name = 'Direct Sales Agent';
         $role->description = 'DSA';
         $role->save();
@@ -110,6 +115,11 @@ class RolesTableSeeder extends Seeder
         $role = new Role();
         $role->name = 'Document Verification Agent';
         $role->description = 'DVA';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'Document Verification Agent Captain';
+        $role->description = 'DVAC';
         $role->save();
 
         $role = new Role();

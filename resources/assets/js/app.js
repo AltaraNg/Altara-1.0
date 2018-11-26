@@ -10,7 +10,9 @@ import './store/filters.js';
 import './store/globalFunctions.js';
 
 Vue.use(VeeValidate, {
-    events: 'input|blur'
+    events: 'input|blur',
+    classes: true,
+    classNames:{invalid: 'is-invalid'}
 });
 const app = new Vue({
     el: '#root',

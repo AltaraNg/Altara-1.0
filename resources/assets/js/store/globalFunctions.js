@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Flash from '../helpers/flash';
+import {store} from '../store/store';
 //NB functions her can be accessed anywhere
 // on the project(vue components)
 // by using this.$functionName
@@ -40,8 +41,37 @@ Vue.prototype.$networkErr = function (err = '') {
     this.$LIPS(false);
     let msg = 'Your are not connected to the network please wait till network is back!';
     if (err == 'form') msg = 'Please ensure all the fields are filled correctly!';
-    if (err == 'page') msg = 'You do not have access to that page!!';
-    Flash.setError(msg);
+    if (err == 'page') msg = 'You do not have access to that page!';
+    if (err == 'edit') msg = 'You do not have access to edit details because it is out of your jurisdiction!';
+    Flash.setError(msg, 10000);
     //custom message for network "no network connection" and
     //form field validation error
+};
+
+Vue.prototype.$editAccess = function (user = '', customer = '') {
+    if (!!user && !!customer) {
+        if (store.getters.verifyDSAAccess) {
+            if (store.state.DSALead.includes(user.role_id)) {
+                return true;
+            } else {
+                if (user.branch_id === customer.user.branch_id) {
+                    if (store.state.DSACaptain.includes(user.role_id)) {
+                        return true;
+                    } else {
+                        if (user.id === customer.user.id) {
+                            return true
+                        } else return false;
+                    }
+                } else return false;
+            }
+        } else if (store.getters.verifyDVAAccess) {
+            if (store.state.DVALead.includes(user.role_id)) {
+                return true
+            } else {
+                if (user.branch_id === customer.user.branch_id) {
+                    return true
+                } else return false;
+            }
+        } else return false;
+    } else return false;
 };

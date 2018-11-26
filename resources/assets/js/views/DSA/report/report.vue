@@ -10,24 +10,22 @@
                                 <label>Report Type</label>
                                 <select class="custom-select w-100" v-model="report.type"
                                         v-validate="'required'" data-vv-as="report type" data-vv-validate-on="blur"
-                                        name="report_type"
-                                        :class="{'is-invalid': errors.first('report_type')}">
+                                        name="report_type">
                                     <option value="">select type</option>
                                     <option :value="type.slug" v-for="type in types">{{type.name | capitalize}}</option>
                                 </select>
-                                <small class="text-muted" v-if="errors.first('report_type')">
+                                <small v-if="errors.first('report_type')">
                                     {{errors.first('report_type')}}
                                 </small>
                             </div>
                             <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                                 <label>Branch</label>
                                 <select class="custom-select w-100" v-model="report.branch.id"
-                                        v-validate="'required'" data-vv-as="office branch" name="branch_id" data-vv-validate-on="blur"
-                                        :class="{'is-invalid': errors.first('branch_id')}">
+                                        v-validate="'required'" data-vv-as="office branch" name="branch_id" data-vv-validate-on="blur">
                                     <option value="">select branch</option>
                                     <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
                                 </select>
-                                <small class="text-muted" v-if="errors.first('branch_id')">
+                                <small v-if="errors.first('branch_id')">
                                     {{errors.first('branch_id')}}
                                 </small>
                             </div>
@@ -35,9 +33,8 @@
                                 <label>Date from:</label>
                                 <input type="date" class="form-control" v-model="report.from"
                                        v-validate="'required|date_format:MM/DD/YYYY'" data-vv-as="Date from"
-                                       name="date_from"
-                                       :class="{'is-invalid': errors.first('date_from')}">
-                                <small class="text-muted" v-if="errors.first('date_from')">
+                                       name="date_from">
+                                <small v-if="errors.first('date_from')">
                                     {{errors.first('date_from')}}
                                 </small>
                             </div>
@@ -45,9 +42,8 @@
                                 <label>Date To:</label>
                                 <input type="date" class="form-control" v-model="report.to"
                                        v-validate="'required|date_format:MM/DD/YYYY'" data-vv-as="Date to"
-                                       name="date_to"
-                                       :class="{'is-invalid': errors.first('date_to')}">
-                                <small class="text-muted" v-if="errors.first('date_to')">
+                                       name="date_to">
+                                <small v-if="errors.first('date_to')">
                                     {{errors.first('date_to')}}
                                 </small>
                             </div>

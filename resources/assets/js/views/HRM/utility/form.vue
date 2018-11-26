@@ -8,9 +8,8 @@
                    placeholder="employee full name"
                    v-model="form.full_name"
                    v-validate="'required|max:100'"
-                   :class="{'is-invalid': errors.first('name')}"
                    name="name">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('name')">
                 {{ errors.first('name') }}
             </small>
@@ -24,13 +23,13 @@
                    v-model="form.phone_number"
                    name="phone_number"
                    v-validate="'required|numeric|max:11|min:11'"
-                   :class="{'is-invalid': errors.first('phone_number') || error.phone_number }"
+                   :class="{'is-invalid': error.phone_number }"
                    data-vv-as="phone number">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('phone_number')">
                 {{errors.first('phone_number') }}
             </small>
-            <small class="text-muted"
+            <small
                    v-if="error.phone_number">
                 {{error.phone_number[0]}}
             </small>
@@ -43,14 +42,13 @@
             <select name="status"
                     class="custom-select w-100"
                     v-model="form.status"
-                    :class="{'is-invalid': errors.first('status')}"
                     v-validate="'required'" data-vv-validate-on="blur">
                 <option value="" selected>select status</option>
                 <option v-for="status in statuses" :value="status">
                     {{status | capitalize}}
                 </option>
             </select>
-            <small class="text-muted" v-if="errors.first('status')">
+            <small v-if="errors.first('status')">
                 {{errors.first('status') }}
             </small>
         </div>
@@ -60,14 +58,13 @@
             <select name="nationality"
                     class="custom-select w-100"
                     v-model="form.nationality"
-                    :class="{'is-invalid': errors.first('nationality')}"
                     v-validate="'required'" data-vv-validate-on="blur">
                 <option value="" selected>select nationality</option>
                 <option v-for="country in countries" :value="country">
                     {{country | capitalize}}
                 </option>
             </select>
-            <small class="text-muted" v-if="errors.first('nationality')">
+            <small v-if="errors.first('nationality')">
                 {{errors.first('nationality') }}
             </small>
         </div>
@@ -81,12 +78,9 @@
                    v-model="form.date_of_birth"
                    name="date_of_birth"
                    v-validate="'required'"
-                   :class="{'is-invalid': errors.first('date_of_birth')}"
                    data-vv-as="date of birth">
-            <small class="text-muted"
-                   v-if="errors.first('date_of_birth')">
-                {{errors.first('date_of_birth')}}
-            </small>
+            <small v-if="errors.first('date_of_birth')">{{errors.first('date_of_birth')}}</small>
+            <small v-if="error.date_of_birth">{{error.date_of_birth[0]}}</small>
         </div>
 
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -96,13 +90,13 @@
                    placeholder="name@example.com"
                    v-model="form.email"
                    name="email"
-                   :class="{'is-invalid': errors.first('email') || error.email}"
+                   :class="{'is-invalid': error.email}"
                    v-validate="'required|email|min:1'">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('email')">
                 {{errors.first('email')}}
             </small>
-            <small class="text-muted"
+            <small
                    v-if="error.email">
                 {{error.email[0]}}
             </small>
@@ -117,13 +111,13 @@
                    v-model="form.staff_id"
                    name="staff_id"
                    v-validate="'required'"
-                   :class="{'is-invalid': errors.first('staff_id')  || error.staff_id}"
+                   :class="{'is-invalid': error.staff_id}"
                    data-vv-as="employee id">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('staff_id')">
                 {{errors.first('staff_id') }}
             </small>
-            <small class="text-muted"
+            <small
                    v-if="error.staff_id">
                 {{error.staff_id[0]}}
             </small>
@@ -135,14 +129,13 @@
                     class="custom-select w-100"
                     v-model="form.role_id"
                     v-validate="'required'" data-vv-validate-on="blur"
-                    :class="{'is-invalid': errors.first('role')}"
                     data-vv-name="role">
                 <option value="" selected>select role</option>
                 <option v-for="role in roles" :value="role.id">
                     {{role.name | capitalize}}
                 </option>
             </select>
-            <small class="text-muted"
+            <small
                    v-if="errors.first('role')">
                 {{errors.first('role') }}
             </small>
@@ -155,7 +148,6 @@
             <select name="qualification"
                     class="custom-select w-100"
                     v-model="form.highest_qualification"
-                    :class="{'is-invalid': errors.first('qualification')}"
                     v-validate="'required'" data-vv-validate-on="blur"
                     data-vv-name="qualification">
                 <option value="" selected>select qualification</option>
@@ -163,7 +155,7 @@
                     {{qualification | capitalize}}
                 </option>
             </select>
-            <small class="text-muted"
+            <small
                    v-if="errors.has('qualification')">
                 {{errors.first('qualification') }}
             </small>
@@ -175,14 +167,13 @@
                     class="custom-select w-100"
                     v-model="form.branch_id"
                     v-validate="'required'" data-vv-validate-on="blur"
-                    :class="{'is-invalid': errors.first('branch')}"
                     data-vv-name="branch">
                 <option value="" selected>select branch</option>
                 <option v-for="branch in branches" :value="branch.id">
                     {{branch.name | capitalize}}
                 </option>
             </select>
-            <small class="text-muted"
+            <small
                    v-if="errors.has('branch')">
                 {{errors.first('branch') }}
             </small>
@@ -196,9 +187,8 @@
                    v-model="form.date_of_appointment"
                    name="date_of_appointment"
                    v-validate="'required'"
-                   :class="{'is-invalid': errors.first('date_of_appointment')}"
                    data-vv-as="date of appointment">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('date_of_appointment')">
                 {{errors.first('date_of_appointment')}}
             </small>
@@ -215,14 +205,13 @@
                     class="custom-select w-100"
                     v-model="form.category"
                     v-validate="'required'" data-vv-validate-on="blur"
-                    :class="{'is-invalid': errors.first('category')}"
                     data-vv-name="category">
                 <option value="" selected>select category</option>
                 <option v-for="category in categories" :value="category">
                     {{category | capitalize}}
                 </option>
             </select>
-            <small class="text-muted"
+            <small
                    v-if="errors.has('category')">
                 {{errors.first('category') }}
             </small>
@@ -244,7 +233,7 @@
                     {{sex}}
                 </label>
             </div>
-            <small class="text-muted"
+            <small
                    v-if="errors.first('gender')">
                 {{errors.first('gender')}}
             </small>
@@ -256,10 +245,9 @@
                       placeholder="address"
                       rows="1"
                       v-model="form.address"
-                      :class="{'is-invalid': errors.first('address')}"
                       name="address"
                       v-validate="'required|max:255'"></textarea>
-            <small class="text-muted"
+            <small
                    v-if="errors.first('address')">
                 {{errors.first('address')}}
             </small>
@@ -276,9 +264,8 @@
                    v-model="form.referee_1"
                    name="referee_1"
                    v-validate="'required|max:50'"
-                   :class="{'is-invalid': errors.first('referee_1')}"
                    data-vv-as="referee 1 full name">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('referee_1')">
                 {{errors.first('referee_1') }}
             </small>
@@ -292,9 +279,8 @@
                    v-model="form.referee_1_phone_no"
                    name="referee_1_phone_no"
                    v-validate="'required|numeric|max:11|min:11'"
-                   :class="{'is-invalid': errors.first('referee_1_phone_no')}"
                    data-vv-as="referee 1 phone number">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('referee_1_phone_no')">
                 {{errors.first('referee_1_phone_no')}}
             </small>
@@ -310,9 +296,8 @@
                    v-model="form.referee_2"
                    name="referee_2"
                    v-validate="'required|max:50'"
-                   :class="{'is-invalid': errors.first('referee_2')}"
                    data-vv-as="referee 2 full name">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('referee_2')">
                 {{errors.first('referee_2') }}
             </small>
@@ -326,9 +311,8 @@
                    v-model="form.referee_2_phone_no"
                    name="referee_2_phone_no"
                    v-validate="'required|numeric|max:11|min:11'"
-                   :class="{'is-invalid': errors.first('referee_2_phone_no')}"
                    data-vv-as="referee 2 phone number">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('referee_2_phone_no')">
                 {{errors.first('referee_2_phone_no') }}
             </small>
@@ -346,9 +330,8 @@
                    v-model="form.next_of_kin_name"
                    name="next_of_kin_name"
                    v-validate="'required|max:50'"
-                   :class="{'is-invalid': errors.first('next_of_kin_name')}"
                    data-vv-as="next of kin name">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('next_of_kin_name')">
                 {{errors.first('next_of_kin_name') }}
             </small>
@@ -362,9 +345,8 @@
                    v-model="form.next_of_kin_phone_no"
                    name="next_of_kin_phone_no"
                    v-validate="'required|numeric|max:11|min:11'"
-                   :class="{'is-invalid': errors.first('next_of_kin_phone_no')}"
                    data-vv-as="next of kin phone number">
-            <small class="text-muted"
+            <small
                    v-if="errors.first('next_of_kin_phone_no')">
                 {{errors.first('next_of_kin_phone_no')}}
             </small>

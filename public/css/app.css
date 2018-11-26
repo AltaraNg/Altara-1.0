@@ -16574,7 +16574,7 @@ a:hover, a:active, a:visited {
   color: inherit;
 }
 
-small.text-muted {
+small.text-muted, form small:not(.error-control) {
   font-size: 1.1rem;
   color: #c81618 !important;
   float: left;
@@ -16864,10 +16864,17 @@ table button i {
 }
 
 .portal-card {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
   -webkit-box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.2);
           box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.2);
   border-radius: .7rem;
   overflow: hidden;
+}
+
+.portal-card:hover {
+  -webkit-transform: scale(1.02);
+          transform: scale(1.02);
 }
 
 .portal-card p {

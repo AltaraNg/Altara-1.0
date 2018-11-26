@@ -26193,10 +26193,12 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
         ProfileAccess: [],
         ProfileEditAccess: [],
         DSALead: [1, 2, 8, 9, 15],
-        DSAAccess: [1, 2, 8, 9, 15, 17],
-        DVAAccess: [1, 2, 8, 9, 13, 16, 20, 21],
+        DSACaptain: [1, 2, 8, 9, 15, 17],
+        DSAAccess: [1, 2, 8, 9, 15, 17, 18],
+        DVALead: [1, 2, 8, 9, 13, 16],
+        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
         HRMAccess: [1, 2, 6, 7, 8, 9],
-        FSLAccess: [1, 2, 8, 9, 11, 14, 18],
+        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
         authRole: parseInt(localStorage.getItem('role')),
         api_token: localStorage.getItem('api_token')
     },
@@ -26789,7 +26791,13 @@ __webpack_require__(30);
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vee_validate__["a" /* default */], {
+<<<<<<< HEAD
     events: 'input|blur'
+=======
+    events: 'input|blur',
+    classes: true,
+    classNames: { invalid: 'is-invalid' }
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 });
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#root',
@@ -38055,10 +38063,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -38215,9 +38219,6 @@ var render = function() {
                             }
                           ],
                           staticClass: "custom-select w-100",
-                          class: {
-                            "is-invalid": _vm.errors.first("report_type")
-                          },
                           attrs: {
                             "data-vv-as": "report type",
                             "data-vv-validate-on": "blur",
@@ -38260,7 +38261,7 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _vm.errors.first("report_type")
-                        ? _c("small", { staticClass: "text-muted" }, [
+                        ? _c("small", [
                             _vm._v(
                               "\n                                " +
                                 _vm._s(_vm.errors.first("report_type")) +
@@ -38298,9 +38299,6 @@ var render = function() {
                             }
                           ],
                           staticClass: "custom-select w-100",
-                          class: {
-                            "is-invalid": _vm.errors.first("branch_id")
-                          },
                           attrs: {
                             "data-vv-as": "office branch",
                             name: "branch_id",
@@ -38343,7 +38341,7 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _vm.errors.first("branch_id")
-                        ? _c("small", { staticClass: "text-muted" }, [
+                        ? _c("small", [
                             _vm._v(
                               "\n                                " +
                                 _vm._s(_vm.errors.first("branch_id")) +
@@ -38379,7 +38377,6 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        class: { "is-invalid": _vm.errors.first("date_from") },
                         attrs: {
                           type: "date",
                           "data-vv-as": "Date from",
@@ -38397,7 +38394,7 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _vm.errors.first("date_from")
-                        ? _c("small", { staticClass: "text-muted" }, [
+                        ? _c("small", [
                             _vm._v(
                               "\n                                " +
                                 _vm._s(_vm.errors.first("date_from")) +
@@ -38433,7 +38430,6 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        class: { "is-invalid": _vm.errors.first("date_to") },
                         attrs: {
                           type: "date",
                           "data-vv-as": "Date to",
@@ -38451,7 +38447,7 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _vm.errors.first("date_to")
-                        ? _c("small", { staticClass: "text-muted" }, [
+                        ? _c("small", [
                             _vm._v(
                               "\n                                " +
                                 _vm._s(_vm.errors.first("date_to")) +
@@ -39318,24 +39314,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -39534,7 +39512,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("name") },
             attrs: {
               type: "text",
               placeholder: "employee full name",
@@ -39552,7 +39529,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("name")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("name")) +
@@ -39585,10 +39562,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: {
-              "is-invalid":
-                _vm.errors.first("phone_number") || _vm.error.phone_number
-            },
+            class: { "is-invalid": _vm.error.phone_number },
             attrs: {
               type: "tel",
               placeholder: "081xxxxxxxx",
@@ -39607,7 +39581,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("phone_number")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("phone_number")) +
@@ -39617,7 +39591,7 @@ var render = function() {
             : _vm._e(),
           _vm._v(" "),
           _vm.error.phone_number
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.error.phone_number[0]) +
@@ -39654,7 +39628,10 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
+<<<<<<< HEAD
               class: { "is-invalid": _vm.errors.first("status") },
+=======
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: { name: "status", "data-vv-validate-on": "blur" },
               on: {
                 change: function($event) {
@@ -39693,7 +39670,7 @@ var render = function() {
           ),
           _vm._v(" "),
           _vm.errors.first("status")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("status")) +
@@ -39728,7 +39705,10 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
+<<<<<<< HEAD
               class: { "is-invalid": _vm.errors.first("nationality") },
+=======
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: { name: "nationality", "data-vv-validate-on": "blur" },
               on: {
                 change: function($event) {
@@ -39767,7 +39747,7 @@ var render = function() {
           ),
           _vm._v(" "),
           _vm.errors.first("nationality")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("nationality")) +
@@ -39802,7 +39782,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("date_of_birth") },
             attrs: {
               type: "date",
               name: "date_of_birth",
@@ -39820,13 +39799,11 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("date_of_birth")
-            ? _c("small", { staticClass: "text-muted" }, [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.errors.first("date_of_birth")) +
-                    "\n        "
-                )
-              ])
+            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("date_of_birth")))])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.error.date_of_birth
+            ? _c("small", [_vm._v(_vm._s(_vm.error.date_of_birth[0]))])
             : _vm._e()
         ]
       ),
@@ -39853,9 +39830,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: {
-              "is-invalid": _vm.errors.first("email") || _vm.error.email
-            },
+            class: { "is-invalid": _vm.error.email },
             attrs: {
               type: "email",
               placeholder: "name@example.com",
@@ -39873,7 +39848,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("email")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("email")) +
@@ -39883,7 +39858,7 @@ var render = function() {
             : _vm._e(),
           _vm._v(" "),
           _vm.error.email
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " + _vm._s(_vm.error.email[0]) + "\n        "
                 )
@@ -39916,9 +39891,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: {
-              "is-invalid": _vm.errors.first("staff_id") || _vm.error.staff_id
-            },
+            class: { "is-invalid": _vm.error.staff_id },
             attrs: {
               type: "text",
               placeholder: "AC/C/013/18",
@@ -39937,7 +39910,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("staff_id")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("staff_id")) +
@@ -39947,7 +39920,7 @@ var render = function() {
             : _vm._e(),
           _vm._v(" "),
           _vm.error.staff_id
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.error.staff_id[0]) +
@@ -39982,7 +39955,10 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
+<<<<<<< HEAD
               class: { "is-invalid": _vm.errors.first("role") },
+=======
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: {
                 name: "role",
                 "data-vv-validate-on": "blur",
@@ -40025,7 +40001,7 @@ var render = function() {
           ),
           _vm._v(" "),
           _vm.errors.first("role")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("role")) +
@@ -40062,7 +40038,10 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
+<<<<<<< HEAD
               class: { "is-invalid": _vm.errors.first("qualification") },
+=======
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: {
                 name: "qualification",
                 "data-vv-validate-on": "blur",
@@ -40105,7 +40084,7 @@ var render = function() {
           ),
           _vm._v(" "),
           _vm.errors.has("qualification")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("qualification")) +
@@ -40140,7 +40119,10 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
+<<<<<<< HEAD
               class: { "is-invalid": _vm.errors.first("branch") },
+=======
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: {
                 name: "branch",
                 "data-vv-validate-on": "blur",
@@ -40183,7 +40165,7 @@ var render = function() {
           ),
           _vm._v(" "),
           _vm.errors.has("branch")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("branch")) +
@@ -40218,7 +40200,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("date_of_appointment") },
             attrs: {
               type: "date",
               name: "date_of_appointment",
@@ -40236,7 +40217,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("date_of_appointment")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("date_of_appointment")) +
@@ -40305,7 +40286,10 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
+<<<<<<< HEAD
               class: { "is-invalid": _vm.errors.first("category") },
+=======
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: {
                 name: "qualification",
                 "data-vv-validate-on": "blur",
@@ -40348,7 +40332,7 @@ var render = function() {
           ),
           _vm._v(" "),
           _vm.errors.has("category")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("category")) +
@@ -40409,7 +40393,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("gender")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("gender")) +
@@ -40443,7 +40427,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control w-100",
-            class: { "is-invalid": _vm.errors.first("address") },
             attrs: { placeholder: "address", rows: "1", name: "address" },
             domProps: { value: _vm.form.address },
             on: {
@@ -40457,7 +40440,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("address")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("address")) +
@@ -40494,7 +40477,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("referee_1") },
             attrs: {
               type: "text",
               placeholder: "enter full name here",
@@ -40513,7 +40495,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("referee_1")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("referee_1")) +
@@ -40546,7 +40528,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("referee_1_phone_no") },
             attrs: {
               type: "tel",
               placeholder: "081xxxxxxxx",
@@ -40565,7 +40546,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("referee_1_phone_no")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("referee_1_phone_no")) +
@@ -40600,7 +40581,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("referee_2") },
             attrs: {
               type: "text",
               placeholder: "enter full name here",
@@ -40619,7 +40599,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("referee_2")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("referee_2")) +
@@ -40652,7 +40632,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("referee_2_phone_no") },
             attrs: {
               type: "tel",
               placeholder: "081xxxxxxxx",
@@ -40671,7 +40650,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("referee_2_phone_no")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("referee_2_phone_no")) +
@@ -40708,7 +40687,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("next_of_kin_name") },
             attrs: {
               type: "text",
               placeholder: "enter full name here",
@@ -40727,7 +40705,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("next_of_kin_name")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("next_of_kin_name")) +
@@ -40760,7 +40738,6 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.first("next_of_kin_phone_no") },
             attrs: {
               type: "tel",
               placeholder: "081xxxxxxxx",
@@ -40779,7 +40756,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm.errors.first("next_of_kin_phone_no")
-            ? _c("small", { staticClass: "text-muted" }, [
+            ? _c("small", [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.errors.first("next_of_kin_phone_no")) +
@@ -42938,6 +42915,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -43041,6 +43019,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+=======
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 
 
 
@@ -43048,12 +43028,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: { Verification: __WEBPACK_IMPORTED_MODULE_4__views_DVA_verification_verification___default.a },
     props: { action: { default: 'update' } },
     data: function data() {
         return {
             error: {},
+<<<<<<< HEAD
+=======
+            user: {},
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
             newCustomer: {},
             fillWorkGuarantor: false,
             fillPersonalGuarantor: false,
@@ -43094,6 +43082,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         if (_this.action === 'update') {
                             newUrl = newUrl + '/' + _this.newCustomer.id;
                             logMsg = 'updated';
+                            var acc = _this.$editAccess(_this.user, _this.newCustomer);
+                            if (!acc) {
+                                _this.$networkErr('edit');
+                                return;
+                            }
                         }
                         Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["c" /* post */])(newUrl, _this.newCustomer).then(function (res) {
                             if (res.data.hasOwnProperty('registered') || res.data.hasOwnProperty('updated')) {
@@ -43146,10 +43139,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this2 = this;
 
         Object(__WEBPACK_IMPORTED_MODULE_3__helpers_api__["a" /* get */])('/api/customer/create').then(function (res) {
-            return _this2.prepareForm(res.data);
+            _this2.prepareForm(res.data);
+            _this2.user = res.data.user;
         });
         /*on create of the component fetch the data required to prepare the form
         * states, branches and the currently logged in dsa details*/
+<<<<<<< HEAD
+=======
+    },
+    mounted: function mounted() {
+        /*$('input').each(function(){
+            $(this).addClass('form-control');
+        })*/
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
     }
 });
 
@@ -43188,7 +43190,11 @@ exports = module.exports = __webpack_require__(22)(false);
 
 
 // module
+<<<<<<< HEAD
 exports.push([module.i, "\ntr[data-v-07317a72]{\n    margin-bottom: 1rem;\n    float: left;\n    width: 100%;\n    font-weight: 400;\n}\ntbody tr th[data-v-07317a72] {\n    width: 2em;\n    text-align:center;\n}\n", ""]);
+=======
+exports.push([module.i, "\ntr[data-v-07317a72] {\n    margin-bottom : 1rem;\n    float         : left;\n    width         : 100%;\n    font-weight   : 400;\n}\ntbody tr th[data-v-07317a72] {\n    width      : 2em;\n    text-align : center;\n}\n", ""]);
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 
 // exports
 
@@ -43657,6 +43663,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 
 
 
@@ -43758,7 +43810,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             data.hasOwnProperty('user') ? this.user = data.user : this.user = null;
             this.customer = data.customer;
             if (data.customer != '') {
-                console.log(data.customer);
                 this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                 this.form.id_card = data.customer.document.id_card_url;
                 this.form.passport = data.customer.document.passport_url;
@@ -43785,6 +43836,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.$network()) {
                 this.$LIPS(true);
                 Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["a" /* get */])('/api/customer/' + this.customer_id).then(function (res) {
+                    // console.log(res.data);
                     _this.buttonStatus(res.data);
                     _this.$LIPS(false);
                 }).catch(function (err) {
@@ -43800,61 +43852,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         validate: function validate(type) {
             var _this2 = this;
 
-            if (this.$network()) {
-                this.$LIPS(true);
-                if (this.veriView.includes(type) && !this.customer.work_guarantor_first_name) {
-                    this.modal(type + '_modal');
-                    this.$LIPS(false);
-                    this.$scrollToTop();
-                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
-                    return;
-                }
-                this.info_from_neighbors === 'no' ? this.address.info_from_neighbors_desc = '' : '';
-                this[type].customer_id = this.customer.id;
-                this[type].user_id = this.user.id;
-                this[type].staff_name = this.user.full_name;
-                this.$validator.validateAll(type).then(function (result) {
-                    if (result) {
-                        Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('/api/' + type, _this2[type]).then(function (res) {
-                            _this2.buttonStatus(res.data.response);
-                            var id = 'Customer ID : ' + String(_this2.customer.id),
-                                typeCaps = _this2.$options.filters.capitalize(type),
-                                action = 'Customer' + typeCaps + 'Verification';
-                            if (type === 'address') _this2.address.approval_status === 1 ? action += 'Passed' : action += 'NotPassed';
-                            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])(action, id);
-                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess(typeCaps + ' status updated!');
-                            _this2.modal(type + '_modal');
-                            _this2.$LIPS(false);
-                            _this2.$scrollToTop();
-                        }).catch(function (err) {
-                            _this2.$LIPS(false);
-                            _this2.$scrollToTop();
-                            __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data.message);
-                        });
+            var acc = this.$editAccess(this.user, this.customer);
+            if (acc) {
+                if (this.$network()) {
+                    this.$LIPS(true);
+                    if (this.veriView.includes(type) && !this.customer.work_guarantor_first_name) {
+                        this.modal(type + '_modal');
+                        this.$LIPS(false);
+                        this.$scrollToTop();
+                        __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
+                        return;
                     }
-                    if (!result) _this2.$networkErr('form');
-                });
-            } else this.$networkErr();
+                    this.info_from_neighbors === 'no' ? this.address.info_from_neighbors_desc = '' : '';
+                    this[type].customer_id = this.customer.id;
+                    this[type].user_id = this.user.id;
+                    this[type].staff_name = this.user.full_name;
+                    this.$validator.validateAll(type).then(function (result) {
+                        if (result) {
+                            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])('/api/' + type, _this2[type]).then(function (res) {
+                                _this2.buttonStatus(res.data.response);
+                                var id = 'Customer ID : ' + String(_this2.customer.id),
+                                    typeCaps = _this2.$options.filters.capitalize(type),
+                                    action = 'Customer' + typeCaps + 'Verification';
+                                if (type === 'address') _this2.address.approval_status === 1 ? action += 'Passed' : action += 'NotPassed';
+                                Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])(action, id);
+                                __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess(typeCaps + ' status updated!');
+                                _this2.modal(type + '_modal');
+                                _this2.$LIPS(false);
+                                _this2.$scrollToTop();
+                            }).catch(function (err) {
+                                _this2.$LIPS(false);
+                                _this2.$scrollToTop();
+                                __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(err.response.data.message);
+                            });
+                        }
+                        if (!result) _this2.$networkErr('form');
+                    });
+                } else this.$networkErr();
+            } else {
+                this.$networkErr('edit');$('.modal').modal('hide');
+            };
         },
         save: function save(document, modal) {
             var _this3 = this;
 
-            this.storeURL = 'api/document/' + this.customer.document.id + '?_method=PUT&document=' + document;
-            this.$LIPS(true);
-            this.form.document = document;
-            var form = Object(__WEBPACK_IMPORTED_MODULE_3__helpers_form__["a" /* toMulipartedForm */])(this.form, 'edit');
-            Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])(this.storeURL, form).then(function (res) {
-                _this3.buttonStatus(res.data.response);
-                Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])('Customer' + _this3.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + String(_this3.customer.id));
-                _this3.modal(modal);
-                _this3.$LIPS(false);
-                _this3.$scrollToTop();
-                __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('Document Updated Successfully!');
-            }).catch(function (err) {
-                _this3.error = err.response.data.errors;
-                _this3.$LIPS(false);
-                _this3.$scrollToTop();
-            });
+            var acc = this.$editAccess(this.user, this.customer);
+            if (acc) {
+                this.storeURL = 'api/document/' + this.customer.document.id + '?_method=PUT&document=' + document;
+                this.$LIPS(true);
+                this.form.document = document;
+                var form = Object(__WEBPACK_IMPORTED_MODULE_3__helpers_form__["a" /* toMulipartedForm */])(this.form, 'edit');
+                Object(__WEBPACK_IMPORTED_MODULE_2__helpers_api__["c" /* post */])(this.storeURL, form).then(function (res) {
+                    _this3.buttonStatus(res.data.response);
+                    Object(__WEBPACK_IMPORTED_MODULE_0__helpers_log__["a" /* log */])('Customer' + _this3.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + String(_this3.customer.id));
+                    _this3.modal(modal);
+                    _this3.$LIPS(false);
+                    _this3.$scrollToTop();
+                    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setSuccess('Document Updated Successfully!');
+                }).catch(function (err) {
+                    _this3.error = err.response.data.errors;
+                    _this3.$LIPS(false);
+                    _this3.$scrollToTop();
+                });
+            } else {
+                this.$networkErr('edit');$('.modal').modal('hide');
+            };
         }
     },
     computed: {
@@ -44546,7 +44608,19 @@ var render = function() {
                 _vm._m(6),
                 _vm._v(" "),
                 _c("td", [
+<<<<<<< HEAD
                   _vm._v(_vm._s(_vm._f("capitalize")(_vm.customer.branch.name)))
+=======
+                  _vm._v(
+                    _vm._s(
+                      _vm._f("capitalize")(
+                        _vm.customer.branch.description +
+                          " " +
+                          _vm.customer.branch.name
+                      )
+                    )
+                  )
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                 ])
               ])
             ])
@@ -44698,7 +44772,6 @@ var render = function() {
                       ],
                       staticClass:
                         "form-control col-lg-9 col-md-8 col-sm-8 col-12 float-left mt-1",
-                      class: { "is-invalid": _vm.errors.first("customer_id") },
                       attrs: {
                         "data-vv-as": "customer id",
                         name: "customer_id"
@@ -44901,11 +44974,38 @@ var render = function() {
                                             ) +
                                             "\n                                "
                                         ),
-                                        _c("small", [
-                                          _vm._v(
-                                            "(Click here to update status!)"
-                                          )
-                                        ])
+                                        !_vm.key(type)
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "(Click here to update status!)"
+                                              )
+                                            ])
+                                          : _c(
+                                              "span",
+                                              {
+                                                staticClass: "float-right",
+                                                staticStyle: {
+                                                  "font-size": "10px"
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                    by - " +
+                                                    _vm._s(
+                                                      _vm._f("capitalize")(
+                                                        type == "passport" ||
+                                                        type == "id_card"
+                                                          ? _vm.customer[
+                                                              "document"
+                                                            ].staff_name
+                                                          : _vm.customer[type]
+                                                              .staff_name
+                                                      )
+                                                    ) +
+                                                    "\n                                "
+                                                )
+                                              ]
+                                            )
                                       ]
                                     )
                                   ]
@@ -45093,6 +45193,7 @@ var render = function() {
                         _c(
                           "form",
                           {
+                            attrs: { "data-vv-scope": "address" },
                             on: {
                               submit: function($event) {
                                 $event.preventDefault()
@@ -45136,17 +45237,19 @@ var render = function() {
                                             rawName: "v-model",
                                             value: _vm.address.date_of_visit,
                                             expression: "address.date_of_visit"
+                                          },
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "date_of_visit"
-                                          )
-                                        },
                                         attrs: {
                                           type: "date",
-                                          name: "date_of_visit"
+                                          name: "date_of_visit",
+                                          "data-vv-as": "date of visit"
                                         },
                                         domProps: {
                                           value: _vm.address.date_of_visit
@@ -45163,7 +45266,21 @@ var render = function() {
                                             )
                                           }
                                         }
-                                      })
+                                      }),
+                                      _vm._v(" "),
+                                      _vm.errors.first("address.date_of_visit")
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                                " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "address.date_of_visit"
+                                                  )
+                                                ) +
+                                                "\n                                            "
+                                            )
+                                          ])
+                                        : _vm._e()
                                     ]
                                   ),
                                   _vm._v(" "),
@@ -45183,17 +45300,19 @@ var render = function() {
                                             rawName: "v-model",
                                             value: _vm.address.time_of_visit,
                                             expression: "address.time_of_visit"
+                                          },
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "time_of_visit"
-                                          )
-                                        },
                                         attrs: {
                                           type: "time",
-                                          name: "time_of_visit"
+                                          name: "time_of_visit",
+                                          "data-vv-as": "time of visit"
                                         },
                                         domProps: {
                                           value: _vm.address.time_of_visit
@@ -45210,7 +45329,21 @@ var render = function() {
                                             )
                                           }
                                         }
-                                      })
+                                      }),
+                                      _vm._v(" "),
+                                      _vm.errors.first("address.time_of_visit")
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                                " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "address.time_of_visit"
+                                                  )
+                                                ) +
+                                                "\n                                            "
+                                            )
+                                          ])
+                                        : _vm._e()
                                     ]
                                   )
                                 ]),
@@ -45232,13 +45365,20 @@ var render = function() {
                                             value: _vm.address.customer_meetup,
                                             expression:
                                               "address.customer_meetup"
+                                          },
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
                                           }
                                         ],
                                         attrs: {
                                           type: "radio",
                                           name: "customer_meetup",
                                           id: "yes",
-                                          value: "yes"
+                                          value: "yes",
+                                          "data-vv-as": "customer meetup"
                                         },
                                         domProps: {
                                           checked: _vm._q(
@@ -45299,7 +45439,21 @@ var render = function() {
                                       _c("label", { attrs: { for: "no" } }, [
                                         _vm._v("No")
                                       ])
-                                    ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm.errors.first("address.customer_meetup")
+                                      ? _c("small", [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "address.customer_meetup"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -45322,10 +45476,17 @@ var render = function() {
                                             value: _vm.address.confirm_address,
                                             expression:
                                               "address.confirm_address"
+                                          },
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
                                           }
                                         ],
                                         attrs: {
-                                          name: "confirm address",
+                                          "data-vv-as": "confirm address",
+                                          name: "confirm_address",
                                           type: "radio",
                                           id: "add_yes",
                                           value: "yes"
@@ -45366,7 +45527,7 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
-                                          name: "confirm address",
+                                          name: "confirm_address",
                                           type: "radio",
                                           id: "add_no",
                                           value: "no"
@@ -45393,7 +45554,21 @@ var render = function() {
                                         { attrs: { for: "add_no" } },
                                         [_vm._v("No")]
                                       )
-                                    ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm.errors.first("address.confirm_address")
+                                      ? _c("small", [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "address.confirm_address"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -45412,18 +45587,20 @@ var render = function() {
                                           rawName: "v-model",
                                           value: _vm.address.what_he_sells,
                                           expression: "address.what_he_sells"
+                                        },
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
                                         }
                                       ],
                                       staticClass: "form-control",
-                                      class: {
-                                        "is-invalid": _vm.errors.first(
-                                          "what_he_sells"
-                                        )
-                                      },
                                       attrs: {
                                         type: "text",
                                         placeholder: "comment here...",
-                                        name: "what_he_sells"
+                                        name: "what_he_sells",
+                                        "data-vv-as": "what he sells"
                                       },
                                       domProps: {
                                         value: _vm.address.what_he_sells
@@ -45440,7 +45617,21 @@ var render = function() {
                                           )
                                         }
                                       }
-                                    })
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.errors.first("address.what_he_sells")
+                                      ? _c("small", [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "address.what_he_sells"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -45457,6 +45648,12 @@ var render = function() {
                                     _c("textarea", {
                                       directives: [
                                         {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
+                                        },
+                                        {
                                           name: "model",
                                           rawName: "v-model",
                                           value: _vm.address.business_info,
@@ -45464,15 +45661,11 @@ var render = function() {
                                         }
                                       ],
                                       staticClass: "form-control",
-                                      class: {
-                                        "is-invalid": _vm.errors.first(
-                                          "business info"
-                                        )
-                                      },
                                       attrs: {
                                         placeholder: "comment here...",
                                         rows: "1",
-                                        name: "business info"
+                                        name: "business_info",
+                                        "data-vv-as": "business info"
                                       },
                                       domProps: {
                                         value: _vm.address.business_info
@@ -45489,7 +45682,21 @@ var render = function() {
                                           )
                                         }
                                       }
-                                    })
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.errors.first("address.business_info")
+                                      ? _c("small", [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "address.business_info"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -45506,6 +45713,12 @@ var render = function() {
                                     _c("textarea", {
                                       directives: [
                                         {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
+                                        },
+                                        {
                                           name: "model",
                                           rawName: "v-model",
                                           value: _vm.address.product_info,
@@ -45513,15 +45726,11 @@ var render = function() {
                                         }
                                       ],
                                       staticClass: "form-control w-100",
-                                      class: {
-                                        "is-invalid": _vm.errors.first(
-                                          "product info"
-                                        )
-                                      },
                                       attrs: {
                                         placeholder: "comment here...",
                                         rows: "1",
-                                        name: "product info"
+                                        "data-vv-as": "product info",
+                                        name: "product_info"
                                       },
                                       domProps: {
                                         value: _vm.address.product_info
@@ -45538,7 +45747,21 @@ var render = function() {
                                           )
                                         }
                                       }
-                                    })
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.errors.first("address.product_info")
+                                      ? _c("small", [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "address.product_info"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -45560,11 +45783,18 @@ var render = function() {
                                             rawName: "v-model",
                                             value: _vm.address.aware_of_plan,
                                             expression: "address.aware_of_plan"
+                                          },
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
                                           }
                                         ],
                                         attrs: {
-                                          name: "aware of plan",
+                                          name: "aware_of_plan",
                                           type: "radio",
+                                          "data-vv-as": "aware of plan",
                                           id: "pay_yes",
                                           value: "yes"
                                         },
@@ -45603,7 +45833,7 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
-                                          name: "aware of plan",
+                                          name: "aware_of_plan",
                                           type: "radio",
                                           id: "pay_no",
                                           value: "no"
@@ -45630,7 +45860,21 @@ var render = function() {
                                         { attrs: { for: "pay_no" } },
                                         [_vm._v("no")]
                                       )
-                                    ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm.errors.first("address.aware_of_plan")
+                                      ? _c("small", [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "address.aware_of_plan"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -45652,11 +45896,18 @@ var render = function() {
                                             rawName: "v-model",
                                             value: _vm.info_from_neighbors,
                                             expression: "info_from_neighbors"
+                                          },
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
                                           }
                                         ],
                                         attrs: {
-                                          name: "info from neighbors",
+                                          name: "info_from_neighbors",
                                           type: "radio",
+                                          "data-vv-as": "info from neighbors",
                                           id: "neigh_yes",
                                           value: "yes"
                                         },
@@ -45691,7 +45942,7 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
-                                          name: "info from neighbors",
+                                          name: "info_from_neighbors",
                                           type: "radio",
                                           id: "neigh_no",
                                           value: "no"
@@ -45716,48 +45967,90 @@ var render = function() {
                                       )
                                     ]),
                                     _vm._v(" "),
+                                    _vm.errors.first(
+                                      "address.info_from_neighbors"
+                                    )
+                                      ? _c("small", [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "address.info_from_neighbors"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
                                     _vm.info_from_neighbors == "yes"
-                                      ? _c("textarea", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
+                                      ? _c("div", [
+                                          _c("textarea", {
+                                            directives: [
+                                              {
+                                                name: "validate",
+                                                rawName: "v-validate",
+                                                value: "required",
+                                                expression: "'required'"
+                                              },
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.address
+                                                    .info_from_neighbors_desc,
+                                                expression:
+                                                  "address.info_from_neighbors_desc"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              "is-invalid": _vm.errors.first(
+                                                "address.info_from_neighbors_desc"
+                                              )
+                                            },
+                                            attrs: {
+                                              placeholder: "comment here...",
+                                              rows: "1",
+                                              name: "info_from_neighbors_desc",
+                                              "data-vv-as":
+                                                "info from neighbors desc"
+                                            },
+                                            domProps: {
                                               value:
                                                 _vm.address
-                                                  .info_from_neighbors_desc,
-                                              expression:
-                                                "address.info_from_neighbors_desc"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "neighbors description"
-                                            )
-                                          },
-                                          attrs: {
-                                            placeholder: "comment here...",
-                                            rows: "1",
-                                            name: "neighbors description"
-                                          },
-                                          domProps: {
-                                            value:
-                                              _vm.address
-                                                .info_from_neighbors_desc
-                                          },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
+                                                  .info_from_neighbors_desc
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.address,
+                                                  "info_from_neighbors_desc",
+                                                  $event.target.value
+                                                )
                                               }
-                                              _vm.$set(
-                                                _vm.address,
-                                                "info_from_neighbors_desc",
-                                                $event.target.value
-                                              )
                                             }
-                                          }
-                                        })
+                                          }),
+                                          _vm._v(" "),
+                                          _vm.errors.first(
+                                            "address.info_from_neighbors_desc"
+                                          )
+                                            ? _c("small", [
+                                                _vm._v(
+                                                  "\n                                                " +
+                                                    _vm._s(
+                                                      _vm.errors.first(
+                                                        "address.info_from_neighbors_desc"
+                                                      )
+                                                    ) +
+                                                    "\n                                            "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ])
                                       : _vm._e()
                                   ]
                                 ),
@@ -45775,6 +46068,12 @@ var render = function() {
                                     _c("textarea", {
                                       directives: [
                                         {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
+                                        },
+                                        {
                                           name: "model",
                                           rawName: "v-model",
                                           value:
@@ -45787,13 +46086,15 @@ var render = function() {
                                       staticClass: "form-control",
                                       class: {
                                         "is-invalid": _vm.errors.first(
-                                          "business or work duration"
+                                          "address.business_or_work_duration"
                                         )
                                       },
                                       attrs: {
                                         placeholder: "address",
                                         rows: "1",
-                                        name: "business or work duration"
+                                        name: "business_or_work_duration",
+                                        "data-vv-as":
+                                          "business or work duration"
                                       },
                                       domProps: {
                                         value:
@@ -45811,7 +46112,23 @@ var render = function() {
                                           )
                                         }
                                       }
-                                    })
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.errors.first(
+                                      "address.business_or_work_duration"
+                                    )
+                                      ? _c("small", [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "address.business_or_work_duration"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -45993,6 +46310,7 @@ var render = function() {
                                   _c("div", { staticClass: "modal-body" }, [
                                     type !== "processing_fee"
                                       ? _c("h5", [
+<<<<<<< HEAD
                                           _vm.customer[type + "_first_name"]
                                             ? _c("table", [
                                                 _c("tbody", [
@@ -46066,6 +46384,45 @@ var render = function() {
                                                       _c("strong", [
                                                         _vm._v("Phone No. : ")
                                                       ]),
+=======
+                                          _c("table", [
+                                            _c("tbody", [
+                                              _c("tr", [
+                                                _c("th", [
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "mr-3 fas fa-map-marker-alt"
+                                                  })
+                                                ]),
+                                                _vm._v(" "),
+                                                _vm.customer[type + "_state"]
+                                                  ? _c("td", [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.$data[
+                                                            type + "_address"
+                                                          ]
+                                                        )
+                                                      )
+                                                    ])
+                                                  : _c("td", [
+                                                      _vm._v(
+                                                        "please update customer details!"
+                                                      )
+                                                    ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("tr", [
+                                                _c("th", [
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "mr-3 fas fa-mobile-alt"
+                                                  })
+                                                ]),
+                                                _vm._v(" "),
+                                                _vm.customer[type + "_telno"]
+                                                  ? _c("td", [
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                                       _vm._v(
                                                         _vm._s(
                                                           _vm.customer[
@@ -46074,6 +46431,7 @@ var render = function() {
                                                         )
                                                       )
                                                     ])
+<<<<<<< HEAD
                                                   ]),
                                                   _vm._v(" "),
                                                   _c("tr", [
@@ -46090,6 +46448,65 @@ var render = function() {
                                                           "Relationship : "
                                                         )
                                                       ]),
+=======
+                                                  : _c("td", [
+                                                      _vm._v(
+                                                        "please update customer details!"
+                                                      )
+                                                    ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("tr", [
+                                                _c("th", [
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "mr-3 fas fa-user-circle"
+                                                  })
+                                                ]),
+                                                _vm._v(" "),
+                                                _vm.customer[
+                                                  type + "_first_name"
+                                                ]
+                                                  ? _c("td", [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.customer[
+                                                            type + "_first_name"
+                                                          ] +
+                                                            " " +
+                                                            _vm.customer[
+                                                              type +
+                                                                "_middle_name"
+                                                            ] +
+                                                            " " +
+                                                            _vm.customer[
+                                                              type +
+                                                                "_last_name"
+                                                            ]
+                                                        ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ])
+                                                  : _c("td", [
+                                                      _vm._v(
+                                                        "please update customer details!"
+                                                      )
+                                                    ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("tr", [
+                                                _c("th", [
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "mr-3 fas fa-user-circle"
+                                                  })
+                                                ]),
+                                                _vm._v(" "),
+                                                _vm.customer[
+                                                  type + "_relationship"
+                                                ]
+                                                  ? _c("td", [
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                                       _vm._v(
                                                         _vm._s(
                                                           _vm._f("capitalize")(
@@ -46101,6 +46518,7 @@ var render = function() {
                                                         )
                                                       )
                                                     ])
+<<<<<<< HEAD
                                                   ])
                                                 ])
                                               ])
@@ -46117,6 +46535,16 @@ var render = function() {
                                                   )
                                                 ])
                                               ])
+=======
+                                                  : _c("td", [
+                                                      _vm._v(
+                                                        "please update customer details!"
+                                                      )
+                                                    ])
+                                              ])
+                                            ])
+                                          ])
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                         ])
                                       : _vm._e(),
                                     _vm._v(" "),
@@ -46167,11 +46595,6 @@ var render = function() {
                                                       }
                                                     ],
                                                     staticClass: "form-control",
-                                                    class: {
-                                                      "is-invalid": _vm.errors.first(
-                                                        type + ".date_of_call"
-                                                      )
-                                                    },
                                                     attrs: {
                                                       type: "date",
                                                       name: "date_of_call"
@@ -46216,11 +46639,6 @@ var render = function() {
                                                       }
                                                     ],
                                                     staticClass: "form-control",
-                                                    class: {
-                                                      "is-invalid": _vm.errors.first(
-                                                        type + ".date_collected"
-                                                      )
-                                                    },
                                                     attrs: {
                                                       type: "date",
                                                       name: "date_of_call"
@@ -46250,47 +46668,35 @@ var render = function() {
                                               _vm.errors.first(
                                                 type + ".date_of_call"
                                               )
-                                                ? _c(
-                                                    "small",
-                                                    {
-                                                      staticClass: "text-muted"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                                                " +
-                                                          _vm._s(
-                                                            _vm.errors.first(
-                                                              type +
-                                                                ".date_of_call"
-                                                            )
-                                                          ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ]
-                                                  )
+                                                ? _c("small", [
+                                                    _vm._v(
+                                                      "\n                                                " +
+                                                        _vm._s(
+                                                          _vm.errors.first(
+                                                            type +
+                                                              ".date_of_call"
+                                                          )
+                                                        ) +
+                                                        "\n                                            "
+                                                    )
+                                                  ])
                                                 : _vm._e(),
                                               _vm._v(" "),
                                               _vm.errors.first(
                                                 type + ".date_collected"
                                               )
-                                                ? _c(
-                                                    "small",
-                                                    {
-                                                      staticClass: "text-muted"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                                                " +
-                                                          _vm._s(
-                                                            _vm.errors.first(
-                                                              type +
-                                                                ".date_collected"
-                                                            )
-                                                          ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ]
-                                                  )
+                                                ? _c("small", [
+                                                    _vm._v(
+                                                      "\n                                                " +
+                                                        _vm._s(
+                                                          _vm.errors.first(
+                                                            type +
+                                                              ".date_collected"
+                                                          )
+                                                        ) +
+                                                        "\n                                            "
+                                                    )
+                                                  ])
                                                 : _vm._e()
                                             ]
                                           ),
@@ -46334,11 +46740,6 @@ var render = function() {
                                                       }
                                                     ],
                                                     staticClass: "form-control",
-                                                    class: {
-                                                      "is-invalid": _vm.errors.first(
-                                                        type + ".time_of_call"
-                                                      )
-                                                    },
                                                     attrs: {
                                                       type: "time",
                                                       name: "time_of_call"
@@ -46383,11 +46784,6 @@ var render = function() {
                                                       }
                                                     ],
                                                     staticClass: "form-control",
-                                                    class: {
-                                                      "is-invalid": _vm.errors.first(
-                                                        type + ".time_collected"
-                                                      )
-                                                    },
                                                     attrs: {
                                                       type: "time",
                                                       name: "time_collected"
@@ -46417,47 +46813,35 @@ var render = function() {
                                               _vm.errors.first(
                                                 type + ".time_of_call"
                                               )
-                                                ? _c(
-                                                    "small",
-                                                    {
-                                                      staticClass: "text-muted"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                                                " +
-                                                          _vm._s(
-                                                            _vm.errors.first(
-                                                              type +
-                                                                ".time_of_call"
-                                                            )
-                                                          ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ]
-                                                  )
+                                                ? _c("small", [
+                                                    _vm._v(
+                                                      "\n                                                " +
+                                                        _vm._s(
+                                                          _vm.errors.first(
+                                                            type +
+                                                              ".time_of_call"
+                                                          )
+                                                        ) +
+                                                        "\n                                            "
+                                                    )
+                                                  ])
                                                 : _vm._e(),
                                               _vm._v(" "),
                                               _vm.errors.first(
                                                 type + ".time_collected"
                                               )
-                                                ? _c(
-                                                    "small",
-                                                    {
-                                                      staticClass: "text-muted"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                                                " +
-                                                          _vm._s(
-                                                            _vm.errors.first(
-                                                              type +
-                                                                ".time_collected"
-                                                            )
-                                                          ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ]
-                                                  )
+                                                ? _c("small", [
+                                                    _vm._v(
+                                                      "\n                                                " +
+                                                        _vm._s(
+                                                          _vm.errors.first(
+                                                            type +
+                                                              ".time_collected"
+                                                          )
+                                                        ) +
+                                                        "\n                                            "
+                                                    )
+                                                  ])
                                                 : _vm._e()
                                             ]
                                           )
@@ -46614,25 +46998,17 @@ var render = function() {
                                                 _vm.errors.first(
                                                   type + ".consent"
                                                 )
-                                                  ? _c(
-                                                      "small",
-                                                      {
-                                                        staticClass:
-                                                          "text-muted"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "\n                                                " +
-                                                            _vm._s(
-                                                              _vm.errors.first(
-                                                                type +
-                                                                  ".consent"
-                                                              )
-                                                            ) +
-                                                            "\n                                            "
-                                                        )
-                                                      ]
-                                                    )
+                                                  ? _c("small", [
+                                                      _vm._v(
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            _vm.errors.first(
+                                                              type + ".consent"
+                                                            )
+                                                          ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ])
                                                   : _vm._e()
                                               ])
                                             : _c("div", [
@@ -46697,24 +47073,17 @@ var render = function() {
                                                 _vm.errors.first(
                                                   type + ".amount"
                                                 )
-                                                  ? _c(
-                                                      "small",
-                                                      {
-                                                        staticClass:
-                                                          "text-muted"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "\n                                                " +
-                                                            _vm._s(
-                                                              _vm.errors.first(
-                                                                type + ".amount"
-                                                              )
-                                                            ) +
-                                                            "\n                                            "
-                                                        )
-                                                      ]
-                                                    )
+                                                  ? _c("small", [
+                                                      _vm._v(
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            _vm.errors.first(
+                                                              type + ".amount"
+                                                            )
+                                                          ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ])
                                                   : _vm._e()
                                               ])
                                         ]),
@@ -46767,21 +47136,17 @@ var render = function() {
                                             }),
                                             _vm._v(" "),
                                             _vm.errors.first(type + ".report")
-                                              ? _c(
-                                                  "small",
-                                                  { staticClass: "text-muted" },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                                            " +
-                                                        _vm._s(
-                                                          _vm.errors.first(
-                                                            type + ".report"
-                                                          )
-                                                        ) +
-                                                        "\n                                        "
-                                                    )
-                                                  ]
-                                                )
+                                              ? _c("small", [
+                                                  _vm._v(
+                                                    "\n                                            " +
+                                                      _vm._s(
+                                                        _vm.errors.first(
+                                                          type + ".report"
+                                                        )
+                                                      ) +
+                                                      "\n                                        "
+                                                  )
+                                                ])
                                               : _vm._e()
                                           ]
                                         )
@@ -46944,9 +47309,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("emp_name")
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter Employee name here",
@@ -46972,7 +47334,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("emp_name")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("emp_name")) +
@@ -47008,9 +47370,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("employee_id")
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter Employee number here",
@@ -47036,7 +47395,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("employee_id")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -47070,17 +47429,11 @@ var render = function() {
                                   {
                                     name: "validate",
                                     rawName: "v-validate",
-                                    value: "required|date_format:MM/DD/YYYY",
-                                    expression:
-                                      "'required|date_format:MM/DD/YYYY'"
+                                    value: "required",
+                                    expression: "'required'"
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "date_of_registration"
-                                  )
-                                },
                                 attrs: {
                                   type: "date",
                                   "data-vv-as": "Date of Registration",
@@ -47104,7 +47457,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("date_of_registration")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -47148,9 +47501,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("first_name")
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter First name here..",
@@ -47173,7 +47523,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("first_name")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("first_name")) +
@@ -47251,9 +47601,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("last_name")
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter Last name here..",
@@ -47276,7 +47623,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("last_name")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("last_name")) +
@@ -47354,7 +47701,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("gender")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("gender")) +
@@ -47392,9 +47739,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("telephone")
-                                },
                                 attrs: {
                                   type: "tel",
                                   placeholder: "Enter Phone number here..",
@@ -47416,22 +47760,25 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("telephone")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.errors.first("telephone")) +
-                                        "\n                        "
+                                      _vm._s(_vm.errors.first("telephone"))
                                     )
                                   ])
                                 : _vm._e(),
                               _vm._v(" "),
                               _vm.error.telephone
+<<<<<<< HEAD
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.error.telephone[0]) +
                                         "\n                        "
                                     )
+=======
+                                ? _c("small", [
+                                    _vm._v(_vm._s(_vm.error.telephone[0]))
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                   ])
                                 : _vm._e()
                             ]
@@ -47466,9 +47813,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("street_name")
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter street name here..",
@@ -47491,7 +47835,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("street_name")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -47529,9 +47873,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("house_number")
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter House number here..",
@@ -47556,7 +47897,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("house_number")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -47594,11 +47935,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "nearest_bus_stop"
-                                  )
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter nearest bus stop here..",
@@ -47621,7 +47957,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("nearest_bus_stop")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -47661,9 +47997,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("area")
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter area here..",
@@ -47687,7 +48020,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("area")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("area")) +
@@ -47723,9 +48056,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("city")
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter city here..",
@@ -47747,7 +48077,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("city")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("city")) +
@@ -47785,13 +48115,17 @@ var render = function() {
                                     }
                                   ],
                                   staticClass: "custom-select w-100",
-                                  class: {
-                                    "is-invalid": _vm.errors.first("state")
-                                  },
                                   attrs: {
                                     name: "state",
                                     "data-vv-validate-on": "blur"
                                   },
+<<<<<<< HEAD
+                                  attrs: {
+                                    name: "state",
+                                    "data-vv-validate-on": "blur"
+                                  },
+=======
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                   on: {
                                     change: function($event) {
                                       var $$selectedVal = Array.prototype.filter
@@ -47831,9 +48165,15 @@ var render = function() {
                                 2
                               ),
                               _vm._v(" "),
+<<<<<<< HEAD
                               _vm.error.state
                                 ? _c("small", { staticClass: "text-muted" }, [
                                     _vm._v(_vm._s(_vm.errors.state))
+=======
+                              _vm.errors.first("state")
+                                ? _c("small", [
+                                    _vm._v(_vm._s(_vm.errors.first("state")))
+>>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                   ])
                                 : _vm._e()
                             ]
@@ -47909,17 +48249,11 @@ var render = function() {
                                   {
                                     name: "validate",
                                     rawName: "v-validate",
-                                    value: "required|date_format:MM/DD/YYYY",
-                                    expression:
-                                      "'required|date_format:MM/DD/YYYY'"
+                                    value: "required",
+                                    expression: "'required'"
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "date_of_birth"
-                                  )
-                                },
                                 attrs: {
                                   type: "date",
                                   name: "date_of_birth",
@@ -47943,7 +48277,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("date_of_birth")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -48021,7 +48355,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("civil_status")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -48061,11 +48395,6 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "form-control",
-                                    class: {
-                                      "is-invalid": _vm.errors.first(
-                                        "years_together"
-                                      )
-                                    },
                                     attrs: {
                                       type: "number",
                                       placeholder: "years together..",
@@ -48090,21 +48419,15 @@ var render = function() {
                                   }),
                                   _vm._v(" "),
                                   _vm.errors.first("years_together")
-                                    ? _c(
-                                        "small",
-                                        { staticClass: "text-muted" },
-                                        [
-                                          _vm._v(
-                                            "\n                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "years_together"
-                                                )
-                                              ) +
-                                              "\n                        "
-                                          )
-                                        ]
-                                      )
+                                    ? _c("small", [
+                                        _vm._v(
+                                          "\n                            " +
+                                            _vm._s(
+                                              _vm.errors.first("years_together")
+                                            ) +
+                                            "\n                        "
+                                        )
+                                      ])
                                     : _vm._e()
                                 ]
                               )
@@ -48181,7 +48504,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("typeOfHome")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("typeOfHome")) +
@@ -48258,7 +48581,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("noOfRoom")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("noOfRoom")) +
@@ -48297,11 +48620,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "duration_of_residence"
-                                  )
-                                },
                                 attrs: {
                                   type: "number",
                                   placeholder: "Duration of residence..",
@@ -48326,7 +48644,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("duration_of_residence")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -48373,11 +48691,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "number_in_household"
-                                  )
-                                },
                                 attrs: {
                                   type: "number",
                                   placeholder: "Enter number here..",
@@ -48402,7 +48715,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("number_in_household")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -48442,11 +48755,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "how_many_work"
-                                  )
-                                },
                                 attrs: {
                                   type: "number",
                                   placeholder: "Enter number here..",
@@ -48471,7 +48779,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("how_many_work")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -48511,11 +48819,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "no_depend_on_you"
-                                  )
-                                },
                                 attrs: {
                                   type: "number",
                                   placeholder: "Enter number here..",
@@ -48540,7 +48843,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("no_depend_on_you")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -48578,11 +48881,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "number_of_children"
-                                  )
-                                },
                                 attrs: {
                                   type: "number",
                                   placeholder: "Enter number here..",
@@ -48607,7 +48905,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("number_of_children")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -48696,7 +48994,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("highestLevel")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -48736,9 +49034,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("time_from")
-                                },
                                 attrs: {
                                   type: "time",
                                   name: "time_from",
@@ -48762,7 +49057,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("time_from")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("time_from")) +
@@ -48795,9 +49090,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first("time_to")
-                                },
                                 attrs: {
                                   type: "time",
                                   name: "time_to",
@@ -48821,7 +49113,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("time_to")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("time_to")) +
@@ -48945,7 +49237,7 @@ var render = function() {
                               ),
                               _vm._v(" "),
                               _vm.errors.first("otherLoan")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("otherLoan")) +
@@ -49084,19 +49376,15 @@ var render = function() {
                                       ),
                                       _vm._v(" "),
                                       _vm.errors.first("payBack")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                " +
-                                                  _vm._s(
-                                                    _vm.errors.first("payBack")
-                                                  ) +
-                                                  "\n                            "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                " +
+                                                _vm._s(
+                                                  _vm.errors.first("payBack")
+                                                ) +
+                                                "\n                            "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -49258,7 +49546,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("status")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("status")) +
@@ -49307,11 +49595,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "office_phone"
-                                          )
-                                        },
                                         attrs: {
                                           type: "tel",
                                           placeholder:
@@ -49339,21 +49622,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("office_phone")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "office_phone"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "office_phone"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -49388,11 +49667,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "name_of_firm"
-                                          )
-                                        },
                                         attrs: {
                                           type: "text",
                                           placeholder:
@@ -49420,21 +49694,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("name_of_firm")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "name_of_firm"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "name_of_firm"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -49469,11 +49739,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "current_salary"
-                                          )
-                                        },
                                         attrs: {
                                           type: "number",
                                           placeholder:
@@ -49501,21 +49766,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("current_salary")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "current_salary"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "current_salary"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -49612,11 +49873,6 @@ var render = function() {
                                                   expression: "'required'"
                                                 }
                                               ],
-                                              class: {
-                                                "is-invalid": _vm.errors.first(
-                                                  "means"
-                                                )
-                                              },
                                               attrs: {
                                                 type: "radio",
                                                 name: "means",
@@ -49652,19 +49908,15 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("means")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first("means")
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first("means")
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ],
                                     2
@@ -49748,19 +50000,15 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("period")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first("period")
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first("period")
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ],
                                     2
@@ -49800,11 +50048,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "custom-select w-100",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "work_duration"
-                                            )
-                                          },
                                           attrs: {
                                             "data-vv-validate-on": "blur",
                                             name: "work_duration",
@@ -49857,21 +50100,17 @@ var render = function() {
                                       ),
                                       _vm._v(" "),
                                       _vm.errors.first("work_duration")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "work_duration"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "work_duration"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -49985,21 +50224,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("days_of_work")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "days_of_work"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "days_of_work"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ],
                                     2
@@ -50036,11 +50271,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "office_street_name"
-                                          )
-                                        },
                                         attrs: {
                                           type: "text",
                                           placeholder: "Enter Street name here",
@@ -50066,21 +50296,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("office_street_name")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "office_street_name"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "office_street_name"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50114,11 +50340,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "office_building_number"
-                                          )
-                                        },
                                         attrs: {
                                           type: "text",
                                           placeholder: "Enter Building Number",
@@ -50143,21 +50364,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("office_building_number")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "office_building_number"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "office_building_number"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50188,11 +50405,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "office_nearest_bus_stop"
-                                          )
-                                        },
                                         attrs: {
                                           type: "text",
                                           placeholder: "Enter nearest bus stop",
@@ -50220,21 +50432,17 @@ var render = function() {
                                       _vm.errors.first(
                                         "office_nearest_bus_stop"
                                       )
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "office_nearest_bus_stop"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "office_nearest_bus_stop"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50266,11 +50474,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "company_area"
-                                          )
-                                        },
                                         attrs: {
                                           type: "text",
                                           placeholder: "Enter area",
@@ -50295,21 +50498,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("company_area")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "company_area"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "company_area"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50340,11 +50539,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "company_city"
-                                          )
-                                        },
                                         attrs: {
                                           type: "text",
                                           placeholder: "Enter city",
@@ -50369,21 +50563,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("company_city")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "company_city"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "company_city"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50417,11 +50607,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "custom-select w-100",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "company_state"
-                                            )
-                                          },
                                           attrs: {
                                             name: "company_state",
                                             "data-vv-validate-on": "blur",
@@ -50474,21 +50659,17 @@ var render = function() {
                                       ),
                                       _vm._v(" "),
                                       _vm.errors.first("company_state")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "company_state"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "company_state"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50524,11 +50705,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "company_phone_number"
-                                          )
-                                        },
                                         attrs: {
                                           type: "tel",
                                           placeholder: "Enter city",
@@ -50553,21 +50729,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("company_phone_number")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "company_phone_number"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "company_phone_number"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50601,11 +50773,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "available_from"
-                                          )
-                                        },
                                         attrs: {
                                           type: "time",
                                           name: "available_from",
@@ -50630,21 +50797,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("available_from")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "available_from"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "available_from"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50676,11 +50839,6 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
-                                        class: {
-                                          "is-invalid": _vm.errors.first(
-                                            "available_to"
-                                          )
-                                        },
                                         attrs: {
                                           type: "time",
                                           name: "available_to",
@@ -50704,21 +50862,17 @@ var render = function() {
                                       }),
                                       _vm._v(" "),
                                       _vm.errors.first("available_to")
-                                        ? _c(
-                                            "small",
-                                            { staticClass: "text-muted" },
-                                            [
-                                              _vm._v(
-                                                "\n                                    " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "available_to"
-                                                    )
-                                                  ) +
-                                                  "\n                                "
-                                              )
-                                            ]
-                                          )
+                                        ? _c("small", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "available_to"
+                                                  )
+                                                ) +
+                                                "\n                                "
+                                            )
+                                          ])
                                         : _vm._e()
                                     ]
                                   ),
@@ -50807,11 +50961,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "office_phone"
-                                            )
-                                          },
                                           attrs: {
                                             type: "tel",
                                             placeholder:
@@ -50839,21 +50988,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("office_phone")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "office_phone"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "office_phone"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -50888,11 +51033,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "name_of_firm"
-                                            )
-                                          },
                                           attrs: {
                                             type: "text",
                                             placeholder:
@@ -50920,21 +51060,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("name_of_firm")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "name_of_firm"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "name_of_firm"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -50968,11 +51104,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "market_name"
-                                            )
-                                          },
                                           attrs: {
                                             type: "text",
                                             placeholder: "name of market",
@@ -50997,21 +51128,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("market_name")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "market_name"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "market_name"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51046,11 +51173,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "current_salary"
-                                            )
-                                          },
                                           attrs: {
                                             type: "number",
                                             placeholder:
@@ -51078,21 +51200,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("current_salary")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "current_salary"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "current_salary"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51126,11 +51244,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "monthly_gains"
-                                            )
-                                          },
                                           attrs: {
                                             type: "number",
                                             placeholder: "monthly gains",
@@ -51155,21 +51268,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("monthly_gains")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "monthly_gains"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "monthly_gains"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51206,11 +51315,6 @@ var render = function() {
                                               }
                                             ],
                                             staticClass: "custom-select w-100",
-                                            class: {
-                                              "is-invalid": _vm.errors.first(
-                                                "work_duration"
-                                              )
-                                            },
                                             attrs: {
                                               "data-vv-validate-on": "blur",
                                               name: "work_duration",
@@ -51265,21 +51369,17 @@ var render = function() {
                                         ),
                                         _vm._v(" "),
                                         _vm.errors.first("work_duration")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "work_duration"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "work_duration"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51421,21 +51521,17 @@ var render = function() {
                                         ),
                                         _vm._v(" "),
                                         _vm.errors.first("bank_account")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "bank_account"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "bank_account"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51552,21 +51648,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("days_of_work")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "days_of_work"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "days_of_work"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ],
                                       2
@@ -51604,11 +51696,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "office_street_name"
-                                            )
-                                          },
                                           attrs: {
                                             type: "text",
                                             placeholder:
@@ -51635,21 +51722,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("office_street_name")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "office_street_name"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "office_street_name"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51681,11 +51764,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "office_building_number"
-                                            )
-                                          },
                                           attrs: {
                                             type: "text",
                                             placeholder:
@@ -51714,21 +51792,17 @@ var render = function() {
                                         _vm.errors.first(
                                           "office_building_number"
                                         )
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "office_building_number"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "office_building_number"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51762,11 +51836,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "office_nearest_bus_stop"
-                                            )
-                                          },
                                           attrs: {
                                             type: "text",
                                             placeholder:
@@ -51795,21 +51864,17 @@ var render = function() {
                                         _vm.errors.first(
                                           "office_nearest_bus_stop"
                                         )
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "office_nearest_bus_stop"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "office_nearest_bus_stop"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51842,11 +51907,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "company_area"
-                                            )
-                                          },
                                           attrs: {
                                             type: "text",
                                             placeholder: "Enter area",
@@ -51871,21 +51931,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("company_area")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "company_area"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "company_area"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51917,11 +51973,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "company_city"
-                                            )
-                                          },
                                           attrs: {
                                             type: "text",
                                             placeholder: "Enter city",
@@ -51946,21 +51997,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("company_city")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "company_city"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "company_city"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -51994,11 +52041,6 @@ var render = function() {
                                               }
                                             ],
                                             staticClass: "custom-select w-100",
-                                            class: {
-                                              "is-invalid": _vm.errors.first(
-                                                "company_state"
-                                              )
-                                            },
                                             attrs: {
                                               name: "company_state",
                                               "data-vv-validate-on": "blur",
@@ -52053,21 +52095,17 @@ var render = function() {
                                         ),
                                         _vm._v(" "),
                                         _vm.errors.first("company_state")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "company_state"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "company_state"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -52103,11 +52141,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "company_phone_number"
-                                            )
-                                          },
                                           attrs: {
                                             type: "tel",
                                             placeholder: "Enter city",
@@ -52132,21 +52165,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("company_phone_number")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "company_phone_number"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "company_phone_number"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -52183,11 +52212,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "available_from"
-                                            )
-                                          },
                                           attrs: {
                                             type: "time",
                                             name: "available_from",
@@ -52212,21 +52236,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("available_from")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "available_from"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "available_from"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -52258,11 +52278,6 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          class: {
-                                            "is-invalid": _vm.errors.first(
-                                              "available_to"
-                                            )
-                                          },
                                           attrs: {
                                             type: "time",
                                             name: "available_to",
@@ -52287,21 +52302,17 @@ var render = function() {
                                         }),
                                         _vm._v(" "),
                                         _vm.errors.first("available_to")
-                                          ? _c(
-                                              "small",
-                                              { staticClass: "text-muted" },
-                                              [
-                                                _vm._v(
-                                                  "\n                                    " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "available_to"
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
+                                          ? _c("small", [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(
+                                                    _vm.errors.first(
+                                                      "available_to"
+                                                    )
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ])
                                           : _vm._e()
                                       ]
                                     ),
@@ -52388,11 +52399,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "NOK_first_name"
-                                  )
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter first name",
@@ -52417,7 +52423,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("NOK_first_name")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -52500,11 +52506,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "NOK_last_name"
-                                  )
-                                },
                                 attrs: {
                                   type: "text",
                                   placeholder: "Enter last name",
@@ -52529,7 +52530,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("NOK_last_name")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -52616,7 +52617,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("nokgender")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(_vm.errors.first("nokgender")) +
@@ -52654,11 +52655,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "NOK_phone_number"
-                                  )
-                                },
                                 attrs: {
                                   type: "tel",
                                   placeholder: "Enter phone number",
@@ -52683,7 +52679,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("NOK_phone_number")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -52725,11 +52721,6 @@ var render = function() {
                                     }
                                   ],
                                   staticClass: "custom-select w-100",
-                                  class: {
-                                    "is-invalid": _vm.errors.first(
-                                      "NOK_work_duration"
-                                    )
-                                  },
                                   attrs: {
                                     "data-vv-as":
                                       "next of kin duration of work",
@@ -52776,7 +52767,7 @@ var render = function() {
                               ),
                               _vm._v(" "),
                               _vm.errors.first("NOK_work_duration")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -52863,7 +52854,7 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _vm.errors.first("relationship")
-                                ? _c("small", { staticClass: "text-muted" }, [
+                                ? _c("small", [
                                     _vm._v(
                                       "\n                            " +
                                         _vm._s(
@@ -52955,9 +52946,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first("WG_first_name")
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter first name",
@@ -52982,7 +52970,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("WG_first_name")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53067,9 +53055,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first("WG_last_name")
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter last name",
@@ -53094,7 +53079,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("WG_last_name")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(_vm.errors.first("WG_last_name")) +
@@ -53180,7 +53165,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("relationshipwg")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53261,7 +53246,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("wggender")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(_vm.errors.first("wggender")) +
@@ -53302,11 +53287,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "work_guarantor_street_name"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter Street name here",
@@ -53331,7 +53311,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("work_guarantor_street_name")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53371,11 +53351,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "work_guarantor_office_building"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter Building Number",
@@ -53440,11 +53415,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "work_guarantor_bus_stop"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter nearest bus stop",
@@ -53469,7 +53439,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("work_guarantor_bus_stop")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53511,11 +53481,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "work_guarantor_area"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter area",
@@ -53538,7 +53503,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("work_guarantor_area")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53576,11 +53541,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "work_guarantor_city"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter city",
@@ -53605,7 +53565,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("work_guarantor_city")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53646,11 +53606,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "work_guarantor_state"
-                                  )
-                                },
                                 attrs: {
                                   "data-vv-as": "work guarantor state",
                                   "data-vv-validate-on": "blur",
@@ -53694,7 +53649,7 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _vm.errors.first("work_guarantor_state")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53734,11 +53689,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "work_guarantor_phone"
-                                )
-                              },
                               attrs: {
                                 type: "tel",
                                 placeholder: "Enter city",
@@ -53763,7 +53713,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("work_guarantor_phone")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53806,11 +53756,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "work_guarantor_work_duration"
-                                  )
-                                },
                                 attrs: {
                                   "data-vv-as": "work guarantor work duration",
                                   "data-vv-validate-on": "blur",
@@ -53854,7 +53799,7 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _vm.errors.first("work_guarantor_work_duration")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -53988,9 +53933,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first("PG_first_name")
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter first name",
@@ -54016,7 +53958,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("PG_first_name")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -54103,9 +54045,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first("PG_last_name")
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter last name",
@@ -54131,7 +54070,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("PG_last_name")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(_vm.errors.first("PG_last_name")) +
@@ -54217,7 +54156,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("relationshippg")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -54303,7 +54242,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("pggender")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(_vm.errors.first("pggender")) +
@@ -54344,9 +54283,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first("pguaadd_street")
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter Street name here",
@@ -54371,7 +54307,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("pguaadd_street")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -54409,11 +54345,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "pguaadd_houseno"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter Building Number",
@@ -54438,7 +54369,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("pguaadd_houseno")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -54476,9 +54407,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first("pguaadd_nbstop")
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter nearest bus stop",
@@ -54503,7 +54431,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("pguaadd_nbstop")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -54543,9 +54471,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first("pgua_area")
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter area",
@@ -54568,7 +54493,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("pgua_area")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(_vm.errors.first("pgua_area")) +
@@ -54606,11 +54531,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "personal_guarantor_city"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter city",
@@ -54635,7 +54555,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("personal_guarantor_city")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -54679,11 +54599,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "personal_guarantor_state"
-                                  )
-                                },
                                 attrs: {
                                   "data-vv-as": "personal guarantor state",
                                   "data-vv-validate-on": "blur",
@@ -54727,7 +54642,7 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _vm.errors.first("personal_guarantor_state")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -54771,11 +54686,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "personal_guarantor_telno"
-                                )
-                              },
                               attrs: {
                                 type: "tel",
                                 placeholder: "Enter city",
@@ -54800,7 +54710,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("personal_guarantor_telno")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -54845,11 +54755,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
-                                class: {
-                                  "is-invalid": _vm.errors.first(
-                                    "personal_guarantor_work_duration"
-                                  )
-                                },
                                 attrs: {
                                   "data-vv-as":
                                     "personal guarantor work duration",
@@ -54986,11 +54891,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "what_product_do_you_need"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter Product name",
@@ -55015,7 +54915,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("what_product_do_you_need")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -55057,11 +54957,6 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.errors.first(
-                                  "what_do_you_need_it_for"
-                                )
-                              },
                               attrs: {
                                 type: "text",
                                 placeholder: "Enter Reason..",
@@ -55086,7 +54981,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _vm.errors.first("what_do_you_need_it_for")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -55128,9 +55023,6 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "custom-select w-100",
-                                class: {
-                                  "is-invalid": _vm.errors.first("branch_id")
-                                },
                                 attrs: {
                                   disabled: "",
                                   "data-vv-as": "office branch",
@@ -55175,7 +55067,7 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _vm.errors.first("branch_id")
-                              ? _c("small", { staticClass: "text-muted" }, [
+                              ? _c("small", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(_vm.errors.first("branch_id")) +
@@ -55639,8 +55531,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -55761,7 +55651,6 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-sm-12",
-                      class: { "is-invalid": _vm.errors.first("contacts") },
                       attrs: {
                         placeholder:
                           "Kindly add the number and seperate each with a semi-colon ';' ",
@@ -55780,7 +55669,7 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _vm.errors.first("contacts")
-                      ? _c("small", { staticClass: "text-muted" }, [
+                      ? _c("small", [
                           _vm._v(
                             _vm._s(_vm.errors.first("contacts")) +
                               "\n                        "
@@ -55814,7 +55703,6 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-sm-12",
-                      class: { "is-invalid": _vm.errors.first("message") },
                       attrs: {
                         placeholder: "the content of the message goes here",
                         rows: "3",
@@ -55832,7 +55720,7 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _vm.errors.first("message")
-                      ? _c("small", { staticClass: "text-muted" }, [
+                      ? _c("small", [
                           _vm._v(_vm._s(_vm.errors.first("message")))
                         ])
                       : _vm._e()
@@ -64775,6 +64663,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('slug', function (value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(21);
+
 
 
 //NB functions her can be accessed anywhere
@@ -64821,10 +64711,42 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$networkErr = function () 
     this.$LIPS(false);
     var msg = 'Your are not connected to the network please wait till network is back!';
     if (err == 'form') msg = 'Please ensure all the fields are filled correctly!';
-    if (err == 'page') msg = 'You do not have access to that page!!';
-    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(msg);
+    if (err == 'page') msg = 'You do not have access to that page!';
+    if (err == 'edit') msg = 'You do not have access to edit details because it is out of your jurisdiction!';
+    __WEBPACK_IMPORTED_MODULE_1__helpers_flash__["a" /* default */].setError(msg, 10000);
     //custom message for network "no network connection" and
     //form field validation error
+};
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$editAccess = function () {
+    var user = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    var customer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+    if (!!user && !!customer) {
+        if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].getters.verifyDSAAccess) {
+            if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].state.DSALead.includes(user.role_id)) {
+                return true;
+            } else {
+                if (user.branch_id === customer.user.branch_id) {
+                    if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].state.DSACaptain.includes(user.role_id)) {
+                        return true;
+                    } else {
+                        if (user.id === customer.user.id) {
+                            return true;
+                        } else return false;
+                    }
+                } else return false;
+            }
+        } else if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].getters.verifyDVAAccess) {
+            if (__WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].state.DVALead.includes(user.role_id)) {
+                return true;
+            } else {
+                if (user.branch_id === customer.user.branch_id) {
+                    return true;
+                } else return false;
+            }
+        } else return false;
+    } else return false;
 };
 
 /***/ }),

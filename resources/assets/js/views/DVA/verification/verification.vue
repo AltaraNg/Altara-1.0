@@ -13,8 +13,7 @@
                                    v-validate="'required|numeric'"
                                    data-vv-as="customer id"
                                    name="customer_id"
-                                   @onkeyUp="check"
-                                   :class="{'is-invalid': errors.first('customer_id')}">
+                                   @onkeyUp="check">
                             <div
                                     class="col-lg-3 col-md-4 col-sm-4 col-12 float-right px-md-3 mt-md-0 px-sm-3 mt-sm-0 mt-2 px-0">
                                 <button type="submit" class="btn btn-block bg-default my-1" :disabled="check">
@@ -56,7 +55,11 @@
                                 <div class="card-footer pointer" @click="modal(type+'_modal')">
                                     <i class="now-ui-icons ui-1_calendar-60 pr-1"></i>
                                     {{key(type) ? 'Verified' : 'Not Verified'}}
-                                    <small>(Click here to update status!)</small>
+                                    <small v-if="! key(type)">(Click here to update status!)</small>
+                                    <span style="font-size: 10px" v-else class="float-right">
+                                        by - {{type == 'passport' || type == 'id_card' ?
+                                        customer['document'].staff_name : customer[type].staff_name | capitalize}}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -106,7 +109,7 @@
                                     <span class="text-danger"><i class="fas fa-times"></i></span>
                                 </a>
                             </div>
-                            <form @submit.prevent="validate('address')">
+                            <form @submit.prevent="validate('address')" :data-vv-scope="'address'">
                                 <div class="modal-body p-5">
                                     <h5>
                                         <tr class="m-0">
@@ -119,15 +122,21 @@
                                             <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
                                                 <label>Date of Visitation</label>
                                                 <input type="date" class="form-control" name="date_of_visit"
-                                                       v-model="address.date_of_visit"
-                                                       :class="{'is-invalid': errors.first('date_of_visit')}">
+                                                       v-model="address.date_of_visit" v-validate="'required'"
+                                                       data-vv-as="date of visit">
+
+                                                <small v-if="errors.first('address.date_of_visit')">
+                                                    {{errors.first('address.date_of_visit')}}
+                                                </small>
                                             </div>
                                             <div class="form-group float-left  col-md-6 col-12  pl-md-3 pl-0 pr-0">
                                                 <label>Time of Visit</label>
                                                 <input v-model="address.time_of_visit" type="time"
-                                                       class="form-control"
-                                                       name="time_of_visit"
-                                                       :class="{'is-invalid': errors.first('time_of_visit')}">
+                                                       class="form-control" v-validate="'required'"
+                                                       name="time_of_visit" data-vv-as="time of visit">
+                                                <small v-if="errors.first('address.time_of_visit')">
+                                                    {{errors.first('address.time_of_visit')}}
+                                                </small>
                                             </div>
                                         </div>
 
@@ -135,7 +144,8 @@
                                             <label>1. Did you meet the customer?</label>
                                             <span class="radio mx-5">
                                                 <input v-model="address.customer_meetup"
-                                                       type="radio" name="customer_meetup" id="yes" value="yes">
+                                                       type="radio" name="customer_meetup" id="yes" value="yes"
+                                                       v-validate="'required'" data-vv-as="customer meetup">
                                                 <label for="yes">Yes</label>
                                             </span>
                                             <span class="radio ml-5">
@@ -143,6 +153,10 @@
                                                        type="radio" name="customer_meetup" id="no" value="no">
                                                 <label for="no">No</label>
                                             </span>
+
+                                            <small v-if="errors.first('address.customer_meetup')">
+                                                {{errors.first('address.customer_meetup')}}
+                                            </small>
                                         </div>
 
                                         <div class="form-group clearfix">
@@ -150,22 +164,30 @@
                                                 2. Is the address/location same with what you have in the application form?
                                             </label>
                                             <span class="radio mx-5">
-                                                <input v-model="address.confirm_address"
-                                                       name="confirm address" type="radio" id="add_yes" value="yes">
+                                                <input v-model="address.confirm_address" v-validate="'required'"
+                                                       data-vv-as="confirm address"
+                                                       name="confirm_address" type="radio" id="add_yes" value="yes">
                                                 <label for="add_yes">Yes</label>
                                             </span>
                                             <span class="radio ml-5">
                                                 <input v-model="address.confirm_address"
-                                                       name="confirm address" type="radio" id="add_no" value="no">
+                                                       name="confirm_address" type="radio" id="add_no" value="no">
                                                 <label for="add_no">No</label>
                                             </span>
+                                            <small v-if="errors.first('address.confirm_address')">
+                                                {{errors.first('address.confirm_address')}}
+                                            </small>
                                         </div>
 
                                         <div class="form-group clearfix">
                                             <label>3. What does he/she do or sell?</label>
                                             <input type="text" class="form-control" placeholder="comment here..."
                                                    v-model="address.what_he_sells" name="what_he_sells"
-                                                   :class="{'is-invalid': errors.first('what_he_sells')}">
+                                                   v-validate="'required'"
+                                                   data-vv-as="what he sells">
+                                            <small v-if="errors.first('address.what_he_sells')">
+                                                {{errors.first('address.what_he_sells')}}
+                                            </small>
                                         </div>
 
                                         <div class="form-group clearfix">
@@ -173,10 +195,12 @@
                                                    business. Write down what you see in terms of address, stock value, premise, type of shop or business, sales etc.</label>
                                             <textarea class="form-control"
                                                       placeholder="comment here..."
-                                                      rows="1"
+                                                      rows="1" v-validate="'required'"
                                                       v-model="address.business_info"
-                                                      name="business info"
-                                                      :class="{'is-invalid': errors.first('business info')}"></textarea>
+                                                      name="business_info" data-vv-as="business info"></textarea>
+                                            <small v-if="errors.first('address.business_info')">
+                                                {{errors.first('address.business_info')}}
+                                            </small>
                                         </div>
 
                                         <div class="form-group clearfix">
@@ -186,10 +210,12 @@
                                             </label>
                                             <textarea class="form-control w-100"
                                                       placeholder="comment here..."
-                                                      rows="1"
+                                                      rows="1" v-validate="'required'" data-vv-as="product info"
                                                       v-model="address.product_info"
-                                                      name="product info"
-                                                      :class="{'is-invalid': errors.first('product info')}"></textarea>
+                                                      name="product_info"></textarea>
+                                            <small v-if="errors.first('address.product_info')">
+                                                {{errors.first('address.product_info')}}
+                                            </small>
                                         </div>
 
                                         <div class="form-group clearfix">
@@ -198,20 +224,23 @@
                                             </label>
                                             <span class="radio mx-5">
                                                 <input v-model="address.aware_of_plan"
-                                                       name="aware of plan"
-                                                       type="radio"
+                                                       name="aware_of_plan"
+                                                       type="radio" v-validate="'required'" data-vv-as="aware of plan"
                                                        id="pay_yes"
                                                        value="yes">
                                                 <label for="pay_yes">yes</label>
                                             </span>
                                             <span class="radio ml-5">
                                                 <input v-model="address.aware_of_plan"
-                                                       name="aware of plan"
+                                                       name="aware_of_plan"
                                                        type="radio"
                                                        id="pay_no"
                                                        value="no">
                                                 <label for="pay_no">no</label>
                                             </span>
+                                            <small v-if="errors.first('address.aware_of_plan')">
+                                                {{errors.first('address.aware_of_plan')}}
+                                            </small>
                                         </div>
 
                                         <div class="form-group clearfix">
@@ -220,27 +249,41 @@
                                             </label>
                                             <span class="radio mx-5">
                                                 <input v-model="info_from_neighbors"
-                                                       name="info from neighbors"
-                                                       type="radio"
+                                                       name="info_from_neighbors"
+                                                       type="radio" v-validate="'required'"
+                                                       data-vv-as="info from neighbors"
                                                        id="neigh_yes"
                                                        value="yes">
                                                 <label for="neigh_yes">yes</label>
                                             </span>
                                             <span class="radio ml-5">
                                                 <input v-model="info_from_neighbors"
-                                                       name="info from neighbors"
+                                                       name="info_from_neighbors"
                                                        type="radio"
                                                        id="neigh_no"
                                                        value="no">
                                                 <label for="neigh_no">no</label>
                                             </span>
+                                            <small
+                                                   v-if="errors.first('address.info_from_neighbors')">
+                                                {{errors.first('address.info_from_neighbors')}}
+                                            </small>
 
-                                            <textarea v-if="info_from_neighbors == 'yes'" class="form-control"
-                                                      placeholder="comment here..."
-                                                      rows="1"
-                                                      v-model="address.info_from_neighbors_desc"
-                                                      name="neighbors description"
-                                                      :class="{'is-invalid': errors.first('neighbors description')}"></textarea>
+                                            <div v-if="info_from_neighbors == 'yes'">
+                                                <textarea class="form-control"
+                                                          placeholder="comment here..."
+                                                          rows="1" v-validate="'required'"
+                                                          v-model="address.info_from_neighbors_desc"
+                                                          name="info_from_neighbors_desc"
+                                                          data-vv-as="info from neighbors desc"
+                                                          :class="{'is-invalid':
+                                                          errors.first('address.info_from_neighbors_desc')}"></textarea>
+                                                <small
+                                                       v-if="errors.first('address.info_from_neighbors_desc')">
+                                                    {{errors.first('address.info_from_neighbors_desc')}}
+                                                </small>
+                                            </div>
+
                                         </div>
 
                                         <div class="form-group clearfix">
@@ -248,10 +291,16 @@
                                             </label>
                                             <textarea class="form-control"
                                                       placeholder="address"
-                                                      rows="1"
+                                                      rows="1" v-validate="'required'"
                                                       v-model="address.business_or_work_duration"
-                                                      name="business or work duration"
-                                                      :class="{'is-invalid': errors.first('business or work duration')}"></textarea>
+                                                      name="business_or_work_duration"
+                                                      data-vv-as="business or work duration"
+                                                      :class="{'is-invalid':
+                                                      errors.first('address.business_or_work_duration')}"></textarea>
+                                            <small
+                                                   v-if="errors.first('address.business_or_work_duration')">
+                                                {{errors.first('address.business_or_work_duration')}}
+                                            </small>
                                         </div>
 
                                         <div v-if="addressBtns">
@@ -324,7 +373,16 @@
                                             </tr>
                                             <tr>
                                                 <th><i class="mr-3 fas fa-mobile-alt"></i></th>
-                                                <td><strong>Phone No. : </strong>{{customer[type+'_telno']}}</td>
+                                                <td v-if="customer[type+'_telno']">{{customer[type+'_telno']}}</td>
+                                                <td v-else>please update customer details!</td>
+                                            </tr>
+                                            <tr>
+                                                <th><i class="mr-3 fas fa-user-circle"></i></th>
+                                                <td v-if="customer[type+'_first_name']">{{customer[type+'_first_name']+ ' '
+                                                                                        + customer[type+'_middle_name']+ ' '
+                                                                                        + customer[type+'_last_name']}}
+                                                </td>
+                                                <td v-else>please update customer details!</td>
                                             </tr>
                                             
                                             <tr>
@@ -347,18 +405,16 @@
                                                 </label>
                                                 <input v-if="type !== 'processing_fee'" type="date" class="form-control"
                                                        v-model="$data[type].date_of_call" v-validate="'required'"
-                                                       :class="{'is-invalid': errors.first(type+'.date_of_call')}"
                                                        name="date_of_call">
                                                 <input v-else type="date" class="form-control"
                                                        v-model="$data[type].date_collected" v-validate="'required'"
-                                                       :class="{'is-invalid': errors.first(type+'.date_collected')}"
                                                        name="date_of_call">
 
-                                                <small class="text-muted" v-if="errors.first(type+'.date_of_call')">
+                                                <small v-if="errors.first(type+'.date_of_call')">
                                                     {{errors.first(type+'.date_of_call')}}
                                                 </small>
 
-                                                <small class="text-muted" v-if="errors.first(type+'.date_collected')">
+                                                <small v-if="errors.first(type+'.date_collected')">
                                                     {{errors.first(type+'.date_collected')}}
                                                 </small>
 
@@ -369,19 +425,17 @@
                                                 </label>
                                                 <input v-if="type !== 'processing_fee'" type="time" class="form-control"
                                                        v-model="$data[type].time_of_call"
-                                                       :class="{'is-invalid': errors.first(type+'.time_of_call')}"
                                                        name="time_of_call" v-validate="'required'">
                                                 <input v-else type="time" class="form-control"
                                                        v-model="$data[type].time_collected"
-                                                       :class="{'is-invalid': errors.first(type+'.time_collected')}"
                                                        name="time_collected" v-validate="'required'">
 
 
-                                                <small class="text-muted" v-if="errors.first(type+'.time_of_call')">
+                                                <small v-if="errors.first(type+'.time_of_call')">
                                                     {{errors.first(type+'.time_of_call')}}
                                                 </small>
 
-                                                <small class="text-muted" v-if="errors.first(type+'.time_collected')">
+                                                <small v-if="errors.first(type+'.time_collected')">
                                                     {{errors.first(type+'.time_collected')}}
                                                 </small>
 
@@ -403,7 +457,7 @@
                                                            value="0" name="consent">
                                                     <label :for="type+'_no'">Did not Give Consent</label>
                                                 </div>
-                                                <small class="text-muted" v-if="errors.first(type+'.consent')">
+                                                <small v-if="errors.first(type+'.consent')">
                                                     {{errors.first(type+'.consent')}}
                                                 </small>
                                             </div>
@@ -414,7 +468,7 @@
                                                     <input v-model="$data[type].amount" class="form-control"
                                                            type="number" disabled name="amount" v-validate="'required'">
                                                 </div>
-                                                <small class="text-muted" v-if="errors.first(type+'.amount')">
+                                                <small v-if="errors.first(type+'.amount')">
                                                     {{errors.first(type+'.amount')}}
                                                 </small>
                                             </div>
@@ -424,7 +478,7 @@
                                             <textarea class="form-control w-100" placeholder="comment here..." rows="3"
                                                       v-model="$data[type].report" v-validate="'required'"
                                                       name="report"></textarea>
-                                            <small class="text-muted" v-if="errors.first(type+'.report')">
+                                            <small v-if="errors.first(type+'.report')">
                                                 {{errors.first(type+'.report')}}
                                             </small>
                                         </div>
@@ -548,7 +602,6 @@
                 (data.hasOwnProperty('user')) ? this.user = data.user : this.user = null;
                 this.customer = data.customer;
                 if (data.customer != '') {
-                    console.log(data.customer);
                     this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                     this.form.id_card = data.customer.document.id_card_url;
                     this.form.passport = data.customer.document.passport_url;
@@ -578,6 +631,7 @@
                     this.$LIPS(true);
                     get('/api/customer/' + this.customer_id)
                         .then(res => {
+                            // console.log(res.data);
                             this.buttonStatus(res.data);
                             this.$LIPS(false);
                         })
@@ -592,63 +646,69 @@
                 } else this.$networkErr();
             },
             validate(type) {
-                if (this.$network()) {
-                    this.$LIPS(true);
-                    if ((this.veriView.includes(type)) && !(this.customer.work_guarantor_first_name)) {
-                        this.modal(type + '_modal');
-                        this.$LIPS(false);
-                        this.$scrollToTop();
-                        Flash.setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
-                        return;
-                    }
-                    (this.info_from_neighbors === 'no') ? this.address.info_from_neighbors_desc = '' : '';
-                    this[type].customer_id = this.customer.id;
-                    this[type].user_id = this.user.id;
-                    this[type].staff_name = this.user.full_name;
-                    this.$validator.validateAll(type).then((result) => {
-                        if (result) {
-                            post('/api/' + type, this[type])
-                                .then(res => {
-                                    this.buttonStatus(res.data.response);
-                                    let id = 'Customer ID : ' + String(this.customer.id),
-                                        typeCaps = this.$options.filters.capitalize(type),
-                                        action = 'Customer' + typeCaps + 'Verification';
-                                    if (type === 'address')
-                                        (this.address.approval_status === 1) ? action += 'Passed' : action += 'NotPassed';
-                                    log(action, id);
-                                    Flash.setSuccess(typeCaps + ' status updated!');
-                                    this.modal(type + '_modal');
-                                    this.$LIPS(false);
-                                    this.$scrollToTop();
-                                })
-                                .catch(err => {
-                                    this.$LIPS(false);
-                                    this.$scrollToTop();
-                                    Flash.setError(err.response.data.message);
-                                });
+                let acc = this.$editAccess(this.user, this.customer);
+                if (acc) {
+                    if (this.$network()) {
+                        this.$LIPS(true);
+                        if ((this.veriView.includes(type)) && !(this.customer.work_guarantor_first_name)) {
+                            this.modal(type + '_modal');
+                            this.$LIPS(false);
+                            this.$scrollToTop();
+                            Flash.setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
+                            return;
                         }
-                        if (!result) this.$networkErr('form');
-                    });
-                } else this.$networkErr();
+                        (this.info_from_neighbors === 'no') ? this.address.info_from_neighbors_desc = '' : '';
+                        this[type].customer_id = this.customer.id;
+                        this[type].user_id = this.user.id;
+                        this[type].staff_name = this.user.full_name;
+                        this.$validator.validateAll(type).then((result) => {
+                            if (result) {
+                                post('/api/' + type, this[type])
+                                    .then(res => {
+                                        this.buttonStatus(res.data.response);
+                                        let id = 'Customer ID : ' + String(this.customer.id),
+                                            typeCaps = this.$options.filters.capitalize(type),
+                                            action = 'Customer' + typeCaps + 'Verification';
+                                        if (type === 'address')
+                                            (this.address.approval_status === 1) ? action += 'Passed' : action += 'NotPassed';
+                                        log(action, id);
+                                        Flash.setSuccess(typeCaps + ' status updated!');
+                                        this.modal(type + '_modal');
+                                        this.$LIPS(false);
+                                        this.$scrollToTop();
+                                    })
+                                    .catch(err => {
+                                        this.$LIPS(false);
+                                        this.$scrollToTop();
+                                        Flash.setError(err.response.data.message);
+                                    });
+                            }
+                            if (!result) this.$networkErr('form');
+                        });
+                    } else this.$networkErr();
+                } else {this.$networkErr('edit'); $('.modal').modal('hide')};
             },
             save(document, modal) {
-                this.storeURL = `api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
-                this.$LIPS(true);
-                this.form.document = document;
-                const form = toMulipartedForm(this.form, 'edit');
-                post(this.storeURL, form).then((res) => {
-                    this.buttonStatus(res.data.response);
-                    log('Customer' + this.$options.filters.capitalize(document) + 'Upload',
-                        'Customer ID : ' + String(this.customer.id));
-                    this.modal(modal);
-                    this.$LIPS(false);
-                    this.$scrollToTop();
-                    Flash.setSuccess('Document Updated Successfully!');
-                }).catch((err) => {
-                    this.error = err.response.data.errors;
-                    this.$LIPS(false);
-                    this.$scrollToTop();
-                })
+                let acc = this.$editAccess(this.user, this.customer);
+                if (acc) {
+                    this.storeURL = `api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
+                    this.$LIPS(true);
+                    this.form.document = document;
+                    const form = toMulipartedForm(this.form, 'edit');
+                    post(this.storeURL, form).then((res) => {
+                        this.buttonStatus(res.data.response);
+                        log('Customer' + this.$options.filters.capitalize(document) + 'Upload',
+                            'Customer ID : ' + String(this.customer.id));
+                        this.modal(modal);
+                        this.$LIPS(false);
+                        this.$scrollToTop();
+                        Flash.setSuccess('Document Updated Successfully!');
+                    }).catch((err) => {
+                        this.error = err.response.data.errors;
+                        this.$LIPS(false);
+                        this.$scrollToTop();
+                    })
+                } else {this.$networkErr('edit'); $('.modal').modal('hide')};
             },
         },
         computed: {
@@ -662,14 +722,15 @@
     }
 </script>
 <style scoped>
-    tr{
-        margin-bottom: 1rem;
-        float: left;
-        width: 100%;
-        font-weight: 400;
+    tr {
+        margin-bottom : 1rem;
+        float         : left;
+        width         : 100%;
+        font-weight   : 400;
     }
+
     tbody tr th {
-        width: 2em;
-        text-align:center;
+        width      : 2em;
+        text-align : center;
     }
 </style>
