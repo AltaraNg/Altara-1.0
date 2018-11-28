@@ -71,7 +71,7 @@
                                     data-placement="top"
                                     title="update branch details"
                                     @click="updateBranch(model.id)">
-                                <i class="fas fa-key"></i>
+                                <i class="fas fa-cog"></i>
                             </button>
                         </td>
                     </tr>

@@ -86,6 +86,7 @@
                                             <image-upload v-model="$data['form'][type]"/>
                                         </div>
                                     </div>
+                                    <small v-if="error[type]">{{error[type][0]}}</small>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
@@ -707,7 +708,6 @@
                     this.$networkErr('edit');
                     $('.modal').modal('hide')
                 }
-                ;
             },
         },
         computed: {
