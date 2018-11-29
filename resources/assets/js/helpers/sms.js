@@ -40,6 +40,8 @@ export default {
         this.send(details);
     },
     send(details) {
+        console.log(details);
+        console.log(this.message);
         /*get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
             + 234 + details.phone + "&text=" + this.message + "").then(res => Flash.setSuccess('SMS sent Successfully'))*/
     }
