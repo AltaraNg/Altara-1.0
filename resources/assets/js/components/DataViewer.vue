@@ -351,7 +351,7 @@
                     /*if up is 1 then its for details update*/
                     if (this.$network()) {
                         this.$LIPS(true);
-                        get("api/employee/" + emp.id + "/edit").then((res) => {
+                        get("/api/employee/" + emp.id + "/edit").then((res) => {
                             /*the full employee details are fetched to populate
                             the form for editing ie the utility form*/
                             this.sentData = res.data;
@@ -366,7 +366,7 @@
             resetPassword() {
                 if (this.$network()) {
                     this.$LIPS(true);
-                    get('api/reset-password/' + this.form.id).then((res) => {
+                    get('/api/reset-password/' + this.form.id).then((res) => {
                         this.$scrollToTop();
                         $('#editPassword').modal('toggle');
                         log('resetUserPassword', this.form.staff_id);

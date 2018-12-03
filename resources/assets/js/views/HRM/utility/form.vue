@@ -206,8 +206,8 @@
                     v-validate="'required'" data-vv-validate-on="blur"
                     data-vv-name="category">
                 <option value="" selected>select category</option>
-                <option v-for="category in categories" :value="category">
-                    {{category | capitalize}}
+                <option v-for="category in categories" :value="category.name">
+                    {{category.name | capitalize}}
                 </option>
             </select>
             <small
@@ -395,7 +395,7 @@
                 password: '',
                 countries: ['nigeria'],
                 gender: ['male', 'female'],
-                categories: ['permanent', 'contract'],
+                categories: {},
                 textDetails: {phone: '', loginPassword: '', loginID: '',},
                 statuses: ['married', 'single', 'divorced', 'complicated'],
                 qualifications: ['HND', 'OND', 'bachelors', 'masters', 'doctorate'],
@@ -422,6 +422,10 @@
                 this.form = data.form;
                 this.roles = data.roles;
                 this.branches = data.branches;
+                this.categories = data.categories;
+
+                console.log(data);
+
             },
             register(emp = null, AC = 1) {
                 //NB: this function is used by the employee register, employee update and for portal access update.
@@ -450,9 +454,9 @@
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
-                            let newUrl = 'api/register', message, logMsg;
+                            let newUrl = '/api/register', message, logMsg;
                             //for registration the url is used
-                            if (this.action === 'update') newUrl = "api/employee/" + emp.id + "/update";
+                            if (this.action === 'update') newUrl = "/api/employee/" + emp.id + "/update";
                             //else f the form action is not registration den its update
                             //hence the url "api/employee/{id}/update"
                             post(newUrl, emp)
@@ -466,7 +470,7 @@
                                         message = "Staff registered! An sms has been sent to the employee with his Login details!";
                                         SMS.welcome(this.textDetails);
                                     } else if (res.data.hasOwnProperty('updated')) {
-                                        //if the response is from "api/employee/{id}/update"
+                                        //if the response is from "/api/employee/{id}/update"
                                         logMsg = 'Updated';
                                         message = 'Staff details updated!';
                                         this.$emit('done');

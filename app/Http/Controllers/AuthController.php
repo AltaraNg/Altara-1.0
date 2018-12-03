@@ -103,11 +103,13 @@ class AuthController extends Controller
     {
         $branches = Branch::select('name', 'id')->orderBy('name', 'asc')->get();
         $roles = Role::select('name', 'id')->orderBy('name', 'asc')->get();
+        $categories = EmployeeCategory::orderBy('name', 'asc')->get();
         $user = User::find($id);
         return response()->json([
             'roles' => $roles,
             'form' => $user,
             'branches' => $branches,
+            'categories' => $categories
         ]);
     }
 
