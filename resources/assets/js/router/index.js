@@ -31,6 +31,10 @@ import Inventory from '../views/FSL/inventory/inventory.vue';
 Vue.use(VueRouter);
 Vue.use(routerHistory);
 const router = new VueRouter({
+    hashbang: false,
+    history: true,
+    linkActiveClass: 'active',
+    mode:'history',
     routes: [
         {path: '/', redirect: {name: 'home'}},
         {
@@ -118,6 +122,7 @@ const router = new VueRouter({
     ]
 });
 
+router.mode = 'html5';
 router.afterEach(writeHistory);
 router.beforeEach((to, from, next) => {
     /*route access control*/

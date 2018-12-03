@@ -87,7 +87,6 @@
                                    name="telephone">
                             <small v-if="errors.first('telephone')">{{errors.first('telephone')}}</small>
                             <small v-if="error.telephone">{{error.telephone[0]}}</small>
-
                         </div>
 
                         <div class="spaceAfter"></div>

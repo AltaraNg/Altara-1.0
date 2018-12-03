@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Bank;
+use App\EmployeeCategory;
 use Illuminate\Http\Request;
 
-class BankController extends Controller
+class EmployeeCategoryController extends Controller
 {
     public function __construct()
     {
@@ -45,10 +45,10 @@ class BankController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Bank  $bank
+     * @param  \App\EmployeeCategory  $employeeCategory
      * @return \Illuminate\Http\Response
      */
-    public function show(Bank $bank)
+    public function show(EmployeeCategory $employeeCategory)
     {
         //
     }
@@ -56,10 +56,10 @@ class BankController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Bank  $bank
+     * @param  \App\EmployeeCategory  $employeeCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bank $bank)
+    public function edit(EmployeeCategory $employeeCategory)
     {
         //
     }
@@ -68,10 +68,10 @@ class BankController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Bank  $bank
+     * @param  \App\EmployeeCategory  $employeeCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bank $bank)
+    public function update(Request $request, EmployeeCategory $employeeCategory)
     {
         //
     }
@@ -79,10 +79,10 @@ class BankController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Bank  $bank
+     * @param  \App\EmployeeCategory  $employeeCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bank $bank)
+    public function destroy(EmployeeCategory $employeeCategory)
     {
         //
     }

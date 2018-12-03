@@ -356,12 +356,17 @@ small.text-muted, form small:not(.error-control) {
 }
 
 .form-group {
-
+  height: 8rem;
+  margin-bottom: .8rem;
   & label, .category {
     font-weight   : 600;
     color         : $default-color;
     margin-bottom : .2rem;
   }
+}
+
+input,select{
+  max-height : 4rem;
 }
 
 [data-bg="default"] { background : $default-color; }

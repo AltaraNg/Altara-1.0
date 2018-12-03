@@ -5,7 +5,7 @@ export default {
     message: "",
     welcome(details) {
         this.message =
-            "Welcome to Altara credit. Please keep your login details safe. Your login details are as follows," +
+            "Welcome to Altara credit. Please secure your login details. " +
             ' Staff ID: "' +
             details.loginID +
             '" password: "' +
@@ -42,7 +42,7 @@ export default {
     send(details) {
         console.log(details);
         console.log(this.message);
-        /*get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
-            + 234 + details.phone + "&text=" + this.message + "").then(res => Flash.setSuccess('SMS sent Successfully'))*/
+        get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to="
+            + 234 + details.phone + "&text=" + this.message + "").then(res => Flash.setSuccess('SMS sent Successfully'))
     }
 };

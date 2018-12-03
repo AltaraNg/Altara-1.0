@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Branch;
+use App\EmployeeCategory;
 use App\Role;
 use App\User;
 use DateTime;
@@ -20,20 +21,21 @@ class AuthController extends Controller
     public function create()
     {
         $form = User::form();
-        $roles = Role::select('name', 'id')->orderBy('name', 'asc')->get();
-        $branches = Branch::select('name', 'id')->orderBy('name', 'asc')->get();
+        $roles = Role::orderBy('name', 'asc')->get();
+        $branches = Branch::orderBy('name', 'asc')->get();
+        $categories = EmployeeCategory::orderBy('name', 'asc')->get();
         return response()->json([
             'form' => $form,
             'roles' => $roles,
             'branches' => $branches,
+            'categories' => $categories
         ]);
     }
 
     public function register(Request $request)
     {
-        Validator::extend('older_than', function($attribute, $value, $parameters)
-        {
-            $minAge = ( ! empty($parameters)) ? (int) $parameters[0] : 18;
+        Validator::extend('older_than', function ($attribute, $value, $parameters) {
+            $minAge = (!empty($parameters)) ? (int)$parameters[0] : 18;
             return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
         });
 
@@ -113,18 +115,18 @@ class AuthController extends Controller
     {
         $this->validate($request, [
             'email' => 'unique:users,email,' . $id,
-            'staff_id' => 'unique:users,staff_id,'.$id,
-            'phone_number' => 'unique:users,phone_number,'.$id,
+            'staff_id' => 'unique:users,staff_id,' . $id,
+            'phone_number' => 'unique:users,phone_number,' . $id,
         ]);
 
         $user = User::find($id);
-        if($request->portal_access == 1 && isset($user->date_of_exit)){
+        if ($request->portal_access == 1 && isset($user->date_of_exit)) {
             return response()->json([
                 'message' => 'Staff exited! Access cant be granted!',
             ], 422);
         }
-        if(isset($user->date_of_exit) || isset($request->date_of_exit)) {
-            $request['portal_access'] = 0 ;
+        if (isset($user->date_of_exit) || isset($request->date_of_exit)) {
+            $request['portal_access'] = 0;
             $request->request->add(['api_token' => null]);
         }
 
@@ -145,5 +147,20 @@ class AuthController extends Controller
             'reset' => true,
             'password' => $gen_password,
         ]);
+    }
+
+    public function generateStaffID($category)
+    {
+        $count = User::count();
+        $prefix = '';
+        $num = '';
+        if ($category === 'contract') $prefix = 'AC/C/';
+        if ($category === 'permanent') $prefix = 'ACL/';
+        if ($category === 'freelance') $prefix = 'AC/F/';
+        if (strlen((string)$count) === 1) $num = '00' . $count;
+        else if (strlen((string)$count) === 2) $num = '0' . $count;
+        else if (strlen((string)$count) >= 3) $num = $count;
+        $id = $prefix . $num . '/' . date("y");
+        return $id;
     }
 }

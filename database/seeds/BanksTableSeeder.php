@@ -2,6 +2,7 @@
 
 use App\Bank;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class BanksTableSeeder extends Seeder
 {
@@ -12,6 +13,7 @@ class BanksTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('banks')->delete();
         $banks = [
             'Access Bank',
             'Diamond Bank',
@@ -32,11 +34,8 @@ class BanksTableSeeder extends Seeder
             'Wema Bank',
             'Zenith Bank',
         ];
-
         for ($i = 0; $i < count($banks); $i++) {
-            $bank = new Bank();
-            $bank->name = $banks[$i];
-            $bank->save();
+            Bank::create(['name' => $banks[$i]]);
         }
     }
 }
