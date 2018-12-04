@@ -435,7 +435,7 @@
                 //control update rather for registration.
 
                 //emp for context :registration is the form, ie a new user hences uses
-                //the default url 'api/register' for registration
+                //the default url '/api/register' for registration
                 //emp for context :details update and portal access
                 //update are the staff details to be updated
                 if(AC === 1) this.updatingPortalAccess = true;
@@ -458,11 +458,11 @@
                             //for registration the url is used
                             if (this.action === 'update') newUrl = "/api/employee/" + emp.id + "/update";
                             //else f the form action is not registration den its update
-                            //hence the url "api/employee/{id}/update"
+                            //hence the url "/api/employee/{id}/update"
                             post(newUrl, emp)
                                 .then((res) => {
                                     if (res.data.hasOwnProperty('registered')) {
-                                        //if the response is from 'api/register'
+                                        //if the response is from '/api/register'
                                         logMsg = 'Registered';
                                         this.textDetails.loginID = String(this.form.staff_id);
                                         this.textDetails.phone = String(parseInt(this.form.phone_number));

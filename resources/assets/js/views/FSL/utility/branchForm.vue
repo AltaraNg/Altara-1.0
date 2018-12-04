@@ -163,11 +163,11 @@
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
-                            let url = 'api/branch', action = this.$options.filters.capitalize(this.action);
+                            let url = '/api/branch', action = this.$options.filters.capitalize(this.action);
                             //for creating a branch the url above is used
-                            if (this.action === 'update') url = "api/branch/" + this.branchToUpdate.id;
+                            if (this.action === 'update') url = "/api/branch/" + this.branchToUpdate.id;
                             //else if the form action is not create den its update
-                            //hence the url "api/branch/{id}"
+                            //hence the url "/api/branch/{id}"
                             post(url, this.form)
                                 .then((res) => {
                                     this.$scrollToTop();

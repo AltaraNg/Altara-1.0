@@ -687,7 +687,7 @@
             save(document, modal) {
                 let acc = this.$editAccess(this.user, this.customer);
                 if (acc) {
-                    this.storeURL = `api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
+                    this.storeURL = `/api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
                     this.$LIPS(true);
                     this.form.document = document;
                     const form = toMulipartedForm(this.form, 'edit');

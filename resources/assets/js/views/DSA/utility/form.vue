@@ -1363,7 +1363,7 @@
                         }
                         if (this.$network()) {
                             this.$LIPS(true);
-                            this.error = {}
+                            this.error = {};
                             let newUrl = '/api/customer';
                             var logMsg = 'createdNew';
                             if (this.action === 'update'){

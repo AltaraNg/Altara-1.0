@@ -39,7 +39,9 @@ class RolesTableSeeder extends Seeder
             'Document Verification Agent Captain',
             'Collections Agent',
             'Driver',
-            'Delivery Driver'
+            'Delivery Driver',
+            'Junior Accountant',
+            'Buyer'
         ];
         for ($i = 0; $i < count($roles); $i++) {
             Role::create(['name' => $roles[$i]]);
