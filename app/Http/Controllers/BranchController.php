@@ -56,9 +56,6 @@ class BranchController extends Controller
     {
         $this->validate($request, [
             'name' => 'unique:branches',
-            'phone_english' => 'unique:branches',
-            'phone_yoruba' => 'unique:branches',
-            'account_name' => 'unique:branches',
             'account_number' => 'unique:branches',
             'email' => 'unique:branches',
         ]);
@@ -107,9 +104,6 @@ class BranchController extends Controller
     {
         $this->validate($request, [
             'name' => 'unique:branches,name,' . $id,
-            'phone_english' => 'unique:branches,phone_english,'.$id,
-            'phone_yoruba' => 'unique:branches,phone_yoruba,'.$id,
-            'account_name' => 'unique:branches,account_name,'.$id,
             'account_number' => 'unique:branches,account_number,'.$id,
             'email' => 'unique:branches,email,'.$id
         ]);

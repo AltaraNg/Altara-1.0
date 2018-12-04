@@ -21,9 +21,9 @@ class CreateBranchesTable extends Migration
             $table->string('employee_id', 30);
             $table->string('name')->unique();
             $table->string('status');
-            $table->string('phone_english')->unique();
-            $table->string('phone_yoruba')->unique();
-            $table->string('account_name')->nullable()->unique();
+            $table->string('phone_english');
+            $table->string('phone_yoruba');
+            $table->string('account_name')->nullable();
             $table->string('account_number')->nullable()->unique();
             $table->string('email')->nullable()->unique();
             $table->string('bank')->nullable();
