@@ -179,7 +179,7 @@ module.exports = function normalizeComponent (
 "use strict";
 
 
-var bind = __webpack_require__(16);
+var bind = __webpack_require__(17);
 var isBuffer = __webpack_require__(43);
 
 /*global toString:true*/
@@ -11978,10 +11978,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(17);
+    adapter = __webpack_require__(18);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(17);
+    adapter = __webpack_require__(18);
   }
   return adapter;
 }
@@ -12060,6 +12060,88 @@ module.exports = defaults;
 
 /***/ }),
 /* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(14);
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
+var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
+    state: {
+        loader: false,
+        ProfileAccess: [],
+        ProfileEditAccess: [],
+        DSALead: [1, 2, 8, 9, 15],
+        DSACaptain: [1, 2, 8, 9, 15, 17],
+        DSAAccess: [1, 2, 8, 9, 15, 17, 18],
+        DVALead: [1, 2, 8, 9, 13, 16],
+        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
+        HRMAccess: [1, 2, 6, 7, 8, 9],
+        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
+        authRole: parseInt(localStorage.getItem('role')),
+        api_token: localStorage.getItem('api_token')
+    },
+    getters: {
+        verifyDSAAccess: function verifyDSAAccess(state) {
+            if (state.DSAAccess.includes(state.authRole) && state.api_token) {
+                return true;
+            }
+            return false;
+        },
+        verifyDVAAccess: function verifyDVAAccess(state) {
+            if (state.DVAAccess.includes(state.authRole) && state.api_token) {
+                return true;
+            }
+            return false;
+        },
+        verifyHRMAccess: function verifyHRMAccess(state) {
+            if (state.HRMAccess.includes(state.authRole) && state.api_token) {
+                return true;
+            }
+            return false;
+        },
+        verifyFSLAccess: function verifyFSLAccess(state) {
+            if (state.FSLAccess.includes(state.authRole) && state.api_token) {
+                return true;
+            }
+            return false;
+        },
+        getProfileAccess: function getProfileAccess(state) {
+            return state.ProfileAccess;
+        },
+        getProfileEditAccess: function getProfileEditAccess(state) {
+            return state.ProfileEditAccess;
+        }
+    },
+    mutations: {
+        mutateProfileAccess: function mutateProfileAccess(state, payload) {
+            state.ProfileAccess.push(payload);
+        },
+        mutateAuth: function mutateAuth(state) {
+            state.authRole = parseInt(localStorage.getItem('role'));
+            state.api_token = localStorage.getItem('api_token');
+        }
+    },
+    actions: {
+        mutateProfileAccess: function mutateProfileAccess(context, payload) {
+            context.commit('mutateProfileAccess', payload);
+        },
+        mutateAuth: function mutateAuth(context) {
+            context.commit('mutateAuth');
+        }
+    }
+});
+
+/***/ }),
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13004,7 +13086,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -23375,7 +23457,7 @@ return jQuery;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25904,7 +25986,7 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25922,7 +26004,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25933,7 +26015,7 @@ var settle = __webpack_require__(46);
 var buildURL = __webpack_require__(48);
 var parseHeaders = __webpack_require__(49);
 var isURLSameOrigin = __webpack_require__(50);
-var createError = __webpack_require__(18);
+var createError = __webpack_require__(19);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(51);
 
 module.exports = function xhrAdapter(config) {
@@ -26109,7 +26191,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26134,7 +26216,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26146,7 +26228,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26170,88 +26252,6 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_es6_promise_auto__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(13);
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
-var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
-    state: {
-        loader: false,
-        ProfileAccess: [],
-        ProfileEditAccess: [],
-        DSALead: [1, 2, 8, 9, 15],
-        DSACaptain: [1, 2, 8, 9, 15, 17],
-        DSAAccess: [1, 2, 8, 9, 15, 17, 18],
-        DVALead: [1, 2, 8, 9, 13, 16],
-        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
-        HRMAccess: [1, 2, 6, 7, 8, 9],
-        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
-        authRole: parseInt(localStorage.getItem('role')),
-        api_token: localStorage.getItem('api_token')
-    },
-    getters: {
-        verifyDSAAccess: function verifyDSAAccess(state) {
-            if (state.DSAAccess.includes(state.authRole) && state.api_token) {
-                return true;
-            }
-            return false;
-        },
-        verifyDVAAccess: function verifyDVAAccess(state) {
-            if (state.DVAAccess.includes(state.authRole) && state.api_token) {
-                return true;
-            }
-            return false;
-        },
-        verifyHRMAccess: function verifyHRMAccess(state) {
-            if (state.HRMAccess.includes(state.authRole) && state.api_token) {
-                return true;
-            }
-            return false;
-        },
-        verifyFSLAccess: function verifyFSLAccess(state) {
-            if (state.FSLAccess.includes(state.authRole) && state.api_token) {
-                return true;
-            }
-            return false;
-        },
-        getProfileAccess: function getProfileAccess(state) {
-            return state.ProfileAccess;
-        },
-        getProfileEditAccess: function getProfileEditAccess(state) {
-            return state.ProfileEditAccess;
-        }
-    },
-    mutations: {
-        mutateProfileAccess: function mutateProfileAccess(state, payload) {
-            state.ProfileAccess.push(payload);
-        },
-        mutateAuth: function mutateAuth(state) {
-            state.authRole = parseInt(localStorage.getItem('role'));
-            state.api_token = localStorage.getItem('api_token');
-        }
-    },
-    actions: {
-        mutateProfileAccess: function mutateProfileAccess(context, payload) {
-            context.commit('mutateProfileAccess', payload);
-        },
-        mutateAuth: function mutateAuth(context) {
-            context.commit('mutateAuth');
-        }
-    }
-});
 
 /***/ }),
 /* 22 */
@@ -26775,12 +26775,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store_store__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_filters_js__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store_globalFunctions_js__ = __webpack_require__(158);
-window.$ = window.jQuery = __webpack_require__(14);
-window.Popper = __webpack_require__(15).default;
+window.$ = window.jQuery = __webpack_require__(15);
+window.Popper = __webpack_require__(16).default;
 __webpack_require__(30);
 
 
@@ -26791,13 +26791,9 @@ __webpack_require__(30);
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vee_validate__["a" /* default */], {
-<<<<<<< HEAD
-    events: 'input|blur'
-=======
     events: 'input|blur',
     classes: true,
     classNames: { invalid: 'is-invalid' }
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 });
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#root',
@@ -26817,7 +26813,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(14), __webpack_require__(15)) :
+   true ? factory(exports, __webpack_require__(15), __webpack_require__(16)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -31548,7 +31544,7 @@ module.exports = __webpack_require__(42);
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(16);
+var bind = __webpack_require__(17);
 var Axios = __webpack_require__(44);
 var defaults = __webpack_require__(12);
 
@@ -31583,9 +31579,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(20);
+axios.Cancel = __webpack_require__(21);
 axios.CancelToken = __webpack_require__(58);
-axios.isCancel = __webpack_require__(19);
+axios.isCancel = __webpack_require__(20);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -31738,7 +31734,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(18);
+var createError = __webpack_require__(19);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -32171,7 +32167,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(55);
-var isCancel = __webpack_require__(19);
+var isCancel = __webpack_require__(20);
 var defaults = __webpack_require__(12);
 var isAbsoluteURL = __webpack_require__(56);
 var combineURLs = __webpack_require__(57);
@@ -32331,7 +32327,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(20);
+var Cancel = __webpack_require__(21);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -32716,7 +32712,7 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router_back_button__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router_back_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_router_back_button__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_HomePage_vue__ = __webpack_require__(66);
@@ -39628,10 +39624,6 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
-<<<<<<< HEAD
-              class: { "is-invalid": _vm.errors.first("status") },
-=======
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: { name: "status", "data-vv-validate-on": "blur" },
               on: {
                 change: function($event) {
@@ -39705,10 +39697,6 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
-<<<<<<< HEAD
-              class: { "is-invalid": _vm.errors.first("nationality") },
-=======
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: { name: "nationality", "data-vv-validate-on": "blur" },
               on: {
                 change: function($event) {
@@ -39955,10 +39943,6 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
-<<<<<<< HEAD
-              class: { "is-invalid": _vm.errors.first("role") },
-=======
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: {
                 name: "role",
                 "data-vv-validate-on": "blur",
@@ -40038,10 +40022,6 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
-<<<<<<< HEAD
-              class: { "is-invalid": _vm.errors.first("qualification") },
-=======
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: {
                 name: "qualification",
                 "data-vv-validate-on": "blur",
@@ -40119,10 +40099,6 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
-<<<<<<< HEAD
-              class: { "is-invalid": _vm.errors.first("branch") },
-=======
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: {
                 name: "branch",
                 "data-vv-validate-on": "blur",
@@ -40286,10 +40262,6 @@ var render = function() {
                 }
               ],
               staticClass: "custom-select w-100",
-<<<<<<< HEAD
-              class: { "is-invalid": _vm.errors.first("category") },
-=======
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
               attrs: {
                 name: "qualification",
                 "data-vv-validate-on": "blur",
@@ -42915,112 +42887,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-<<<<<<< HEAD
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-=======
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 
 
 
@@ -43028,20 +42894,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: { Verification: __WEBPACK_IMPORTED_MODULE_4__views_DVA_verification_verification___default.a },
     props: { action: { default: 'update' } },
     data: function data() {
         return {
             error: {},
-<<<<<<< HEAD
-=======
             user: {},
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
             newCustomer: {},
             fillWorkGuarantor: false,
             fillPersonalGuarantor: false,
@@ -43144,14 +43004,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         /*on create of the component fetch the data required to prepare the form
         * states, branches and the currently logged in dsa details*/
-<<<<<<< HEAD
-=======
     },
     mounted: function mounted() {
         /*$('input').each(function(){
             $(this).addClass('form-control');
         })*/
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
     }
 });
 
@@ -43190,11 +43047,7 @@ exports = module.exports = __webpack_require__(22)(false);
 
 
 // module
-<<<<<<< HEAD
-exports.push([module.i, "\ntr[data-v-07317a72]{\n    margin-bottom: 1rem;\n    float: left;\n    width: 100%;\n    font-weight: 400;\n}\ntbody tr th[data-v-07317a72] {\n    width: 2em;\n    text-align:center;\n}\n", ""]);
-=======
 exports.push([module.i, "\ntr[data-v-07317a72] {\n    margin-bottom : 1rem;\n    float         : left;\n    width         : 100%;\n    font-weight   : 400;\n}\ntbody tr th[data-v-07317a72] {\n    width      : 2em;\n    text-align : center;\n}\n", ""]);
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
 
 // exports
 
@@ -43663,8 +43516,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-<<<<<<< HEAD
-=======
 //
 //
 //
@@ -43708,7 +43559,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -44608,9 +44469,6 @@ var render = function() {
                 _vm._m(6),
                 _vm._v(" "),
                 _c("td", [
-<<<<<<< HEAD
-                  _vm._v(_vm._s(_vm._f("capitalize")(_vm.customer.branch.name)))
-=======
                   _vm._v(
                     _vm._s(
                       _vm._f("capitalize")(
@@ -44620,7 +44478,6 @@ var render = function() {
                       )
                     )
                   )
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                 ])
               ])
             ])
@@ -46310,7 +46167,6 @@ var render = function() {
                                   _c("div", { staticClass: "modal-body" }, [
                                     type !== "processing_fee"
                                       ? _c("h5", [
-<<<<<<< HEAD
                                           _vm.customer[type + "_first_name"]
                                             ? _c("table", [
                                                 _c("tbody", [
@@ -46380,58 +46236,62 @@ var render = function() {
                                                       })
                                                     ]),
                                                     _vm._v(" "),
-                                                    _c("td", [
-                                                      _c("strong", [
-                                                        _vm._v("Phone No. : ")
-                                                      ]),
-=======
-                                          _c("table", [
-                                            _c("tbody", [
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "mr-3 fas fa-map-marker-alt"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[type + "_state"]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.$data[
-                                                            type + "_address"
-                                                          ]
-                                                        )
-                                                      )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ]),
-                                              _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "mr-3 fas fa-mobile-alt"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[type + "_telno"]
-                                                  ? _c("td", [
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.customer[
-                                                            type + "_telno"
-                                                          ]
-                                                        )
-                                                      )
-                                                    ])
-<<<<<<< HEAD
+                                                    _vm.customer[
+                                                      type + "_telno"
+                                                    ]
+                                                      ? _c("td", [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              _vm.customer[
+                                                                type + "_telno"
+                                                              ]
+                                                            )
+                                                          )
+                                                        ])
+                                                      : _c("td", [
+                                                          _vm._v(
+                                                            "please update customer details!"
+                                                          )
+                                                        ])
+                                                  ]),
+                                                  _vm._v(" "),
+                                                  _c("tr", [
+                                                    _c("th", [
+                                                      _c("i", {
+                                                        staticClass:
+                                                          "mr-3 fas fa-user-circle"
+                                                      })
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _vm.customer[
+                                                      type + "_first_name"
+                                                    ]
+                                                      ? _c("td", [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              _vm.customer[
+                                                                type +
+                                                                  "_first_name"
+                                                              ] +
+                                                                " " +
+                                                                _vm.customer[
+                                                                  type +
+                                                                    "_middle_name"
+                                                                ] +
+                                                                " " +
+                                                                _vm.customer[
+                                                                  type +
+                                                                    "_last_name"
+                                                                ]
+                                                            ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ])
+                                                      : _c("td", [
+                                                          _vm._v(
+                                                            "please update customer details!"
+                                                          )
+                                                        ])
                                                   ]),
                                                   _vm._v(" "),
                                                   _c("tr", [
@@ -46448,65 +46308,6 @@ var render = function() {
                                                           "Relationship : "
                                                         )
                                                       ]),
-=======
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ]),
-                                              _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "mr-3 fas fa-user-circle"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[
-                                                  type + "_first_name"
-                                                ]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.customer[
-                                                            type + "_first_name"
-                                                          ] +
-                                                            " " +
-                                                            _vm.customer[
-                                                              type +
-                                                                "_middle_name"
-                                                            ] +
-                                                            " " +
-                                                            _vm.customer[
-                                                              type +
-                                                                "_last_name"
-                                                            ]
-                                                        ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ]),
-                                              _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "mr-3 fas fa-user-circle"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[
-                                                  type + "_relationship"
-                                                ]
-                                                  ? _c("td", [
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                                       _vm._v(
                                                         _vm._s(
                                                           _vm._f("capitalize")(
@@ -46518,7 +46319,6 @@ var render = function() {
                                                         )
                                                       )
                                                     ])
-<<<<<<< HEAD
                                                   ])
                                                 ])
                                               ])
@@ -46535,16 +46335,6 @@ var render = function() {
                                                   )
                                                 ])
                                               ])
-=======
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ])
-                                            ])
-                                          ])
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                         ])
                                       : _vm._e(),
                                     _vm._v(" "),
@@ -47768,17 +47558,8 @@ var render = function() {
                                 : _vm._e(),
                               _vm._v(" "),
                               _vm.error.telephone
-<<<<<<< HEAD
-                                ? _c("small", { staticClass: "text-muted" }, [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.error.telephone[0]) +
-                                        "\n                        "
-                                    )
-=======
                                 ? _c("small", [
                                     _vm._v(_vm._s(_vm.error.telephone[0]))
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                   ])
                                 : _vm._e()
                             ]
@@ -48119,13 +47900,6 @@ var render = function() {
                                     name: "state",
                                     "data-vv-validate-on": "blur"
                                   },
-<<<<<<< HEAD
-                                  attrs: {
-                                    name: "state",
-                                    "data-vv-validate-on": "blur"
-                                  },
-=======
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                   on: {
                                     change: function($event) {
                                       var $$selectedVal = Array.prototype.filter
@@ -48165,15 +47939,9 @@ var render = function() {
                                 2
                               ),
                               _vm._v(" "),
-<<<<<<< HEAD
-                              _vm.error.state
-                                ? _c("small", { staticClass: "text-muted" }, [
-                                    _vm._v(_vm._s(_vm.errors.state))
-=======
                               _vm.errors.first("state")
                                 ? _c("small", [
                                     _vm._v(_vm._s(_vm.errors.first("state")))
->>>>>>> cf2be67adb6639ed09f16416ac3f3162b7c57108
                                   ])
                                 : _vm._e()
                             ]
@@ -55820,7 +55588,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_auth__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_flash__ = __webpack_require__(2);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -64663,7 +64431,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter('slug', function (value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_flash__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(13);
 
 
 
