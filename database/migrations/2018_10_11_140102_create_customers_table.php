@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateCustomersTable extends Migration
@@ -130,6 +131,8 @@ class CreateCustomersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('branch_id')->references('id')->on('branches');
         });
+
+        DB::update("ALTER TABLE customers AUTO_INCREMENT = 5000;");
     }
 
     /**

@@ -16,11 +16,17 @@ Route::get('/create', 'AuthController@create');
 Route::post('/logout', 'AuthController@logout');
 Route::post('/register', 'AuthController@register');
 Route::get('/employee/{id}/edit', 'AuthController@edit');
+Route::get('/branch/create', 'BranchController@create');
 Route::get('/customer/create', 'CustomerController@create');
+Route::post('/branch/{branch}', 'BranchController@update');
 Route::post('/employee/{id}/update', 'AuthController@update');
+Route::post('/customer/{customer}', 'CustomerController@update');
 Route::get('/reset-password/{id}', 'AuthController@resetPassword');
 Route::apiResources([
     'log' => 'LogController',
+    'user' => 'UserController',
+    'state' => 'StateController',
+    'branch' => 'BranchController',
     'address' => 'AddressController',
     'message' => 'MessageController',
     'customer' => 'CustomerController',
@@ -30,7 +36,4 @@ Route::apiResources([
     'processing_fee' => 'ProcessingFeeController',
     'personal_guarantor' => 'PersonalGuarantorController',
 ]);
-Route::post('/customer/{customer}', 'CustomerController@update');
-Route::get('/user', 'UserController@getData');
-Route::get('/customer', 'CustomerController@getData');
 Route::post('/report', 'ReportController@generateReport');

@@ -72,7 +72,7 @@
                         if(this.$network()){
                             this.$LIPS(true);
                             this.error = {};
-                            post('api/login', this.form)
+                            post('/api/login', this.form)
                                 .then((res) => {
                                     if (res.data.authenticated) {
                                         Auth.set(res.data);

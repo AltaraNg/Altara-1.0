@@ -72,7 +72,7 @@
                         </tr>
                         <tr>
                             <th class="text-muted"><i class="mr-3 far fa-building"></i>Branch</th>
-                            <td>{{customer.branch.name | capitalize}}</td>
+                            <td>{{customer.branch.description + ' ' +customer.branch.name | capitalize}}</td>
                         </tr>
                         </tbody>
                     </table>

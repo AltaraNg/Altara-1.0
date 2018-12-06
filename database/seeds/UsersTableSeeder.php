@@ -124,7 +124,7 @@ class UsersTableSeeder extends Seeder
         $faker = Factory::create();
 
         /*foreach (range(5, 50) as $i) {
-            $rand = rand(5, 23);
+            $rand = rand(5, 25);
             $role = Role::find($rand);
             User::create([
                 'role_id' => $role->id,

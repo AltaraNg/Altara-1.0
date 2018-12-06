@@ -8,10 +8,9 @@
                    placeholder="employee full name"
                    v-model="form.full_name"
                    v-validate="'required|max:100'"
-                   :class="{'is-invalid': errors.first('name')}"
                    name="name">
-            <small class="text-muted"
-                   v-if="errors.first('name')">
+            <small
+                    v-if="errors.first('name')">
                 {{ errors.first('name') }}
             </small>
         </div>
@@ -24,14 +23,13 @@
                    v-model="form.phone_number"
                    name="phone_number"
                    v-validate="'required|numeric|max:11|min:11'"
-                   :class="{'is-invalid': errors.first('phone_number') || error.phone_number }"
+                   :class="{'is-invalid': error.phone_number }"
                    data-vv-as="phone number">
-            <small class="text-muted"
-                   v-if="errors.first('phone_number')">
+            <small v-if="errors.first('phone_number')">
                 {{errors.first('phone_number') }}
             </small>
-            <small class="text-muted"
-                   v-if="error.phone_number">
+            <small
+                    v-if="error.phone_number">
                 {{error.phone_number[0]}}
             </small>
         </div>
@@ -43,14 +41,13 @@
             <select name="status"
                     class="custom-select w-100"
                     v-model="form.status"
-                    :class="{'is-invalid': errors.first('status')}"
                     v-validate="'required'" data-vv-validate-on="blur">
                 <option value="" selected>select status</option>
                 <option v-for="status in statuses" :value="status">
                     {{status | capitalize}}
                 </option>
             </select>
-            <small class="text-muted" v-if="errors.first('status')">
+            <small v-if="errors.first('status')">
                 {{errors.first('status') }}
             </small>
         </div>
@@ -60,14 +57,13 @@
             <select name="nationality"
                     class="custom-select w-100"
                     v-model="form.nationality"
-                    :class="{'is-invalid': errors.first('nationality')}"
                     v-validate="'required'" data-vv-validate-on="blur">
                 <option value="" selected>select nationality</option>
                 <option v-for="country in countries" :value="country">
                     {{country | capitalize}}
                 </option>
             </select>
-            <small class="text-muted" v-if="errors.first('nationality')">
+            <small v-if="errors.first('nationality')">
                 {{errors.first('nationality') }}
             </small>
         </div>
@@ -81,12 +77,9 @@
                    v-model="form.date_of_birth"
                    name="date_of_birth"
                    v-validate="'required'"
-                   :class="{'is-invalid': errors.first('date_of_birth')}"
                    data-vv-as="date of birth">
-            <small class="text-muted"
-                   v-if="errors.first('date_of_birth')">
-                {{errors.first('date_of_birth')}}
-            </small>
+            <small v-if="errors.first('date_of_birth')">{{errors.first('date_of_birth')}}</small>
+            <small v-if="error.date_of_birth">{{error.date_of_birth[0]}}</small>
         </div>
 
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -96,14 +89,14 @@
                    placeholder="name@example.com"
                    v-model="form.email"
                    name="email"
-                   :class="{'is-invalid': errors.first('email') || error.email}"
+                   :class="{'is-invalid': error.email}"
                    v-validate="'required|email|min:1'">
-            <small class="text-muted"
-                   v-if="errors.first('email')">
+            <small
+                    v-if="errors.first('email')">
                 {{errors.first('email')}}
             </small>
-            <small class="text-muted"
-                   v-if="error.email">
+            <small
+                    v-if="error.email">
                 {{error.email[0]}}
             </small>
         </div>
@@ -117,14 +110,14 @@
                    v-model="form.staff_id"
                    name="staff_id"
                    v-validate="'required'"
-                   :class="{'is-invalid': errors.first('staff_id')  || error.staff_id}"
+                   :class="{'is-invalid': error.staff_id}"
                    data-vv-as="employee id">
-            <small class="text-muted"
-                   v-if="errors.first('staff_id')">
+            <small
+                    v-if="errors.first('staff_id')">
                 {{errors.first('staff_id') }}
             </small>
-            <small class="text-muted"
-                   v-if="error.staff_id">
+            <small
+                    v-if="error.staff_id">
                 {{error.staff_id[0]}}
             </small>
         </div>
@@ -135,15 +128,14 @@
                     class="custom-select w-100"
                     v-model="form.role_id"
                     v-validate="'required'" data-vv-validate-on="blur"
-                    :class="{'is-invalid': errors.first('role')}"
                     data-vv-name="role">
                 <option value="" selected>select role</option>
                 <option v-for="role in roles" :value="role.id">
                     {{role.name | capitalize}}
                 </option>
             </select>
-            <small class="text-muted"
-                   v-if="errors.first('role')">
+            <small
+                    v-if="errors.first('role')">
                 {{errors.first('role') }}
             </small>
         </div>
@@ -155,7 +147,6 @@
             <select name="qualification"
                     class="custom-select w-100"
                     v-model="form.highest_qualification"
-                    :class="{'is-invalid': errors.first('qualification')}"
                     v-validate="'required'" data-vv-validate-on="blur"
                     data-vv-name="qualification">
                 <option value="" selected>select qualification</option>
@@ -163,8 +154,8 @@
                     {{qualification | capitalize}}
                 </option>
             </select>
-            <small class="text-muted"
-                   v-if="errors.has('qualification')">
+            <small
+                    v-if="errors.has('qualification')">
                 {{errors.first('qualification') }}
             </small>
         </div>
@@ -175,15 +166,14 @@
                     class="custom-select w-100"
                     v-model="form.branch_id"
                     v-validate="'required'" data-vv-validate-on="blur"
-                    :class="{'is-invalid': errors.first('branch')}"
                     data-vv-name="branch">
                 <option value="" selected>select branch</option>
                 <option v-for="branch in branches" :value="branch.id">
                     {{branch.name | capitalize}}
                 </option>
             </select>
-            <small class="text-muted"
-                   v-if="errors.has('branch')">
+            <small
+                    v-if="errors.has('branch')">
                 {{errors.first('branch') }}
             </small>
         </div>
@@ -196,10 +186,9 @@
                    v-model="form.date_of_appointment"
                    name="date_of_appointment"
                    v-validate="'required'"
-                   :class="{'is-invalid': errors.first('date_of_appointment')}"
                    data-vv-as="date of appointment">
-            <small class="text-muted"
-                   v-if="errors.first('date_of_appointment')">
+            <small
+                    v-if="errors.first('date_of_appointment')">
                 {{errors.first('date_of_appointment')}}
             </small>
         </div>
@@ -215,15 +204,14 @@
                     class="custom-select w-100"
                     v-model="form.category"
                     v-validate="'required'" data-vv-validate-on="blur"
-                    :class="{'is-invalid': errors.first('category')}"
                     data-vv-name="category">
                 <option value="" selected>select category</option>
-                <option v-for="category in categories" :value="category">
-                    {{category | capitalize}}
+                <option v-for="category in categories" :value="category.name">
+                    {{category.name | capitalize}}
                 </option>
             </select>
-            <small class="text-muted"
-                   v-if="errors.has('category')">
+            <small
+                    v-if="errors.has('category')">
                 {{errors.first('category') }}
             </small>
         </div>
@@ -244,8 +232,8 @@
                     {{sex}}
                 </label>
             </div>
-            <small class="text-muted"
-                   v-if="errors.first('gender')">
+            <small
+                    v-if="errors.first('gender')">
                 {{errors.first('gender')}}
             </small>
         </div>
@@ -256,11 +244,10 @@
                       placeholder="address"
                       rows="1"
                       v-model="form.address"
-                      :class="{'is-invalid': errors.first('address')}"
                       name="address"
                       v-validate="'required|max:255'"></textarea>
-            <small class="text-muted"
-                   v-if="errors.first('address')">
+            <small
+                    v-if="errors.first('address')">
                 {{errors.first('address')}}
             </small>
         </div>
@@ -276,10 +263,9 @@
                    v-model="form.referee_1"
                    name="referee_1"
                    v-validate="'required|max:50'"
-                   :class="{'is-invalid': errors.first('referee_1')}"
                    data-vv-as="referee 1 full name">
-            <small class="text-muted"
-                   v-if="errors.first('referee_1')">
+            <small
+                    v-if="errors.first('referee_1')">
                 {{errors.first('referee_1') }}
             </small>
         </div>
@@ -292,10 +278,9 @@
                    v-model="form.referee_1_phone_no"
                    name="referee_1_phone_no"
                    v-validate="'required|numeric|max:11|min:11'"
-                   :class="{'is-invalid': errors.first('referee_1_phone_no')}"
                    data-vv-as="referee 1 phone number">
-            <small class="text-muted"
-                   v-if="errors.first('referee_1_phone_no')">
+            <small
+                    v-if="errors.first('referee_1_phone_no')">
                 {{errors.first('referee_1_phone_no')}}
             </small>
         </div>
@@ -310,10 +295,9 @@
                    v-model="form.referee_2"
                    name="referee_2"
                    v-validate="'required|max:50'"
-                   :class="{'is-invalid': errors.first('referee_2')}"
                    data-vv-as="referee 2 full name">
-            <small class="text-muted"
-                   v-if="errors.first('referee_2')">
+            <small
+                    v-if="errors.first('referee_2')">
                 {{errors.first('referee_2') }}
             </small>
         </div>
@@ -326,10 +310,9 @@
                    v-model="form.referee_2_phone_no"
                    name="referee_2_phone_no"
                    v-validate="'required|numeric|max:11|min:11'"
-                   :class="{'is-invalid': errors.first('referee_2_phone_no')}"
                    data-vv-as="referee 2 phone number">
-            <small class="text-muted"
-                   v-if="errors.first('referee_2_phone_no')">
+            <small
+                    v-if="errors.first('referee_2_phone_no')">
                 {{errors.first('referee_2_phone_no') }}
             </small>
         </div>
@@ -346,10 +329,9 @@
                    v-model="form.next_of_kin_name"
                    name="next_of_kin_name"
                    v-validate="'required|max:50'"
-                   :class="{'is-invalid': errors.first('next_of_kin_name')}"
                    data-vv-as="next of kin name">
-            <small class="text-muted"
-                   v-if="errors.first('next_of_kin_name')">
+            <small
+                    v-if="errors.first('next_of_kin_name')">
                 {{errors.first('next_of_kin_name') }}
             </small>
         </div>
@@ -362,10 +344,9 @@
                    v-model="form.next_of_kin_phone_no"
                    name="next_of_kin_phone_no"
                    v-validate="'required|numeric|max:11|min:11'"
-                   :class="{'is-invalid': errors.first('next_of_kin_phone_no')}"
                    data-vv-as="next of kin phone number">
-            <small class="text-muted"
-                   v-if="errors.first('next_of_kin_phone_no')">
+            <small
+                    v-if="errors.first('next_of_kin_phone_no')">
                 {{errors.first('next_of_kin_phone_no')}}
             </small>
         </div>
@@ -414,7 +395,7 @@
                 password: '',
                 countries: ['nigeria'],
                 gender: ['male', 'female'],
-                categories: ['permanent', 'contract'],
+                categories: {},
                 textDetails: {phone: '', loginPassword: '', loginID: '',},
                 statuses: ['married', 'single', 'divorced', 'complicated'],
                 qualifications: ['HND', 'OND', 'bachelors', 'masters', 'doctorate'],
@@ -441,6 +422,10 @@
                 this.form = data.form;
                 this.roles = data.roles;
                 this.branches = data.branches;
+                this.categories = data.categories;
+
+                console.log(data);
+
             },
             register(emp = null, AC = 1) {
                 //NB: this function is used by the employee register, employee update and for portal access update.
@@ -450,7 +435,7 @@
                 //control update rather for registration.
 
                 //emp for context :registration is the form, ie a new user hences uses
-                //the default url 'api/register' for registration
+                //the default url '/api/register' for registration
                 //emp for context :details update and portal access
                 //update are the staff details to be updated
                 if(AC === 1) this.updatingPortalAccess = true;
@@ -469,15 +454,15 @@
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
-                            let newUrl = 'api/register', message, logMsg;
+                            let newUrl = '/api/register', message, logMsg;
                             //for registration the url is used
-                            if (this.action === 'update') newUrl = "api/employee/" + emp.id + "/update";
+                            if (this.action === 'update') newUrl = "/api/employee/" + emp.id + "/update";
                             //else f the form action is not registration den its update
-                            //hence the url "api/employee/{id}/update"
+                            //hence the url "/api/employee/{id}/update"
                             post(newUrl, emp)
                                 .then((res) => {
                                     if (res.data.hasOwnProperty('registered')) {
-                                        //if the response is from 'api/register'
+                                        //if the response is from '/api/register'
                                         logMsg = 'Registered';
                                         this.textDetails.loginID = String(this.form.staff_id);
                                         this.textDetails.phone = String(parseInt(this.form.phone_number));
@@ -485,7 +470,7 @@
                                         message = "Staff registered! An sms has been sent to the employee with his Login details!";
                                         SMS.welcome(this.textDetails);
                                     } else if (res.data.hasOwnProperty('updated')) {
-                                        //if the response is from "api/employee/{id}/update"
+                                        //if the response is from "/api/employee/{id}/update"
                                         logMsg = 'Updated';
                                         message = 'Staff details updated!';
                                         this.$emit('done');
@@ -507,7 +492,7 @@
                                         this.$scrollToTop();
                                         this.error = err.response.data;
                                         if (err.response.data.errors) this.error = err.response.data.errors;
-                                        Flash.setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
+                                        this.$networkErr('unique');
                                     }
                                     this.$LIPS(false);
                                 })

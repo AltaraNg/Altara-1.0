@@ -96,4 +96,9 @@ class User extends Authenticatable
         return $this->hasMany(Message::class);
     }
 
+    public function branches()
+    {
+        return $this->hasMany(Branch::class);
+    }
+
 }

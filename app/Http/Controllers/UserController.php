@@ -12,8 +12,7 @@ class UserController extends Controller
         $this->middleware('auth:api')->except('');
     }
 
-    public function getData()
-    {
+    public function index(){
         $model = User::select('id', 'full_name','staff_id', 'phone_number','portal_access','email', 'date_of_appointment')->searchPaginateAndOrder();
         $columns = User::$columns;
         return response()->json([
