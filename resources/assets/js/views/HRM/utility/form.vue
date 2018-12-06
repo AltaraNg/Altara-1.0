@@ -10,7 +10,7 @@
                    v-validate="'required|max:100'"
                    name="name">
             <small
-                   v-if="errors.first('name')">
+                    v-if="errors.first('name')">
                 {{ errors.first('name') }}
             </small>
         </div>
@@ -25,12 +25,11 @@
                    v-validate="'required|numeric|max:11|min:11'"
                    :class="{'is-invalid': error.phone_number }"
                    data-vv-as="phone number">
-            <small
-                   v-if="errors.first('phone_number')">
+            <small v-if="errors.first('phone_number')">
                 {{errors.first('phone_number') }}
             </small>
             <small
-                   v-if="error.phone_number">
+                    v-if="error.phone_number">
                 {{error.phone_number[0]}}
             </small>
         </div>
@@ -93,11 +92,11 @@
                    :class="{'is-invalid': error.email}"
                    v-validate="'required|email|min:1'">
             <small
-                   v-if="errors.first('email')">
+                    v-if="errors.first('email')">
                 {{errors.first('email')}}
             </small>
             <small
-                   v-if="error.email">
+                    v-if="error.email">
                 {{error.email[0]}}
             </small>
         </div>
@@ -114,11 +113,11 @@
                    :class="{'is-invalid': error.staff_id}"
                    data-vv-as="employee id">
             <small
-                   v-if="errors.first('staff_id')">
+                    v-if="errors.first('staff_id')">
                 {{errors.first('staff_id') }}
             </small>
             <small
-                   v-if="error.staff_id">
+                    v-if="error.staff_id">
                 {{error.staff_id[0]}}
             </small>
         </div>
@@ -136,7 +135,7 @@
                 </option>
             </select>
             <small
-                   v-if="errors.first('role')">
+                    v-if="errors.first('role')">
                 {{errors.first('role') }}
             </small>
         </div>
@@ -156,7 +155,7 @@
                 </option>
             </select>
             <small
-                   v-if="errors.has('qualification')">
+                    v-if="errors.has('qualification')">
                 {{errors.first('qualification') }}
             </small>
         </div>
@@ -174,7 +173,7 @@
                 </option>
             </select>
             <small
-                   v-if="errors.has('branch')">
+                    v-if="errors.has('branch')">
                 {{errors.first('branch') }}
             </small>
         </div>
@@ -189,7 +188,7 @@
                    v-validate="'required'"
                    data-vv-as="date of appointment">
             <small
-                   v-if="errors.first('date_of_appointment')">
+                    v-if="errors.first('date_of_appointment')">
                 {{errors.first('date_of_appointment')}}
             </small>
         </div>
@@ -207,12 +206,12 @@
                     v-validate="'required'" data-vv-validate-on="blur"
                     data-vv-name="category">
                 <option value="" selected>select category</option>
-                <option v-for="category in categories" :value="category">
-                    {{category | capitalize}}
+                <option v-for="category in categories" :value="category.name">
+                    {{category.name | capitalize}}
                 </option>
             </select>
             <small
-                   v-if="errors.has('category')">
+                    v-if="errors.has('category')">
                 {{errors.first('category') }}
             </small>
         </div>
@@ -234,7 +233,7 @@
                 </label>
             </div>
             <small
-                   v-if="errors.first('gender')">
+                    v-if="errors.first('gender')">
                 {{errors.first('gender')}}
             </small>
         </div>
@@ -248,7 +247,7 @@
                       name="address"
                       v-validate="'required|max:255'"></textarea>
             <small
-                   v-if="errors.first('address')">
+                    v-if="errors.first('address')">
                 {{errors.first('address')}}
             </small>
         </div>
@@ -266,7 +265,7 @@
                    v-validate="'required|max:50'"
                    data-vv-as="referee 1 full name">
             <small
-                   v-if="errors.first('referee_1')">
+                    v-if="errors.first('referee_1')">
                 {{errors.first('referee_1') }}
             </small>
         </div>
@@ -281,7 +280,7 @@
                    v-validate="'required|numeric|max:11|min:11'"
                    data-vv-as="referee 1 phone number">
             <small
-                   v-if="errors.first('referee_1_phone_no')">
+                    v-if="errors.first('referee_1_phone_no')">
                 {{errors.first('referee_1_phone_no')}}
             </small>
         </div>
@@ -298,7 +297,7 @@
                    v-validate="'required|max:50'"
                    data-vv-as="referee 2 full name">
             <small
-                   v-if="errors.first('referee_2')">
+                    v-if="errors.first('referee_2')">
                 {{errors.first('referee_2') }}
             </small>
         </div>
@@ -313,7 +312,7 @@
                    v-validate="'required|numeric|max:11|min:11'"
                    data-vv-as="referee 2 phone number">
             <small
-                   v-if="errors.first('referee_2_phone_no')">
+                    v-if="errors.first('referee_2_phone_no')">
                 {{errors.first('referee_2_phone_no') }}
             </small>
         </div>
@@ -332,7 +331,7 @@
                    v-validate="'required|max:50'"
                    data-vv-as="next of kin name">
             <small
-                   v-if="errors.first('next_of_kin_name')">
+                    v-if="errors.first('next_of_kin_name')">
                 {{errors.first('next_of_kin_name') }}
             </small>
         </div>
@@ -347,7 +346,7 @@
                    v-validate="'required|numeric|max:11|min:11'"
                    data-vv-as="next of kin phone number">
             <small
-                   v-if="errors.first('next_of_kin_phone_no')">
+                    v-if="errors.first('next_of_kin_phone_no')">
                 {{errors.first('next_of_kin_phone_no')}}
             </small>
         </div>
@@ -396,7 +395,7 @@
                 password: '',
                 countries: ['nigeria'],
                 gender: ['male', 'female'],
-                categories: ['permanent', 'contract'],
+                categories: {},
                 textDetails: {phone: '', loginPassword: '', loginID: '',},
                 statuses: ['married', 'single', 'divorced', 'complicated'],
                 qualifications: ['HND', 'OND', 'bachelors', 'masters', 'doctorate'],
@@ -423,6 +422,10 @@
                 this.form = data.form;
                 this.roles = data.roles;
                 this.branches = data.branches;
+                this.categories = data.categories;
+
+                console.log(data);
+
             },
             register(emp = null, AC = 1) {
                 //NB: this function is used by the employee register, employee update and for portal access update.
@@ -432,7 +435,7 @@
                 //control update rather for registration.
 
                 //emp for context :registration is the form, ie a new user hences uses
-                //the default url 'api/register' for registration
+                //the default url '/api/register' for registration
                 //emp for context :details update and portal access
                 //update are the staff details to be updated
                 if(AC === 1) this.updatingPortalAccess = true;
@@ -451,15 +454,15 @@
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
-                            let newUrl = 'api/register', message, logMsg;
+                            let newUrl = '/api/register', message, logMsg;
                             //for registration the url is used
-                            if (this.action === 'update') newUrl = "api/employee/" + emp.id + "/update";
+                            if (this.action === 'update') newUrl = "/api/employee/" + emp.id + "/update";
                             //else f the form action is not registration den its update
-                            //hence the url "api/employee/{id}/update"
+                            //hence the url "/api/employee/{id}/update"
                             post(newUrl, emp)
                                 .then((res) => {
                                     if (res.data.hasOwnProperty('registered')) {
-                                        //if the response is from 'api/register'
+                                        //if the response is from '/api/register'
                                         logMsg = 'Registered';
                                         this.textDetails.loginID = String(this.form.staff_id);
                                         this.textDetails.phone = String(parseInt(this.form.phone_number));
@@ -467,7 +470,7 @@
                                         message = "Staff registered! An sms has been sent to the employee with his Login details!";
                                         SMS.welcome(this.textDetails);
                                     } else if (res.data.hasOwnProperty('updated')) {
-                                        //if the response is from "api/employee/{id}/update"
+                                        //if the response is from "/api/employee/{id}/update"
                                         logMsg = 'Updated';
                                         message = 'Staff details updated!';
                                         this.$emit('done');
@@ -489,7 +492,7 @@
                                         this.$scrollToTop();
                                         this.error = err.response.data;
                                         if (err.response.data.errors) this.error = err.response.data.errors;
-                                        Flash.setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
+                                        this.$networkErr('unique');
                                     }
                                     this.$LIPS(false);
                                 })

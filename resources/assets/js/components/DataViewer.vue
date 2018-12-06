@@ -35,34 +35,43 @@
                                 <span v-else>&darr;</span>
                             </span>
                         </th>
-                        <th v-if="user" scope="col"><span>Action</span></th>
+                        <th v-if="user || branch" scope="col"><span>Action</span></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="employee in model.data">
-                        <td v-for="(value,key) in employee">{{value}}</td>
+                    <tr v-for="model in model.data">
+                        <td v-for="(value,key) in model">{{value}}</td>
                         <td v-if="user">
                             <button class="text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round"
                                     data-toggle="tooltip"
                                     data-placement="top"
                                     title="Edit Employee Detail"
-                                    @click="update(employee,'updateEmployee',1)">
+                                    @click="update(model,'updateEmployee',1)">
                                 <i class="fas fa-user-edit"></i>
                             </button>
                             <button class="text-center mr-2 btn btn-icon btn-sm float-left btn-round"
-                                    :class="{ 'btn-success' : accessStatus(employee.portal_access),
-                                            'btn-danger' :  !accessStatus(employee.portal_access)}"
+                                    :class="{ 'btn-success' : accessStatus(model.portal_access),
+                                            'btn-danger' :  !accessStatus(model.portal_access)}"
                                     data-toggle="tooltip" data-placement="top" title="Edit Employee Portal Access"
-                                    @click="update(employee,'editPortalAccess')">
-                                <i class="fas fa-lock-open" v-if="accessStatus(employee.portal_access)"></i>
+                                    @click="update(model,'editPortalAccess')">
+                                <i class="fas fa-lock-open" v-if="accessStatus(model.portal_access)"></i>
                                 <i class="fas fa-lock" v-else></i>
                             </button>
                             <button class="text-center mr-2 btn btn-warning btn-icon btn-sm float-left btn-round"
                                     data-toggle="tooltip"
                                     data-placement="top"
                                     title="Reset Employee Password"
-                                    @click="update(employee,'editPassword')">
+                                    @click="update(model,'editPassword')">
                                 <i class="fas fa-key"></i>
+                            </button>
+                        </td>
+                        <td v-if="branch">
+                            <button class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="update branch details"
+                                    @click="updateBranch(model.id)">
+                                <i class="fas fa-cog"></i>
                             </button>
                         </td>
                     </tr>
@@ -181,6 +190,25 @@
             </div>
         </div>
         <!--employee password reset modal stops here-->
+
+        <!--employee details branch update modal start here-->
+        <div class="modal fade bd-example-modal-lg" id="updateBranch">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header py-2">
+                        <h6 class="modal-title py-1">Update Branch Details</h6>
+                        <a class="close py-1" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <branch-form action="update" :branchToUpdate="branchToUpdate" @done="fetchIndexData"/>
+                        <!--call for the same form used for branch/create registration-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--employee details branch update modal stops here-->
     </div>
 </template>
 <script>
@@ -190,10 +218,12 @@
     import {get} from '../helpers/api';
     import Flash from '../helpers/flash';
     import UtilityForm from '../views/HRM/utility/form';
+    import BranchForm from '../views/FSL/utility/branchForm';
 
     export default {
         components: {
-            UtilityForm
+            UtilityForm,
+            BranchForm
         },
         data() {
             return {
@@ -221,7 +251,7 @@
                 },
                 /*data generic to data viewer stops here*/
 
-                /*data peculiar to hrm portal data viewer*/
+                /*data peculiar to hrm portal data viewer starts here*/
                 bus: new Vue(),
                 form: {},
                 portal_access: [
@@ -229,11 +259,19 @@
                     {name: 'deny', value: 0}
                 ],
                 sentData: {},
-                /*data peculiar to hrm portal data viewer*/
+                /*data peculiar to hrm portal data viewer stops here*/
+
+                /*data peculiar to fsl branch portal data viewer starts here*/
+
+                states:{},
+                branchToUpdate:{},
+
+                /*data peculiar to fsl branch portal data viewer stops here*/
             }
         },
         props: ['source', 'title', 'appModel'],
         created() {
+            if(this.appModel === 'branch')get('/api/state').then(res => this.states = res.data.states);
             this.fetchIndexData();
         },
         updated() {
@@ -263,6 +301,8 @@
                 this.fetchIndexData();
             },
             fetchIndexData() {
+                this.$LIPS(true);
+                $('.modal').modal('hide');
                 get(
                     `${this.source}` +
                     `?page=${this.query.page}` +
@@ -273,16 +313,25 @@
                     `&search_column=${this.query.search_column}` +
                     `&search_operator=${this.query.search_operator}`)
                     .then(res => {
+                        let data = res.data.model.data;
+                        /*the state id for the branch fetched from the db is a number
+                        * hence the code below is used to get the state name
+                        * corresponding to the state id and display it
+                        * instead of showing state id as a number*/
+                        if(data[0].state_id){
+                            for(let i = 0 ; i < data.length; i++){
+                                data[i].state_id = this.states.find(obj => obj.id === data[i].state_id).name;
+                            }
+                        }
                         Vue.set(this.$data, 'model', res.data.model);
                         Vue.set(this.$data, 'columns', res.data.columns);
                         this.$scrollToTop();
-                        $('.modal').modal('hide');
                         this.$LIPS(false);
                     })
             },
             /*methods exclusive to data viewer stop here*/
 
-            /*methods exclusive to hrm data viewer stop here*/
+            /*methods exclusive to hrm data viewer starts here*/
             accessStatus(status) {
                 return Boolean(Number(status));
                 /*returns true or false for the portal
@@ -302,7 +351,7 @@
                     /*if up is 1 then its for details update*/
                     if (this.$network()) {
                         this.$LIPS(true);
-                        get("api/employee/" + emp.id + "/edit").then((res) => {
+                        get("/api/employee/" + emp.id + "/edit").then((res) => {
                             /*the full employee details are fetched to populate
                             the form for editing ie the utility form*/
                             this.sentData = res.data;
@@ -317,7 +366,7 @@
             resetPassword() {
                 if (this.$network()) {
                     this.$LIPS(true);
-                    get('api/reset-password/' + this.form.id).then((res) => {
+                    get('/api/reset-password/' + this.form.id).then((res) => {
                         this.$scrollToTop();
                         $('#editPassword').modal('toggle');
                         log('resetUserPassword', this.form.staff_id);
@@ -333,13 +382,37 @@
                 this.fetchIndexData();
                 (type == 'err') ? Flash.setError(msg, 10000) : Flash.setSuccess(msg);
             },
+            /*methods exclusive to hrm data viewer stops here*/
+
+            /*methods exclusive to branch on  fsl portal*/
+            updateBranch(id) {
+                /*id id the id of the branch as fetched from the data view*/
+                if (this.$network()) {
+                    this.$LIPS(true);
+                    get('/api/branch/' + id).then(res => {
+                        /*the branch details with that id is fetched and prepared to be
+                        * sent to the for for branch update
+                        * NB same form is used both for
+                        * update and creating branch*/
+                        this.branchToUpdate = res.data.branch;
+                        $('#updateBranch').modal('toggle');
+                    })
+                }else this.$networkErr();
+            }
+            /*methods exclusive to branch on  fsl portal*/
         },
         computed: {
             user() {
                 return !!(this.appModel == 'user');
-                /*return true of the context
+                /*return true if the context
                 * of the data viewer is
                 * for employees*/
+            },
+            branch() {
+                return !!(this.appModel == 'branch');
+                /*return true if the context
+                * of the data viewer is
+                * for branch*/
             }
         },
     }

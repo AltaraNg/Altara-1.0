@@ -86,6 +86,7 @@
                                             <image-upload v-model="$data['form'][type]"/>
                                         </div>
                                     </div>
+                                    <small v-if="error[type]">{{error[type][0]}}</small>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
@@ -111,12 +112,14 @@
                             </div>
                             <form @submit.prevent="validate('address')" :data-vv-scope="'address'">
                                 <div class="modal-body p-5">
-                                    <h5>
-                                        <tr class="m-0">
-                                            <th><i class="fas fa-map-marker-alt mr-4"></i></th>
+                                    <table class="mb-3 w-100">
+                                        <tbody class="px-3">
+                                        <tr>
+                                            <th><i class="fas fa-map-marker-alt mx-4"></i></th>
                                             <td>{{customerAddress}}</td>
                                         </tr>
-                                    </h5>
+                                        </tbody>
+                                    </table>
                                     <div class="w-100 p-3">
                                         <div class="clearfix">
                                             <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
@@ -265,7 +268,7 @@
                                                 <label for="neigh_no">no</label>
                                             </span>
                                             <small
-                                                   v-if="errors.first('address.info_from_neighbors')">
+                                                    v-if="errors.first('address.info_from_neighbors')">
                                                 {{errors.first('address.info_from_neighbors')}}
                                             </small>
 
@@ -279,7 +282,7 @@
                                                           :class="{'is-invalid':
                                                           errors.first('address.info_from_neighbors_desc')}"></textarea>
                                                 <small
-                                                       v-if="errors.first('address.info_from_neighbors_desc')">
+                                                        v-if="errors.first('address.info_from_neighbors_desc')">
                                                     {{errors.first('address.info_from_neighbors_desc')}}
                                                 </small>
                                             </div>
@@ -298,7 +301,7 @@
                                                       :class="{'is-invalid':
                                                       errors.first('address.business_or_work_duration')}"></textarea>
                                             <small
-                                                   v-if="errors.first('address.business_or_work_duration')">
+                                                    v-if="errors.first('address.business_or_work_duration')">
                                                 {{errors.first('address.business_or_work_duration')}}
                                             </small>
                                         </div>
@@ -357,47 +360,36 @@
                             </div>
                             <form @submit.prevent="validate(type)" v-if="customer" :data-vv-scope="type">
                                 <div class="modal-body">
-                                    <h5 v-if="type !== 'processing_fee'">
-                                        <table v-if="customer[type+'_first_name']">
-                                            <tbody>
-                                                <tr>
-                                                <th><i class="mr-3 fas fa-user-circle"></i></th>
-                                                <td><strong>Full Name : </strong> {{customer[type+'_first_name']+ ' '
-                                                    + customer[type+'_middle_name']+ ' '
-                                                    + customer[type+'_last_name']}}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th><i class="mr-3 fas fa-map-marker-alt"></i></th>
-                                                <td><strong>Address : </strong> {{$data[type+'_address']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th><i class="mr-3 fas fa-mobile-alt"></i></th>
-                                                <td v-if="customer[type+'_telno']">{{customer[type+'_telno']}}</td>
-                                                <td v-else>please update customer details!</td>
-                                            </tr>
-                                            <tr>
-                                                <th><i class="mr-3 fas fa-user-circle"></i></th>
-                                                <td v-if="customer[type+'_first_name']">{{customer[type+'_first_name']+ ' '
-                                                                                        + customer[type+'_middle_name']+ ' '
-                                                                                        + customer[type+'_last_name']}}
-                                                </td>
-                                                <td v-else>please update customer details!</td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th><i class="mr-3 fas fa-user-circle"></i></th>
-                                                <td><strong>Relationship : </strong>{{customer[type+'_relationship'] | capitalize}}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                       <table v-else>
-                                           <tbody>
-                                               <td style="color:red">Please Update!</td>
-                                           </tbody>
-                                       </table>
-                                    </h5>
-                                    <div class="form-group col-12 px-2 float-left mt-0 mb-2">
+                                    <!--<h5 v-if="type !== 'processing_fee'">-->
+                                    <table class="mb-3" v-if="type !== 'processing_fee'">
+                                        <tbody>
+                                        <tr>
+                                            <th><i class="fas fa-map-marker-alt"></i></th>
+                                            <td v-if="customer[type+'_state']">{{$data[type+'_address']}}</td>
+                                            <td v-else>please update customer details!</td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-mobile-alt"></i></th>
+                                            <td v-if="customer[type+'_telno']">{{customer[type+'_telno']}}</td>
+                                            <td v-else>please update customer details!</td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class=" fas fa-user-circle"></i></th>
+                                            <td v-if="customer[type+'_first_name']">{{customer[type+'_first_name']+ ' '
+                                                                                    + customer[type+'_middle_name']+ ' '
+                                                                                    + customer[type+'_last_name']}}
+                                            </td>
+                                            <td v-else>please update customer details!</td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-user-circle"></i></th>
+                                            <td v-if="customer[type+'_relationship']">{{customer[type+'_relationship'] | capitalize}}</td>
+                                            <td v-else>please update customer details!</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--</h5>-->
+                                    <div class="form-group col-12 px-2 clearfix my-0">
                                         <div class="clearfix">
                                             <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
                                                 <label>
@@ -473,7 +465,7 @@
                                                 </small>
                                             </div>
                                         </div>
-                                        <div class="form-group clearfix">
+                                        <div class="clearfix">
                                             <label>Report</label>
                                             <textarea class="form-control w-100" placeholder="comment here..." rows="3"
                                                       v-model="$data[type].report" v-validate="'required'"
@@ -686,12 +678,16 @@
                             if (!result) this.$networkErr('form');
                         });
                     } else this.$networkErr();
-                } else {this.$networkErr('edit'); $('.modal').modal('hide')};
+                } else {
+                    this.$networkErr('edit');
+                    $('.modal').modal('hide')
+                }
+                ;
             },
             save(document, modal) {
                 let acc = this.$editAccess(this.user, this.customer);
                 if (acc) {
-                    this.storeURL = `api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
+                    this.storeURL = `/api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
                     this.$LIPS(true);
                     this.form.document = document;
                     const form = toMulipartedForm(this.form, 'edit');
@@ -708,7 +704,10 @@
                         this.$LIPS(false);
                         this.$scrollToTop();
                     })
-                } else {this.$networkErr('edit'); $('.modal').modal('hide')};
+                } else {
+                    this.$networkErr('edit');
+                    $('.modal').modal('hide')
+                }
             },
         },
         computed: {
@@ -723,14 +722,22 @@
 </script>
 <style scoped>
     tr {
-        margin-bottom : 1rem;
-        float         : left;
-        width         : 100%;
-        font-weight   : 400;
+        margin-bottom    : .4rem;
+        float            : left;
+        width            : 100%;
+        font-weight      : 400;
+        background-color : rgba(7, 74, 116, .1);
     }
 
     tbody tr th {
-        width      : 2em;
-        text-align : center;
+        width        : 4rem;
+        text-align   : center;
+        border-right : .4rem solid white;
+        border-left  : .3rem solid rgba(7, 74, 116, .7);
     }
+
+    tbody tr td {
+        padding : .4rem 1.5rem;
+    }
+
 </style>

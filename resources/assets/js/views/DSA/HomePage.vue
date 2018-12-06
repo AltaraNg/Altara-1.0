@@ -42,8 +42,8 @@
             }
         },
         created() {
-            if (this.$store.state.DSALead.includes(this.$store.state.authRole))
-                this.portals[2].aces = true; else this.portals[2].aces = false;
+            (this.$store.state.DSALead.includes(this.$store.state.authRole)) ?
+                this.portals[2].aces = true : this.portals[2].aces = false;
                 /*only the dsa lead can access the report portal hence the method*/
         }
     }

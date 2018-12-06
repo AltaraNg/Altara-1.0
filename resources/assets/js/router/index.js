@@ -24,11 +24,17 @@ import EmployeeManager from '../views/HRM/employee/Manager.vue';
 import EmployeeRegister from '../views/HRM/employee/Register.vue';
 import FSL from '../views/FSL/index.vue';
 import FSLHome from '../views/FSL/HomePage.vue';
+import BranchCreate from '../views/FSL/branch/create.vue';
+import BranchUpdate from '../views/FSL/branch/update.vue';
 import Inventory from '../views/FSL/inventory/inventory.vue';
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
 const router = new VueRouter({
+    hashbang: false,
+    history: true,
+    linkActiveClass: 'active',
+    mode:'history',
     routes: [
         {path: '/', redirect: {name: 'home'}},
         {
@@ -107,6 +113,8 @@ const router = new VueRouter({
             children: [
                 {path: 'home', component: FSLHome, name: 'FSLHome', alias: '/fsl-home'},
                 {path: 'inventory', component: Inventory, name: 'inventory', alias: '/inventory'},
+                {path: 'branch/create', component: BranchCreate, name: 'branchCreate', alias: '/branch-create'},
+                {path: 'branch/update', component: BranchUpdate, name: 'branchUpdate', alias: '/branch-update'},
             ]
         },
         {path: '/not-found', component: NotFound},
@@ -114,6 +122,7 @@ const router = new VueRouter({
     ]
 });
 
+router.mode = 'html5';
 router.afterEach(writeHistory);
 router.beforeEach((to, from, next) => {
     /*route access control*/

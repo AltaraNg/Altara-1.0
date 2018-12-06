@@ -87,7 +87,6 @@
                                    name="telephone">
                             <small v-if="errors.first('telephone')">{{errors.first('telephone')}}</small>
                             <small v-if="error.telephone">{{error.telephone[0]}}</small>
-
                         </div>
 
                         <div class="spaceAfter"></div>
@@ -1364,7 +1363,7 @@
                         }
                         if (this.$network()) {
                             this.$LIPS(true);
-                            this.error = {}
+                            this.error = {};
                             let newUrl = '/api/customer';
                             var logMsg = 'createdNew';
                             if (this.action === 'update'){
@@ -1434,10 +1433,5 @@
             /*on create of the component fetch the data required to prepare the form
             * states, branches and the currently logged in dsa details*/
         },
-        mounted(){
-            /*$('input').each(function(){
-                $(this).addClass('form-control');
-            })*/
-        }
     }
 </script>

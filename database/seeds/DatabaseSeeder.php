@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             RolesTableSeeder::class,
             UsersTableSeeder::class,
             CustomerTableSeeder::class,
+            BanksTableSeeder::class,
+            EmployeeCategorySeeder::class
         ]);
     }
 }

@@ -28,7 +28,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration')->searchPaginateAndOrder();
+        $columns = Customer::$columns;
+        return response()->json([
+            'model' => $model,
+            'columns' => $columns,
+        ]);
     }
 
     /**
@@ -45,7 +50,7 @@ class CustomerController extends Controller
             'form' => $form,
             'states' => $states,
             'branches' => $branches,
-            'user' => auth('api')->user()->only(['full_name', 'id', 'branch_id','role_id']),
+            'user' => auth('api')->user()->only(['full_name', 'id', 'branch_id', 'role_id']),
         ]);
     }
 
@@ -104,7 +109,7 @@ class CustomerController extends Controller
                 'empty_work_guarantor' => WorkGuarantor::form(),
                 'empty_personal_guarantor' => PersonalGuarantor::form(),
                 'empty_processing_fee' => ProcessingFee::form(),
-                'user' => auth('api')->user()->only(['full_name', 'id', 'branch_id','role_id']),
+                'user' => auth('api')->user()->only(['full_name', 'id', 'branch_id', 'role_id']),
                 'success' => true
             ]);
         }
@@ -160,16 +165,4 @@ class CustomerController extends Controller
     {
         //
     }
-
-
-    public function getData()
-    {
-        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration')->searchPaginateAndOrder();
-        $columns = Customer::$columns;
-        return response()->json([
-            'model' => $model,
-            'columns' => $columns,
-        ]);
-    }
-
 }
