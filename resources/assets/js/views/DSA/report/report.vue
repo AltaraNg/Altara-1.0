@@ -21,7 +21,8 @@
                             <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                                 <label>Branch</label>
                                 <select class="custom-select w-100" v-model="report.branch.id"
-                                        v-validate="'required'" data-vv-as="office branch" name="branch_id" data-vv-validate-on="blur">
+                                        v-validate="'required'" data-vv-as="office branch" name="branch_id"
+                                        data-vv-validate-on="blur">
                                     <option value="">select branch</option>
                                     <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
                                 </select>
@@ -63,14 +64,11 @@
     import {get, postD} from '../../../helpers/api';
 
     export default {
-        beforeCreate(){
-            if (!this.$store.state.DSALead.includes(this.$store.state.authRole)) {
-                /*this component can only be accessed by the dsa lead hence this route guard
-                * if the role of the dsa agent logged in is contained in the
-                * array of the dsa lead then access will be granted*/
-                this.$networkErr('page');
-                this.$router.push('/home');
-            }
+        beforeCreate() {
+            if (!this.$store.getters.verifyDSALead) this.$networkErr('page');
+            /*this component can only be accessed by the dsa lead hence this route guard
+            * if the role of the dsa agent logged in is contained in the
+            * array of the dsa lead then access will be granted*/
         },
         data() {
             return {
@@ -101,7 +99,7 @@
         },
         created() {
             get('/api/create')
-                .then((res) => {
+                .then(res => {
                     this.setDates();
                     /*set dates*/
                     this.branches = res.data.branches;
@@ -111,16 +109,16 @@
         },
         methods: {
             generateReport() {
-                this.$validator.validateAll().then((result) => {
+                this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             let branch = this.branches.find(obj => obj.id == this.report.branch.id);
                             this.report.branch = branch;
-                            postD('/api/report', this.report).then((response) => {
-                                const url = window.URL.createObjectURL(new Blob([response.data]));
+                            postD('/api/report', this.report).then(res => {
+                                const url = window.URL.createObjectURL(new Blob([res.data]));
                                 const link = document.createElement('a');
                                 link.href = url;
-                                link.setAttribute('download', this.report.type + '_for_' + branch.name + '.xlsx');
+                                link.setAttribute('download', `${this.report.type}_for_${branch.name}.xlsx`);
                                 document.body.appendChild(link);
                                 link.click();
                             });
@@ -130,19 +128,18 @@
                 });
             },
             setDates() {
-                const toTwoDigits = num => num < 10 ? '0' + num : num;
-                let reformatDate = d => d.getFullYear() + '-' + toTwoDigits(d.getMonth() + 1) + '-' +
-                    toTwoDigits(d.getDate()),
+                const toTwoDigs = num => num < 10 ? '0' + num : num;
+                let reformatDate = d => `${d.getFullYear()}-${toTwoDigs(d.getMonth() + 1)}-${toTwoDigs(d.getDate())}`,
                     d = new Date(),
                     day = d.getDay(),
-                    diff = d.getDate() - day + (day == 0 ? -6 : 1),
+                    diff = d.getDate() - day + (day === 0 ? -6 : 1),
                     m = new Date(d.setDate(diff)),
                     f = new Date();
-                f.setDate(m.getDate() + 4);
+                f.setDate(m.getDate() + 5);
                 this.report.from = m = reformatDate(m);
                 this.report.to = f = reformatDate(f);
                 /*this function returns the monday ie this.report.from
-                * and the friday of the : this.report.to of the
+                * and the saturday of the : this.report.to of the
                 * current week*/
             },
         }

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Flash from '../helpers/flash';
 import {store} from '../store/store';
 import {routerHistory, writeHistory} from 'vue-router-back-button'
 import Home from '../views/HomePage.vue';
@@ -136,7 +137,7 @@ router.beforeEach((to, from, next) => {
         /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
         * the method in store will return true if a user has access to the portal hence next();
         * and false is a user don't have access hence error message and redirect to home*/
-        this.$networkErr('page');
+        Flash.setError('You do not have access to that page!',3000);
         return next({name: 'home'});
     }
     /*else next will call the route for the all unknown path

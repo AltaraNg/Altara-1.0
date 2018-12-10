@@ -20,23 +20,13 @@
                         desc: 'For products inventory and management'
                     },{
                         url: 'branch/create', title: 'Create Branch', url_c: 'Create Branch now!',
-                        desc: 'Create a new Branch office',aces: false,
+                        desc: 'Create a new Branch office',aces: this.$store.getters.verifyFSLLead,
                     },{
                         url: 'branch/update', title: 'Update Branch', url_c: 'Update Branch now!',
-                        desc: 'Update a Branch office',aces: false,
+                        desc: 'Update a Branch office',aces: this.$store.getters.verifyFSLLead,
                     }
                 ]
             }
-        },
-        created() {
-            if(this.$store.state.FSLLead.includes(this.$store.state.authRole)){
-                this.portals[1].aces = true;
-                this.portals[2].aces = true;
-            }else{
-                this.portals[1].aces = false;
-                this.portals[2].aces = false;
-            }
-            /*only the dsa lead can access the report portal hence the method*/
         }
     }
 </script>

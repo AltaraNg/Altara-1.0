@@ -247,7 +247,7 @@
                     less_than_or_equal_to: '<=',
                     greater_than_or_equal_to: '>=',
                     in: 'IN',
-                    like: 'LIKE',
+                    like: 'LIKE'
                 },
                 /*data generic to data viewer stops here*/
 
@@ -262,17 +262,19 @@
                 /*data peculiar to hrm portal data viewer stops here*/
 
                 /*data peculiar to fsl branch portal data viewer starts here*/
-
-                states:{},
-                branchToUpdate:{},
-
+                states: {},
+                branchToUpdate: {}
                 /*data peculiar to fsl branch portal data viewer stops here*/
             }
         },
         props: ['source', 'title', 'appModel'],
         created() {
-            if(this.appModel === 'branch')get('/api/state').then(res => this.states = res.data.states);
+            if (this.appModel === 'branch') get('/api/state').then(res => this.states = res.data.states);
             this.fetchIndexData();
+            $(document).on('click', 'tr', function () {
+                $('tr.current').removeClass('current');
+                $(this).addClass('current');
+            });
         },
         updated() {
             $('[data-toggle="tooltip"]').tooltip();
@@ -292,9 +294,9 @@
                 }
             },
             toggleOrder(column) {
-                if (column === this.query.column) {
-                    (this.query.direction === 'desc') ? this.query.direction = 'asc' : this.query.direction = 'desc';
-                } else {
+                if (column === this.query.column)
+                    this.query.direction = this.query.direction === 'desc' ? 'asc' : 'desc';
+                else {
                     this.query.column = column;
                     this.query.direcntion = 'asc';
                 }
@@ -318,10 +320,9 @@
                         * hence the code below is used to get the state name
                         * corresponding to the state id and display it
                         * instead of showing state id as a number*/
-                        if(data[0].state_id){
-                            for(let i = 0 ; i < data.length; i++){
-                                data[i].state_id = this.states.find(obj => obj.id === data[i].state_id).name;
-                            }
+                        if (data.length && data[0].state_id) {
+                            const comp = this;
+                            data.forEach(curr => curr.state_id = comp.states.find(obj => obj.id === curr.state_id).name)
                         }
                         Vue.set(this.$data, 'model', res.data.model);
                         Vue.set(this.$data, 'columns', res.data.columns);
@@ -344,19 +345,19 @@
                 * up is tentative if 0*/
                 if (up === 0) {
                     this.form = emp;
-                    $('#' + mod).modal('toggle');
+                    $(`#${mod}`).modal('toggle');
                     /*then action is for password reset or portal access update
                     * the corresponding modal is triggered as above*/
                 } else if (up === 1) {
                     /*if up is 1 then its for details update*/
                     if (this.$network()) {
                         this.$LIPS(true);
-                        get("/api/employee/" + emp.id + "/edit").then((res) => {
+                        get(`/api/employee/${emp.id}/edit`).then(res => {
                             /*the full employee details are fetched to populate
                             the form for editing ie the utility form*/
                             this.sentData = res.data;
                             /*the data sent to the utility form is updated*/
-                            $('#' + mod).modal('toggle');
+                            $(`#${mod}`).modal('toggle');
                             /*corresponding modal is toggled*/
                             this.$LIPS(false);
                         });
@@ -366,21 +367,16 @@
             resetPassword() {
                 if (this.$network()) {
                     this.$LIPS(true);
-                    get('/api/reset-password/' + this.form.id).then((res) => {
+                    get(`/api/reset-password/${this.form.id}`).then(res => {
                         this.$scrollToTop();
                         $('#editPassword').modal('toggle');
                         log('resetUserPassword', this.form.staff_id);
-                        Flash.setSuccess('The employee password was successfully reset!');
+                        Flash.setSuccess('Employee password reset successful!');
                         let details = {phone: String(parseInt(this.form.phone_number)), password: res.data.password};
                         SMS.passwordReset(details);
                         this.$LIPS(false);
                     })
                 } else this.$networkErr();
-            },
-
-            complete(msg, type = 'success') {
-                this.fetchIndexData();
-                (type == 'err') ? Flash.setError(msg, 10000) : Flash.setSuccess(msg);
             },
             /*methods exclusive to hrm data viewer stops here*/
 
@@ -389,7 +385,7 @@
                 /*id id the id of the branch as fetched from the data view*/
                 if (this.$network()) {
                     this.$LIPS(true);
-                    get('/api/branch/' + id).then(res => {
+                    get(`/api/branch/${id}`).then(res => {
                         /*the branch details with that id is fetched and prepared to be
                         * sent to the for for branch update
                         * NB same form is used both for
@@ -397,7 +393,7 @@
                         this.branchToUpdate = res.data.branch;
                         $('#updateBranch').modal('toggle');
                     })
-                }else this.$networkErr();
+                } else this.$networkErr();
             }
             /*methods exclusive to branch on  fsl portal*/
         },

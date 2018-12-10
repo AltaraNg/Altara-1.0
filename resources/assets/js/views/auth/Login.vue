@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div id="login">
-            <div class="col-md-5 mx-auto" id="loginCard" v-bind:style="{ marginTop: cardMT+'px'}">
+            <div class="col-md-5 mx-auto" id="loginCard" :style="{ marginTop: cardMT+'px'}">
                 <div class="card">
                     <ul class="nav nav-tabs justify-content-center bg-default"><h6>Staff Login</h6></ul>
                     <form @submit.prevent="login" class="pt-1 pb-3">
@@ -52,28 +52,20 @@
     export default {
         data() {
             return {
-                form: {
-                    staff_id: '',
-                    password: ''
-                },
+                form: {staff_id: '', password: ''},
                 cardMT: '',
-                error: {},
+                error: {}
             }
         },
         methods: {
-            watchCardMT() {
-                let winHeight = $(window).height(),
-                    cardHeight = $('#loginCard').height();
-                this.cardMT = (winHeight - cardHeight) / 2;
-            },
-            login() {
-                this.$validator.validateAll().then((result) => {
+            login: function () {
+                this.$validator.validateAll().then(result => {
                     if (result) {
-                        if(this.$network()){
+                        if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
                             post('/api/login', this.form)
-                                .then((res) => {
+                                .then(res => {
                                     if (res.data.authenticated) {
                                         Auth.set(res.data);
                                         this.$router.push('/home');
@@ -81,7 +73,7 @@
                                     } else if (!res.data.authenticated) Flash.setError(res.data.message);
                                     this.$LIPS(false);
                                 })
-                                .catch((err) => {
+                                .catch(err => {
                                     if (err.response.status === 422) {
                                         this.error = err.response.data;
                                         if (err.response.data.errors) this.error = err.response.data.errors;
@@ -89,7 +81,7 @@
                                     this.$LIPS(false);
                                     Flash.setError('Check your login details and try again!');
                                 });
-                        }else this.$networkErr();
+                        } else this.$networkErr();
                     }
                 });
             }
@@ -98,7 +90,7 @@
             if (localStorage.getItem('api_token')) this.$router.push('/home');
         },
         mounted() {
-            this.watchCardMT();
+            this.cardMT = (window.innerHeight - $('#loginCard').height()) / 2;
         },
     }
 </script>

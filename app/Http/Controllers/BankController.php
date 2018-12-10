@@ -9,7 +9,7 @@ class BankController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api')->only('logout');
+        $this->middleware('auth:api')->only('');
     }
     /**
      * Display a listing of the resource.

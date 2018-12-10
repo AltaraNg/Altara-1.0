@@ -45,9 +45,7 @@ class LogController extends Controller
         $log->description = $request->description;
         $log->action = $request->action;
         $log->save();
-        return response()->json([
-            'logged' => true,
-        ]);
+        return response()->json(['logged' => true]);
     }
 
     /**

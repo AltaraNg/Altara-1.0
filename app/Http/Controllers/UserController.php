@@ -17,7 +17,7 @@ class UserController extends Controller
         $columns = User::$columns;
         return response()->json([
             'model' => $model,
-            'columns' => $columns,
+            'columns' => $columns
         ]);
     }
 }

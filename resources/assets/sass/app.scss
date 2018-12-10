@@ -12,7 +12,7 @@
 }
 
 html {
-  font-size : 62.5%;
+  font-size : 57%;
 }
 
 body {
@@ -356,7 +356,6 @@ small.text-muted, form small:not(.error-control) {
 }
 
 .form-group {
-  height: 8rem;
   margin-bottom: .8rem;
   & label, .category {
     font-weight   : 600;
@@ -815,6 +814,10 @@ table button i {
       transform: translateX(14%) skewX(35deg);
     }
   }
+}
+
+tr.current{
+  background-color: #f1f4f7;
 }
 
 @media (max-width : 600px) {

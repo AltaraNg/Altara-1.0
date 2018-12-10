@@ -18,11 +18,9 @@
             }
         },
         methods: {
-            upload(e) {
+            upload: function (e) {
                 const files = e.target.files;
-                if (files && files.length > 0) {
-                    this.$emit('input', files[0])
-                }
+                if (files && files.length > 0) this.$emit('input', files[0])
             }
         }
     }

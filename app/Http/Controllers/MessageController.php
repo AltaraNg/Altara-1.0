@@ -9,7 +9,7 @@ class MessageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api')->except('index');
+        $this->middleware('auth:api')->except('');
     }
 
     /**
@@ -45,9 +45,7 @@ class MessageController extends Controller
         $message->contacts = implode(' ', $request['contacts']);
         $message->user_id = auth('api')->user()->id;
         $message->save();
-        return response()->json([
-            'sentAndLogged' => true,
-        ]);
+        return response()->json(['sentAndLogged' => true]);
     }
 
     /**

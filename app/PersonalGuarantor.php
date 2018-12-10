@@ -29,7 +29,7 @@ class PersonalGuarantor extends Model
             'consent' => '',
             'date_of_call' => '',
             'time_of_call' => '',
-            'report' => '',
+            'report' => ''
         ];
     }
 }

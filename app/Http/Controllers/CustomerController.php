@@ -32,7 +32,7 @@ class CustomerController extends Controller
         $columns = Customer::$columns;
         return response()->json([
             'model' => $model,
-            'columns' => $columns,
+            'columns' => $columns
         ]);
     }
 
@@ -50,7 +50,7 @@ class CustomerController extends Controller
             'form' => $form,
             'states' => $states,
             'branches' => $branches,
-            'user' => auth('api')->user()->only(['full_name', 'id', 'branch_id', 'role_id']),
+            'user' => auth('api')->user()->only(['full_name', 'id', 'branch_id', 'role_id'])
         ]);
     }
 
@@ -62,29 +62,16 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'telephone' => 'unique:customers',
-        ]);
+        $this->validate($request, ['telephone' => 'unique:customers']);
         $customer = new Customer($request->all());
         $customer->days_of_work = implode(' ', $request['days_of_work']);
         $customer->save();
-        (new Verification([
-            'customer_id' => $customer->id,
-            'passport' => 0,
-            'id_card' => 0,
-            'address' => 0,
-            'work_guarantor' => 0,
-            'personal_guarantor' => 0,
-        ]))->save();
-        (new Document([
-            'customer_id' => $customer->id,
-            'id_card_url' => '',
-            'passport_url' => '',
-        ]))->save();
+        $this->createCustomerDocument($customer->id);
+        $this->createCustomerVerification($customer->id);
         return response()->json([
             'registered' => true,
-            'customer' => $this->show($customer->id)->original['customer'],
             'prepareForm' => $this->create()->original,
+            'customer' => $this->fetchCustomer($customer->id)
         ]);
     }
 
@@ -96,26 +83,28 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $customer = Customer::with([
-            'user' => function ($query) {
-                $query->select('id', 'full_name', 'branch_id');
-            },
-            'branch', 'verification', 'address', 'workGuarantor', 'personalGuarantor', 'document', 'processingFee'
-        ])->whereId($id)->first();
+        $customer = $this->fetchCustomer($id);
         if ($customer) {
+            $d = $customer->document;
+            $v = $customer->verification;
+            if (!isset($v) || !isset($d)) {
+                if (!isset($d)) $this->createCustomerDocument($customer->id);
+                if (!isset($v)) $this->createCustomerVerification($customer->id);
+                $customer = $this->fetchCustomer($id);
+            }
             return response()->json([
+                'success' => true,
                 'customer' => $customer,
                 'empty_address' => Address::form(),
+                'empty_processing_fee' => ProcessingFee::form(),
                 'empty_work_guarantor' => WorkGuarantor::form(),
                 'empty_personal_guarantor' => PersonalGuarantor::form(),
-                'empty_processing_fee' => ProcessingFee::form(),
-                'user' => auth('api')->user()->only(['full_name', 'id', 'branch_id', 'role_id']),
-                'success' => true
+                'user' => auth('api')->user()->only(['full_name', 'id', 'branch_id', 'role_id'])
             ]);
         }
         return response()->json([
-            'message' => 'The Customer ID did not match any customer in our records!',
             'customer' => '',
+            'message' => 'The Customer ID did not match any customer in our records!'
         ], 422);
     }
 
@@ -139,20 +128,58 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        unset($request['address']);
-        unset($request['branch']);
-        unset($request['document']);
-        unset($request['personal_guarantor']);
-        unset($request['processing_fee']);
         unset($request['user']);
+        unset($request['branch']);
+        unset($request['address']);
+        unset($request['document']);
         unset($request['verification']);
         unset($request['work_guarantor']);
+        unset($request['processing_fee']);
+        unset($request['personal_guarantor']);
         Customer::whereId($id)->update($request->all());
         return response()->json([
             'updated' => true,
-            'customer' => $this->show($id)->original['customer'],
             'prepareForm' => $this->create()->original,
+            'customer' => $this->show($id)->original['customer']
         ]);
+    }
+
+
+    public function fetchCustomer($id)
+    {
+        return Customer::with([
+            'user' => function ($query) {
+                $query->select('id', 'full_name', 'branch_id');
+            },
+            'branch',
+            'verification',
+            'address',
+            'workGuarantor',
+            'personalGuarantor',
+            'document',
+            'processingFee'
+        ])->whereId($id)->first();
+    }
+
+    static function createCustomerVerification($customerId)
+    {
+        (new Verification([
+            'id_card' => 0,
+            'address' => 0,
+            'passport' => 0,
+            'work_guarantor' => 0,
+            'personal_guarantor' => 0,
+            'customer_id' => $customerId
+        ]))->save();
+    }
+
+    static function createCustomerDocument($customerId)
+    {
+        (new Document([
+            'id_card_url' => '',
+            'passport_url' => '',
+            'customer_id' => $customerId
+        ]))->save();
     }
 
     /**

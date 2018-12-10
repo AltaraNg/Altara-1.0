@@ -26,7 +26,7 @@
             'preview': 'setPreview'
         },
         methods: {
-            setPreview() {
+            setPreview: function () {
                 if (this.preview instanceof File) {
                     const fileReader = new FileReader();
                     fileReader.onload = (event) => {
@@ -35,9 +35,7 @@
                     fileReader.readAsDataURL(this.preview)
                 } else if (typeof this.preview === 'string') {
                     this.image = `https://s3.eu-west-2.amazonaws.com/altara-one/${this.preview}`;
-                } else {
-                    this.image = null;
-                }
+                } else this.image = null;
             }
         }
     }

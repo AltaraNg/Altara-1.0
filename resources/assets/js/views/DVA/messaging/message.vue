@@ -41,20 +41,18 @@
         data() {
             return {
                 contacts: '',
-                sentData: '',
-                form: '',
+                sentData: {},
+                form: {}
             }
         },
         methods: {
             sendMessage() {
-                this.$validator.validateAll().then((result) => {
+                this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            var contacts = this.contacts.split(";").filter(function (str) {
-                                return /\S/.test(str);
-                            });
-                            for (var i = 0; i < contacts.length; i++) {
+                            let contacts = this.contacts.split(";").filter(str => /\S/.test(str));
+                            for (let i = 0; i < contacts.length; i++) {
                                 this.sentData.phone = contacts[i].trim().substr(1);
                                 SMS.dvaMessage(this.sentData);
                                 if (contacts.length - 1 === i) this.done(contacts);
@@ -73,7 +71,7 @@
                 this.form.pages = Math.ceil(this.form.message.length / 160);
                 let remaining = this.form.message.length % 160;
                 if (remaining > 0) this.form.pages += 1;
-                post('/api/message', this.form).then(res => this.resetData());
+                post('/api/message', this.form).then(() => this.resetData());
             },
             resetData() {
                 this.contacts = '';

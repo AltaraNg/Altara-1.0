@@ -29,7 +29,7 @@ class ProcessingFee extends Model
             'amount' => '1000',
             'date_collected' => '',
             'time_collected' => '',
-            'report' => '',
+            'report' => ''
         ];
     }
 }

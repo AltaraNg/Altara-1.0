@@ -115,14 +115,9 @@
                 if (err.response.status === 404) this.$router.push("/not-found");
             });
             window.addEventListener('load', () => {
-                navigator.onLine ? this.showStatus(true) : this.showStatus(false);//uncomment this when u push to production
-                //this.$network() ? this.showStatus(true) : this.showStatus(false);//dis current line should be removed after testing
-                window.addEventListener('online', () => {
-                    this.showStatus(true);
-                });
-                window.addEventListener('offline', () => {
-                    this.showStatus(false);
-                });
+                this.showStatus(navigator.onLine);
+                window.addEventListener('online', () => this.showStatus(true));
+                window.addEventListener('offline', () => this.showStatus(false));
             });
         },
         computed: {
@@ -150,7 +145,7 @@
             showStatus(online) {
                 online ? Flash.setSuccess('you are connected to the internet!') : this.$networkErr();
             },
-            clearFlash(){
+            clearFlash() {
                 Flash.removeMsg();
             }
         },
