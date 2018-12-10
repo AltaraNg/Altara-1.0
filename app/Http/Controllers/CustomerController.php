@@ -192,4 +192,18 @@ class CustomerController extends Controller
     {
         //
     }
+    /*public function runQuery()
+    {
+        $customers = Customer::where('user_id',0)->select(['id', 'user_id', 'employee_id', 'employee_name'])->get();
+        for ($i = 0; $i < count($customers) ; $i++){
+            ini_set('max_execution_time', 0);
+            $user = User::where('staff_id',$customers[$i]->employee_id)->first();
+            if($user){
+                $customers[$i]->user_id = $user->id;
+                $customers[$i]->employee_name = $user->full_name;
+                $customers[$i]->save();
+            }
+        }
+        return response()->json(['success' => true]);
+    }*/
 }

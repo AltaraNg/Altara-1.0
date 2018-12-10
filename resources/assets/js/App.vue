@@ -36,6 +36,11 @@
                                         <router-link to="/user/profile" class="dropdown-item p-4">
                                             <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i> My Profile
                                         </router-link>
+
+                                        <!--<a href="#" @click="runQuery" class="dropdown-item p-4">
+                                            <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i> Custom DB Query
+                                        </a>-->
+
                                         <span class="dropdown-item p-4" @click.stop="logout">
                                         <i class="now-ui-icons media-1_button-power pr-1"></i> Logout
                                     </span>
@@ -147,7 +152,17 @@
             },
             clearFlash() {
                 Flash.removeMsg();
-            }
+            }/*,
+            async runQuery() {
+                try {
+                    this.$LIPS(true);
+                    const result = await get("/api/runQuery");
+                    console.log(result);
+                    this.$LIPS(false);
+                } catch (e) {
+                    Flash.setError('Error Running query :(');
+                }
+            }*/
         },
     };
 </script>

@@ -22,7 +22,7 @@
 </template>
 <script>
     export default {
-        /*router navigation is used in the entire app for in app navigaton(basically previous and next)
+        /*router navigation is used in the entire app for in app navigation (basically previous and next)
         * the : pageTitle is the title of the page where this navigation component is used
         * the : pageTitleSmall is the minimized title for the small screen view
         * the previous is the this.$routerHistory.previous().path sent from the parent component
