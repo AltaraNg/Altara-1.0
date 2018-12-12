@@ -62,8 +62,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $message = 'Check your login details and try again!';
         $user = User::where('staff_id', $request->staff_id)->first();
-        if (!$user) return response()->json(['staff_id' => ['The combination does not exist in our record!']], 422);
+        if (!$user) return response()->json([
+            'staff_id' => ['The combination does not exist in our record!'],
+            'message' => $message
+        ], 422);
         if ($user->portal_access === 1) {
             if ($user && Hash::check($request->password, $user->password)) {
                 $user->api_token = str_random(60);
@@ -71,21 +75,23 @@ class AuthController extends Controller
                 return response()
                     ->json([
                         'user_id' => $user->id,
-                        'authenticated' => true,
+                        'auth' => true,
                         'role' => $user->role_id,
                         'api_token' => $user->api_token,
                         'user_name' => $user->full_name,
-                        'portal_access' => $user->portal_access
+                        'portal_access' => $user->portal_access,
+                        'message' => 'You have successfully logged in'
                     ]);
             }
-            return response()->json(['staff_id' => ['Provided staff id and password does not match']], 422);
-        } else {
-            return response()
-                ->json([
-                    'authenticated' => false,
-                    'message' => 'You are not authorized to access this portal. Please meet the authority to verify your portal access status!'
-                ]);
-        }
+            return response()->json([
+                'staff_id' => ['Provided staff id and password does not match'],
+                'message' => $message
+            ], 422);
+        } else return response()->json([
+            'authenticated' => false,
+            'message' => 'You are not authorized to access this portal!'
+        ],423);
+
     }
 
     public function logout(Request $request)
@@ -142,13 +148,13 @@ class AuthController extends Controller
         ]);
     }
 
-    public function generateStaffID($category,$role)
+    public function generateStaffID($category, $role)
     {
         $driver_role = [24, 25];
         if (in_array(intval($role), $driver_role)) {
             $lastID = User::whereIn('role_id', $driver_role)->orderBy('staff_id', 'desc')->first()->staff_id;
         } else {
-            $lastID = User::where('category', $category)->whereNotIn('role_id',$driver_role)->orderBy('staff_id', 'desc')->first()->staff_id;
+            $lastID = User::where('category', $category)->whereNotIn('role_id', $driver_role)->orderBy('staff_id', 'desc')->first()->staff_id;
         }
         $num = '';
         $prefix = '';
@@ -156,7 +162,7 @@ class AuthController extends Controller
         if (in_array(intval($role), [24, 25])) {
             $prefix = 'DD/';
             $nextNum = explode('/', $lastID)[1];
-        }else{
+        } else {
             if ($category === 'contract') {
                 $prefix = 'AC/C/';
                 $nextNum = explode('/', $lastID)[2];

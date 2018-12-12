@@ -9,8 +9,9 @@ import NotFound from '../views/NotFound.vue';
 import DSA from '../views/DSA/index.vue';
 import DSAHome from '../views/DSA/HomePage.vue';
 import DSAReport from '../views/DSA/report/report.vue';
-import CustomerList from '../views/DSA/list/list.vue';
+import CustomerList from '../components/CustomerList.vue';
 import CustomerUpdate from '../views/DSA/utility/form.vue';
+import CustomerProfileFull from '../components/CustomerProfileFull.vue';
 import CustomerRegister from '../views/DSA/registration/Register.vue';
 import DVA from '../views/DVA/index.vue';
 import DVAHome from '../views/DVA/HomePage.vue';
@@ -69,11 +70,6 @@ const router = new VueRouter({
                     component: CustomerUpdate,
                     name: 'DSACustomerUpdate',
                     alias: '/dsa-update-customer'
-                }, {
-                    path: 'customer/list',
-                    component: CustomerList,
-                    name: 'customerList',
-                    alias: '/register-list'
                 }
             ]
         },
@@ -118,6 +114,9 @@ const router = new VueRouter({
                 {path: 'branch/update', component: BranchUpdate, name: 'branchUpdate', alias: '/branch-update'},
             ]
         },
+
+        {path: '/customer/list', component: CustomerList,name: 'customerList', alias: '/register-list'},
+        {path: '/customer/:id', component: CustomerProfileFull,name: 'customerProfileFull', alias: '/customer-profile-full'},
         {path: '/not-found', component: NotFound},
         {path: '*', component: NotFound},
     ]

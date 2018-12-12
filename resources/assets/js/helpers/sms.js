@@ -20,6 +20,7 @@ export default {
     },
     send(details) {
         get(`https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to=234${details.phone}&text=${this.message}`)
-            .then(() => console.log("sms sent successfully"))
+            .then(() => console.log("sms sent successfully"));
+        console.log(details,this.message);
     }
 };

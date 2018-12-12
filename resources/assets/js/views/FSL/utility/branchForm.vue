@@ -166,27 +166,23 @@
                             //hence the url "/api/branch/{id}"
                             post(url, this.form)
                                 .then(res => {
-                                    this.$scrollToTop();
                                     log(`Branch${action}`, `${this.form.employee_id}`);
-                                    if (this.ifCreate(this.action)) {
-                                        this.prepareForm(res.data.prepareForm);
-                                        this.$LIPS(false);
-                                    }
+                                    if (this.ifCreate(this.action)) this.prepareForm(res.data.prepareForm);
                                     if (this.ifUpdate(this.action)) this.$emit('done');
                                     Flash.setSuccess(`Branch ${this.action}d successfully!`, 20000);
                                 })
-                                .catch(err => {
-                                    if (err.response.status === 422) {
-                                        this.$scrollToTop();
-                                        this.error = err.response.data;
-                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                .catch(e => {
+                                    e = e.response;
+                                    if (e.status === 422) {
+                                        this.error = e.data.errors ? e.data.errors : e.data;
                                         this.$networkErr('unique');
                                     }
-                                    this.$LIPS(false);
-                                })
+                                }).finally(() => {
+                                this.$scrollToTop();
+                                this.$LIPS(false);
+                            })
                         } else this.$networkErr();
-                    }
-                    if (!result) this.$networkErr('form');
+                    } else this.$networkErr('form');
                 });
             },
         },

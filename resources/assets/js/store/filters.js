@@ -1,16 +1,13 @@
 //noinspection JSAnnotator
 import Vue from 'vue';
 
-Vue.filter('capitalize', value => {
-    if (!value) return '';
-    value = ((value.toString()).replace(/_/g, ' ')).split(" ");
-    for (let i = 0; i < value.length; i++) {
-        value[i] = value[i].charAt(0).toUpperCase() + value[i].slice(1);
+Vue.filter('capitalize', d => {
+    if (d) {
+        d = (d.replace(/_/g, ' ').split(" "));
+        d.forEach((e, i, a) => a[i] = e.charAt(0).toUpperCase() + e.slice(1));
+        return d.join(' ');
     }
-    return (value.join()).replace(/,/g, ' ');
+    return '';
 });
 
-Vue.filter('slug', value => {
-    if (!value) return '';
-    return (value.replace(/ /g, '_')).toLowerCase();
-});
+Vue.filter('slug', e => !e ? '' : (e.replace(/ /g, '_')).toLowerCase());

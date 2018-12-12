@@ -33,7 +33,7 @@
                         desc: 'Real time DSA reports!',
                         aces: this.$store.getters.verifyDSALead,
                     }, {
-                        url: 'customer/list',
+                        url: '/customer/list',
                         title: 'Customer List',
                         url_c: 'View Customer List',
                         desc: 'View all registered customers!',

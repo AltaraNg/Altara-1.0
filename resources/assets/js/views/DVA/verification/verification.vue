@@ -366,9 +366,8 @@
                                         </tr>
                                         <tr>
                                             <th><i class=" fas fa-user-circle"></i></th>
-                                            <td v-if="customer[type+'_first_name']">{{customer[type+'_first_name']+ ' '
-                                                                                    + customer[type+'_middle_name']+ ' '
-                                                                                    + customer[type+'_last_name']}}
+                                            <td v-if="customer[type+'_first_name']">
+                                                {{`${customer[type+'_first_name']} ${customer[type+'_last_name']}`}}
                                             </td>
                                             <td v-else>please update customer details!</td>
                                         </tr>
@@ -617,22 +616,18 @@
                     })
                 }
             },
-            fetchCustomer() {
+            async fetchCustomer() {
                 if (this.$network()) {
                     this.$LIPS(true);
-                    get(`/api/customer/${this.customer_id}`)
-                        .then(res => {
-                            this.buttonStatus(res.data);
-                            this.$LIPS(false);
-                        })
-                        .catch(err => {
-                            this.$LIPS(false);
-                            this.$scrollToTop();
-                            if (err.response.status === 422) {
-                                this.buttonStatus(err.response.data);
-                                Flash.setError(err.response.data.message);
-                            } else Flash.setError('Error trying to get customer details please try again shortly!');
-                        })
+                    await get(`/api/customer/${this.customer_id}`)
+                        .then(res => this.buttonStatus(res.data))
+                        .catch(e => {
+                            e = e.response;
+                            if (e.status === 422) this.buttonStatus(e.data);
+                            Flash.setError(e.data.message);
+                        });
+                    this.$scrollToTop();
+                    this.$LIPS(false);
                 } else this.$networkErr();
             },
             validate(type) {
@@ -651,9 +646,9 @@
                         this[type].customer_id = this.customer.id;
                         this[type].user_id = this.user.id;
                         this[type].staff_name = this.user.full_name;
-                        this.$validator.validateAll(type).then(result => {
+                        this.$validator.validateAll(type).then(async result => {
                             if (result) {
-                                post(`/api/${type}`, this[type])
+                                await post(`/api/${type}`, this[type])
                                     .then(res => {
                                         this.buttonStatus(res.data.response);
                                         let id = `Customer ID : ${this.customer.id}`,
@@ -664,16 +659,11 @@
                                         log(action, id);
                                         Flash.setSuccess(`${typeCaps} status updated!`);
                                         this.modal(`${type}_modal`);
-                                        this.$LIPS(false);
-                                        this.$scrollToTop();
                                     })
-                                    .catch(err => {
-                                        this.$LIPS(false);
-                                        this.$scrollToTop();
-                                        Flash.setError(err.response.data.message);
-                                    });
-                            }
-                            if (!result) this.$networkErr('form');
+                                    .catch(e => Flash.setError(e.response.data.message));
+                                this.$LIPS(false);
+                                this.$scrollToTop();
+                            }else this.$networkErr('form');
                         });
                     } else this.$networkErr();
                 } else {
@@ -681,25 +671,21 @@
                     $('.modal').modal('hide')
                 }
             },
-            save(document, modal) {
+            async save(document, modal) {
                 let acc = this.$editAccess(this.user, this.customer);
                 if (acc) {
                     this.storeURL = `/api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
                     this.$LIPS(true);
                     this.form.document = document;
                     const form = toMulipartedForm(this.form, 'edit');
-                    post(this.storeURL, form).then((res) => {
+                    await post(this.storeURL, form).then(res => {
                         this.buttonStatus(res.data.response);
                         log(`Customer${this.$options.filters.capitalize(document)}Upload`, `Customer ID : ${this.customer.id}`);
                         this.modal(modal);
-                        this.$LIPS(false);
-                        this.$scrollToTop();
                         Flash.setSuccess('Document Updated Successfully!');
-                    }).catch((err) => {
-                        this.error = err.response.data.errors;
-                        this.$LIPS(false);
-                        this.$scrollToTop();
-                    })
+                    }).catch(e => this.error = e.response.data.errors);
+                    this.$LIPS(false);
+                    this.$scrollToTop();
                 } else {
                     this.$networkErr('edit');
                     $('.modal').modal('hide')

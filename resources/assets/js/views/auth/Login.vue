@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div id="login">
-            <div class="col-md-5 mx-auto" id="loginCard" :style="{ marginTop: cardMT+'px'}">
+            <div class="col-md-5 mx-auto" id="loginCard" :style="{ marginTop: `${cardMT}px`}">
                 <div class="card">
                     <ul class="nav nav-tabs justify-content-center bg-default"><h6>Staff Login</h6></ul>
                     <form @submit.prevent="login" class="pt-1 pb-3">
@@ -58,29 +58,27 @@
             }
         },
         methods: {
-            login: function () {
-                this.$validator.validateAll().then(result => {
+            login() {
+                this.$validator.validateAll().then(async result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
-                            post('/api/login', this.form)
+                            await post('/api/login', this.form)
                                 .then(res => {
-                                    if (res.data.authenticated) {
-                                        Auth.set(res.data);
+                                    res = res.data;
+                                    if (res.auth) {
+                                        Auth.set(res);
                                         this.$router.push('/home');
-                                        Flash.setSuccess('You have successfully logged in.');
-                                    } else if (!res.data.authenticated) Flash.setError(res.data.message);
-                                    this.$LIPS(false);
-                                })
-                                .catch(err => {
-                                    if (err.response.status === 422) {
-                                        this.error = err.response.data;
-                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                        Flash.setSuccess(res.message);
                                     }
-                                    this.$LIPS(false);
-                                    Flash.setError('Check your login details and try again!');
+                                })
+                                .catch(e => {
+                                    e = e.response;
+                                    if (e.status === 422) this.error = e.data.errors ? e.data.errors : e.data;
+                                    Flash.setError(e.data.message);
                                 });
+                            this.$LIPS(false);
                         } else this.$networkErr();
                     }
                 });

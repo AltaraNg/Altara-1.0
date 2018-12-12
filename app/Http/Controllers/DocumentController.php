@@ -79,7 +79,7 @@ class DocumentController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            $request['document'] => 'image|max:512|dimensions:max_width=1200,max_height=1200'
+            $request['document'] => 'image|max:512|dimensions:max_width=1200,max_height=1200|mimes:jpeg,jpg,png'
         ]);
         $document = Document::findOrFail($id);
         if ($request->hasFile($request['document']) && $request->file($request['document'])->isValid()) {

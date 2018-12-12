@@ -452,34 +452,31 @@
                                         //it emits an event to the parent(dataviewer.vue)
                                         // since its for update
                                     }
-                                    this.$scrollToTop();
                                     log('Staff' + logMsg, String(res.data.staff_id));
                                     Flash.setSuccess(message, 20000);
                                     if (this.ifReg(this.action)) this.form = res.data.form;
                                     //the line above is there so as to allow the log
                                     // method use its data before resetting
-                                    this.$LIPS(false);
                                 })
-                                .catch((err) => {
-                                    if (err.response.status === 422) {
-                                        //catch error thrown by laravel validation;
-                                        this.$scrollToTop();
-                                        this.error = err.response.data;
-                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                .catch(e => {
+                                    e = e.response;
+                                    if (e.status === 422) {
+                                        this.error = e.data.errors ? e.data.errors : e.data;
                                         this.$networkErr('unique');
                                     }
-                                    this.$LIPS(false);
-                                })
+                                }).finally(()=>{
+                                this.$scrollToTop();
+                                this.$LIPS(false);
+                            });
                         } else this.$networkErr();
-                    }
-                    if (!result) this.$networkErr('form');
+                    }else this.$networkErr('form');
                 });
             },
         },
         created() {
             if (this.ifReg(this.action)) get('/api/create').then(res => this.prepareForm(res.data));
             //if registration fetch data for new customer registration and prepare form
-            if (this.action == 'update') this.bus.$on('submit', this.register);
+            if (this.action === 'update') this.bus.$on('submit', this.register);
             //this.bus is a (vue instance and )prop received from dataviewer to track when the access portal form(ref: DataViewer.vue
             //=> id="editPortalAccess") is submitted from the data viewer. this is because we want to use the 'register'
             //function to process both (1)registration, (2)update details and (3)update portal access

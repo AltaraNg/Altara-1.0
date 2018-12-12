@@ -1301,6 +1301,8 @@
                 states: {},
                 branches: {},
                 newCustomer: {},
+                ifUp: a => a === 'update',
+                ifReg: a => a === 'register',
                 fillWorkGuarantor: false,
                 gender: ['male', 'female'],
                 fillPersonalGuarantor: false,
@@ -1323,7 +1325,7 @@
         },
         methods: {
             register() {
-                this.$validator.validateAll().then(result => {
+                this.$validator.validateAll().then(async result => {
                     if (result) {
                         if (this.newCustomer.employment_status === 'unemployed') {
                             Flash.setError('you can only register customer from formal and informal sectors at the moment!');
@@ -1333,65 +1335,42 @@
                             this.$LIPS(true);
                             this.error = {};
                             let newUrl = '/api/customer';
-                            var logMsg = 'createdNew';
+                            let logMsg = 'createdNew';
                             if (this.action === 'update') {
                                 newUrl = `${newUrl}/${this.newCustomer.id}`;
                                 logMsg = 'updated';
                                 let acc = this.$editAccess(this.user, this.newCustomer);
                                 if (!acc) return this.$networkErr('edit');
                             }
-                            post(newUrl, this.newCustomer)
+                            await post(newUrl, this.newCustomer)
                                 .then(res => {
                                     Flash.setSuccess(`Customer ${this.action} successful! Customer ID is: ${res.data.customer.id}`, 30000);
                                     log(`${logMsg}Customer`, `Customer ID :${res.data.customer.id}`);
-                                    this.$scrollToTop();
                                     if (this.action === 'register') SMS.customerReg(res.data.customer);
                                     this.prepareForm(res.data.prepareForm);
-                                    this.$LIPS(false);
-                                }).catch((err) => {
-                                if (err.response.status === 422) {
-                                    this.$scrollToTop();
-                                    this.error = err.response.data;
-                                    if (err.response.data.errors) this.error = err.response.data.errors;
-                                    Flash.setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
-                                }
-                                this.$LIPS(false)
-                            })
+                                }).catch(e => {
+                                    e = e.response;
+                                    if (e.status === 422) this.error = e.data.errors ? e.data.errors : e.data;
+                                    Flash.setError(e.status === 422 ? 'unique' : e.message, 10000);
+                                });
+                            this.$scrollToTop();
+                            this.$LIPS(false)
                         } else this.$networkErr();
-                    }
-                    if (!result) this.$networkErr('form');
+                    } else this.$networkErr('form');
                 });
             },
             prepareForm(data) {
-                this.states = data.states;
-                this.branches = data.branches;
-                this.newCustomer = data.form;
-                /*prepare form for customer registration*/
+                [this.states, this.branches, this.newCustomer, this.user] = [data.states, data.branches, data.form, data.user];
             },
             updateCustomer(customer) {
-                if (this.ifUp('update')) {
-                    this.fillWorkGuarantor = true;
-                    this.fillPersonalGuarantor = true;
-                    /*if the form context is update set the
-                    guarantor details to automatic.*/
-                }
+                if (this.ifUp('update')) [this.fillWorkGuarantor, this.fillPersonalGuarantor] = [true, true];
                 this.newCustomer = customer;
-            },
-            ifReg(a) {
-                return !!(a === 'register');
-            },
-            ifUp(a) {
-                return !!(a === 'update');
             }
         },
         created() {
-            get('/api/customer/create').then(res => {
-                this.prepareForm(res.data);
-                this.user = res.data.user;
-
-            });
+            get('/api/customer/create').then(res => this.prepareForm(res.data));
             /*on create of the component fetch the data required to prepare the form
             * states, branches and the currently logged in dsa details*/
-        },
+        }
     }
 </script>

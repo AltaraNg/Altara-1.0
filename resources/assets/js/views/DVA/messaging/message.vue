@@ -47,19 +47,18 @@
         },
         methods: {
             sendMessage() {
-                this.$validator.validateAll().then(result => {
+                this.$validator.validateAll().then(async result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
                             let contacts = this.contacts.split(";").filter(str => /\S/.test(str));
-                            for (let i = 0; i < contacts.length; i++) {
-                                this.sentData.phone = contacts[i].trim().substr(1);
+                            contacts.forEach(el => {
+                                this.sentData.phone = el.trim().substr(1);
                                 SMS.dvaMessage(this.sentData);
-                                if (contacts.length - 1 === i) this.done(contacts);
-                            }
+                            });
+                            this.done(contacts);
                         } else this.$networkErr();
-                    }
-                    if (!result) this.$networkErr('form');
+                    }else this.$networkErr('form');
                 });
             },
             done(contacts) {

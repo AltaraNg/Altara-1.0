@@ -24,6 +24,9 @@
                     },{
                         url: 'branch/update', title: 'Update Branch', url_c: 'Update Branch now!',
                         desc: 'Update a Branch office',aces: this.$store.getters.verifyFSLLead,
+                    }, {
+                        url: '/customer/list', title: 'Customer List', url_c: 'View Customer List',
+                        desc: 'View all registered customers!',
                     }
                 ]
             }

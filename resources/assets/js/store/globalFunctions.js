@@ -19,7 +19,7 @@ Vue.prototype.$LIPS = function(s){ this.$store.state.loader = this.$isProcessing
 Vue.prototype.$scrollToTop = () => $("html, body").animate({scrollTop: 0}, 500);
 //scrolls the page (with animation) to the top
 
-Vue.prototype.$getDate = function () {
+Vue.prototype.$getDate = () => {
     const toTwoDigits = num => num < 10 ? '0' + num : num;
     let today = new Date(),
         year = today.getFullYear(),
@@ -29,6 +29,7 @@ Vue.prototype.$getDate = function () {
     //return the current date; format : yyyy-mm-dd;
 };
 Vue.prototype.$network = () => window.navigator.onLine;
+// Vue.prototype.$network = () => true;
 //return the network status(true | false) of the system if connected to a
 // network not NB: this doesn't work with internet access. it only
 //detects the system is connected to a network
@@ -37,11 +38,11 @@ Vue.prototype.$network = () => window.navigator.onLine;
 Vue.prototype.$networkErr = function (err = '') {
     this.$scrollToTop();
     this.$LIPS(false);
-    let msg = 'Your are not connected to the network please wait till network is back!';
-    if (err == 'form') msg = 'Please ensure all the fields are filled correctly!';
-    if (err == 'page') { msg = 'You do not have access to that page!'; this.$router.push('/home'); }
-    if (err == 'edit') msg = 'You do not have access to edit details because it is out of your jurisdiction!';
-    if (err == 'unique') msg = 'Your details contains a unique field that already exists in our record change it and try again!';
+    let msg = 'No network access, try again later!';
+    if (err === 'form') msg = 'Please ensure all the fields are filled correctly!';
+    if (err === 'page') {msg = 'You do not have access to that page!'; this.$router.push('/home');}
+    if (err === 'edit') msg = 'You do not have access to edit details because it is out of your jurisdiction!';
+    if (err === 'unique') msg = 'Your details contains a unique field that already exists in our record change it and try again!';
     Flash.setError(msg, 10000);
     //custom message for network "no network connection" and
     //form field validation error

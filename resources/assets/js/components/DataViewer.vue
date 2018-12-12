@@ -35,7 +35,7 @@
                                 <span v-else>&darr;</span>
                             </span>
                         </th>
-                        <th v-if="user || branch" scope="col"><span>Action</span></th>
+                        <th v-if="user || branch || customer" scope="col"><span>Action</span></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,12 +65,12 @@
                                 <i class="fas fa-key"></i>
                             </button>
                         </td>
-                        <td v-if="branch">
+                        <td v-if="branch || customer">
                             <button class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
                                     data-toggle="tooltip"
                                     data-placement="top"
-                                    title="update branch details"
-                                    @click="updateBranch(model.id)">
+                                    :title="`${branch ? 'update branch details' : 'view details'}`"
+                                    @click="branch ? updateBranch(model.id) : $router.push(`/customer/${model.id}`)">
                                 <i class="fas fa-cog"></i>
                             </button>
                         </td>
@@ -233,7 +233,7 @@
                 query: {
                     page: 1,
                     column: 'id',
-                    direction: 'asc',
+                    direction: 'desc',
                     per_page: 10,
                     search_column: 'id',
                     search_operator: 'greater_than',
@@ -269,7 +269,7 @@
         },
         props: ['source', 'title', 'appModel'],
         created() {
-            if (this.appModel === 'branch') get('/api/state').then(res => this.states = res.data.states);
+            if (this.branch) get('/api/state').then(res => this.states = res.data.states);
             this.fetchIndexData();
             $(document).on('click', 'tr', function () {
                 $('tr.current').removeClass('current');
@@ -399,16 +399,22 @@
         },
         computed: {
             user() {
-                return !!(this.appModel == 'user');
+                return this.appModel === 'user';
                 /*return true if the context
                 * of the data viewer is
                 * for employees*/
             },
             branch() {
-                return !!(this.appModel == 'branch');
+                return this.appModel === 'branch';
                 /*return true if the context
                 * of the data viewer is
                 * for branch*/
+            },
+            customer() {
+                return this.appModel === 'customer';
+                /*return true if the context
+                * of the data viewer is
+                * for customer*/
             }
         },
     }
