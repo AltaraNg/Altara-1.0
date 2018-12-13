@@ -36,11 +36,6 @@
                                         <router-link to="/user/profile" class="dropdown-item p-4">
                                             <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i> My Profile
                                         </router-link>
-
-                                        <!--<a href="#" @click="runQuery" class="dropdown-item p-4">
-                                            <i class="now-ui-icons ui-1_settings-gear-63 pr-1"></i> Custom DB Query
-                                        </a>-->
-
                                         <span class="dropdown-item p-4" @click.stop="logout">
                                         <i class="now-ui-icons media-1_button-power pr-1"></i> Logout
                                     </span>

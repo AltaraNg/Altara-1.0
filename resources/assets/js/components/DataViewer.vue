@@ -71,7 +71,8 @@
                                     data-placement="top"
                                     :title="`${branch ? 'update branch details' : 'view details'}`"
                                     @click="branch ? updateBranch(model.id) : $router.push(`/customer/${model.id}`)">
-                                <i class="fas fa-cog"></i>
+                                <i class="fas fa-cog" v-if="branch"></i>
+                                <i class="far fa-user" v-if="customer"></i>
                             </button>
                         </td>
                     </tr>

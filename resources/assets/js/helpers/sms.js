@@ -4,7 +4,8 @@ export default {
     message: "",
     welcome(details) {
         this.message = `Welcome to Altara credit. Please secure your login details. Staff ID: ${details.loginID}, password: ${details.loginPassword}`;
-        this.send(details);
+        console.log(details, this.message);
+        //this.send(details);
     },
     customerReg(details) {
         this.message = `Dear ${details.first_name} ${details.last_name}, Welcome to Altara Credit Limited, You are hereby invited to our showroom at ${details.branch.description} to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact: ${details.branch.phone_yoruba}. Your customer id is: ${details.id}`;
