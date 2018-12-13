@@ -29,7 +29,6 @@ Vue.prototype.$getDate = () => {
     //return the current date; format : yyyy-mm-dd;
 };
 Vue.prototype.$network = () => window.navigator.onLine;
-// Vue.prototype.$network = () => true;
 //return the network status(true | false) of the system if connected to a
 // network not NB: this doesn't work with internet access. it only
 //detects the system is connected to a network

@@ -373,7 +373,8 @@
                         $('#editPassword').modal('toggle');
                         log('resetUserPassword', this.form.staff_id);
                         Flash.setSuccess('Employee password reset successful!');
-                        let details = {phone: String(parseInt(this.form.phone_number)), password: res.data.password};
+                        let details = {phone: String(parseInt(this.form.phone_number)), password: res.data.password ,
+                            staff_id:this.form.staff_id};
                         SMS.passwordReset(details);
                         this.$LIPS(false);
                     })

@@ -195,7 +195,10 @@ class CustomerController extends Controller
         //
     }
     /**
-     * - Before running the correct query below rerun the old one for the staff with the id 046...mis typed as 1c/c/046/2018 by taiwo.
+     * - Before running the correct query below
+     * rerun the old one for the
+     * staff with the id 046...
+     * mis typed as 1c/c/046/2018 by taiwo.
      */
     /*public function runQuery()
     {
@@ -212,7 +215,9 @@ class CustomerController extends Controller
         return response()->json(['success' => true]);
     }*/
 
-    /**The code below corrects the id error in format like 077
+    /**The code below corrects
+     * the id error in
+     * format like 077
      */
 
     /*public function runQuery()
@@ -410,7 +415,7 @@ class CustomerController extends Controller
     }*/
 
 
-    /*public function saveCustomer($customer, $user)
+   /* public function saveCustomer($customer, $user)
     {
         $customer->user_id = $user->id;
         $customer->employee_id = $user->staff_id;
