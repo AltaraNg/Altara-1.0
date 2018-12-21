@@ -45,7 +45,7 @@ class AuthController extends Controller
             'date_of_birth' => 'older_than:18'
         ]);
         $user = new User($request->all());
-        $gen_password = str_random(10);
+        $gen_password = str_random(8);
         $user->password = bcrypt($gen_password);
         $user->staff_id = $this->generateStaffID($request->category, $request->role);
         $user->hr_id = auth('api')->user()->id;
@@ -138,7 +138,7 @@ class AuthController extends Controller
     public function resetPassword($id)
     {
         $user = User::where('id', $id)->first();
-        $gen_password = str_random(10);
+        $gen_password = str_random(8);
         $user->password = bcrypt($gen_password);
         $user->api_token = null;
         $user->save();

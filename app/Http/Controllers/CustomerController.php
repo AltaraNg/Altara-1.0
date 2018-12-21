@@ -13,7 +13,6 @@ use App\User;
 use App\Verification;
 use App\WorkGuarantor;
 use Illuminate\Http\Request;
-use function PHPSTORM_META\elementType;
 
 class CustomerController extends Controller
 {
@@ -278,7 +277,6 @@ class CustomerController extends Controller
      * - format: AT/C/024/18            a:4     a[0]:       a[1]:       a[2]:               DONE
      * - format: A/C/047/18             a:4     a[0]:a      a[1]:       a[2]:               DONE
      * - format: A/C/047/DSA            a:4     a[0]:       a[1]:       a[2]:               DONE
-
      */
 
     /*public function runQuery()
@@ -346,14 +344,6 @@ class CustomerController extends Controller
                     if(strtolower($arrEmployeeId[0]) == 'ac'){
                         if(strtolower($arrEmployeeId[1]) == 'c' && strlen($arrEmployeeId[2]) == 3 && $arrEmployeeId[3] == 18){
 
-//                            $user = User::where('staff_id', 'like', '%' . $arrEmployeeId[3] . '%')->whereIn('role_id',[17,18])->select('id', 'staff_id', 'full_name')->first();
-//
-//                            if(!$user){
-//
-//                            }
-//                            $cus->arrEmployeeId = $arrEmployeeId;
-//                            array_push($allCus, $cus);
-
                         }else{//23
                             if(strlen($arrEmployeeId[2]) == 3 ){//16
                                 if(strtolower(   (str_split($arrEmployeeId[2]))[0]  ) == 'o'){
@@ -414,12 +404,101 @@ class CustomerController extends Controller
         ]);
     }*/
 
+//    public function runQuery()
+//    {
+//        $dsa = [17, 18, 19];
+//        $user = '';
+//        $allCus = [];
+//        $foundUser = [];
+//        ini_set('max_execution_time', 0);
+//        $customers = Customer::where('user_id', 0)->select(['id', 'user_id', 'employee_id', 'employee_name'])->orderBy('employee_id')->get();
+//
+//        foreach ($customers as $cus) {
+//
+//            $nam = $cus->employee_id;
+//            $nam2 = $cus->employee_name;
+//
+//            $c1 = preg_match("~[0-9]~", $nam) === 1;
+//            $c2 = preg_match("~[0-9]~", $nam2) === 1;
+//            $c3 = stripos($nam, '/') !== false;
+//            $c4 = stripos($nam2, '/') !== false;
+//            $c5 = stripos($nam, '-') !== false;
+//            $c6 = stripos($nam2, '-') !== false;
+//
+//            //The code below works for where employee name and id are both names
+//            /*if ($c1 || $c2 || $c3 || $c4 || $nam == '' || $nam2 == '') {}
+//            else {
+//
+//                $name = explode(' ', strtolower($nam) . ' ' . strtolower($nam2));
+//
+//                if (count($name) === 2)
+//                    $user = User::whereIn('role_id', $dsa)
+//                        ->where('full_name', 'like', '%' . $name[0] . '%')
+//                        ->where('full_name', 'like', '%' . $name[1] . '%')
+//                        ->select('id', 'staff_id', 'full_name')
+//                        ->first();
+//
+//                else if (count($name) === 3)
+//                    $user = User::whereIn('role_id', $dsa)
+//                        ->where('full_name', 'like', '%' . $name[0] . '%')
+//                        ->where('full_name', 'like', '%' . $name[1] . '%')
+//                        ->where('full_name', 'like', '%' . $name[2] . '%')
+//                        ->select('id', 'staff_id', 'full_name')
+//                        ->first();
+//
+//                if ($user) $this->saveCustomer($cus, $user);
+//
+//                if ($user) {$cus->user = $user; array_push($foundUser,$user);};
+//                $cus->names = $name;
+//                array_push($allCus, $cus);
+//
+//
+//            }*/
+//
+//            //The code below works for where employee id is a name
+//            /*if (($c1 || $c3 || $nam == '' || $c5)) {}
+//            else {
+//
+//                $name = explode(' ', strtolower($nam));
+//
+//                if (count($name) === 1)
+//                    $user = User::whereIn('role_id', $dsa)
+//                        ->where('full_name', 'like', '%' . $name[0] . '%')
+//                        ->select('id', 'staff_id', 'full_name')
+//                        ->first();
+//
+//                else if (count($name) === 2)
+//                    $user = User::whereIn('role_id', $dsa)
+//                        ->where('full_name', 'like', '%' . $name[0] . '%')
+//                        ->where('full_name', 'like', '%' . $name[1] . '%')
+//                        ->select('id', 'staff_id', 'full_name')
+//                        ->first();
+//
+//                else if (count($name) === 3)
+//                    $user = User::whereIn('role_id', $dsa)
+//                        ->where('full_name', 'like', '%' . $name[0] . '%')
+//                        ->where('full_name', 'like', '%' . $name[1] . '%')
+//                        ->where('full_name', 'like', '%' . $name[2] . '%')
+//                        ->select('id', 'staff_id', 'full_name')
+//                        ->first();
+//
+//                //if ($user) $this->saveCustomer($cus, $user);
+//                if ($user) {$cus->user = $user; array_push($foundUser,$user);};
+//                $cus->names = $name;
+//                array_push($allCus, $cus);
+//            }*/
+//        }
+//        return response()->json([
+//            'foundUser' => $foundUser,
+//            'allCus' => $allCus,
+//        ]);
+//    }
 
-   /* public function saveCustomer($customer, $user)
-    {
-        $customer->user_id = $user->id;
-        $customer->employee_id = $user->staff_id;
-        $customer->employee_name = $user->full_name;
-        $customer->save();
-    }*/
+//    public function saveCustomer($customer, $user)
+//    {
+//        $customer->user_id = $user->id;
+//        $customer->employee_id = $user->staff_id;
+//        $customer->employee_name = $user->full_name;
+//        $customer->save();
+//    }
 }

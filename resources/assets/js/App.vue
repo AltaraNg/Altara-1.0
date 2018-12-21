@@ -10,6 +10,9 @@
                             <router-link class="navbar-brand p-0" to="/home">
                                 <img class="float-left" :src="`/images/altara_logo.png`">
                             </router-link>
+                            <!--<a class="navbar-brand p-0" @click="runQuery" href="#">
+                                <img class="float-left" :src="`/images/altara_logo.png`">
+                            </a>-->
                             <button type="button"
                                     aria-expanded="false"
                                     data-toggle="collapse"
@@ -81,7 +84,7 @@
     import Flash from "./helpers/flash";
     import Loader from "./components/Loader.vue";
     import SideNav from "./components/SideNav.vue";
-    import {interceptors, post} from "./helpers/api";
+    import {interceptors, post, get} from "./helpers/api";
 
     export default {
         components: {
@@ -101,8 +104,8 @@
                 Flash.setSuccess("Welcome Back!");
             }*/
             if (!localStorage.getItem("api_token")) {
-                this.$router.push("/login");
                 Flash.setError("You have to Login!");
+                this.$router.push("/login");
             }
         },
         created() {

@@ -4,7 +4,7 @@
             <div class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center"><h6>Messaging</h6></ul>
                 <div class="card-body p-4 ">
-                    <form @submit.prevent="sendMessage" class="clearfix">
+                    <form @submit.prevent="sendMessage" id="messaging" class="clearfix">
                         <div class="form-group col-md-12 px-md-3 px-1 float-left">
                             <label>Phone Numbers</label>
                             <textarea class="form-control col-sm-12"
@@ -51,7 +51,7 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            let contacts = this.contacts.split(";").filter(str => /\S/.test(str));
+                            let contacts = this.contacts.split(",").filter(str => /\S/.test(str));
                             contacts.forEach(el => {
                                 this.sentData.phone = el.trim().substr(1);
                                 SMS.dvaMessage(this.sentData);

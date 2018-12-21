@@ -89,6 +89,7 @@
         },
         mounted() {
             this.cardMT = (window.innerHeight - $('#loginCard').height()) / 2;
+            this.$LIPS(false);
         },
     }
 </script>

@@ -48,6 +48,7 @@ Vue.prototype.$networkErr = function (err = '') {
 };
 
 Vue.prototype.$editAccess = function (user = '', customer = '') {
+    console.log(user.branch_id, customer.branch_id);
     if (!!user && !!customer) {
         if (store.getters.verifyDSAAccess) {
             if (store.state.DSALead.includes(user.role_id)) {

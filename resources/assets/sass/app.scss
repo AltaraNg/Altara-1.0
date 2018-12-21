@@ -762,6 +762,12 @@ table button i {
   }
 }
 
+form#messaging{
+  textarea {
+    font: 500 1.5rem $default-font;
+  }
+}
+
 @media (max-width : 990px) {
   html {
     font-size : 59%;
