@@ -54,6 +54,39 @@ Vue.prototype.$editAccess = function (user = '', customer = '') {
             if (store.state.DSALead.includes(user.role_id)) {
                 return true;
             } else {
+                if (user.branch_id === customer.branch_id) {
+                    if (store.state.DSACaptain.includes(user.role_id)) {
+                        return true;
+                    } else {
+                        if (user.id === customer.user.id) {
+                            return true
+                        } else return false;
+                    }
+                } else return false;
+            }
+        } else if (store.getters.verifyDVAAccess) {
+            if (store.state.DVALead.includes(user.role_id)) {
+                return true
+            } else {
+                if (user.branch_id === customer.branch_id) {
+                    return true
+                } else return false;
+            }
+        } else return false;
+    } else return false;
+};
+
+
+
+
+
+/*Vue.prototype.$editAccess = function (user = '', customer = '') {
+    console.log(user.branch_id, customer.branch_id);
+    if (!!user && !!customer) {
+        if (store.getters.verifyDSAAccess) {
+            if (store.state.DSALead.includes(user.role_id)) {
+                return true;
+            } else {
                 if (user.branch_id === customer.user.branch_id) {
                     if (store.state.DSACaptain.includes(user.role_id)) {
                         return true;
@@ -74,4 +107,4 @@ Vue.prototype.$editAccess = function (user = '', customer = '') {
             }
         } else return false;
     } else return false;
-};
+};*/
