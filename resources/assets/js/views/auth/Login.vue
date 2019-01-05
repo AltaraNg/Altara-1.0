@@ -5,7 +5,7 @@
                 <div class="card">
                     <ul class="nav nav-tabs justify-content-center bg-default"><h6>Staff Login</h6></ul>
                     <form @submit.prevent="login" class="pt-1 pb-3">
-                        <div class="card-body clearfix">
+                        <div class="card-body clearfix px-5">
                             <div class="col-sm-12 px-0 px-md-3">
                                 <label class="category">* Staff ID</label>
                                 <div class="input-group">
@@ -30,7 +30,7 @@
                                     {{errors.first('password') }}
                                 </small>
                             </div>
-                            <div class="col-sm-12 mb-4 px-0 px-md-3">
+                            <div class="col-sm-12 mb-4 px-0 px-md-3 pt-3">
                                 <button class="btn btn-block bg-default" :disabled="$isProcessing" type="submit">
                                     Login! &nbsp; <i class="far fa-paper-plane"></i>
                                 </button>
@@ -93,4 +93,36 @@
         },
     }
 </script>
-<style></style>
+
+<style lang="scss">
+    @import "../../../sass/app/variables";
+    #login {
+        .col-md-6,
+        .col-md-12,
+        .col-sm-6,
+        .col-sm-12 {
+            margin-bottom : 2rem;
+            label {
+                margin-top    : 1rem;
+                margin-bottom : .1rem;
+                & + .input-group {
+                    margin-bottom : 0;
+                }
+            }
+            input {
+                border-right : 0 !important;
+            }
+            small {
+                color     : $color-red;
+                font-size : $default-font-size-small;
+            }
+            i {
+                font-size : $default-font-size-small;
+            }
+        }
+        .form-control:focus + .input-group-addon,
+        .form-control:focus ~ .input-group-addon {
+            border-color : lighten($default-color, 15%) !important;
+        }
+    }
+</style>

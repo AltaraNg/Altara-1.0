@@ -30,3 +30,50 @@
         props: ['pageTitle', 'pageTitleSmall', 'previous', 'forward']
     }
 </script>
+
+<style lang="scss">
+    /*Not the css is included in this component to reduce
+    * the size of the main css file because
+    * the components are lazy loaded*/
+    @import "../../sass/app/variables";
+
+    #index {
+        a#back {
+            left : 0;
+        }
+        a#forward {
+            right : 0;
+        }
+        a#back, a#forward {
+            margin-top : .8rem;
+            position   : absolute;
+            i {
+                font-size : 1.2*$default-font-size-icon
+            }
+        }
+        .forward, .back {
+            line-height : 2.4rem;
+            margin-top  : -.2rem;
+            font-weight : bold;
+        }
+    }
+
+    @media (max-width : 990px) {
+        #index {
+            a#back, a#forward {
+                i {
+                    font-size : 1.3* $default-font-size-icon
+                }
+            }
+        }
+    }
+
+    @media (max-width : 600px) {
+        #index {
+            a#back, a#forward, [data-title="title"] {
+                margin-top    : -.3rem;
+                margin-bottom : .3rem;
+            }
+        }
+    }
+</style>

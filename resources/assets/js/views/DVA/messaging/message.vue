@@ -83,3 +83,12 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    @import "../../../../sass/app/variables";
+    #messaging{
+        textarea {
+            font: 500 1.5rem $default-font;
+        }
+    }
+</style>

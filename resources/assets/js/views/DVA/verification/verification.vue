@@ -702,7 +702,7 @@
         },
     }
 </script>
-<style scoped>
+<style scoped lang="scss">
     tr {
         margin-bottom    : .4rem;
         float            : left;
@@ -720,6 +720,96 @@
 
     tbody tr td {
         padding : .4rem 1.5rem;
+    }
+
+    .upload {
+        &-image {
+            min-height      : 20rem;
+            min-width       : 20rem;
+            margin          : 0 auto;
+            background      : #fafafa;
+            border          : 1px dashed rgba(0, 0, 0, 0.1);
+            display         : flex;
+            justify-content : center;
+            align-items     : center;
+        }
+        &-box {
+            padding : 1rem;
+        }
+        &-close {
+            position : absolute;
+            right    : 0;
+            top      : 0;
+        }
+    }
+
+
+    .verification {
+        .card-stats .icon {
+            margin : 0 1.5rem;
+        }
+
+        .info .icon.icon-circle {
+            width         : 8rem;
+            height        : 8rem;
+            border-radius : 50%;
+        }
+
+        .info-horizontal .icon.icon-circle i {
+            display     : table;
+            margin      : 0 auto;
+            line-height : 8rem;
+            font-size   : 2.4rem;
+        }
+
+        .stats-title {
+            font-weight : 300;
+            font-size   : 1.2rem;
+        }
+
+        .card-footer:hover {
+            background-image : linear-gradient(to bottom, rgb(255, 255, 255), #eeeeee);
+        }
+
+        h4.info-title {
+            margin    : 0;
+            font-size : 2.2rem;
+        }
+
+        .no-success .icon.icon-warning.icon-circle {
+            border     : 1px solid #b30000;
+            box-shadow : 0 .9rem 1.5rem -.6rem rgba(179, 0, 0, 0.5) !important;
+        }
+
+        .success .icon.icon-warning.icon-circle {
+            border     : 1px solid #488413;
+            box-shadow : 0 .9rem 1.5rem -.6rem rgba(72, 132, 19, 0.5) !important;
+        }
+
+        .card.card-stats::before {
+            content  : '';
+            width    : 3px;
+            height   : 100%;
+            position : absolute;
+            left     : 0;
+            top      : 0;
+        }
+
+        .success::before {
+            background : linear-gradient(45deg, #8ef985 0%, #01af13 100%);
+        }
+
+        .no-success::before {
+            background : linear-gradient(45deg, #ff9b83 0%, #a40000 100%);
+        }
+
+        .success i {
+            color : #63b61a;
+        }
+
+        .no-success i {
+            color : #c70000;
+        }
     }
 
 </style>

@@ -43,7 +43,39 @@
         },
         beforeCreate() {
             Auth.initialize();
-            this.$store.dispatch('mutateAuth');
+            if(!this.$store.state.api_token && !this.$store.state.authRole) this.$store.dispatch('mutateAuth');
         },
     }
 </script>
+
+<style lang="scss">
+    @import "../../sass/app/mixins";
+    .product .card {
+        @include transition(.2s);
+        &:hover {
+            transform : scale(1.02);
+        }
+        i, svg {
+            font-size : 9rem;
+            opacity   : .1;
+            margin    : 1rem auto;
+        }
+    }
+
+    @media (max-width : 990px) {
+
+        .product {
+            i, svg {
+                font-size : 1.2rem;
+            }
+        }
+    }
+
+    @media (max-width : 600px) {
+        .product {
+            i, svg {
+                font-size : 1rem;
+            }
+        }
+    }
+</style>

@@ -5,6 +5,9 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
+        states: null,
+        branches: null,
+        lifestyleBranches:[8]/*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/,
         loader: false,
         ProfileAccess: [],
         ProfileEditAccess: [],
@@ -20,6 +23,8 @@ export const store = new Vuex.Store({
         api_token: localStorage.getItem('api_token'),
     },
     getters: {
+        getStates: state => state.states,
+        getBranches: state => state.branches,
         getProfileAccess: state => state.ProfileAccess,
         getProfileEditAccess: state => state.ProfileEditAccess,
         verifyDSALead: state => state.DSALead.includes(state.authRole),
@@ -27,17 +32,22 @@ export const store = new Vuex.Store({
         verifyDSAAccess: state => state.DSAAccess.includes(state.authRole) && state.api_token,
         verifyDVAAccess: state => state.DVAAccess.includes(state.authRole) && state.api_token,
         verifyHRMAccess: state => state.HRMAccess.includes(state.authRole) && state.api_token,
-        verifyFSLAccess: state => state.FSLAccess.includes(state.authRole) && state.api_token
+        verifyFSLAccess: state => state.FSLAccess.includes(state.authRole) && state.api_token,
     },
     mutations: {
-        mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
         mutateAuth: state => {
-            state.authRole = parseInt(localStorage.getItem('role'));
-            state.api_token = localStorage.getItem('api_token');
-        }
+            Vue.set(state, 'api_token', localStorage.getItem('api_token'));
+            Vue.set(state, 'authRole', parseInt(localStorage.getItem('role')));
+        },
+        mutateStates: (state, states) => Vue.set(state, 'states', states),
+        mutateBranches: (state, branches) => Vue.set(state, 'branches', branches),
+        mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
+
     },
     actions: {
+        mutateAuth: context => context.commit('mutateAuth'),
+        mutateStates: (context, states) => context.commit('mutateStates', states),
+        mutateBranches: (context, branches) => context.commit('mutateBranches', branches),
         mutateProfileAccess: (context, payload) => context.commit('mutateProfileAccess', payload),
-        mutateAuth: context => context.commit('mutateAuth')
     }
 });

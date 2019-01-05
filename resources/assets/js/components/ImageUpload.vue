@@ -18,7 +18,7 @@
             }
         },
         methods: {
-            upload: function (e) {
+            upload(e) {
                 const files = e.target.files;
                 if (files && files.length > 0) this.$emit('input', files[0])
             }

@@ -29,6 +29,11 @@ class BranchController extends Controller
         ]);
     }
 
+    public function allBranches(){
+        $branches = Branch::all();
+        return response()->json(['branches' => $branches]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

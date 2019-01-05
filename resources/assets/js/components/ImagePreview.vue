@@ -26,7 +26,7 @@
             'preview': 'setPreview'
         },
         methods: {
-            setPreview: function () {
+            setPreview() {
                 if (this.preview instanceof File) {
                     const fileReader = new FileReader();
                     fileReader.onload = (event) => {

@@ -3,32 +3,41 @@ import VueRouter from 'vue-router';
 import Flash from '../helpers/flash';
 import {store} from '../store/store';
 import {routerHistory, writeHistory} from 'vue-router-back-button'
-import Home from '../views/HomePage.vue';
-import Login from '../views/auth/Login.vue';
-import NotFound from '../views/NotFound.vue';
-import DSA from '../views/DSA/index.vue';
-import DSAHome from '../views/DSA/HomePage.vue';
-import DSAReport from '../views/DSA/report/report.vue';
-import CustomerList from '../components/CustomerList.vue';
-import CustomerUpdate from '../views/DSA/utility/form.vue';
-import CustomerProfileFull from '../components/CustomerProfileFull.vue';
-import CustomerRegister from '../views/DSA/registration/Register.vue';
-import DVA from '../views/DVA/index.vue';
-import DVAHome from '../views/DVA/HomePage.vue';
-import DVAMessage from '../views/DVA/messaging/message.vue';
-import DVAVerification from '../views/DVA/verification/verification.vue';
-import Profile from '../views/profile/Index.vue';
-import ProfileEdit from '../views/profile/Edit.vue';
-import ProfileHome from '../views/profile/HomePage.vue';
-import HRM from '../views/HRM/index.vue';
-import HRMHome from '../views/HRM/HomePage.vue';
-import EmployeeManager from '../views/HRM/employee/Manager.vue';
-import EmployeeRegister from '../views/HRM/employee/Register.vue';
-import FSL from '../views/FSL/index.vue';
-import FSLHome from '../views/FSL/HomePage.vue';
-import BranchCreate from '../views/FSL/branch/create.vue';
-import BranchUpdate from '../views/FSL/branch/update.vue';
-import Inventory from '../views/FSL/inventory/inventory.vue';
+
+const Home = () => import( '../views/HomePage.vue');
+
+const Login = () => import( '../views/auth/Login.vue');
+
+const NotFound = () => import( '../views/NotFound.vue');
+
+const DSA = () => import( '../views/DSA/index.vue');
+const DSAHome = () => import( '../views/DSA/HomePage.vue');
+const DSAReport = () => import( '../views/DSA/report/report.vue');
+
+const CustomerList = () => import( '../components/CustomerList.vue');
+const CustomerUpdate = () => import( '../views/DSA/utility/form.vue');
+const CustomerProfileFull = () => import( '../components/CustomerProfileFull.vue');
+const CustomerRegister = () => import( '../views/DSA/registration/Register.vue');
+
+const DVA = () => import( '../views/DVA/index.vue');
+const DVAHome = () => import( '../views/DVA/HomePage.vue');
+const DVAMessage = () => import( '../views/DVA/messaging/message.vue');
+const DVAVerification = () => import( '../views/DVA/verification/verification.vue');
+
+const Profile = () => import( '../views/profile/Index.vue');
+const ProfileEdit = () => import( '../views/profile/Edit.vue');
+const ProfileHome = () => import( '../views/profile/HomePage.vue');
+
+const HRM = () => import( '../views/HRM/index.vue');
+const HRMHome = () => import( '../views/HRM/HomePage.vue');
+const EmployeeManager = () => import( '../views/HRM/employee/Manager.vue');
+const EmployeeRegister = () => import( '../views/HRM/employee/Register.vue');
+
+const FSL = () => import( '../views/FSL/index.vue');
+const FSLHome = () => import( '../views/FSL/HomePage.vue');
+const BranchCreate = () => import( '../views/FSL/branch/create.vue');
+const BranchUpdate = () => import( '../views/FSL/branch/update.vue');
+const Inventory = () => import( '../views/FSL/inventory/inventory.vue');
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -36,7 +45,7 @@ const router = new VueRouter({
     hashbang: false,
     history: true,
     linkActiveClass: 'active',
-    mode:'history',
+    mode: 'history',
     routes: [
         {path: '/', redirect: {name: 'home'}},
         {
@@ -115,8 +124,13 @@ const router = new VueRouter({
             ]
         },
 
-        {path: '/customer/list', component: CustomerList,name: 'customerList', alias: '/register-list'},
-        {path: '/customer/:id', component: CustomerProfileFull,name: 'customerProfileFull', alias: '/customer-profile-full'},
+        {path: '/customer/list', component: CustomerList, name: 'customerList', alias: '/register-list'},
+        {
+            path: '/customer/:id',
+            component: CustomerProfileFull,
+            name: 'customerProfileFull',
+            alias: '/customer-profile-full'
+        },
         {path: '/not-found', component: NotFound},
         {path: '*', component: NotFound},
     ]
@@ -136,7 +150,7 @@ router.beforeEach((to, from, next) => {
         /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
         * the method in store will return true if a user has access to the portal hence next();
         * and false is a user don't have access hence error message and redirect to home*/
-        Flash.setError('You do not have access to that page!',3000);
+        Flash.setError('You do not have access to that page!', 3000);
         return next({name: 'home'});
     }
     /*else next will call the route for the all unknown path

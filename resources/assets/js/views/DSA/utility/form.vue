@@ -1257,10 +1257,25 @@
                             </small>
                         </div>
 
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label class="w-100 float-left pl-1">Category</label>
+                            <div class="radio p-0 col-6 float-left">
+                                <input v-model="isLifestyle" type="radio" id="lifestyle" :value="true">
+                                <label for="lifestyle">lifestyle</label>
+                            </div>
+                            <div class="radio p-0 col-6 float-left">
+                                <input v-model="isLifestyle" type="radio" id="appliance" :value="false">
+                                <label for="appliance">appliance</label>
+                            </div>
+                        </div>
+
+
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Office Branch</label>
                             <select class="custom-select w-100" v-model="newCustomer.branch_id"
-                                    v-validate="'required'" disabled data-vv-as="office branch" name="branch_id"
+                                    v-validate="'required'" disabled data-vv-as="office branch"
+                                    name="branch_id"
                                     data-vv-validate-on="blur">
                                 <option value="">select office branch</option>
                                 <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
@@ -1321,6 +1336,8 @@
                 relationships: [
                     'spouse', 'mother', 'sibling', 'uncle', 'nephew', 'in-law', 'friend', 'child',
                     'father', 'grandparent', 'cousin', 'caretaker', 'grandchild'],
+
+                isLifestyle:false,
             }
         },
         methods: {
@@ -1360,7 +1377,10 @@
                 });
             },
             prepareForm(data) {
-                [this.states, this.branches, this.newCustomer, this.user] = [data.states, data.branches, data.form, data.user];
+                this.states = data.states;
+                this.branches = data.branches;
+                this.newCustomer = data.form;
+                this.user = data.user;
             },
             updateCustomer(customer) {
                 if (this.ifUp('update')) [this.fillWorkGuarantor, this.fillPersonalGuarantor] = [true, true];
@@ -1371,6 +1391,11 @@
             get('/api/customer/create').then(res => this.prepareForm(res.data));
             /*on create of the component fetch the data required to prepare the form
             * states, branches and the currently logged in dsa details*/
+        },
+        watch:{
+            isLifestyle(value){
+                this.newCustomer.branch_id = value ? 8 : this.user.branch_id;
+            }
         }
     }
 </script>

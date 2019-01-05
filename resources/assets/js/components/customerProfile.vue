@@ -84,7 +84,7 @@
     export default {
         props: ['customer'],
         computed: {
-            approved () {
+            approved() {
                 return (this.customer.verification.address === 1 &&
                     this.customer.verification.id_card === 1 &&
                     this.customer.verification.passport === 1 &&
@@ -103,3 +103,98 @@
         }
     }
 </script>
+
+<style lang="scss">
+    @import "../../sass/app/variables";
+
+    .customer-profile {
+        position : relative;
+        th {
+            width       : auto;
+            font-weight : normal;
+        }
+
+        td, .data {
+            font-size   : 1.5rem;
+            font-weight : 500;
+        }
+
+        .status {
+            padding       : 1.2rem 3rem;
+            float         : left;
+            color         : white;
+            border-radius : .5rem;
+            box-shadow    : 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
+            font-weight   : 700;
+            font-size     : 1.3rem;
+            &.approved {
+                background-color : $color-green;
+            }
+            &.not-approved {
+                background-color : $color-red;
+            }
+        }
+        .design {
+            position   : absolute;
+            top        : 13rem;
+            bottom     : 0;
+            left       : 0;
+            width      : 101%;
+            height     : calc(100% - 8.1rem);
+            z-index    : 0;
+            background : linear-gradient(45deg, #dedede 0%, #ffffff 100%);
+        }
+
+        .profile-picture, .no-image {
+            height     : 16rem;
+            width      : 16rem;
+            box-shadow : 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .no-image {
+            background-color : #e3e3e3;
+            border-radius    : 50%;
+            line-height      : 16rem;
+            text-align       : center;
+            font-size        : 8rem;
+            color            : rgba(0, 0, 0, 0.15);
+        }
+
+        .img-border {
+            padding          : 1.1rem;
+            background-color : white;
+            border-radius    : 50%;
+        }
+
+        .separator {
+            position         : absolute;
+            left             : 50%;
+            height           : 70%;
+            width            : 1px;
+            background-color : rgba(0, 0, 0, 0.1);
+            top              : 3%;
+        }
+
+    }
+
+    @media (max-width : 600px) {
+        .customer-profile {
+            .design {
+                background : linear-gradient(180deg, #dedede 0%, #ffffff 100%);
+            }
+            .separator {
+                top : -11%;
+            }
+            .small-center {
+                text-align : center;
+            }
+            th {
+                width : 35%;
+            }
+            tbody {
+                padding : 1rem 1rem 0;
+                float   : left;
+            }
+        }
+    }
+</style>

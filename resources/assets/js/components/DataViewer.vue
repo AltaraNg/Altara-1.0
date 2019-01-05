@@ -217,6 +217,7 @@
     import SMS from '../helpers/sms';
     import {log} from "../helpers/log";
     import {get} from '../helpers/api';
+    import {store} from '../store/store';
     import Flash from '../helpers/flash';
     import UtilityForm from '../views/HRM/utility/form';
     import BranchForm from '../views/FSL/utility/branchForm';
@@ -263,14 +264,13 @@
                 /*data peculiar to hrm portal data viewer stops here*/
 
                 /*data peculiar to fsl branch portal data viewer starts here*/
-                states: {},
                 branchToUpdate: {}
                 /*data peculiar to fsl branch portal data viewer stops here*/
             }
         },
         props: ['source', 'title', 'appModel'],
         created() {
-            if (this.branch) get('/api/state').then(res => this.states = res.data.states);
+            this.$prepareStates();
             this.fetchIndexData();
             $(document).on('click', 'tr', function () {
                 $('tr.current').removeClass('current');
@@ -322,8 +322,8 @@
                         * corresponding to the state id and display it
                         * instead of showing state id as a number*/
                         if (data.length && data[0].state_id) {
-                            const comp = this;
-                            data.forEach(curr => curr.state_id = comp.states.find(obj => obj.id === curr.state_id).name)
+                            data.forEach(curr => curr.state_id =
+                                store.getters.getStates.find(obj => obj.id === curr.state_id).name)
                         }
                         Vue.set(this.$data, 'model', res.data.model);
                         Vue.set(this.$data, 'columns', res.data.columns);
@@ -373,8 +373,10 @@
                         $('#editPassword').modal('toggle');
                         log('resetUserPassword', this.form.staff_id);
                         Flash.setSuccess('Employee password reset successful!');
-                        let details = {phone: String(parseInt(this.form.phone_number)), password: res.data.password ,
-                            staff_id:this.form.staff_id};
+                        let details = {
+                            phone: String(parseInt(this.form.phone_number)), password: res.data.password,
+                            staff_id: this.form.staff_id
+                        };
                         SMS.passwordReset(details);
                         this.$LIPS(false);
                     })

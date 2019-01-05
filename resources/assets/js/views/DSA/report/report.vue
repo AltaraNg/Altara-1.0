@@ -24,7 +24,8 @@
                                         v-validate="'required'" data-vv-as="office branch" name="branch_id"
                                         data-vv-validate-on="blur">
                                     <option value="">select branch</option>
-                                    <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
+                                    <option :value="branch.id" v-for="branch in $store.state.branches">
+                                        {{branch.name}}</option>
                                 </select>
                                 <small v-if="errors.first('branch_id')">
                                     {{errors.first('branch_id')}}
@@ -61,6 +62,7 @@
     </transition>
 </template>
 <script>
+    import {store} from '../../../store/store';
     import {get, postD} from '../../../helpers/api';
 
     export default {
@@ -69,10 +71,15 @@
             /*this component can only be accessed by the dsa lead hence this route guard
             * if the role of the dsa agent logged in is contained in the
             * array of the dsa lead then access will be granted*/
+
+            this.$prepareBranches();
+
+            // console.log(store.state.branches);
+
         },
         data() {
             return {
-                branches: {},
+                // branches: {},
                 types: [
                     {
                         name: "sales report",
@@ -98,21 +105,33 @@
             }
         },
         created() {
-            get('/api/create')
+
+
+            // this.$prepareBranches();
+
+
+            // console.log(store.state.branches);
+
+            this.setDates();
+
+            // this.branches = res.data.branches;
+
+           /* get('/api/create')
                 .then(res => {
                     this.setDates();
-                    /*set dates*/
+                    /!*set dates*!/
                     this.branches = res.data.branches;
-                    /*fetch the list of states and
-                    prepare the form with it*/
-                });
+                    /!*fetch the list of branches and
+                    prepare the form with it*!/
+                });*/
         },
         methods: {
             generateReport() {
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
-                            let branch = this.branches.find(obj => obj.id == this.report.branch.id);
+                            // let branch = this.branches.find(obj => obj.id == this.report.branch.id);
+                            let branch = store.state.branches.find(obj => obj.id == this.report.branch.id);
                             this.report.branch = branch;
                             postD('/api/report', this.report).then(res => {
                                 const url = window.URL.createObjectURL(new Blob([res.data]));
