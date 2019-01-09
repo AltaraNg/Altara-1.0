@@ -120,14 +120,14 @@
             //is called by another parent component.
             //the action is purpose or the context
             action: '',
-            branchToUpdate: {default: {}},
+            branchToUpdate: {default: ''}
         },
         data() {
             return {
                 form: {},
                 banks: {},
                 error: {},
-                states: {},
+                states: {}
             }
         },
         methods: {
@@ -135,13 +135,13 @@
                 //a is the action for which the form is called or the context
                 //the form is used this function return true if the
                 //action : a is === create else else
-                return !!(a === 'create');
+                return a === 'create';
             },
             ifUpdate(a) {
                 //a is the action for which the form is called or the context
                 //the form is used this function return true if the
                 //action : a is === update else else
-                return !!(a === 'update');
+                return a === 'update';
             },
             prepareForm(data) {
                 //this function is used when a data is sent to this component
@@ -154,40 +154,35 @@
                 this.states = data.states;
             },
             processBranch() {
-                this.$validator.validateAll().then((result) => {
+                this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
                             let url = '/api/branch', action = this.$options.filters.capitalize(this.action);
                             //for creating a branch the url above is used
-                            if (this.action === 'update') url = "/api/branch/" + this.branchToUpdate.id;
+                            if (this.action === 'update') url = `/api/branch/${this.branchToUpdate.id}`;
                             //else if the form action is not create den its update
                             //hence the url "/api/branch/{id}"
                             post(url, this.form)
-                                .then((res) => {
-                                    this.$scrollToTop();
-                                    log('Branch' + action, String(this.form.employee_id));
-                                    if (this.ifCreate(this.action)) {
-                                        this.prepareForm(res.data.prepareForm);
-                                        this.$LIPS(false);
-                                    }
+                                .then(res => {
+                                    log(`Branch${action}`, `${this.form.employee_id}`);
+                                    if (this.ifCreate(this.action)) this.prepareForm(res.data.prepareForm);
                                     if (this.ifUpdate(this.action)) this.$emit('done');
-                                    Flash.setSuccess('Branch ' + this.action + 'd successfully!', 20000);
+                                    Flash.setSuccess(`Branch ${this.action}d successfully!`, 20000);
                                 })
-                                .catch((err) => {
-                                    if (err.response.status === 422) {
-                                        //catch error thrown by laravel validation;
-                                        this.$scrollToTop();
-                                        this.error = err.response.data;
-                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                .catch(e => {
+                                    e = e.response;
+                                    if (e.status === 422) {
+                                        this.error = e.data.errors ? e.data.errors : e.data;
                                         this.$networkErr('unique');
                                     }
-                                    this.$LIPS(false);
-                                })
+                                }).finally(() => {
+                                this.$scrollToTop();
+                                this.$LIPS(false);
+                            })
                         } else this.$networkErr();
-                    }
-                    if (!result) this.$networkErr('form');
+                    } else this.$networkErr('form');
                 });
             },
         },
@@ -196,7 +191,7 @@
             // fetch data for new branch registration and prepare form
         },
         watch: {
-            branchToUpdate: function (newVal) {
+            branchToUpdate(newVal) {
                 /*watches when a data is sent from the parent (dataviewer)
                 * to this component*/
                 this.form = newVal;

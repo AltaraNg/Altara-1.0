@@ -36,7 +36,7 @@ class Address extends Model
             'aware_of_plan' => '',
             'info_from_neighbors_desc' => '',
             'business_or_work_duration' => '',
-            'approval_status' => '',
+            'approval_status' => ''
         ];
     }
 }

@@ -1,11 +1,11 @@
 <template>
     <transition name="fade">
         <div id="login">
-            <div class="col-md-5 mx-auto" id="loginCard" v-bind:style="{ marginTop: cardMT+'px'}">
+            <div class="col-md-5 mx-auto" id="loginCard" :style="{ marginTop: `${cardMT}px`}">
                 <div class="card">
                     <ul class="nav nav-tabs justify-content-center bg-default"><h6>Staff Login</h6></ul>
                     <form @submit.prevent="login" class="pt-1 pb-3">
-                        <div class="card-body clearfix">
+                        <div class="card-body clearfix px-5">
                             <div class="col-sm-12 px-0 px-md-3">
                                 <label class="category">* Staff ID</label>
                                 <div class="input-group">
@@ -30,7 +30,7 @@
                                     {{errors.first('password') }}
                                 </small>
                             </div>
-                            <div class="col-sm-12 mb-4 px-0 px-md-3">
+                            <div class="col-sm-12 mb-4 px-0 px-md-3 pt-3">
                                 <button class="btn btn-block bg-default" :disabled="$isProcessing" type="submit">
                                     Login! &nbsp; <i class="far fa-paper-plane"></i>
                                 </button>
@@ -52,44 +52,34 @@
     export default {
         data() {
             return {
-                form: {
-                    staff_id: '',
-                    password: ''
-                },
+                form: {staff_id: '', password: ''},
                 cardMT: '',
-                error: {},
+                error: {}
             }
         },
         methods: {
-            watchCardMT() {
-                let winHeight = $(window).height(),
-                    cardHeight = $('#loginCard').height();
-                this.cardMT = (winHeight - cardHeight) / 2;
-            },
             login() {
-                this.$validator.validateAll().then((result) => {
+                this.$validator.validateAll().then(async result => {
                     if (result) {
-                        if(this.$network()){
+                        if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
-                            post('/api/login', this.form)
-                                .then((res) => {
-                                    if (res.data.authenticated) {
-                                        Auth.set(res.data);
+                            await post('/api/login', this.form)
+                                .then(res => {
+                                    res = res.data;
+                                    if (res.auth) {
+                                        Auth.set(res);
                                         this.$router.push('/home');
-                                        Flash.setSuccess('You have successfully logged in.');
-                                    } else if (!res.data.authenticated) Flash.setError(res.data.message);
-                                    this.$LIPS(false);
-                                })
-                                .catch((err) => {
-                                    if (err.response.status === 422) {
-                                        this.error = err.response.data;
-                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                        Flash.setSuccess(res.message);
                                     }
-                                    this.$LIPS(false);
-                                    Flash.setError('Check your login details and try again!');
+                                })
+                                .catch(e => {
+                                    e = e.response;
+                                    if (e.status === 422) this.error = e.data.errors ? e.data.errors : e.data;
+                                    Flash.setError(e.data.message);
                                 });
-                        }else this.$networkErr();
+                            this.$LIPS(false);
+                        } else this.$networkErr();
                     }
                 });
             }
@@ -98,8 +88,41 @@
             if (localStorage.getItem('api_token')) this.$router.push('/home');
         },
         mounted() {
-            this.watchCardMT();
+            this.cardMT = (window.innerHeight - $('#loginCard').height()) / 2;
+            this.$LIPS(false);
         },
     }
 </script>
-<style></style>
+
+<style lang="scss">
+    @import "../../../sass/app/variables";
+    #login {
+        .col-md-6,
+        .col-md-12,
+        .col-sm-6,
+        .col-sm-12 {
+            margin-bottom : 2rem;
+            label {
+                margin-top    : 1rem;
+                margin-bottom : .1rem;
+                & + .input-group {
+                    margin-bottom : 0;
+                }
+            }
+            input {
+                border-right : 0 !important;
+            }
+            small {
+                color     : $color-red;
+                font-size : $default-font-size-small;
+            }
+            i {
+                font-size : $default-font-size-small;
+            }
+        }
+        .form-control:focus + .input-group-addon,
+        .form-control:focus ~ .input-group-addon {
+            border-color : lighten($default-color, 15%) !important;
+        }
+    }
+</style>

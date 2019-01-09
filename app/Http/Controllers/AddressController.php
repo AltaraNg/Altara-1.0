@@ -31,7 +31,7 @@ class AddressController extends Controller
     public function create()
     {
         return response()->json([
-            'form' => Address::form(),
+            'form' => Address::form()
         ]);
     }
 
@@ -45,9 +45,7 @@ class AddressController extends Controller
     {
         $address = Address::where('customer_id', $request->customer_id)->get();
         if ($address->count()) {
-            return response()->json([
-                'message' => 'Sorry this users has already been declined!'
-            ], 428);
+            return response()->json(['message' => 'Sorry this users has already been declined!'], 428);
         } else (new Address($request->all()))->save();
         Verification::where('customer_id', '=', $request->customer_id)->update(['address' => $request->approval_status]);
         return response()->json([

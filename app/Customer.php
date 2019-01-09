@@ -111,7 +111,7 @@ class Customer extends Model
             'personal_guarantor_telno' => '',
             'personal_guarantor_work_duration' => '',
             'what_product_do_you_need' => '',
-            'what_do_you_need_it_for' => '',
+            'what_do_you_need_it_for' => ''
         ];
     }
 

@@ -44,9 +44,7 @@ class WorkGuarantorController extends Controller
     {
         $workGuarantor = WorkGuarantor::where('customer_id', $request->customer_id)->get();
         if ($workGuarantor->count()) {
-            return response()->json([
-                'message' => 'Sorry this users has already been declined!'
-            ], 428);
+            return response()->json(['message' => 'Sorry this users has already been declined!'], 428);
         } else (new WorkGuarantor($request->all()))->save();
         Verification::where('customer_id', '=', $request->customer_id)->update(['work_guarantor' => $request->consent]);
         return response()->json([

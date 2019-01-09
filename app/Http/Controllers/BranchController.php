@@ -21,12 +21,17 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $model = Branch::select('id', 'name', 'state_id', 'phone_english', 'phone_yoruba', 'email', 'description','status')->searchPaginateAndOrder();
+        $model = Branch::select('id', 'name', 'state_id', 'phone_english', 'phone_yoruba', 'email', 'description', 'status')->searchPaginateAndOrder();
         $columns = Branch::$columns;
         return response()->json([
             'model' => $model,
-            'columns' => $columns,
+            'columns' => $columns
         ]);
+    }
+
+    public function allBranches(){
+        $branches = Branch::all();
+        return response()->json(['branches' => $branches]);
     }
 
     /**
@@ -42,7 +47,7 @@ class BranchController extends Controller
         return response()->json([
             'form' => $form,
             'banks' => $banks,
-            'states' => $states,
+            'states' => $states
         ]);
     }
 
@@ -56,15 +61,15 @@ class BranchController extends Controller
     {
         $this->validate($request, [
             'name' => 'unique:branches',
-            'account_number' => 'unique:branches',
             'email' => 'unique:branches',
+            'account_number' => 'unique:branches'
         ]);
         $user = new Branch($request->all());
         $user->save();
         return response()
             ->json([
                 'created' => true,
-                'prepareForm' => $this->create()->original,
+                'prepareForm' => $this->create()->original
             ]);
     }
 
@@ -77,9 +82,7 @@ class BranchController extends Controller
     public function show($id)
     {
         $branch = Branch::whereId($id)->first();
-        return response()->json([
-            'branch' => $branch
-        ]);
+        return response()->json(['branch' => $branch]);
     }
 
     /**
@@ -104,13 +107,11 @@ class BranchController extends Controller
     {
         $this->validate($request, [
             'name' => 'unique:branches,name,' . $id,
-            'account_number' => 'unique:branches,account_number,'.$id,
-            'email' => 'unique:branches,email,'.$id
+            'email' => 'unique:branches,email,' . $id,
+            'account_number' => 'unique:branches,account_number,' . $id
         ]);
         Branch::whereId($id)->update($request->all());
-        return response()->json([
-            'updated' => true,
-        ]);
+        return response()->json(['updated' => true]);
     }
 
     /**

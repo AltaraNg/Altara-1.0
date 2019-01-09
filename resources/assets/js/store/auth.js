@@ -4,7 +4,7 @@ export default {
         api_token: null,
         user_name: null,
         user_id: null,
-        role: null,
+        role: null
     },
     initialize() {
         this.state.portal_access = parseInt(localStorage.getItem('portal_access'));

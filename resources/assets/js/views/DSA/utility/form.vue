@@ -30,7 +30,7 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Date</label>
                             <input type="date" class="form-control" v-model="newCustomer.date_of_registration"
-                                   v-validate="'required'" data-vv-as="Date of Registration"
+                                   v-validate="'required'" disabled data-vv-as="Date of Registration"
                                    name="date_of_registration">
                             <small v-if="errors.first('date_of_registration')">
                                 {{errors.first('date_of_registration')}}
@@ -142,9 +142,10 @@
                             </small>
                         </div>
 
-                        <div class="form-group col-md-4 px-md-3 px-1 float-left" >
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>State</label>
-                            <select class="custom-select w-100" v-model="newCustomer.state" name="state" data-vv-validate-on="blur"
+                            <select class="custom-select w-100" v-model="newCustomer.state" name="state"
+                                    data-vv-validate-on="blur"
                                     v-validate="'required'">
                                 <option value="">select state</option>
                                 <option v-bind:value="state.name" v-for="state in states">{{state.name}}</option>
@@ -433,7 +434,8 @@
                                     <label class="w-100 float-left pl-1">How do you receive salary?</label>
                                     <div class="radio pl-1 pr-3 float-left" v-for="means in receiveIncomeMeans">
                                         <input v-model="newCustomer.receive_income_means" type="radio" name="means"
-                                               :id="means" :value="means" v-validate="'required'" data-vv-as="income means">
+                                               :id="means" :value="means" v-validate="'required'"
+                                               data-vv-as="income means">
                                         <label :for="means">{{means}}</label>
                                     </div>
                                     <small v-if="errors.first('means')">
@@ -463,7 +465,8 @@
                                 <div class="form-group col-md-3 px-md-3 px-1 float-left">
                                     <label>Duration in Current work</label>
                                     <select class="custom-select w-100"
-                                            v-model="newCustomer.years_of_existence_or_work_duration" data-vv-validate-on="blur"
+                                            v-model="newCustomer.years_of_existence_or_work_duration"
+                                            data-vv-validate-on="blur"
                                             v-validate="'required'" name="work_duration" data-vv-as="work duration">
                                         <option value="">select duration</option>
                                         <option :value="duration" v-for="duration in durations">{{duration}}</option>
@@ -660,8 +663,10 @@
                                 <div class="form-group col-md-6 px-md-3 px-1 float-left">
                                     <label>Years of Existence</label>
                                     <select class="custom-select w-100"
-                                            v-model="newCustomer.years_of_existence_or_work_duration" data-vv-validate-on="blur"
-                                            v-validate="'required'" name="work_duration" data-vv-as="years of existence">
+                                            v-model="newCustomer.years_of_existence_or_work_duration"
+                                            data-vv-validate-on="blur"
+                                            v-validate="'required'" name="work_duration"
+                                            data-vv-as="years of existence">
                                         <option value="">select duration</option>
                                         <option :value="duration" v-for="duration in durations">{{duration}}</option>
                                     </select>
@@ -870,7 +875,8 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Duration in Current work</label>
                             <select class="custom-select w-100" v-model="newCustomer.nextofkin_work_duration"
-                                    v-validate="'required'" data-vv-as="next of kin duration of work" data-vv-validate-on="blur"
+                                    v-validate="'required'" data-vv-as="next of kin duration of work"
+                                    data-vv-validate-on="blur"
                                     name="NOK_work_duration">
                                 <option value="">select duration</option>
                                 <option :value="duration" v-for="duration in durations">{{duration}}</option>
@@ -1042,7 +1048,8 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Duration in Current work</label>
                             <select class="custom-select w-100" v-model="newCustomer.work_guarantor_work_duration"
-                                    v-validate="'required'" data-vv-as="work guarantor work duration" data-vv-validate-on="blur"
+                                    v-validate="'required'" data-vv-as="work guarantor work duration"
+                                    data-vv-validate-on="blur"
                                     name="work_guarantor_work_duration">
                                 <option value="">select duration</option>
                                 <option :value="duration" v-for="duration in durations">{{duration}}</option>
@@ -1179,7 +1186,8 @@
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>State</label>
                             <select class="custom-select w-100" v-model="newCustomer.personal_guarantor_state"
-                                    v-validate="'required'" data-vv-as="personal guarantor state" data-vv-validate-on="blur"
+                                    v-validate="'required'" data-vv-as="personal guarantor state"
+                                    data-vv-validate-on="blur"
                                     name="personal_guarantor_state">
                                 <option value="">select state</option>
                                 <option :value="state.name" v-for="state in states">{{state.name}}</option>
@@ -1205,7 +1213,8 @@
                             <label>Duration in Current work</label>
                             <select class="custom-select w-100"
                                     v-model="newCustomer.personal_guarantor_work_duration"
-                                    v-validate="'required'" data-vv-as="personal guarantor work duration" data-vv-validate-on="blur"
+                                    v-validate="'required'" data-vv-as="personal guarantor work duration"
+                                    data-vv-validate-on="blur"
                                     name="personal_guarantor_work_duration">
                                 <option value="">select duration</option>
                                 <option :value="duration" v-for="duration in durations">{{duration}}</option>
@@ -1248,10 +1257,25 @@
                             </small>
                         </div>
 
+
+                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                            <label class="w-100 float-left pl-1">Category</label>
+                            <div class="radio p-0 col-6 float-left">
+                                <input v-model="isLifestyle" type="radio" id="lifestyle" :value="true">
+                                <label for="lifestyle">lifestyle</label>
+                            </div>
+                            <div class="radio p-0 col-6 float-left">
+                                <input v-model="isLifestyle" type="radio" id="appliance" :value="false">
+                                <label for="appliance">appliance</label>
+                            </div>
+                        </div>
+
+
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Office Branch</label>
                             <select class="custom-select w-100" v-model="newCustomer.branch_id"
-                                    v-validate="'required'" disabled data-vv-as="office branch" name="branch_id"
+                                    v-validate="'required'" disabled data-vv-as="office branch"
+                                    name="branch_id"
                                     data-vv-validate-on="blur">
                                 <option value="">select office branch</option>
                                 <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
@@ -1284,154 +1308,94 @@
 
     export default {
         components: {Verification},
-        props: {action: {default:'update'}},
+        props: {action: {default: 'update'}},
         data() {
             return {
-                error:{},
-                user:{},
-                newCustomer: {},
-                fillWorkGuarantor: false,
-                fillPersonalGuarantor: false,
-                gender: [
-                    'male', 'female'
-                ],
-                noOfRooms: [
-                    'one room', 'two room', 'more than Two room'
-                ],
-                weekdays: [
-                    'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
-                ],
-                receiveIncomeMeans: [
-                    'bank deposit',
-                    'cheque',
-                    'cash',
-                ],
-                paymentPeriod: [
-                    'daily',
-                    'weekly',
-                    'monthly',
-                ],
-                employmentStatus: [
-                    'formal',
-                    'informal(business)',
-                    'unemployed',
-                ],
+                user: {},
+                error: {},
                 states: {},
                 branches: {},
-                highestLevelOfEdu: [
-                    'no studies',
-                    'secondary',
-                    'polytechnic',
-                    'primary',
-                    'university',
-                    'masters',
-                ],
-                civilStatus: [
-                    'single', 'married', 'divorced', 'widow', 'live together'
-                ],
-                typesOfHome: [
-                    'family', 'owned', 'rented'
-                ],
-                relationshipWG: [
-                    'supervisor', 'neighbouring worker', 'co-worker', 'employee'
-                ],
-                relationshipPG: [
-                    'friend', 'family', 'co-worker', 'employee', 'other'
-                ],
-                relationships: [
-                    'spouse', 'mother', 'sibling', 'uncle', 'nephew', 'in-law', 'friend', 'child', 'father',
-                    'grandparent', 'cousin', 'caretaker', 'grandchild'
-                ],
+                newCustomer: {},
+                ifUp: a => a === 'update',
+                ifReg: a => a === 'register',
+                fillWorkGuarantor: false,
+                gender: ['male', 'female'],
+                fillPersonalGuarantor: false,
+                typesOfHome: ['family', 'owned', 'rented'],
+                paymentPeriod: ['daily', 'weekly', 'monthly'],
+                receiveIncomeMeans: ['bank deposit', 'cheque', 'cash'],
+                noOfRooms: ['one room', 'two room', 'more than Two room'],
+                employmentStatus: ['formal', 'informal(business)', 'unemployed'],
+                relationshipPG: ['friend', 'family', 'co-worker', 'employee', 'other'],
+                civilStatus: ['single', 'married', 'divorced', 'widow', 'live together'],
+                relationshipWG: ['supervisor', 'neighbouring worker', 'co-worker', 'employee'],
+                weekdays: ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+                highestLevelOfEdu: ['no studies', 'secondary', 'polytechnic', 'primary', 'university', 'masters'],
                 durations: [
-                    'less than 1 year',
-                    '1 year', '2 years',
-                    '3 years',
-                    'between 4 - 9 years',
-                    'more than 10 years',
-                    'more than 20 years'
-                ],
+                    'less than 1 year', '1 year', '2 years', '3 years', 'between 4 - 9 years', 'more than 10 years', 'more than 20 years'],
+                relationships: [
+                    'spouse', 'mother', 'sibling', 'uncle', 'nephew', 'in-law', 'friend', 'child',
+                    'father', 'grandparent', 'cousin', 'caretaker', 'grandchild'],
+
+                isLifestyle:false,
             }
         },
         methods: {
             register() {
-                this.$validator.validateAll().then((result) => {
+                this.$validator.validateAll().then(async result => {
                     if (result) {
                         if (this.newCustomer.employment_status === 'unemployed') {
                             Flash.setError('you can only register customer from formal and informal sectors at the moment!');
-                            this.$scrollToTop();
-                            return;
+                            return this.$scrollToTop();
                         }
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.error = {};
                             let newUrl = '/api/customer';
-                            var logMsg = 'createdNew';
-                            if (this.action === 'update'){
-                                newUrl = newUrl + '/' +this.newCustomer.id;
+                            let logMsg = 'createdNew';
+                            if (this.action === 'update') {
+                                newUrl = `${newUrl}/${this.newCustomer.id}`;
                                 logMsg = 'updated';
                                 let acc = this.$editAccess(this.user, this.newCustomer);
-                                if(!acc){
-                                    this.$networkErr('edit');
-                                    return;
-                                }
+                                if (!acc) return this.$networkErr('edit');
                             }
-                            post(newUrl, this.newCustomer)
-                                .then((res) => {
-                                    if (res.data.hasOwnProperty('registered') || res.data.hasOwnProperty('updated')) {
-                                        Flash.setSuccess('Customer ' + this.action +
-                                            ' successful! Your Customer ID is : ' + res.data.customer.id, 45000);
-                                        log(logMsg+'Customer', 'Customer ID : ' + String(res.data.customer.id));
-                                        this.$scrollToTop();
-                                        if (this.action === 'register') SMS.customerReg(res.data.customer);
-                                        this.prepareForm(res.data.prepareForm);
-                                    }
-                                    this.$LIPS(false);
-                                }).catch((err) => {
-                                    if (err.response.status === 422) {
-                                        //catch error thrown by laravel validation;
-                                        this.$scrollToTop();
-                                        this.error = err.response.data;
-                                        if (err.response.data.errors) this.error = err.response.data.errors;
-                                        Flash.setError('Your details contains a unique field that already exists in our record change it and try again!', 10000);
-                                    }
-                                    this.$LIPS(false)
-                                })
+                            await post(newUrl, this.newCustomer)
+                                .then(res => {
+                                    Flash.setSuccess(`Customer ${this.action} successful! Customer ID is: ${res.data.customer.id}`, 30000);
+                                    log(`${logMsg}Customer`, `Customer ID :${res.data.customer.id}`);
+                                    if (this.action === 'register') SMS.customerReg(res.data.customer);
+                                    this.prepareForm(res.data.prepareForm);
+                                }).catch(e => {
+                                    e = e.response;
+                                    if (e.status === 422) this.error = e.data.errors ? e.data.errors : e.data;
+                                    Flash.setError(e.status === 422 ? 'unique' : e.message, 10000);
+                                });
+                            this.$scrollToTop();
+                            this.$LIPS(false)
                         } else this.$networkErr();
-                    }
-                    if (!result) this.$networkErr('form');
+                    } else this.$networkErr('form');
                 });
             },
             prepareForm(data) {
                 this.states = data.states;
                 this.branches = data.branches;
                 this.newCustomer = data.form;
-                /*prepare form for customer
-                * registration*/
+                this.user = data.user;
             },
             updateCustomer(customer) {
-                if (this.ifUp('update')) {
-                    this.fillWorkGuarantor = true;
-                    this.fillPersonalGuarantor = true;
-                    /*if the form context is update set the
-                    guarantor details to automatic.*/
-                }
+                if (this.ifUp('update')) [this.fillWorkGuarantor, this.fillPersonalGuarantor] = [true, true];
                 this.newCustomer = customer;
-            },
-            ifReg(a) {
-                return !!(a === 'register');
-            },
-            ifUp(a) {
-                return !!(a === 'update');
             }
         },
         created() {
-            get('/api/customer/create').then(res => {
-                this.prepareForm(res.data);
-                this.user = res.data.user;
-
-            });
+            get('/api/customer/create').then(res => this.prepareForm(res.data));
             /*on create of the component fetch the data required to prepare the form
             * states, branches and the currently logged in dsa details*/
         },
+        watch:{
+            isLifestyle(value){
+                this.newCustomer.branch_id = value ? 8 : this.user.branch_id;
+            }
+        }
     }
 </script>

@@ -278,11 +278,8 @@
                                                           rows="1" v-validate="'required'"
                                                           v-model="address.info_from_neighbors_desc"
                                                           name="info_from_neighbors_desc"
-                                                          data-vv-as="info from neighbors desc"
-                                                          :class="{'is-invalid':
-                                                          errors.first('address.info_from_neighbors_desc')}"></textarea>
-                                                <small
-                                                        v-if="errors.first('address.info_from_neighbors_desc')">
+                                                          data-vv-as="info from neighbors desc"></textarea>
+                                                <small v-if="errors.first('address.info_from_neighbors_desc')">
                                                     {{errors.first('address.info_from_neighbors_desc')}}
                                                 </small>
                                             </div>
@@ -297,11 +294,8 @@
                                                       rows="1" v-validate="'required'"
                                                       v-model="address.business_or_work_duration"
                                                       name="business_or_work_duration"
-                                                      data-vv-as="business or work duration"
-                                                      :class="{'is-invalid':
-                                                      errors.first('address.business_or_work_duration')}"></textarea>
-                                            <small
-                                                    v-if="errors.first('address.business_or_work_duration')">
+                                                      data-vv-as="business or work duration"></textarea>
+                                            <small v-if="errors.first('address.business_or_work_duration')">
                                                 {{errors.first('address.business_or_work_duration')}}
                                             </small>
                                         </div>
@@ -350,9 +344,7 @@
                         <div class="modal-content">
                             <div class="modal-header py-2">
                                 <h6 class="modal-title py-1">
-                                    {{type | capitalize }}
-                                    {{(type !== 'processing_fee') ? 'Verification' : ''}}
-                                    Status
+                                    {{type | capitalize }} {{(type !== 'processing_fee') ? 'Verification' : ''}} Status
                                 </h6>
                                 <a href="javascript:" class="close py-1" data-dismiss="modal" aria-label="Close">
                                     <span class="modal-close text-danger"><i class="fas fa-times"></i></span>
@@ -360,7 +352,6 @@
                             </div>
                             <form @submit.prevent="validate(type)" v-if="customer" :data-vv-scope="type">
                                 <div class="modal-body">
-                                    <!--<h5 v-if="type !== 'processing_fee'">-->
                                     <table class="mb-3" v-if="type !== 'processing_fee'">
                                         <tbody>
                                         <tr>
@@ -375,9 +366,8 @@
                                         </tr>
                                         <tr>
                                             <th><i class=" fas fa-user-circle"></i></th>
-                                            <td v-if="customer[type+'_first_name']">{{customer[type+'_first_name']+ ' '
-                                                                                    + customer[type+'_middle_name']+ ' '
-                                                                                    + customer[type+'_last_name']}}
+                                            <td v-if="customer[type+'_first_name']">
+                                                {{`${customer[type+'_first_name']} ${customer[type+'_last_name']}`}}
                                             </td>
                                             <td v-else>please update customer details!</td>
                                         </tr>
@@ -388,7 +378,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <!--</h5>-->
+
                                     <div class="form-group col-12 px-2 clearfix my-0">
                                         <div class="clearfix">
                                             <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
@@ -504,7 +494,7 @@
 
     export default {
         props: {
-            action: {default: 'verify'},
+            action: {default: 'verify'}
             /*by default this component is used for dva verifications purposed but its customer search feature and
             * customer profile display feature is borrowed by other component to avoid duplication of
             * features hence the props: action is 'verify by default.'*/
@@ -514,7 +504,7 @@
             /*the image upload is used for the customer id and passport upload.
             * its a separate component on its own and can be called
             * anywhere on the application*/
-            CustomerProfile,
+            CustomerProfile
         },
         data() {
             return {
@@ -545,15 +535,14 @@
         },
         methods: {
             modal(name) {
-                $('#' + name).modal('toggle');
+                $(`#${name}`).modal('toggle');
                 /*this method is used to automatically
                 * toggle the modal with the id of
                 * "name passed to it"*/
                 this.errors.clear(name);
             },
             key(key) {
-                if (this.customer.verification[key] == 1) return true;
-                if (this.customer.verification[key] == 0) return false;
+                return ((this.customer.verification[key]));
                 /*the 'key' is a value that exists in the cardView array. anytime its called it checks the the customer
                 * to know the status of that particular parameter eg. is the passport have not been uploaded
                 * it will be 0 else 1 if uploaded with will return true */
@@ -591,50 +580,54 @@
                 /*$emit update event is used to send data to the parent component where this serves as a child
                 * component. eg. dsa utility form. NB: The customer registration component(form)
                 * is used as the customer update form for both dsa and dva portal.*/
-                (data.hasOwnProperty('user')) ? this.user = data.user : this.user = null;
+                this.user = data.hasOwnProperty('user') ? data.user : null;
                 this.customer = data.customer;
                 if (data.customer != '') {
                     this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                     this.form.id_card = data.customer.document.id_card_url;
                     this.form.passport = data.customer.document.passport_url;
-                    this.customerAddress = this.customer.add_houseno + ', ' + this.customer.add_street + ', ' + this.customer.area_address + ', ' + this.customer.city + ', ' + this.customer.state;
-
-                    this.work_guarantor_address = this.customer.guaadd_houseno + ', ' + this.customer.guaadd_street + ', ' +
-                        this.customer.gua_area + ', ' + this.customer.work_guarantor_city + ', ' +
-                        this.customer.work_guarantor_state;
-
-                    this.personal_guarantor_address = this.customer.pguaadd_houseno + ', ' + this.customer.pguaadd_street +
-                        ', ' + this.customer.pgua_area + ', ' + this.customer.personal_guarantor_city + ', ' +
-                        this.customer.personal_guarantor_state;
-                    for (let i = 0; i < this.veriData.length; i++) {
-                        let type = this.veriData[i];
-                        if (!!data.customer[type]) {
-                            this[type] = data.customer[type];
-                            this[type + 'Btns'] = false;
-                        } else {
-                            this[type] = data['empty_' + type];
-                            this[type + 'Btns'] = true;
-                        }
-                    }
+                    this.customerAddress =
+                        `${this.customer.add_houseno}
+                        ${this.customer.add_street}
+                        ${this.customer.area_address}
+                        ${this.customer.city}
+                        ${this.customer.state}`;
+                    this.work_guarantor_address =
+                        `${this.customer.guaadd_houseno},
+                        ${this.customer.guaadd_street},
+                        ${this.customer.gua_area},
+                        ${this.customer.work_guarantor_city},
+                        ${this.customer.work_guarantor_state}`;
+                    this.personal_guarantor_address =
+                        `${this.customer.pguaadd_houseno},
+                        ${this.customer.pguaadd_street},
+                        ${this.customer.pgua_area},
+                        ${this.customer.personal_guarantor_city},
+                        ${this.customer.personal_guarantor_state}`;
+                    this.veriData.forEach(e => {
+                        //e is the current array element during the foreach call;
+                        this[`${e}Btns`] = !(!!data.customer[e]);
+                        //eg this.work_guarantorBtns = if (data.customer.work_guarantor) {return true} else {return false}
+                        //and anything the if return will be inverted.
+                        this[e] = !!data.customer[e] ? data.customer[e] : data[`empty_${e}`];
+                        //eg this.work_guarantor = if(data.customer.work_guarantor){ return data.customer.work_guarantor }
+                        // else {return data.empty_work_guarantor}
+                        //the empty_work_guarantor is returned from backend when no work guarantor has been added.
+                    })
                 }
             },
-            fetchCustomer() {
+            async fetchCustomer() {
                 if (this.$network()) {
                     this.$LIPS(true);
-                    get('/api/customer/' + this.customer_id)
-                        .then(res => {
-                            // console.log(res.data);
-                            this.buttonStatus(res.data);
-                            this.$LIPS(false);
-                        })
-                        .catch(err => {
-                            this.$LIPS(false);
-                            this.$scrollToTop();
-                            if (err.response.status === 422) {
-                                this.buttonStatus(err.response.data);
-                                Flash.setError(err.response.data.message);
-                            } else Flash.setError('Error trying to get customer details please try again shortly!');
-                        })
+                    await get(`/api/customer/${this.customer_id}`)
+                        .then(res => this.buttonStatus(res.data))
+                        .catch(e => {
+                            e = e.response;
+                            if (e.status === 422) this.buttonStatus(e.data);
+                            Flash.setError(e.data.message);
+                        });
+                    this.$scrollToTop();
+                    this.$LIPS(false);
                 } else this.$networkErr();
             },
             validate(type) {
@@ -643,7 +636,7 @@
                     if (this.$network()) {
                         this.$LIPS(true);
                         if ((this.veriView.includes(type)) && !(this.customer.work_guarantor_first_name)) {
-                            this.modal(type + '_modal');
+                            this.modal(`${type}_modal`);
                             this.$LIPS(false);
                             this.$scrollToTop();
                             Flash.setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
@@ -653,57 +646,46 @@
                         this[type].customer_id = this.customer.id;
                         this[type].user_id = this.user.id;
                         this[type].staff_name = this.user.full_name;
-                        this.$validator.validateAll(type).then((result) => {
+                        this.$validator.validateAll(type).then(async result => {
                             if (result) {
-                                post('/api/' + type, this[type])
+                                await post(`/api/${type}`, this[type])
                                     .then(res => {
                                         this.buttonStatus(res.data.response);
-                                        let id = 'Customer ID : ' + String(this.customer.id),
+                                        let id = `Customer ID : ${this.customer.id}`,
                                             typeCaps = this.$options.filters.capitalize(type),
-                                            action = 'Customer' + typeCaps + 'Verification';
+                                            action = `Customer${typeCaps}Verification`;
                                         if (type === 'address')
-                                            (this.address.approval_status === 1) ? action += 'Passed' : action += 'NotPassed';
+                                            action += this.address.approval_status ? 'Passed' : 'NotPassed';
                                         log(action, id);
-                                        Flash.setSuccess(typeCaps + ' status updated!');
-                                        this.modal(type + '_modal');
-                                        this.$LIPS(false);
-                                        this.$scrollToTop();
+                                        Flash.setSuccess(`${typeCaps} status updated!`);
+                                        this.modal(`${type}_modal`);
                                     })
-                                    .catch(err => {
-                                        this.$LIPS(false);
-                                        this.$scrollToTop();
-                                        Flash.setError(err.response.data.message);
-                                    });
-                            }
-                            if (!result) this.$networkErr('form');
+                                    .catch(e => Flash.setError(e.response.data.message));
+                                this.$LIPS(false);
+                                this.$scrollToTop();
+                            }else this.$networkErr('form');
                         });
                     } else this.$networkErr();
                 } else {
                     this.$networkErr('edit');
                     $('.modal').modal('hide')
                 }
-                ;
             },
-            save(document, modal) {
+            async save(document, modal) {
                 let acc = this.$editAccess(this.user, this.customer);
                 if (acc) {
                     this.storeURL = `/api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
                     this.$LIPS(true);
                     this.form.document = document;
                     const form = toMulipartedForm(this.form, 'edit');
-                    post(this.storeURL, form).then((res) => {
+                    await post(this.storeURL, form).then(res => {
                         this.buttonStatus(res.data.response);
-                        log('Customer' + this.$options.filters.capitalize(document) + 'Upload',
-                            'Customer ID : ' + String(this.customer.id));
+                        log(`Customer${this.$options.filters.capitalize(document)}Upload`, `Customer ID : ${this.customer.id}`);
                         this.modal(modal);
-                        this.$LIPS(false);
-                        this.$scrollToTop();
                         Flash.setSuccess('Document Updated Successfully!');
-                    }).catch((err) => {
-                        this.error = err.response.data.errors;
-                        this.$LIPS(false);
-                        this.$scrollToTop();
-                    })
+                    }).catch(e => this.error = e.response.data.errors);
+                    this.$LIPS(false);
+                    this.$scrollToTop();
                 } else {
                     this.$networkErr('edit');
                     $('.modal').modal('hide')
@@ -720,7 +702,7 @@
         },
     }
 </script>
-<style scoped>
+<style scoped lang="scss">
     tr {
         margin-bottom    : .4rem;
         float            : left;
@@ -738,6 +720,96 @@
 
     tbody tr td {
         padding : .4rem 1.5rem;
+    }
+
+    .upload {
+        &-image {
+            min-height      : 20rem;
+            min-width       : 20rem;
+            margin          : 0 auto;
+            background      : #fafafa;
+            border          : 1px dashed rgba(0, 0, 0, 0.1);
+            display         : flex;
+            justify-content : center;
+            align-items     : center;
+        }
+        &-box {
+            padding : 1rem;
+        }
+        &-close {
+            position : absolute;
+            right    : 0;
+            top      : 0;
+        }
+    }
+
+
+    .verification {
+        .card-stats .icon {
+            margin : 0 1.5rem;
+        }
+
+        .info .icon.icon-circle {
+            width         : 8rem;
+            height        : 8rem;
+            border-radius : 50%;
+        }
+
+        .info-horizontal .icon.icon-circle i {
+            display     : table;
+            margin      : 0 auto;
+            line-height : 8rem;
+            font-size   : 2.4rem;
+        }
+
+        .stats-title {
+            font-weight : 300;
+            font-size   : 1.2rem;
+        }
+
+        .card-footer:hover {
+            background-image : linear-gradient(to bottom, rgb(255, 255, 255), #eeeeee);
+        }
+
+        h4.info-title {
+            margin    : 0;
+            font-size : 2.2rem;
+        }
+
+        .no-success .icon.icon-warning.icon-circle {
+            border     : 1px solid #b30000;
+            box-shadow : 0 .9rem 1.5rem -.6rem rgba(179, 0, 0, 0.5) !important;
+        }
+
+        .success .icon.icon-warning.icon-circle {
+            border     : 1px solid #488413;
+            box-shadow : 0 .9rem 1.5rem -.6rem rgba(72, 132, 19, 0.5) !important;
+        }
+
+        .card.card-stats::before {
+            content  : '';
+            width    : 3px;
+            height   : 100%;
+            position : absolute;
+            left     : 0;
+            top      : 0;
+        }
+
+        .success::before {
+            background : linear-gradient(45deg, #8ef985 0%, #01af13 100%);
+        }
+
+        .no-success::before {
+            background : linear-gradient(45deg, #ff9b83 0%, #a40000 100%);
+        }
+
+        .success i {
+            color : #63b61a;
+        }
+
+        .no-success i {
+            color : #c70000;
+        }
     }
 
 </style>

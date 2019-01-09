@@ -18,6 +18,7 @@ Route::post('/register', 'AuthController@register');
 Route::get('/employee/{id}/edit', 'AuthController@edit');
 Route::get('/branch/create', 'BranchController@create');
 Route::get('/customer/create', 'CustomerController@create');
+Route::get('/branches', 'BranchController@allBranches');
 Route::post('/branch/{branch}', 'BranchController@update');
 Route::post('/employee/{id}/update', 'AuthController@update');
 Route::post('/customer/{customer}', 'CustomerController@update');
@@ -37,3 +38,4 @@ Route::apiResources([
     'personal_guarantor' => 'PersonalGuarantorController',
 ]);
 Route::post('/report', 'ReportController@generateReport');
+//Route::get('/runQuery','CustomerController@runQuery');

@@ -9,10 +9,7 @@
                    v-model="form.full_name"
                    v-validate="'required|max:100'"
                    name="name">
-            <small
-                    v-if="errors.first('name')">
-                {{ errors.first('name') }}
-            </small>
+            <small v-if="errors.first('name')">{{ errors.first('name') }}</small>
         </div>
 
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -104,25 +101,6 @@
         <div class="spaceBetween  mb-md-2 mb-0"></div>
 
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-            <label>Employee ID Number</label>
-            <input type="text" class="form-control"
-                   placeholder="AC/C/013/18"
-                   v-model="form.staff_id"
-                   name="staff_id"
-                   v-validate="'required'"
-                   :class="{'is-invalid': error.staff_id}"
-                   data-vv-as="employee id">
-            <small
-                    v-if="errors.first('staff_id')">
-                {{errors.first('staff_id') }}
-            </small>
-            <small
-                    v-if="error.staff_id">
-                {{error.staff_id[0]}}
-            </small>
-        </div>
-
-        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
             <label>Role in the company</label>
             <select name="role"
                     class="custom-select w-100"
@@ -139,8 +117,6 @@
                 {{errors.first('role') }}
             </small>
         </div>
-
-        <div class="spaceBetween mb-md-2 mb-0"></div>
 
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
             <label>Highest Qualification</label>
@@ -160,6 +136,8 @@
             </small>
         </div>
 
+        <div class="spaceBetween mb-md-2 mb-0"></div>
+
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
             <label>Operations Branch</label>
             <select name="branch"
@@ -178,8 +156,6 @@
             </small>
         </div>
 
-        <div class="spaceBetween mb-md-2 mb-0"></div>
-
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
             <label>Date of Appointment</label>
             <input type="date" class="form-control"
@@ -192,6 +168,8 @@
                 {{errors.first('date_of_appointment')}}
             </small>
         </div>
+
+        <div class="spaceBetween mb-md-2 mb-0"></div>
 
         <div v-if="ifUp(action)" class="form-group col-md-6 col-12 float-left px-0 px-md-3">
             <label>Date of Exit</label>
@@ -216,9 +194,6 @@
             </small>
         </div>
 
-        <div class="spaceBetween mb-md-2 mb-0"></div>
-
-        <!--gender-->
         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
             <label class="w-100 float-left pl-1">Gender</label>
             <div class="radio p-0 col-md-6 col-6 float-left" v-for="sex in gender">
@@ -238,7 +213,9 @@
             </small>
         </div>
 
-        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+        <div class="spaceBetween mb-md-2 mb-0"></div>
+
+        <div class="form-group col-12 float-left px-0 px-md-3">
             <label>Describe Location</label>
             <textarea class="form-control w-100"
                       placeholder="address"
@@ -398,21 +375,21 @@
                 categories: {},
                 textDetails: {phone: '', loginPassword: '', loginID: '',},
                 statuses: ['married', 'single', 'divorced', 'complicated'],
-                qualifications: ['HND', 'OND', 'bachelors', 'masters', 'doctorate'],
+                qualifications: ['NCE', 'HND', 'OND', 'bachelors', 'masters', 'doctorate'],
             }
         },
         methods: {
             ifReg(a) {
                 //a is the action for which the form is called or the context
                 //the form is used this function return true if the
-                //action : a is === register else else
-                return !!(a === 'register');
+                //action : a is === register
+                return a === 'register';
             },
             ifUp(a) {
                 //a is the action for which the form is called or the context
                 //the form is used this function return true if the
-                //action : a is === update else else
-                return !!(a === 'update');
+                //action : a is === update
+                return a === 'update';
             },
             prepareForm(data) {
                 //this function is used when a data is sent to this component
@@ -423,9 +400,6 @@
                 this.roles = data.roles;
                 this.branches = data.branches;
                 this.categories = data.categories;
-
-                console.log(data);
-
             },
             register(emp = null, AC = 1) {
                 //NB: this function is used by the employee register, employee update and for portal access update.
@@ -438,9 +412,9 @@
                 //the default url '/api/register' for registration
                 //emp for context :details update and portal access
                 //update are the staff details to be updated
-                if(AC === 1) this.updatingPortalAccess = true;
-                this.$validator.validateAll().then((result) => {
-                    if(AC === 1){
+                if (AC === 1) this.updatingPortalAccess = true;
+                this.$validator.validateAll().then(result => {
+                    if (AC === 1) {
                         //AC means the context : access control, by default its set to true i.e 1 because this function
                         //was called as a callback on a this.$emit process and cant pass two params to the function
                         //the employee register call the function in this manner : register(form,0) to show
@@ -456,18 +430,19 @@
                             this.error = {};
                             let newUrl = '/api/register', message, logMsg;
                             //for registration the url is used
-                            if (this.action === 'update') newUrl = "/api/employee/" + emp.id + "/update";
+                            if (this.action === 'update') newUrl = `/api/employee/${emp.id}/update`;
                             //else f the form action is not registration den its update
                             //hence the url "/api/employee/{id}/update"
                             post(newUrl, emp)
-                                .then((res) => {
+                                .then(res => {
                                     if (res.data.hasOwnProperty('registered')) {
                                         //if the response is from '/api/register'
                                         logMsg = 'Registered';
-                                        this.textDetails.loginID = String(this.form.staff_id);
+                                        this.textDetails.loginID = String(res.data.staff_id);
                                         this.textDetails.phone = String(parseInt(this.form.phone_number));
                                         this.textDetails.loginPassword = this.password = res.data.password;
-                                        message = "Staff registered! An sms has been sent to the employee with his Login details!";
+                                        message =
+                                            `Staff registered with ID ${res.data.staff_id}. An sms has been sent to the employee with his Login details!`;
                                         SMS.welcome(this.textDetails);
                                     } else if (res.data.hasOwnProperty('updated')) {
                                         //if the response is from "/api/employee/{id}/update"
@@ -477,35 +452,31 @@
                                         //it emits an event to the parent(dataviewer.vue)
                                         // since its for update
                                     }
-                                    this.$scrollToTop();
-                                    log('Staff' + logMsg, String(this.form.staff_id));
+                                    log('Staff' + logMsg, String(res.data.staff_id));
                                     Flash.setSuccess(message, 20000);
                                     if (this.ifReg(this.action)) this.form = res.data.form;
                                     //the line above is there so as to allow the log
-                                    // method use its data before reseting
-                                    this.$LIPS(false);
-                                    this.errors.clear();
+                                    // method use its data before resetting
                                 })
-                                .catch((err) => {
-                                    if (err.response.status === 422) {
-                                        //catch error thrown by laravel validation;
-                                        this.$scrollToTop();
-                                        this.error = err.response.data;
-                                        if (err.response.data.errors) this.error = err.response.data.errors;
+                                .catch(e => {
+                                    e = e.response;
+                                    if (e.status === 422) {
+                                        this.error = e.data.errors ? e.data.errors : e.data;
                                         this.$networkErr('unique');
                                     }
-                                    this.$LIPS(false);
-                                })
+                                }).finally(()=>{
+                                this.$scrollToTop();
+                                this.$LIPS(false);
+                            });
                         } else this.$networkErr();
-                    }
-                    if (!result) this.$networkErr('form');
+                    }else this.$networkErr('form');
                 });
             },
         },
         created() {
             if (this.ifReg(this.action)) get('/api/create').then(res => this.prepareForm(res.data));
             //if registration fetch data for new customer registration and prepare form
-            if (this.action == 'update') this.bus.$on('submit', this.register);
+            if (this.action === 'update') this.bus.$on('submit', this.register);
             //this.bus is a (vue instance and )prop received from dataviewer to track when the access portal form(ref: DataViewer.vue
             //=> id="editPortalAccess") is submitted from the data viewer. this is because we want to use the 'register'
             //function to process both (1)registration, (2)update details and (3)update portal access

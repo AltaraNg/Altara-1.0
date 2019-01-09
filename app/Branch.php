@@ -13,9 +13,7 @@ class Branch extends Model
 
     protected $hidden = [];
 
-    public static $columns = [
-        'id', 'name', 'state_id', 'phone_english', 'phone_yoruba', 'email', 'description','status'
-    ];
+    public static $columns = ['id', 'name', 'state_id', 'phone_english', 'phone_yoruba', 'email', 'description','status'];
 
     protected $table = 'branches';
 
@@ -35,7 +33,7 @@ class Branch extends Model
             'bank' => '',
             'state_id' => '',
             'status' => '',
-            'description' => '',
+            'description' => ''
         ];
     }
 

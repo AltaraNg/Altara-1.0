@@ -4,7 +4,7 @@
             <div class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center"><h6>Messaging</h6></ul>
                 <div class="card-body p-4 ">
-                    <form @submit.prevent="sendMessage" class="clearfix">
+                    <form @submit.prevent="sendMessage" id="messaging" class="clearfix">
                         <div class="form-group col-md-12 px-md-3 px-1 float-left">
                             <label>Phone Numbers</label>
                             <textarea class="form-control col-sm-12"
@@ -41,27 +41,24 @@
         data() {
             return {
                 contacts: '',
-                sentData: '',
-                form: '',
+                sentData: {},
+                form: {}
             }
         },
         methods: {
             sendMessage() {
-                this.$validator.validateAll().then((result) => {
+                this.$validator.validateAll().then(async result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            var contacts = this.contacts.split(";").filter(function (str) {
-                                return /\S/.test(str);
-                            });
-                            for (var i = 0; i < contacts.length; i++) {
-                                this.sentData.phone = contacts[i].trim().substr(1);
+                            let contacts = this.contacts.split(",").filter(str => /\S/.test(str));
+                            contacts.forEach(el => {
+                                this.sentData.phone = el.trim().substr(1);
                                 SMS.dvaMessage(this.sentData);
-                                if (contacts.length - 1 === i) this.done(contacts);
-                            }
+                            });
+                            this.done(contacts);
                         } else this.$networkErr();
-                    }
-                    if (!result) this.$networkErr('form');
+                    }else this.$networkErr('form');
                 });
             },
             done(contacts) {
@@ -72,9 +69,14 @@
                 this.form.message = this.sentData.message;
                 this.form.pages = Math.trunc(this.form.message.length / 160);
                 let remaining = this.form.message.length % 160;
+<<<<<<< HEAD
                 // Pages 
                 this.form.pages >= 1 ? (this.form.pages += this.remaining == 0 ? 0 : 1) : this.form.pages++
                 post('/api/message', this.form).then(res => this.resetData());
+=======
+                if (remaining > 0) this.form.pages += 1;
+                post('/api/message', this.form).then(() => this.resetData());
+>>>>>>> 603f447633b89a2b432c1d761bc317f926057480
             },
             resetData() {
                 this.contacts = '';
@@ -87,3 +89,12 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    @import "../../../../sass/app/variables";
+    #messaging{
+        textarea {
+            font: 500 1.5rem $default-font;
+        }
+    }
+</style>

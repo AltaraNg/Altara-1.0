@@ -14,12 +14,7 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'api_token',
-        'hr_id',
-    ];
+    protected $hidden = ['password', 'remember_token', 'api_token', 'hr_id'];
 
     public static $columns = [
         'id', 'full_name', 'staff_id', 'phone_number', 'portal_access', 'email', 'date_of_appointment'
@@ -47,7 +42,7 @@ class User extends Authenticatable
             'date_of_birth' => '',
             'nationality' => '',
             'next_of_kin_name' => '',
-            'next_of_kin_phone_no' => '',
+            'next_of_kin_phone_no' => ''
         ];
     }
 

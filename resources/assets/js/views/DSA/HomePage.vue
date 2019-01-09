@@ -31,20 +31,15 @@
                         title: 'Sales Lead Reporting',
                         url_c: 'Get Reports',
                         desc: 'Real time DSA reports!',
-                        aces: false,
+                        aces: this.$store.getters.verifyDSALead,
                     }, {
-                        url: 'customer/list',
+                        url: '/customer/list',
                         title: 'Customer List',
                         url_c: 'View Customer List',
                         desc: 'View all registered customers!',
                     }
                 ]
             }
-        },
-        created() {
-            (this.$store.state.DSALead.includes(this.$store.state.authRole)) ?
-                this.portals[2].aces = true : this.portals[2].aces = false;
-                /*only the dsa lead can access the report portal hence the method*/
         }
     }
 </script>

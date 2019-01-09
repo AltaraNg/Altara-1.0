@@ -10,6 +10,9 @@
                             <router-link class="navbar-brand p-0" to="/home">
                                 <img class="float-left" :src="`/images/altara_logo.png`">
                             </router-link>
+                            <!--<a class="navbar-brand p-0" @click="runQuery" href="#">
+                                <img class="float-left" :src="`/images/altara_logo.png`">
+                            </a>-->
                             <button type="button"
                                     aria-expanded="false"
                                     data-toggle="collapse"
@@ -81,7 +84,7 @@
     import Flash from "./helpers/flash";
     import Loader from "./components/Loader.vue";
     import SideNav from "./components/SideNav.vue";
-    import {interceptors, post} from "./helpers/api";
+    import {interceptors, post, get} from "./helpers/api";
 
     export default {
         components: {
@@ -101,8 +104,8 @@
                 Flash.setSuccess("Welcome Back!");
             }*/
             if (!localStorage.getItem("api_token")) {
-                this.$router.push("/login");
                 Flash.setError("You have to Login!");
+                this.$router.push("/login");
             }
         },
         created() {
@@ -115,14 +118,9 @@
                 if (err.response.status === 404) this.$router.push("/not-found");
             });
             window.addEventListener('load', () => {
-                navigator.onLine ? this.showStatus(true) : this.showStatus(false);//uncomment this when u push to production
-                //this.$network() ? this.showStatus(true) : this.showStatus(false);//dis current line should be removed after testing
-                window.addEventListener('online', () => {
-                    this.showStatus(true);
-                });
-                window.addEventListener('offline', () => {
-                    this.showStatus(false);
-                });
+                this.showStatus(navigator.onLine);
+                window.addEventListener('online', () => this.showStatus(true));
+                window.addEventListener('offline', () => this.showStatus(false));
             });
         },
         computed: {
@@ -150,9 +148,19 @@
             showStatus(online) {
                 online ? Flash.setSuccess('you are connected to the internet!') : this.$networkErr();
             },
-            clearFlash(){
+            clearFlash() {
                 Flash.removeMsg();
-            }
+            }/*,
+            async runQuery() {
+                try {
+                    this.$LIPS(true);
+                    const result = await get("/api/runQuery");
+                    console.log(result);
+                    this.$LIPS(false);
+                } catch (e) {
+                    Flash.setError('Error Running query :(');
+                }
+            }*/
         },
     };
 </script>

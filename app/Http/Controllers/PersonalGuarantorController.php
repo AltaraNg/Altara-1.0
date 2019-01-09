@@ -29,9 +29,7 @@ class PersonalGuarantorController extends Controller
      */
     public function create()
     {
-        return response()->json([
-            'form' => PersonalGuarantor::form(),
-        ]);
+        return response()->json(['form' => PersonalGuarantor::form()]);
     }
 
     /**
@@ -44,9 +42,7 @@ class PersonalGuarantorController extends Controller
     {
         $workGuarantor = PersonalGuarantor::where('customer_id', $request->customer_id)->get();
         if ($workGuarantor->count()) {
-            return response()->json([
-                'message' => 'Sorry this users has already been declined!'
-            ], 428);
+            return response()->json(['message' => 'Sorry this users has already been declined!'], 428);
         } else (new PersonalGuarantor($request->all()))->save();
         Verification::where('customer_id', '=', $request->customer_id)->update(['personal_guarantor' => $request->consent]);
         return response()->json([

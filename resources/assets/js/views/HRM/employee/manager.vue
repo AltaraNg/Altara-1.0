@@ -12,6 +12,6 @@
     import DataViewer from '../../../components/DataViewer';
 
     export default {
-        components: {DataViewer},
+        components: {DataViewer}
     }
 </script>
