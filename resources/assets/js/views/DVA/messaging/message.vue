@@ -69,14 +69,9 @@
                 this.form.message = this.sentData.message;
                 this.form.pages = Math.trunc(this.form.message.length / 160);
                 let remaining = this.form.message.length % 160;
-<<<<<<< HEAD
                 // Pages 
                 this.form.pages >= 1 ? (this.form.pages += this.remaining == 0 ? 0 : 1) : this.form.pages++
                 post('/api/message', this.form).then(res => this.resetData());
-=======
-                if (remaining > 0) this.form.pages += 1;
-                post('/api/message', this.form).then(() => this.resetData());
->>>>>>> 603f447633b89a2b432c1d761bc317f926057480
             },
             resetData() {
                 this.contacts = '';
