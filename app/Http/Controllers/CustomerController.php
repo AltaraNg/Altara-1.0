@@ -85,6 +85,16 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = $this->fetchCustomer($id);
+
+       if(!isset($customer->branch)){
+
+          $customer->branch_id = $customer->user->branch_id;
+
+          $customer->save();
+
+          $customer = $this->fetchCustomer($id);
+       }
+
         if ($customer) {
             $d = $customer->document;
             $v = $customer->verification;
@@ -148,7 +158,7 @@ class CustomerController extends Controller
 
     public function fetchCustomer($id)
     {
-        return Customer::with([
+        $customer = Customer::with([
             'user' => function ($query) {
                 $query->select('id', 'full_name', 'branch_id');
             },
@@ -160,6 +170,8 @@ class CustomerController extends Controller
             'document',
             'processingFee'
         ])->whereId($id)->first();
+
+        return $customer;
     }
 
     static function createCustomerVerification($customerId)

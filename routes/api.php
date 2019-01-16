@@ -38,4 +38,7 @@ Route::apiResources([
     'personal_guarantor' => 'PersonalGuarantorController',
 ]);
 Route::post('/report', 'ReportController@generateReport');
+Route::post('/report/daily', 'ReportController@getRegistrationReport');
+
 //Route::get('/runQuery','CustomerController@runQuery');
+//Route::get('/runQuery','AuthController@runQuery');
