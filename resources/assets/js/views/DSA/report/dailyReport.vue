@@ -99,6 +99,8 @@
 
                      let branch;
 
+                     this.$LIPS(true);
+
                      /** check is the user select "for all branches is where value is 0"*/
                      if (this.report.branch.id !== 0) {
                         /** if it he doesnt want for all branches*/
@@ -143,6 +145,8 @@
                            document.body.appendChild(link);
 
                            link.click();
+
+                           this.$LIPS(false);
                         });
                   } else this.$networkErr();
                }

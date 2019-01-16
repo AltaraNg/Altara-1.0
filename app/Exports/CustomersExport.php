@@ -30,7 +30,7 @@ class CustomersExport implements FromCollection
    {
       $request = $this->request;
 
-      $customers = DB::table('altaraone.customers')
+      $customers = DB::table('customers')
 
          ->select(DB::raw('employee_name, employee_id, branch_id, date_of_registration, COUNT(*) as customers_registered'))
 
