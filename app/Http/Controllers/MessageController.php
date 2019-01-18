@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api')->except('');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -41,10 +36,16 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
+       /** we keep track of all the message sent to anybody through this portal.
+        * This is a control measure */
+       /** create the message instance*/
         $message = new Message($request->all());
+        /** add other key value pair, like the current logged in user id(who sent the message)*/
         $message->contacts = implode(' ', $request['contacts']);
         $message->user_id = auth('api')->user()->id;
+        /** save to the database*/
         $message->save();
+        /** return the response flag(true) */
         return response()->json(['sentAndLogged' => true]);
     }
 

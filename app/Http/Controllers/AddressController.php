@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api')->except('');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -30,6 +25,7 @@ class AddressController extends Controller
      */
     public function create()
     {
+       /** return form for address creation*/
         return response()->json([
             'form' => Address::form()
         ]);
@@ -43,11 +39,20 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
+       /** fetch the address with the id passed from the request*/
         $address = Address::where('customer_id', $request->customer_id)->get();
+        /** NB::The control statement below is so because once an address linked to a customer is created on the address table
+         * it means that the customer's address have be approved or declined and any other attempt means the customer
+         * is trying to bypass the previous approval or decline, hence the response with code 428 */
         if ($address->count()) {
-            return response()->json(['message' => 'Sorry this users has already been declined!'], 428);
-        } else (new Address($request->all()))->save();
+           /** if the customer address(actually this is an address questionnaire for verifications process) exists,
+            * that means the customer address have been processed before*/
+            return response()->json(['message' => 'Sorry this customer has already been declined!'], 428);
+        } else (new Address($request->all()))->save(); /**else create an address for the customer and save*/
+        /** after creating address update the address column in the verification table to the approval
+         * status sent from the request(0 or 1 as the case may be) */
         Verification::where('customer_id', '=', $request->customer_id)->update(['address' => $request->approval_status]);
+        /** return the customer with all his/her details*/
         return response()->json([
             'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
         ]);

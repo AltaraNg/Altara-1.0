@@ -10,15 +10,23 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    /** this is a generic trait created to serve as a generic
+     * scope for fetching and paginating the
+     * model where it is called */
     use DataViewer;
 
     protected $guarded = [];
 
     protected $hidden = ['password', 'remember_token', 'api_token', 'hr_id'];
 
+    /** columns to be used to render the list(Data viewer) of user in the view*/
     public static $columns = [
         'id', 'full_name', 'staff_id', 'phone_number', 'portal_access', 'email', 'date_of_appointment'
     ];
+
+    /** this is the user object form, it is sent to the js
+     * view when the user creation
+     * form is required */
 
     public static function Form()
     {

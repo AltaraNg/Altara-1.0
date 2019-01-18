@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Verification extends Model
 {
-    protected $guarded = [];
+   protected $guarded = [];
 
-    protected $hidden = [];
+   protected $hidden = [];
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
+   public function customer()
+   {
+      return $this->belongsTo(Customer::class);
+   }
 }

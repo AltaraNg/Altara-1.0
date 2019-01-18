@@ -1,8 +1,8 @@
 <template>
    <div class="card">
-      <ul class="nav nav-tabs justify-content-center bg-default"><h6>Daily Report Generation (Captains)</h6></ul>
+      <ul class="nav nav-tabs justify-content-center bg-default"><h6>Daily Report (Captains)</h6></ul>
       <div class="card-body px-4">
-         <form @submit.prevent="generateReport">
+         <!--<form @submit.prevent="generateReport">
             <div class="my-4 clearfix">
 
                <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
@@ -51,14 +51,66 @@
                   Generate Report <i class="far fa-paper-plane ml-1"></i>
                </button>
             </div>
+         </form>-->
+
+         <form @submit.prevent="submitReport">
+            <div class="my-4 clearfix">
+
+               <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                  <label>DSA (Name-ID)</label>
+                  <select class="custom-select w-100" v-model="report.user_id" v-validate="'required'" name="dsa"
+                          data-vv-validate-on="blur">
+                     <option value="">select DSA</option>
+                     <option :value="user.id" v-for="user in users">{{`${user.full_name} - (${user.staff_id})`}}</option>
+                  </select>
+                  <small v-if="errors.first('dsa')">{{errors.first('dsa')}}</small>
+               </div>
+
+               <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                  <label>Date</label>
+                  <input type="date" class="form-control" v-model="report.date" v-validate="'required|date_format:MM/DD/YYYY'" name="date">
+                  <small v-if="errors.first('date')">{{errors.first('date')}}</small>
+               </div>
+
+               <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                  <label>Number of forms registered on portal</label>
+                  <input type="number" class="form-control" v-model="report.number_on_portal" v-validate="'required|integer|min:0'"
+                         data-vv-as="number on portal" name="number_on_portal">
+                  <small v-if="errors.first('number_on_portal')">{{errors.first('number_on_portal')}}</small>
+               </div>
+
+               <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                  <label>Number of forms submitted too captain</label>
+                  <input type="number" class="form-control" v-model="report.number_to_captain" v-validate="'required|integer|min:0'"
+                         data-vv-as="number to captain" name="number_to_captain">
+                  <small v-if="errors.first('number_to_captain')">{{errors.first('number_to_captain')}}</small>
+               </div>
+
+               <div class="spaceAfter"></div>
+
+               <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                  <label class="w-100 float-left">Remark/Comment</label>
+                  <textarea cols="3" class="form-control" v-model="report.remark" v-validate="'required|max:255'" name="remark"></textarea>
+                  <small v-if="errors.first('remark')">{{errors.first('remark')}}</small>
+               </div>
+
+            </div>
+
+            <div class="col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4">
+               <button type="submit" class="btn btn-block btn-lg bg-default" :disabled="$isProcessing">
+                  Log Report <i class="far fa-paper-plane ml-1"></i>
+               </button>
+            </div>
          </form>
+
+
       </div>
    </div>
 </template>
 
 <script>
-   import {store} from '../../../store/store';
-   import {get, postD} from "../../../helpers/api";
+   import Flash from '../../../helpers/flash';
+   import {get, post} from "../../../helpers/api";
 
    export default {
 
@@ -66,54 +118,66 @@
 
          return {
 
-            duration: 'daily',
+            // duration: 'daily',
             /** duration is used a to toggle the "to date"
              * to make if disabled when the user
              * wants a daily report*/
+
+            users:null,
 
             report: {
                /** both the "from" and "to" are set to the current date. even without
                 * adding/selecting anything on the form this make
                 * the form ready out of the box */
-               from: this.$getDate(),
+               /*from: this.$getDate(),
 
-               to: this.$getDate(),
+               to: this.$getDate(),*/
 
-               branch: {},
+               user_id: null,
+
+               date: this.$getDate(),
+
+               number_on_portal: null,
+
+               number_to_captain: null,
+
+               remark: null
+
+               // branch: {},
             },
          }
       },
 
       methods: {
 
-         generateReport() {
+         /*generateReport() {
 
-            /** check if the required fields have a value */
+            /!** check if the required fields have a value *!/
             this.$validator.validateAll().then(result => {
 
                if (result) {
-                  /** if the result from the check is truthy*/
+                  /!** if the result from the check is truthy*!/
 
                   if (this.$network()) {
-                     /** check network connectivity*/
+                     /!** check network connectivity*!/
 
                      let branch;
 
                      this.$LIPS(true);
 
-                     /** check is the user select "for all branches is where value is 0"*/
+                     /!** check is the user select "for all branches is where value is 0"*!/
                      if (this.report.branch.id !== 0) {
-                        /** if it he doesnt want for all branches*/
+                        /!** if it he doesnt want for all branches*!/
 
-                        /** find the branch where the value of the branch input field matches with the branch id
-                         * NB: the branches are stored in the store for use globally in the app*/
+                        /!** find the branch where the value of the branch input field matches with the branch id
+                         * NB: the branches are stored in the store for use globally in the app*!/
                         branch = store.state.branches.find(obj => obj.id === this.report.branch.id);
 
-                        /**when u get the branch set the report branch to the branch retrieved above*/
+                        /!**when u get the branch set the report branch to the branch retrieved above*!/
                         this.report.branch = branch;
                      }
 
-                     /** if
+                     /!** if
                       * (
                       *    (the duration is daily) and (the report.from is not today's date)
                       *    (NB: this.$getDate() is a vue prototype i created to return the current date)
@@ -125,7 +189,7 @@
                       * The above ensure
                       * 1. that when a user selects daily that the both dates are the same date.
                       * 2. That the report.from must be earlier(in date) than the report to
-                      * */
+                      * *!/
                      if ((this.duration === 'daily' && this.report.from !== this.$getDate()) || (this.report.from > this.report.to))
                         this.report.to = this.report.from;
 
@@ -152,15 +216,38 @@
                }
                if (!result) this.$networkErr('form');
             });
-         },
+         },*/
+
+         submitReport(){
+            /** validate form*/
+            this.$validator.validateAll().then(result => {
+               /** if validation is successful*/
+               if (result) {
+                  /** check is network is available*/
+                  if (this.$network()) {
+                     /** if network is available*/
+                     this.$LIPS(true);
+                     /** make a request to the backend*/
+                     post(`/api/dsa_daily_registration`, this.report)
+                        .then(res => {
+                           this.$scrollToTop();
+                           this.$LIPS(false);
+                           if(res.data.submitted)Flash.setSuccess(res.data.message);
+                        }).catch(() => Flash.setError('Error logging report please try again later!'));
+                  } else this.$networkErr();
+               }
+               if (!result) this.$networkErr('form');
+            });
+         }
       },
 
       created() {
          /** get the details of the current user */
+         /*get(`/api/user/${this.$store.state.user_id}`)
+            .then(res => this.report.branch = res.data.user.branch);*/
 
-         get(`/api/user/${this.$store.state.user_id}`)
-
-            .then(res => this.report.branch = res.data.user.branch);
+         get(`/api/user/getBranchUsers`)
+            .then(res => this.users = res.data.DSAs);
 
          /** set the branch for the daily report form to the current users branch.
           * This is to reduce the time the user spend on selecting
@@ -168,12 +255,11 @@
       },
 
       watch: {
-
-         duration: function (val) {
-            /** ifi the current option select by the user is "daily" set the TO to current date*/
+        /* duration: function (val) {
+            /!** ifi the current option select by the user is "daily" set the TO to current date*!/
 
             if (val === 'daily') this.report.to = this.$getDate();
-         }
+         }*/
       }
    }
 </script>

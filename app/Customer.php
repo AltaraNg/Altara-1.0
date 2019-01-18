@@ -6,16 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+   /** this is a generic trait created to serve as a generic
+    * scope for fetching and paginating the
+    * model where it is called */
     use DataViewer;
 
     protected $guarded = [];
 
     protected $hidden = [];
 
+   /** columns to be used to render the list(Data viewer) of customers in the view*/
     public static $columns = [
-        'id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration'
+       'id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration'
     ];
 
+   /** this is the user object form, it is sent to the js
+    * view when the customer creation
+    * form is required */
     public static function form()
     {
         $user = auth('api')->user();
