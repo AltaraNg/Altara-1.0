@@ -53,13 +53,13 @@
             </div>
          </form>-->
 
-         <form @submit.prevent="submitReport">
+         <form @submit.prevent="submitReport" id="dsaDailyReportForm">
             <div class="my-4 clearfix">
 
                <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                   <label>DSA (Name-ID)</label>
-                  <select class="custom-select w-100" v-model="report.user_id" v-validate="'required'" name="dsa"
-                          data-vv-validate-on="blur">
+                  <select class="custom-select w-100" data-vv-validate-on="blur" name="dsa" v-model="report.user_id"
+                          v-validate="'required'">
                      <option value="">select DSA</option>
                      <option :value="user.id" v-for="user in users">{{`${user.full_name} - (${user.staff_id})`}}</option>
                   </select>
@@ -68,21 +68,21 @@
 
                <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                   <label>Date</label>
-                  <input type="date" class="form-control" v-model="report.date" v-validate="'required|date_format:MM/DD/YYYY'" name="date">
+                  <input class="form-control" name="date" type="date" v-model="report.date" v-validate="'required|date_format:MM/DD/YYYY'">
                   <small v-if="errors.first('date')">{{errors.first('date')}}</small>
                </div>
 
                <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                   <label>Number of forms registered on portal</label>
-                  <input type="number" class="form-control" v-model="report.number_on_portal" v-validate="'required|integer|min:0'"
-                         data-vv-as="number on portal" name="number_on_portal">
+                  <input class="form-control" data-vv-as="number on portal" name="number_on_portal" type="number"
+                         v-model="report.number_on_portal" v-validate="'required|integer|min:0'">
                   <small v-if="errors.first('number_on_portal')">{{errors.first('number_on_portal')}}</small>
                </div>
 
                <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                   <label>Number of forms submitted too captain</label>
-                  <input type="number" class="form-control" v-model="report.number_to_captain" v-validate="'required|integer|min:0'"
-                         data-vv-as="number to captain" name="number_to_captain">
+                  <input class="form-control" data-vv-as="number to captain" name="number_to_captain" type="number"
+                         v-model="report.number_to_captain" v-validate="'required|integer|min:0'">
                   <small v-if="errors.first('number_to_captain')">{{errors.first('number_to_captain')}}</small>
                </div>
 
@@ -90,14 +90,14 @@
 
                <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                   <label class="w-100 float-left">Remark/Comment</label>
-                  <textarea cols="3" class="form-control" v-model="report.remark" v-validate="'required|max:255'" name="remark"></textarea>
+                  <textarea class="form-control" cols="3" name="remark" v-model="report.remark" v-validate="'required|max:255'"></textarea>
                   <small v-if="errors.first('remark')">{{errors.first('remark')}}</small>
                </div>
 
             </div>
 
             <div class="col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4">
-               <button type="submit" class="btn btn-block btn-lg bg-default" :disabled="$isProcessing">
+               <button :disabled="$isProcessing" class="btn btn-block btn-lg bg-default" type="submit">
                   Log Report <i class="far fa-paper-plane ml-1"></i>
                </button>
             </div>
@@ -117,38 +117,26 @@
       data() {
 
          return {
-
             // duration: 'daily',
             /** duration is used a to toggle the "to date"
              * to make if disabled when the user
              * wants a daily report*/
-
-            users:null,
-
-            report: {
-               /** both the "from" and "to" are set to the current date. even without
-                * adding/selecting anything on the form this make
-                * the form ready out of the box */
-               /*from: this.$getDate(),
-
-               to: this.$getDate(),*/
-
-               user_id: null,
-
-               date: this.$getDate(),
-
-               number_on_portal: null,
-
-               number_to_captain: null,
-
-               remark: null
-
-               // branch: {},
-            },
+            users: null,
+            report: null,
          }
       },
 
       methods: {
+
+         initForm(){
+            this.report = {
+               user_id: '',
+               date: this.$getDate(),
+               number_on_portal: '',
+               number_to_captain: '',
+               remark: ''
+            };
+         },
 
          /*generateReport() {
 
@@ -218,7 +206,7 @@
             });
          },*/
 
-         submitReport(){
+         submitReport() {
             /** validate form*/
             this.$validator.validateAll().then(result => {
                /** if validation is successful*/
@@ -230,9 +218,12 @@
                      /** make a request to the backend*/
                      post(`/api/dsa_daily_registration`, this.report)
                         .then(res => {
+                           document.getElementById('dsaDailyReportForm').reset();
+                           this.$validator.reset();
+                           this.initForm();
                            this.$scrollToTop();
                            this.$LIPS(false);
-                           if(res.data.submitted)Flash.setSuccess(res.data.message);
+                           if (res.data.submitted) Flash.setSuccess(res.data.message);
                         }).catch(() => Flash.setError('Error logging report please try again later!'));
                   } else this.$networkErr();
                }
@@ -245,7 +236,7 @@
          /** get the details of the current user */
          /*get(`/api/user/${this.$store.state.user_id}`)
             .then(res => this.report.branch = res.data.user.branch);*/
-
+         this.initForm();
          get(`/api/user/getBranchUsers`)
             .then(res => this.users = res.data.DSAs);
 
@@ -255,11 +246,11 @@
       },
 
       watch: {
-        /* duration: function (val) {
-            /!** ifi the current option select by the user is "daily" set the TO to current date*!/
+         /* duration: function (val) {
+             /!** ifi the current option select by the user is "daily" set the TO to current date*!/
 
-            if (val === 'daily') this.report.to = this.$getDate();
-         }*/
+             if (val === 'daily') this.report.to = this.$getDate();
+          }*/
       }
    }
 </script>
