@@ -15,27 +15,19 @@ class CreateDsaDailyRegistrationTable extends Migration
    {
       Schema::create('dsa_daily_registration', function (Blueprint $table) {
          $table->increments('id');
-
          $table->unsignedInteger('user_id')->index()->nullable();
-
          $table->string('captain_id', 30);
-
+         $table->unsignedInteger('branch_id')->index()->nullable();
          $table->string('date');
-
          $table->string('number_on_portal');
-
          $table->string('number_to_captain');
-
          $table->string('remark');
-
          $table->timestamps();
       });
-
       Schema::table('dsa_daily_registration', function ($table) {
-
             $table->foreign('user_id')->references('id')->on('users');
-
             $table->foreign('captain_id')->references('staff_id')->on('users');
+            $table->foreign('branch_id')->references('id')->on('branches');
       });
    }
 
