@@ -28,6 +28,10 @@
                                v-model="form.category_name" v-validate="'required|max:150'">
                         <small v-if="errors.first('category_name')">{{ errors.first('category_name') }}</small>
                      </div>
+
+
+
+
                      <div class="spaceBetween mb-md-2 mb-0"></div>
                      <hr class="style-two">
                   </div>

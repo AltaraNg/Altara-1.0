@@ -70,6 +70,8 @@
 
          //2 send to the method in this component that will handle it when component is created
 
+
+
          //3. set the current mode of the form
          next(vm => vm.setMode(to.meta.mode));
       },
