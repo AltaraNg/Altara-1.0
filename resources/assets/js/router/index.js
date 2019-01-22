@@ -38,123 +38,91 @@ const FSLHome = () => import( '../views/FSL/HomePage.vue');
 const BranchCreate = () => import( '../views/FSL/branch/create.vue');
 const BranchUpdate = () => import( '../views/FSL/branch/update.vue');
 const Inventory = () => import( '../views/FSL/inventory/inventory.vue');
+const SuppliersForm = () => import('../views/FSL/supplier/form.vue');
+const BrandForm = () => import('../views/FSL/brand/form.vue');
+const CategoryForm = () => import('../views/FSL/category/form.vue');
+const ProductForm = () => import('../views/FSL/product/form.vue');
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
 const router = new VueRouter({
-    hashbang: false,
-    history: true,
-    linkActiveClass: 'active',
-    mode: 'history',
-    routes: [
-        {path: '/', redirect: {name: 'home'}},
-        {
-            path: '/home',
-            component: Home,
-            name: 'home',
-            meta: {role: localStorage.getItem("role_id")},
-            alias: '/welcome-home'
-        },
-        {path: '/login', component: Login, name: 'login'},
-        {
-            path: '/user', component: Profile,
-            children: [
-                {path: 'profile', component: ProfileHome},
-                {path: 'profile/edit', component: ProfileEdit},
-            ]
-        },
-        {
-            path: '/dsa', component: DSA, meta: {DSA: true},
-            children: [
-                {path: '/', redirect: {name: 'DSAHome'}},
-                {path: 'home', component: DSAHome, name: 'DSAHome', alias: '/dsa-home'},
-                {path: 'report', component: DSAReport, name: 'DSAReport', alias: '/dsa-report'},
-                {
-                    path: 'customer/register',
-                    component: CustomerRegister,
-                    name: 'customerRegister',
-                    alias: '/register-customer'
-                }, {
-                    path: 'customer/update',
-                    component: CustomerUpdate,
-                    name: 'DSACustomerUpdate',
-                    alias: '/dsa-update-customer'
-                }
-            ]
-        },
-        {
-            path: '/dva', component: DVA, meta: {DVA: true},
-            children: [
-                {path: '/', redirect: {name: 'DVAHome'}},
-                {path: 'home', component: DVAHome, name: 'DVAHome', alias: '/dva-home'},
-                {path: 'message', component: DVAMessage, name: 'DVAMessage', alias: '/dva-message'},
-                {
-                    path: 'customer/update',
-                    component: CustomerUpdate,
-                    name: 'DVACustomerUpdate',
-                    alias: '/dva-update-customer'
-                },
-                {path: 'verification', component: DVAVerification, name: 'DVAVerification', alias: '/dva-verification'},
-            ]
-        }, {
-            path: '/hrm', component: HRM, meta: {HRM: true},
-            children: [
-                {path: '/', redirect: {name: 'HRMHome'}},
-                {path: 'home', component: HRMHome, name: 'HRMHome', alias: '/hrm-home'},
-                {
-                    path: 'employee/register',
-                    component: EmployeeRegister,
-                    name: 'employeeRegister',
-                    alias: '/register-employee'
-                },
-                {
-                    path: 'employee/manager',
-                    component: EmployeeManager,
-                    name: 'employeeManager',
-                    alias: '/manage-employee'
-                },
-            ]
-        }, {
-            path: '/fsl', component: FSL, meta: {FSL: true},
-            children: [
-                {path: 'home', component: FSLHome, name: 'FSLHome', alias: '/fsl-home'},
-                {path: 'inventory', component: Inventory, name: 'inventory', alias: '/inventory'},
-                {path: 'branch/create', component: BranchCreate, name: 'branchCreate', alias: '/branch-create'},
-                {path: 'branch/update', component: BranchUpdate, name: 'branchUpdate', alias: '/branch-update'},
-            ]
-        },
-
-        {path: '/customer/list', component: CustomerList, name: 'customerList', alias: '/register-list'},
-        {
-            path: '/customer/:id',
-            component: CustomerProfileFull,
-            name: 'customerProfileFull',
-            alias: '/customer-profile-full'
-        },
-        {path: '/not-found', component: NotFound},
-        {path: '*', component: NotFound},
-    ]
+   hashbang: false,
+   history: true,
+   linkActiveClass: 'active',
+   mode: 'history',
+   routes: [
+      {path: '/', redirect: {name: 'home'}},
+      {path: '/home',component: Home,name: 'home',meta: {role: localStorage.getItem("role_id")},alias: '/welcome-home'},
+      {path: '/login', component: Login, name: 'login'},
+      {path: '/user', component: Profile,children: [
+            {path: 'profile', component: ProfileHome},
+            {path: 'profile/edit', component: ProfileEdit},
+         ]
+      },
+      {path: '/dsa', component: DSA, meta: {DSA: true},children: [
+            {path: '/', redirect: {name: 'DSAHome'}},
+            {path: 'home', component: DSAHome, name: 'DSAHome', alias: '/dsa-home'},
+            {path: 'report', component: DSAReport, name: 'DSAReport', alias: '/dsa-report'},
+            {path: 'customer/register',component: CustomerRegister,name: 'customerRegister',alias: '/register-customer'},
+            {path: 'customer/update',component: CustomerUpdate,name: 'DSACustomerUpdate',alias: '/dsa-update-customer'}
+         ]
+      },
+      {path: '/dva', component: DVA, meta: {DVA: true},children: [
+            {path: '/', redirect: {name: 'DVAHome'}},
+            {path: 'home', component: DVAHome, name: 'DVAHome', alias: '/dva-home'},
+            {path: 'message', component: DVAMessage, name: 'DVAMessage', alias: '/dva-message'},
+            {path: 'customer/update',component: CustomerUpdate,name: 'DVACustomerUpdate',alias: '/dva-update-customer'},
+            {path: 'verification', component: DVAVerification, name: 'DVAVerification', alias: '/dva-verification'},
+         ]
+      },
+      {path: '/hrm', component: HRM, meta: {HRM: true},children: [
+            {path: '/', redirect: {name: 'HRMHome'}},
+            {path: 'home', component: HRMHome, name: 'HRMHome', alias: '/hrm-home'},
+            {path: 'employee/register', component: EmployeeRegister,name: 'employeeRegister',alias: '/register-employee'},
+            {path: 'employee/manager',component: EmployeeManager,name: 'employeeManager',alias: '/manage-employee'},
+         ]
+      },
+      {path: '/fsl', component: FSL, meta: {FSL: true},children: [
+            {path: 'home', component: FSLHome, name: 'FSLHome', alias: '/fsl-home'},
+            {path: 'inventory', component: Inventory, name: 'inventory', alias: '/inventory'},
+            {path: 'branch/create', component: BranchCreate, name: 'branchCreate', alias: '/branch-create'},
+            {path: 'branch/update', component: BranchUpdate, name: 'branchUpdate', alias: '/branch-update'},
+            {path: 'suppliers/create',  component: SuppliersForm,name: 'suppliersCreate',alias: '/suppliers-create',meta: {mode: 'create'}},
+            {path: 'suppliers/:id/edit',  component: SuppliersForm,name: 'suppliersEdit',alias: '/suppliers-edit',meta: {mode: 'edit'}},
+            {path: 'brands/create',component: BrandForm,name: 'BrandCreate',alias: '/brand-create',meta: {mode: 'create'}},
+            {path: 'brands/:id/edit',component: BrandForm,name: 'BrandEdit',alias: '/brand-edit',meta: {mode: 'edit'}},
+            {path: 'categories/create',component: CategoryForm,name: 'categoryCreate',alias: '/category-create',meta: {mode: 'create'}},
+            {path: 'categories/:id/edit',component: CategoryForm,name: 'categoryEdit',alias: '/category-edit',meta: {mode: 'edit'}},
+            {path: 'products/create',component: ProductForm,name: 'productCreate',alias: '/product-create',meta: {mode: 'create'}},
+            {path: 'products/:id/edit',component: ProductForm,name: 'productEdit',alias: '/product-edit',meta: {mode: 'edit'}}
+         ]
+      },
+      {path: '/customer/list', component: CustomerList, name: 'customerList', alias: '/register-list'},
+      {path: '/customer/:id',component: CustomerProfileFull,name: 'customerProfileFull',alias: '/customer-profile-full'},
+      {path: '/not-found', component: NotFound},
+      {path: '*', component: NotFound},
+   ]
 });
 
 router.mode = 'html5';
 router.afterEach(writeHistory);
 router.beforeEach((to, from, next) => {
-    /*route access control*/
-    let home = (((to.path).split("/")).filter(Boolean)[0]).toUpperCase();
-    /* get the base for every route eg.
-    * :route : '/dsa/customer/register'
-    * : home will return 'DSA*/
-    if (to.matched.some(m => m.meta[home])) {
-        /*if home ('DSA in this case is matched')*/
-        if (store.getters['verify' + home + 'Access']) return next();
-        /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
-        * the method in store will return true if a user has access to the portal hence next();
-        * and false is a user don't have access hence error message and redirect to home*/
-        Flash.setError('You do not have access to that page!', 3000);
-        return next({name: 'home'});
-    }
-    /*else next will call the route for the all unknown path
-    * : the : 'NotFound'*/
-    next();
+   /*route access control*/
+   let home = (((to.path).split("/")).filter(Boolean)[0]).toUpperCase();
+   /* get the base for every route eg.
+   * :route : '/dsa/customer/register'
+   * : home will return 'DSA*/
+   if (to.matched.some(m => m.meta[home])) {
+      /*if home ('DSA in this case is matched')*/
+      if (store.getters['verify' + home + 'Access']) return next();
+      /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
+      * the method in store will return true if a user has access to the portal hence next();
+      * and false is a user don't have access hence error message and redirect to home*/
+      Flash.setError('You do not have access to that page!', 3000);
+      return next({name: 'home'});
+   }
+   /*else next will call the route for the all unknown path
+   * : the : 'NotFound'*/
+   next();
 });
 export default router
