@@ -19,16 +19,13 @@
                         url: 'inventory', title: 'Products Inventory', url_c: 'View Inventory!',
                         desc: 'For products inventory and management'
                     },{
-                        url: 'branch/create', title: 'Create Branch', url_c: 'Create Branch now!',
-                        desc: 'Create a new Branch office',aces: this.$store.getters.verifyFSLLead,
-                    },{
-                        url: 'branch/update', title: 'Update Branch', url_c: 'Update Branch now!',
-                        desc: 'Update a Branch office',aces: this.$store.getters.verifyFSLLead,
+                        url: 'branch', title: 'Manage Branches', url_c: 'Manage Branches now!',
+                        desc: 'Manage all the branch details',aces: this.$store.getters.verifyFSLLead,
                     }, {
                         url: '/customer/list', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
                     }, {
-                        url: 'suppliers/create', title: 'Manage Suppliers', url_c: 'Create/Update Suppliers',
+                        url: 'suppliers/create', title: 'Manage Supplier', url_c: 'Create/Update Supplier',
                         desc: 'Manage all the suppliers details!',
                     }, {
                         url: 'brands/create', title: 'Manage Brands', url_c: 'Create/Update Brands',

@@ -51,13 +51,10 @@ class BranchController extends Controller
       /** fetch the branch object form that will
        * be used to create a new branch*/
       $form = Branch::form();
-      /** fetch the list of all the states*/
-      $states = State::all();
       /** return the form, states, and banks*/
       return response()->json([
          'form' => $form,
          'banks' => $banks,
-         'states' => $states
       ]);
    }
 
@@ -70,19 +67,18 @@ class BranchController extends Controller
    public function store(Request $request)
    {
       /** validate the input from the branch form*/
-      $this->validate($request, [
+      $request->validate([
          'name' => 'unique:branches',
          'email' => 'unique:branches',
          'account_number' => 'unique:branches'
       ]);
       /** create new instance of branch*/
-      $user = new Branch($request->all());
+      $branch = new Branch($request->all());
       /** save to database */
-      $user->save();
+      $branch->save();
       /** return created flag set to true and a fresh branch creation form*/
       return response()->json([
-         'created' => true,
-         'prepareForm' => $this->create()->original
+         'created' => true
       ]);
    }
 
@@ -108,7 +104,12 @@ class BranchController extends Controller
     */
    public function edit($id)
    {
-      //
+      $banks = Bank::all();
+      $form = Branch::findOrFail($id);
+      return response()->json([
+         'form' => $form,
+         'banks' => $banks,
+      ]);
    }
 
    /**

@@ -14,6 +14,7 @@ class CreateDsaDailyRegistrationTable extends Migration
    public function up()
    {
       Schema::create('dsa_daily_registration', function (Blueprint $table) {
+         $table->engine = 'InnoDB';
          $table->increments('id');
          $table->unsignedInteger('user_id')->index()->nullable();
          $table->string('captain_id', 30);

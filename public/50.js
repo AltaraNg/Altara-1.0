@@ -1,49 +1,14 @@
 webpackJsonp([50],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/branch/create.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+   value: true
 });
-
-var _branchForm = __webpack_require__("./resources/assets/js/views/FSL/utility/branchForm.vue");
-
-var _branchForm2 = _interopRequireDefault(_branchForm);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    components: { BranchForm: _branchForm2.default }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/utility/branchForm.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _log = __webpack_require__("./resources/assets/js/helpers/log.js");
 
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 
@@ -53,97 +18,355 @@ var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 exports.default = {
-    props: {
-        //the component is never called exclusively its
-        //is called by another parent component.
-        //the action is purpose or the context
-        action: '',
-        branchToUpdate: { default: '' }
-    },
-    data: function data() {
-        return {
-            form: {},
-            banks: {},
-            error: {},
-            states: {}
-        };
-    },
+   data: function data() {
 
-    methods: {
-        ifCreate: function ifCreate(a) {
-            //a is the action for which the form is called or the context
-            //the form is used this function return true if the
-            //action : a is === create else else
-            return a === 'create';
-        },
-        ifUpdate: function ifUpdate(a) {
-            //a is the action for which the form is called or the context
-            //the form is used this function return true if the
-            //action : a is === update else else
-            return a === 'update';
-        },
-        prepareForm: function prepareForm(data) {
-            //this function is used when a data is sent to this component
-            //or this component makes a request to backend the
-            //data received is used to prepare the form
-            this.error = {};
-            this.errors.clear();
-            this.form = data.form;
-            this.banks = data.banks;
-            this.states = data.states;
-        },
-        processBranch: function processBranch() {
-            var _this = this;
+      return {
+         // duration: 'daily',
+         /** duration is used a to toggle the "to date"
+          * to make if disabled when the user
+          * wants a daily report*/
+         users: null,
+         report: null
+      };
+   },
 
-            this.$validator.validateAll().then(function (result) {
-                if (result) {
-                    if (_this.$network()) {
-                        _this.$LIPS(true);
-                        _this.error = {};
-                        var url = '/api/branch',
-                            action = _this.$options.filters.capitalize(_this.action);
-                        //for creating a branch the url above is used
-                        if (_this.action === 'update') url = '/api/branch/' + _this.branchToUpdate.id;
-                        //else if the form action is not create den its update
-                        //hence the url "/api/branch/{id}"
-                        (0, _api.post)(url, _this.form).then(function (res) {
-                            (0, _log.log)('Branch' + action, '' + _this.form.employee_id);
-                            if (_this.ifCreate(_this.action)) _this.prepareForm(res.data.prepareForm);
-                            if (_this.ifUpdate(_this.action)) _this.$emit('done');
-                            _flash2.default.setSuccess('Branch ' + _this.action + 'd successfully!', 20000);
-                        }).catch(function (e) {
-                            e = e.response;
-                            if (e.status === 422) {
-                                _this.error = e.data.errors ? e.data.errors : e.data;
-                                _this.$networkErr('unique');
-                            }
-                        }).finally(function () {
-                            _this.$scrollToTop();
-                            _this.$LIPS(false);
-                        });
-                    } else _this.$networkErr();
-                } else _this.$networkErr('form');
-            });
-        }
-    },
-    created: function created() {
-        var _this2 = this;
 
-        (0, _api.get)('/api/branch/create').then(function (res) {
-            return _this2.prepareForm(res.data);
-        });
-        // fetch data for new branch registration and prepare form
-    },
+   methods: {
+      initForm: function initForm() {
+         this.report = {
+            user_id: '',
+            date: this.$getDate(),
+            number_on_portal: '',
+            number_to_captain: '',
+            remark: ''
+         };
+      },
 
-    watch: {
-        branchToUpdate: function branchToUpdate(newVal) {
-            /*watches when a data is sent from the parent (dataviewer)
-            * to this component*/
-            this.form = newVal;
-            this.$LIPS(false);
-        }
-    }
+
+      /*generateReport() {
+          /!** check if the required fields have a value *!/
+         this.$validator.validateAll().then(result => {
+             if (result) {
+               /!** if the result from the check is truthy*!/
+                if (this.$network()) {
+                  /!** check network connectivity*!/
+                   let branch;
+                   this.$LIPS(true);
+                   /!** check is the user select "for all branches is where value is 0"*!/
+                  if (this.report.branch.id !== 0) {
+                     /!** if it he doesnt want for all branches*!/
+                      /!** find the branch where the value of the branch input field matches with the branch id
+                      * NB: the branches are stored in the store for use globally in the app*!/
+                     branch = store.state.branches.find(obj => obj.id === this.report.branch.id);
+                      /!**when u get the branch set the report branch to the branch retrieved above*!/
+                     this.report.branch = branch;
+                  }
+                   /!** if
+                   * (
+                   *    (the duration is daily) and (the report.from is not today's date)
+                   *    (NB: this.$getDate() is a vue prototype i created to return the current date)
+                   * ) or (
+                   *    report.from is greater than report.to
+                   *    (NB: this implies that report.from must be earlier(in date) than the report to)
+                   * )
+                   * then reset the report.to to the report.from.
+                   * The above ensure
+                   * 1. that when a user selects daily that the both dates are the same date.
+                   * 2. That the report.from must be earlier(in date) than the report to
+                   * *!/
+                  if ((this.duration === 'daily' && this.report.from !== this.$getDate()) || (this.report.from > this.report.to))
+                     this.report.to = this.report.from;
+                   postD(`/api/report/daily`, this.report)
+                     .then(res => {
+                         const url = window.URL.createObjectURL(new Blob([res.data]));
+                         const link = document.createElement('a');
+                         link.href = url;
+                         link.setAttribute('download',
+                            `report from ${this.report.from} to ${this.report.to}.xlsx`);
+                         document.body.appendChild(link);
+                         link.click();
+                         this.$LIPS(false);
+                     });
+               } else this.$networkErr();
+            }
+            if (!result) this.$networkErr('form');
+         });
+      },*/
+
+      submitReport: function submitReport() {
+         var _this = this;
+
+         /** validate form*/
+         this.$validator.validateAll().then(function (result) {
+            /** if validation is successful*/
+            if (result) {
+               /** check is network is available*/
+               if (_this.$network()) {
+                  /** if network is available*/
+                  _this.$LIPS(true);
+                  /** make a request to the backend*/
+                  (0, _api.post)('/api/dsa_daily_registration', _this.report).then(function (res) {
+                     document.getElementById('dsaDailyReportForm').reset();
+                     _this.$validator.reset();
+                     _this.initForm();
+                     _this.$scrollToTop();
+                     _this.$LIPS(false);
+                     if (res.data.submitted) _flash2.default.setSuccess(res.data.message);
+                  }).catch(function () {
+                     return _flash2.default.setError('Error logging report please try again later!');
+                  });
+               } else _this.$networkErr();
+            }
+            if (!result) _this.$networkErr('form');
+         });
+      }
+   },
+
+   created: function created() {
+      var _this2 = this;
+
+      /** get the details of the current user */
+      /*get(`/api/user/${this.$store.state.user_id}`)
+         .then(res => this.report.branch = res.data.user.branch);*/
+      this.initForm();
+      (0, _api.get)('/api/user/getBranchUsers').then(function (res) {
+         return _this2.users = res.data.DSAs;
+      });
+
+      /** set the branch for the daily report form to the current users branch.
+       * This is to reduce the time the user spend on selecting
+       * options on the form*/
+   },
+
+
+   watch: {
+      /* duration: function (val) {
+          /!** ifi the current option select by the user is "daily" set the TO to current date*!/
+           if (val === 'daily') this.report.to = this.$getDate();
+       }*/
+   }
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/report.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+   value: true
+});
+
+var _store = __webpack_require__("./resources/assets/js/store/store.js");
+
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+
+var _dailyReport = __webpack_require__("./resources/assets/js/views/DSA/report/dailyReport.vue");
+
+var _dailyReport2 = _interopRequireDefault(_dailyReport);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+
+   components: { DailyReport: _dailyReport2.default },
+
+   beforeCreate: function beforeCreate() {
+      if (!this.$store.getters.verifyDSACaptain) this.$networkErr('page');
+      /** this component can only be accessed by the dsa leads and captains hence this route guard
+      * if the role of the dsa agent logged in is contained in the
+      * array of the dsa lead then access will be granted*/
+      this.$prepareBranches();
+   },
+   data: function data() {
+      return {
+         types: [{
+            name: "sales report",
+            slug: "sales_report"
+         }, {
+            name: "score card",
+            slug: "score_card"
+         }, {
+            name: "weekly operations",
+            slug: "weekly_operations"
+         }],
+         report: {
+            to: '',
+            from: '',
+            branch: {
+               id: '',
+               name: ''
+            },
+            employee: '',
+            type: ''
+         }
+      };
+   },
+   created: function created() {
+      this.setDates();
+   },
+
+   methods: {
+      generateReport: function generateReport() {
+         var _this = this;
+
+         this.$validator.validateAll().then(function (result) {
+            if (result) {
+               if (_this.$network()) {
+                  var branch = _store.store.state.branches.find(function (obj) {
+                     return obj.id === _this.report.branch.id;
+                  });
+                  _this.report.branch = branch;
+                  (0, _api.postD)('/api/report', _this.report).then(function (res) {
+                     var url = window.URL.createObjectURL(new Blob([res.data]));
+                     var link = document.createElement('a');
+                     link.href = url;
+                     link.setAttribute('download', _this.report.type + '_for_' + branch.name + '.xlsx');
+                     document.body.appendChild(link);
+                     link.click();
+                  });
+               } else _this.$networkErr();
+            }
+            if (!result) _this.$networkErr('form');
+         });
+      },
+      setDates: function setDates() {
+         /** this function computes and set the FROM and TO date to the
+          * Monday and Friday of the current Week
+          * PURPOSE: For better UX */
+         var toTwoDigs = function toTwoDigs(num) {
+            return num < 10 ? '0' + num : num;
+         };
+         var reformatDate = function reformatDate(d) {
+            return d.getFullYear() + '-' + toTwoDigs(d.getMonth() + 1) + '-' + toTwoDigs(d.getDate());
+         },
+             d = new Date(),
+             day = d.getDay(),
+             diff = d.getDate() - day + (day === 0 ? -6 : 1),
+             m = new Date(d.setDate(diff)),
+             f = new Date();
+         f.setDate(m.getDate() + 5);
+         this.report.from = m = reformatDate(m);
+         this.report.to = f = reformatDate(f);
+         /** this function returns the monday ie this.report.from
+         * and the saturday of the : this.report.to of the
+         * current week*/
+      }
+   }
 }; //
 //
 //
@@ -212,652 +435,346 @@ exports.default = {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-01f74a80\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/utility/branchForm.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4e31093c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    {
-      on: {
-        submit: function($event) {
-          $event.preventDefault()
-          return _vm.processBranch($event)
-        }
-      }
-    },
-    [
-      _c("h5", [_vm._v("Branch Details")]),
-      _vm._v(" "),
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body px-4" }, [
       _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("Branch Name")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required",
-                expression: "'required'"
-              },
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.name,
-                expression: "form.name"
-              }
-            ],
-            staticClass: "form-control",
-            class: { "is-invalid": _vm.error.name },
-            attrs: {
-              type: "text",
-              placeholder: "branch name",
-              name: "branch_name",
-              "data-vv-as": "branch name"
-            },
-            domProps: { value: _vm.form.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "name", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.first("branch_name")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("branch_name")))])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.error.name
-            ? _c("small", [_vm._v(_vm._s(_vm.error.name[0]))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("State")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.state_id,
-                  expression: "form.state_id"
-                },
-                {
-                  name: "validate",
-                  rawName: "v-validate",
-                  value: "required",
-                  expression: "'required'"
-                }
-              ],
-              staticClass: "custom-select w-100",
-              attrs: { name: "state", "data-vv-validate-on": "blur" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.form,
-                    "state_id",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            [
-              _c("option", { attrs: { value: "", selected: "" } }, [
-                _vm._v("select state")
-              ]),
-              _vm._v(" "),
-              _vm._l(_vm.states, function(state) {
-                return _c("option", { domProps: { value: state.id } }, [
-                  _vm._v(_vm._s(_vm._f("capitalize")(state.name)))
-                ])
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _vm.errors.first("state")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("state")))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "spaceBetween  mb-md-2 mb-0" }),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("Phone (English)")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.phone_english,
-                expression: "form.phone_english"
-              },
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required|numeric|max:11|min:11",
-                expression: "'required|numeric|max:11|min:11'"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              type: "tel",
-              placeholder: "081xxxxxxxx",
-              name: "phone_english",
-              "data-vv-as": "phone english"
-            },
-            domProps: { value: _vm.form.phone_english },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "phone_english", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.first("phone_english")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("phone_english")))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("Phone (Yoruba)")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.phone_yoruba,
-                expression: "form.phone_yoruba"
-              },
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required|numeric|max:11|min:11",
-                expression: "'required|numeric|max:11|min:11'"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              type: "tel",
-              placeholder: "081xxxxxxxx",
-              name: "phone_yoruba",
-              "data-vv-as": "phone yoruba"
-            },
-            domProps: { value: _vm.form.phone_yoruba },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "phone_yoruba", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.first("phone_yoruba")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("phone_yoruba")))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "spaceBetween  mb-md-2 mb-0" }),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", { staticClass: "w-100 float-left pl-1" }, [
-            _vm._v("Status")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "radio pl-1 w-50 pr-3 float-left" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.status,
-                  expression: "form.status"
-                },
-                {
-                  name: "validate",
-                  rawName: "v-validate",
-                  value: "required",
-                  expression: "'required'"
-                }
-              ],
-              attrs: {
-                type: "radio",
-                name: "status",
-                id: "active",
-                value: "active"
-              },
-              domProps: { checked: _vm._q(_vm.form.status, "active") },
-              on: {
-                change: function($event) {
-                  _vm.$set(_vm.form, "status", "active")
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "active" } }, [_vm._v("Active")])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "radio pl-1 w-50 pr-3 float-left" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.status,
-                  expression: "form.status"
-                }
-              ],
-              attrs: {
-                type: "radio",
-                name: "status",
-                id: "passive",
-                value: "passive"
-              },
-              domProps: { checked: _vm._q(_vm.form.status, "passive") },
-              on: {
-                change: function($event) {
-                  _vm.$set(_vm.form, "status", "passive")
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "passive" } }, [_vm._v("Passive")])
-          ]),
-          _vm._v(" "),
-          _vm.errors.first("status")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("status")))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("Describe Location")]),
-          _vm._v(" "),
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.description,
-                expression: "form.description"
-              },
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required|max:255",
-                expression: "'required|max:255'"
-              }
-            ],
-            staticClass: "form-control w-100",
-            attrs: {
-              placeholder: "address description",
-              name: "description",
-              rows: "1"
-            },
-            domProps: { value: _vm.form.description },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "description", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.first("description")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("description")))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "spaceAfter" }),
-      _vm._v(" "),
-      _c("h5", [_vm._v("Account Details")]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("Email")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.email,
-                expression: "form.email"
-              },
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required|email",
-                expression: "'required|email'"
-              }
-            ],
-            staticClass: "form-control",
-            class: { "is-invalid": _vm.error.email },
-            attrs: {
-              type: "email",
-              placeholder: "name@example.com",
-              name: "email"
-            },
-            domProps: { value: _vm.form.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "email", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.first("email")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("email")))])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.error.email
-            ? _c("small", [_vm._v(_vm._s(_vm.error.email[0]))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("Bank")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.bank,
-                  expression: "form.bank"
-                },
-                {
-                  name: "validate",
-                  rawName: "v-validate",
-                  value: "required",
-                  expression: "'required'"
-                }
-              ],
-              staticClass: "custom-select w-100",
-              attrs: { name: "bank", "data-vv-validate-on": "blur" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.form,
-                    "bank",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            [
-              _c("option", { attrs: { value: "", selected: "" } }, [
-                _vm._v("select bank")
-              ]),
-              _vm._v(" "),
-              _vm._l(_vm.banks, function(bank) {
-                return _c("option", { domProps: { value: bank.id } }, [
-                  _vm._v(_vm._s(_vm._f("capitalize")(bank.name)))
-                ])
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _vm.errors.first("bank")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("bank")))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "spaceBetween  mb-md-2 mb-0" }),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("Account Name")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required",
-                expression: "'required'"
-              },
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.account_name,
-                expression: "form.account_name"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              type: "text",
-              placeholder: "branch name",
-              name: "account_name",
-              "data-vv-as": "account name"
-            },
-            domProps: { value: _vm.form.account_name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "account_name", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.first("account_name")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("account_name")))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-group col-md-6 col-12 float-left px-0 px-md-3" },
-        [
-          _c("label", [_vm._v("Account Number")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.account_number,
-                expression: "form.account_number"
-              },
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required|numeric|max:10|min:10",
-                expression: "'required|numeric|max:10|min:10'"
-              }
-            ],
-            staticClass: "form-control",
-            class: { "is-invalid": _vm.error.account_number },
-            attrs: {
-              type: "tel",
-              placeholder: "01xxxxxxxx",
-              name: "account_number",
-              "data-vv-as": "account number"
-            },
-            domProps: { value: _vm.form.account_number },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "account_number", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.first("account_number")
-            ? _c("small", [_vm._v(_vm._s(_vm.errors.first("account_number")))])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.error.account_number
-            ? _c("small", [_vm._v(_vm._s(_vm.error.account_number[0]))])
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c("hr", { staticClass: "style-two" }),
-      _vm._v(" "),
-      _c(
-        "div",
+        "form",
         {
-          staticClass:
-            "col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3 float-right"
+          attrs: { id: "dsaDailyReportForm" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.submitReport($event)
+            }
+          }
         },
         [
+          _c("div", { staticClass: "my-4 clearfix" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("DSA (Name-ID)")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.report.user_id,
+                        expression: "report.user_id"
+                      },
+                      {
+                        name: "validate",
+                        rawName: "v-validate",
+                        value: "required",
+                        expression: "'required'"
+                      }
+                    ],
+                    staticClass: "custom-select w-100",
+                    attrs: { "data-vv-validate-on": "blur", name: "dsa" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.report,
+                          "user_id",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [
+                      _vm._v("select DSA")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.users, function(user) {
+                      return _c("option", { domProps: { value: user.id } }, [
+                        _vm._v(
+                          _vm._s(user.full_name + " - (" + user.staff_id + ")")
+                        )
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _vm.errors.first("dsa")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("dsa")))])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Date")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.date,
+                      expression: "report.date"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|date_format:MM/DD/YYYY",
+                      expression: "'required|date_format:MM/DD/YYYY'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { name: "date", type: "date" },
+                  domProps: { value: _vm.report.date },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.report, "date", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("date")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("date")))])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Number of forms registered on portal")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.number_on_portal,
+                      expression: "report.number_on_portal"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|integer|min:0",
+                      expression: "'required|integer|min:0'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    "data-vv-as": "number on portal",
+                    name: "number_on_portal",
+                    type: "number"
+                  },
+                  domProps: { value: _vm.report.number_on_portal },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.report,
+                        "number_on_portal",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("number_on_portal")
+                  ? _c("small", [
+                      _vm._v(_vm._s(_vm.errors.first("number_on_portal")))
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Number of forms submitted too captain")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.number_to_captain,
+                      expression: "report.number_to_captain"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|integer|min:0",
+                      expression: "'required|integer|min:0'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    "data-vv-as": "number to captain",
+                    name: "number_to_captain",
+                    type: "number"
+                  },
+                  domProps: { value: _vm.report.number_to_captain },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.report,
+                        "number_to_captain",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("number_to_captain")
+                  ? _c("small", [
+                      _vm._v(_vm._s(_vm.errors.first("number_to_captain")))
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "spaceAfter" }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", { staticClass: "w-100 float-left" }, [
+                  _vm._v("Remark/Comment")
+                ]),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.remark,
+                      expression: "report.remark"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|max:255",
+                      expression: "'required|max:255'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { cols: "3", name: "remark" },
+                  domProps: { value: _vm.report.remark },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.report, "remark", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("remark")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("remark")))])
+                  : _vm._e()
+              ]
+            )
+          ]),
+          _vm._v(" "),
           _c(
-            "button",
-            {
-              staticClass: "btn btn-block btn-lg bg-default",
-              attrs: { type: "submit", disabled: _vm.$isProcessing }
-            },
+            "div",
+            { staticClass: "col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4" },
             [
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm._f("capitalize")(_vm.action)) +
-                  " Branch "
-              ),
-              _c("i", { staticClass: "far fa-paper-plane ml-1" })
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-block btn-lg bg-default",
+                  attrs: { disabled: _vm.$isProcessing, type: "submit" }
+                },
+                [
+                  _vm._v("\n               Log Report "),
+                  _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                ]
+              )
             ]
           )
         ]
       )
-    ]
-  )
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      { staticClass: "nav nav-tabs justify-content-center bg-default" },
+      [_c("h6", [_vm._v("Daily Report (Captains)")])]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-01f74a80", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-4e31093c", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0fbe97dc\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/branch/create.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53ac12f5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/report.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -865,22 +782,351 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
-    _c("div", { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeEdit" } }, [
-      _c("div", { staticClass: "card" }, [
-        _c(
-          "ul",
-          { staticClass: "nav nav-tabs justify-content-center bg-default" },
-          [_c("h6", [_vm._v("Create Branch")])]
-        ),
+    _c(
+      "div",
+      { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
+      [
+        _vm.$store.getters.verifyDSALead
+          ? _c("div", { staticClass: "card" }, [
+              _c(
+                "ul",
+                {
+                  staticClass: "nav nav-tabs justify-content-center bg-default"
+                },
+                [_c("h6", [_vm._v("Report Generation")])]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body px-4" }, [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.generateReport($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "my-4 clearfix" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Report Type")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.report.type,
+                                  expression: "report.type"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "custom-select w-100",
+                              attrs: {
+                                "data-vv-as": "report type",
+                                "data-vv-validate-on": "blur",
+                                name: "report_type"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.report,
+                                    "type",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "" } }, [
+                                _vm._v("select type")
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.types, function(type) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: type.slug } },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm._f("capitalize")(type.name))
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _vm.errors.first("report_type")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("report_type")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Branch")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.report.branch.id,
+                                  expression: "report.branch.id"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "custom-select w-100",
+                              attrs: {
+                                "data-vv-as": "office branch",
+                                name: "branch_id",
+                                "data-vv-validate-on": "blur"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.report.branch,
+                                    "id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "" } }, [
+                                _vm._v("select branch")
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.$store.state.branches, function(
+                                branch
+                              ) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: branch.id } },
+                                  [
+                                    _vm._v(
+                                      "\n                           " +
+                                        _vm._s(branch.name) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _vm.errors.first("branch_id")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("branch_id")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Date from:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.report.from,
+                                expression: "report.from"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|date_format:MM/DD/YYYY",
+                                expression: "'required|date_format:MM/DD/YYYY'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "date",
+                              "data-vv-as": "Date from",
+                              name: "date_from"
+                            },
+                            domProps: { value: _vm.report.from },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.report,
+                                  "from",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("date_from")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("date_from")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Date To:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.report.to,
+                                expression: "report.to"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|date_format:MM/DD/YYYY",
+                                expression: "'required|date_format:MM/DD/YYYY'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "date",
+                              "data-vv-as": "Date to",
+                              name: "date_to"
+                            },
+                            domProps: { value: _vm.report.to },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.report, "to", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("date_to")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("date_to")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4"
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-block btn-lg bg-default",
+                            attrs: {
+                              type: "submit",
+                              disabled: _vm.$isProcessing
+                            }
+                          },
+                          [
+                            _vm._v("\n                     Generate Report "),
+                            _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "card-body pl-4 pr-4" },
-          [_c("branch-form", { attrs: { action: "create" } })],
-          1
-        )
-      ])
-    ])
+        _vm.$store.getters.verifyDSACaptain ? _c("daily-report") : _vm._e()
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -889,47 +1135,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0fbe97dc", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-53ac12f5", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/log.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.log = log;
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
-
-function log(action, description) {
-    /*actions is the action performed
-    * description is reference of the data the action was taken on*/
-    action = action.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
-        return str.toUpperCase();
-    });
-    //formats and capitalize the action performed
-    (0, _api.post)('/api/log', { action: action, description: description });
-    //and logs then on the log table;
-}
-
-/***/ }),
-
-/***/ "./resources/assets/js/views/FSL/branch/create.vue":
+/***/ "./resources/assets/js/views/DSA/report/dailyReport.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/branch/create.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0fbe97dc\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/branch/create.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4e31093c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -946,7 +1166,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\branch\\create.vue"
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\report\\dailyReport.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -955,9 +1175,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0fbe97dc", Component.options)
+    hotAPI.createRecord("data-v-4e31093c", Component.options)
   } else {
-    hotAPI.reload("data-v-0fbe97dc", Component.options)
+    hotAPI.reload("data-v-4e31093c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -969,15 +1189,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/FSL/utility/branchForm.vue":
+/***/ "./resources/assets/js/views/DSA/report/report.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/utility/branchForm.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/report.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-01f74a80\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/utility/branchForm.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53ac12f5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/report.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -994,7 +1214,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\utility\\branchForm.vue"
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\report\\report.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1003,9 +1223,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-01f74a80", Component.options)
+    hotAPI.createRecord("data-v-53ac12f5", Component.options)
   } else {
-    hotAPI.reload("data-v-01f74a80", Component.options)
+    hotAPI.reload("data-v-53ac12f5", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

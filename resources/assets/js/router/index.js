@@ -33,11 +33,11 @@ const HRMHome = () => import( '../views/HRM/HomePage.vue');
 const EmployeeManager = () => import( '../views/HRM/employee/Manager.vue');
 const EmployeeRegister = () => import( '../views/HRM/employee/Register.vue');
 
-const FSL = () => import( '../views/FSL/index.vue');
-const FSLHome = () => import( '../views/FSL/HomePage.vue');
-const BranchCreate = () => import( '../views/FSL/branch/create.vue');
-const BranchUpdate = () => import( '../views/FSL/branch/update.vue');
-const Inventory = () => import( '../views/FSL/inventory/inventory.vue');
+const FSL = () => import('../views/FSL/index.vue');
+const FSLHome = () => import('../views/FSL/HomePage.vue');
+const Branch = () => import('../views/FSL/branch/branches.vue');
+const BranchForm = () => import('../views/FSL/branch/form.vue');
+const Inventory = () => import('../views/FSL/inventory/inventory.vue');
 const SuppliersForm = () => import('../views/FSL/supplier/form.vue');
 const BrandForm = () => import('../views/FSL/brand/form.vue');
 const CategoryForm = () => import('../views/FSL/category/form.vue');
@@ -52,53 +52,59 @@ const router = new VueRouter({
    mode: 'history',
    routes: [
       {path: '/', redirect: {name: 'home'}},
-      {path: '/home',component: Home,name: 'home',meta: {role: localStorage.getItem("role_id")},alias: '/welcome-home'},
+      {path: '/home', component: Home, name: 'home', meta: {role: localStorage.getItem("role_id")}},
       {path: '/login', component: Login, name: 'login'},
-      {path: '/user', component: Profile,children: [
+      {
+         path: '/user', component: Profile, children: [
             {path: 'profile', component: ProfileHome},
             {path: 'profile/edit', component: ProfileEdit},
          ]
       },
-      {path: '/dsa', component: DSA, meta: {DSA: true},children: [
+      {
+         path: '/dsa', component: DSA, meta: {DSA: true}, children: [
             {path: '/', redirect: {name: 'DSAHome'}},
-            {path: 'home', component: DSAHome, name: 'DSAHome', alias: '/dsa-home'},
-            {path: 'report', component: DSAReport, name: 'DSAReport', alias: '/dsa-report'},
-            {path: 'customer/register',component: CustomerRegister,name: 'customerRegister',alias: '/register-customer'},
-            {path: 'customer/update',component: CustomerUpdate,name: 'DSACustomerUpdate',alias: '/dsa-update-customer'}
+            {path: 'home', component: DSAHome, name: 'DSAHome'},
+            {path: 'report', component: DSAReport, name: 'DSAReport'},
+            {path: 'customer/register', component: CustomerRegister, name: 'customerRegister'},
+            {path: 'customer/update', component: CustomerUpdate, name: 'DSACustomerUpdate'}
          ]
       },
-      {path: '/dva', component: DVA, meta: {DVA: true},children: [
+      {
+         path: '/dva', component: DVA, meta: {DVA: true}, children: [
             {path: '/', redirect: {name: 'DVAHome'}},
-            {path: 'home', component: DVAHome, name: 'DVAHome', alias: '/dva-home'},
-            {path: 'message', component: DVAMessage, name: 'DVAMessage', alias: '/dva-message'},
-            {path: 'customer/update',component: CustomerUpdate,name: 'DVACustomerUpdate',alias: '/dva-update-customer'},
-            {path: 'verification', component: DVAVerification, name: 'DVAVerification', alias: '/dva-verification'},
+            {path: 'home', component: DVAHome, name: 'DVAHome'},
+            {path: 'message', component: DVAMessage, name: 'DVAMessage'},
+            {path: 'customer/update', component: CustomerUpdate, name: 'DVACustomerUpdate'},
+            {path: 'verification', component: DVAVerification, name: 'DVAVerification'},
          ]
       },
-      {path: '/hrm', component: HRM, meta: {HRM: true},children: [
+      {
+         path: '/hrm', component: HRM, meta: {HRM: true}, children: [
             {path: '/', redirect: {name: 'HRMHome'}},
-            {path: 'home', component: HRMHome, name: 'HRMHome', alias: '/hrm-home'},
-            {path: 'employee/register', component: EmployeeRegister,name: 'employeeRegister',alias: '/register-employee'},
-            {path: 'employee/manager',component: EmployeeManager,name: 'employeeManager',alias: '/manage-employee'},
+            {path: 'home', component: HRMHome, name: 'HRMHome'},
+            {path: 'employee/manager', component: EmployeeManager, name: 'employeeManager'},
+            {path: 'employee/register', component: EmployeeRegister, name: 'employeeRegister'},
          ]
       },
-      {path: '/fsl', component: FSL, meta: {FSL: true},children: [
-            {path: 'home', component: FSLHome, name: 'FSLHome', alias: '/fsl-home'},
-            {path: 'inventory', component: Inventory, name: 'inventory', alias: '/inventory'},
-            {path: 'branch/create', component: BranchCreate, name: 'branchCreate', alias: '/branch-create'},
-            {path: 'branch/update', component: BranchUpdate, name: 'branchUpdate', alias: '/branch-update'},
-            {path: 'suppliers/create',  component: SuppliersForm,name: 'suppliersCreate',alias: '/suppliers-create',meta: {mode: 'create'}},
-            {path: 'suppliers/:id/edit',  component: SuppliersForm,name: 'suppliersEdit',alias: '/suppliers-edit',meta: {mode: 'edit'}},
-            {path: 'brands/create',component: BrandForm,name: 'BrandCreate',alias: '/brand-create',meta: {mode: 'create'}},
-            {path: 'brands/:id/edit',component: BrandForm,name: 'BrandEdit',alias: '/brand-edit',meta: {mode: 'edit'}},
-            {path: 'categories/create',component: CategoryForm,name: 'categoryCreate',alias: '/category-create',meta: {mode: 'create'}},
-            {path: 'categories/:id/edit',component: CategoryForm,name: 'categoryEdit',alias: '/category-edit',meta: {mode: 'edit'}},
-            {path: 'products/create',component: ProductForm,name: 'productCreate',alias: '/product-create',meta: {mode: 'create'}},
-            {path: 'products/:id/edit',component: ProductForm,name: 'productEdit',alias: '/product-edit',meta: {mode: 'edit'}}
+      {
+         path: '/fsl', component: FSL, meta: {FSL: true}, children: [
+            {path: 'home', component: FSLHome, name: 'FSLHome'},
+            {path: 'inventory', component: Inventory, name: 'inventory'},
+            {path: 'branch', component: Branch, name: 'branch'},
+            {path: 'branch/:id/edit', component: BranchForm, name: 'branchEdit', meta: {mode: 'edit'}},
+            {path: 'branch/create', component: BranchForm, name: 'branchCreate', meta: {mode: 'create'}},
+            {path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: {mode: 'edit'}},
+            {path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: {mode: 'create'}},
+            {path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: {mode: 'edit'}},
+            {path: 'products/create', component: ProductForm, name: 'productCreate', meta: {mode: 'create'}},
+            {path: 'categories/:id/edit', component: CategoryForm, name: 'categoryEdit', meta: {mode: 'edit'}},
+            {path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: {mode: 'create'}},
+            {path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: {mode: 'edit'}},
+            {path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: {mode: 'create'}}
          ]
       },
-      {path: '/customer/list', component: CustomerList, name: 'customerList', alias: '/register-list'},
-      {path: '/customer/:id',component: CustomerProfileFull,name: 'customerProfileFull',alias: '/customer-profile-full'},
+      {path: '/customer/list', component: CustomerList, name: 'customerList'},
+      {path: '/customer/:id', component: CustomerProfileFull, name: 'customerProfileFull'},
       {path: '/not-found', component: NotFound},
       {path: '*', component: NotFound},
    ]

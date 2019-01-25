@@ -43,7 +43,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64,11 +64,29 @@ exports.default = {
     data: function data() {
         return {
             portals: [{
-                url: 'employee/register', title: 'Staff Registration', url_c: 'Register New staff!',
-                desc: 'For Registering new staff'
+                url: 'inventory', title: 'Products Inventory', url_c: 'View Inventory!',
+                desc: 'For products inventory and management'
             }, {
-                url: 'employee/manager', title: 'Staff Management', url_c: 'Manage staff Details!',
-                desc: 'For Registering new staff'
+                url: 'branch/create', title: 'Create Branch', url_c: 'Create Branch now!',
+                desc: 'Create a new Branch office', aces: this.$store.getters.verifyFSLLead
+            }, {
+                url: 'branch/update', title: 'Update Branch', url_c: 'Update Branch now!',
+                desc: 'Update a Branch office', aces: this.$store.getters.verifyFSLLead
+            }, {
+                url: '/customer/list', title: 'Customer List', url_c: 'View Customer List',
+                desc: 'View all registered customers!'
+            }, {
+                url: 'suppliers/create', title: 'Manage Supplier', url_c: 'Create/Update Supplier',
+                desc: 'Manage all the suppliers details!'
+            }, {
+                url: 'brands/create', title: 'Manage Brands', url_c: 'Create/Update Brands',
+                desc: 'Manage all the brands details!'
+            }, {
+                url: 'categories/create', title: 'Manage Categories', url_c: 'Create/Update Categories',
+                desc: 'Manage all the category details!'
+            }, {
+                url: 'products/create', title: 'Manage products', url_c: 'Create/Update products',
+                desc: 'Manage all the product details!'
             }]
         };
     }
@@ -164,7 +182,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b67afb58\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/HomePage.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-599c6738\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -183,7 +201,8 @@ var render = function() {
                 url: portal.url,
                 title: portal.title,
                 url_c: portal.url_c,
-                desc: portal.desc
+                desc: portal.desc,
+                aces: portal.aces
               }
             })
           ],
@@ -199,7 +218,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b67afb58", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-599c6738", module.exports)
   }
 }
 
@@ -284,15 +303,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/HRM/HomePage.vue":
+/***/ "./resources/assets/js/views/FSL/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/HomePage.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b67afb58\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-599c6738\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/HomePage.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -309,7 +328,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\HRM\\HomePage.vue"
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\HomePage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -318,9 +337,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b67afb58", Component.options)
+    hotAPI.createRecord("data-v-599c6738", Component.options)
   } else {
-    hotAPI.reload("data-v-b67afb58", Component.options)
+    hotAPI.reload("data-v-599c6738", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

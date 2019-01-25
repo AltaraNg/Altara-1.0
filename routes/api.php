@@ -13,15 +13,10 @@
 
 Route::post('/login', 'AuthController@login');
 Route::group(['middleware' => ['auth:api']], function () {
-   Route::get('/branch/create', 'BranchController@create');
    Route::get('/branches', 'BranchController@allBranches');
-   Route::post('/branch/{branch}', 'BranchController@update');
-   /*------*/
-   Route::get('/customer/create', 'CustomerController@create');
    Route::post('/customer/{customer}', 'CustomerController@update');
-   /*------*/
    Route::get('/user/getBranchUsers', 'UserController@getBranchUsers');
-   Route::apiResources([
+   Route::Resources([
       'log' => 'LogController',
       'user' => 'UserController',
       'bank' => 'BankController',

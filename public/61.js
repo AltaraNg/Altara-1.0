@@ -38,6 +38,7 @@ exports.default = {
 
       //2 send to the method in this component that will handle it when component is created
 
+
       //3. set the current mode of the form
       next(function (vm) {
          return vm.setMode(to.meta.mode);
