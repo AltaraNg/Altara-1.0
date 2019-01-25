@@ -113,43 +113,6 @@ const router = new VueRouter({
 router.mode = 'html5';
 router.afterEach(writeHistory);
 router.beforeEach((to, from, next) => {
-<<<<<<< HEAD
-    /*route access control*/
-    let home = (((to.path).split("/")).filter(Boolean)[0]).toUpperCase();
-    /* get the base for every route eg.
-    * :route : '/dsa/customer/register'
-    * : home will return 'DSA*/
-    if (to.matched.some(m => m.meta[home])) {
-        /*if home ('DSA in this case is matched')*/
-        if (store.getters['verify' + home + 'Access']) return next();
-        /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
-        * the method in store will return true if a user has access to the portal hence next();
-        * and false is a user don't have access hence error message and redirect to home*/
-        Flash.setError('You do not have access to that page!', 3000);
-        return next({name: 'home'});
-    }
-    /*else next will call the route for the all unknown path
-    * : the : 'NotFound'*/
-    next();
-
-
-    //check if the path user is going to is our param path
-    // if(from.meta.role == 11 || from.meta.role == 1){
-    // if( to.path != '/dsa' ||  to.path != '/customer/register' ||  to.path != '/dsa/home' ){
-    //     //check if the user item is already set
-    //         //move to the route
-    // 		next('/home');
-    // 		 //prompt for username
-    // 		 Flash.setError("DSAs are not allowed on this route");
-    //         }else{
-    //        //prompt for username
-    // 		 Flash.setSuccess("Welcome to the Admin");
-    //         //return, do not move to the route
-    // 	//	return;
-    // 		next();
-    // 		}
-    // }
-=======
    /*route access control*/
    let home = (((to.path).split("/")).filter(Boolean)[0]).toUpperCase();
    /* get the base for every route eg.
@@ -167,6 +130,5 @@ router.beforeEach((to, from, next) => {
    /*else next will call the route for the all unknown path
    * : the : 'NotFound'*/
    next();
->>>>>>> 5b66d6bd3124cd9c1e27808029b5045efc350129
 });
 export default router

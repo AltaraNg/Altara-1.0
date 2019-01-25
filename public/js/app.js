@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		26: 0
+/******/ 		0: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -1722,7 +1722,7 @@ module.exports = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+   value: true
 });
 
 var _auth = __webpack_require__("./resources/assets/js/store/auth.js");
@@ -1746,101 +1746,92 @@ var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: {
-        SideNav: _SideNav2.default,
-        Loader: _Loader2.default
-    },
-    data: function data() {
-        return {
-            flash: _flash2.default.state,
-            authState: _auth2.default.state
-        };
-    },
-    beforeCreate: function beforeCreate() {
-        _auth2.default.initialize();
-        /*if (localStorage.getItem("api_token")) {
-            this.$router.push("/home");
-            Flash.setSuccess("Welcome Back!");
+   components: {
+      SideNav: _SideNav2.default,
+      Loader: _Loader2.default
+   },
+   data: function data() {
+      return {
+         flash: _flash2.default.state,
+         authState: _auth2.default.state
+      };
+   },
+   beforeCreate: function beforeCreate() {
+      _auth2.default.initialize();
+      /*if (localStorage.getItem("api_token")) {
+          this.$router.push("/home");
+          Flash.setSuccess("Welcome Back!");
+      }*/
+      if (!localStorage.getItem("api_token")) {
+         _flash2.default.setError("You have to Login!");
+         this.$router.push("/login");
+      }
+   },
+   created: function created() {
+      var _this = this;
+
+      (0, _api.interceptors)(function (err) {
+         if (err.response.status === 401) {
+            _auth2.default.remove();
+            _this.$router.push("/login");
+         }
+         if (err.response.status === 500) _flash2.default.setError(err.response.statusText);
+         if (err.response.status === 404) _this.$router.push("/not-found");
+      });
+      window.addEventListener('load', function () {
+         _this.showStatus(navigator.onLine);
+         window.addEventListener('online', function () {
+            return _this.showStatus(true);
+         });
+         window.addEventListener('offline', function () {
+            return _this.showStatus(false);
+         });
+      });
+   },
+
+   computed: {
+      auth: function auth() {
+         return this.authState.api_token && this.authState.user_id;
+      },
+      guest: function guest() {
+         return !this.auth;
+      }
+   },
+   methods: {
+      logout: function logout() {
+         var _this2 = this;
+
+         if (this.$network()) {
+            this.$LIPS(true);
+            (0, _api.post)("/api/logout").then(function (res) {
+               if (res.data.logged_out) {
+                  _this2.$LIPS(false);
+                  _auth2.default.remove();
+                  _flash2.default.setSuccess("You have successfully logged out!");
+                  _this2.$router.push("/login");
+               }
+            });
+         } else this.$networkErr();
+      },
+      showStatus: function showStatus(online) {
+         online ? _flash2.default.setSuccess('you are connected to the internet!') : this.$networkErr();
+      },
+      clearFlash: function clearFlash() {
+         _flash2.default.removeMsg();
+      } /*,
+        async runQuery() {
+          try {
+             this.$LIPS(true);
+             const result = await get("/api/runQuery");
+             console.log(result);
+             this.$LIPS(false);
+          } catch (e) {
+             Flash.setError('Error Running query :(');
+          }
         }*/
-        if (!localStorage.getItem("api_token")) {
-            _flash2.default.setError("You have to Login!");
-            this.$router.push("/login");
-        }
-    },
-    created: function created() {
-        var _this = this;
 
-        (0, _api.interceptors)(function (err) {
-            if (err.response.status === 401) {
-                _auth2.default.remove();
-                _this.$router.push("/login");
-            }
-            if (err.response.status === 500) _flash2.default.setError(err.response.statusText);
-            if (err.response.status === 404) _this.$router.push("/not-found");
-        });
-        window.addEventListener('load', function () {
-            _this.showStatus(navigator.onLine);
-            window.addEventListener('online', function () {
-                return _this.showStatus(true);
-            });
-            window.addEventListener('offline', function () {
-                return _this.showStatus(false);
-            });
-        });
-    },
-
-    computed: {
-        auth: function auth() {
-            return this.authState.api_token && this.authState.user_id;
-        },
-        guest: function guest() {
-            return !this.auth;
-        }
-    },
-    methods: {
-        logout: function logout() {
-            var _this2 = this;
-
-            if (this.$network()) {
-                this.$LIPS(true);
-                (0, _api.post)("/api/logout").then(function (res) {
-                    if (res.data.logged_out) {
-                        _this2.$LIPS(false);
-                        _auth2.default.remove();
-                        _flash2.default.setSuccess("You have successfully logged out!");
-                        _this2.$router.push("/login");
-                    }
-                });
-            } else this.$networkErr();
-        },
-        showStatus: function showStatus(online) {
-            online ? _flash2.default.setSuccess('you are connected to the internet!') : this.$networkErr();
-        },
-        clearFlash: function clearFlash() {
-            _flash2.default.removeMsg();
-        } /*,
-          async runQuery() {
-             try {
-                 this.$LIPS(true);
-                 const result = await get("/api/runQuery");
-                 console.log(result);
-                 this.$LIPS(false);
-             } catch (e) {
-                 Flash.setError('Error Running query :(');
-             }
-          }*/
-
-    }
+   }
 }; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -28594,12 +28585,12 @@ var render = function() {
                           {
                             staticClass: "navbar-toggler navbar-toggler-right",
                             attrs: {
-                              type: "button",
+                              "aria-controls": "navigation-index",
                               "aria-expanded": "false",
-                              "data-toggle": "collapse",
-                              "data-target": "#navigation",
                               "aria-label": "Toggle navigation",
-                              "aria-controls": "navigation-index"
+                              "data-target": "#navigation",
+                              "data-toggle": "collapse",
+                              type: "button"
                             }
                           },
                           [_c("i", { staticClass: "fas fa-bars" })]
@@ -28629,9 +28620,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", { staticClass: "fas fa-home pr-1" }),
-                                  _vm._v(
-                                    " Home\n                                "
-                                  )
+                                  _vm._v(" Home")
                                 ]
                               )
                             ],
@@ -28645,10 +28634,10 @@ var render = function() {
                                   {
                                     staticClass: "nav-link dropdown-toggle",
                                     attrs: {
-                                      id: "menu",
-                                      "data-toggle": "dropdown",
+                                      "aria-expanded": "false",
                                       "aria-haspopup": "true",
-                                      "aria-expanded": "false"
+                                      "data-toggle": "dropdown",
+                                      id: "menu"
                                     }
                                   },
                                   [
@@ -28663,7 +28652,7 @@ var render = function() {
                                             _vm.authState.user_name
                                           )
                                         ) +
-                                        "\n                                "
+                                        "\n                        "
                                     )
                                   ]
                                 ),
@@ -28687,7 +28676,7 @@ var render = function() {
                                             "now-ui-icons ui-1_settings-gear-63 pr-1"
                                         }),
                                         _vm._v(
-                                          " My Profile\n                                    "
+                                          " My Profile\n                           "
                                         )
                                       ]
                                     ),
@@ -28709,7 +28698,7 @@ var render = function() {
                                             "now-ui-icons media-1_button-power pr-1"
                                         }),
                                         _vm._v(
-                                          " Logout\n                                "
+                                          " Logout\n                           "
                                         )
                                       ]
                                     )
@@ -28745,13 +28734,13 @@ var render = function() {
                         _vm._v(
                           " " +
                             _vm._s(_vm.flash.success) +
-                            "\n                        "
+                            "\n                  "
                         ),
                         _c(
                           "button",
                           {
                             staticClass: "close",
-                            attrs: { type: "button", "aria-label": "Close" },
+                            attrs: { "aria-label": "Close", type: "button" },
                             on: { click: _vm.clearFlash }
                           },
                           [
@@ -28788,15 +28777,13 @@ var render = function() {
                           _vm._v("Oops!")
                         ]),
                         _vm._v(
-                          " " +
-                            _vm._s(_vm.flash.error) +
-                            "\n                        "
+                          " " + _vm._s(_vm.flash.error) + "\n                  "
                         ),
                         _c(
                           "button",
                           {
                             staticClass: "close",
-                            attrs: { type: "button", "aria-label": "Close" },
+                            attrs: { "aria-label": "Close", type: "button" },
                             on: { click: _vm.clearFlash }
                           },
                           [
@@ -43956,6 +43943,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.get = get;
 exports.post = post;
+exports.byMethod = byMethod;
 exports.postD = postD;
 exports.del = del;
 exports.interceptors = interceptors;
@@ -43979,16 +43967,28 @@ function get(url) {
         }
     });
 }
-function post(url, payload) {
+function post(url, data) {
     return (0, _axios2.default)({
         method: 'POST',
         url: url,
-        data: payload,
+        data: data,
         headers: {
             'Authorization': 'Bearer ' + _auth2.default.state.api_token
         }
     });
 }
+
+function byMethod(method, url, data) {
+    return (0, _axios2.default)({
+        method: method,
+        url: url,
+        data: data,
+        headers: {
+            'Authorization': 'Bearer ' + _auth2.default.state.api_token
+        }
+    });
+}
+
 function postD(url, payload) {
     return (0, _axios2.default)({
         method: 'POST',
@@ -44308,7 +44308,7 @@ function debounce(func, wait, immediate) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+   value: true
 });
 
 var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
@@ -44330,195 +44330,146 @@ var _vueRouterBackButton = __webpack_require__("./node_modules/vue-router-back-b
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
-    return __webpack_require__.e/* import() */(46).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
+   return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
 };
 
 var Login = function Login() {
-    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
+   return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
 };
 
 var NotFound = function NotFound() {
-    return __webpack_require__.e/* import() */(50).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
+   return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
 };
 
 var DSA = function DSA() {
-    return __webpack_require__.e/* import() */(43).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
+   return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
 };
 var DSAHome = function DSAHome() {
-    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
+   return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
 };
 var DSAReport = function DSAReport() {
-    return __webpack_require__.e/* import() */(52).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
-};
-var CaptainReport = function CaptainReport() {
-    return __webpack_require__.e/* import() */(53).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/captain.vue"));
+   return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
 };
 
 var CustomerList = function CustomerList() {
-    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/components/CustomerList.vue"));
+   return __webpack_require__.e/* import() */(5).then(__webpack_require__.bind(null, "./resources/assets/js/components/CustomerList.vue"));
 };
 var CustomerUpdate = function CustomerUpdate() {
-    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/utility/form.vue"));
+   return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/utility/form.vue"));
 };
 var CustomerProfileFull = function CustomerProfileFull() {
-    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/components/CustomerProfileFull.vue"));
+   return __webpack_require__.e/* import() */(4).then(__webpack_require__.bind(null, "./resources/assets/js/components/CustomerProfileFull.vue"));
 };
 var CustomerRegister = function CustomerRegister() {
-    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/registration/Register.vue"));
+   return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/registration/Register.vue"));
 };
 
 var DVA = function DVA() {
-    return __webpack_require__.e/* import() */(42).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
+   return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
 };
 var DVAHome = function DVAHome() {
-    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
+   return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
 };
 var DVAMessage = function DVAMessage() {
-    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
+   return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
 };
 var DVAVerification = function DVAVerification() {
-    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
+   return __webpack_require__.e/* import() */(3).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
 };
 
 var Profile = function Profile() {
-    return __webpack_require__.e/* import() */(47).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
+   return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
 };
 var ProfileEdit = function ProfileEdit() {
-    return __webpack_require__.e/* import() */(49).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
+   return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
 };
 var ProfileHome = function ProfileHome() {
-    return __webpack_require__.e/* import() */(48).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
+   return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
 };
 
 var HRM = function HRM() {
-    return __webpack_require__.e/* import() */(40).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
+   return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
 };
 var HRMHome = function HRMHome() {
-    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
+   return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
 };
 var EmployeeManager = function EmployeeManager() {
-    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/Manager.vue"));
+   return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/Manager.vue"));
 };
 var EmployeeRegister = function EmployeeRegister() {
-    return __webpack_require__.e/* import() */(44).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/Register.vue"));
+   return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/Register.vue"));
 };
 
 var FSL = function FSL() {
-    return __webpack_require__.e/* import() */(41).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
+   return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
 };
 var FSLHome = function FSLHome() {
-    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
+   return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
 };
-var BranchCreate = function BranchCreate() {
-    return __webpack_require__.e/* import() */(45).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/create.vue"));
+var Branch = function Branch() {
+   return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/branches.vue"));
 };
-var BranchUpdate = function BranchUpdate() {
-    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/update.vue"));
+var BranchForm = function BranchForm() {
+   return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
 };
 var Inventory = function Inventory() {
-    return __webpack_require__.e/* import() */(51).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/inventory/inventory.vue"));
+   return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/inventory/inventory.vue"));
+};
+var SuppliersForm = function SuppliersForm() {
+   return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/supplier/form.vue"));
+};
+var BrandForm = function BrandForm() {
+   return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/brand/form.vue"));
+};
+var CategoryForm = function CategoryForm() {
+   return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/category/form.vue"));
+};
+var ProductForm = function ProductForm() {
+   return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/product/form.vue"));
 };
 
 _vue2.default.use(_vueRouter2.default);
 _vue2.default.use(_vueRouterBackButton.routerHistory);
 var router = new _vueRouter2.default({
-    hashbang: false,
-    history: true,
-    linkActiveClass: 'active',
-    mode: 'history',
-    routes: [{ path: '/', redirect: { name: 'home' } }, {
-        path: '/home',
-        component: Home,
-        name: 'home',
-        meta: { role: localStorage.getItem("role_id") },
-        alias: '/welcome-home'
-    }, { path: '/login', component: Login, name: 'login' }, {
-        path: '/user', component: Profile,
-        children: [{ path: 'profile', component: ProfileHome }, { path: 'profile/edit', component: ProfileEdit }]
-    }, {
-        path: '/dsa', component: DSA, meta: { DSA: true },
-        children: [{ path: '/', redirect: { name: 'DSAHome' } }, { path: 'home', component: DSAHome, name: 'DSAHome', alias: '/dsa-home' }, { path: 'report', component: DSAReport, name: 'DSAReport', alias: '/dsa-report' }, { path: 'report/captain', component: CaptainReport, name: 'CaptainReport', alias: '/captain-report' }, {
-            path: 'customer/register',
-            component: CustomerRegister,
-            name: 'customerRegister',
-            alias: '/register-customer'
-        }, {
-            path: 'customer/update',
-            component: CustomerUpdate,
-            name: 'DSACustomerUpdate',
-            alias: '/dsa-update-customer'
-        }]
-    }, {
-        path: '/dva', component: DVA, meta: { DVA: true },
-        children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: DVAHome, name: 'DVAHome', alias: '/dva-home' }, { path: 'message', component: DVAMessage, name: 'DVAMessage', alias: '/dva-message' }, {
-            path: 'customer/update',
-            component: CustomerUpdate,
-            name: 'DVACustomerUpdate',
-            alias: '/dva-update-customer'
-        }, { path: 'verification', component: DVAVerification, name: 'DVAVerification', alias: '/dva-verification' }]
-    }, {
-        path: '/hrm', component: HRM, meta: { HRM: true },
-        children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: HRMHome, name: 'HRMHome', alias: '/hrm-home' }, {
-            path: 'employee/register',
-            component: EmployeeRegister,
-            name: 'employeeRegister',
-            alias: '/register-employee'
-        }, {
-            path: 'employee/manager',
-            component: EmployeeManager,
-            name: 'employeeManager',
-            alias: '/manage-employee'
-        }]
-    }, {
-        path: '/fsl', component: FSL, meta: { FSL: true },
-        children: [{ path: 'home', component: FSLHome, name: 'FSLHome', alias: '/fsl-home' }, { path: 'inventory', component: Inventory, name: 'inventory', alias: '/inventory' }, { path: 'branch/create', component: BranchCreate, name: 'branchCreate', alias: '/branch-create' }, { path: 'branch/update', component: BranchUpdate, name: 'branchUpdate', alias: '/branch-update' }]
-    }, { path: '/customer/list', component: CustomerList, name: 'customerList', alias: '/register-list' }, {
-        path: '/customer/:id',
-        component: CustomerProfileFull,
-        name: 'customerProfileFull',
-        alias: '/customer-profile-full'
-    }, { path: '/not-found', component: NotFound }, { path: '*', component: NotFound }]
+   hashbang: false,
+   history: true,
+   linkActiveClass: 'active',
+   mode: 'history',
+   routes: [{ path: '/', redirect: { name: 'home' } }, { path: '/home', component: Home, name: 'home', meta: { role: localStorage.getItem("role_id") } }, { path: '/login', component: Login, name: 'login' }, {
+      path: '/user', component: Profile, children: [{ path: 'profile', component: ProfileHome }, { path: 'profile/edit', component: ProfileEdit }]
+   }, {
+      path: '/dsa', component: DSA, meta: { DSA: true }, children: [{ path: '/', redirect: { name: 'DSAHome' } }, { path: 'home', component: DSAHome, name: 'DSAHome' }, { path: 'report', component: DSAReport, name: 'DSAReport' }, { path: 'customer/register', component: CustomerRegister, name: 'customerRegister' }, { path: 'customer/update', component: CustomerUpdate, name: 'DSACustomerUpdate' }]
+   }, {
+      path: '/dva', component: DVA, meta: { DVA: true }, children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: DVAHome, name: 'DVAHome' }, { path: 'message', component: DVAMessage, name: 'DVAMessage' }, { path: 'customer/update', component: CustomerUpdate, name: 'DVACustomerUpdate' }, { path: 'verification', component: DVAVerification, name: 'DVAVerification' }]
+   }, {
+      path: '/hrm', component: HRM, meta: { HRM: true }, children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: HRMHome, name: 'HRMHome' }, { path: 'employee/manager', component: EmployeeManager, name: 'employeeManager' }, { path: 'employee/register', component: EmployeeRegister, name: 'employeeRegister' }]
+   }, {
+      path: '/fsl', component: FSL, meta: { FSL: true }, children: [{ path: 'home', component: FSLHome, name: 'FSLHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, { path: 'branch', component: Branch, name: 'branch' }, { path: 'branch/:id/edit', component: BranchForm, name: 'branchEdit', meta: { mode: 'edit' } }, { path: 'branch/create', component: BranchForm, name: 'branchCreate', meta: { mode: 'create' } }, { path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: { mode: 'edit' } }, { path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: { mode: 'create' } }, { path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: { mode: 'edit' } }, { path: 'products/create', component: ProductForm, name: 'productCreate', meta: { mode: 'create' } }, { path: 'categories/:id/edit', component: CategoryForm, name: 'categoryEdit', meta: { mode: 'edit' } }, { path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: { mode: 'create' } }, { path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: { mode: 'edit' } }, { path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: { mode: 'create' } }]
+   }, { path: '/customer/list', component: CustomerList, name: 'customerList' }, { path: '/customer/:id', component: CustomerProfileFull, name: 'customerProfileFull' }, { path: '/not-found', component: NotFound }, { path: '*', component: NotFound }]
 });
 
 router.mode = 'html5';
 router.afterEach(_vueRouterBackButton.writeHistory);
 router.beforeEach(function (to, from, next) {
-    /*route access control*/
-    var home = to.path.split("/").filter(Boolean)[0].toUpperCase();
-    /* get the base for every route eg.
-    * :route : '/dsa/customer/register'
-    * : home will return 'DSA*/
-    if (to.matched.some(function (m) {
-        return m.meta[home];
-    })) {
-        /*if home ('DSA in this case is matched')*/
-        if (_store.store.getters['verify' + home + 'Access']) return next();
-        /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
-        * the method in store will return true if a user has access to the portal hence next();
-        * and false is a user don't have access hence error message and redirect to home*/
-        _flash2.default.setError('You do not have access to that page!', 3000);
-        return next({ name: 'home' });
-    }
-    /*else next will call the route for the all unknown path
-    * : the : 'NotFound'*/
-    next();
-
-    //check if the path user is going to is our param path
-    // if(from.meta.role == 11 || from.meta.role == 1){
-    // if( to.path != '/dsa' ||  to.path != '/customer/register' ||  to.path != '/dsa/home' ){
-    //     //check if the user item is already set
-    //         //move to the route
-    // 		next('/home');
-    // 		 //prompt for username
-    // 		 Flash.setError("DSAs are not allowed on this route");
-    //         }else{
-    //        //prompt for username
-    // 		 Flash.setSuccess("Welcome to the Admin");
-    //         //return, do not move to the route
-    // 	//	return;
-    // 		next();
-    // 		}
-    // }
+   /*route access control*/
+   var home = to.path.split("/").filter(Boolean)[0].toUpperCase();
+   /* get the base for every route eg.
+   * :route : '/dsa/customer/register'
+   * : home will return 'DSA*/
+   if (to.matched.some(function (m) {
+      return m.meta[home];
+   })) {
+      /*if home ('DSA in this case is matched')*/
+      if (_store.store.getters['verify' + home + 'Access']) return next();
+      /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
+      * the method in store will return true if a user has access to the portal hence next();
+      * and false is a user don't have access hence error message and redirect to home*/
+      _flash2.default.setError('You do not have access to that page!', 3000);
+      return next({ name: 'home' });
+   }
+   /*else next will call the route for the all unknown path
+   * : the : 'NotFound'*/
+   next();
 });
 exports.default = router;
 
@@ -44764,7 +44715,7 @@ _vue2.default.prototype.$editAccess = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+   value: true
 });
 exports.store = undefined;
 
@@ -44782,86 +44733,91 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vuex2.default);
 var store = exports.store = new _vuex2.default.Store({
-    state: {
-        states: null,
-        branches: null,
-        lifestyleBranches: [8] /*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/
-        , loader: false,
-        ProfileAccess: [],
-        ProfileEditAccess: [],
-        DSALead: [1, 2, 8, 9, 15],
-        DSACaptain: [1, 2, 8, 9, 15, 17],
-        DSAAccess: [1, 2, 8, 9, 15, 17, 18],
-        DVALead: [1, 2, 8, 9, 13, 16],
-        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
-        HRMAccess: [1, 2, 6, 7, 8, 9],
-        FSLLead: [1, 2, 8, 9, 11],
-        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
-        authRole: parseInt(localStorage.getItem('role')),
-        api_token: localStorage.getItem('api_token')
-    },
-    getters: {
-        getStates: function getStates(state) {
-            return state.states;
-        },
-        getBranches: function getBranches(state) {
-            return state.branches;
-        },
-        getProfileAccess: function getProfileAccess(state) {
-            return state.ProfileAccess;
-        },
-        getProfileEditAccess: function getProfileEditAccess(state) {
-            return state.ProfileEditAccess;
-        },
-        verifyDSALead: function verifyDSALead(state) {
-            return state.DSALead.includes(state.authRole);
-        },
-        verifyFSLLead: function verifyFSLLead(state) {
-            return state.FSLLead.includes(state.authRole);
-        },
-        verifyDSAAccess: function verifyDSAAccess(state) {
-            return state.DSAAccess.includes(state.authRole) && state.api_token;
-        },
-        verifyDVAAccess: function verifyDVAAccess(state) {
-            return state.DVAAccess.includes(state.authRole) && state.api_token;
-        },
-        verifyHRMAccess: function verifyHRMAccess(state) {
-            return state.HRMAccess.includes(state.authRole) && state.api_token;
-        },
-        verifyFSLAccess: function verifyFSLAccess(state) {
-            return state.FSLAccess.includes(state.authRole) && state.api_token;
-        }
-    },
-    mutations: {
-        mutateAuth: function mutateAuth(state) {
-            _vue2.default.set(state, 'api_token', localStorage.getItem('api_token'));
-            _vue2.default.set(state, 'authRole', parseInt(localStorage.getItem('role')));
-        },
-        mutateStates: function mutateStates(state, states) {
-            return _vue2.default.set(state, 'states', states);
-        },
-        mutateBranches: function mutateBranches(state, branches) {
-            return _vue2.default.set(state, 'branches', branches);
-        },
-        mutateProfileAccess: function mutateProfileAccess(state, payload) {
-            return state.ProfileAccess.push(payload);
-        }
+   state: {
+      states: null,
+      branches: null,
+      lifestyleBranches: [8] /*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/
+      , loader: false,
+      ProfileAccess: [],
+      ProfileEditAccess: [],
+      DSALead: [1, 2, 8, 9, 15],
+      DSACaptain: [1, 2, 8, 9, 15, 17],
+      DSAAccess: [1, 2, 8, 9, 15, 17, 18],
+      DVALead: [1, 2, 8, 9, 13, 16],
+      DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
+      HRMAccess: [1, 2, 6, 7, 8, 9],
+      FSLLead: [1, 2, 8, 9, 11],
+      FSLAccess: [1, 2, 8, 9, 11, 14, 19],
+      authRole: parseInt(localStorage.getItem('role')),
+      api_token: localStorage.getItem('api_token'),
+      user_id: localStorage.getItem('user_id')
+   },
+   getters: {
+      getStates: function getStates(state) {
+         return state.states;
+      },
+      getBranches: function getBranches(state) {
+         return state.branches;
+      },
+      getProfileAccess: function getProfileAccess(state) {
+         return state.ProfileAccess;
+      },
+      getProfileEditAccess: function getProfileEditAccess(state) {
+         return state.ProfileEditAccess;
+      },
+      verifyFSLLead: function verifyFSLLead(state) {
+         return state.FSLLead.includes(state.authRole);
+      },
+      verifyDSALead: function verifyDSALead(state) {
+         return state.DSALead.includes(state.authRole);
+      },
+      verifyDSACaptain: function verifyDSACaptain(state) {
+         return state.DSACaptain.includes(state.authRole);
+      },
+      verifyDSAAccess: function verifyDSAAccess(state) {
+         return state.DSAAccess.includes(state.authRole) && state.api_token;
+      },
+      verifyDVAAccess: function verifyDVAAccess(state) {
+         return state.DVAAccess.includes(state.authRole) && state.api_token;
+      },
+      verifyHRMAccess: function verifyHRMAccess(state) {
+         return state.HRMAccess.includes(state.authRole) && state.api_token;
+      },
+      verifyFSLAccess: function verifyFSLAccess(state) {
+         return state.FSLAccess.includes(state.authRole) && state.api_token;
+      }
+   },
+   mutations: {
+      mutateAuth: function mutateAuth(state) {
+         _vue2.default.set(state, 'authRole', parseInt(localStorage.getItem('role')));
+         _vue2.default.set(state, 'api_token', localStorage.getItem('api_token'));
+         _vue2.default.set(state, 'user_id', localStorage.getItem('user_id'));
+      },
+      mutateStates: function mutateStates(state, states) {
+         return _vue2.default.set(state, 'states', states);
+      },
+      mutateBranches: function mutateBranches(state, branches) {
+         return _vue2.default.set(state, 'branches', branches);
+      },
+      mutateProfileAccess: function mutateProfileAccess(state, payload) {
+         return state.ProfileAccess.push(payload);
+      }
 
-    },
-    actions: {
-        mutateAuth: function mutateAuth(context) {
-            return context.commit('mutateAuth');
-        },
-        mutateStates: function mutateStates(context, states) {
-            return context.commit('mutateStates', states);
-        },
-        mutateBranches: function mutateBranches(context, branches) {
-            return context.commit('mutateBranches', branches);
-        },
-        mutateProfileAccess: function mutateProfileAccess(context, payload) {
-            return context.commit('mutateProfileAccess', payload);
-        }
-    }
+   },
+   actions: {
+      mutateAuth: function mutateAuth(context) {
+         return context.commit('mutateAuth');
+      },
+      mutateStates: function mutateStates(context, states) {
+         return context.commit('mutateStates', states);
+      },
+      mutateBranches: function mutateBranches(context, branches) {
+         return context.commit('mutateBranches', branches);
+      },
+      mutateProfileAccess: function mutateProfileAccess(context, payload) {
+         return context.commit('mutateProfileAccess', payload);
+      }
+   }
 });
 
 /***/ }),

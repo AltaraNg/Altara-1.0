@@ -37,54 +37,6 @@
    import {post} from '../../../helpers/api';
    import Flash from '../../../helpers/flash';
 
-<<<<<<< HEAD
-    export default {
-        data() {
-            return {
-                contacts: '',
-                sentData: {},
-                form: {}
-            }
-        },
-        methods: {
-            sendMessage() {
-                this.$validator.validateAll().then(async result => {
-                    if (result) {
-                        if (this.$network()) {
-                            this.$LIPS(true);
-                            let contacts = this.contacts.split(",").filter(str => /\S/.test(str));
-                            contacts.forEach(el => {
-                                this.sentData.phone = el.trim().substr(1);
-                                SMS.dvaMessage(this.sentData);
-                            });
-                            this.done(contacts);
-                        } else this.$networkErr();
-                    }else this.$networkErr('form');
-                });
-            },
-            done(contacts) {
-                this.$LIPS(false);
-                Flash.setSuccess('Messages sent!');
-                this.form.contacts = contacts;
-                this.form.contact_count = contacts.length;
-                this.form.message = this.sentData.message;
-                this.form.pages = Math.trunc(this.form.message.length / 160);
-                let remaining = this.form.message.length % 160;
-                // Pages 
-                this.form.pages >= 1 ? (this.form.pages += this.remaining == 0 ? 0 : 1) : this.form.pages++
-                post('/api/message', this.form).then(res => this.resetData());
-            },
-            resetData() {
-                this.contacts = '';
-                this.sentData = {message: '', phone: ''};
-                this.form = {pages: 0, user_id: '', message: '', contacts: [], contact_count: 0};
-            },
-        },
-        created() {
-            this.resetData();
-        }
-    }
-=======
    export default {
       data() {
          return {
@@ -130,7 +82,6 @@
          this.resetData();
       }
    }
->>>>>>> 5b66d6bd3124cd9c1e27808029b5045efc350129
 </script>
 
 <style lang="scss" scoped>
