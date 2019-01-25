@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 webpackJsonp([21],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/profile/HomePage.vue":
@@ -98,3 +99,6 @@ module.exports = Component.exports
 /***/ })
 
 });
+=======
+webpackJsonp([21],{RXsi:function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var o=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var o in r)Object.prototype.hasOwnProperty.call(r,o)&&(e[o]=r[o])}return e},s=r("NYxO"),n=i(r("qYF3")),a=i(r("TOoT"));function i(e){return e&&e.__esModule?e:{default:e}}t.default={data:function(){return{Auth:n.default.state}},computed:o({},(0,s.mapGetters)(["getProfileAccess"])),methods:o({},(0,s.mapActions)([])),beforeCreate:function(){var e=parseInt(localStorage.getItem("role"));this.$store.dispatch("mutateProfileAccess",e),-1!==this.$store.state.ProfileAccess.indexOf(e)||localStorage.getItem("api_token")||(a.default.setError("You do not have access to that page!"),this.$router.push("/login"))}}},dgKe:function(e,t,r){var o=r("VU/8")(r("RXsi"),r("iiI2"),!1,null,null,null);e.exports=o.exports},iiI2:function(e,t){e.exports={render:function(){var e=this.$createElement,t=this._self._c||e;return t("div",{attrs:{id:"profile-view"}},[t("router-view")],1)},staticRenderFns:[]}}});
+>>>>>>> 5b66d6bd3124cd9c1e27808029b5045efc350129
