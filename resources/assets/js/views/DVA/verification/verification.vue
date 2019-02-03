@@ -722,28 +722,6 @@
         padding : .4rem 1.5rem;
     }
 
-    .upload {
-        &-image {
-            min-height      : 20rem;
-            min-width       : 20rem;
-            margin          : 0 auto;
-            background      : #fafafa;
-            border          : 1px dashed rgba(0, 0, 0, 0.1);
-            display         : flex;
-            justify-content : center;
-            align-items     : center;
-        }
-        &-box {
-            padding : 1rem;
-        }
-        &-close {
-            position : absolute;
-            right    : 0;
-            top      : 0;
-        }
-    }
-
-
     .verification {
         .card-stats .icon {
             margin : 0 1.5rem;

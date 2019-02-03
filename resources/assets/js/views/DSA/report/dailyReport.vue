@@ -237,8 +237,7 @@
          /*get(`/api/user/${this.$store.state.user_id}`)
             .then(res => this.report.branch = res.data.user.branch);*/
          this.initForm();
-         get(`/api/user/getBranchUsers`)
-            .then(res => this.users = res.data.DSAs);
+         get(`/api/user/getBranchUsers`).then(res => this.users = res.data.DSAs);
 
          /** set the branch for the daily report form to the current users branch.
           * This is to reduce the time the user spend on selecting

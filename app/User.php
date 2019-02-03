@@ -50,7 +50,12 @@ class User extends Authenticatable
          'date_of_birth' => '',
          'nationality' => '',
          'next_of_kin_name' => '',
-         'next_of_kin_phone_no' => ''
+         'next_of_kin_phone_no' => '',
+         'guarantor_name' => '',
+         'guarantor_phone_no' => '',
+         'guarantor_address' => '',
+         'guarantor_relationship' => '',
+         'cv' => '',
       ];
    }
 
@@ -109,9 +114,19 @@ class User extends Authenticatable
       return $this->hasMany(Supplier::class);
    }
 
+   public function productsAdded()
+   {
+      return $this->hasMany(Product::class, 'user_id', 'id');
+   }
+
    public function productsSold()
    {
-      return $this->hasMany(Product::class);
+      return $this->hasMany(Product::class, 'sold_by', 'id');
+   }
+
+   public function productsReceived()
+   {
+      return $this->hasMany(Product::class, 'received_by', 'id');
    }
 
 }
