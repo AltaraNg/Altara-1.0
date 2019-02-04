@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 webpackJsonp([11],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue":
@@ -44,7 +43,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65,16 +64,25 @@ exports.default = {
     data: function data() {
         return {
             portals: [{
-                url: 'verification', title: 'Document Verification', url_c: 'Verify Registered Customer!',
-                desc: 'For Verification of registered customers'
+                url: 'customer/register',
+                title: 'Customer Registration',
+                url_c: 'Register new customer now!',
+                desc: 'Registering new customers'
             }, {
-                url: 'customer/update', title: 'Customer Update', url_c: 'Update customers details!',
-                desc: 'For Updating existing customers details'
+                url: 'customer/update',
+                title: 'Customer Update',
+                url_c: 'Update customers details!',
+                desc: 'Updating customers details'
             }, {
-                url: 'message', title: 'Messaging', url_c: 'Send messages!',
-                desc: 'For sending messages to customers'
+                url: 'report/',
+                title: 'Sales Reporting',
+                url_c: 'Get Reports',
+                desc: 'Real time DSA reports!',
+                aces: this.$store.getters.verifyDSACaptain
             }, {
-                url: '/customer/list', title: 'Customer List', url_c: 'View Customer List',
+                url: '/customer/list',
+                title: 'Customer List',
+                url_c: 'View Customer List',
                 desc: 'View all registered customers!'
             }]
         };
@@ -103,47 +111,6 @@ exports.push([module.i, "\n.portal-card {\n  -webkit-transition: all .2s;\n  tra
 
 // exports
 
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20f97f30\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/HomePage.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "fade" } }, [
-    _c(
-      "div",
-      _vm._l(_vm.portals, function(portal) {
-        return _c(
-          "div",
-          [
-            _c("portal-card", {
-              attrs: {
-                url: portal.url,
-                title: portal.title,
-                url_c: portal.url_c,
-                desc: portal.desc
-              }
-            })
-          ],
-          1
-        )
-      })
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-20f97f30", module.exports)
-  }
-}
 
 /***/ }),
 
@@ -207,6 +174,48 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-28781233", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3c1dfcb6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/HomePage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      _vm._l(_vm.portals, function(portal) {
+        return _c(
+          "div",
+          [
+            _c("portal-card", {
+              attrs: {
+                url: portal.url,
+                title: portal.title,
+                url_c: portal.url_c,
+                desc: portal.desc,
+                aces: portal.aces
+              }
+            })
+          ],
+          1
+        )
+      })
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3c1dfcb6", module.exports)
   }
 }
 
@@ -291,15 +300,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/DVA/HomePage.vue":
+/***/ "./resources/assets/js/views/DSA/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/HomePage.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20f97f30\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3c1dfcb6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/HomePage.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -316,7 +325,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\HomePage.vue"
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\HomePage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -325,9 +334,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-20f97f30", Component.options)
+    hotAPI.createRecord("data-v-3c1dfcb6", Component.options)
   } else {
-    hotAPI.reload("data-v-20f97f30", Component.options)
+    hotAPI.reload("data-v-3c1dfcb6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -340,6 +349,3 @@ module.exports = Component.exports
 /***/ })
 
 });
-=======
-webpackJsonp([11],{"70mC":function(t,e,r){var a=r("VU/8")(r("Z++X"),r("RSR4"),!1,null,null,null);t.exports=a.exports},"K5f/":function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default={props:{title:"",desc:"",url:"",url_c:"",aces:{default:!0}}}},RLQk:function(t,e,r){var a=r("tpSG");"string"==typeof a&&(a=[[t.i,a,""]]),a.locals&&(t.exports=a.locals);r("rjj0")("784a5460",a,!0,{})},RSR4:function(t,e){t.exports={render:function(){var t=this.$createElement,e=this._self._c||t;return e("transition",{attrs:{name:"fade"}},[e("div",this._l(this.portals,function(t){return e("div",[e("portal-card",{attrs:{url:t.url,title:t.title,url_c:t.url_c,desc:t.desc,aces:t.aces}})],1)}))])},staticRenderFns:[]}},"Z++X":function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var a,o=r("mdxA"),s=(a=o)&&a.__esModule?a:{default:a};e.default={components:{PortalCard:s.default},data:function(){return{portals:[{url:"customer/register",title:"Customer Registration",url_c:"Register new customer now!",desc:"Registering new customers"},{url:"customer/update",title:"Customer Update",url_c:"Update customers details!",desc:"Updating customers details"},{url:"report/",title:"Sales Reporting",url_c:"Get Reports",desc:"Real time DSA reports!",aces:this.$store.getters.verifyDSACaptain},{url:"/customer/list",title:"Customer List",url_c:"View Customer List",desc:"View all registered customers!"}]}}}},jIGj:function(t,e){t.exports={render:function(){var t=this,e=t.$createElement,r=t._self._c||e;return t.aces?r("div",{staticClass:"col-md-4 col-sm-6 float-left product p-4"},[r("div",{staticClass:"portal-card clearfix"},[r("div",{staticClass:"first portion clearfix"},[r("span",{staticClass:"deco"}),r("span",{staticClass:"deco second"}),t._v(" "),r("span",{staticClass:"portal-title"},[t._v(t._s(t._f("capitalize")(t.title)))])]),t._v(" "),r("div",{staticClass:"portion clearfix"},[r("p",[t._v(t._s(t._f("capitalize")(t.desc)))]),t._v(" "),r("h6",{staticStyle:{"margin-top":"2rem"}},[t._v(t._s(t._f("capitalize")(t.url_c)))]),t._v(" "),r("span",{staticClass:"deco-down first"}),t._v(" "),r("span",{staticClass:"deco-down second"},[r("router-link",{staticClass:"btn bg-default btn-round m-0",attrs:{to:t.url}},[t._v("\n                   continue "),r("span",{staticClass:"custom-icon ml-2"},[r("i",{staticClass:"now-ui-icons ui-1_send"})])])],1)])])]):t._e()},staticRenderFns:[]}},mdxA:function(t,e,r){var a=r("VU/8")(r("K5f/"),r("jIGj"),!1,function(t){r("RLQk")},null,null);t.exports=a.exports},tpSG:function(t,e,r){(t.exports=r("FZ+f")(!1)).push([t.i,".portal-card{-webkit-transition:all .2s;transition:all .2s;-webkit-box-shadow:0 5px 25px 0 rgba(0,0,0,.2);box-shadow:0 5px 25px 0 rgba(0,0,0,.2);border-radius:.7rem;overflow:hidden}.portal-card:hover{-webkit-transform:scale(1.02);transform:scale(1.02)}.portal-card p{font-size:1.7rem;font-weight:300}.portal-card .portion{background-color:#fff;position:relative;padding:3rem}.portal-card .portion.first{border-bottom:1px solid #ebebeb;background:linear-gradient(30deg,#ebebeb,#f5f5f5)}.portal-card .portal-title{color:#074a74;font-size:20px;padding-top:1.5rem;float:left}.portal-card .deco{position:absolute;top:4rem;width:7rem;height:.3rem;left:3rem;border-radius:4rem;background-color:#074a74}.portal-card .deco.second{left:10.5rem;background-color:#fe5a11}.portal-card .deco-down{position:absolute;z-index:10;bottom:-1px;background:linear-gradient(30deg,#ebebeb,#f5f5f5)}.portal-card .deco-down.first{height:.5rem;width:100%;left:0;border-top:1px solid #ebebeb}.portal-card .deco-down.second{width:45%;-webkit-transform:skewX(-35deg);transform:skewX(-35deg);right:-2rem;border-radius:.5rem 0 0 0;border:1px solid #ebebeb;padding:1.2rem 1rem}.portal-card a{-webkit-transform:translateX(20%) skewX(35deg);transform:translateX(20%) skewX(35deg)}@media (max-width:990px){.portal-card .portion{padding:2rem 2.5rem}.portal-card .deco{top:3rem;height:.2rem;left:2.5rem}.portal-card .deco.second{left:10rem}.portal-card .deco-down.second{padding:.8rem .5rem}.portal-card a{padding:8px 16px;-webkit-transform:translateX(14%) skewX(35deg);transform:translateX(14%) skewX(35deg)}}@media (max-width:600px){.portal-card .deco-down.second{padding:.9rem .5rem}.portal-card a{padding:9px 16px;-webkit-transform:translateX(25%) skewX(35deg);transform:translateX(25%) skewX(35deg)}}",""])}});
->>>>>>> 2dc2e2c495d18c7a9372aa09bf9e80a4bd45b742

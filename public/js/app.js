@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		0: 0
+/******/ 		30: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -44330,102 +44330,103 @@ var _vueRouterBackButton = __webpack_require__("./node_modules/vue-router-back-b
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
-   return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
+   return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
 };
 
 var Login = function Login() {
-   return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
+   return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
 };
 
 var NotFound = function NotFound() {
-   return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
+   return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
 };
 
 var DSA = function DSA() {
-   return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
+   return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
 };
 var DSAHome = function DSAHome() {
-   return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
+   return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
 };
 var DSAReport = function DSAReport() {
-   return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
+   return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
 };
 
 var CustomerList = function CustomerList() {
    return __webpack_require__.e/* import() */(5).then(__webpack_require__.bind(null, "./resources/assets/js/components/CustomerList.vue"));
 };
 var CustomerUpdate = function CustomerUpdate() {
-   return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/utility/form.vue"));
+   return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/utility/form.vue"));
 };
 var CustomerProfileFull = function CustomerProfileFull() {
    return __webpack_require__.e/* import() */(4).then(__webpack_require__.bind(null, "./resources/assets/js/components/CustomerProfileFull.vue"));
 };
 var CustomerRegister = function CustomerRegister() {
-   return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/registration/Register.vue"));
+   return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/registration/Register.vue"));
 };
 
 var DVA = function DVA() {
-   return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
+   return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
 };
 var DVAHome = function DVAHome() {
-   return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
+   return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
 };
 var DVAMessage = function DVAMessage() {
-   return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
+   return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
 };
 var DVAVerification = function DVAVerification() {
-   return __webpack_require__.e/* import() */(3).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
+   return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
 };
 
 var Profile = function Profile() {
-   return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
+   return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
 };
 var ProfileEdit = function ProfileEdit() {
-   return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
+   return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
 };
 var ProfileHome = function ProfileHome() {
-   return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
+   return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
 };
 
 var HRM = function HRM() {
-   return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
+   return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
 };
 var HRMHome = function HRMHome() {
-   return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
+   return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
 };
-var EmployeeManager = function EmployeeManager() {
-   return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/Manager.vue"));
+var DataViewer = function DataViewer() {
+   return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/components/DataViewer.vue"));
 };
-var EmployeeRegister = function EmployeeRegister() {
-   return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/Register.vue"));
+// const EmployeeManager = () => import( '../views/HRM/employee/Manager.vue');
+var EmployeeForm = function EmployeeForm() {
+   return __webpack_require__.e/* import() */(3).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/employeeForm.vue"));
 };
 
 var FSL = function FSL() {
-   return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
+   return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
 };
 var FSLHome = function FSLHome() {
-   return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
+   return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
 };
 var Branch = function Branch() {
-   return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/branches.vue"));
+   return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/branches.vue"));
 };
 var BranchForm = function BranchForm() {
-   return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
+   return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
 };
 var Inventory = function Inventory() {
-   return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/inventory/inventory.vue"));
+   return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/inventory/inventory.vue"));
 };
 var SuppliersForm = function SuppliersForm() {
-   return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/supplier/form.vue"));
+   return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/supplier/form.vue"));
 };
 var BrandForm = function BrandForm() {
-   return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/brand/form.vue"));
+   return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/brand/form.vue"));
 };
 var CategoryForm = function CategoryForm() {
-   return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/category/form.vue"));
+   return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/category/form.vue"));
 };
 var ProductForm = function ProductForm() {
-   return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/product/form.vue"));
+   return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/product/form.vue"));
 };
 
 _vue2.default.use(_vueRouter2.default);
@@ -44442,7 +44443,7 @@ var router = new _vueRouter2.default({
    }, {
       path: '/dva', component: DVA, meta: { DVA: true }, children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: DVAHome, name: 'DVAHome' }, { path: 'message', component: DVAMessage, name: 'DVAMessage' }, { path: 'customer/update', component: CustomerUpdate, name: 'DVACustomerUpdate' }, { path: 'verification', component: DVAVerification, name: 'DVAVerification' }]
    }, {
-      path: '/hrm', component: HRM, meta: { HRM: true }, children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: HRMHome, name: 'HRMHome' }, { path: 'employee/manager', component: EmployeeManager, name: 'employeeManager' }, { path: 'employee/register', component: EmployeeRegister, name: 'employeeRegister' }]
+      path: '/hrm', component: HRM, meta: { HRM: true }, children: [{ path: 'home', redirect: { name: 'HRMHome' } }, { path: '', component: HRMHome, name: 'HRMHome' }, { path: 'employee', component: DataViewer, name: 'employeeManager', meta: { appModel: 'user', source: '/api/user' } }, { path: 'employee/create', component: EmployeeForm, name: 'employeeCreate', meta: { mode: 'create' } }, { path: 'employee/:id/edit', component: EmployeeForm, name: 'employeeEdit', meta: { mode: 'edit' } }]
    }, {
       path: '/fsl', component: FSL, meta: { FSL: true }, children: [{ path: 'home', component: FSLHome, name: 'FSLHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, { path: 'branch', component: Branch, name: 'branch' }, { path: 'branch/:id/edit', component: BranchForm, name: 'branchEdit', meta: { mode: 'edit' } }, { path: 'branch/create', component: BranchForm, name: 'branchCreate', meta: { mode: 'create' } }, { path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: { mode: 'edit' } }, { path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: { mode: 'create' } }, { path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: { mode: 'edit' } }, { path: 'products/create', component: ProductForm, name: 'productCreate', meta: { mode: 'create' } }, { path: 'categories/:id/edit', component: CategoryForm, name: 'categoryEdit', meta: { mode: 'edit' } }, { path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: { mode: 'create' } }, { path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: { mode: 'edit' } }, { path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: { mode: 'create' } }]
    }, { path: '/customer/list', component: CustomerList, name: 'customerList' }, { path: '/customer/:id', component: CustomerProfileFull, name: 'customerProfileFull' }, { path: '/not-found', component: NotFound }, { path: '*', component: NotFound }]
@@ -44597,6 +44598,7 @@ _vue2.default.prototype.$getDate = function () {
     return year + '-' + month + '-' + day;
     //return the current date; format : yyyy-mm-dd;
 };
+// Vue.prototype.$network = () => true;
 _vue2.default.prototype.$network = function () {
     return window.navigator.onLine;
 };
