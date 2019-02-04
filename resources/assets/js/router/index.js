@@ -30,8 +30,9 @@ const ProfileHome = () => import( '../views/profile/HomePage.vue');
 
 const HRM = () => import( '../views/HRM/index.vue');
 const HRMHome = () => import( '../views/HRM/HomePage.vue');
-const EmployeeManager = () => import( '../views/HRM/employee/Manager.vue');
-const EmployeeRegister = () => import( '../views/HRM/employee/Register.vue');
+const DataViewer = () => import( '../components/DataViewer.vue');
+// const EmployeeManager = () => import( '../views/HRM/employee/Manager.vue');
+const EmployeeForm = () => import( '../views/HRM/employee/employeeForm.vue');
 
 const FSL = () => import('../views/FSL/index.vue');
 const FSLHome = () => import('../views/FSL/HomePage.vue');
@@ -80,10 +81,11 @@ const router = new VueRouter({
       },
       {
          path: '/hrm', component: HRM, meta: {HRM: true}, children: [
-            {path: '/', redirect: {name: 'HRMHome'}},
-            {path: 'home', component: HRMHome, name: 'HRMHome'},
-            {path: 'employee/manager', component: EmployeeManager, name: 'employeeManager'},
-            {path: 'employee/register', component: EmployeeRegister, name: 'employeeRegister'},
+            {path: 'home', redirect: {name: 'HRMHome'}},
+            {path: '', component: HRMHome, name: 'HRMHome'},
+            {path: 'employee', component: DataViewer, name: 'employeeManager', meta: {appModel: 'user', source: '/api/user'}},
+            {path: 'employee/create', component: EmployeeForm, name: 'employeeCreate', meta: {mode: 'create'}},
+            {path: 'employee/:id/edit', component: EmployeeForm, name: 'employeeEdit', meta: {mode: 'edit'}},
          ]
       },
       {

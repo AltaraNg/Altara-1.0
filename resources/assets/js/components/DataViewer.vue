@@ -1,89 +1,103 @@
 <template>
-   <div>
-      <!--data viewer starts here-->
-      <div class="card-body p-4 p-md-5">
-         <div class="clearfix w-100">
-            <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
-               <label>Search Column</label>
-               <select class="custom-select w-100" v-model="query.search_column">
-                  <option :value="column" v-for="column in columns">{{column | capitalize}}</option>
-               </select>
+
+
+   <transition name="fade">
+      <div class="pt-md-3 pt-2" id="employeeEdit">
+         <div class="card" style="border-top: 4px solid #0e5f92;">
+            <div class="px-5 py-4">
+               <div class="px-3 clearfix">
+                  <h5 class="h5-custom float-left m-0">Staff Management</h5>
+                  <router-link class="float-right btn btn-primary bg-default m-0" to="/hrm/employee/create">Register a Staff!</router-link>
+               </div>
             </div>
-            <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
-               <label>Search Operator</label>
-               <select class="custom-select w-100" v-model="query.search_operator">
-                  <option :value="key" v-for="(value, key) in operators">{{value}}</option>
-               </select>
-            </div>
-            <div class="form-group col-md-6 col-sm-6 px-md-3 px-1 float-left">
-               <label>Search Input</label>
-               <input @keyup.enter="fetchIndexData()" class="form-control" placeholder="search..." type="text"
-                      v-model="query.search_input">
-            </div>
-            <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 pt-md-2 pt-0 float-left">
-               <button @click="fetchIndexData()" class="btn btn-block bg-default mb-0 mt-3 mt-md-4">Filter</button>
-            </div>
-         </div>
-         <div class="px-0 px-md-3 mt-3 table-responsive">
-            <table class="table m-0  table-bordered table-hover">
-               <thead class="thead-light">
-               <tr>
-                  <th @click="toggleOrder(column)" scope="col" v-for="column in columns">
-                     <span>{{column | capitalize}}</span>
-                     <span class="dv-table-column" v-if="column === query.column">
+            <hr class="m-0">
+
+            <div>
+               <!--data viewer starts here-->
+               <div class="card-body p-4 p-md-5">
+                  <div class="clearfix w-100">
+                     <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
+                        <label>Search Column</label>
+                        <select class="custom-select w-100" v-model="query.search_column">
+                           <option :value="column" v-for="column in columns">{{column | capitalize}}</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
+                        <label>Search Operator</label>
+                        <select class="custom-select w-100" v-model="query.search_operator">
+                           <option :value="key" v-for="(value, key) in operators">{{value}}</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-6 col-sm-6 px-md-3 px-1 float-left">
+                        <label>Search Input</label>
+                        <input @keyup.enter="fetchIndexData()" class="form-control" placeholder="search..." type="text"
+                               v-model="query.search_input">
+                     </div>
+                     <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 pt-md-2 pt-0 float-left">
+                        <button @click="fetchIndexData()" class="btn btn-block bg-default mb-0 mt-3 mt-md-4">Filter</button>
+                     </div>
+                  </div>
+                  <div class="px-0 px-md-3 mt-3 table-responsive">
+                     <table class="table m-0  table-bordered table-hover">
+                        <thead class="thead-light">
+                        <tr>
+                           <th @click="toggleOrder(column)" scope="col" v-for="column in columns">
+                              <span>{{column | capitalize}}</span>
+                              <span class="dv-table-column" v-if="column === query.column">
                         <span v-if="query.direction === 'desc'">&uarr;</span>
                         <span v-else>&darr;</span>
                      </span>
-                  </th>
-                  <th scope="col" v-if="user || branch || customer"><span>Action</span></th>
-               </tr>
-               </thead>
-               <tbody>
-               <tr v-for="model in model.data">
-                  <td v-for="(value,key) in model">{{value}}</td>
-                  <td v-if="user">
-                     <button @click="update(model,'updateEmployee',1)"
-                             class="text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round"
-                             data-placement="top"
-                             data-toggle="tooltip"
-                             title="Edit Employee Detail">
-                        <i class="fas fa-user-edit"></i>
-                     </button>
-                     <button :class="{ 'btn-success' : accessStatus(model.portal_access),
+                           </th>
+                           <th scope="col" v-if="user || branch || customer"><span>Action</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="model in model.data">
+                           <td v-for="(value,key) in model">{{value}}</td>
+                           <td v-if="user">
+                              <router-link :to="`/hrm/employee/${model.id}/edit`"
+                                           class="text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round"
+                                           data-placement="top"
+                                           data-toggle="tooltip"
+                                           title="Edit Employee Detail">
+                                 <i class="fas fa-user-edit"></i>
+                              </router-link>
+                              <button :class="{ 'btn-success' : accessStatus(model.portal_access),
                                             'btn-danger' :  !accessStatus(model.portal_access)}"
-                             @click="update(model,'editPortalAccess')"
-                             class="text-center mr-2 btn btn-icon btn-sm float-left btn-round" data-placement="top" data-toggle="tooltip"
-                             title="Edit Employee Portal Access">
-                        <i class="fas fa-lock-open" v-if="accessStatus(model.portal_access)"></i>
-                        <i class="fas fa-lock" v-else></i>
-                     </button>
-                     <button @click="update(model,'editPassword')"
-                             class="text-center mr-2 btn btn-warning btn-icon btn-sm float-left btn-round"
-                             data-placement="top"
-                             data-toggle="tooltip"
-                             title="Reset Employee Password">
-                        <i class="fas fa-key"></i>
-                     </button>
-                  </td>
-                  <td v-if="branch || customer">
-                     <button :title="`${branch ? 'update branch details' : 'view details'}`"
-                             @click="branch ? $router.push(`/fsl/branch/${model.id}/edit`) : $router.push(`/customer/${model.id}`)"
-                             class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
-                             data-placement="top"
-                             data-toggle="tooltip">
-                        <i class="fas fa-cog" v-if="branch"></i>
-                        <i class="far fa-user" v-if="customer"></i>
-                     </button>
-                  </td>
-               </tr>
-               </tbody>
-            </table>
-         </div>
-         <nav aria-label="Page navigation example" class="clearfix pt-5">
+                                      @click="update(model,'editPortalAccess')"
+                                      class="text-center mr-2 btn btn-icon btn-sm float-left btn-round" data-placement="top"
+                                      data-toggle="tooltip"
+                                      title="Edit Employee Portal Access">
+                                 <i class="fas fa-lock-open" v-if="accessStatus(model.portal_access)"></i>
+                                 <i class="fas fa-lock" v-else></i>
+                              </button>
+                              <button @click="update(model,'editPassword')"
+                                      class="text-center mr-2 btn btn-warning btn-icon btn-sm float-left btn-round"
+                                      data-placement="top"
+                                      data-toggle="tooltip"
+                                      title="Reset Employee Password">
+                                 <i class="fas fa-key"></i>
+                              </button>
+                           </td>
+                           <td v-if="branch || customer">
+                              <button :title="`${branch ? 'update branch details' : 'view details'}`"
+                                      @click="branch ? $router.push(`/fsl/branch/${model.id}/edit`) : $router.push(`/customer/${model.id}`)"
+                                      class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
+                                      data-placement="top"
+                                      data-toggle="tooltip">
+                                 <i class="fas fa-cog" v-if="branch"></i>
+                                 <i class="far fa-user" v-if="customer"></i>
+                              </button>
+                           </td>
+                        </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <nav aria-label="Page navigation example" class="clearfix pt-5">
                 <span class="float-left col-md-6 col-12 px-0 mb-5 mb-md-0">
-                    Displaying: {{model.from}} - {{model.to}} of {{model.total}} {{appModel | capitalize}} (s)
+                    Displaying: {{model.from}} - {{model.to}} of {{model.total}} {{$route.meta.appModel | capitalize}} (s)
                 </span>
-            <span class="justify-content-end float-right col-md-6 col-12 px-0 mb-5 mb-md-0">
+                     <span class="justify-content-end float-right col-md-6 col-12 px-0 mb-5 mb-md-0">
                     <ul class="pagination m-0 float-right">
                         <li class="page-item">
                             <a @click="prev()" class="page-link"><i class="fas fa-arrow-circle-left"></i></a>
@@ -99,110 +113,116 @@
                                type="text" v-model="query.per_page">
                     </span>
                 </span>
-         </nav>
-      </div>
-      <!--data viewer stops here-->
+                  </nav>
+               </div>
+               <!--data viewer stops here-->
 
-      <!--employee details update modal start here-->
-      <div class="modal fade bd-example-modal-lg" id="updateEmployee">
-         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-               <div class="modal-header py-2">
-                  <h6 class="modal-title py-1">Update Employee Details</h6>
-                  <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                     <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
-                  </a>
+               <!--employee details update modal start here
+               <div class="modal fade bd-example-modal-lg" id="updateEmployee">
+                  <div class="modal-dialog modal-lg">
+                     <div class="modal-content">
+                        <div class="modal-header py-2">
+                           <h6 class="modal-title py-1">Update Employee Details</h6>
+                           <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                              <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                           </a>
+                        </div>
+                        <div class="modal-body">
+                           <utility-form :bus="bus" :receivedData="sentData" @done="fetchIndexData()" action="update"/>
+                           call for the same form used for staff/employee registration
+                        </div>
+                     </div>
+                  </div>
                </div>
-               <div class="modal-body">
-                  <utility-form :bus="bus" :receivedData="sentData" @done="fetchIndexData()" action="update"/>
-                  <!--call for the same form used for staff/employee registration-->
-               </div>
-            </div>
-         </div>
-      </div>
-      <!--employee details update modal stops here-->
+               employee details update modal stops here-->
 
-      <!--employ portal access update modal starts here-->
-      <div class="modal fade" id="editPortalAccess">
-         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-               <div class="modal-header py-2">
-                  <h6 class="modal-title py-1">Edit Employee Portal Access</h6>
-                  <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                     <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
-                  </a>
-               </div>
-               <form>
-                  <div class="modal-body">
-                     <div class="form-group col-12 float-left mt-0 mb-2">
+               <!--employ portal access update modal starts here-->
+               <div class="modal fade" id="editPortalAccess">
+                  <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                        <div class="modal-header py-2">
+                           <h6 class="modal-title py-1">Edit Employee Portal Access</h6>
+                           <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                              <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                           </a>
+                        </div>
+                        <form>
+                           <div class="modal-body">
+                              <div class="form-group col-12 float-left mt-0 mb-2">
                         <span class="mb-2 w-100 float-left pl-1 text-center" style="font-size: 14px">
                            Please Verify you selected the right access before clicking <br>
                            <strong>Save Changes </strong>!
                         </span>
-                        <div class="radio p-0 col-6 float-left text-center" v-for="access in portal_access">
-                           <input :id="access.name" :value="access.value" name="access" type="radio"
-                                  v-model="form.portal_access">
-                           <label :for="access.name">{{access.name | capitalize}} Access</label>
-                        </div>
+                                 <div class="radio p-0 col-6 float-left text-center" v-for="access in portal_access">
+                                    <input :id="access.name" :value="access.value" name="access" type="radio"
+                                           v-model="form.portal_access">
+                                    <label :for="access.name">{{access.name | capitalize}} Access</label>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="modal-footer">
+                              <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">cancel</button>
+                              <!--<button :disabled="$isProcessing" @click="bus.$emit('submit',form)" class="m-2 btn bg-default"-->
+                              <button :disabled="$isProcessing" @click="myLog(form.id)" class="m-2 btn bg-default"
+                                      type="button"> Save changes <i class="far fa-paper-plane ml-1"></i>
+                              </button>
+                           </div>
+                        </form>
                      </div>
                   </div>
-                  <div class="modal-footer">
-                     <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">cancel</button>
-                     <button :disabled="$isProcessing" @click="bus.$emit('submit',form)" class="m-2 btn bg-default"
-                             type="button"> Save changes <i class="far fa-paper-plane ml-1"></i>
-                     </button>
-                  </div>
-               </form>
-            </div>
-         </div>
-      </div>
-      <!--employ portal access update modal stops here-->
-
-      <!--employee password reset modal starts here-->
-      <div class="modal fade" id="editPassword">
-         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-               <div class="modal-header py-2">
-                  <h6 class="modal-title py-1">Reset Employee Password</h6>
-                  <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                     <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
-                  </a>
                </div>
-               <form>
-                  <div class="modal-body">
-                     <div class="form-group col-12 float-left mt-2 mb-4 ">
+               <!--employ portal access update modal stops here-->
+
+               <!--employee password reset modal starts here-->
+               <div class="modal fade" id="editPassword">
+                  <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                        <div class="modal-header py-2">
+                           <h6 class="modal-title py-1">Reset Employee Password</h6>
+                           <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                              <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                           </a>
+                        </div>
+                        <form>
+                           <div class="modal-body">
+                              <div class="form-group col-12 float-left mt-2 mb-4 ">
                                 <span>A new password will be sent to the employee via <strong>sms</strong> on the
                                       telephone He/She <strong>used for registration</strong> on this portal.
                                     <br><br>Please Kindly verify that the phone to receive the new password is on and active!
                                 </span><br><br>
-                        <u><em>click the continue and reset password to finish this task!</em></u>
+                                 <u><em>click the continue and reset password to finish this task!</em></u>
+                              </div>
+                           </div>
+                           <div class="modal-footer">
+                              <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">cancel</button>
+                              <button :disabled="$isProcessing" @click="resetPassword" class="m-2 btn bg-default"
+                                      type="button">
+                                 continue and reset password <i class="far fa-paper-plane ml-1"></i>
+                              </button>
+                           </div>
+                        </form>
                      </div>
                   </div>
-                  <div class="modal-footer">
-                     <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">cancel</button>
-                     <button :disabled="$isProcessing" @click="resetPassword" class="m-2 btn bg-default"
-                             type="button">
-                        continue and reset password <i class="far fa-paper-plane ml-1"></i>
-                     </button>
-                  </div>
-               </form>
+               </div>
+               <!--employee password reset modal stops here-->
             </div>
          </div>
       </div>
-      <!--employee password reset modal stops here-->
-   </div>
+   </transition>
+
+
 </template>
 <script>
    import Vue from 'vue';
    import SMS from '../helpers/sms';
    import {log} from "../helpers/log";
-   import {get} from '../helpers/api';
+   import {byMethod, get} from '../helpers/api';
    import {store} from '../store/store';
    import Flash from '../helpers/flash';
-   import UtilityForm from '../views/HRM/utility/form';
+   // import UtilityForm from '../views/HRM/employee/employeeForm';
 
    export default {
-      components: {UtilityForm},
+      // components: {UtilityForm},
       data() {
          return {
             /*data generic to data viewer starts here*/
@@ -236,11 +256,11 @@
                {name: 'grant', value: 1},
                {name: 'deny', value: 0}
             ],
-            sentData: {},
+            //sentData: {},
             /*data peculiar to hrm portal data viewer stops here*/
          }
       },
-      props: ['source', 'title', 'appModel'],
+
       created() {
          this.$prepareStates();
          this.fetchIndexData();
@@ -249,23 +269,28 @@
             $(this).addClass('current');
          });
       },
+
       updated() {
          $('[data-toggle="tooltip"]').tooltip();
       },
+
       methods: {
          /*methods exclusive to data viewer starts here*/
+
          next() {
             if (this.model.next_page_url) {
                this.query.page++;
                this.fetchIndexData();
             }
          },
+
          prev() {
             if (this.model.prev_page_url) {
                this.query.page--;
                this.fetchIndexData();
             }
          },
+
          toggleOrder(column) {
             if (column === this.query.column)
                this.query.direction = this.query.direction === 'desc' ? 'asc' : 'desc';
@@ -275,11 +300,12 @@
             }
             this.fetchIndexData();
          },
+
          fetchIndexData() {
             this.$LIPS(true);
             $('.modal').modal('hide');
             get(
-               `${this.source}` +
+               `${this.$route.meta.source}` +
                `?page=${this.query.page}` +
                `&column=${this.query.column}` +
                `&per_page=${this.query.per_page}` +
@@ -312,37 +338,16 @@
             access status for each staff
             (1 or 0 respectively)*/
          },
-         update(emp, mod, up = 0) {
-            /*emp is the employer you want to carry an action on
-            * mod is the modal id that carries the form for the process
-            * up is tentative if 0*/
-            if (up === 0) {
-               this.form = emp;
-               $(`#${mod}`).modal('toggle');
-               /*then action is for password reset or portal access update
-               * the corresponding modal is triggered as above*/
-            } else if (up === 1) {
-               /*if up is 1 then its for details update*/
-               if (this.$network()) {
-                  this.$LIPS(true);
-                  get(`/api/employee/${emp.id}/edit`).then(res => {
-                     /*the full employee details are fetched to populate
-                     the form for editing ie the utility form*/
-                     this.sentData = res.data;
-                     /*the data sent to the utility form is updated*/
-                     $(`#${mod}`).modal('toggle');
-                     /*corresponding modal is toggled*/
-                     this.$LIPS(false);
-                  });
-               } else this.$networkErr();
-            }
+
+         update(emp, mod) {
+            this.form = emp;
+            $(`#${mod}`).modal('toggle');
          },
+
          resetPassword() {
             if (this.$network()) {
                this.$LIPS(true);
                get(`/api/reset-password/${this.form.id}`).then(res => {
-                  this.$scrollToTop();
-                  $('#editPassword').modal('toggle');
                   log('resetUserPassword', this.form.staff_id);
                   Flash.setSuccess('Employee password reset successful!');
                   let details = {
@@ -350,27 +355,45 @@
                      staff_id: this.form.staff_id
                   };
                   SMS.passwordReset(details);
-                  this.$LIPS(false);
-               })
+               }).finally(() => this.done());
             } else this.$networkErr();
          },
+
+         myLog(id) {
+            if (this.$network()) {
+               this.$LIPS(true);
+               byMethod('PUT', `/api/user/${id}`, this.form)
+                  .then(res => {
+                     log(`PortalAccessUpdated`, String(res.data.staff_id));
+                     Flash.setSuccess('Portal access updated', 20000);
+                  })
+                  .catch(() => Flash.setError('Error updating status. Try again later!'))
+                  .finally(() => this.done());
+            } else this.$networkErr();
+         },
+
+         done(){
+            this.$scrollToTop();
+            this.$LIPS(false);
+            $('.modal').modal('hide');
+         }
          /*methods exclusive to hrm data viewer stops here*/
       },
       computed: {
          user() {
-            return this.appModel === 'user';
+            return this.$route.meta.appModel === 'user';
             /*return true if the context
             * of the data viewer is
             * for employees*/
          },
          branch() {
-            return this.appModel === 'branch';
+            return this.$route.meta.appModel === 'branch';
             /*return true if the context
             * of the data viewer is
             * for branch*/
          },
          customer() {
-            return this.appModel === 'customer';
+            return this.$route.meta.appModel === 'customer';
             /*return true if the context
             * of the data viewer is
             * for customer*/
