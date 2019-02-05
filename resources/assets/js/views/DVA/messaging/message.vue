@@ -7,17 +7,14 @@
                <form @submit.prevent="sendMessage" class="clearfix" id="messaging">
                   <div class="form-group col-md-12 px-md-3 px-1 float-left">
                      <label>Phone Numbers</label>
-                     <textarea class="form-control col-sm-12"
-                               name="contacts"
-                               placeholder="Kindly add the number and seperate each with a semi-colon ';' " rows="3" v-model="contacts" v-validate="'required'"></textarea>
-                     <small v-if="errors.first('contacts')">{{errors.first('contacts')}}
-                     </small>
+                     <textarea class="form-control col-sm-12" name="contacts" v-model="contacts" v-validate="'required'"
+                               placeholder="Kindly add the number and seperate each with a semi-colon ';'" rows="3" ></textarea>
+                     <small v-if="errors.first('contacts')">{{errors.first('contacts')}}</small>
                   </div>
                   <div class="form-group col-md-12 px-md-3 px-1 float-left">
                      <label>Message Body</label>
-                     <textarea class="form-control col-sm-12" name="message"
-                               placeholder="the content of the message goes here" rows="3" v-model="sentData.message"
-                               v-validate="'required'"></textarea>
+                     <textarea class="form-control col-sm-12" name="message" v-validate="'required'"
+                               placeholder="the content of the message goes here" rows="3" v-model="sentData.message"></textarea>
                      <small v-if="errors.first('message')">{{errors.first('message')}}</small>
                   </div>
                   <hr class="style-two">

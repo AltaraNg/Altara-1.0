@@ -1,7 +1,6 @@
 <template>
    <transition name="fade">
       <div class="pt-md-3 pt-2" id="employeeRegister">
-
          <div class="card" v-if="$store.getters.verifyDSALead">
             <ul class="nav nav-tabs justify-content-center bg-default"><h6>Report Generation</h6></ul>
             <div class="card-body px-4">
@@ -60,22 +59,17 @@
                </form>
             </div>
          </div>
-
-         <daily-report v-if="$store.getters.verifyDSACaptain"></daily-report>
-
+         <daily-report v-if="$store.getters.verifyDSACaptain"/>
       </div>
    </transition>
 </template>
 <script>
+   import DailyReport from './dailyReport';
    import {store} from '../../../store/store';
    import {postD} from '../../../helpers/api';
 
-   import DailyReport from './dailyReport';
-
    export default {
-
       components: {DailyReport},
-
       beforeCreate() {
          if (!this.$store.getters.verifyDSACaptain) this.$networkErr('page');
          /** this component can only be accessed by the dsa leads and captains hence this route guard

@@ -13,11 +13,8 @@ const NotFound = () => import( '../views/NotFound.vue');
 const DSA = () => import( '../views/DSA/index.vue');
 const DSAHome = () => import( '../views/DSA/HomePage.vue');
 const DSAReport = () => import( '../views/DSA/report/report.vue');
-
-const CustomerList = () => import( '../components/CustomerList.vue');
-const CustomerUpdate = () => import( '../views/DSA/utility/form.vue');
-const CustomerProfileFull = () => import( '../components/CustomerProfileFull.vue');
-const CustomerRegister = () => import( '../views/DSA/registration/Register.vue');
+const CustomerForm = () => import( '../views/shared/customerForm.vue');
+const CustomerProfile = () => import( '../components/CustomerProfile.vue');
 
 const DVA = () => import( '../views/DVA/index.vue');
 const DVAHome = () => import( '../views/DVA/HomePage.vue');
@@ -31,12 +28,10 @@ const ProfileHome = () => import( '../views/profile/HomePage.vue');
 const HRM = () => import( '../views/HRM/index.vue');
 const HRMHome = () => import( '../views/HRM/HomePage.vue');
 const DataViewer = () => import( '../components/DataViewer.vue');
-// const EmployeeManager = () => import( '../views/HRM/employee/Manager.vue');
 const EmployeeForm = () => import( '../views/HRM/employee/employeeForm.vue');
 
 const FSL = () => import('../views/FSL/index.vue');
 const FSLHome = () => import('../views/FSL/HomePage.vue');
-const Branch = () => import('../views/FSL/branch/branches.vue');
 const BranchForm = () => import('../views/FSL/branch/form.vue');
 const Inventory = () => import('../views/FSL/inventory/inventory.vue');
 const SuppliersForm = () => import('../views/FSL/supplier/form.vue');
@@ -66,8 +61,8 @@ const router = new VueRouter({
             {path: '/', redirect: {name: 'DSAHome'}},
             {path: 'home', component: DSAHome, name: 'DSAHome'},
             {path: 'report', component: DSAReport, name: 'DSAReport'},
-            {path: 'customer/register', component: CustomerRegister, name: 'customerRegister'},
-            {path: 'customer/update', component: CustomerUpdate, name: 'DSACustomerUpdate'}
+            {path: 'customer/create', component: CustomerForm, meta: {mode: 'register'}},
+            {path: 'customer/update', component: CustomerForm, meta: {mode: 'update'}}
          ]
       },
       {
@@ -75,26 +70,26 @@ const router = new VueRouter({
             {path: '/', redirect: {name: 'DVAHome'}},
             {path: 'home', component: DVAHome, name: 'DVAHome'},
             {path: 'message', component: DVAMessage, name: 'DVAMessage'},
-            {path: 'customer/update', component: CustomerUpdate, name: 'DVACustomerUpdate'},
-            {path: 'verification', component: DVAVerification, name: 'DVAVerification'},
+            {path: 'customer/update', component: CustomerForm, meta: {mode: 'update'}},
+            {path: 'verification', component: DVAVerification},
          ]
       },
       {
          path: '/hrm', component: HRM, meta: {HRM: true}, children: [
-            {path: 'home', redirect: {name: 'HRMHome'}},
-            {path: '', component: HRMHome, name: 'HRMHome'},
-            {path: 'employee', component: DataViewer, name: 'employeeManager', meta: {appModel: 'user', source: '/api/user'}},
-            {path: 'employee/create', component: EmployeeForm, name: 'employeeCreate', meta: {mode: 'create'}},
-            {path: 'employee/:id/edit', component: EmployeeForm, name: 'employeeEdit', meta: {mode: 'edit'}},
+            {path: '/', redirect: {name: 'HRMHome'}},
+            {path: 'home', component: HRMHome, name:'HRMHome'},
+            {path: 'employee', component: DataViewer, meta: {appModel: 'user', source: '/api/user',new:'/hrm/employee'}},
+            {path: 'employee/create', component: EmployeeForm, meta: {mode: 'create'}},
+            {path: 'employee/:id/edit', component: EmployeeForm, meta: {mode: 'edit'}},
          ]
       },
       {
          path: '/fsl', component: FSL, meta: {FSL: true}, children: [
             {path: 'home', component: FSLHome, name: 'FSLHome'},
             {path: 'inventory', component: Inventory, name: 'inventory'},
-            {path: 'branch', component: Branch, name: 'branch'},
-            {path: 'branch/:id/edit', component: BranchForm, name: 'branchEdit', meta: {mode: 'edit'}},
-            {path: 'branch/create', component: BranchForm, name: 'branchCreate', meta: {mode: 'create'}},
+            {path: 'branch', component: DataViewer, meta: {appModel: 'branch', source: '/api/branch',new:'/fsl/branch'}},
+            {path: 'branch/:id/edit', component: BranchForm, meta: {mode: 'edit'}},
+            {path: 'branch/create', component: BranchForm, meta: {mode: 'create'}},
             {path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: {mode: 'edit'}},
             {path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: {mode: 'create'}},
             {path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: {mode: 'edit'}},
@@ -105,8 +100,8 @@ const router = new VueRouter({
             {path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: {mode: 'create'}}
          ]
       },
-      {path: '/customer/list', component: CustomerList, name: 'customerList'},
-      {path: '/customer/:id', component: CustomerProfileFull, name: 'customerProfileFull'},
+      {path: '/customer', component: DataViewer, meta: {appModel: 'customer', source: '/api/customer',new:'/dsa/customer'}},
+      {path: '/customer/:id', component: CustomerProfile, meta:{mode:'full'}},
       {path: '/not-found', component: NotFound},
       {path: '*', component: NotFound},
    ]

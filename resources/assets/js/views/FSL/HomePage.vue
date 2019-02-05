@@ -22,7 +22,7 @@
                         url: 'branch', title: 'Manage Branches', url_c: 'Manage Branches now!',
                         desc: 'Manage all the branch details',aces: this.$store.getters.verifyFSLLead,
                     }, {
-                        url: '/customer/list', title: 'Customer List', url_c: 'View Customer List',
+                        url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
                     }, {
                         url: 'suppliers/create', title: 'Manage Supplier', url_c: 'Create/Update Supplier',

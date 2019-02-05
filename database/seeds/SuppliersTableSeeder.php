@@ -19,7 +19,7 @@ class SuppliersTableSeeder extends Seeder
       foreach (range(1, 30) as $i) {
          Supplier::create([
             'user_id' => $i,
-            'category_id' => rand(1, 13),
+//            'category_id' => rand(1, 13),
             'full_name' => $faker->firstName . ' ' . $faker->lastName,
             'address' => $faker->streetAddress,
             'phone_number' => $faker->phoneNumber,

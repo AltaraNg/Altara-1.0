@@ -16,7 +16,7 @@
             return {
                 portals: [
                     {
-                        url: 'customer/register',
+                        url: 'customer/create',
                         title: 'Customer Registration',
                         url_c: 'Register new customer now!',
                         desc: 'Registering new customers',
@@ -32,7 +32,7 @@
                         desc: 'Real time DSA reports!',
                         aces: this.$store.getters.verifyDSACaptain,
                     }, {
-                        url: '/customer/list',
+                        url: '/customer',
                         title: 'Customer List',
                         url_c: 'View Customer List',
                         desc: 'View all registered customers!',

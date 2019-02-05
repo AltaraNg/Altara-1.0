@@ -1,3 +1,4 @@
+<!--
 <template>
     <transition name="fade">
         <div class="px-md-4 px-2">
@@ -20,4 +21,4 @@
     export default {
         components: {DataViewer, AppNavigation}
     }
-</script>
+</script>-->

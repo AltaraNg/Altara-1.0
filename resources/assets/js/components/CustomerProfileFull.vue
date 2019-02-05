@@ -1,3 +1,4 @@
+<!--
 <template>
     <transition name="fade">
         <div class="px-md-4 px-2">
@@ -40,4 +41,4 @@
             }
         }
     }
-</script>
+</script>-->
