@@ -8,8 +8,8 @@
             </span>
         </router-link>
         <strong class="mx-auto w-100 float-left" data-title="title">
-            <span class="d-none d-sm-block">{{pageTitle}} Portal</span>
-            <span class="d-block d-sm-none">{{pageTitleSmall}} Portal</span>
+            <span class="d-none d-sm-block">{{pageTitle}}</span>
+            <span class="d-block d-sm-none">{{pageTitleSmall}}</span>
         </strong>
         <router-link v-if="$routerHistory.hasForward()" :to="forward"
                      class="text-secondary float-right mr-1 pr-2 mr-sm-4 pr-sm-3" id="forward">

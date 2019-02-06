@@ -17,7 +17,6 @@ class CreateSuppliersTable extends Migration
          $table->engine = 'InnoDB';
          $table->increments('id');
          $table->unsignedInteger('user_id')->index()->nullable();
-         $table->unsignedInteger('category_id')->index()->nullable();
          $table->string('full_name');
          $table->text('address');
          $table->string('phone_number')->unique();
@@ -30,7 +29,6 @@ class CreateSuppliersTable extends Migration
 
       Schema::table('suppliers', function ($table) {
          $table->foreign('user_id')->references('id')->on('users');
-         $table->foreign('category_id')->references('id')->on('categories');
       });
    }
 

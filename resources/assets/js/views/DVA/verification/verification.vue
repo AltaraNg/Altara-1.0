@@ -2,7 +2,8 @@
     <transition name="fade">
         <div class="pt-md-3 pt-2 verification" id="employeeRegister">
             <div class="card">
-                <ul class="nav nav-tabs bg-default justify-content-center"><h6>{{action | capitalize}} Customer</h6>
+                <ul class="nav nav-tabs bg-default justify-content-center">
+                    <h6>{{action | capitalize}} Customer</h6>
                 </ul>
                 <div class="card-body p-4">
                     <form @submit.prevent="fetchCustomer">
@@ -14,8 +15,7 @@
                                    data-vv-as="customer id"
                                    name="customer_id"
                                    @onkeyUp="check">
-                            <div
-                                    class="col-lg-3 col-md-4 col-sm-4 col-12 float-right px-md-3 mt-md-0 px-sm-3 mt-sm-0 mt-2 px-0">
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-12 float-right px-md-3 mt-md-0 px-sm-3 mt-sm-0 mt-2 px-0">
                                 <button type="submit" class="btn btn-block bg-default my-1" :disabled="check">
                                     Fetch customer details <i class="far fa-paper-plane ml-1"></i>
                                 </button>
@@ -29,7 +29,7 @@
             </div>
             <transition name="fade">
                 <div v-if="customer">
-                    <customer-profile :customer="customer"/>
+                    <customer-profile :view-customer="customer"/>
                     <div v-if="action !== 'update'">
                         <div class="float-left col-lg-3 col-sm-6 px-0 px-sm-3" v-for="type in cardView">
                             <div class="card card-stats" :class="DivClass(type)">
@@ -490,7 +490,7 @@
     import {get, post} from '../../../helpers/api';
     import {toMulipartedForm} from '../../../helpers/form';
     import ImageUpload from '../../../components/ImageUpload';
-    import CustomerProfile from '../../../components/customerProfile';
+    import CustomerProfile from '../../../components/CustomerProfile';
 
     export default {
         props: {

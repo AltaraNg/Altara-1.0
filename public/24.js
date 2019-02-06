@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 webpackJsonp([24],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/NotFound.vue":
@@ -101,3 +102,6 @@ module.exports = Component.exports
 /***/ })
 
 });
+=======
+webpackJsonp([24],{BAKB:function(t,e){t.exports={render:function(){var t=this.$createElement,e=this._self._c||t;return e("transition",{attrs:{name:"fade"}},[e("div",{staticClass:"pt-md-3 pt-2",attrs:{id:"inventory"}},[e("h2",[this._v("Inventory")])])])},staticRenderFns:[]}},fCca:function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default={}},fEAB:function(t,e,n){var r=n("VU/8")(n("fCca"),n("BAKB"),!1,null,null,null);t.exports=r.exports}});
+>>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9

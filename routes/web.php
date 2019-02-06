@@ -8,10 +8,13 @@ use App\Supplier;
 
 Route::get('/clins', function () {
 
+//    $data = Supplier::whereId(1 )->with(['categories'])->get();
 
-   $data = Category::find(2)->brands()->get();
+    $data = Category::whereId(1 )->with(['suppliers'])->get();
 
+    //$data = Supplier::whereId(2)->with(['categories'])->get();
 
+   //$data = Category::find(2)->brands()->get();
 
    /*$data = Product::whereId(1)->with([
       'adder' => function ($query) {
@@ -34,8 +37,7 @@ Route::get('/clins', function () {
    ])->get();*/
 
    return response()->json([
-      'product' => $data,
-
+      'supplier' => $data,
    ]);
 
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 webpackJsonp([19],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HomePage.vue":
@@ -269,3 +270,6 @@ module.exports = Component.exports
 /***/ })
 
 });
+=======
+webpackJsonp([19],{"+/kq":function(e,t){e.exports={render:function(){this.$createElement;this._self._c;return this._m(0)},staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticClass:"profile-page sidebar-collapse"},[t("h1",[this._v("This is the profile page")])])}]}},W7ej:function(e,t,s){var n=s("VU/8")(s("zShF"),s("+/kq"),!1,null,null,null);e.exports=n.exports},zShF:function(e,t,s){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default={}}});
+>>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
