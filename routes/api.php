@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth:api']], function () {
       'message' => 'MessageController',
       'customer' => 'CustomerController',
       'document' => 'DocumentController',
+      'attendance' => 'AttendanceController',
       'verification' => 'VerificationController',
       'work_guarantor' => 'WorkGuarantorController',
       'processing_fee' => 'ProcessingFeeController',

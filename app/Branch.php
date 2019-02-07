@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
-   /** this is a generic trait created to serve as a generic
-    * scope for fetching and paginating the
-    * model where it is called */
+    /** this is a generic trait created to serve as a generic
+     * scope for fetching and paginating the
+     * model where it is called */
     use DataViewer;
 
     protected $guarded = [];
 
     protected $hidden = [];
 
-   /** columns to be used to render the list(Data viewer) of branches in the view*/
-    public static $columns = ['id', 'name', 'state_id', 'phone_english', 'phone_yoruba', 'email', 'description','status'];
+    /** columns to be used to render the list(Data viewer) of branches in the view*/
+    public static $columns = ['id', 'name', 'state_id', 'phone_english', 'phone_yoruba', 'email', 'description', 'status'];
 
     protected $table = 'branches';
 
     /** this is the branch object form, it is sent to the js
-    * view when the branch creation
-    * form is required */
+     * view when the branch creation
+     * form is required */
     public static function form()
     {
         $user = auth('api')->user();
@@ -72,9 +72,14 @@ class Branch extends Model
         return $this->belongsTo(Bank::class);
     }
 
-   public function products()
-   {
-      return $this->hasMany(Product::class, 'branch_id','id');
-   }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'branch_id', 'id');
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 
 }
