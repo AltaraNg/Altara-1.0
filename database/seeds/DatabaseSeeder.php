@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             SuppliersTableSeeder::class,
             ProductsTableSeeder::class,
             BrandCategoryTableSeeder::class,
-            SupplierCategorySeeder::class
+            SupplierCategorySeeder::class,
+            AttendanceTableSeeder::class,
         ]);
     }
 }

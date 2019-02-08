@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class UpdateTable extends Migration
 {
@@ -13,15 +12,18 @@ class UpdateTable extends Migration
      */
     public function up()
     {
-       Schema::table('users', function ($table) {
-          $table->string('guarantor_name')->after('next_of_kin_phone_no')->nullable();
-          $table->string('guarantor_phone_no')->after('guarantor_name')->nullable();
-          $table->string('guarantor_address')->after('guarantor_phone_no')->nullable();
-          $table->string('guarantor_relationship')->after('guarantor_address')->nullable();
+        Schema::table('users', function ($table) {
+            $table->string('guarantor_name')->after('next_of_kin_phone_no')->nullable();
+            $table->string('guarantor_phone_no')->nullable();
+            $table->string('guarantor_address')->nullable();
+            $table->string('guarantor_relationship')->nullable();
+            $table->string('guarantor_name_2')->nullable();
+            $table->string('guarantor_phone_no_2')->nullable();
+            $table->string('guarantor_address_2')->nullable();
+            $table->string('guarantor_relationship_2')->nullable();
+            $table->string('cv_url')->after('guarantor_relationship')->nullable();
 
-          $table->string('cv_url')->after('guarantor_relationship')->nullable();
-
-       });
+        });
     }
 
     /**

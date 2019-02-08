@@ -574,6 +574,82 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+>>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
 
 function initialize(to) {
    var urls = { create: 'user/create', edit: 'user/' + to.params.id + '/edit' };
@@ -2948,7 +3024,11 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "spaceAfter" }),
                       _vm._v(" "),
+<<<<<<< HEAD
                       _c("h5", [_vm._v("Guarantor Details")]),
+=======
+                      _c("h5", [_vm._v("First Guarantor's Details")]),
+>>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                       _vm._v(" "),
                       _c(
                         "div",
@@ -3033,6 +3113,12 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+<<<<<<< HEAD
+=======
+                            class: {
+                              "is-invalid": _vm.error.guarantor_phone_no
+                            },
+>>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                             attrs: {
                               "data-vv-as": "guarantor number",
                               name: "guarantor_phone_no",
@@ -3064,6 +3150,19 @@ var render = function() {
                                     "\n                     "
                                 )
                               ])
+<<<<<<< HEAD
+=======
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.error.guarantor_phone_no
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.error.guarantor_phone_no[0]) +
+                                    "\n                     "
+                                )
+                              ])
+>>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                             : _vm._e()
                         ]
                       ),
@@ -3158,7 +3257,12 @@ var render = function() {
                             ],
                             staticClass: "form-control w-100",
                             attrs: {
+<<<<<<< HEAD
                               name: "guarantor address",
+=======
+                              name: "guarantor_address",
+                              "data-vv-as": "guarantor address",
+>>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                               placeholder: "guarantor address",
                               rows: "1"
                             },
@@ -3193,6 +3297,272 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
                       _vm._v(" "),
+<<<<<<< HEAD
+=======
+                      _c("h5", [_vm._v("Second Guarantor's Details")]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                        },
+                        [
+                          _c("label", [_vm._v("Guarantor's Full Name")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.guarantor_name_2,
+                                expression: "form.guarantor_name_2"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|max:50",
+                                expression: "'required|max:50'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              "data-vv-as": "guarantor name",
+                              name: "guarantor_name_2",
+                              placeholder: "enter full name here",
+                              type: "text"
+                            },
+                            domProps: { value: _vm.form.guarantor_name_2 },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "guarantor_name_2",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("guarantor_name_2")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(
+                                      _vm.errors.first("guarantor_name_2")
+                                    ) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                        },
+                        [
+                          _c("label", [_vm._v("Guarantor's Number")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.guarantor_phone_no_2,
+                                expression: "form.guarantor_phone_no_2"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|numeric|max:11|min:11",
+                                expression: "'required|numeric|max:11|min:11'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.error.guarantor_phone_no_2
+                            },
+                            attrs: {
+                              "data-vv-as": "guarantor number",
+                              name: "guarantor_phone_no_2",
+                              placeholder: "081xxxxxxxx",
+                              type: "tel"
+                            },
+                            domProps: { value: _vm.form.guarantor_phone_no_2 },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "guarantor_phone_no_2",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("guarantor_phone_no_2")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(
+                                      _vm.errors.first("guarantor_phone_no_2")
+                                    ) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.error.guarantor_phone_no_2
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.error.guarantor_phone_no_2[0]) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                        },
+                        [
+                          _c("label", [_vm._v("Guarantor's relationship")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.guarantor_relationship_2,
+                                expression: "form.guarantor_relationship_2"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|max:50",
+                                expression: "'required|max:50'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              "data-vv-as": "guarantor relationship",
+                              name: "guarantor_relationship_2",
+                              placeholder: "enter guarantor relationship here",
+                              type: "text"
+                            },
+                            domProps: {
+                              value: _vm.form.guarantor_relationship_2
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "guarantor_relationship_2",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("guarantor_relationship_2")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "guarantor_relationship_2"
+                                      )
+                                    ) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                        },
+                        [
+                          _c("label", [_vm._v("Guarantor's address")]),
+                          _vm._v(" "),
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.guarantor_address_2,
+                                expression: "form.guarantor_address_2"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|max:255",
+                                expression: "'required|max:255'"
+                              }
+                            ],
+                            staticClass: "form-control w-100",
+                            attrs: {
+                              name: "guarantor_address_2",
+                              placeholder: "guarantor address",
+                              "data-vv-as": "guarantor address",
+                              rows: "1"
+                            },
+                            domProps: { value: _vm.form.guarantor_address_2 },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "guarantor_address_2",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("guarantor_address_2")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(
+                                      _vm.errors.first("guarantor_address_2")
+                                    ) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
+                      _vm._v(" "),
+>>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                       _c("h5", [_vm._v("Upload Documents")]),
                       _vm._v(" "),
                       _c(

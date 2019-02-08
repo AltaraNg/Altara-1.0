@@ -1,16 +1,38 @@
 <?php
 
 
+use App\Attendance;
+use App\Branch;
 use App\Brand;
 use App\Category;
 use App\Product;
 use App\Supplier;
+use App\User;
 
 Route::get('/clins', function () {
 
+    /*$data = Attendance::with(['user' => function($query) {
+        return $query->select('id','full_name', 'staff_id', 'role_id','branch_id');
+    }, 'user.role' => function($query) {
+        return $query->select('id','name');
+    }, 'user.branch' => function($query) {
+        return $query->select('id','name');
+    }, 'branch' => function($query){
+        return $query->select('id', 'name');
+    }])->get();*/
+
+//    $data = User::whereId(1)->select('id','full_name','staff_id','role_id')->with(['attendances'])->get();
+    $data = Branch::whereId(2)->select('id','name')->with(['attendances'])->get();
+
+
+    return response()->json([
+        'user' => $data,
+    ]);
+
+
 //    $data = Supplier::whereId(1 )->with(['categories'])->get();
 
-    $data = Category::whereId(1 )->with(['suppliers'])->get();
+    //$data = Category::whereId(1 )->with(['suppliers'])->get();
 
     //$data = Supplier::whereId(2)->with(['categories'])->get();
 
@@ -36,9 +58,7 @@ Route::get('/clins', function () {
       },
    ])->get();*/
 
-   return response()->json([
-      'supplier' => $data,
-   ]);
+
 
 
    /*user < = > products relationships*/

@@ -338,7 +338,7 @@
 
                      <div class="spaceAfter"></div>
 
-                     <h5>Guarantor Details</h5>
+                     <h5>First Guarantor's Details</h5>
 
                      <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                         <label>Guarantor's Full Name</label>
@@ -361,12 +361,15 @@
                                data-vv-as="guarantor number"
                                name="guarantor_phone_no"
                                placeholder="081xxxxxxxx"
+                               :class="{'is-invalid': error.guarantor_phone_no }"
                                type="tel"
                                v-model="form.guarantor_phone_no"
                                v-validate="'required|numeric|max:11|min:11'">
-                        <small
-                           v-if="errors.first('guarantor_phone_no')">
+                        <small v-if="errors.first('guarantor_phone_no')">
                            {{errors.first('guarantor_phone_no')}}
+                        </small>
+                        <small v-if="error.guarantor_phone_no">
+                           {{error.guarantor_phone_no[0]}}
                         </small>
                      </div>
 
@@ -390,7 +393,8 @@
                      <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                         <label>Guarantor's address</label>
                         <textarea class="form-control w-100"
-                                  name="guarantor address"
+                                  name="guarantor_address"
+                                  data-vv-as="guarantor address"
                                   placeholder="guarantor address"
                                   rows="1"
                                   v-model="form.guarantor_address"
@@ -398,6 +402,75 @@
                         <small
                            v-if="errors.first('guarantor_address')">
                            {{errors.first('guarantor_address')}}
+                        </small>
+                     </div>
+
+                     <div class="spaceBetween mb-md-2 mb-0"></div>
+
+                     <h5>Second Guarantor's Details</h5>
+
+                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                        <label>Guarantor's Full Name</label>
+                        <input class="form-control"
+                               data-vv-as="guarantor name"
+                               name="guarantor_name_2"
+                               placeholder="enter full name here"
+                               type="text"
+                               v-model="form.guarantor_name_2"
+                               v-validate="'required|max:50'">
+                        <small
+                            v-if="errors.first('guarantor_name_2')">
+                           {{errors.first('guarantor_name_2') }}
+                        </small>
+                     </div>
+
+                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                        <label>Guarantor's Number</label>
+                        <input class="form-control"
+                               data-vv-as="guarantor number"
+                               name="guarantor_phone_no_2"
+                               placeholder="081xxxxxxxx"
+                               type="tel"
+                               :class="{'is-invalid': error.guarantor_phone_no_2 }"
+                               v-model="form.guarantor_phone_no_2"
+                               v-validate="'required|numeric|max:11|min:11'">
+                        <small v-if="errors.first('guarantor_phone_no_2')">
+                           {{errors.first('guarantor_phone_no_2')}}
+                        </small>
+                        <small v-if="error.guarantor_phone_no_2">
+                           {{error.guarantor_phone_no_2[0]}}
+                        </small>
+                     </div>
+
+                     <div class="spaceBetween mb-md-2 mb-0"></div>
+
+                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                        <label>Guarantor's relationship</label>
+                        <input class="form-control"
+                               data-vv-as="guarantor relationship"
+                               name="guarantor_relationship_2"
+                               placeholder="enter guarantor relationship here"
+                               type="text"
+                               v-model="form.guarantor_relationship_2"
+                               v-validate="'required|max:50'">
+                        <small
+                            v-if="errors.first('guarantor_relationship_2')">
+                           {{errors.first('guarantor_relationship_2') }}
+                        </small>
+                     </div>
+
+                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                        <label>Guarantor's address</label>
+                        <textarea class="form-control w-100"
+                                  name="guarantor_address_2"
+                                  placeholder="guarantor address"
+                                  data-vv-as="guarantor address"
+                                  rows="1"
+                                  v-model="form.guarantor_address_2"
+                                  v-validate="'required|max:255'"></textarea>
+                        <small
+                            v-if="errors.first('guarantor_address_2')">
+                           {{errors.first('guarantor_address_2')}}
                         </small>
                      </div>
 
