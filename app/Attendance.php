@@ -8,6 +8,8 @@ class Attendance extends Model
 {
     protected $guarded = [];
 
+    protected $hidden = ['created_at','updated_at'];
+
     public static function form()
     {
         $users = User::where('branch_id', auth('api')->user()->branch_id)
