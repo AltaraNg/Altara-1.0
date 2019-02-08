@@ -574,8 +574,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-<<<<<<< HEAD
-=======
 //
 //
 //
@@ -649,7 +647,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
->>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
+//
 
 function initialize(to) {
    var urls = { create: 'user/create', edit: 'user/' + to.params.id + '/edit' };
@@ -3024,11 +3022,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "spaceAfter" }),
                       _vm._v(" "),
-<<<<<<< HEAD
-                      _c("h5", [_vm._v("Guarantor Details")]),
-=======
                       _c("h5", [_vm._v("First Guarantor's Details")]),
->>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                       _vm._v(" "),
                       _c(
                         "div",
@@ -3113,12 +3107,9 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
-<<<<<<< HEAD
-=======
                             class: {
                               "is-invalid": _vm.error.guarantor_phone_no
                             },
->>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                             attrs: {
                               "data-vv-as": "guarantor number",
                               name: "guarantor_phone_no",
@@ -3150,8 +3141,6 @@ var render = function() {
                                     "\n                     "
                                 )
                               ])
-<<<<<<< HEAD
-=======
                             : _vm._e(),
                           _vm._v(" "),
                           _vm.error.guarantor_phone_no
@@ -3162,7 +3151,6 @@ var render = function() {
                                     "\n                     "
                                 )
                               ])
->>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                             : _vm._e()
                         ]
                       ),
@@ -3257,12 +3245,8 @@ var render = function() {
                             ],
                             staticClass: "form-control w-100",
                             attrs: {
-<<<<<<< HEAD
-                              name: "guarantor address",
-=======
                               name: "guarantor_address",
                               "data-vv-as": "guarantor address",
->>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                               placeholder: "guarantor address",
                               rows: "1"
                             },
@@ -3297,8 +3281,6 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
                       _vm._v(" "),
-<<<<<<< HEAD
-=======
                       _c("h5", [_vm._v("Second Guarantor's Details")]),
                       _vm._v(" "),
                       _c(
@@ -3562,7 +3544,6 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
                       _vm._v(" "),
->>>>>>> d9eb9dec46cdf3d10a53769ab7ce9d04b16d3bb4
                       _c("h5", [_vm._v("Upload Documents")]),
                       _vm._v(" "),
                       _c(
