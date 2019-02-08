@@ -414,6 +414,7 @@
                            </div>
                            <div v-else>
                               <label class="cv_label mr-4">CV</label>
+                              <!-- BAD NAMING -->
                               <image-upload :usage="`cv`" class="cv_upload" v-model="form.cv"/>
                            </div>
                         </div>

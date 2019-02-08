@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 webpackJsonp([6],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/messaging/message.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/auth/Login.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15,15 +14,15 @@ var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _sms = __webpack_require__("./resources/assets/js/helpers/sms.js");
+var _auth = __webpack_require__("./resources/assets/js/store/auth.js");
 
-var _sms2 = _interopRequireDefault(_sms);
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+var _auth2 = _interopRequireDefault(_auth);
 
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
+
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -61,44 +60,74 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
    data: function data() {
       return {
-         contacts: '',
-         sentData: {},
-         form: {}
+         form: { staff_id: '', password: '' },
+         cardMT: '',
+         error: {}
       };
    },
 
    methods: {
-      sendMessage: function sendMessage() {
+      login: function login() {
          var _this = this;
 
          this.$validator.validateAll().then(function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
-               var contacts;
                return _regenerator2.default.wrap(function _callee$(_context) {
                   while (1) {
                      switch (_context.prev = _context.next) {
                         case 0:
-                           if (result) {
-                              if (_this.$network()) {
-                                 _this.$LIPS(true);
-                                 contacts = _this.contacts.split(",").filter(function (str) {
-                                    return (/\S/.test(str)
-                                    );
-                                 });
+                           if (!result) {
+                              _context.next = 10;
+                              break;
+                           }
 
-                                 contacts.forEach(function (el) {
-                                    _this.sentData.phone = el.trim().substr(1);
-                                    _sms2.default.dvaMessage(_this.sentData);
-                                 });
-                                 _this.done(contacts);
-                              } else _this.$networkErr();
-                           } else _this.$networkErr('form');
+                           if (!_this.$network()) {
+                              _context.next = 9;
+                              break;
+                           }
 
-                        case 1:
+                           _this.$LIPS(true);
+                           _this.error = {};
+                           _context.next = 6;
+                           return (0, _api.post)('/api/login', _this.form).then(function (res) {
+                              res = res.data;
+                              if (res.auth) {
+                                 _auth2.default.set(res);
+                                 _this.$store.dispatch('mutateAuth');
+                                 _this.$router.push('/home');
+                                 _flash2.default.setSuccess(res.message);
+                              }
+                           }).catch(function (e) {
+                              e = e.response;
+                              if (e.status === 422) _this.error = e.data.errors ? e.data.errors : e.data;
+                              _flash2.default.setError(e.data.message);
+                           });
+
+                        case 6:
+                           _this.$LIPS(false);
+                           _context.next = 10;
+                           break;
+
+                        case 9:
+                           _this.$networkErr();
+
+                        case 10:
                         case 'end':
                            return _context.stop();
                      }
@@ -110,30 +139,14 @@ exports.default = {
                return _ref.apply(this, arguments);
             };
          }());
-      },
-      done: function done(contacts) {
-         var _this2 = this;
-
-         this.$LIPS(false);
-         _flash2.default.setSuccess('Messages sent!');
-         this.form.contacts = contacts;
-         this.form.contact_count = contacts.length;
-         this.form.message = this.sentData.message;
-         this.form.pages = Math.ceil(this.form.message.length / 160);
-         var remaining = this.form.message.length % 160;
-         if (remaining > 0) this.form.pages += 1;
-         (0, _api.post)('/api/message', this.form).then(function () {
-            return _this2.resetData();
-         });
-      },
-      resetData: function resetData() {
-         this.contacts = '';
-         this.sentData = { message: '', phone: '' };
-         this.form = { pages: 0, user_id: '', message: '', contacts: [], contact_count: 0 };
       }
    },
-   created: function created() {
-      this.resetData();
+   beforeCreate: function beforeCreate() {
+      if (localStorage.getItem('api_token')) this.$router.push('/home');
+   },
+   mounted: function mounted() {
+      this.cardMT = (window.innerHeight - $('#loginCard').height()) / 2;
+      this.$LIPS(false);
    }
 };
 
@@ -147,7 +160,7 @@ module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7f0e0036\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/messaging/message.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e26ed42\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/auth/Login.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -155,7 +168,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n#messaging textarea[data-v-7f0e0036] {\n  font: 500 1.5rem \"Raleway\", sans-serif;\n}\n", ""]);
+exports.push([module.i, "\n#login .col-md-6,\n#login .col-md-12,\n#login .col-sm-6,\n#login .col-sm-12 {\n  margin-bottom: 2rem;\n}\n#login .col-md-6 label,\n  #login .col-md-12 label,\n  #login .col-sm-6 label,\n  #login .col-sm-12 label {\n    margin-top: 1rem;\n    margin-bottom: .1rem;\n}\n#login .col-md-6 label + .input-group,\n    #login .col-md-12 label + .input-group,\n    #login .col-sm-6 label + .input-group,\n    #login .col-sm-12 label + .input-group {\n      margin-bottom: 0;\n}\n#login .col-md-6 input,\n  #login .col-md-12 input,\n  #login .col-sm-6 input,\n  #login .col-sm-12 input {\n    border-right: 0 !important;\n}\n#login .col-md-6 small,\n  #login .col-md-12 small,\n  #login .col-sm-6 small,\n  #login .col-sm-12 small {\n    color: #c81618;\n    font-size: 1.1rem;\n}\n#login .col-md-6 i,\n  #login .col-md-12 i,\n  #login .col-sm-6 i,\n  #login .col-sm-12 i {\n    font-size: 1.1rem;\n}\n#login .form-control:focus + .input-group-addon,\n#login .form-control:focus ~ .input-group-addon {\n  border-color: #0b78bc !important;\n}\n", ""]);
 
 // exports
 
@@ -938,7 +951,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7f0e0036\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/messaging/message.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3e26ed42\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/auth/Login.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -946,159 +959,185 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
-    _c(
-      "div",
-      { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
-      [
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "ul",
-            { staticClass: "nav nav-tabs bg-default justify-content-center" },
-            [_c("h6", [_vm._v("Messaging")])]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body p-4 " }, [
+    _c("div", { attrs: { id: "login" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "col-md-5 mx-auto",
+          style: { marginTop: _vm.cardMT + "px" },
+          attrs: { id: "loginCard" }
+        },
+        [
+          _c("div", { staticClass: "card" }, [
+            _c(
+              "ul",
+              { staticClass: "nav nav-tabs justify-content-center bg-default" },
+              [_c("h6", [_vm._v("Staff Login")])]
+            ),
+            _vm._v(" "),
             _c(
               "form",
               {
-                staticClass: "clearfix",
-                attrs: { id: "messaging" },
+                staticClass: "pt-1 pb-3",
                 on: {
                   submit: function($event) {
                     $event.preventDefault()
-                    return _vm.sendMessage($event)
+                    return _vm.login($event)
                   }
                 }
               },
               [
-                _c(
-                  "div",
-                  {
-                    staticClass: "form-group col-md-12 px-md-3 px-1 float-left"
-                  },
-                  [
-                    _c("label", [_vm._v("Phone Numbers")]),
+                _c("div", { staticClass: "card-body clearfix px-5" }, [
+                  _c("div", { staticClass: "col-sm-12 px-0 px-md-3" }, [
+                    _c("label", { staticClass: "category" }, [
+                      _vm._v("* Staff ID")
+                    ]),
                     _vm._v(" "),
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.contacts,
-                          expression: "contacts"
-                        },
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      staticClass: "form-control col-sm-12",
-                      attrs: {
-                        name: "contacts",
-                        placeholder:
-                          "Kindly add the number and seperate each with a semi-colon ';' ",
-                        rows: "3"
-                      },
-                      domProps: { value: _vm.contacts },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.staff_id,
+                            expression: "form.staff_id"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
                           }
-                          _vm.contacts = $event.target.value
+                        ],
+                        staticClass: "form-control",
+                        attrs: { name: "Staff ID", placeholder: "Staff ID" },
+                        domProps: { value: _vm.form.staff_id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "staff_id", $event.target.value)
+                          }
                         }
-                      }
-                    }),
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "input-group-addon" }, [
+                        _c("i", { staticClass: "ml-2 fa fa-user-circle" })
+                      ])
+                    ]),
                     _vm._v(" "),
-                    _vm.errors.first("contacts")
-                      ? _c("small", [
+                    _vm.errors.first("Staff ID")
+                      ? _c("small", { staticClass: "error-control" }, [
                           _vm._v(
-                            _vm._s(_vm.errors.first("contacts")) +
-                              "\n                  "
+                            _vm._s(_vm.errors.first("Staff ID")) +
+                              "\n                     "
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.error.staff_id
+                      ? _c("small", { staticClass: "error-control" }, [
+                          _vm._v(_vm._s(_vm.error.staff_id[0]))
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-12 px-0 px-md-3" }, [
+                    _c("label", { staticClass: "category" }, [
+                      _vm._v("* Password")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.password,
+                            expression: "form.password"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required|min:6|max:25",
+                            expression: "'required|min:6|max:25'"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          name: "password",
+                          placeholder: "Password",
+                          type: "password"
+                        },
+                        domProps: { value: _vm.form.password },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "password", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "input-group-addon" }, [
+                        _c("i", { staticClass: "ml-2 fas fa-key" })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm.errors.first("password")
+                      ? _c("small", { staticClass: "error-control" }, [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.errors.first("password")) +
+                              "\n                     "
                           )
                         ])
                       : _vm._e()
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "form-group col-md-12 px-md-3 px-1 float-left"
-                  },
-                  [
-                    _c("label", [_vm._v("Message Body")]),
-                    _vm._v(" "),
-                    _c("textarea", {
-                      directives: [
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-sm-12 mb-4 px-0 px-md-3 pt-3" },
+                    [
+                      _c(
+                        "button",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sentData.message,
-                          expression: "sentData.message"
+                          staticClass: "btn btn-block bg-default",
+                          attrs: { disabled: _vm.$isProcessing, type: "submit" }
                         },
+                        [
+                          _vm._v("\n                        Login!   "),
+                          _c("i", { staticClass: "far fa-paper-plane" })
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "text-center float-left w-100 pb-4" },
+                    [
+                      _vm._v("Forgot Password? "),
+                      _c(
+                        "router-link",
                         {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      staticClass: "form-control col-sm-12",
-                      attrs: {
-                        name: "message",
-                        placeholder: "the content of the message goes here",
-                        rows: "3"
-                      },
-                      domProps: { value: _vm.sentData.message },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sentData, "message", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.first("message")
-                      ? _c("small", [
-                          _vm._v(_vm._s(_vm.errors.first("message")))
-                        ])
-                      : _vm._e()
-                  ]
-                ),
-                _vm._v(" "),
-                _c("hr", { staticClass: "style-two" }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3 float-right"
-                  },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-block btn-lg bg-default",
-                        attrs: { disabled: _vm.$isProcessing, type: "submit" }
-                      },
-                      [
-                        _vm._v("\n                     Send messages "),
-                        _c("i", { staticClass: "far fa-paper-plane ml-1" })
-                      ]
-                    )
-                  ]
-                )
+                          staticClass: "text-info",
+                          attrs: { to: "/forgotPassword" }
+                        },
+                        [_vm._v("Click here")]
+                      )
+                    ],
+                    1
+                  )
+                ])
               ]
             )
           ])
-        ])
-      ]
-    )
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -1107,29 +1146,29 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7f0e0036", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-3e26ed42", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7f0e0036\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/messaging/message.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e26ed42\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/auth/Login.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7f0e0036\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/messaging/message.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e26ed42\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/auth/Login.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("0ce36a93", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("5068f0fa", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7f0e0036\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./message.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7f0e0036\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./message.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e26ed42\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Login.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e26ed42\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Login.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -1140,68 +1179,25 @@ if(false) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/sms.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-   value: true
-});
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
-
-exports.default = {
-   message: "",
-   welcome: function welcome(details) {
-      this.message = "Welcome to Altara credit. Please secure your login details. Staff ID: " + details.loginID + ", password: " + details.loginPassword;
-      this.send(details);
-   },
-   customerReg: function customerReg(details) {
-      this.message = "Dear " + details.first_name + " " + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact: " + details.branch.phone_yoruba + ". Your customer id is: " + details.id;
-      this.send({ phone: details.telephone.substr(1) });
-   },
-   passwordReset: function passwordReset(details) {
-      this.message = "Password reset successful! if your did not request for a new password kindly report back immediately, your staff ID is " + details.staff_id + ", new password: " + details.password;
-      this.send(details);
-   },
-   dvaMessage: function dvaMessage(details) {
-      this.message = details.message;
-      this.send(details);
-   },
-   send: function send(details) {
-      console.log(details);
-      /*get(`/api/message/create?to=234${details.phone}&message=${this.message}`).then(res => {
-         let data = JSON.parse(res.data);
-         if (data.messages[0].status.groupId === 1) {
-            console.log("sms sent successfully");
-         }
-      });*/
-   }
-};
-
-/***/ }),
-
-/***/ "./resources/assets/js/views/DVA/messaging/message.vue":
+/***/ "./resources/assets/js/views/auth/Login.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7f0e0036\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/messaging/message.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e26ed42\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/auth/Login.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/messaging/message.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/auth/Login.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7f0e0036\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/messaging/message.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3e26ed42\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/auth/Login.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-7f0e0036"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -1212,7 +1208,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\messaging\\message.vue"
+Component.options.__file = "resources\\assets\\js\\views\\auth\\Login.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1221,9 +1217,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7f0e0036", Component.options)
+    hotAPI.createRecord("data-v-3e26ed42", Component.options)
   } else {
-    hotAPI.reload("data-v-7f0e0036", Component.options)
+    hotAPI.reload("data-v-3e26ed42", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1236,6 +1232,3 @@ module.exports = Component.exports
 /***/ })
 
 });
-=======
-webpackJsonp([6],{AB2z:function(t,r,e){var n=e("VU/8")(e("xsZX"),e("wTQ/"),!1,function(t){e("SBcZ")},null,null);t.exports=n.exports},SBcZ:function(t,r,e){var n=e("oYtk");"string"==typeof n&&(n=[[t.i,n,""]]),n.locals&&(t.exports=n.locals);e("rjj0")("374c8a72",n,!0,{})},SldL:function(t,r){!function(r){"use strict";var e,n=Object.prototype,o=n.hasOwnProperty,i="function"==typeof Symbol?Symbol:{},a=i.iterator||"@@iterator",s=i.asyncIterator||"@@asyncIterator",l=i.toStringTag||"@@toStringTag",c="object"==typeof t,u=r.regeneratorRuntime;if(u)c&&(t.exports=u);else{(u=r.regeneratorRuntime=c?t.exports:{}).wrap=x;var f="suspendedStart",p="suspendedYield",d="executing",h="completed",m={},g={};g[a]=function(){return this};var v=Object.getPrototypeOf,y=v&&v(v($([])));y&&y!==n&&o.call(y,a)&&(g=y);var w=C.prototype=_.prototype=Object.create(g);L.prototype=w.constructor=C,C.constructor=L,C[l]=L.displayName="GeneratorFunction",u.isGeneratorFunction=function(t){var r="function"==typeof t&&t.constructor;return!!r&&(r===L||"GeneratorFunction"===(r.displayName||r.name))},u.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,C):(t.__proto__=C,l in t||(t[l]="GeneratorFunction")),t.prototype=Object.create(w),t},u.awrap=function(t){return{__await:t}},E(k.prototype),k.prototype[s]=function(){return this},u.AsyncIterator=k,u.async=function(t,r,e,n){var o=new k(x(t,r,e,n));return u.isGeneratorFunction(r)?o:o.next().then(function(t){return t.done?t.value:o.next()})},E(w),w[l]="Generator",w[a]=function(){return this},w.toString=function(){return"[object Generator]"},u.keys=function(t){var r=[];for(var e in t)r.push(e);return r.reverse(),function e(){for(;r.length;){var n=r.pop();if(n in t)return e.value=n,e.done=!1,e}return e.done=!0,e}},u.values=$,O.prototype={constructor:O,reset:function(t){if(this.prev=0,this.next=0,this.sent=this._sent=e,this.done=!1,this.delegate=null,this.method="next",this.arg=e,this.tryEntries.forEach(j),!t)for(var r in this)"t"===r.charAt(0)&&o.call(this,r)&&!isNaN(+r.slice(1))&&(this[r]=e)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(t){if(this.done)throw t;var r=this;function n(n,o){return s.type="throw",s.arg=t,r.next=n,o&&(r.method="next",r.arg=e),!!o}for(var i=this.tryEntries.length-1;i>=0;--i){var a=this.tryEntries[i],s=a.completion;if("root"===a.tryLoc)return n("end");if(a.tryLoc<=this.prev){var l=o.call(a,"catchLoc"),c=o.call(a,"finallyLoc");if(l&&c){if(this.prev<a.catchLoc)return n(a.catchLoc,!0);if(this.prev<a.finallyLoc)return n(a.finallyLoc)}else if(l){if(this.prev<a.catchLoc)return n(a.catchLoc,!0)}else{if(!c)throw new Error("try statement without catch or finally");if(this.prev<a.finallyLoc)return n(a.finallyLoc)}}}},abrupt:function(t,r){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.tryLoc<=this.prev&&o.call(n,"finallyLoc")&&this.prev<n.finallyLoc){var i=n;break}}i&&("break"===t||"continue"===t)&&i.tryLoc<=r&&r<=i.finallyLoc&&(i=null);var a=i?i.completion:{};return a.type=t,a.arg=r,i?(this.method="next",this.next=i.finallyLoc,m):this.complete(a)},complete:function(t,r){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&r&&(this.next=r),m},finish:function(t){for(var r=this.tryEntries.length-1;r>=0;--r){var e=this.tryEntries[r];if(e.finallyLoc===t)return this.complete(e.completion,e.afterLoc),j(e),m}},catch:function(t){for(var r=this.tryEntries.length-1;r>=0;--r){var e=this.tryEntries[r];if(e.tryLoc===t){var n=e.completion;if("throw"===n.type){var o=n.arg;j(e)}return o}}throw new Error("illegal catch attempt")},delegateYield:function(t,r,n){return this.delegate={iterator:$(t),resultName:r,nextLoc:n},"next"===this.method&&(this.arg=e),m}}}function x(t,r,e,n){var o=r&&r.prototype instanceof _?r:_,i=Object.create(o.prototype),a=new O(n||[]);return i._invoke=function(t,r,e){var n=f;return function(o,i){if(n===d)throw new Error("Generator is already running");if(n===h){if("throw"===o)throw i;return F()}for(e.method=o,e.arg=i;;){var a=e.delegate;if(a){var s=P(a,e);if(s){if(s===m)continue;return s}}if("next"===e.method)e.sent=e._sent=e.arg;else if("throw"===e.method){if(n===f)throw n=h,e.arg;e.dispatchException(e.arg)}else"return"===e.method&&e.abrupt("return",e.arg);n=d;var l=b(t,r,e);if("normal"===l.type){if(n=e.done?h:p,l.arg===m)continue;return{value:l.arg,done:e.done}}"throw"===l.type&&(n=h,e.method="throw",e.arg=l.arg)}}}(t,e,a),i}function b(t,r,e){try{return{type:"normal",arg:t.call(r,e)}}catch(t){return{type:"throw",arg:t}}}function _(){}function L(){}function C(){}function E(t){["next","throw","return"].forEach(function(r){t[r]=function(t){return this._invoke(r,t)}})}function k(t){var r;this._invoke=function(e,n){function i(){return new Promise(function(r,i){!function r(e,n,i,a){var s=b(t[e],t,n);if("throw"!==s.type){var l=s.arg,c=l.value;return c&&"object"==typeof c&&o.call(c,"__await")?Promise.resolve(c.__await).then(function(t){r("next",t,i,a)},function(t){r("throw",t,i,a)}):Promise.resolve(c).then(function(t){l.value=t,i(l)},a)}a(s.arg)}(e,n,r,i)})}return r=r?r.then(i,i):i()}}function P(t,r){var n=t.iterator[r.method];if(n===e){if(r.delegate=null,"throw"===r.method){if(t.iterator.return&&(r.method="return",r.arg=e,P(t,r),"throw"===r.method))return m;r.method="throw",r.arg=new TypeError("The iterator does not provide a 'throw' method")}return m}var o=b(n,t.iterator,r.arg);if("throw"===o.type)return r.method="throw",r.arg=o.arg,r.delegate=null,m;var i=o.arg;return i?i.done?(r[t.resultName]=i.value,r.next=t.nextLoc,"return"!==r.method&&(r.method="next",r.arg=e),r.delegate=null,m):i:(r.method="throw",r.arg=new TypeError("iterator result is not an object"),r.delegate=null,m)}function S(t){var r={tryLoc:t[0]};1 in t&&(r.catchLoc=t[1]),2 in t&&(r.finallyLoc=t[2],r.afterLoc=t[3]),this.tryEntries.push(r)}function j(t){var r=t.completion||{};r.type="normal",delete r.arg,t.completion=r}function O(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(S,this),this.reset(!0)}function $(t){if(t){var r=t[a];if(r)return r.call(t);if("function"==typeof t.next)return t;if(!isNaN(t.length)){var n=-1,i=function r(){for(;++n<t.length;)if(o.call(t,n))return r.value=t[n],r.done=!1,r;return r.value=e,r.done=!0,r};return i.next=i}}return{next:F}}function F(){return{value:e,done:!0}}}(function(){return this}()||Function("return this")())},Xxa5:function(t,r,e){t.exports=e("jyFz")},jyFz:function(t,r,e){var n=function(){return this}()||Function("return this")(),o=n.regeneratorRuntime&&Object.getOwnPropertyNames(n).indexOf("regeneratorRuntime")>=0,i=o&&n.regeneratorRuntime;if(n.regeneratorRuntime=void 0,t.exports=e("SldL"),o)n.regeneratorRuntime=i;else try{delete n.regeneratorRuntime}catch(t){n.regeneratorRuntime=void 0}},oYtk:function(t,r,e){(t.exports=e("FZ+f")(!1)).push([t.i,"#login .col-md-6,#login .col-md-12,#login .col-sm-6,#login .col-sm-12{margin-bottom:2rem}#login .col-md-6 label,#login .col-md-12 label,#login .col-sm-6 label,#login .col-sm-12 label{margin-top:1rem;margin-bottom:.1rem}#login .col-md-6 label+.input-group,#login .col-md-12 label+.input-group,#login .col-sm-6 label+.input-group,#login .col-sm-12 label+.input-group{margin-bottom:0}#login .col-md-6 input,#login .col-md-12 input,#login .col-sm-6 input,#login .col-sm-12 input{border-right:0!important}#login .col-md-6 small,#login .col-md-12 small,#login .col-sm-6 small,#login .col-sm-12 small{color:#c81618;font-size:1.1rem}#login .col-md-6 i,#login .col-md-12 i,#login .col-sm-6 i,#login .col-sm-12 i{font-size:1.1rem}#login .form-control:focus+.input-group-addon,#login .form-control:focus~.input-group-addon{border-color:#0b78bc!important}",""])},"wTQ/":function(t,r){t.exports={render:function(){var t=this,r=t.$createElement,e=t._self._c||r;return e("transition",{attrs:{name:"fade"}},[e("div",{attrs:{id:"login"}},[e("div",{staticClass:"col-md-5 mx-auto",style:{marginTop:t.cardMT+"px"},attrs:{id:"loginCard"}},[e("div",{staticClass:"card"},[e("ul",{staticClass:"nav nav-tabs justify-content-center bg-default"},[e("h6",[t._v("Staff Login")])]),t._v(" "),e("form",{staticClass:"pt-1 pb-3",on:{submit:function(r){return r.preventDefault(),t.login(r)}}},[e("div",{staticClass:"card-body clearfix px-5"},[e("div",{staticClass:"col-sm-12 px-0 px-md-3"},[e("label",{staticClass:"category"},[t._v("* Staff ID")]),t._v(" "),e("div",{staticClass:"input-group"},[e("input",{directives:[{name:"model",rawName:"v-model",value:t.form.staff_id,expression:"form.staff_id"},{name:"validate",rawName:"v-validate",value:"required",expression:"'required'"}],staticClass:"form-control",attrs:{name:"Staff ID",placeholder:"Staff ID"},domProps:{value:t.form.staff_id},on:{input:function(r){r.target.composing||t.$set(t.form,"staff_id",r.target.value)}}}),t._v(" "),e("span",{staticClass:"input-group-addon"},[e("i",{staticClass:"ml-2 fa fa-user-circle"})])]),t._v(" "),t.errors.first("Staff ID")?e("small",{staticClass:"error-control"},[t._v(t._s(t.errors.first("Staff ID"))+"\n                     ")]):t._e(),t._v(" "),t.error.staff_id?e("small",{staticClass:"error-control"},[t._v(t._s(t.error.staff_id[0]))]):t._e()]),t._v(" "),e("div",{staticClass:"col-sm-12 px-0 px-md-3"},[e("label",{staticClass:"category"},[t._v("* Password")]),t._v(" "),e("div",{staticClass:"input-group"},[e("input",{directives:[{name:"model",rawName:"v-model",value:t.form.password,expression:"form.password"},{name:"validate",rawName:"v-validate",value:"required|min:6|max:25",expression:"'required|min:6|max:25'"}],staticClass:"form-control",attrs:{name:"password",placeholder:"Password",type:"password"},domProps:{value:t.form.password},on:{input:function(r){r.target.composing||t.$set(t.form,"password",r.target.value)}}}),t._v(" "),e("span",{staticClass:"input-group-addon"},[e("i",{staticClass:"ml-2 fas fa-key"})])]),t._v(" "),t.errors.first("password")?e("small",{staticClass:"error-control"},[t._v("\n                        "+t._s(t.errors.first("password"))+"\n                     ")]):t._e()]),t._v(" "),e("div",{staticClass:"col-sm-12 mb-4 px-0 px-md-3 pt-3"},[e("button",{staticClass:"btn btn-block bg-default",attrs:{disabled:t.$isProcessing,type:"submit"}},[t._v("\n                        Login!   "),e("i",{staticClass:"far fa-paper-plane"})])]),t._v(" "),e("span",{staticClass:"text-center float-left w-100 pb-4"},[t._v("Forgot Password? "),e("router-link",{staticClass:"text-info",attrs:{to:"/forgotPassword"}},[t._v("Click here")])],1)])])])])])])},staticRenderFns:[]}},xsZX:function(t,r,e){"use strict";Object.defineProperty(r,"__esModule",{value:!0});var n=s(e("Xxa5")),o=s(e("qYF3")),i=s(e("TOoT")),a=e("uD8u");function s(t){return t&&t.__esModule?t:{default:t}}r.default={data:function(){return{form:{staff_id:"",password:""},cardMT:"",error:{}}},methods:{login:function(){var t,r,e=this;this.$validator.validateAll().then((t=n.default.mark(function t(r){return n.default.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:if(!r){t.next=10;break}if(!e.$network()){t.next=9;break}return e.$LIPS(!0),e.error={},t.next=6,(0,a.post)("/api/login",e.form).then(function(t){(t=t.data).auth&&(o.default.set(t),e.$store.dispatch("mutateAuth"),e.$router.push("/home"),i.default.setSuccess(t.message))}).catch(function(t){422===(t=t.response).status&&(e.error=t.data.errors?t.data.errors:t.data),i.default.setError(t.data.message)});case 6:e.$LIPS(!1),t.next=10;break;case 9:e.$networkErr();case 10:case"end":return t.stop()}},t,e)}),r=function(){var r=t.apply(this,arguments);return new Promise(function(t,e){return function n(o,i){try{var a=r[o](i),s=a.value}catch(t){return void e(t)}if(!a.done)return Promise.resolve(s).then(function(t){n("next",t)},function(t){n("throw",t)});t(s)}("next")})},function(t){return r.apply(this,arguments)}))}},beforeCreate:function(){localStorage.getItem("api_token")&&this.$router.push("/home")},mounted:function(){this.cardMT=(window.innerHeight-$("#loginCard").height())/2,this.$LIPS(!1)}}}});
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9

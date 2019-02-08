@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-webpackJsonp([16,20],{
+webpackJsonp([16],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/DataViewer.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11,132 +10,14 @@ Object.defineProperty(exports, "__esModule", {
    value: true
 });
 
-var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _sms = __webpack_require__("./resources/assets/js/helpers/sms.js");
-
-var _sms2 = _interopRequireDefault(_sms);
-
-var _log = __webpack_require__("./resources/assets/js/helpers/log.js");
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
-
-var _store = __webpack_require__("./resources/assets/js/store/store.js");
-
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
 
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import UtilityForm from '../views/HRM/employee/employeeForm';
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -249,197 +130,241 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 
 exports.default = {
-   // components: {UtilityForm},
    data: function data() {
-      return {
-         /*data generic to data viewer starts here*/
-         model: {},
-         columns: {},
-         query: {
-            page: 1,
-            column: 'id',
-            direction: 'desc',
-            per_page: 10,
-            search_column: 'id',
-            search_operator: 'greater_than',
-            search_input: 0
-         },
-         operators: {
-            equal: '=',
-            not_equal: '<>',
-            less_than: '<',
-            greater_than: '>',
-            less_than_or_equal_to: '<=',
-            greater_than_or_equal_to: '>=',
-            in: 'IN',
-            like: 'LIKE'
-         },
-         /*data generic to data viewer stops here*/
 
-         /*data peculiar to hrm portal data viewer starts here*/
-         bus: new _vue2.default(),
-         form: {},
-         portal_access: [{ name: 'grant', value: 1 }, { name: 'deny', value: 0 }]
-         //sentData: {},
-         /*data peculiar to hrm portal data viewer stops here*/
+      return {
+         // duration: 'daily',
+         /** duration is used a to toggle the "to date"
+          * to make if disabled when the user
+          * wants a daily report*/
+         users: null,
+         report: null
       };
-   },
-   created: function created() {
-      this.$prepareStates();
-      this.fetchIndexData();
-      $(document).on('click', 'tr', function () {
-         $('tr.current').removeClass('current');
-         $(this).addClass('current');
-      });
-   },
-   updated: function updated() {
-      $('[data-toggle="tooltip"]').tooltip();
    },
 
 
    methods: {
-      /*methods exclusive to data viewer starts here*/
+      initForm: function initForm() {
+         this.report = {
+            user_id: '',
+            date: this.$getDate(),
+            number_on_portal: '',
+            number_to_captain: '',
+            remark: ''
+         };
+      },
 
-      next: function next() {
-         if (this.model.next_page_url) {
-            this.query.page++;
-            this.fetchIndexData();
-         }
-      },
-      prev: function prev() {
-         if (this.model.prev_page_url) {
-            this.query.page--;
-            this.fetchIndexData();
-         }
-      },
-      toggleOrder: function toggleOrder(column) {
-         if (column === this.query.column) this.query.direction = this.query.direction === 'desc' ? 'asc' : 'desc';else {
-            this.query.column = column;
-            this.query.direcntion = 'asc';
-         }
-         this.fetchIndexData();
-      },
-      fetchIndexData: function fetchIndexData() {
+
+      /*generateReport() {
+          /!** check if the required fields have a value *!/
+         this.$validator.validateAll().then(result => {
+             if (result) {
+               /!** if the result from the check is truthy*!/
+                if (this.$network()) {
+                  /!** check network connectivity*!/
+                   let branch;
+                   this.$LIPS(true);
+                   /!** check is the user select "for all branches is where value is 0"*!/
+                  if (this.report.branch.id !== 0) {
+                     /!** if it he doesnt want for all branches*!/
+                      /!** find the branch where the value of the branch input field matches with the branch id
+                      * NB: the branches are stored in the store for use globally in the app*!/
+                     branch = store.state.branches.find(obj => obj.id === this.report.branch.id);
+                      /!**when u get the branch set the report branch to the branch retrieved above*!/
+                     this.report.branch = branch;
+                  }
+                   /!** if
+                   * (
+                   *    (the duration is daily) and (the report.from is not today's date)
+                   *    (NB: this.$getDate() is a vue prototype i created to return the current date)
+                   * ) or (
+                   *    report.from is greater than report.to
+                   *    (NB: this implies that report.from must be earlier(in date) than the report to)
+                   * )
+                   * then reset the report.to to the report.from.
+                   * The above ensure
+                   * 1. that when a user selects daily that the both dates are the same date.
+                   * 2. That the report.from must be earlier(in date) than the report to
+                   * *!/
+                  if ((this.duration === 'daily' && this.report.from !== this.$getDate()) || (this.report.from > this.report.to))
+                     this.report.to = this.report.from;
+                   postD(`/api/report/daily`, this.report)
+                     .then(res => {
+                         const url = window.URL.createObjectURL(new Blob([res.data]));
+                         const link = document.createElement('a');
+                         link.href = url;
+                         link.setAttribute('download',
+                            `report from ${this.report.from} to ${this.report.to}.xlsx`);
+                         document.body.appendChild(link);
+                         link.click();
+                         this.$LIPS(false);
+                     });
+               } else this.$networkErr();
+            }
+            if (!result) this.$networkErr('form');
+         });
+      },*/
+
+      submitReport: function submitReport() {
          var _this = this;
 
-         this.$LIPS(true);
-         $('.modal').modal('hide');
-         (0, _api.get)('' + this.$route.meta.source + ('?page=' + this.query.page) + ('&column=' + this.query.column) + ('&per_page=' + this.query.per_page) + ('&direction=' + this.query.direction) + ('&search_input=' + this.query.search_input) + ('&search_column=' + this.query.search_column) + ('&search_operator=' + this.query.search_operator)).then(function (res) {
-            var data = res.data.model.data;
-            /*the state id for the branch fetched from the db is a number
-            * hence the code below is used to get the state name
-            * corresponding to the state id and display it
-            * instead of showing state id as a number*/
-            if (data.length && data[0].state_id) {
-               data.forEach(function (curr) {
-                  return curr.state_id = _store.store.getters.getStates.find(function (obj) {
-                     return obj.id === curr.state_id;
-                  }).name;
-               });
+         /** validate form*/
+         this.$validator.validateAll().then(function (result) {
+            /** if validation is successful*/
+            if (result) {
+               /** check is network is available*/
+               if (_this.$network()) {
+                  /** if network is available*/
+                  _this.$LIPS(true);
+                  /** make a request to the backend*/
+                  (0, _api.post)('/api/dsa_daily_registration', _this.report).then(function (res) {
+                     document.getElementById('dsaDailyReportForm').reset();
+                     _this.$validator.reset();
+                     _this.initForm();
+                     _this.$scrollToTop();
+                     _this.$LIPS(false);
+                     if (res.data.submitted) _flash2.default.setSuccess(res.data.message);
+                  }).catch(function () {
+                     return _flash2.default.setError('Error logging report please try again later!');
+                  });
+               } else _this.$networkErr();
             }
-            _vue2.default.set(_this.$data, 'model', res.data.model);
-            _vue2.default.set(_this.$data, 'columns', res.data.columns);
-            _this.$scrollToTop();
-            _this.$LIPS(false);
+            if (!result) _this.$networkErr('form');
          });
-      },
-
-      /*methods exclusive to data viewer stop here*/
-
-      /*methods exclusive to hrm data viewer starts here*/
-      accessStatus: function accessStatus(status) {
-         return Boolean(Number(status));
-         /*returns true or false for the portal
-         access status for each staff
-         (1 or 0 respectively)*/
-      },
-      update: function update(emp, mod) {
-         this.form = emp;
-         $('#' + mod).modal('toggle');
-      },
-      resetPassword: function resetPassword() {
-         var _this2 = this;
-
-         if (this.$network()) {
-            this.$LIPS(true);
-            (0, _api.get)('/api/reset-password/' + this.form.id).then(function (res) {
-               (0, _log.log)('resetUserPassword', _this2.form.staff_id);
-               _flash2.default.setSuccess('Employee password reset successful!');
-               var details = {
-                  phone: String(parseInt(_this2.form.phone_number)), password: res.data.password,
-                  staff_id: _this2.form.staff_id
-               };
-               _sms2.default.passwordReset(details);
-            }).finally(function () {
-               return _this2.done();
-            });
-         } else this.$networkErr();
-      },
-      myLog: function myLog(id) {
-         var _this3 = this;
-
-         if (this.$network()) {
-            this.$LIPS(true);
-            (0, _api.byMethod)('PUT', '/api/user/' + id, this.form).then(function (res) {
-               (0, _log.log)('PortalAccessUpdated', String(res.data.staff_id));
-               _flash2.default.setSuccess('Portal access updated', 20000);
-            }).catch(function () {
-               return _flash2.default.setError('Error updating status. Try again later!');
-            }).finally(function () {
-               return _this3.done();
-            });
-         } else this.$networkErr();
-      },
-      done: function done() {
-         this.$scrollToTop();
-         this.$LIPS(false);
-         $('.modal').modal('hide');
       }
-      /*methods exclusive to hrm data viewer stops here*/
-
    },
-   computed: {
-      user: function user() {
-         return this.$route.meta.appModel === 'user';
-         /*return true if the context
-         * of the data viewer is
-         * for employees*/
-      },
-      branch: function branch() {
-         return this.$route.meta.appModel === 'branch';
-         /*return true if the context
-         * of the data viewer is
-         * for branch*/
-      },
-      customer: function customer() {
-         return this.$route.meta.appModel === 'customer';
-         /*return true if the context
-         * of the data viewer is
-         * for customer*/
-      }
+
+   created: function created() {
+      var _this2 = this;
+
+      /** get the details of the current user */
+      /*get(`/api/user/${this.$store.state.user_id}`)
+         .then(res => this.report.branch = res.data.user.branch);*/
+      this.initForm();
+      (0, _api.get)('/api/user/getBranchUsers').then(function (res) {
+         return _this2.users = res.data.DSAs;
+      });
+
+      /** set the branch for the daily report form to the current users branch.
+       * This is to reduce the time the user spend on selecting
+       * options on the form*/
+   },
+
+
+   watch: {
+      /* duration: function (val) {
+          /!** ifi the current option select by the user is "daily" set the TO to current date*!/
+           if (val === 'daily') this.report.to = this.$getDate();
+       }*/
    }
 };
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/branch/branches.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/report.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+   value: true
 });
 
-var _DataViewer = __webpack_require__("./resources/assets/js/components/DataViewer.vue");
+var _dailyReport = __webpack_require__("./resources/assets/js/views/DSA/report/dailyReport.vue");
 
-var _DataViewer2 = _interopRequireDefault(_DataViewer);
+var _dailyReport2 = _interopRequireDefault(_dailyReport);
+
+var _store = __webpack_require__("./resources/assets/js/store/store.js");
+
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: { DataViewer: _DataViewer2.default }
+   components: { DailyReport: _dailyReport2.default },
+   beforeCreate: function beforeCreate() {
+      if (!this.$store.getters.verifyDSACaptain) this.$networkErr('page');
+      /** this component can only be accessed by the dsa leads and captains hence this route guard
+      * if the role of the dsa agent logged in is contained in the
+      * array of the dsa lead then access will be granted*/
+      this.$prepareBranches();
+   },
+   data: function data() {
+      return {
+         types: [{
+            name: "sales report",
+            slug: "sales_report"
+         }, {
+            name: "score card",
+            slug: "score_card"
+         }, {
+            name: "weekly operations",
+            slug: "weekly_operations"
+         }],
+         report: {
+            to: '',
+            from: '',
+            branch: {
+               id: '',
+               name: ''
+            },
+            employee: '',
+            type: ''
+         }
+      };
+   },
+   created: function created() {
+      this.setDates();
+   },
+
+   methods: {
+      generateReport: function generateReport() {
+         var _this = this;
+
+         this.$validator.validateAll().then(function (result) {
+            if (result) {
+               if (_this.$network()) {
+                  var branch = _store.store.state.branches.find(function (obj) {
+                     return obj.id === _this.report.branch.id;
+                  });
+                  _this.report.branch = branch;
+                  (0, _api.postD)('/api/report', _this.report).then(function (res) {
+                     var url = window.URL.createObjectURL(new Blob([res.data]));
+                     var link = document.createElement('a');
+                     link.href = url;
+                     link.setAttribute('download', _this.report.type + '_for_' + branch.name + '.xlsx');
+                     document.body.appendChild(link);
+                     link.click();
+                  });
+               } else _this.$networkErr();
+            }
+            if (!result) _this.$networkErr('form');
+         });
+      },
+      setDates: function setDates() {
+         /** this function computes and set the FROM and TO date to the
+          * Monday and Friday of the current Week
+          * PURPOSE: For better UX */
+         var toTwoDigs = function toTwoDigs(num) {
+            return num < 10 ? '0' + num : num;
+         };
+         var reformatDate = function reformatDate(d) {
+            return d.getFullYear() + '-' + toTwoDigs(d.getMonth() + 1) + '-' + toTwoDigs(d.getDate());
+         },
+             d = new Date(),
+             day = d.getDay(),
+             diff = d.getDate() - day + (day === 0 ? -6 : 1),
+             m = new Date(d.setDate(diff)),
+             f = new Date();
+         f.setDate(m.getDate() + 5);
+         this.report.from = m = reformatDate(m);
+         this.report.to = f = reformatDate(f);
+         /** this function returns the monday ie this.report.from
+         * and the saturday of the : this.report.to of the
+         * current week*/
+      }
+   }
 }; //
 //
 //
@@ -450,54 +375,401 @@ exports.default = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-412d66a0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/branch/branches.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4e31093c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "fade" } }, [
-    _c("div", { staticClass: "pt-md-3 pt-2", attrs: { id: "index" } }, [
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body px-4" }, [
       _c(
-        "div",
-        { staticClass: "card" },
-        [
-          _c(
-            "ul",
-            { staticClass: "nav nav-tabs justify-content-center bg-default" },
-            [_c("h6", [_vm._v("Manage Branches")])]
-          ),
-          _vm._v(" "),
-          _c("data-viewer", {
-            attrs: {
-              source: "/api/branch",
-              title: "Branch(s)",
-              appModel: "branch"
+        "form",
+        {
+          attrs: { id: "dsaDailyReportForm" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.submitReport($event)
             }
-          })
-        ],
-        1
+          }
+        },
+        [
+          _c("div", { staticClass: "my-4 clearfix" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("DSA (Name-ID)")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.report.user_id,
+                        expression: "report.user_id"
+                      },
+                      {
+                        name: "validate",
+                        rawName: "v-validate",
+                        value: "required",
+                        expression: "'required'"
+                      }
+                    ],
+                    staticClass: "custom-select w-100",
+                    attrs: { "data-vv-validate-on": "blur", name: "dsa" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.report,
+                          "user_id",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [
+                      _vm._v("select DSA")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.users, function(user) {
+                      return _c("option", { domProps: { value: user.id } }, [
+                        _vm._v(
+                          _vm._s(user.full_name + " - (" + user.staff_id + ")")
+                        )
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _vm.errors.first("dsa")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("dsa")))])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Date")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.date,
+                      expression: "report.date"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|date_format:MM/DD/YYYY",
+                      expression: "'required|date_format:MM/DD/YYYY'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { name: "date", type: "date" },
+                  domProps: { value: _vm.report.date },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.report, "date", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("date")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("date")))])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Number of forms registered on portal")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.number_on_portal,
+                      expression: "report.number_on_portal"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|integer|min:0",
+                      expression: "'required|integer|min:0'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    "data-vv-as": "number on portal",
+                    name: "number_on_portal",
+                    type: "number"
+                  },
+                  domProps: { value: _vm.report.number_on_portal },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.report,
+                        "number_on_portal",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("number_on_portal")
+                  ? _c("small", [
+                      _vm._v(_vm._s(_vm.errors.first("number_on_portal")))
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Number of forms submitted too captain")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.number_to_captain,
+                      expression: "report.number_to_captain"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|integer|min:0",
+                      expression: "'required|integer|min:0'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    "data-vv-as": "number to captain",
+                    name: "number_to_captain",
+                    type: "number"
+                  },
+                  domProps: { value: _vm.report.number_to_captain },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.report,
+                        "number_to_captain",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("number_to_captain")
+                  ? _c("small", [
+                      _vm._v(_vm._s(_vm.errors.first("number_to_captain")))
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "spaceAfter" }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", { staticClass: "w-100 float-left" }, [
+                  _vm._v("Remark/Comment")
+                ]),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.remark,
+                      expression: "report.remark"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|max:255",
+                      expression: "'required|max:255'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { cols: "3", name: "remark" },
+                  domProps: { value: _vm.report.remark },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.report, "remark", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("remark")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("remark")))])
+                  : _vm._e()
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4" },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-block btn-lg bg-default",
+                  attrs: { disabled: _vm.$isProcessing, type: "submit" }
+                },
+                [
+                  _vm._v("\n               Log Report "),
+                  _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                ]
+              )
+            ]
+          )
+        ]
       )
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      { staticClass: "nav nav-tabs justify-content-center bg-default" },
+      [_c("h6", [_vm._v("Daily Report (Captains)")])]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-412d66a0", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-4e31093c", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53eb4313\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/DataViewer.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53ac12f5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/report.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -505,832 +777,351 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
-    _c("div", { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeEdit" } }, [
-      _c(
-        "div",
-        {
-          staticClass: "card",
-          staticStyle: { "border-top": "4px solid #0e5f92" }
-        },
-        [
-          _c("div", { staticClass: "px-5 py-4" }, [
-            _c(
-              "div",
-              { staticClass: "px-3 clearfix" },
-              [
-                _c("h5", { staticClass: "h5-custom float-left m-0" }, [
-                  _vm._v("Staff Management")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "float-right btn btn-primary bg-default m-0",
-                    attrs: { to: "/hrm/employee/create" }
-                  },
-                  [_vm._v("Register a Staff!")]
-                )
-              ],
-              1
-            )
-          ]),
-          _vm._v(" "),
-          _c("hr", { staticClass: "m-0" }),
-          _vm._v(" "),
-          _c("div", [
-            _c("div", { staticClass: "card-body p-4 p-md-5" }, [
-              _c("div", { staticClass: "clearfix w-100" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "form-group col-md-2 col-sm-6 px-md-3 px-1 float-left"
-                  },
-                  [
-                    _c("label", [_vm._v("Search Column")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.query.search_column,
-                            expression: "query.search_column"
-                          }
-                        ],
-                        staticClass: "custom-select w-100",
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.query,
-                              "search_column",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      _vm._l(_vm.columns, function(column) {
-                        return _c("option", { domProps: { value: column } }, [
-                          _vm._v(_vm._s(_vm._f("capitalize")(column)))
-                        ])
-                      })
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "form-group col-md-2 col-sm-6 px-md-3 px-1 float-left"
-                  },
-                  [
-                    _c("label", [_vm._v("Search Operator")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.query.search_operator,
-                            expression: "query.search_operator"
-                          }
-                        ],
-                        staticClass: "custom-select w-100",
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.query,
-                              "search_operator",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      _vm._l(_vm.operators, function(value, key) {
-                        return _c("option", { domProps: { value: key } }, [
-                          _vm._v(_vm._s(value))
-                        ])
-                      })
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "form-group col-md-6 col-sm-6 px-md-3 px-1 float-left"
-                  },
-                  [
-                    _c("label", [_vm._v("Search Input")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.query.search_input,
-                          expression: "query.search_input"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { placeholder: "search...", type: "text" },
-                      domProps: { value: _vm.query.search_input },
-                      on: {
-                        keyup: function($event) {
-                          if (
-                            !("button" in $event) &&
-                            _vm._k(
-                              $event.keyCode,
-                              "enter",
-                              13,
-                              $event.key,
-                              "Enter"
-                            )
-                          ) {
-                            return null
-                          }
-                          _vm.fetchIndexData()
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.query,
-                            "search_input",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "form-group col-md-2 col-sm-6 px-md-3 px-1 pt-md-2 pt-0 float-left"
-                  },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "btn btn-block bg-default mb-0 mt-3 mt-md-4",
-                        on: {
-                          click: function($event) {
-                            _vm.fetchIndexData()
-                          }
-                        }
-                      },
-                      [_vm._v("Filter")]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "px-0 px-md-3 mt-3 table-responsive" }, [
-                _c(
-                  "table",
-                  { staticClass: "table m-0  table-bordered table-hover" },
-                  [
-                    _c("thead", { staticClass: "thead-light" }, [
-                      _c(
-                        "tr",
-                        [
-                          _vm._l(_vm.columns, function(column) {
-                            return _c(
-                              "th",
-                              {
-                                attrs: { scope: "col" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.toggleOrder(column)
-                                  }
-                                }
-                              },
-                              [
-                                _c("span", [
-                                  _vm._v(_vm._s(_vm._f("capitalize")(column)))
-                                ]),
-                                _vm._v(" "),
-                                column === _vm.query.column
-                                  ? _c(
-                                      "span",
-                                      { staticClass: "dv-table-column" },
-                                      [
-                                        _vm.query.direction === "desc"
-                                          ? _c("span", [_vm._v("↑")])
-                                          : _c("span", [_vm._v("↓")])
-                                      ]
-                                    )
-                                  : _vm._e()
-                              ]
-                            )
-                          }),
-                          _vm._v(" "),
-                          _vm.user || _vm.branch || _vm.customer
-                            ? _c("th", { attrs: { scope: "col" } }, [
-                                _c("span", [_vm._v("Action")])
-                              ])
-                            : _vm._e()
-                        ],
-                        2
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.model.data, function(model) {
-                        return _c(
-                          "tr",
-                          [
-                            _vm._l(model, function(value, key) {
-                              return _c("td", [_vm._v(_vm._s(value))])
-                            }),
-                            _vm._v(" "),
-                            _vm.user
-                              ? _c(
-                                  "td",
-                                  [
-                                    _c(
-                                      "router-link",
-                                      {
-                                        staticClass:
-                                          "text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round",
-                                        attrs: {
-                                          to:
-                                            "/hrm/employee/" +
-                                            model.id +
-                                            "/edit",
-                                          "data-placement": "top",
-                                          "data-toggle": "tooltip",
-                                          title: "Edit Employee Detail"
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
-                                          staticClass: "fas fa-user-edit"
-                                        })
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "text-center mr-2 btn btn-icon btn-sm float-left btn-round",
-                                        class: {
-                                          "btn-success": _vm.accessStatus(
-                                            model.portal_access
-                                          ),
-                                          "btn-danger": !_vm.accessStatus(
-                                            model.portal_access
-                                          )
-                                        },
-                                        attrs: {
-                                          "data-placement": "top",
-                                          "data-toggle": "tooltip",
-                                          title: "Edit Employee Portal Access"
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            _vm.update(
-                                              model,
-                                              "editPortalAccess"
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _vm.accessStatus(model.portal_access)
-                                          ? _c("i", {
-                                              staticClass: "fas fa-lock-open"
-                                            })
-                                          : _c("i", {
-                                              staticClass: "fas fa-lock"
-                                            })
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "text-center mr-2 btn btn-warning btn-icon btn-sm float-left btn-round",
-                                        attrs: {
-                                          "data-placement": "top",
-                                          "data-toggle": "tooltip",
-                                          title: "Reset Employee Password"
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            _vm.update(model, "editPassword")
-                                          }
-                                        }
-                                      },
-                                      [_c("i", { staticClass: "fas fa-key" })]
-                                    )
-                                  ],
-                                  1
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.branch || _vm.customer
-                              ? _c("td", [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass:
-                                        "text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round",
-                                      attrs: {
-                                        title:
-                                          "" +
-                                          (_vm.branch
-                                            ? "update branch details"
-                                            : "view details"),
-                                        "data-placement": "top",
-                                        "data-toggle": "tooltip"
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.branch
-                                            ? _vm.$router.push(
-                                                "/fsl/branch/" +
-                                                  model.id +
-                                                  "/edit"
-                                              )
-                                            : _vm.$router.push(
-                                                "/customer/" + model.id
-                                              )
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm.branch
-                                        ? _c("i", { staticClass: "fas fa-cog" })
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      _vm.customer
-                                        ? _c("i", {
-                                            staticClass: "far fa-user"
-                                          })
-                                        : _vm._e()
-                                    ]
-                                  )
-                                ])
-                              : _vm._e()
-                          ],
-                          2
-                        )
-                      })
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
+      [
+        _vm.$store.getters.verifyDSALead
+          ? _c("div", { staticClass: "card" }, [
               _c(
-                "nav",
+                "ul",
                 {
-                  staticClass: "clearfix pt-5",
-                  attrs: { "aria-label": "Page navigation example" }
+                  staticClass: "nav nav-tabs justify-content-center bg-default"
                 },
-                [
-                  _c(
-                    "span",
-                    {
-                      staticClass:
-                        "float-left col-md-6 col-12 px-0 mb-5 mb-md-0"
-                    },
-                    [
-                      _vm._v(
-                        "\n                 Displaying: " +
-                          _vm._s(_vm.model.from) +
-                          " - " +
-                          _vm._s(_vm.model.to) +
-                          " of " +
-                          _vm._s(_vm.model.total) +
-                          " " +
-                          _vm._s(
-                            _vm._f("capitalize")(_vm.$route.meta.appModel)
-                          ) +
-                          " (s)\n             "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      staticClass:
-                        "justify-content-end float-right col-md-6 col-12 px-0 mb-5 mb-md-0"
-                    },
-                    [
-                      _c("ul", { staticClass: "pagination m-0 float-right" }, [
-                        _c("li", { staticClass: "page-item" }, [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "page-link",
-                              on: {
-                                click: function($event) {
-                                  _vm.prev()
-                                }
-                              }
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "fas fa-arrow-circle-left"
-                              })
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("li", { staticClass: "page-item" }, [
-                          _c("span", { staticClass: "page-link" }, [
-                            _vm._v(
-                              "Current Page: " + _vm._s(_vm.model.current_page)
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("li", { staticClass: "page-item" }, [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "page-link",
-                              on: {
-                                click: function($event) {
-                                  _vm.next()
-                                }
-                              }
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "fas fa-arrow-circle-right"
-                              })
-                            ]
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "float-left" }, [
-                        _c("span", { staticClass: "py-2 pr-3 float-left" }, [
-                          _vm._v("Rows Per Page ")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.query.per_page,
-                              expression: "query.per_page"
-                            }
-                          ],
-                          staticClass: "form-control float-left",
-                          attrs: { placeholder: "search...", type: "text" },
-                          domProps: { value: _vm.query.per_page },
-                          on: {
-                            keyup: function($event) {
-                              if (
-                                !("button" in $event) &&
-                                _vm._k(
-                                  $event.keyCode,
-                                  "enter",
-                                  13,
-                                  $event.key,
-                                  "Enter"
-                                )
-                              ) {
-                                return null
-                              }
-                              _vm.fetchIndexData()
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.query,
-                                "per_page",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]
-                  )
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "modal fade", attrs: { id: "editPortalAccess" } },
-              [
+                [_c("h6", [_vm._v("Report Generation")])]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body px-4" }, [
                 _c(
-                  "div",
-                  { staticClass: "modal-dialog", attrs: { role: "document" } },
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.generateReport($event)
+                      }
+                    }
+                  },
                   [
-                    _c("div", { staticClass: "modal-content" }, [
-                      _c("div", { staticClass: "modal-header py-2" }, [
-                        _c("h6", { staticClass: "modal-title py-1" }, [
-                          _vm._v("Edit Employee Portal Access")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "close py-1",
-                            attrs: {
-                              "aria-label": "Close",
-                              "data-dismiss": "modal"
-                            }
-                          },
-                          [
-                            _c(
-                              "span",
-                              {
-                                staticClass: "modal-close text-danger",
-                                attrs: { "aria-hidden": "true" }
-                              },
-                              [_c("i", { staticClass: "fas fa-times" })]
-                            )
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("form", [
-                        _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "my-4 clearfix" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Report Type")]),
+                          _vm._v(" "),
                           _c(
-                            "div",
+                            "select",
                             {
-                              staticClass:
-                                "form-group col-12 float-left mt-0 mb-2"
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.report.type,
+                                  expression: "report.type"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "custom-select w-100",
+                              attrs: {
+                                "data-vv-as": "report type",
+                                "data-vv-validate-on": "blur",
+                                name: "report_type"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.report,
+                                    "type",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
                             },
                             [
-                              _c(
-                                "span",
-                                {
-                                  staticClass:
-                                    "mb-2 w-100 float-left pl-1 text-center",
-                                  staticStyle: { "font-size": "14px" }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                        Please Verify you selected the right access before clicking "
-                                  ),
-                                  _c("br"),
-                                  _vm._v(" "),
-                                  _c("strong", [_vm._v("Save Changes ")]),
-                                  _vm._v("!\n                     ")
-                                ]
-                              ),
+                              _c("option", { attrs: { value: "" } }, [
+                                _vm._v("select type")
+                              ]),
                               _vm._v(" "),
-                              _vm._l(_vm.portal_access, function(access) {
+                              _vm._l(_vm.types, function(type) {
                                 return _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "radio p-0 col-6 float-left text-center"
-                                  },
+                                  "option",
+                                  { domProps: { value: type.slug } },
                                   [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.form.portal_access,
-                                          expression: "form.portal_access"
-                                        }
-                                      ],
-                                      attrs: {
-                                        id: access.name,
-                                        name: "access",
-                                        type: "radio"
-                                      },
-                                      domProps: {
-                                        value: access.value,
-                                        checked: _vm._q(
-                                          _vm.form.portal_access,
-                                          access.value
-                                        )
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          _vm.$set(
-                                            _vm.form,
-                                            "portal_access",
-                                            access.value
-                                          )
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c(
-                                      "label",
-                                      { attrs: { for: access.name } },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("capitalize")(access.name)
-                                          ) + " Access"
-                                        )
-                                      ]
+                                    _vm._v(
+                                      _vm._s(_vm._f("capitalize")(type.name))
                                     )
                                   ]
                                 )
                               })
                             ],
                             2
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "modal-footer" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "m-2 btn btn-secondary",
-                              attrs: { "data-dismiss": "modal", type: "button" }
-                            },
-                            [_vm._v("cancel")]
                           ),
                           _vm._v(" "),
+                          _vm.errors.first("report_type")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("report_type")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Branch")]),
+                          _vm._v(" "),
                           _c(
-                            "button",
+                            "select",
                             {
-                              staticClass: "m-2 btn bg-default",
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.report.branch.id,
+                                  expression: "report.branch.id"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "custom-select w-100",
                               attrs: {
-                                disabled: _vm.$isProcessing,
-                                type: "button"
+                                "data-vv-as": "office branch",
+                                name: "branch_id",
+                                "data-vv-validate-on": "blur"
                               },
                               on: {
-                                click: function($event) {
-                                  _vm.myLog(_vm.form.id)
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.report.branch,
+                                    "id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
                                 }
                               }
                             },
                             [
-                              _vm._v(" Save changes "),
-                              _c("i", {
-                                staticClass: "far fa-paper-plane ml-1"
+                              _c("option", { attrs: { value: "" } }, [
+                                _vm._v("select branch")
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.$store.state.branches, function(
+                                branch
+                              ) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: branch.id } },
+                                  [
+                                    _vm._v(
+                                      "\n                           " +
+                                        _vm._s(branch.name) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
                               })
-                            ]
-                          )
-                        ])
-                      ])
-                    ])
-                  ]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "modal fade", attrs: { id: "editPassword" } },
-              [
-                _c(
-                  "div",
-                  { staticClass: "modal-dialog", attrs: { role: "document" } },
-                  [
-                    _c("div", { staticClass: "modal-content" }, [
-                      _c("div", { staticClass: "modal-header py-2" }, [
-                        _c("h6", { staticClass: "modal-title py-1" }, [
-                          _vm._v("Reset Employee Password")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "close py-1",
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _vm.errors.first("branch_id")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("branch_id")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Date from:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.report.from,
+                                expression: "report.from"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|date_format:MM/DD/YYYY",
+                                expression: "'required|date_format:MM/DD/YYYY'"
+                              }
+                            ],
+                            staticClass: "form-control",
                             attrs: {
-                              "aria-label": "Close",
-                              "data-dismiss": "modal"
+                              type: "date",
+                              "data-vv-as": "Date from",
+                              name: "date_from"
+                            },
+                            domProps: { value: _vm.report.from },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.report,
+                                  "from",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("date_from")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("date_from")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Date To:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.report.to,
+                                expression: "report.to"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|date_format:MM/DD/YYYY",
+                                expression: "'required|date_format:MM/DD/YYYY'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "date",
+                              "data-vv-as": "Date to",
+                              name: "date_to"
+                            },
+                            domProps: { value: _vm.report.to },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.report, "to", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("date_to")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("date_to")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4"
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-block btn-lg bg-default",
+                            attrs: {
+                              type: "submit",
+                              disabled: _vm.$isProcessing
                             }
                           },
                           [
-                            _c(
-                              "span",
-                              {
-                                staticClass: "modal-close text-danger",
-                                attrs: { "aria-hidden": "true" }
-                              },
-                              [_c("i", { staticClass: "fas fa-times" })]
-                            )
+                            _vm._v("\n                     Generate Report "),
+                            _c("i", { staticClass: "far fa-paper-plane ml-1" })
                           ]
                         )
-                      ]),
-                      _vm._v(" "),
-                      _c("form", [
-                        _c("div", { staticClass: "modal-body" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-12 float-left mt-2 mb-4 "
-                            },
-                            [
-                              _c("span", [
-                                _vm._v(
-                                  "A new password will be sent to the employee via "
-                                ),
-                                _c("strong", [_vm._v("sms")]),
-                                _vm._v(
-                                  " on the\n                                   telephone He/She "
-                                ),
-                                _c("strong", [_vm._v("used for registration")]),
-                                _vm._v(
-                                  " on this portal.\n                                 "
-                                ),
-                                _c("br"),
-                                _c("br"),
-                                _vm._v(
-                                  "Please Kindly verify that the phone to receive the new password is on and active!\n                             "
-                                )
-                              ]),
-                              _c("br"),
-                              _c("br"),
-                              _vm._v(" "),
-                              _c("u", [
-                                _c("em", [
-                                  _vm._v(
-                                    "click the continue and reset password to finish this task!"
-                                  )
-                                ])
-                              ])
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "modal-footer" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "m-2 btn btn-secondary",
-                              attrs: { "data-dismiss": "modal", type: "button" }
-                            },
-                            [_vm._v("cancel")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "m-2 btn bg-default",
-                              attrs: {
-                                disabled: _vm.$isProcessing,
-                                type: "button"
-                              },
-                              on: { click: _vm.resetPassword }
-                            },
-                            [
-                              _vm._v(
-                                "\n                              continue and reset password "
-                              ),
-                              _c("i", {
-                                staticClass: "far fa-paper-plane ml-1"
-                              })
-                            ]
-                          )
-                        ])
-                      ])
-                    ])
+                      ]
+                    )
                   ]
                 )
-              ]
-            )
-          ])
-        ]
-      )
-    ])
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.$store.getters.verifyDSACaptain ? _c("daily-report") : _vm._e()
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -1339,21 +1130,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-53eb4313", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-53ac12f5", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/DataViewer.vue":
+/***/ "./resources/assets/js/views/DSA/report/dailyReport.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/DataViewer.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53eb4313\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/DataViewer.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4e31093c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1370,7 +1161,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\DataViewer.vue"
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\report\\dailyReport.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1379,9 +1170,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-53eb4313", Component.options)
+    hotAPI.createRecord("data-v-4e31093c", Component.options)
   } else {
-    hotAPI.reload("data-v-53eb4313", Component.options)
+    hotAPI.reload("data-v-4e31093c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1393,84 +1184,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/log.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.log = log;
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
-
-function log(action, description) {
-    /*actions is the action performed
-    * description is reference of the data the action was taken on*/
-    action = action.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
-        return str.toUpperCase();
-    });
-    //formats and capitalize the action performed
-    (0, _api.post)('/api/log', { action: action, description: description });
-    //and logs then on the log table;
-}
-
-/***/ }),
-
-/***/ "./resources/assets/js/helpers/sms.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-   value: true
-});
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
-
-exports.default = {
-   message: "",
-   welcome: function welcome(details) {
-      this.message = "Welcome to Altara credit. Please secure your login details. Staff ID: " + details.loginID + ", password: " + details.loginPassword;
-      this.send(details);
-   },
-   customerReg: function customerReg(details) {
-      this.message = "Dear " + details.first_name + " " + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact: " + details.branch.phone_yoruba + ". Your customer id is: " + details.id;
-      this.send({ phone: details.telephone.substr(1) });
-   },
-   passwordReset: function passwordReset(details) {
-      this.message = "Password reset successful! if your did not request for a new password kindly report back immediately, your staff ID is " + details.staff_id + ", new password: " + details.password;
-      this.send(details);
-   },
-   dvaMessage: function dvaMessage(details) {
-      this.message = details.message;
-      this.send(details);
-   },
-   send: function send(details) {
-      console.log(details);
-      /*get(`/api/message/create?to=234${details.phone}&message=${this.message}`).then(res => {
-         let data = JSON.parse(res.data);
-         if (data.messages[0].status.groupId === 1) {
-            console.log("sms sent successfully");
-         }
-      });*/
-   }
-};
-
-/***/ }),
-
-/***/ "./resources/assets/js/views/FSL/branch/branches.vue":
+/***/ "./resources/assets/js/views/DSA/report/report.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/branch/branches.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/report.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-412d66a0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/branch/branches.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53ac12f5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/report.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1487,7 +1209,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\branch\\branches.vue"
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\report\\report.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1496,9 +1218,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-412d66a0", Component.options)
+    hotAPI.createRecord("data-v-53ac12f5", Component.options)
   } else {
-    hotAPI.reload("data-v-412d66a0", Component.options)
+    hotAPI.reload("data-v-53ac12f5", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1511,6 +1233,3 @@ module.exports = Component.exports
 /***/ })
 
 });
-=======
-webpackJsonp([16],{"2tpd":function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,r=e._self._c||t;return r("div",{staticClass:"card"},[e._m(0),e._v(" "),r("div",{staticClass:"card-body px-4"},[r("form",{attrs:{id:"dsaDailyReportForm"},on:{submit:function(t){return t.preventDefault(),e.submitReport(t)}}},[r("div",{staticClass:"my-4 clearfix"},[r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",[e._v("DSA (Name-ID)")]),e._v(" "),r("select",{directives:[{name:"model",rawName:"v-model",value:e.report.user_id,expression:"report.user_id"},{name:"validate",rawName:"v-validate",value:"required",expression:"'required'"}],staticClass:"custom-select w-100",attrs:{"data-vv-validate-on":"blur",name:"dsa"},on:{change:function(t){var r=Array.prototype.filter.call(t.target.options,function(e){return e.selected}).map(function(e){return"_value"in e?e._value:e.value});e.$set(e.report,"user_id",t.target.multiple?r:r[0])}}},[r("option",{attrs:{value:""}},[e._v("select DSA")]),e._v(" "),e._l(e.users,function(t){return r("option",{domProps:{value:t.id}},[e._v(e._s(t.full_name+" - ("+t.staff_id+")"))])})],2),e._v(" "),e.errors.first("dsa")?r("small",[e._v(e._s(e.errors.first("dsa")))]):e._e()]),e._v(" "),r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",[e._v("Date")]),e._v(" "),r("input",{directives:[{name:"model",rawName:"v-model",value:e.report.date,expression:"report.date"},{name:"validate",rawName:"v-validate",value:"required|date_format:MM/DD/YYYY",expression:"'required|date_format:MM/DD/YYYY'"}],staticClass:"form-control",attrs:{name:"date",type:"date"},domProps:{value:e.report.date},on:{input:function(t){t.target.composing||e.$set(e.report,"date",t.target.value)}}}),e._v(" "),e.errors.first("date")?r("small",[e._v(e._s(e.errors.first("date")))]):e._e()]),e._v(" "),r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",[e._v("Number of forms registered on portal")]),e._v(" "),r("input",{directives:[{name:"model",rawName:"v-model",value:e.report.number_on_portal,expression:"report.number_on_portal"},{name:"validate",rawName:"v-validate",value:"required|integer|min:0",expression:"'required|integer|min:0'"}],staticClass:"form-control",attrs:{"data-vv-as":"number on portal",name:"number_on_portal",type:"number"},domProps:{value:e.report.number_on_portal},on:{input:function(t){t.target.composing||e.$set(e.report,"number_on_portal",t.target.value)}}}),e._v(" "),e.errors.first("number_on_portal")?r("small",[e._v(e._s(e.errors.first("number_on_portal")))]):e._e()]),e._v(" "),r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",[e._v("Number of forms submitted too captain")]),e._v(" "),r("input",{directives:[{name:"model",rawName:"v-model",value:e.report.number_to_captain,expression:"report.number_to_captain"},{name:"validate",rawName:"v-validate",value:"required|integer|min:0",expression:"'required|integer|min:0'"}],staticClass:"form-control",attrs:{"data-vv-as":"number to captain",name:"number_to_captain",type:"number"},domProps:{value:e.report.number_to_captain},on:{input:function(t){t.target.composing||e.$set(e.report,"number_to_captain",t.target.value)}}}),e._v(" "),e.errors.first("number_to_captain")?r("small",[e._v(e._s(e.errors.first("number_to_captain")))]):e._e()]),e._v(" "),r("div",{staticClass:"spaceAfter"}),e._v(" "),r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",{staticClass:"w-100 float-left"},[e._v("Remark/Comment")]),e._v(" "),r("textarea",{directives:[{name:"model",rawName:"v-model",value:e.report.remark,expression:"report.remark"},{name:"validate",rawName:"v-validate",value:"required|max:255",expression:"'required|max:255'"}],staticClass:"form-control",attrs:{cols:"3",name:"remark"},domProps:{value:e.report.remark},on:{input:function(t){t.target.composing||e.$set(e.report,"remark",t.target.value)}}}),e._v(" "),e.errors.first("remark")?r("small",[e._v(e._s(e.errors.first("remark")))]):e._e()])]),e._v(" "),r("div",{staticClass:"col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4"},[r("button",{staticClass:"btn btn-block btn-lg bg-default",attrs:{disabled:e.$isProcessing,type:"submit"}},[e._v("\n               Log Report "),r("i",{staticClass:"far fa-paper-plane ml-1"})])])])])])},staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("ul",{staticClass:"nav nav-tabs justify-content-center bg-default"},[t("h6",[this._v("Daily Report (Captains)")])])}]}},Mb2S:function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var a,o=r("TOoT"),s=(a=o)&&a.__esModule?a:{default:a},n=r("uD8u");t.default={data:function(){return{users:null,report:null}},methods:{initForm:function(){this.report={user_id:"",date:this.$getDate(),number_on_portal:"",number_to_captain:"",remark:""}},submitReport:function(){var e=this;this.$validator.validateAll().then(function(t){t&&(e.$network()?(e.$LIPS(!0),(0,n.post)("/api/dsa_daily_registration",e.report).then(function(t){document.getElementById("dsaDailyReportForm").reset(),e.$validator.reset(),e.initForm(),e.$scrollToTop(),e.$LIPS(!1),t.data.submitted&&s.default.setSuccess(t.data.message)}).catch(function(){return s.default.setError("Error logging report please try again later!")})):e.$networkErr()),t||e.$networkErr("form")})}},created:function(){var e=this;this.initForm(),(0,n.get)("/api/user/getBranchUsers").then(function(t){return e.users=t.data.DSAs})},watch:{}}},UorG:function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var a,o=r("oPea"),s=(a=o)&&a.__esModule?a:{default:a},n=r("N71M"),i=r("uD8u");t.default={components:{DailyReport:s.default},beforeCreate:function(){this.$store.getters.verifyDSACaptain||this.$networkErr("page"),this.$prepareBranches()},data:function(){return{types:[{name:"sales report",slug:"sales_report"},{name:"score card",slug:"score_card"},{name:"weekly operations",slug:"weekly_operations"}],report:{to:"",from:"",branch:{id:"",name:""},employee:"",type:""}}},created:function(){this.setDates()},methods:{generateReport:function(){var e=this;this.$validator.validateAll().then(function(t){if(t)if(e.$network()){var r=n.store.state.branches.find(function(t){return t.id===e.report.branch.id});e.report.branch=r,(0,i.postD)("/api/report",e.report).then(function(t){var a=window.URL.createObjectURL(new Blob([t.data])),o=document.createElement("a");o.href=a,o.setAttribute("download",e.report.type+"_for_"+r.name+".xlsx"),document.body.appendChild(o),o.click()})}else e.$networkErr();t||e.$networkErr("form")})},setDates:function(){var e=function(e){return e<10?"0"+e:e},t=function(t){return t.getFullYear()+"-"+e(t.getMonth()+1)+"-"+e(t.getDate())},r=new Date,a=r.getDay(),o=r.getDate()-a+(0===a?-6:1),s=new Date(r.setDate(o)),n=new Date;n.setDate(s.getDate()+5),this.report.from=s=t(s),this.report.to=n=t(n)}}}},fVHq:function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,r=e._self._c||t;return r("transition",{attrs:{name:"fade"}},[r("div",{staticClass:"pt-md-3 pt-2",attrs:{id:"employeeRegister"}},[e.$store.getters.verifyDSALead?r("div",{staticClass:"card"},[r("ul",{staticClass:"nav nav-tabs justify-content-center bg-default"},[r("h6",[e._v("Report Generation")])]),e._v(" "),r("div",{staticClass:"card-body px-4"},[r("form",{on:{submit:function(t){return t.preventDefault(),e.generateReport(t)}}},[r("div",{staticClass:"my-4 clearfix"},[r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",[e._v("Report Type")]),e._v(" "),r("select",{directives:[{name:"model",rawName:"v-model",value:e.report.type,expression:"report.type"},{name:"validate",rawName:"v-validate",value:"required",expression:"'required'"}],staticClass:"custom-select w-100",attrs:{"data-vv-as":"report type","data-vv-validate-on":"blur",name:"report_type"},on:{change:function(t){var r=Array.prototype.filter.call(t.target.options,function(e){return e.selected}).map(function(e){return"_value"in e?e._value:e.value});e.$set(e.report,"type",t.target.multiple?r:r[0])}}},[r("option",{attrs:{value:""}},[e._v("select type")]),e._v(" "),e._l(e.types,function(t){return r("option",{domProps:{value:t.slug}},[e._v(e._s(e._f("capitalize")(t.name)))])})],2),e._v(" "),e.errors.first("report_type")?r("small",[e._v("\n                        "+e._s(e.errors.first("report_type"))+"\n                     ")]):e._e()]),e._v(" "),r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",[e._v("Branch")]),e._v(" "),r("select",{directives:[{name:"model",rawName:"v-model",value:e.report.branch.id,expression:"report.branch.id"},{name:"validate",rawName:"v-validate",value:"required",expression:"'required'"}],staticClass:"custom-select w-100",attrs:{"data-vv-as":"office branch",name:"branch_id","data-vv-validate-on":"blur"},on:{change:function(t){var r=Array.prototype.filter.call(t.target.options,function(e){return e.selected}).map(function(e){return"_value"in e?e._value:e.value});e.$set(e.report.branch,"id",t.target.multiple?r:r[0])}}},[r("option",{attrs:{value:""}},[e._v("select branch")]),e._v(" "),e._l(e.$store.state.branches,function(t){return r("option",{domProps:{value:t.id}},[e._v("\n                           "+e._s(t.name)+"\n                        ")])})],2),e._v(" "),e.errors.first("branch_id")?r("small",[e._v("\n                        "+e._s(e.errors.first("branch_id"))+"\n                     ")]):e._e()]),e._v(" "),r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",[e._v("Date from:")]),e._v(" "),r("input",{directives:[{name:"model",rawName:"v-model",value:e.report.from,expression:"report.from"},{name:"validate",rawName:"v-validate",value:"required|date_format:MM/DD/YYYY",expression:"'required|date_format:MM/DD/YYYY'"}],staticClass:"form-control",attrs:{type:"date","data-vv-as":"Date from",name:"date_from"},domProps:{value:e.report.from},on:{input:function(t){t.target.composing||e.$set(e.report,"from",t.target.value)}}}),e._v(" "),e.errors.first("date_from")?r("small",[e._v("\n                        "+e._s(e.errors.first("date_from"))+"\n                     ")]):e._e()]),e._v(" "),r("div",{staticClass:"form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"},[r("label",[e._v("Date To:")]),e._v(" "),r("input",{directives:[{name:"model",rawName:"v-model",value:e.report.to,expression:"report.to"},{name:"validate",rawName:"v-validate",value:"required|date_format:MM/DD/YYYY",expression:"'required|date_format:MM/DD/YYYY'"}],staticClass:"form-control",attrs:{type:"date","data-vv-as":"Date to",name:"date_to"},domProps:{value:e.report.to},on:{input:function(t){t.target.composing||e.$set(e.report,"to",t.target.value)}}}),e._v(" "),e.errors.first("date_to")?r("small",[e._v("\n                        "+e._s(e.errors.first("date_to"))+"\n                     ")]):e._e()])]),e._v(" "),r("div",{staticClass:"col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4"},[r("button",{staticClass:"btn btn-block btn-lg bg-default",attrs:{type:"submit",disabled:e.$isProcessing}},[e._v("\n                     Generate Report "),r("i",{staticClass:"far fa-paper-plane ml-1"})])])])])]):e._e(),e._v(" "),e.$store.getters.verifyDSACaptain?r("daily-report"):e._e()],1)])},staticRenderFns:[]}},khuM:function(e,t,r){var a=r("VU/8")(r("UorG"),r("fVHq"),!1,null,null,null);e.exports=a.exports},oPea:function(e,t,r){var a=r("VU/8")(r("Mb2S"),r("2tpd"),!1,null,null,null);e.exports=a.exports}});
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9

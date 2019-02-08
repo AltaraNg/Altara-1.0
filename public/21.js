@@ -1,63 +1,44 @@
-<<<<<<< HEAD
 webpackJsonp([21],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/profile/Index.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/NotFound.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
 //
 //
 //
 //
+//
+//
+//
+//
+//
 
-var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-
-var _auth = __webpack_require__("./resources/assets/js/store/auth.js");
-
-var _auth2 = _interopRequireDefault(_auth);
-
-var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
-
-var _flash2 = _interopRequireDefault(_flash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    data: function data() {
-        return {
-            Auth: _auth2.default.state
-        };
-    },
-
-    computed: _extends({}, (0, _vuex.mapGetters)(['getProfileAccess'])),
-    methods: _extends({}, (0, _vuex.mapActions)([])),
-    beforeCreate: function beforeCreate() {
-        var role_id = parseInt(localStorage.getItem('role'));
-        this.$store.dispatch('mutateProfileAccess', role_id);
-        if (!(this.$store.state.ProfileAccess.indexOf(role_id) !== -1) && !localStorage.getItem('api_token')) {
-            _flash2.default.setError('You do not have access to that page!');
-            this.$router.push('/login');
-        }
-    }
-};
+exports.default = {};
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ebf3aabc\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/profile/Index.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-334cb5fc\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/NotFound.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "profile-view" } }, [_c("router-view")], 1)
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c("div", { staticClass: "container" }, [
+      _c("h3", { staticClass: "text-center text-secondary" }, [
+        _vm._v(
+          "\n            Error 404! Sorry the page you are looking for could not be found!\n        "
+        )
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -65,21 +46,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-ebf3aabc", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-334cb5fc", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/profile/Index.vue":
+/***/ "./resources/assets/js/views/NotFound.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/profile/Index.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/NotFound.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ebf3aabc\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/profile/Index.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-334cb5fc\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/NotFound.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -96,7 +77,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\profile\\Index.vue"
+Component.options.__file = "resources\\assets\\js\\views\\NotFound.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -105,9 +86,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-ebf3aabc", Component.options)
+    hotAPI.createRecord("data-v-334cb5fc", Component.options)
   } else {
-    hotAPI.reload("data-v-ebf3aabc", Component.options)
+    hotAPI.reload("data-v-334cb5fc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -120,6 +101,3 @@ module.exports = Component.exports
 /***/ })
 
 });
-=======
-webpackJsonp([21],{"6wyT":function(t,e,n){var r=n("VU/8")(n("75bz"),n("BTwu"),!1,null,null,null);t.exports=r.exports},"75bz":function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default={}},BTwu:function(t,e){t.exports={render:function(){var t=this.$createElement,e=this._self._c||t;return e("transition",{attrs:{name:"fade"}},[e("div",{staticClass:"container"},[e("h3",{staticClass:"text-center text-secondary"},[this._v("\n            Error 404! Sorry the page you are looking for could not be found!\n        ")])])])},staticRenderFns:[]}}});
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
