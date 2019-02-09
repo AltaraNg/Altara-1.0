@@ -594,13 +594,13 @@
          },
 
          onSave() {
-            this.$validator.validateAll().then(result => {
-               if (result) {
-                  if (this.$network()) {
-                     this.$LIPS(true);
-                     this.error = {};
-                     const form = toMulipartedForm(this.form, 'edit');
-                     byMethod(this.method, this.store, form)
+            this.$validator.validateAll().then(result => { // checks form for valiidation error, 
+               if (result) { // if no error, then
+                  if (this.$network()) { // check network
+                     this.$LIPS(true);  // ?
+                     this.error = {};  // initialize error obj
+                     const form = toMulipartedForm(this.form, 'edit'); // call multipath
+                     byMethod(this.method, this.store, form) // call 
                         .then(res => {
                            if (res.data['success']) {
                               this.textDetails.loginID = String(res.data.staff_id);

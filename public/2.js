@@ -746,12 +746,16 @@ exports.default = {
          var _this2 = this;
 
          this.$validator.validateAll().then(function (result) {
+            // checks form for valiidation error, 
             if (result) {
+               // if no error, then
                if (_this2.$network()) {
-                  _this2.$LIPS(true);
-                  _this2.error = {};
-                  var form = (0, _form.toMulipartedForm)(_this2.form, 'edit');
-                  (0, _api.byMethod)(_this2.method, _this2.store, form).then(function (res) {
+                  // check network
+                  _this2.$LIPS(true); // ?
+                  _this2.error = {}; // initialize error obj
+                  var form = (0, _form.toMulipartedForm)(_this2.form, 'edit'); // call multipath
+                  (0, _api.byMethod)(_this2.method, _this2.store, form) // call 
+                  .then(function (res) {
                      if (res.data['success']) {
                         _this2.textDetails.loginID = String(res.data.staff_id);
                         _this2.textDetails.phone = String(parseInt(_this2.form.phone_number));
