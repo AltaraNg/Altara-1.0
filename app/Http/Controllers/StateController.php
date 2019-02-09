@@ -7,18 +7,15 @@ use Illuminate\Http\Request;
 
 class StateController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api')->only('logout');
-    }
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
+       /** fetch list of states */
         $states = State::all();
+        /** return list of states*/
         return response()->json(['states' => $states]);
     }
 

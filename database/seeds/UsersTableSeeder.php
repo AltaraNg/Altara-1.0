@@ -75,7 +75,7 @@ class UsersTableSeeder extends Seeder
         $user->status = 'married';
         $user->category = 'permanent';
         $user->phone_number = '08163145043';
-            $user->password = bcrypt('password');
+        $user->password = bcrypt('password');
         $user->email = 'ibeanuhillary3@gmail.com';
         $user->address = 'ibadan';
         $user->gender = 'male';
@@ -121,14 +121,15 @@ class UsersTableSeeder extends Seeder
         $gender = ['male', 'female'];
         $qualifications = ['bachelors', 'masters', 'doctorate'];
         $statuses = ['married', 'single', 'divorced', 'complicated'];
+        $categories = [ 'contract', 'freelance','permanent'];
         $faker = Factory::create();
 
-        /*foreach (range(5, 50) as $i) {
-            $rand = rand(5, 25);
-            $role = Role::find($rand);
+        foreach (range(5, 150) as $i) {
+            $rand = rand(5, 28);
+            $category = $categories[rand(0,2)];
             User::create([
-                'role_id' => $role->id,
-                'staff_id' => 'AC/' . $role->description . '/2018/000' . $i,
+                'role_id' => $rand,
+                'staff_id' => $this->generateStaffID($category),
                 'full_name' => $faker->firstName . ' ' . $faker->lastName . ' ' . $faker->lastName,
                 'date_of_appointment' => '2016-' . $this->getMonth() . '-' . $this->getDay(),
                 'status' => $statuses[rand(0, 3)],
@@ -141,6 +142,7 @@ class UsersTableSeeder extends Seeder
                 'referee_2' => $faker->firstName . ' ' . $faker->lastName,
                 'highest_qualification' => $qualifications[rand(0, 2)],
                 'branch_id' => rand(1, 6),
+                'category' => $category,
                 'referee_1_phone_no' => $faker->phoneNumber,
                 'referee_2_phone_no' => $faker->phoneNumber,
                 'date_of_birth' => '1990-' . $this->getMonth() . '-' . $this->getDay(),
@@ -149,7 +151,7 @@ class UsersTableSeeder extends Seeder
                 'next_of_kin_name' => $faker->firstName . ' ' . $faker->lastName,
                 'next_of_kin_phone_no' => $faker->phoneNumber
             ]);
-        }*/
+        }
     }
 
     public function getDay()
@@ -164,5 +166,20 @@ class UsersTableSeeder extends Seeder
         $month = rand(1, 12);
         if ($month < 10) $month = '0' . $month;
         return $month;
+    }
+
+    public function generateStaffID($category)
+    {
+        $count = User::count() + 1;
+        $prefix = '';
+        $num = '';
+        if ($category === 'contract') $prefix = 'AC/C/';
+        if ($category === 'permanent') $prefix = 'ACL/';
+        if ($category === 'freelance') $prefix = 'AC/F/';
+        if (strlen((string)$count) === 1) $num = '00' . $count;
+        else if (strlen((string)$count) === 2) $num = '0' . $count;
+        else if (strlen((string)$count) >= 3) $num = $count;
+        $id = $prefix . $num . '/' . date("y");
+        return $id;
     }
 }

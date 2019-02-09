@@ -10,20 +10,23 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    /** this is a generic trait created to serve as a generic
+     * scope for fetching and paginating the
+     * model where it is called */
     use DataViewer;
 
     protected $guarded = [];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'api_token',
-        'hr_id',
-    ];
+    protected $hidden = ['password', 'remember_token', 'api_token', 'hr_id'];
 
+    /** columns to be used to render the list(Data viewer) of user in the view*/
     public static $columns = [
         'id', 'full_name', 'staff_id', 'phone_number', 'portal_access', 'email', 'date_of_appointment'
     ];
+
+    /** this is the user object form, it is sent to the js
+     * view when the user creation
+     * form is required */
 
     public static function Form()
     {
@@ -48,6 +51,16 @@ class User extends Authenticatable
             'nationality' => '',
             'next_of_kin_name' => '',
             'next_of_kin_phone_no' => '',
+            'guarantor_name' => '',
+            'guarantor_phone_no' => '',
+            'guarantor_address' => '',
+            'guarantor_relationship' => '',
+            'guarantor_name_2' => '',
+            'guarantor_phone_no_2' => '',
+            'guarantor_address_2' => '',
+            'guarantor_relationship_2' => '',
+
+            'cv' => '',
         ];
     }
 
@@ -99,6 +112,31 @@ class User extends Authenticatable
     public function branches()
     {
         return $this->hasMany(Branch::class);
+    }
+
+    public function suppliers()
+    {
+        return $this->hasMany(Supplier::class);
+    }
+
+    public function productsAdded()
+    {
+        return $this->hasMany(Product::class, 'user_id', 'id');
+    }
+
+    public function productsSold()
+    {
+        return $this->hasMany(Product::class, 'sold_by', 'id');
+    }
+
+    public function productsReceived()
+    {
+        return $this->hasMany(Product::class, 'received_by', 'id');
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
     }
 
 }

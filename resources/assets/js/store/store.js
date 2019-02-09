@@ -4,68 +4,53 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 export const store = new Vuex.Store({
-    state: {
-        loader: false,
-        ProfileAccess: [],
-        ProfileEditAccess: [],
-        DSALead: [1, 2, 8, 9, 15],
-        DSACaptain: [1, 2, 8, 9, 15, 17],
-        DSAAccess: [1, 2, 8, 9, 15, 17, 18],
-        DVALead: [1, 2, 8, 9, 13, 16],
-        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
-        HRMAccess: [1, 2, 6, 7, 8, 9],
-        FSLLead: [1, 2, 8, 9, 11],
-        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
-        authRole: parseInt(localStorage.getItem('role')),
-        api_token: localStorage.getItem('api_token'),
-    },
-    getters: {
-        verifyDSAAccess: state => {
-            if ((state.DSAAccess.includes(state.authRole)) && (state.api_token)) {
-                return true;
-            }
-            return false;
-        },
-        verifyDVAAccess: state => {
-            if ((state.DVAAccess.includes(state.authRole)) && (state.api_token)) {
-                return true;
-            }
-            return false;
-        },
-        verifyHRMAccess: state => {
-            if ((state.HRMAccess.includes(state.authRole)) && (state.api_token)) {
-                return true;
-            }
-            return false;
-        },
-        verifyFSLAccess: state => {
-            if ((state.FSLAccess.includes(state.authRole)) && (state.api_token)) {
-                return true;
-            }
-            return false;
-        },
-        getProfileAccess: state => {
-            return state.ProfileAccess;
-        },
-        getProfileEditAccess: state => {
-            return state.ProfileEditAccess;
-        }
-    },
-    mutations: {
-        mutateProfileAccess: (state, payload) => {
-            state.ProfileAccess.push(payload);
-        },
-        mutateAuth: (state) => {
-            state.authRole = parseInt(localStorage.getItem('role'));
-            state.api_token = localStorage.getItem('api_token');
-        }
-    },
-    actions: {
-        mutateProfileAccess: (context, payload) => {
-            context.commit('mutateProfileAccess', payload);
-        },
-        mutateAuth: (context) => {
-            context.commit('mutateAuth');
-        }
-    }
+   state: {
+      states: null,
+      branches: null,
+      lifestyleBranches: [8]/*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/,
+      loader: false,
+      ProfileAccess: [],
+      ProfileEditAccess: [],
+      DSALead: [1, 2, 8, 9, 15],
+      DSACaptain: [1, 2, 8, 9, 15, 17],
+      DSAAccess: [1, 2, 8, 9, 15, 17, 18],
+      DVALead: [1, 2, 8, 9, 13, 16],
+      DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
+      HRMAccess: [1, 2, 6, 7, 8, 9],
+      FSLLead: [1, 2, 8, 9, 11],
+      FSLAccess: [1, 2, 8, 9, 11, 14, 19],
+      authRole: parseInt(localStorage.getItem('role')),
+      api_token: localStorage.getItem('api_token'),
+      user_id: localStorage.getItem('user_id'),
+   },
+   getters: {
+      getStates: state => state.states,
+      getBranches: state => state.branches,
+      getProfileAccess: state => state.ProfileAccess,
+      getProfileEditAccess: state => state.ProfileEditAccess,
+      verifyFSLLead: state => state.FSLLead.includes(state.authRole),
+      verifyDSALead: state => state.DSALead.includes(state.authRole),
+      verifyDSACaptain: state => state.DSACaptain.includes(state.authRole),
+      verifyDSAAccess: state => state.DSAAccess.includes(state.authRole) && state.api_token,
+      verifyDVAAccess: state => state.DVAAccess.includes(state.authRole) && state.api_token,
+      verifyHRMAccess: state => state.HRMAccess.includes(state.authRole) && state.api_token,
+      verifyFSLAccess: state => state.FSLAccess.includes(state.authRole) && state.api_token,
+   },
+   mutations: {
+      mutateAuth: state => {
+         Vue.set(state, 'authRole', parseInt(localStorage.getItem('role')));
+         Vue.set(state, 'api_token', localStorage.getItem('api_token'));
+         Vue.set(state,'user_id',localStorage.getItem('user_id'));
+      },
+      mutateStates: (state, states) => Vue.set(state, 'states', states),
+      mutateBranches: (state, branches) => Vue.set(state, 'branches', branches),
+      mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
+
+   },
+   actions: {
+      mutateAuth: context => context.commit('mutateAuth'),
+      mutateStates: (context, states) => context.commit('mutateStates', states),
+      mutateBranches: (context, branches) => context.commit('mutateBranches', branches),
+      mutateProfileAccess: (context, payload) => context.commit('mutateProfileAccess', payload),
+   }
 });
