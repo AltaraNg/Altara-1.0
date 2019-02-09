@@ -3,22 +3,34 @@ import Auth from '../store/auth'
 export function get(url) {
     return axios({
         method: 'GET',
-        url:url,
+        url,
         headers: {
             'Authorization': `Bearer ${Auth.state.api_token}`
         }
     });
 }
-export function post(url, payload) {
+export function post(url, data) {
     return axios({
         method: 'POST',
-        url:url,
-        data:payload,
+        url,
+        data,
         headers: {
             'Authorization': `Bearer ${Auth.state.api_token}`
         }
     });
 }
+
+export function byMethod(method, url, data) {
+    return axios({
+        method,
+        url,
+        data,
+        headers: {
+            'Authorization': `Bearer ${Auth.state.api_token}`
+        }
+    })
+}
+
 export function postD(url, payload) {
     return axios({
         method: 'POST',

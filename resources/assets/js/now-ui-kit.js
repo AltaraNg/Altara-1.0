@@ -18,12 +18,12 @@
 
 var transparent = true;
 
-var transparentDemo = true;
+/*var transparentDemo = true;
 var fixedTop = false;
 
 var navbar_initialized,
     backgroundOrange = false,
-    toggle_initialized = false;
+    toggle_initialized = false;*/
 
 $(document).ready(function() {
     //  Activate the Tooltips
@@ -40,8 +40,8 @@ $(document).ready(function() {
     // Activate the image for the navbar-collapse
     nowuiKit.initNavbarImage();
 
-    $navbar = $('.navbar[color-on-scroll]');
-    scroll_distance = $navbar.attr('color-on-scroll') || 500;
+    var $navbar = $('.navbar[color-on-scroll]');
+    var scroll_distance = $navbar.attr('color-on-scroll') || 500;
 
     // Check if we have the class "navbar-color-on-scroll" then add the function to remove the class "navbar-transparent" so it will transform to a plain color.
 
@@ -71,7 +71,7 @@ $(document).ready(function() {
     if ($(window).width() >= 992) {
         big_image = $('.page-header-image[data-parallax="true"]');
 
-        $(window).on('scroll', nowuiKitDemo.checkScrollForParallax);
+        //$(window).on('scroll', nowuiKitDemo.checkScrollForParallax);
     }
 
     // Activate Carousel
@@ -133,7 +133,7 @@ $(document).on('click', '.navbar-toggler', function() {
     }
 });
 
-nowuiKit = {
+let nowuiKit = {
     misc: {
         navbar_menu_visible: 0
     },
@@ -200,8 +200,8 @@ nowuiKit = {
 
 var big_image;
 
-// Javascript just for Demo purpose, remove it from your project
-nowuiKitDemo = {
+// Javascript just for Demo purpose, remove it from your project$navbar
+/*nowuiKitDemo = {
     checkScrollForParallax: debounce(function() {
         var current_scroll = $(this).scrollTop();
 
@@ -215,7 +215,7 @@ nowuiKitDemo = {
 
     }, 6)
 
-}
+}*/
 
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for

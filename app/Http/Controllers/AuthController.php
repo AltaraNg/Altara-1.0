@@ -2,167 +2,96 @@
 
 namespace App\Http\Controllers;
 
-use App\Branch;
-use App\EmployeeCategory;
-use App\Role;
 use App\User;
-use DateTime;
 use Hash;
 use Illuminate\Http\Request;
 use Validator;
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api')->only('logout');
-    }
-
-    public function create()
-    {
-        $form = User::form();
-        $roles = Role::orderBy('name', 'asc')->get();
-        $branches = Branch::orderBy('name', 'asc')->get();
-        $categories = EmployeeCategory::orderBy('name', 'asc')->get();
-        return response()->json([
-            'form' => $form,
-            'roles' => $roles,
-            'branches' => $branches,
-            'categories' => $categories
-        ]);
-    }
-
-    public function register(Request $request)
-    {
-        Validator::extend('older_than', function ($attribute, $value, $parameters) {
-            $minAge = (!empty($parameters)) ? (int)$parameters[0] : 18;
-            return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
-        });
-
-        $this->validate($request, [
-            'email' => 'unique:users',
-            'staff_id' => 'unique:users',
-            'phone_number' => 'unique:users',
-            'date_of_birth' => 'older_than:18',
-        ]);
-        $user = new User($request->all());
-        $gen_password = str_random(10);
-        $user->password = bcrypt($gen_password);
-        $user->hr_id = auth('api')->user()->id;
-        $user->save();
-        $form = User::form();
-        return response()
-            ->json([
-                'registered' => true,
-                'password' => $gen_password,
-                'form' => $form,
-            ]);
-    }
-
-    public function login(Request $request)
-    {
-        $user = User::where('staff_id', $request->staff_id)->first();
-
-        if (!$user) {
-            return response()->json(['staff_id' => ['The combination does not exist in our record!']], 422);
-        }
-
-        if ($user->portal_access === 1) {
-            if ($user && Hash::check($request->password, $user->password)) {
-                $user->api_token = str_random(60);
-                $user->save();
-                return response()
-                    ->json([
-                        'authenticated' => true,
-                        'api_token' => $user->api_token,
-                        'user_id' => $user->id,
-                        'user_name' => $user->full_name,
-                        'role' => $user->role_id,
-                        'portal_access' => $user->portal_access,
-                    ]);
-            }
-            return response()->json(['staff_id' => ['Provided staff id and password does not match']], 422);
-        } else {
-            return response()
-                ->json([
-                    'authenticated' => false,
-                    'message' => 'You are not authorized to access this portal. Please meet the authority to verify your portal access status!'
-                ]);
-        }
-    }
-
-    public function logout(Request $request)
-    {
-        $user = $request->user();
-        $user->api_token = null;
-        $user->save();
-        return response()->json(['logged_out' => true]);
-    }
-
-    public function edit($id)
-    {
-        $branches = Branch::select('name', 'id')->orderBy('name', 'asc')->get();
-        $roles = Role::select('name', 'id')->orderBy('name', 'asc')->get();
-        $categories = EmployeeCategory::orderBy('name', 'asc')->get();
-        $user = User::find($id);
-        return response()->json([
-            'roles' => $roles,
-            'form' => $user,
-            'branches' => $branches,
-            'categories' => $categories
-        ]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'email' => 'unique:users,email,' . $id,
-            'staff_id' => 'unique:users,staff_id,' . $id,
-            'phone_number' => 'unique:users,phone_number,' . $id,
-        ]);
-
-        $user = User::find($id);
-        if ($request->portal_access == 1 && isset($user->date_of_exit)) {
+   public function login(Request $request)
+   {
+      /** create custom error message*/
+      $message = 'Check your login details and try again!';
+      /** fetch user*/
+      $user = User::where('staff_id', $request->staff_id)->first();
+      /** check if user record exist*/
+      if (!$user) return response()->json([
+         /** user doesnt exist send an error response*/
+         'staff_id' => ['The combination does not exist in our record!'],
+         'message' => $message
+      ], 422);
+      /** at this point the user exists. hence check portal access*/
+      if ($user->portal_access === 1) {
+         /** user have portal access*/
+         /** check is the supplied password matched password in the database*/
+         if ($user && Hash::check($request->password, $user->password)) {
+            /** password correct*/
+            /** generate and API token*/
+            $user->api_token = str_random(60);
+            /** save api_toke in the db*/
+            $user->save();
+            /** return values including api_token and others*/
             return response()->json([
-                'message' => 'Staff exited! Access cant be granted!',
-            ], 422);
-        }
-        if (isset($user->date_of_exit) || isset($request->date_of_exit)) {
-            $request['portal_access'] = 0;
-            $request->request->add(['api_token' => null]);
-        }
+               'user_id' => $user->id,
+               'auth' => true,
+               'role' => $user->role_id,
+               'api_token' => $user->api_token,
+               'user_name' => $user->full_name,
+               'portal_access' => $user->portal_access,
+               'message' => 'You have successfully logged in'
+            ]);
+         }
+         /** here the password doesnt match return response with password mismatch error*/
+         return response()->json([
+            'staff_id' => ['Provided staff id and password does not match'],
+            'message' => $message
+         ], 422);
+      } else {
+         /** user doesnt have portal access return response with error code*/
+         return response()->json([
+            'authenticated' => false,
+            'message' => 'You are not authorized to access this portal!'
+         ], 423);
+      }
+   }
 
-        User::whereId($id)->update($request->all());
-        return response()->json([
-            'updated' => true,
-        ]);
-    }
+   public function logout(Request $request)
+   {
+      /**init user*/
+      $user = $request->user();
+      /** empty api token*/
+      $user->api_token = null;
+      /** save api_token(empty api token) on db*/
+      $user->save();
+      /** return response with logged_out flag*/
+      return response()->json(['logged_out' => true]);
+   }
 
-    public function resetPassword($id)
-    {
-        $user = User::where('id', $id)->first();
-        $gen_password = str_random(10);
-        $user->password = bcrypt($gen_password);
-        $user->api_token = null;
-        $user->save();
-        return response()->json([
-            'reset' => true,
-            'password' => $gen_password,
-        ]);
-    }
+   public function resetPassword($id)
+   {
+      /** fetch the user*/
+      $user = User::where('id', $id)->first();
+      /** generate a new password*/
+      $gen_password = str_random(8);
+      /** encrypt password*/
+      $user->password = bcrypt($gen_password);
+      /** remove api token to log him out from any existing session*/
+      $user->api_token = null;
+      /** update details*/
+      $user->save();
+      /** return response*/
+      return response()->json([
+         'reset' => true,
+         'password' => $gen_password
+      ]);
+   }
 
-    public function generateStaffID($category)
-    {
-        $count = User::count();
-        $prefix = '';
-        $num = '';
-        if ($category === 'contract') $prefix = 'AC/C/';
-        if ($category === 'permanent') $prefix = 'ACL/';
-        if ($category === 'freelance') $prefix = 'AC/F/';
-        if (strlen((string)$count) === 1) $num = '00' . $count;
-        else if (strlen((string)$count) === 2) $num = '0' . $count;
-        else if (strlen((string)$count) >= 3) $num = $count;
-        $id = $prefix . $num . '/' . date("y");
-        return $id;
-    }
+   /*public function runQuery()
+   {
+      $user = User::where('staff_id', 'AC/C/040/19')->first();
+      $user->password = bcrypt('password');
+      $user->save();
+      return response()->json(['changed' => true]);
+   }*/
 }

@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api')->except('');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -40,9 +35,15 @@ class VerificationController extends Controller
      */
     public function store(Request $request)
     {
+       /** fetch the verification with the customer_id passed in the request*/
         $verification = Verification::where([['id', $request->id], ['customer_id', $request->customer_id],])->first();
+        /** unset the updated_at so it get the latest time NB:: by default this is not meant to be done manually but the updated at
+         * and created at are not guarded because they are used in the front end hence are fetched alongside when ever
+         * the record is called hence the need to manually unset and update to take the new update time */
         unset($verification['updated_at']);
+        /** update record*/
         $verification->update($request->all());
+        /** return the updated customer details*/
         return response()->json([
             'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
         ]);

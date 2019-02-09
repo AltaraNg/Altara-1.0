@@ -24,6 +24,9 @@
                     },{
                         url: 'message', title: 'Messaging', url_c: 'Send messages!',
                         desc: 'For sending messages to customers'
+                    }, {
+                        url: '/customer', title: 'Customer List', url_c: 'View Customer List',
+                        desc: 'View all registered customers!',
                     }
                 ]
             }
