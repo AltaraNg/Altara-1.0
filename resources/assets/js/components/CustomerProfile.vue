@@ -94,6 +94,7 @@
 <script>
     import Vue from 'vue';
     import {get} from '../helpers/api';
+    import {EventBus} from "../helpers/event-bus";
     import CustomerProfile from './CustomerProfile';
     import AppNavigation from '../components/AppNavigation';
 
@@ -139,6 +140,9 @@
         created() {
             $('.tooltip').remove();
             if (this.viewCustomer) this.setCustomer(this.viewCustomer);
+            EventBus.$on('customer', customer => {
+                this.setCustomer(customer);
+            });
         },
         beforeRouteEnter(to, from, next) {
             get(`/api/customer/${to.params.id}`).then(res => {

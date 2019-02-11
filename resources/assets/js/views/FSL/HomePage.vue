@@ -24,7 +24,7 @@
                     }, {
                         url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
-                    }, {
+                    }/*, {
                         url: 'suppliers/create', title: 'Manage Supplier', url_c: 'Create/Update Supplier',
                         desc: 'Manage all the suppliers details!',
                     }, {
@@ -36,7 +36,7 @@
                     }, {
                         url: 'products/create', title: 'Manage products', url_c: 'Create/Update products',
                         desc: 'Manage all the product details!',
-                    }
+                    }*/
                 ]
             }
         }
