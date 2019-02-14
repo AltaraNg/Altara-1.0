@@ -21,8 +21,7 @@ class UpdateTable extends Migration
             $table->string('guarantor_phone_no_2')->nullable();
             $table->string('guarantor_address_2')->nullable();
             $table->string('guarantor_relationship_2')->nullable();
-            $table->string('cv_url')->after('guarantor_relationship')->nullable();
-
+            $table->string('cv_url')->after('guarantor_relationship_2')->nullable();
         });
     }
 

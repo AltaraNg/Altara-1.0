@@ -15,11 +15,18 @@ html {
   font-size : 57%;
 }
 
+.side-nav.active + div.main {
+    background-color : #f5f6fa;
+}
+
 body {
   box-sizing  : border-box;
   font-family : $default-font;
   height      : 100vh;
   font-size   : $default-font-size;
+  font-weight: 500;
+  color: #575958;
+  //background-color: #f1f5fb;
 }
 
 .z-1 {
@@ -56,8 +63,9 @@ body {
   transition       : all .4s;
   width            : 22rem;
   height           : 100%;
-  background-color : darken($color-white, 8%);
+  //background-color : darken($color-white, 8%);
   overflow         : hidden;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
   &-header {
     border-bottom : 1px solid rgba($color-black, .05);
     a {

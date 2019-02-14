@@ -1,4 +1,4 @@
-webpackJsonp([29,30,32],{
+webpackJsonp([29,30,33],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue":
 /***/ (function(module, exports, __webpack_require__) {
@@ -59,6 +59,8 @@ var _vue2 = _interopRequireDefault(_vue);
 
 var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
+var _eventBus = __webpack_require__("./resources/assets/js/helpers/event-bus.js");
+
 var _CustomerProfile = __webpack_require__("./resources/assets/js/components/CustomerProfile.vue");
 
 var _CustomerProfile2 = _interopRequireDefault(_CustomerProfile);
@@ -68,100 +70,6 @@ var _AppNavigation = __webpack_require__("./resources/assets/js/components/AppNa
 var _AppNavigation2 = _interopRequireDefault(_AppNavigation);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
     props: ['viewCustomer'],
@@ -199,8 +107,13 @@ exports.default = {
         }
     },
     created: function created() {
+        var _this = this;
+
         $('.tooltip').remove();
         if (this.viewCustomer) this.setCustomer(this.viewCustomer);
+        _eventBus.EventBus.$on('customer', function (customer) {
+            _this.setCustomer(customer);
+        });
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
         (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
@@ -210,10 +123,10 @@ exports.default = {
         });
     },
     beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-        var _this = this;
+        var _this2 = this;
 
         (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
-            _this.setCustomer(res.data.customer);
+            _this2.setCustomer(res.data.customer);
             next();
         });
     },
@@ -224,7 +137,99 @@ exports.default = {
             this.show = true;
         }
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
@@ -343,6 +348,10 @@ var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
 var _log = __webpack_require__("./resources/assets/js/helpers/log.js");
 
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
@@ -350,6 +359,8 @@ var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 var _flash2 = _interopRequireDefault(_flash);
 
 var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+
+var _eventBus = __webpack_require__("./resources/assets/js/helpers/event-bus.js");
 
 var _form = __webpack_require__("./resources/assets/js/helpers/form.js");
 
@@ -942,7 +953,8 @@ exports.default = {
             * component. eg. dsa utility form. NB: The customer registration component(form)
             * is used as the customer update form for both dsa and dva portal.*/
             this.user = data.hasOwnProperty('user') ? data.user : null;
-            this.customer = data.customer;
+            _vue2.default.set(this.$data, 'customer', data.customer);
+            _eventBus.EventBus.$emit('customer', data.customer);
             if (data.customer != '') {
                 this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                 this.form.id_card = data.customer.document.id_card_url;
@@ -3748,7 +3760,7 @@ var render = function() {
                                               },
                                               [
                                                 _vm._v(
-                                                  "\n                                    by - " +
+                                                  "\n                                        by - " +
                                                     _vm._s(
                                                       _vm._f("capitalize")(
                                                         type == "passport" ||
@@ -14640,6 +14652,27 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/helpers/event-bus.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EventBus = undefined;
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EventBus = exports.EventBus = new _vue2.default();
+
+/***/ }),
+
 /***/ "./resources/assets/js/helpers/form.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14749,12 +14782,12 @@ exports.default = {
    },
    send: function send(details) {
       console.log(details);
-      (0, _api.get)("/api/message/create?to=234" + details.phone + "&message=" + this.message).then(function (res) {
-         var data = JSON.parse(res.data);
+      /*get(`/api/message/create?to=234${details.phone}&message=${this.message}`).then(res => {
+         let data = JSON.parse(res.data);
          if (data.messages[0].status.groupId === 1) {
             console.log("sms sent successfully");
          }
-      });
+      });*/
    }
 };
 

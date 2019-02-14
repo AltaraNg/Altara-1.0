@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Attendance;
 use App\Branch;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -16,7 +17,10 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $attendances = User::where('branch_id', 2)
+        $attendances = User::where([
+            ['branch_id', '=', request('branch')],
+            ['date_of_exit', '=', null]
+        ])
             ->select('id', 'full_name', 'staff_id')
             ->with(['attendances' => function ($query) {
                 return $query->when(request(['month', 'year']), function ($query) {
@@ -24,10 +28,16 @@ class AttendanceController extends Controller
                 });
             }])
             ->get();
-        $branch = Branch::whereId(2)->select('id', 'state_id', 'name', 'description')->with(['state'])->get();
+        $branch = Branch::whereId(request('branch'))->select('id', 'state_id', 'name', 'description')->with(['state'])->get();
+
+        $users = User::where('branch_id', request('branch'))
+            ->select('id', 'full_name', 'staff_id', 'branch_id', 'date_of_exit')
+            ->get();
+
         return response()->json([
             'branch' => $branch,
-            'attendances' => $attendances
+            'attendances' => $attendances,
+            'columns' => $this->tabulateData()
         ]);
     }
 
@@ -38,9 +48,15 @@ class AttendanceController extends Controller
      */
     public function create()
     {
+        $check = Attendance::where([
+            ['branch_id', '=', auth('api')->user()->branch_id],
+            ['date', '=', date('Y-m-d')]
+        ])->first();
         $form = Attendance::form();
         return response()->json([
-            'form' => $form
+            'form' => $form,
+            'today' => Carbon::now('+1')->addHour('1')->toDayDateTimeString(),
+            'submittedToday' => $check ? true : false,
         ]);
     }
 
@@ -53,12 +69,13 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $data = request('form');
-        foreach( $data as $attendance){
+        foreach ($data as $attendance) {
             unset($attendance['user']);
             Attendance::create($attendance);
         }
         return response()->json([
-            'saved' => true
+            'saved' => true,
+            'employee_id' => auth('api')->user()->employee_id
         ]);
     }
 
@@ -105,5 +122,22 @@ class AttendanceController extends Controller
     public function destroy(Attendance $attendance)
     {
         //
+    }
+
+    public function tabulateData()
+    {
+        $days = Carbon::now()->daysInMonth;
+        $monthString = Carbon::parse('2019-02-01')->format('F');
+        $daysString = [];
+        for ($i = 1; $i < $days + 1; $i++) {
+            $d = Carbon::parse('2019-' . request('month') . '-' . $i);
+            $daysString[$i] = [
+                'dayString' => str_limit($d->format('l'), '3', ''),
+                'date' => $i,
+                'month' => str_limit($monthString, '3', ''),
+                'fullDate' => Carbon::parse($i . '-' . request('month') . '-2019')->toDateString()
+            ];
+        }
+        return $daysString;
     }
 }

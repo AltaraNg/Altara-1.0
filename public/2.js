@@ -3996,12 +3996,12 @@ exports.default = {
    },
    send: function send(details) {
       console.log(details);
-      (0, _api.get)("/api/message/create?to=234" + details.phone + "&message=" + this.message).then(function (res) {
-         var data = JSON.parse(res.data);
+      /*get(`/api/message/create?to=234${details.phone}&message=${this.message}`).then(res => {
+         let data = JSON.parse(res.data);
          if (data.messages[0].status.groupId === 1) {
             console.log("sms sent successfully");
          }
-      });
+      });*/
    }
 };
 

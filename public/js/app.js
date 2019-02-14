@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		27: 0
+/******/ 		29: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -44330,25 +44330,25 @@ var _vueRouterBackButton = __webpack_require__("./node_modules/vue-router-back-b
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
-   return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
+   return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
 };
 
 var Login = function Login() {
-   return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
+   return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
 };
 
 var NotFound = function NotFound() {
-   return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
+   return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
 };
 
 var DSA = function DSA() {
-   return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
+   return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
 };
 var DSAHome = function DSAHome() {
-   return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
+   return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
 };
 var DSAReport = function DSAReport() {
-   return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
+   return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
 };
 var CustomerForm = function CustomerForm() {
    return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, "./resources/assets/js/views/shared/customerForm.vue"));
@@ -44358,10 +44358,10 @@ var CustomerProfile = function CustomerProfile() {
 };
 
 var DVA = function DVA() {
-   return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
+   return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
 };
 var DVAHome = function DVAHome() {
-   return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
+   return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
 };
 var DVAMessage = function DVAMessage() {
    return __webpack_require__.e/* import() */(5).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
@@ -44371,20 +44371,20 @@ var DVAVerification = function DVAVerification() {
 };
 
 var Profile = function Profile() {
-   return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
+   return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
 };
 var ProfileEdit = function ProfileEdit() {
-   return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
+   return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
 };
 var ProfileHome = function ProfileHome() {
-   return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
+   return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
 };
 
 var HRM = function HRM() {
-   return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
+   return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
 };
 var HRMHome = function HRMHome() {
-   return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
+   return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
 };
 var DataViewer = function DataViewer() {
    return __webpack_require__.e/* import() */(4).then(__webpack_require__.bind(null, "./resources/assets/js/components/DataViewer.vue"));
@@ -44394,28 +44394,36 @@ var EmployeeForm = function EmployeeForm() {
 };
 
 var FSL = function FSL() {
-   return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
+   return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
 };
 var FSLHome = function FSLHome() {
-   return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
+   return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
 };
 var BranchForm = function BranchForm() {
-   return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
+   return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
 };
+
+var Attendance = function Attendance() {
+   return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
+};
+var AttendanceForm = function AttendanceForm() {
+   return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
+};
+
 var Inventory = function Inventory() {
-   return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/inventory/inventory.vue"));
+   return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/inventory/inventory.vue"));
 };
 var SuppliersForm = function SuppliersForm() {
-   return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/supplier/form.vue"));
+   return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/supplier/form.vue"));
 };
 var BrandForm = function BrandForm() {
-   return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/brand/form.vue"));
+   return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/brand/form.vue"));
 };
 var CategoryForm = function CategoryForm() {
-   return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/category/form.vue"));
+   return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/category/form.vue"));
 };
 var ProductForm = function ProductForm() {
-   return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/product/form.vue"));
+   return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/product/form.vue"));
 };
 
 _vue2.default.use(_vueRouter2.default);
@@ -44432,9 +44440,13 @@ var router = new _vueRouter2.default({
    }, {
       path: '/dva', component: DVA, meta: { DVA: true }, children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: DVAHome, name: 'DVAHome' }, { path: 'message', component: DVAMessage, name: 'DVAMessage' }, { path: 'customer/update', component: CustomerForm, meta: { mode: 'update' } }, { path: 'verification', component: DVAVerification }]
    }, {
-      path: '/hrm', component: HRM, meta: { HRM: true }, children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: HRMHome, name: 'HRMHome' }, { path: 'employee', component: DataViewer, meta: { appModel: 'user', source: '/api/user', new: '/hrm/employee' } }, { path: 'employee/create', component: EmployeeForm, meta: { mode: 'create' } }, { path: 'employee/:id/edit', component: EmployeeForm, meta: { mode: 'edit' } }]
+      path: '/hrm', component: HRM, meta: { HRM: true }, children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: HRMHome, name: 'HRMHome' }, { path: 'employee', component: DataViewer, meta: { appModel: 'user', source: '/api/user', new: '/hrm/employee' } }, { path: 'employee/create', component: EmployeeForm, meta: { mode: 'create' } }, { path: 'employee/:id/edit', component: EmployeeForm, meta: { mode: 'edit' } }, { path: 'attendance', component: Attendance }]
    }, {
-      path: '/fsl', component: FSL, meta: { FSL: true }, children: [{ path: 'home', component: FSLHome, name: 'FSLHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, { path: 'branch', component: DataViewer, meta: { appModel: 'branch', source: '/api/branch', new: '/fsl/branch' } }, { path: 'branch/:id/edit', component: BranchForm, meta: { mode: 'edit' } }, { path: 'branch/create', component: BranchForm, meta: { mode: 'create' } }, { path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: { mode: 'edit' } }, { path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: { mode: 'create' } }, { path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: { mode: 'edit' } }, { path: 'products/create', component: ProductForm, name: 'productCreate', meta: { mode: 'create' } }, { path: 'categories/:id/edit', component: CategoryForm, name: 'categoryEdit', meta: { mode: 'edit' } }, { path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: { mode: 'create' } }, { path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: { mode: 'edit' } }, { path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: { mode: 'create' } }]
+      path: '/fsl', component: FSL, meta: { FSL: true }, children: [{ path: 'home', component: FSLHome, name: 'FSLHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, { path: 'branch', component: DataViewer, meta: { appModel: 'branch', source: '/api/branch', new: '/fsl/branch' } }, { path: 'branch/:id/edit', component: BranchForm, meta: { mode: 'edit' } }, { path: 'branch/create', component: BranchForm, meta: { mode: 'create' } }, { path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: { mode: 'edit' } }, { path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: { mode: 'create' } }, { path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: { mode: 'edit' } }, { path: 'products/create', component: ProductForm, name: 'productCreate', meta: { mode: 'create' } }, { path: 'categories/:id/edit', component: CategoryForm, name: 'categoryEdit', meta: { mode: 'edit' } }, { path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: { mode: 'create' } }, { path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: { mode: 'edit' } }, { path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: { mode: 'create' } },
+
+      // {path: 'attendance', component: Attendance, name: 'attendance'},
+      // {path: 'attendance/edit', component: AttendanceForm, name: 'attendanceEdit', meta: {mode: 'edit'}},
+      { path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreate', meta: { mode: 'create' } }]
    }, { path: '/customer', component: DataViewer, meta: { appModel: 'customer', source: '/api/customer', new: '/dsa/customer' } }, { path: '/customer/:id', component: CustomerProfile, meta: { mode: 'full' } }, { path: '/not-found', component: NotFound }, { path: '*', component: NotFound }]
 });
 
@@ -44706,7 +44718,7 @@ _vue2.default.prototype.$editAccess = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-   value: true
+    value: true
 });
 exports.store = undefined;
 
@@ -44724,91 +44736,103 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vuex2.default);
 var store = exports.store = new _vuex2.default.Store({
-   state: {
-      states: null,
-      branches: null,
-      lifestyleBranches: [8] /*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/
-      , loader: false,
-      ProfileAccess: [],
-      ProfileEditAccess: [],
-      DSALead: [1, 2, 8, 9, 15],
-      DSACaptain: [1, 2, 8, 9, 15, 17],
-      DSAAccess: [1, 2, 8, 9, 15, 17, 18],
-      DVALead: [1, 2, 8, 9, 13, 16],
-      DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
-      HRMAccess: [1, 2, 6, 7, 8, 9],
-      FSLLead: [1, 2, 8, 9, 11],
-      FSLAccess: [1, 2, 8, 9, 11, 14, 19],
-      authRole: parseInt(localStorage.getItem('role')),
-      api_token: localStorage.getItem('api_token'),
-      user_id: localStorage.getItem('user_id')
-   },
-   getters: {
-      getStates: function getStates(state) {
-         return state.states;
-      },
-      getBranches: function getBranches(state) {
-         return state.branches;
-      },
-      getProfileAccess: function getProfileAccess(state) {
-         return state.ProfileAccess;
-      },
-      getProfileEditAccess: function getProfileEditAccess(state) {
-         return state.ProfileEditAccess;
-      },
-      verifyFSLLead: function verifyFSLLead(state) {
-         return state.FSLLead.includes(state.authRole);
-      },
-      verifyDSALead: function verifyDSALead(state) {
-         return state.DSALead.includes(state.authRole);
-      },
-      verifyDSACaptain: function verifyDSACaptain(state) {
-         return state.DSACaptain.includes(state.authRole);
-      },
-      verifyDSAAccess: function verifyDSAAccess(state) {
-         return state.DSAAccess.includes(state.authRole) && state.api_token;
-      },
-      verifyDVAAccess: function verifyDVAAccess(state) {
-         return state.DVAAccess.includes(state.authRole) && state.api_token;
-      },
-      verifyHRMAccess: function verifyHRMAccess(state) {
-         return state.HRMAccess.includes(state.authRole) && state.api_token;
-      },
-      verifyFSLAccess: function verifyFSLAccess(state) {
-         return state.FSLAccess.includes(state.authRole) && state.api_token;
-      }
-   },
-   mutations: {
-      mutateAuth: function mutateAuth(state) {
-         _vue2.default.set(state, 'authRole', parseInt(localStorage.getItem('role')));
-         _vue2.default.set(state, 'api_token', localStorage.getItem('api_token'));
-         _vue2.default.set(state, 'user_id', localStorage.getItem('user_id'));
-      },
-      mutateStates: function mutateStates(state, states) {
-         return _vue2.default.set(state, 'states', states);
-      },
-      mutateBranches: function mutateBranches(state, branches) {
-         return _vue2.default.set(state, 'branches', branches);
-      },
-      mutateProfileAccess: function mutateProfileAccess(state, payload) {
-         return state.ProfileAccess.push(payload);
-      }
+    state: {
+        states: null,
+        branches: null,
+        lifestyleBranches: [8] /*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/
+        , loader: false,
+        ProfileAccess: [],
+        ProfileEditAccess: [],
+        DSALead: [1, 2, 8, 9, 15],
+        DSACaptain: [1, 2, 8, 9, 15, 17],
+        DSAAccess: [1, 2, 8, 9, 15, 17, 18],
+        DVALead: [1, 2, 8, 9, 13, 16],
+        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
+        HRMAccess: [1, 2, 6, 7, 8, 9],
+        FSLLead: [1, 2, 8, 9, 11],
+        supervisor: [1, 2, 8, 9, 11, 14],
+        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
+        authRole: parseInt(localStorage.getItem('role')),
+        api_token: localStorage.getItem('api_token'),
+        user_id: localStorage.getItem('user_id'),
+        months: [{ id: '01', name: "January" }, { id: '02', name: "February" }, { id: '03', name: "March" }, { id: '04', name: "April" }, { id: '05', name: "May" }, { id: '06', name: "June" }, { id: '07', name: "July" }, { id: '08', name: "August" }, { id: '09', name: "September" }, { id: '10', name: "October" }, { id: '11', name: "November" }, { id: '12', name: "December" }]
+    },
+    getters: {
+        getStates: function getStates(state) {
+            return state.states;
+        },
+        getMonths: function getMonths(state) {
+            return state.months;
+        },
+        getBranches: function getBranches(state) {
+            return state.branches;
+        },
+        getProfileAccess: function getProfileAccess(state) {
+            return state.ProfileAccess;
+        },
+        getProfileEditAccess: function getProfileEditAccess(state) {
+            return state.ProfileEditAccess;
+        },
+        verifyFSLLead: function verifyFSLLead(state) {
+            return state.FSLLead.includes(state.authRole);
+        },
 
-   },
-   actions: {
-      mutateAuth: function mutateAuth(context) {
-         return context.commit('mutateAuth');
-      },
-      mutateStates: function mutateStates(context, states) {
-         return context.commit('mutateStates', states);
-      },
-      mutateBranches: function mutateBranches(context, branches) {
-         return context.commit('mutateBranches', branches);
-      },
-      mutateProfileAccess: function mutateProfileAccess(context, payload) {
-         return context.commit('mutateProfileAccess', payload);
-      }
-   }
+        auth: function auth(state) {
+            return function (role) {
+                return state[role].includes(state.authRole);
+            };
+        },
+
+        verifyDSALead: function verifyDSALead(state) {
+            return state.DSALead.includes(state.authRole);
+        },
+        verifyDSACaptain: function verifyDSACaptain(state) {
+            return state.DSACaptain.includes(state.authRole);
+        },
+        verifyDSAAccess: function verifyDSAAccess(state) {
+            return state.DSAAccess.includes(state.authRole) && state.api_token;
+        },
+        verifyDVAAccess: function verifyDVAAccess(state) {
+            return state.DVAAccess.includes(state.authRole) && state.api_token;
+        },
+        verifyHRMAccess: function verifyHRMAccess(state) {
+            return state.HRMAccess.includes(state.authRole) && state.api_token;
+        },
+        verifyFSLAccess: function verifyFSLAccess(state) {
+            return state.FSLAccess.includes(state.authRole) && state.api_token;
+        }
+    },
+    mutations: {
+        mutateAuth: function mutateAuth(state) {
+            _vue2.default.set(state, 'authRole', parseInt(localStorage.getItem('role')));
+            _vue2.default.set(state, 'api_token', localStorage.getItem('api_token'));
+            _vue2.default.set(state, 'user_id', localStorage.getItem('user_id'));
+        },
+        mutateStates: function mutateStates(state, states) {
+            return _vue2.default.set(state, 'states', states);
+        },
+        mutateBranches: function mutateBranches(state, branches) {
+            return _vue2.default.set(state, 'branches', branches);
+        },
+        mutateProfileAccess: function mutateProfileAccess(state, payload) {
+            return state.ProfileAccess.push(payload);
+        }
+
+    },
+    actions: {
+        mutateAuth: function mutateAuth(context) {
+            return context.commit('mutateAuth');
+        },
+        mutateStates: function mutateStates(context, states) {
+            return context.commit('mutateStates', states);
+        },
+        mutateBranches: function mutateBranches(context, branches) {
+            return context.commit('mutateBranches', branches);
+        },
+        mutateProfileAccess: function mutateProfileAccess(context, payload) {
+            return context.commit('mutateProfileAccess', payload);
+        }
+    }
 });
 
 /***/ }),

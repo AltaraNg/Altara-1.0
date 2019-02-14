@@ -16092,12 +16092,18 @@ html {
   font-size: 57%;
 }
 
+.side-nav.active + div.main {
+  background-color: #f5f6fa;
+}
+
 body {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-family: "Raleway", sans-serif;
   height: 100vh;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #575958;
 }
 
 .z-1 {
@@ -16137,8 +16143,9 @@ body {
   transition: all .4s;
   width: 22rem;
   height: 100%;
-  background-color: #ebebeb;
   overflow: hidden;
+  -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
+          box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
 }
 
 .side-nav-header {
@@ -16398,7 +16405,7 @@ a:hover, a:active, a:visited {
 }
 
 small.text-muted, form small:not(.error-control) {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #c81618 !important;
   float: left;
   width: 100%;
@@ -16520,7 +16527,7 @@ textarea.form-control.is-invalid:focus {
 }
 
 .modal-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 .modal small {
@@ -16532,7 +16539,7 @@ textarea.form-control.is-invalid:focus {
 }
 
 table button i {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 .btn-success.btn-round {
