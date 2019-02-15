@@ -59,7 +59,6 @@ class User extends Authenticatable
             'guarantor_phone_no_2' => '',
             'guarantor_address_2' => '',
             'guarantor_relationship_2' => '',
-
             'cv' => '',
         ];
     }

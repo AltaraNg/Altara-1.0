@@ -47,7 +47,7 @@ class UserController extends Controller
             'branches' => $branches,
             'categories' => $categories
         ]);
-    }
+    } 
 
     public function store(Request $request)
     {

@@ -651,6 +651,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function initialize(to) {
    var urls = { create: 'user/create', edit: 'user/' + to.params.id + '/edit' };
+   console.log(urls[to.meta.mode]);
    return urls[to.meta.mode];
 }
 
@@ -681,6 +682,7 @@ exports.default = {
    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
       //1. make request to back-end
       (0, _api.get)('/api/' + initialize(to)).then(function (res) {
+         console.log(res.data);
          //2 send to the method to prepare form
          next(function (vm) {
             return vm.prepareForm(res.data);
@@ -693,6 +695,7 @@ exports.default = {
       this.show = false;
       //1. make request to back-end
       (0, _api.get)(initialize(to)).then(function (res) {
+         console.log(res.data);
          //2 send to the method to prepare form
          _this.prepareForm(res.data);
          next();
@@ -715,6 +718,7 @@ exports.default = {
 
                      case 2:
                         this.mode = this.$route.meta.mode;
+                        console.log(this.mode);
                         this.error = {};
                         this.errors.clear();
                         this.form = data.form;
@@ -728,7 +732,7 @@ exports.default = {
                         }
                         this.show = true;
 
-                     case 11:
+                     case 12:
                      case 'end':
                         return _context.stop();
                   }
