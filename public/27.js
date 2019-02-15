@@ -1,24 +1,12 @@
 webpackJsonp([27],{
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/inventory/inventory.vue":
-=======
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/brand/form.vue":
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
-=======
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/category/form.vue":
->>>>>>> a0ca89969ab76f40673091d684de03e540752568
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-<<<<<<< HEAD
-  value: true
-});
-=======
    value: true
 });
 
@@ -145,7 +133,6 @@ exports.default = {
 //
 //
 //
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
 //
 //
 //
@@ -153,23 +140,10 @@ exports.default = {
 //
 //
 //
-<<<<<<< HEAD
-
-exports.default = {};
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-17d7acc2\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/inventory/inventory.vue":
-=======
-
-/***/ }),
-
-<<<<<<< HEAD
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4cd41d03\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/brand/form.vue":
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
-=======
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-65b22648\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/category/form.vue":
->>>>>>> a0ca89969ab76f40673091d684de03e540752568
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -177,11 +151,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
-<<<<<<< HEAD
-    _c("div", { staticClass: "pt-md-3 pt-2", attrs: { id: "inventory" } }, [
-      _c("h2", [_vm._v("Inventory")])
-    ])
-=======
     _c(
       "div",
       { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
@@ -373,7 +342,6 @@ var render = function() {
         ])
       ]
     )
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
   ])
 }
 var staticRenderFns = []
@@ -382,49 +350,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    require("vue-hot-reload-api")      .rerender("data-v-17d7acc2", module.exports)
-=======
-    require("vue-hot-reload-api")      .rerender("data-v-4cd41d03", module.exports)
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
-=======
     require("vue-hot-reload-api")      .rerender("data-v-65b22648", module.exports)
->>>>>>> a0ca89969ab76f40673091d684de03e540752568
   }
 }
 
 /***/ }),
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-/***/ "./resources/assets/js/views/FSL/inventory/inventory.vue":
-=======
-/***/ "./resources/assets/js/views/FSL/brand/form.vue":
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
-=======
 /***/ "./resources/assets/js/views/FSL/category/form.vue":
->>>>>>> a0ca89969ab76f40673091d684de03e540752568
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-<<<<<<< HEAD
-<<<<<<< HEAD
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/inventory/inventory.vue")
-/* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-17d7acc2\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/inventory/inventory.vue")
-=======
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/brand/customerForm.vue")
-/* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4cd41d03\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/brand/customerForm.vue")
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
-=======
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/category/form.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-65b22648\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/category/form.vue")
->>>>>>> a0ca89969ab76f40673091d684de03e540752568
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -441,15 +381,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-<<<<<<< HEAD
-<<<<<<< HEAD
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\inventory\\inventory.vue"
-=======
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\brand\\form.vue"
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
-=======
 Component.options.__file = "resources\\assets\\js\\views\\FSL\\category\\form.vue"
->>>>>>> a0ca89969ab76f40673091d684de03e540752568
 
 /* hot reload */
 if (false) {(function () {
@@ -458,21 +390,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    hotAPI.createRecord("data-v-17d7acc2", Component.options)
-  } else {
-    hotAPI.reload("data-v-17d7acc2", Component.options)
-=======
-    hotAPI.createRecord("data-v-4cd41d03", Component.options)
-  } else {
-    hotAPI.reload("data-v-4cd41d03", Component.options)
->>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
-=======
     hotAPI.createRecord("data-v-65b22648", Component.options)
   } else {
     hotAPI.reload("data-v-65b22648", Component.options)
->>>>>>> a0ca89969ab76f40673091d684de03e540752568
   }
   module.hot.dispose(function (data) {
     disposed = true
