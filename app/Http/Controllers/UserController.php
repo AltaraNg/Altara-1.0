@@ -58,12 +58,14 @@ class UserController extends Controller
             'email' => 'unique:users',
             'phone_number' => 'unique:users',
             'date_of_birth' => 'older_than:18',
-            'cv' => 'mimes:pdf|max:10000',
             'guarantor_phone_no' => 'unique:users',
             'guarantor_phone_no_2' => 'unique:users'
         ]);
 
         if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
+            $request->validate([
+                'cv' => 'mimes:pdf|max:10000'
+            ]);
             $image = $request->file('cv');
             $filename = 'cv' . '/' . str_slug($request->full_name) . '-' . date('d-m-Y');
             $s3 = Storage::disk('s3');
@@ -136,13 +138,10 @@ class UserController extends Controller
             'guarantor_phone_no_2' => 'unique:users,guarantor_phone_no_2,' . $id
         ]);
 
-        if ($request->cv_url == '') {
-            $this->validate($request, [
+        if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
+            $request->validate([
                 'cv' => 'mimes:pdf|max:10000'
             ]);
-        }
-
-        if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
             $image = $request->file('cv');
             $filename = 'cv' . '/' . str_slug($request->full_name) . '-' . date('d-m-Y');
             $s3 = Storage::disk('s3');

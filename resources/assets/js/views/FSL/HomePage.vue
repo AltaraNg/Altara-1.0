@@ -15,16 +15,23 @@
         data() {
             return {
                 portals: [
-                    {
+                    /*{
                         url: 'inventory', title: 'Products Inventory', url_c: 'View Inventory!',
                         desc: 'For products inventory and management'
-                    },{
+                    },*/
+
+                    {
+                        url: 'attendance/create', title: 'Log Daily Attendance', url_c: 'Log Attendance!',
+                        desc: 'For Logging staff attendances!', aces: this.$store.getters.auth('supervisor'),
+                    },
+
+                    {
                         url: 'branch', title: 'Manage Branches', url_c: 'Manage Branches now!',
                         desc: 'Manage all the branch details',aces: this.$store.getters.verifyFSLLead,
                     }, {
                         url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
-                    }, {
+                    }/*, {
                         url: 'suppliers/create', title: 'Manage Supplier', url_c: 'Create/Update Supplier',
                         desc: 'Manage all the suppliers details!',
                     }, {
@@ -36,7 +43,7 @@
                     }, {
                         url: 'products/create', title: 'Manage products', url_c: 'Create/Update products',
                         desc: 'Manage all the product details!',
-                    }
+                    }*/
                 ]
             }
         }

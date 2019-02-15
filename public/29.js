@@ -1,9 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 webpackJsonp([29],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/brand/form.vue":
 =======
 webpackJsonp([29,30,32],{
+=======
+webpackJsonp([29,30,33],{
+>>>>>>> a0ca89969ab76f40673091d684de03e540752568
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue":
 >>>>>>> 592c4ccc33c040d78da2c20bf08dc4e818f089b9
@@ -155,6 +159,8 @@ var _vue2 = _interopRequireDefault(_vue);
 
 var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
+var _eventBus = __webpack_require__("./resources/assets/js/helpers/event-bus.js");
+
 var _CustomerProfile = __webpack_require__("./resources/assets/js/components/CustomerProfile.vue");
 
 var _CustomerProfile2 = _interopRequireDefault(_CustomerProfile);
@@ -165,6 +171,73 @@ var _AppNavigation2 = _interopRequireDefault(_AppNavigation);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+exports.default = {
+    props: ['viewCustomer'],
+    components: { CustomerProfile: _CustomerProfile2.default, AppNavigation: _AppNavigation2.default },
+    data: function data() {
+        return {
+            customer: '',
+            show: false
+        };
+    },
+
+    computed: {
+        passport: function passport() {
+            return 'https://s3.eu-west-2.amazonaws.com/altara-one/' + this.customer.document.passport_url;
+        },
+        name: function name() {
+            return this.customer.first_name + ' ' + this.customer.last_name;
+        },
+        branch: function branch() {
+            return this.customer.branch.description + ' ' + this.customer.branch.name;
+        },
+        address: function address() {
+            return this.customer.add_houseno + ' ' + this.customer.add_street + ' ' + this.customer.area_address + ', ' + this.customer.city + ', ' + this.customer.state + '.';
+        },
+        approved: function approved() {
+            return this.customer.verification.address === 1 && this.customer.verification.id_card === 1 && this.customer.verification.passport === 1 && this.customer.verification.processing_fee === 1 && this.customer.verification.work_guarantor === 1 && this.customer.verification.personal_guarantor === 1;
+            /*This component is the customer profile proper. for optimal result.
+            * The data passed to this should be a response
+            * from the CustomerController@show
+            * this method is used to check the approval
+            * status for any customer details
+            * supplied to it.
+            * NB all the params above must be
+            * 1 for a customer t be approved*/
+        }
+    },
+    created: function created() {
+        var _this = this;
+
+        $('.tooltip').remove();
+        if (this.viewCustomer) this.setCustomer(this.viewCustomer);
+        _eventBus.EventBus.$on('customer', function (customer) {
+            _this.setCustomer(customer);
+        });
+    },
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
+            next(function (vm) {
+                return vm.setCustomer(res.data.customer);
+            });
+        });
+    },
+    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+        var _this2 = this;
+
+        (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
+            _this2.setCustomer(res.data.customer);
+            next();
+        });
+    },
+
+    methods: {
+        setCustomer: function setCustomer(customer) {
+            _vue2.default.set(this.$data, 'customer', customer);
+            this.show = true;
+        }
+    }
+}; //
 //
 //
 //
@@ -258,6 +331,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+<<<<<<< HEAD
 //
 
 <<<<<<< HEAD
@@ -536,6 +610,8 @@ exports.default = {
         }
     }
 };
+=======
+>>>>>>> a0ca89969ab76f40673091d684de03e540752568
 
 /***/ }),
 
@@ -654,6 +730,10 @@ var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
 var _log = __webpack_require__("./resources/assets/js/helpers/log.js");
 
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
@@ -661,6 +741,8 @@ var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 var _flash2 = _interopRequireDefault(_flash);
 
 var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+
+var _eventBus = __webpack_require__("./resources/assets/js/helpers/event-bus.js");
 
 var _form = __webpack_require__("./resources/assets/js/helpers/form.js");
 
@@ -1253,7 +1335,8 @@ exports.default = {
             * component. eg. dsa utility form. NB: The customer registration component(form)
             * is used as the customer update form for both dsa and dva portal.*/
             this.user = data.hasOwnProperty('user') ? data.user : null;
-            this.customer = data.customer;
+            _vue2.default.set(this.$data, 'customer', data.customer);
+            _eventBus.EventBus.$emit('customer', data.customer);
             if (data.customer != '') {
                 this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                 this.form.id_card = data.customer.document.id_card_url;
@@ -4059,7 +4142,7 @@ var render = function() {
                                               },
                                               [
                                                 _vm._v(
-                                                  "\n                                    by - " +
+                                                  "\n                                        by - " +
                                                     _vm._s(
                                                       _vm._f("capitalize")(
                                                         type == "passport" ||
@@ -14951,6 +15034,27 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/helpers/event-bus.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EventBus = undefined;
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EventBus = exports.EventBus = new _vue2.default();
+
+/***/ }),
+
 /***/ "./resources/assets/js/helpers/form.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15060,12 +15164,12 @@ exports.default = {
    },
    send: function send(details) {
       console.log(details);
-      (0, _api.get)("/api/message/create?to=234" + details.phone + "&message=" + this.message).then(function (res) {
-         var data = JSON.parse(res.data);
+      /*get(`/api/message/create?to=234${details.phone}&message=${this.message}`).then(res => {
+         let data = JSON.parse(res.data);
          if (data.messages[0].status.groupId === 1) {
             console.log("sms sent successfully");
          }
-      });
+      });*/
    }
 };
 

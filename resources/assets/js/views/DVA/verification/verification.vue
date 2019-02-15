@@ -57,7 +57,7 @@
                                     {{key(type) ? 'Verified' : 'Not Verified'}}
                                     <small v-if="! key(type)">(Click here to update status!)</small>
                                     <span style="font-size: 10px" v-else class="float-right">
-                                        by - {{type == 'passport' || type == 'id_card' ?
+                                            by - {{type == 'passport' || type == 'id_card' ?
                                         customer['document'].staff_name : customer[type].staff_name | capitalize}}
                                     </span>
                                 </div>
@@ -485,9 +485,11 @@
     </transition>
 </template>
 <script>
+    import Vue from 'vue';
     import {log} from '../../../helpers/log';
     import Flash from '../../../helpers/flash';
     import {get, post} from '../../../helpers/api';
+    import {EventBus} from '../../../helpers/event-bus';
     import {toMulipartedForm} from '../../../helpers/form';
     import ImageUpload from '../../../components/ImageUpload';
     import CustomerProfile from '../../../components/CustomerProfile';
@@ -581,7 +583,8 @@
                 * component. eg. dsa utility form. NB: The customer registration component(form)
                 * is used as the customer update form for both dsa and dva portal.*/
                 this.user = data.hasOwnProperty('user') ? data.user : null;
-                this.customer = data.customer;
+                Vue.set(this.$data, 'customer', data.customer);
+                EventBus.$emit('customer', data.customer);
                 if (data.customer != '') {
                     this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                     this.form.id_card = data.customer.document.id_card_url;

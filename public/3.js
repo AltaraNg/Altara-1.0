@@ -59,6 +59,8 @@ var _vue2 = _interopRequireDefault(_vue);
 
 var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
+var _eventBus = __webpack_require__("./resources/assets/js/helpers/event-bus.js");
+
 var _CustomerProfile = __webpack_require__("./resources/assets/js/components/CustomerProfile.vue");
 
 var _CustomerProfile2 = _interopRequireDefault(_CustomerProfile);
@@ -68,100 +70,6 @@ var _AppNavigation = __webpack_require__("./resources/assets/js/components/AppNa
 var _AppNavigation2 = _interopRequireDefault(_AppNavigation);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
     props: ['viewCustomer'],
@@ -199,8 +107,13 @@ exports.default = {
         }
     },
     created: function created() {
+        var _this = this;
+
         $('.tooltip').remove();
         if (this.viewCustomer) this.setCustomer(this.viewCustomer);
+        _eventBus.EventBus.$on('customer', function (customer) {
+            _this.setCustomer(customer);
+        });
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
         (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
@@ -210,10 +123,10 @@ exports.default = {
         });
     },
     beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-        var _this = this;
+        var _this2 = this;
 
         (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
-            _this.setCustomer(res.data.customer);
+            _this2.setCustomer(res.data.customer);
             next();
         });
     },
@@ -224,7 +137,99 @@ exports.default = {
             this.show = true;
         }
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
@@ -869,6 +874,27 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
+
+/***/ }),
+
+/***/ "./resources/assets/js/helpers/event-bus.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EventBus = undefined;
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EventBus = exports.EventBus = new _vue2.default();
 
 /***/ })
 
