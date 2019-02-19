@@ -17,28 +17,37 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $attendances = User::where([
-            ['branch_id', '=', request('branch')],
-            ['date_of_exit', '=', null]
-        ])
-            ->select('id', 'full_name', 'staff_id')
-            ->with(['attendances' => function ($query) {
-                return $query->when(request(['month', 'year']), function ($query) {
-                    $query->where('date', 'like', '%' . request('year') . '-' . request('month') . '%');
-                });
-            }])
-            ->get();
-        $branch = Branch::whereId(request('branch'))->select('id', 'state_id', 'name', 'description')->with(['state'])->get();
+        $year = request('year');
+        $month = request('month');
+        $branch = request('branch');
 
-        $users = User::where('branch_id', request('branch'))
-            ->select('id', 'full_name', 'staff_id', 'branch_id', 'date_of_exit')
-            ->get();
+        if( isset($year) && isset($month) && isset($branch) ){
+            $attendances = User::where([
+                ['branch_id', '=', $branch],
+                ['date_of_exit', '=', null]
+            ])
+                ->select('id', 'full_name', 'staff_id')
+                ->with(['attendances' => function ($query) {
+                    return $query->when(request(['month', 'year']), function ($query) {
+                        $query->where('date', 'like', '%' . request('year') . '-' . request('month') . '%');
+                    });
+                }])
+                ->get();
+            $branch = Branch::whereId($branch)
+                ->select('id', 'state_id', 'name', 'description')
+                ->with(['state'])
+                ->get();
 
-        return response()->json([
-            'branch' => $branch,
-            'attendances' => $attendances,
-            'columns' => $this->tabulateData()
-        ]);
+            return response()->json([
+                'branch' => $branch,
+                'attendances' => $attendances,
+                'columns' => $this->tabulateData($month, $year)
+            ]);
+        }else{
+            return response()->json([
+                'message' => 'Please select all fields!'
+            ], 400);
+        }
     }
 
     /**
@@ -124,18 +133,19 @@ class AttendanceController extends Controller
         //
     }
 
-    public function tabulateData()
+    public function tabulateData($month, $year)
     {
-        $days = Carbon::now()->daysInMonth;
-        $monthString = Carbon::parse('2019-02-01')->format('F');
+        $date = Carbon::parse($year . '-'. $month . '-01');
+        $days = $date->daysInMonth;
+        $monthString = $date->format('F');
         $daysString = [];
         for ($i = 1; $i < $days + 1; $i++) {
-            $d = Carbon::parse('2019-' . request('month') . '-' . $i);
+            $d = Carbon::parse($year .'-'. $month . '-' . $i);
             $daysString[$i] = [
                 'dayString' => str_limit($d->format('l'), '3', ''),
                 'date' => $i,
                 'month' => str_limit($monthString, '3', ''),
-                'fullDate' => Carbon::parse($i . '-' . request('month') . '-2019')->toDateString()
+                'fullDate' => Carbon::parse($i . '-' . $month . '-'. $year)->toDateString()
             ];
         }
         return $daysString;

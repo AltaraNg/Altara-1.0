@@ -122,6 +122,22 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function initialize(to) {
     var urls = { create: '/api/attendance/create' /*, edit: `/api/attendance/${to.params.id}/edit`*/ };
@@ -272,7 +288,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.form-control[data-v-6defbd3d] {\n    font-size: 1.4rem;\n}\nth[data-v-6defbd3d] {\n    padding-top: 2rem;\n    padding-bottom: 2rem;\n}\ntd[data-v-6defbd3d], th[data-v-6defbd3d] {\n    padding-left: 3rem;\n    padding-right: 3rem;\n}\ntd[data-v-6defbd3d]:nth-child(1), th[data-v-6defbd3d]:nth-child(1) {\n    padding-left: 5rem !important;\n    padding-right: 0;\n}\ntd[data-v-6defbd3d]:nth-child(2) {\n    padding-left: 2rem !important;\n}\ntd[data-v-6defbd3d]:nth-last-child(1), th[data-v-6defbd3d]:nth-last-child(1) {\n    padding-right: 6rem;\n}\n.user[data-v-6defbd3d] {\n    height: 5rem;\n    position: relative;\n    float: left;\n    width: 5rem;\n    background-color: whitesmoke;\n    color: darkgray;\n    border-radius: 50%;\n    -webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);\n            box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);\n    text-align: center;\n    margin: 1rem auto;\n}\n.user-icon[data-v-6defbd3d] {\n    font-size: 2rem;\n    line-height: 5rem;\n}\n.user-name[data-v-6defbd3d] {\n    font-size: 1.6rem;\n    font-weight: 600;\n}\n.absent[data-v-6defbd3d] {\n    background-color: #fbe2e2;\n    border-radius: 5rem;\n    padding: 0.8rem;\n    color: #b46b67;\n    font-weight: 600;\n}\n.present[data-v-6defbd3d] {\n    background-color: #ebf8ea;\n    border-radius: 5rem;\n    padding: 0.4rem 0.8rem;\n    color: #618b62;\n    font-weight: 600;\n}\n.checkbox[data-v-6defbd3d], .radio[data-v-6defbd3d] {\n    margin-bottom: 0;\n}\n.card[data-v-6defbd3d] {\n    border-radius: .4rem;\n    border-top: 3px solid rgba(7, 74, 116, 1);\n}\n.title[data-v-6defbd3d] {\n    font-size: 2.2rem;\n    font-weight: bold;\n    padding-bottom: 1.5rem;\n    position: relative;\n    float: left;\n    border-bottom: 3px solid #2975a5;\n    z-index: 1;\n}\n.col-12.clins[data-v-6defbd3d]::after {\n    content: '';\n    height: 2px;\n    background-color: #e9ebf3;\n    position: absolute;\n    bottom: 0;\n    left: 1.8rem;\n    width: calc(100% - 3.6rem);\n    z-index: 0;\n}\n.heading div[data-v-6defbd3d] {\n    font-weight: 600;\n    color: #a4a5ab;\n}\n.attendance-body[data-v-6defbd3d] {\n    margin-left: 7rem;\n    margin-right: 7rem;\n    z-index: 1;\n}\n.attendance-item[data-v-6defbd3d] {\n    background-color: white;\n    border-radius: .4rem;\n    z-index: 1;\n    -webkit-transition: all 0.2s ease-in-out;\n    transition: all 0.2s ease-in-out;\n}\n.attendance-item[data-v-6defbd3d]:hover {\n    cursor: pointer;\n    -webkit-box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;\n            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;\n    z-index: 10;\n    -webkit-transform: scale(1.005);\n            transform: scale(1.005);\n}\n.attendance-head[data-v-6defbd3d] {\n    margin-left: 5.5rem;\n    margin-right: 5.5rem;\n}\n.no-attendance[data-v-6defbd3d]{\n    font-size: 1.8rem;\n    font-weight: 600;\n    color: #a4a5ab;\n}\n\n\n", ""]);
+exports.push([module.i, "\n.checkbox[data-v-6defbd3d], .radio[data-v-6defbd3d] {\n    margin-bottom: 0;\n}\n@media (max-width: 990px) {\n.user[data-v-6defbd3d]/*, .sm-hide */{\n        display: none;\n}\n[type=\"radio\"] + label[data-v-6defbd3d] {\n        font-size: 1.2rem;\n}\n}\n.sm-show[data-v-6defbd3d]{\n    display: none;\n}\n@media (max-width: 600px) {\n.sm-show[data-v-6defbd3d]{\n        display: inline-block;\n}\n.sm-hide[data-v-6defbd3d]{\n        display: none;\n}\n.staff_id-sm[data-v-6defbd3d]{\n        color: #b6a5ab;\n        font-size: 1.4rem;\n        float: right;\n}\n}\n", ""]);
 
 // exports
 
@@ -1065,11 +1081,14 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
-      { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
+      {
+        staticClass: "pt-md-3 pt-2 attendance attendance-create",
+        attrs: { id: "index" }
+      },
       [
         _c("div", { staticClass: "mt-5 attendance-head" }, [
           _c("div", { staticClass: "mb-5 row" }, [
-            _c("div", { staticClass: "col-12 clins" }, [
+            _c("div", { staticClass: "col-12 title-con" }, [
               _c("span", { staticClass: "title" }, [
                 _vm._v(
                   _vm._s(_vm._f("capitalize")("attendance for " + _vm.today))
@@ -1078,42 +1097,49 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "row px-5 heading pt-3 pb-4" }, [
-            _c("div", { staticClass: "col-4" }, [
+          _c("div", { staticClass: "row px-5 pt-3 pb-4" }, [
+            _c("div", { staticClass: "col-10 col-xs-3 col-md-3 col-lg-3" }, [
               _c("div", { staticClass: "row align-items-center" }, [
-                _c("div", { staticClass: "mx-5 col-1" }),
+                _c("div", { staticClass: "mx-5 col-1 p-0 sm-hide" }),
                 _vm._v(" "),
                 _c("div", { staticClass: "col pl-3" }, [
-                  _c("span", { staticClass: "user-name" }, [
+                  _c("span", { staticClass: "user-name light-heading" }, [
                     _vm._v(_vm._s(_vm.columns[0]))
                   ])
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-1 pl-0" }, [
+            _c("div", { staticClass: "col-2 light-heading" }, [
               _vm._v(_vm._s(_vm.columns[1]))
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-3" }, [
+            _c("div", { staticClass: "col-12 col-xs-3 col-md-3 col-lg-3" }, [
               _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col" }, [
+                _c("div", { staticClass: "col light-heading pr-1 pr-lg-4" }, [
                   _vm._v(_vm._s(_vm.columns[3]))
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "col" }, [
+                _c("div", { staticClass: "col light-heading pl-1 pl-lg-4" }, [
                   _vm._v(_vm._s(_vm.columns[4]))
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-2" }, [
-              _vm._v(_vm._s(_vm.columns[5]))
-            ]),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "col-6 col-xs-2 col-md-2 col-lg-2 px-0 px-lg-4 light-heading"
+              },
+              [_vm._v(_vm._s(_vm.columns[5]))]
+            ),
             _vm._v(" "),
-            _c("div", { staticClass: "col-2" }, [
-              _vm._v(_vm._s(_vm.columns[6]))
-            ])
+            _c(
+              "div",
+              { staticClass: "col-6 col-xs-2 col-md-2 col-lg-2 light-heading" },
+              [_vm._v(_vm._s(_vm.columns[6]))]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -1138,140 +1164,93 @@ var render = function() {
                           "mb-3 px-4 row align-items-center attendance-item"
                       },
                       [
-                        _c("div", { staticClass: "col-4" }, [
-                          _c("div", { staticClass: "row align-items-center" }, [
-                            _c("div", { staticClass: "ml-5 mr-3" }, [
-                              _c("span", { staticClass: "user mx-auto" }, [
-                                _c("i", {
-                                  staticClass: "user-icon fas fa-user-alt"
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col" }, [
-                              _c("span", { staticClass: "user-name" }, [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm._f("capitalize")(user.user.full_name)
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-12 col-xs-3 col-md-3 col-lg-3 pt-2 pb-3 p-xs-0"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "row align-items-center" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "ml-5 mr-3 sm-hide" },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "user mx-auto" },
+                                      [
+                                        _c("i", {
+                                          staticClass:
+                                            "user-icon fas fa-user-alt"
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _c("span", { staticClass: "user-name" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm._f("capitalize")(
+                                          user.user.full_name
+                                        )
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    { staticClass: "sm-show staff_id-sm" },
+                                    [
+                                      _vm._v(
+                                        "\n                                    - " +
+                                          _vm._s(user.user.staff_id) +
+                                          "\n                                "
+                                      )
+                                    ]
                                   )
-                                )
-                              ])
-                            ])
-                          ])
-                        ]),
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-1 pl-0 " }, [
-                          _vm._v(_vm._s(user.user.staff_id))
-                        ]),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-12 col-xs-2 col-md-2 col-lg-2 sm-hide"
+                          },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(user.user.staff_id) +
+                                "\n                    "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-3" }, [
-                          _c("div", { staticClass: "row" }, [
-                            _c("div", { staticClass: "col" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form[index].arrival_time,
-                                    expression: "form[index].arrival_time"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  disabled: _vm.form[index].is_present === "0",
-                                  name: "arrival_time_" + index,
-                                  type: "time"
-                                },
-                                domProps: {
-                                  value: _vm.form[index].arrival_time
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form[index],
-                                      "arrival_time",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form[index].departure_time,
-                                    expression: "form[index].departure_time"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  disabled: _vm.form[index].is_present === "0",
-                                  name: "departure_time_" + index,
-                                  type: "time"
-                                },
-                                domProps: {
-                                  value: _vm.form[index].departure_time
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.form[index],
-                                      "departure_time",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ])
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-2" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "clearfix",
-                              class:
-                                _vm.form[index].is_present === "0"
-                                  ? "absent"
-                                  : "present"
-                            },
-                            [
+                        _c(
+                          "div",
+                          { staticClass: "col-12 col-xs-3 col-md-3 col-lg-3" },
+                          [
+                            _c("div", { staticClass: "row" }, [
                               _c(
                                 "div",
-                                {
-                                  staticClass: "radio pl-1 w-50 pr-3 float-left"
-                                },
+                                { staticClass: "col-6 pr-3 pr-sm-1 pr-lg-4" },
                                 [
                                   _c("input", {
                                     directives: [
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.form[index].is_present,
-                                        expression: "form[index].is_present"
+                                        value: _vm.form[index].arrival_time,
+                                        expression: "form[index].arrival_time"
                                       },
                                       {
                                         name: "validate",
@@ -1280,113 +1259,229 @@ var render = function() {
                                         expression: "'required'"
                                       }
                                     ],
+                                    staticClass: "form-control",
                                     attrs: {
-                                      id: "yes_" + index,
-                                      name: "status_" + index,
-                                      type: "radio",
-                                      value: "1"
+                                      disabled:
+                                        _vm.form[index].is_present === "0",
+                                      name: "arrival_time_" + index,
+                                      type: "time"
                                     },
                                     domProps: {
-                                      checked: _vm._q(
-                                        _vm.form[index].is_present,
-                                        "1"
-                                      )
+                                      value: _vm.form[index].arrival_time
                                     },
                                     on: {
-                                      change: function($event) {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
                                         _vm.$set(
                                           _vm.form[index],
-                                          "is_present",
-                                          "1"
+                                          "arrival_time",
+                                          $event.target.value
                                         )
                                       }
                                     }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "label",
-                                    { attrs: { for: "yes_" + index } },
-                                    [_vm._v("yes")]
-                                  )
+                                  })
                                 ]
                               ),
                               _vm._v(" "),
                               _c(
                                 "div",
-                                {
-                                  staticClass: "radio pl-1 w-50 pr-3 float-left"
-                                },
+                                { staticClass: "col-6 pl-3 pl-sm-1 pl-lg-4" },
                                 [
                                   _c("input", {
                                     directives: [
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.form[index].is_present,
-                                        expression: "form[index].is_present"
+                                        value: _vm.form[index].departure_time,
+                                        expression: "form[index].departure_time"
+                                      },
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
                                       }
                                     ],
+                                    staticClass: "form-control",
                                     attrs: {
-                                      id: "no_" + index,
-                                      name: "status_" + index,
-                                      type: "radio",
-                                      value: "0"
+                                      disabled:
+                                        _vm.form[index].is_present === "0",
+                                      name: "departure_time_" + index,
+                                      type: "time"
                                     },
                                     domProps: {
-                                      checked: _vm._q(
-                                        _vm.form[index].is_present,
-                                        "0"
-                                      )
+                                      value: _vm.form[index].departure_time
                                     },
                                     on: {
-                                      change: function($event) {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
                                         _vm.$set(
                                           _vm.form[index],
-                                          "is_present",
-                                          "0"
+                                          "departure_time",
+                                          $event.target.value
                                         )
                                       }
                                     }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "label",
-                                    { attrs: { for: "no_" + index } },
-                                    [_vm._v("no")]
-                                  )
+                                  })
                                 ]
                               )
-                            ]
-                          )
-                        ]),
+                            ])
+                          ]
+                        ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-2" }, [
-                          _c("input", {
-                            directives: [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-6 col-xs-2 col-md-2 col-lg-2 pr-3 py-4 py-sm-0 px-sm-0 px-lg-4"
+                          },
+                          [
+                            _c(
+                              "div",
                               {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form[index].remark,
-                                expression: "form[index].remark"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { name: "remark_" + index, type: "text" },
-                            domProps: { value: _vm.form[index].remark },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form[index],
-                                  "remark",
-                                  $event.target.value
+                                staticClass: "clearfix",
+                                class:
+                                  _vm.form[index].is_present === "0"
+                                    ? "absent"
+                                    : "present"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "radio w-50 pr-3 float-left" },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.form[index].is_present,
+                                          expression: "form[index].is_present"
+                                        },
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
+                                        }
+                                      ],
+                                      attrs: {
+                                        id: "yes_" + index,
+                                        name: "status_" + index,
+                                        type: "radio",
+                                        value: "1"
+                                      },
+                                      domProps: {
+                                        checked: _vm._q(
+                                          _vm.form[index].is_present,
+                                          "1"
+                                        )
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          _vm.$set(
+                                            _vm.form[index],
+                                            "is_present",
+                                            "1"
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "yes_" + index } },
+                                      [_vm._v("yes")]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "radio w-50 pl-3 float-left" },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.form[index].is_present,
+                                          expression: "form[index].is_present"
+                                        }
+                                      ],
+                                      attrs: {
+                                        id: "no_" + index,
+                                        name: "status_" + index,
+                                        type: "radio",
+                                        value: "0"
+                                      },
+                                      domProps: {
+                                        checked: _vm._q(
+                                          _vm.form[index].is_present,
+                                          "0"
+                                        )
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          _vm.$set(
+                                            _vm.form[index],
+                                            "is_present",
+                                            "0"
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "no_" + index } },
+                                      [_vm._v("no")]
+                                    )
+                                  ]
                                 )
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-6 col-xs-2 col-md-2 col-lg-2 pl-3 py-4 py-sm-0"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form[index].remark,
+                                  expression: "form[index].remark"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { name: "remark_" + index, type: "text" },
+                              domProps: { value: _vm.form[index].remark },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form[index],
+                                    "remark",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
-                        ])
+                            })
+                          ]
+                        )
                       ]
                     )
                   }),
@@ -1395,13 +1490,7 @@ var render = function() {
                     "div",
                     { staticClass: "mb-5 px-0 row align-items-center" },
                     [
-                      _c("div", {
-                        staticClass: "w-100 mb-4 mt-5 mx-0 ",
-                        staticStyle: {
-                          border: "1px solid #e9ebf3",
-                          "border-radius": "3rem"
-                        }
-                      }),
+                      _c("div", { staticClass: "w-100 mb-4 mt-5 mx-0 hr" }),
                       _vm._v(" "),
                       _c(
                         "div",

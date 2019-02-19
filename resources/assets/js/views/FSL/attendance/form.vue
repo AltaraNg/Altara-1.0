@@ -1,67 +1,83 @@
 <template>
     <transition name="fade">
-        <div class="pt-md-3 pt-2" id="employeeRegister">
+        <div class="pt-md-3 pt-2 attendance attendance-create" id="index">
 
             <div class="mt-5 attendance-head">
                 <div class="mb-5 row">
-                    <div class="col-12 clins">
+                    <div class="col-12 title-con">
                         <span class="title">{{`attendance for ${today}` | capitalize}}</span>
                     </div>
                 </div>
-                <div class="row px-5 heading pt-3 pb-4">
-                    <div class="col-4">
+
+                <div class="row px-5 pt-3 pb-4">
+
+                    <div class="col-10 col-xs-3 col-md-3 col-lg-3">
                         <div class="row align-items-center">
-                            <div class="mx-5 col-1"></div>
-                            <div class="col pl-3"><span class="user-name">{{columns[0]}}</span></div>
+                            <div class="mx-5 col-1 p-0 sm-hide"></div>
+                            <div class="col pl-3"><span class="user-name light-heading">{{columns[0]}}</span></div>
                         </div>
                     </div>
-                    <div class="col-1 pl-0">{{columns[1]}}</div>
-                    <div class="col-3">
+
+                    <div class="col-2 light-heading">{{columns[1]}}</div>
+
+                    <div class="col-12 col-xs-3 col-md-3 col-lg-3">
                         <div class="row">
-                            <div class="col">{{columns[3]}}</div>
-                            <div class="col">{{columns[4]}}</div>
+                            <div class="col light-heading pr-1 pr-lg-4">{{columns[3]}}</div>
+                            <div class="col light-heading pl-1 pl-lg-4">{{columns[4]}}</div>
                         </div>
                     </div>
-                    <div class="col-2">{{columns[5]}}</div>
-                    <div class="col-2">{{columns[6]}}</div>
+
+                    <div class="col-6 col-xs-2 col-md-2 col-lg-2 px-0 px-lg-4 light-heading">{{columns[5]}}</div>
+
+                    <div class="col-6 col-xs-2 col-md-2 col-lg-2 light-heading">{{columns[6]}}</div>
                 </div>
             </div>
-
 
             <div class="mt-1 attendance-body">
                 <form @submit.prevent="onSave" v-if="show">
                     <div class="mb-3 px-4 row align-items-center attendance-item" v-for="(user, index) in form">
 
-                        <div class="col-4">
+                        <div class="col-12 col-xs-3 col-md-3 col-lg-3 pt-2 pb-3 p-xs-0">
                             <div class="row align-items-center">
-                                <div class="ml-5 mr-3"><span class="user mx-auto"><i class="user-icon fas fa-user-alt"></i></span></div>
-                                <div class="col"><span class="user-name">{{user.user.full_name | capitalize}}</span></div>
+                                <div class="ml-5 mr-3 sm-hide">
+                                    <span class="user mx-auto">
+                                        <i class="user-icon fas fa-user-alt"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span class="user-name">{{user.user.full_name | capitalize}}</span>
+                                    <span class="sm-show staff_id-sm">
+                                        - {{user.user.staff_id}}
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-1 pl-0 ">{{user.user.staff_id}}</div>
+                        <div class="col-12 col-xs-2 col-md-2 col-lg-2 sm-hide">
+                            {{user.user.staff_id}}
+                        </div>
 
-                        <div class="col-3">
+                        <div class="col-12 col-xs-3 col-md-3 col-lg-3">
                             <div class="row">
-                                <div class="col">
+                                <div class="col-6 pr-3 pr-sm-1 pr-lg-4">
                                     <input :disabled="form[index].is_present === '0'" :name="`arrival_time_${index}`" class="form-control"
                                            type="time" v-model="form[index].arrival_time" v-validate="'required'">
                                 </div>
-                                <div class="col">
+                                <div class="col-6 pl-3 pl-sm-1 pl-lg-4">
                                     <input :disabled="form[index].is_present === '0'" :name="`departure_time_${index}`" class="form-control"
                                            type="time" v-model="form[index].departure_time" v-validate="'required'">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-2">
+                        <div class="col-6 col-xs-2 col-md-2 col-lg-2 pr-3 py-4 py-sm-0 px-sm-0 px-lg-4">
                             <div :class="form[index].is_present === '0' ? 'absent' : 'present'" class="clearfix">
-                                <div class="radio pl-1 w-50 pr-3 float-left">
+                                <div class="radio w-50 pr-3 float-left">
                                     <input :id="`yes_${index}`" :name="`status_${index}`" type="radio"
                                            v-model="form[index].is_present" v-validate="'required'" value="1">
                                     <label :for="`yes_${index}`">yes</label>
                                 </div>
-                                <div class="radio pl-1 w-50 pr-3 float-left">
+                                <div class="radio w-50 pl-3 float-left">
                                     <input :id="`no_${index}`" :name="`status_${index}`" type="radio"
                                            v-model="form[index].is_present" value="0">
                                     <label :for="`no_${index}`">no</label>
@@ -69,14 +85,14 @@
                             </div>
                         </div>
 
-                        <div class="col-2">
+                        <div class="col-6 col-xs-2 col-md-2 col-lg-2 pl-3 py-4 py-sm-0">
                             <input :name="`remark_${index}`" class="form-control" type="text" v-model="form[index].remark">
                         </div>
 
                     </div>
 
                     <div class="mb-5 px-0 row align-items-center">
-                        <div class="w-100 mb-4 mt-5 mx-0 " style="border: 1px solid #e9ebf3; border-radius: 3rem;"></div>
+                        <div class="w-100 mb-4 mt-5 mx-0 hr"></div>
                         <div class="clearfix d-flex justify-content-end w-100">
                             <button :disabled="$isProcessing" class="mx-3 btn bg-default" type="submit">
                                 {{mode | capitalize}} Attendance <i class="far fa-paper-plane ml-1"></i>
@@ -84,7 +100,7 @@
                         </div>
                     </div>
                 </form>
-                <div v-else class="row attendance-item p-5 mb-5">
+                <div class="row attendance-item p-5 mb-5" v-else>
                     <span class="no-attendance">You have already submitted attendance for today!</span>
                 </div>
             </div>
@@ -184,140 +200,34 @@
 </script>
 
 <style scoped type="scss">
-    .form-control {
-        font-size: 1.4rem;
-    }
-
-    th {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-
-    td, th {
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-
-    td:nth-child(1), th:nth-child(1) {
-        padding-left: 5rem !important;
-        padding-right: 0;
-    }
-
-    td:nth-child(2) {
-        padding-left: 2rem !important;
-    }
-
-    td:nth-last-child(1), th:nth-last-child(1) {
-        padding-right: 6rem;
-    }
-
-    .user {
-        height: 5rem;
-        position: relative;
-        float: left;
-        width: 5rem;
-        background-color: whitesmoke;
-        color: darkgray;
-        border-radius: 50%;
-        box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        margin: 1rem auto;
-    }
-
-    .user-icon {
-        font-size: 2rem;
-        line-height: 5rem;
-    }
-
-    .user-name {
-        font-size: 1.6rem;
-        font-weight: 600;
-    }
-
-    .absent {
-        background-color: #fbe2e2;
-        border-radius: 5rem;
-        padding: 0.8rem;
-        color: #b46b67;
-        font-weight: 600;
-    }
-
-    .present {
-        background-color: #ebf8ea;
-        border-radius: 5rem;
-        padding: 0.4rem 0.8rem;
-        color: #618b62;
-        font-weight: 600;
-    }
-
     .checkbox, .radio {
         margin-bottom: 0;
     }
 
-    .card {
-        border-radius: .4rem;
-        border-top: 3px solid rgba(7, 74, 116, 1);
+    @media (max-width: 990px) {
+        .user/*, .sm-hide */{
+            display: none;
+        }
+        [type="radio"] + label {
+            font-size: 1.2rem;
+        }
     }
 
-
-    .title {
-        font-size: 2.2rem;
-        font-weight: bold;
-        padding-bottom: 1.5rem;
-        position: relative;
-        float: left;
-        border-bottom: 3px solid #2975a5;
-        z-index: 1;
+    .sm-show{
+        display: none;
     }
 
-
-    .col-12.clins::after {
-        content: '';
-        height: 2px;
-        background-color: #e9ebf3;
-        position: absolute;
-        bottom: 0;
-        left: 1.8rem;
-        width: calc(100% - 3.6rem);
-        z-index: 0;
+    @media (max-width: 600px) {
+        .sm-show{
+            display: inline-block;
+        }
+        .sm-hide{
+            display: none;
+        }
+        .staff_id-sm{
+            color: #b6a5ab;
+            font-size: 1.4rem;
+            float: right;
+        }
     }
-
-    .heading div {
-        font-weight: 600;
-        color: #a4a5ab;
-    }
-
-    .attendance-body {
-        margin-left: 7rem;
-        margin-right: 7rem;
-        z-index: 1;
-    }
-
-
-    .attendance-item {
-        background-color: white;
-        border-radius: .4rem;
-        z-index: 1;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .attendance-item:hover {
-        cursor: pointer;
-        box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
-        z-index: 10;
-        transform: scale(1.005);
-    }
-
-    .attendance-head {
-        margin-left: 5.5rem;
-        margin-right: 5.5rem;
-    }
-
-    .no-attendance{
-        font-size: 1.8rem;
-        font-weight: 600;
-        color: #a4a5ab;
-    }
-
-
 </style>
