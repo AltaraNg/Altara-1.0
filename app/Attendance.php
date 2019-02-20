@@ -27,12 +27,11 @@ class Attendance extends Model
                     'user' => $users[$i],
                     'user_id' => $users[$i]->id,
                     'branch_id' => 2,
-                    'date' => '2019-02-14',
-//                    'date' => date('Y-m-d'),
-                    'arrival_time' => '08:00',
-                    'departure_time' => '18:00',
+                    'date' => date('Y-m-d'),
+                    'arrival_time' => '',
+                    'departure_time' => '',
                     'is_present' => 1,
-                    'remark' => 'all good',
+                    'remark' => '',
                 ];
                 $form[$i] = $userForm;
             }

@@ -16,7 +16,7 @@ html {
 }
 
 .side-nav.active + div.main {
-    background-color : #f5f6fa;
+    //background-color : #f5f6fa;
 }
 
 body {
@@ -27,6 +27,8 @@ body {
   font-weight: 500;
   color: #575958;
   //background-color: #f1f5fb;
+
+  background-color: #f5f6fa;
 }
 
 .z-1 {
@@ -114,6 +116,7 @@ body {
   float      : right;
   transition : all 0.4s;
   overflow-x : hidden;
+  background-color: unset;
 }
 
 .position- {
@@ -138,6 +141,11 @@ hr.style-two {
   width            : 100%;
   float            : left;
   opacity          : 0.6;
+}
+
+.hr{
+  border: 1px solid #e9ebf3;
+  border-radius: 3rem;
 }
 
 #index,
@@ -214,11 +222,14 @@ hr.style-two {
 }
 
 .form-control::placeholder {
-  color : rgb(142, 151, 160);
+  //color : rgba(142, 151, 160,0.5);
+  //font-weight : 500;
 }
 
 button, input, optgroup, select, textarea, .form-control::placeholder {
+  color : rgba(142, 151, 160,0.5);
   font-weight : 500;
+  font-size: 1.4rem;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -418,6 +429,202 @@ form#messaging{
   }
 }
 
+.attendance{
+
+  .heading.day {
+    font-size: 1.4rem;
+  }
+
+  &-create{
+    th {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    td, th {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+
+    td:nth-child(1), th:nth-child(1) {
+      padding-left: 5rem !important;
+      padding-right: 0;
+    }
+
+    td:nth-child(2) {
+      padding-left: 2rem !important;
+    }
+
+    td:nth-last-child(1), th:nth-last-child(1) {
+      padding-right: 6rem;
+    }
+    .absent {
+      background-color: #fbe2e2;
+      border-radius: 5rem;
+      padding: 0.4rem 0.8rem;
+      color: #b46b67;
+      font-weight: 600;
+    }
+
+    .present {
+      background-color: #ebf8ea;
+      border-radius: 5rem;
+      padding: 0.4rem 0.8rem;
+      color: #618b62;
+      font-weight: 600;
+    }
+  }
+
+  &-view{
+    td, th {
+      height: 6.2rem;
+    }
+
+    td {
+      position: relative;
+      font-weight: 700;
+    }
+
+    .table-names {
+      td {
+        padding: 0;
+      }
+
+      thead th {
+        padding: 0 1.5rem 0 4rem;
+        vertical-align: middle;
+        background-color: #f4fbff;
+      }
+    }
+
+    .table-details{
+      thead th {
+        min-width: 8rem;
+        background-color: #f4fbff;
+      }
+      td {
+        text-align: center;
+      }
+    }
+
+    .user-details {
+      padding: 0 1.5rem 0 4rem;
+    }
+
+    td.present::after {
+      content: '';
+      height: 2px;
+      border-radius: 3rem;
+      width: 80%;
+      position: absolute;
+      bottom: 15%;
+      right: 10%;
+      background-color: #b5d4ad;
+      z-index: 3;
+    }
+
+
+    td.absent::after {
+      content: '';
+      height: 2px;
+      border-radius: 3rem;
+      width: 80%;
+      position: absolute;
+      bottom: 15%;
+      right: 10%;
+      background-color: #e49797;
+      z-index: 3;
+    }
+  }
+
+
+
+
+
+
+
+  &-body {
+    margin-left: 7rem;
+    margin-right: 7rem;
+    z-index: 1;
+  }
+
+  &-item {
+    background-color: white;
+    border-radius: .4rem;
+    z-index: 1;
+    transition: all 0.2s ease-in-out;
+  }
+
+  &-item:hover {
+    cursor: pointer;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
+    z-index: 10;
+    transform: scale(1.005);
+  }
+
+  &-head {
+    margin-left: 5.5rem;
+    margin-right: 5.5rem;
+  }
+
+  .no-attendance{
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #a4a5ab;
+  }
+
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  padding-bottom: 1.5rem;
+  position: relative;
+  float: left;
+  border-bottom: 3px solid #2975a5;
+  z-index: 1;
+}
+.title-con::after {
+  content: '';
+  height: 2px;
+  background-color: #e9ebf3;
+  position: absolute;
+  bottom: 0;
+  left: 1.8rem;
+  width: calc(100% - 3.6rem);
+  z-index: 0;
+}
+
+.light-heading {
+  font-weight: 600;
+  color: #a4a5ab;
+}
+
+
+.user {
+  height: 4rem;
+  position: relative;
+  float: left;
+  width: 4rem;
+  background-color: whitesmoke;
+  color: darkgray;
+  border-radius: 50%;
+  box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 1rem auto;
+  &-icon {
+    font-size: 2rem;
+    line-height: 4rem;
+  }
+  &-name {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+}
+
+
+
 @media (max-width : 990px) {
   html {
     font-size : 59%;
@@ -437,6 +644,47 @@ form#messaging{
   .modal-dialog {
     max-width : 64rem;
   }
+
+  .attendance{
+    &-item{
+      box-shadow: 0 0.3rem .6rem rgba(0, 0, 0, 0.10) !important;
+        padding: .8rem .4rem !important;
+    }
+    &-item:hover {
+      box-shadow: 0 .8rem 2rem rgba(0, 0, 0, .175) !important;
+      transform: scale(1.005);
+    }
+    .no-attendance{
+      font-size: 1.6rem;
+    }
+    &-body {
+      margin-left: 3rem;
+      margin-right: 3rem;
+    }
+    &-head {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+    &-view{
+      .user-details {
+        padding: 0 1rem 0 2rem;
+      }
+      .user-name{
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+      &-create{
+          .present {
+              padding: 0.2rem 0.6rem;
+          }
+      }
+  }
+  .title {
+    font-size: 1.8rem;
+    padding-bottom: 1rem;
+    border-bottom: .3rem solid #2975a5;
+  }
 }
 
 tr.current{
@@ -449,5 +697,26 @@ tr.current{
   }
   .table-responsive {
     display : block;
+  }
+
+  .myBtn{
+    width: 97%;
+    margin-right: 3%;
+    margin-top: 2.5rem !important;
+  }
+
+    .user{
+        display: none;
+    }
+    .user-name{
+        padding:0;
+    }
+
+  .attendance{
+    &-create{
+      .present {
+        padding: 0rem 0.6rem;
+      }
+    }
   }
 }
