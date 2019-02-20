@@ -675,7 +675,7 @@ form#messaging{
       }
     }
       &-create{
-          .present {
+          .present , .absent{
               padding: 0.2rem 0.6rem;
           }
       }
@@ -714,8 +714,8 @@ tr.current{
 
   .attendance{
     &-create{
-      .present {
-        padding: 0rem 0.6rem;
+      .present,.absent {
+        padding: 0 0.6rem;
       }
     }
   }

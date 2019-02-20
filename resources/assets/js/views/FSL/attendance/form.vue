@@ -14,7 +14,9 @@
                     <div class="col-10 col-xs-3 col-md-3 col-lg-3">
                         <div class="row align-items-center">
                             <div class="mx-5 col-1 p-0 sm-hide"></div>
-                            <div class="col pl-3"><span class="user-name light-heading">{{columns[0]}}</span></div>
+                            <div class="col pl-4 ml-1 ml-xs-0 pl-xs-3">
+                                <span class="user-name light-heading">{{columns[0]}}</span>
+                            </div>
                         </div>
                     </div>
 
