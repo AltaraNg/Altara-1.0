@@ -20,10 +20,10 @@
                         desc: 'For products inventory and management'
                     },*/
 
-                    /*{
+                    {
                         url: 'attendance/create', title: 'Log Daily Attendance', url_c: 'Log Attendance!',
                         desc: 'For Logging staff attendances!', aces: this.$store.getters.auth('supervisor'),
-                    },*/
+                    },
 
                     {
                         url: 'branch', title: 'Manage Branches', url_c: 'Manage Branches now!',

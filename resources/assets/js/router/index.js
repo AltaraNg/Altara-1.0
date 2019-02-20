@@ -86,6 +86,7 @@ const router = new VueRouter({
             {path: 'employee/create', component: EmployeeForm, meta: {mode: 'create'}},
             {path: 'employee/:id/edit', component: EmployeeForm, meta: {mode: 'edit'}},
             {path: 'attendance', component: Attendance},
+            {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateHrm', meta: {mode: 'create'}}
          ]
       },
       {
@@ -103,10 +104,7 @@ const router = new VueRouter({
             {path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: {mode: 'create'}},
             {path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: {mode: 'edit'}},
             {path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: {mode: 'create'}},
-
-            // {path: 'attendance', component: Attendance, name: 'attendance'},
-            // {path: 'attendance/edit', component: AttendanceForm, name: 'attendanceEdit', meta: {mode: 'edit'}},
-            {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreate', meta: {mode: 'create'}}
+            {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateFsl', meta: {mode: 'create'}}
          ]
       },
       {path: '/customer', component: DataViewer, meta: {appModel: 'customer', source: '/api/customer',new:'/dsa/customer'}},

@@ -1,11 +1,16 @@
 <template>
     <transition name="fade">
-        <div class="pt-1 pt-lg-5 mx-0 mx-lg-5 attendance attendance-view" id="index">
+        <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
 
             <div class="mt-5 attendance-head">
                 <div class="mb-5 row align-items-center">
                     <div class="col-12 title-con">
                         <span class="title">{{title}}</span>
+                        <div class="row justify-content-end">
+                            <a @click="$router.push('attendance/create')"
+                               class="text-link mt-3" href="javascript:">
+                                click here to create attendance!</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,7 +43,7 @@
                                 {{month.name}}
                             </option>
                             <option :value="year"
-                                    v-for="year in years()"
+                                    v-for="year in $store.getters.getYears"
                                     v-if="caption === 'year'">
                                 {{year}}
                             </option>
@@ -114,14 +119,6 @@
     export default {
         data() {
             return {
-                years: () => {
-                    let years = [];
-                    let startYear = new Date().getFullYear();
-                    for (let i = 0; i < 5; i++) {
-                        years.push(startYear--);
-                    }
-                    return years;
-                },
                 columns: {},
                 show: false,
                 query: {
@@ -223,10 +220,10 @@
                 return (this.$route.query.year && this.$route.query.month && this.$route.query.branch);
             },
             title() {
-                let att = 'Attendance Report';
+                let att = 'Attendance';
                 if (this.completeQry) {
                     let qryMonth = this.$route.query.month, qryYear = this.$route.query.year;
-                    const month = qryMonth ? ' for ' + this.$store.getters.getMonths[parseInt(qryMonth) - 1].name : '';
+                    const month = qryMonth ? ' - ' + this.$store.getters.getMonths[parseInt(qryMonth) - 1].name : '';
                     att += ` ${month} ${qryYear ? qryYear : ''}`;
                 }
                 return att;
