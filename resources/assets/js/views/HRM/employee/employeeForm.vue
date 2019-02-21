@@ -521,6 +521,7 @@
 
    function initialize(to) {
       let urls = {create: `user/create`, edit: `user/${to.params.id}/edit`};
+      console.log(urls[to.meta.mode]);
       return urls[to.meta.mode];
    }
 
@@ -552,6 +553,7 @@
       beforeRouteEnter(to, from, next) {
          //1. make request to back-end
          get(`/api/${initialize(to)}`).then(res => {
+            console.log(res.data);
             //2 send to the method to prepare form
             next(vm => vm.prepareForm(res.data));
          });
@@ -561,6 +563,7 @@
          this.show = false;
          //1. make request to back-end
          get(initialize(to)).then(res => {
+             console.log(res.data);
             //2 send to the method to prepare form
             this.prepareForm(res.data);
             next();
@@ -579,6 +582,7 @@
             //data received is used to prepare the form
             await this.$prepareStates();
             this.mode = this.$route.meta.mode;
+            console.log(this.mode)
             this.error = {};
             this.errors.clear();
             this.form = data.form;

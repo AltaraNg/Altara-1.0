@@ -22,7 +22,7 @@ class CreateAttendancesTable extends Migration
             $table->string('arrival_time')->nullable();
             $table->string('departure_time')->nullable();
             $table->integer('is_present');
-            $table->string('remark');
+            $table->string('remark')->nullable();
             $table->timestamps();
         });
 

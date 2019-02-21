@@ -33,6 +33,10 @@ const EmployeeForm = () => import( '../views/HRM/employee/employeeForm.vue');
 const FSL = () => import('../views/FSL/index.vue');
 const FSLHome = () => import('../views/FSL/HomePage.vue');
 const BranchForm = () => import('../views/FSL/branch/form.vue');
+
+const Attendance = () => import('../views/FSL/attendance/index.vue');
+const AttendanceForm = () => import('../views/FSL/attendance/form.vue');
+
 const Inventory = () => import('../views/FSL/inventory/inventory.vue');
 const SuppliersForm = () => import('../views/FSL/supplier/form.vue');
 const BrandForm = () => import('../views/FSL/brand/form.vue');
@@ -81,6 +85,8 @@ const router = new VueRouter({
             {path: 'employee', component: DataViewer, meta: {appModel: 'user', source: '/api/user',new:'/hrm/employee'}},
             {path: 'employee/create', component: EmployeeForm, meta: {mode: 'create'}},
             {path: 'employee/:id/edit', component: EmployeeForm, meta: {mode: 'edit'}},
+            {path: 'attendance', component: Attendance},
+            {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateHrm', meta: {mode: 'create'}}
          ]
       },
       {
@@ -97,7 +103,8 @@ const router = new VueRouter({
             {path: 'categories/:id/edit', component: CategoryForm, name: 'categoryEdit', meta: {mode: 'edit'}},
             {path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: {mode: 'create'}},
             {path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: {mode: 'edit'}},
-            {path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: {mode: 'create'}}
+            {path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: {mode: 'create'}},
+            {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateFsl', meta: {mode: 'create'}}
          ]
       },
       {path: '/customer', component: DataViewer, meta: {appModel: 'customer', source: '/api/customer',new:'/dsa/customer'}},
