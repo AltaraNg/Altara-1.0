@@ -623,6 +623,16 @@ form#messaging{
   }
 }
 
+.text-link{
+  font-weight: 600;
+  color: #a4a5ab !important;
+  transition: all .3s;
+}
+
+.text-link:hover{
+  color: #2975a5 !important;
+  text-decoration: underline;
+}
 
 
 @media (max-width : 990px) {
@@ -675,7 +685,7 @@ form#messaging{
       }
     }
       &-create{
-          .present {
+          .present , .absent{
               padding: 0.2rem 0.6rem;
           }
       }
@@ -714,8 +724,8 @@ tr.current{
 
   .attendance{
     &-create{
-      .present {
-        padding: 0rem 0.6rem;
+      .present,.absent {
+        padding: 0 0.6rem;
       }
     }
   }

@@ -12,7 +12,7 @@ class UpdateTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ($table) {
+        /*Schema::table('users', function ($table) {
             $table->string('guarantor_name')->after('next_of_kin_phone_no')->nullable();
             $table->string('guarantor_phone_no')->nullable();
             $table->string('guarantor_address')->nullable();
@@ -22,7 +22,7 @@ class UpdateTable extends Migration
             $table->string('guarantor_address_2')->nullable();
             $table->string('guarantor_relationship_2')->nullable();
             $table->string('cv_url')->after('guarantor_relationship_2')->nullable();
-        });
+        });*/
     }
 
     /**

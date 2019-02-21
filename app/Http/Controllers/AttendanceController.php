@@ -57,14 +57,19 @@ class AttendanceController extends Controller
      */
     public function create()
     {
+        $qryBranch = request('branch');
+        $branch = $qryBranch ? $qryBranch : auth('api')->user()->branch_id;
+
         $check = Attendance::where([
-            ['branch_id', '=', auth('api')->user()->branch_id],
+            ['branch_id', '=', $branch],
             ['date', '=', date('Y-m-d')]
         ])->first();
-        $form = Attendance::form();
+
+        $form = Attendance::form($branch);
+
         return response()->json([
             'form' => $form,
-            'today' => Carbon::now('+1')->addHour('1')->toDayDateTimeString(),
+            'today' => Carbon::now('+1')->addHour('1')->toFormattedDateString(),
             'submittedToday' => $check ? true : false,
         ]);
     }

@@ -5,6 +5,13 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
+        years: () => {
+            let years = [], startYear = new Date().getFullYear();
+            for (let i = 0; i < 6; i++) {
+                years.push(startYear--);
+            }
+            return years;
+        },
         states: null,
         branches: null,
         lifestyleBranches: [8]/*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/,
@@ -39,6 +46,7 @@ export const store = new Vuex.Store({
         ]
     },
     getters: {
+        getYears: state => state.years(),
         getStates: state => state.states,
         getMonths: state => state.months,
         getBranches: state => state.branches,

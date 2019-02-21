@@ -6,29 +6,40 @@
                 <div class="mb-5 row">
                     <div class="col-12 title-con">
                         <span class="title">{{`attendance for ${today}` | capitalize}}</span>
+                        <div class="row justify-content-end align-items-center">
+                            <a @click="$router.push(`${branch ? '?branch=' + branch : ''}`)"
+                               class="text-link pr-4 text-capitalize" href="javascript:">
+                                get attendance for?
+                            </a>
+                            <select class="custom-select" v-model="branch">
+                                <option disabled selected value="">branch</option>
+                                <option :value="branch.id" v-for="branch in $store.getters.getBranches">
+                                    {{branch.name | capitalize}}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="mt-5 attendance-head">
                 <div class="row px-5 pt-3 pb-4">
-
                     <div class="col-10 col-xs-3 col-md-3 col-lg-3">
                         <div class="row align-items-center">
                             <div class="mx-5 col-1 p-0 sm-hide"></div>
-                            <div class="col pl-3"><span class="user-name light-heading">{{columns[0]}}</span></div>
+                            <div class="col pl-4 ml-1 ml-xs-0 pl-xs-3">
+                                <span class="user-name light-heading">{{columns[0]}}</span>
+                            </div>
                         </div>
                     </div>
-
                     <div class="col-2 light-heading">{{columns[1]}}</div>
-
                     <div class="col-12 col-xs-3 col-md-3 col-lg-3">
                         <div class="row">
                             <div class="col light-heading pr-1 pr-lg-4">{{columns[3]}}</div>
                             <div class="col light-heading pl-1 pl-lg-4">{{columns[4]}}</div>
                         </div>
                     </div>
-
                     <div class="col-6 col-xs-2 col-md-2 col-lg-2 px-0 px-lg-4 light-heading">{{columns[5]}}</div>
-
                     <div class="col-6 col-xs-2 col-md-2 col-lg-2 light-heading">{{columns[6]}}</div>
                 </div>
             </div>
@@ -115,13 +126,15 @@
     import {byMethod, get} from '../../../helpers/api';
 
     function initialize(to) {
-        let urls = {create: `/api/attendance/create`/*, edit: `/api/attendance/${to.params.id}/edit`*/};
+        let urls =
+            {create: `/api/attendance/create${to.query.branch ? '?branch=' + to.query.branch : ''}`/*, edit: `/api/attendance/${to.params.id}/edit`*/};
         return urls[to.meta.mode];
     }
 
     export default {
         data() {
             return {
+                window,
                 form: {},
                 error: {},
                 mode: null,
@@ -130,7 +143,8 @@
                 resource: '/attendance',
                 store: '/api/attendance',
                 method: 'POST',
-                columns: ['Employee', 'ID', 'Date', 'Arr. Time', 'Dep. Time', 'Present?', 'Remark']
+                columns: ['Employee', 'ID', 'Date', 'Arr. Time', 'Dep. Time', 'Present?', 'Remark'],
+                branch: '',
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -148,6 +162,9 @@
                 this.prepareForm(res.data);
                 next();
             });
+        },
+        created() {
+            this.$prepareBranches();
         },
         methods: {
             async prepareForm(data) {
@@ -205,7 +222,8 @@
     }
 
     @media (max-width: 990px) {
-        .user/*, .sm-hide */{
+        .user /*, .sm-hide */
+        {
             display: none;
         }
         [type="radio"] + label {
@@ -213,18 +231,18 @@
         }
     }
 
-    .sm-show{
+    .sm-show {
         display: none;
     }
 
     @media (max-width: 600px) {
-        .sm-show{
+        .sm-show {
             display: inline-block;
         }
-        .sm-hide{
+        .sm-hide {
             display: none;
         }
-        .staff_id-sm{
+        .staff_id-sm {
             color: #b6a5ab;
             font-size: 1.4rem;
             float: right;

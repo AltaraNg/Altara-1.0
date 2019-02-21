@@ -19,12 +19,9 @@ export default {
       this.send(details);
    },
    send(details) {
-      console.log(details);
-      /*get(`/api/message/create?to=234${details.phone}&message=${this.message}`).then(res => {
+      get(`/api/message/create?to=234${details.phone}&message=${this.message}`).then(res => {
          let data = JSON.parse(res.data);
-         if (data.messages[0].status.groupId === 1) {
-            console.log("sms sent successfully");
-         }
-      });*/
+         if (data.messages[0].status.groupId === 1) console.log("sms sent successfully");
+      });
    }
 };
