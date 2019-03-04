@@ -139,4 +139,14 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class);
     }
 
+    public function cautions()
+    {
+        return $this->hasMany(Caution::class);
+    }
+
+    public function cautionsIssued()
+    {
+        return $this->hasMany(Caution::class, 'issuer_id','id');
+    }
+
 }

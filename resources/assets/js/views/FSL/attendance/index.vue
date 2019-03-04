@@ -48,7 +48,7 @@
                                 {{year}}
                             </option>
                         </select>
-                        <small v-if="errors.first(caption)" class="text-muted">{{errors.first(caption) }}</small>
+                        <small class="text-muted" v-if="errors.first(caption)">{{errors.first(caption) }}</small>
                     </div>
                 </div>
                 <div class="col-12 col-sm-3">
@@ -93,7 +93,10 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="userAtt in attendances">
-                                    <td :class="checkClass(userAtt, day)" v-for="day in columns">
+                                    <td :class="checkClass(userAtt, day)" data-toggle="tooltip" v-for="day in columns" :title="`
+    ${isPresent(userAtt,day,'arrival_time') ? 'Arrival Time : <b>' + $timeConvert(isPresent(userAtt,day,'arrival_time')) + '</b><br>' :''}
+    ${isPresent(userAtt,day,'departure_time') ? 'Departure Time: <b>' + $timeConvert(isPresent(userAtt,day,'arrival_time')) + '</b><br>': ''}
+    <b>${isPresent(userAtt,day,'is_present') ? 'Present' : 'Absent'}</b>`">
                                         {{isPresent(userAtt, day)}}
                                     </td>
                                 </tr>
@@ -163,6 +166,9 @@
                 Vue.set(this.$data.query, 'branch', this.$route.query.branch);
             }
         },
+        updated() {
+            $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
+        },
         methods: {
 
             fetch() {
@@ -189,13 +195,11 @@
                 Flash.setError('Error Fetching Attendance');
             },
 
-            isPresent(userAtt, day) {
+            isPresent(userAtt, day, bool = false) {
                 let c = userAtt.attendances.filter(att => att.date === day.fullDate);
-                if (c.length > 0) {
-                    return c[0].is_present ? 'P' : 'A';
-                } else {
-                    return null;
-                }
+                let data = null;
+                if (c.length > 0) data = bool ? c[0][bool] : c[0].is_present ? 'P' : 'A';
+                return data
             },
             checkClass(userAtt, day) {
                 let theClass, isPresent = this.isPresent(userAtt, day);
@@ -238,16 +242,16 @@
             rgba(0, 0, 0, 0) 8px), #fffff1;
     }
 
-    .custom-select, .myBtn, .daily-attendance{
-        width:75%;
+    .custom-select, .myBtn, .daily-attendance {
+        width: 75%;
     }
 
-    .daily-attendance{
+    .daily-attendance {
         overflow-x: scroll;
     }
 
-    .image-and-names{
-        width:25%;
+    .image-and-names {
+        width: 25%;
     }
 
     @media (max-width: 990px) {
@@ -258,21 +262,21 @@
             width: 100%;
         }
 
-        .image-and-names{
-            width:30%;
+        .image-and-names {
+            width: 30%;
         }
 
-        .daily-attendance{
-            width:70%;
+        .daily-attendance {
+            width: 70%;
         }
     }
 
     @media (max-width: 600px) {
-        .image-and-names{
-            width:50%;
+        .image-and-names {
+            width: 50%;
         }
-        .daily-attendance{
-            width:50%;
+        .daily-attendance {
+            width: 50%;
         }
 
     }
