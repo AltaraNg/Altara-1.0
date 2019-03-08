@@ -93,10 +93,8 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="userAtt in attendances">
-                                    <td :class="checkClass(userAtt, day)" data-toggle="tooltip" v-for="day in columns" :title="`
-    ${isPresent(userAtt,day,'arrival_time') ? 'Arrival Time : <b>' + $timeConvert(isPresent(userAtt,day,'arrival_time')) + '</b><br>' :''}
-    ${isPresent(userAtt,day,'departure_time') ? 'Departure Time: <b>' + $timeConvert(isPresent(userAtt,day,'arrival_time')) + '</b><br>': ''}
-    <b>${isPresent(userAtt,day,'is_present') ? 'Present' : 'Absent'}</b>`">
+                                    <td :class="checkClass(userAtt, day)"
+                                        :title="getTitle(userAtt, day)" data-toggle="tooltip" v-for="day in columns">
                                         {{isPresent(userAtt, day)}}
                                     </td>
                                 </tr>
@@ -196,8 +194,8 @@
             },
 
             isPresent(userAtt, day, bool = false) {
-                let c = userAtt.attendances.filter(att => att.date === day.fullDate);
-                let data = null;
+                let date = day ? day.fullDate : null, data = null;
+                let c = userAtt.attendances.filter(att => att.date === date);
                 if (c.length > 0) data = bool ? c[0][bool] : c[0].is_present ? 'P' : 'A';
                 return data
             },
@@ -217,6 +215,19 @@
                     }
                 }
                 return theClass;
+            },
+
+            getTitle(userAtt,day) {
+                let arrival,departure, aTime, aTimeCon, dTime, dTimeCon, status,isPresent;
+                aTime = this.isPresent(userAtt,day,'arrival_time');
+                dTime = this.isPresent(userAtt, day, 'departure_time');
+                isPresent = this.isPresent(userAtt, day, 'is_present');
+                aTimeCon = this.$timeConvert(aTime);
+                dTimeCon = this.$timeConvert(dTime);
+                arrival = aTime ? `Arrival Time : <b>${aTimeCon}</b><br>` : ``;
+                departure = dTime ? `Departure Time: <b>${dTimeCon}</b><br>` : ``;
+                status = isPresent ? `<b>Present</b>` : ``;
+                return arrival ? `${arrival} ${departure} ${status}` : null;
             }
         },
         computed: {
@@ -235,49 +246,3 @@
         }
     }
 </script>
-
-<style type="scss" scoped>
-    .weekend {
-        background: repeating-linear-gradient(45deg, rgba(227, 210, 163, .2), rgba(227, 210, 163, 0.2) 2px, rgba(0, 0, 0, 0.0) 2px,
-            rgba(0, 0, 0, 0) 8px), #fffff1;
-    }
-
-    .custom-select, .myBtn, .daily-attendance {
-        width: 75%;
-    }
-
-    .daily-attendance {
-        overflow-x: scroll;
-    }
-
-    .image-and-names {
-        width: 25%;
-    }
-
-    @media (max-width: 990px) {
-        .custom-select {
-            width: 90%;
-        }
-        .myBtn {
-            width: 100%;
-        }
-
-        .image-and-names {
-            width: 30%;
-        }
-
-        .daily-attendance {
-            width: 70%;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .image-and-names {
-            width: 50%;
-        }
-        .daily-attendance {
-            width: 50%;
-        }
-
-    }
-</style>

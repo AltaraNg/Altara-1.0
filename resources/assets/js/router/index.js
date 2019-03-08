@@ -30,6 +30,9 @@ const HRMHome = () => import( '../views/HRM/HomePage.vue');
 const DataViewer = () => import( '../components/DataViewer.vue');
 const EmployeeForm = () => import( '../views/HRM/employee/employeeForm.vue');
 
+const Caution = () => import( '../views/HRM/caution/index.vue');
+const CautionForm = () => import( '../views/HRM/caution/form.vue');
+
 const FSL = () => import('../views/FSL/index.vue');
 const FSLHome = () => import('../views/FSL/HomePage.vue');
 const BranchForm = () => import('../views/FSL/branch/form.vue');
@@ -86,7 +89,10 @@ const router = new VueRouter({
             {path: 'employee/create', component: EmployeeForm, meta: {mode: 'create'}},
             {path: 'employee/:id/edit', component: EmployeeForm, meta: {mode: 'edit'}},
             {path: 'attendance', component: Attendance},
-            {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateHrm', meta: {mode: 'create'}}
+            {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateHrm', meta: {mode: 'create'}},
+
+            {path: 'caution', component: Caution},
+            {path: 'caution/create', component: CautionForm, name: 'createCaution', meta: {mode: 'create'}}
          ]
       },
       {
