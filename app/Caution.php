@@ -9,7 +9,7 @@ class Caution extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['reason_min','penalty_min','date_text'];
+    protected $appends = ['reason_min', 'penalty_min', 'date_text'];
 
     public function getReasonMinAttribute()
     {
@@ -39,12 +39,11 @@ class Caution extends Model
     public static function form()
     {
         return [
-            'issuer_id'=>auth('api')->user()->id,
-            'user_id'=>'',
-            'employee_name'=>'nothing here',
-            'reason'=>'',
-            'penalty'=>'',
-            'date'=>date('Y-m-d'),
+            'issuer_id' => auth('api')->user()->id,
+            'user_id' => '',
+            'reason' => '',
+            'penalty' => '',
+            'date' => date('Y-m-d'),
         ];
     }
 }

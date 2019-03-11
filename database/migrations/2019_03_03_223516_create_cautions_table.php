@@ -18,7 +18,6 @@ class CreateCautionsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('issuer_id')->index()->nullable();
             $table->unsignedInteger('user_id')->index()->nullable();
-            $table->string('employee_name');
             $table->text('reason');
             $table->string('penalty');
             $table->string('date');

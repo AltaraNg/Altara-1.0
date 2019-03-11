@@ -115,37 +115,33 @@
    }
 </script>
 
-<style>
+<style lang="scss">
+   @import "../../sass/app/variables";
    .typeahead {
       border-radius : 3px;
-      border        : 1px solid #ccc;
+      border        : 1px solid #E3E3E3;
       position      : relative;
       z-index       : 1;
-      width         : 100%;
-      font-size     : 14px;
    }
 
    .typeahead__open {
-      border : 1px solid #41b883;
+      border : 1px solid lighten($default-color, 15%);
    }
 
    .typeahead__open .typeahead__text {
-      color   : #999;
       opacity : 0.4;
    }
 
    .typeahead__toggle {
       position : relative;
       z-index  : 1;
-      width    : 100%;
+      line-height: 1rem;
    }
 
    .typeahead__search {
       position    : absolute;
       top         : 0;
       left        : 0;
-      line-height : 1em;
-      font-size   : 1em;
       padding     : 10px;
       width       : 100%;
       display     : block;
@@ -153,12 +149,11 @@
       background  : transparent;
       border      : none;
       outline     : none;
-      z-index     : 2;
+      z-index     : 4;
    }
 
    .typeahead__text {
-      min-height  : 36px;
-      font-size   : 1em;
+      min-height  : 30px;
       line-height : 1em;
       padding     : 10px;
       display     : inline-block;
@@ -169,6 +164,16 @@
    .typeahead__list {
       margin  : 0;
       padding : 0;
+       max-height: 240px;
+       overflow-y: scroll;
+      position: absolute;
+      background-color: white;
+      width: calc(100% + 2px);
+      border: 1px solid lighten($default-color, 15%);
+      border-top: 0;
+      left: -1px;
+      right: 0;
+      border-radius: 0 0 4px 4px;
    }
 
    .typeahead__item {
@@ -180,12 +185,11 @@
       display     : block;
       padding     : 10px;
       line-height : 1em;
-      font-size   : 1em;
       cursor      : pointer;
    }
 
    .typeahead__active {
-      background : #41b883;
-      color      : #fff;
+      background : lighten($default-color, 15%);
+      color      : #fff !important;
    }
 </style>

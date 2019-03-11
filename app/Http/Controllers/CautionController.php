@@ -15,10 +15,10 @@ class CautionController extends Controller
      */
     public function index()
     {
-        $cautions = Caution::with(['user' => function($query){
-            return $query->select('id','full_name','staff_id');
-        }, 'issuer' => function($query){
-            return $query->select('id','full_name','staff_id');
+        $cautions = Caution::with(['user' => function ($query) {
+            return $query->select('id', 'full_name', 'staff_id');
+        }, 'issuer' => function ($query) {
+            return $query->select('id', 'full_name', 'staff_id');
         }])->paginate(10);
 
         return response()->json([
@@ -33,9 +33,9 @@ class CautionController extends Controller
      */
     public function create()
     {
-        $users = User::select('id','full_name','staff_id')->get();
+        $users = User::select('id', 'full_name', 'staff_id')->get();
         return response()->json([
-            'form'=>Caution::form(),
+            'form' => Caution::form(),
             'users' => $users
         ]);
     }
@@ -50,9 +50,11 @@ class CautionController extends Controller
     {
         $data = $request->form;
         Caution::create($data);
+        $users = User::select('id', 'full_name', 'staff_id')->get();
         return response()->json([
             'saved' => true,
-            'form'=>Caution::form()
+            'form' => Caution::form(),
+            'users' => $users
         ]);
     }
 

@@ -18,7 +18,6 @@ class CautionTableSeeder extends Seeder
         DB::table('cautions')->delete();
         for ($i = 0; $i < 30; $i++) {
             Caution::create([
-                'employee_name' => $faker->firstName . ' ' . $faker->lastName,
                 'user_id' => rand(1,30),
                 'issuer_id' => rand(1,30),
                 'reason' => $faker->paragraph(3),
