@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth:api']], function () {
       'branch' => 'BranchController',
       'address' => 'AddressController',
       'message' => 'MessageController',
+      'caution' => 'CautionController',
       'customer' => 'CustomerController',
       'document' => 'DocumentController',
       'attendance' => 'AttendanceController',
