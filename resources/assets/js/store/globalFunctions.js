@@ -63,6 +63,19 @@ Vue.prototype.$prepareBranches = () => {
     if (!branches) get('/api/branches').then(res => store.dispatch('mutateBranches', res.data.branches));
 };
 
+Vue.prototype.$timeConvert = time => {
+    // Check correct time format and split into components
+    if(time){
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+        if (time.length > 1) { // If time format correct
+            time = time.slice(1);  // Remove full string match value
+            time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+            time[0] = +time[0] % 12 || 12; // Adjust hours
+        }
+        return time.join(''); // return adjusted time or original string
+    } return time;
+};
+
 Vue.prototype.$prepareStates = () => {
     /*** this function checks for app level branch Hence the call for list of states is done
      * Once throughout the application lifecycle this is for memory optimization
@@ -116,7 +129,7 @@ Vue.prototype.$editAccess = function (user = '', customer = '') {
                 /**if the user is a lead grant access*/
                 return true
             } else {
-                if(store.state.lifestyleBranches.includes(user.branch_id)){
+                if (store.state.lifestyleBranches.includes(user.branch_id)) {
                     /*if the DVA's branch is lifestyle grant access*/
                     return true;
                 }

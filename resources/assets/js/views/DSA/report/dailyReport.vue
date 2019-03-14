@@ -80,7 +80,7 @@
                </div>
 
                <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
-                  <label>Number of forms submitted too captain</label>
+                  <label>Number of forms submitted to captain</label>
                   <input class="form-control" data-vv-as="number to captain" name="number_to_captain" type="number"
                          v-model="report.number_to_captain" v-validate="'required|integer|min:0'">
                   <small v-if="errors.first('number_to_captain')">{{errors.first('number_to_captain')}}</small>

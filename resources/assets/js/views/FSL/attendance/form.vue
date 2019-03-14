@@ -9,7 +9,7 @@
                         <div class="row justify-content-end align-items-center">
                             <a @click="$router.push(`${branch ? '?branch=' + branch : ''}`)"
                                class="text-link pr-4 text-capitalize" href="javascript:">
-                                get attendance for?
+                                get attendance list for?
                             </a>
                             <select class="custom-select" v-model="branch">
                                 <option disabled selected value="">branch</option>
@@ -222,7 +222,7 @@
     }
 
     @media (max-width: 990px) {
-        .user /*, .sm-hide */
+        .user
         {
             display: none;
         }
@@ -231,17 +231,7 @@
         }
     }
 
-    .sm-show {
-        display: none;
-    }
-
     @media (max-width: 600px) {
-        .sm-show {
-            display: inline-block;
-        }
-        .sm-hide {
-            display: none;
-        }
         .staff_id-sm {
             color: #b6a5ab;
             font-size: 1.4rem;

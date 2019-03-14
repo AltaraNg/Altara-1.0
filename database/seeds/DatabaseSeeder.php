@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             BrandCategoryTableSeeder::class,
             SupplierCategorySeeder::class,
             AttendanceTableSeeder::class,
+            CautionTableSeeder::class,
         ]);
     }
 }
