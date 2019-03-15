@@ -158,11 +158,13 @@
         },
         created() {
             this.$prepareBranches();
-            if (this.completeQry) {
-                Vue.set(this.$data.query, 'year', this.$route.query.year);
-                Vue.set(this.$data.query, 'month', this.$route.query.month);
-                Vue.set(this.$data.query, 'branch', this.$route.query.branch);
-            }
+            const q = this.$route.query,
+                dt = new Date(),
+                year = q.year ? q.year : dt.getFullYear(),
+                month = q.month ? q.month : dt.getMonth() + 1;
+            Vue.set(this.$data.query, 'year', year);
+            Vue.set(this.$data.query, 'month', month >= 10 ? month : '0' + month);
+            if (this.completeQry) Vue.set(this.$data.query, 'branch', q.branch);
         },
         updated() {
             $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
@@ -217,9 +219,9 @@
                 return theClass;
             },
 
-            getTitle(userAtt,day) {
-                let arrival,departure, aTime, aTimeCon, dTime, dTimeCon, status,isPresent;
-                aTime = this.isPresent(userAtt,day,'arrival_time');
+            getTitle(userAtt, day) {
+                let arrival, departure, aTime, aTimeCon, dTime, dTimeCon, status, isPresent;
+                aTime = this.isPresent(userAtt, day, 'arrival_time');
                 dTime = this.isPresent(userAtt, day, 'departure_time');
                 isPresent = this.isPresent(userAtt, day, 'is_present');
                 aTimeCon = this.$timeConvert(aTime);

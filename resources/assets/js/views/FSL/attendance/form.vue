@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="radio w-50 pl-3 float-left">
                                     <input :id="`no_${index}`" :name="`status_${index}`" type="radio"
-                                           v-model="form[index].is_present" value="0">
+                                           v-model="form[index].is_present" value="0" @click="clearTime(index)">
                                     <label :for="`no_${index}`">no</label>
                                 </div>
                             </div>
@@ -168,7 +168,6 @@
         },
         methods: {
             async prepareForm(data) {
-                console.log(data);
                 this.mode = this.$route.meta.mode;
                 //this function is used when a data is sent to this component
                 //or this component makes a request to backend the
@@ -211,6 +210,10 @@
                         } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
+            },
+            clearTime(index){
+                this.form[index].arrival_time = '';
+                this.form[index].departure_time = '';
             }
         }
     }

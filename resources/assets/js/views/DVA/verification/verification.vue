@@ -754,7 +754,7 @@
 
         h4.info-title {
             margin    : 0;
-            font-size : 2.2rem;
+            font-size : 2rem;
         }
 
         .no-success .icon.icon-warning.icon-circle {

@@ -241,7 +241,7 @@ hr.style-two {
 button, input, optgroup, select, textarea, .form-control::placeholder {
     color: rgba(142, 151, 160, 0.5);
     font-weight: 500;
-    font-size: 1.4rem;
+    font-size: 1.2rem !important;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -419,8 +419,13 @@ textarea.form-control.is-invalid:focus {
 
 }
 
-table button i {
+table button i, table a i {
     font-size: $default-font-size;
+}
+
+table a i {
+    line-height: 2.75rem !important;
+    color: white;
 }
 
 .btn-success.btn-round {
@@ -507,7 +512,7 @@ form#messaging {
         }
 
         .heading.day {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
         }
 
         .daily-attendance {
@@ -611,7 +616,7 @@ form#messaging {
     }
 
     .no-attendance {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 600;
         color: #a4a5ab;
     }
@@ -619,7 +624,7 @@ form#messaging {
 }
 
 .title {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: bold;
     padding-bottom: 1.5rem;
     position: relative;
@@ -660,12 +665,12 @@ form#messaging {
     margin: 1rem auto;
 
     &-icon {
-        font-size: 2rem;
+        font-size: 1.8rem;
         line-height: 4rem;
     }
 
     &-name {
-        font-size: 1.6rem;
+        font-size: 1.1 * $default-font-size;
         font-weight: 600;
     }
 }
@@ -739,7 +744,7 @@ form#messaging {
         }
 
         .no-attendance {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
         }
 
         &-body {
@@ -770,7 +775,7 @@ form#messaging {
         }
     }
     .title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         padding-bottom: 1rem;
         border-bottom: .3rem solid #2975a5;
     }

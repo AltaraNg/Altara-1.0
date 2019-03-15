@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Branch;
+use App\Counter;
 use App\EmployeeCategory;
 use App\Role;
 use App\User;
@@ -138,6 +139,14 @@ class UserController extends Controller
             'guarantor_phone_no_2' => 'unique:users,guarantor_phone_no_2,' . $id
         ]);
 
+        /** fetch the user*/
+        $user = User::find($id);
+        $newId = $user->staff_id;
+        $transfer = $request->category !== $user->category;
+        if ($transfer) {
+            $newId = $this->generateStaffID($request->category, $request->role_id);
+        }
+
         if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
             $request->validate([
                 'cv' => 'mimes:pdf|max:10000'
@@ -149,8 +158,6 @@ class UserController extends Controller
             $request['cv_url'] = $filename;
         }
 
-        /** fetch the user*/
-        $user = User::find($id);
         /** check is the request tries to grant access(ie portal_access == 1) to the user,
          * if the user has already exited the firm, the
          * portal access cannot be granted */
@@ -166,10 +173,17 @@ class UserController extends Controller
         }
 
         /** update the user and save in db*/
-        User::whereId($id)->update($request->except('cv'));
+        unset($request['transfer']);
+        $user->update($request->except('cv'));
+        $user->update(['staff_id' => $newId]);
 
         /** return response */
-        return response()->json(['updated' => true]);
+        return response()->json([
+            'updated' => true,
+            'message' => $transfer ? "Employee Detail's and Transfer Successful! New ID is " . $newId : "Employee detail's updated successful!",
+            'staff_id' => $transfer ? $newId : null,
+            'transfer' => $transfer,
+        ]);
     }
 
     public function getBranchUsers()
@@ -185,53 +199,38 @@ class UserController extends Controller
 
     public function generateStaffID($category, $role)
     {
-        /** store the id of the driver roles*/
         $driver_role = [24, 25];
-        /** check if the $role is driver*/
-        if (in_array(intval($role), $driver_role)) {
-            /** if the role is driver get the last driver id*/
-            $lastID = User::whereIn('role_id', $driver_role)->orderBy('staff_id', 'desc')->first()->staff_id;
-        } else {
-            /**get the last id of contract or permanent or freelance staff that is not a driver role*/
-            $lastID = User::where('category', $category)->whereNotIn('role_id', $driver_role)->orderBy('staff_id', 'desc')->first()->staff_id;
-        }
-        /** initialize method variables */
+        $lastID = Counter::where('name', in_array(intval($role), $driver_role) ? 'last_driver_id' : 'last_' . $category . '_id')->first();
+        $lastIDVal = $lastID->value;
+
         $num = '';
         $prefix = '';
         $nextNum = '';
         if (in_array(intval($role), [24, 25])) {
-            /** if role is driver, create a prefix */
             $prefix = 'DD/';
-            /** the number value of the last staff id eg DD/01, 01 is at position arr[1] */
-            $nextNum = explode('/', $lastID)[1];
+            $nextNum = explode('/', $lastIDVal)[1];
         } else {
-            /** if not driver is either contract, permanent, freelance*/
-            /** for each of the following control statements the first step creates prefix and 2nd step get the number value of the $lastID*/
             if ($category === 'contract') {
                 $prefix = 'AC/C/';
-                /** format of $lastID = Al/C/128/18, our concern is the 128 ie the arr[2]*/
-                $nextNum = explode('/', $lastID)[2];
+                $nextNum = explode('/', $lastIDVal)[2];
             }
             if ($category === 'permanent') {
                 $prefix = 'ACL/';
-                /** format of $lastID = Al/128/18, our concern is the 128 ie the arr[1]*/
-                $nextNum = explode('/', $lastID)[1];
+                $nextNum = explode('/', $lastIDVal)[1];
             }
             if ($category === 'freelance') {
                 $prefix = 'AC/F/';
-                /** format of $lastID = Al/F/128/18, our concern is the 128 ie the arr[2]*/
-                $nextNum = explode('/', $lastID)[2];
+                $nextNum = explode('/', $lastIDVal)[2];
             }
         }
-        /**add 1 to the $lastID number value*/
+
         $nextNum = intval($nextNum) + 1;
-        /** set the number value of the new id($id) to be 3 digit long eg, 001 for 1, 019 for 19, 123 for 123*/
         if (strlen((string)$nextNum) === 1) $num = '00' . $nextNum;
         else if (strlen((string)$nextNum) === 2) $num = '0' . $nextNum;
         else if (strlen((string)$nextNum) >= 3) $num = $nextNum;
-        /** construct the new id by merging all the generated parts*/
         $id = (in_array(intval($role), $driver_role)) ? $prefix . $num : $prefix . $num . '/' . date("y");
-        /** return the new id */
+
+        $lastID->update(['value' => $id]);
         return $id;
     }
 

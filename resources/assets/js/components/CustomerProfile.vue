@@ -176,7 +176,7 @@
         }
 
         td, .data {
-            font-size: 1.5rem;
+            font-size: $default-font-size;
             font-weight: 500;
         }
 
@@ -187,7 +187,7 @@
             border-radius: .5rem;
             box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: $default-font-size;
 
             &.approved {
                 background-color: $color-green;

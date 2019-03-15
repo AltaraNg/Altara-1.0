@@ -1,6 +1,8 @@
 <?php
 
+
 Route::get('/clins', function () {
+
 });
 
 Route::get('/{vue?}', function () {
