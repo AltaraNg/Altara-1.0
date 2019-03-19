@@ -21,7 +21,7 @@ class AttendanceController extends Controller
         $month = request('month');
         $branch = request('branch');
 
-        if( isset($year) && isset($month) && isset($branch) ){
+        if (isset($year) && isset($month) && isset($branch)) {
             $attendances = User::where([
                 ['branch_id', '=', $branch],
                 ['date_of_exit', '=', null]
@@ -43,7 +43,7 @@ class AttendanceController extends Controller
                 'attendances' => $attendances,
                 'columns' => $this->tabulateData($month, $year)
             ]);
-        }else{
+        } else {
             return response()->json([
                 'message' => 'Please select all fields!'
             ], 400);
@@ -60,10 +60,9 @@ class AttendanceController extends Controller
         $qryBranch = request('branch');
         $branch = $qryBranch ? $qryBranch : auth('api')->user()->branch_id;
 
-        $check = Attendance::where([
-            ['branch_id', '=', $branch],
-            ['date', '=', date('Y-m-d')]
-        ])->first();
+        $check = Attendance::where('branch_id', $branch)
+            ->where('date', date('Y-m-d'))
+            ->first();
 
         $form = Attendance::form($branch);
 
@@ -83,14 +82,25 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $data = request('form');
-        foreach ($data as $attendance) {
-            unset($attendance['user']);
-            Attendance::create($attendance);
+
+        $attendance = Attendance::where('branch_id', $data[0]['branch_id'])
+            ->where('date', $data[0]['date'])
+            ->get();
+
+        if (!count($attendance)) {
+            foreach ($data as $attendance) {
+                unset($attendance['user']);
+                Attendance::create($attendance);
+            }
+            return response()->json([
+                'saved' => true,
+                'employee_id' => auth('api')->user()->employee_id
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Attendance for ' . $data[0]['date'] . ' has already been created!'
+            ], 422);
         }
-        return response()->json([
-            'saved' => true,
-            'employee_id' => auth('api')->user()->employee_id
-        ]);
     }
 
     /**
@@ -140,17 +150,17 @@ class AttendanceController extends Controller
 
     public function tabulateData($month, $year)
     {
-        $date = Carbon::parse($year . '-'. $month . '-01');
+        $date = Carbon::parse($year . '-' . $month . '-01');
         $days = $date->daysInMonth;
         $monthString = $date->format('F');
         $daysString = [];
         for ($i = 1; $i < $days + 1; $i++) {
-            $d = Carbon::parse($year .'-'. $month . '-' . $i);
+            $d = Carbon::parse($year . '-' . $month . '-' . $i);
             $daysString[$i] = [
                 'dayString' => str_limit($d->format('l'), '3', ''),
                 'date' => $i,
                 'month' => str_limit($monthString, '3', ''),
-                'fullDate' => Carbon::parse($i . '-' . $month . '-'. $year)->toDateString()
+                'fullDate' => Carbon::parse($i . '-' . $month . '-' . $year)->toDateString()
             ];
         }
         return $daysString;
