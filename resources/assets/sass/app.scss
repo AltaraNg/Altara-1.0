@@ -563,29 +563,26 @@ form#messaging {
             padding: 0 1.5rem 0 4rem;
         }
 
-        td.present::after {
+        td.arrEarly::before, td.arrLate::before, td.leftEarly::after, td.leftLate::after, td.absent::before{
             content: '';
             height: 2px;
             border-radius: 3rem;
-            width: 80%;
+            width: 38%;
             position: absolute;
             bottom: 15%;
-            right: 10%;
-            background-color: #b5d4ad;
             z-index: 3;
         }
+        td.arrEarly::before, td.arrLate::before{left:10%;}
+        td.leftEarly::after, td.leftLate::after{right:10%;}
+        td.arrEarly::before, td.leftLate::after {background-color: #6ca669;}
+        td.arrLate::before, td.leftEarly::after{background-color: #f7b900;}
 
+        td.arrEarly.leftLate::before,td.arrEarly.leftLate::after{width: 41%;}
 
-        td.absent::after {
-            content: '';
-            height: 2px;
-            border-radius: 3rem;
+        td.absent::before{
             width: 80%;
-            position: absolute;
-            bottom: 15%;
-            right: 10%;
-            background-color: #e49797;
-            z-index: 3;
+            left:10%;
+            background-color: #ff4c4c;
         }
     }
 
@@ -692,6 +689,27 @@ form#messaging {
 
 .shadow-sm {
     box-shadow: 0 .15rem .3rem rgba(0,0,0,.05)!important;
+}
+
+.modal .info-table{
+    tr {
+        margin-bottom    : .4rem;
+        float            : left;
+        width            : 100%;
+        font-weight      : 400;
+        background-color : rgba(7, 74, 116, .1);
+    }
+
+    tbody tr th {
+        width        : 4rem;
+        text-align   : center;
+        border-right : .4rem solid white;
+        border-left  : .3rem solid rgba(7, 74, 116, .7);
+    }
+
+    tbody tr td {
+        padding : .4rem 1.5rem;
+    }
 }
 
 @media (max-width: 990px) {

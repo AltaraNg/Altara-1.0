@@ -75,7 +75,7 @@ class UserController extends Controller
         }
 
         $user = new User;
-        $user->fill($request->except('cv'));
+        $user->fill($request->except(['cv','transfer']));
         $gen_password = str_random(8);
         /** encrypt the password*/
         $user->password = bcrypt($gen_password);

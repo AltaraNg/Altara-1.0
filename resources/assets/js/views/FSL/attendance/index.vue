@@ -10,7 +10,40 @@
                             <a @click="$router.push('attendance/create')"
                                class="text-link mt-3" href="javascript:">
                                 click here to create attendance!</a>
+                            <span class="mx-4 mt-3">||</span>
+                            <a @click="toggleGuide" class="text-link mt-3"
+                               href="javascript:">
+                                view table guide!</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="attendance-body" id="table-guide">
+                <div class="pt-5 row bg-white shadow-sm" style="border-radius: .5rem">
+                    <div>
+                        <td class="arrEarly leftLate"><span>A</span></td>
+                        <span>In before/at 9:00am <br> Out after/at 6:00pm</span>
+                    </div>
+
+                    <div>
+                        <td class="arrEarly leftEarly"><span>A</span></td>
+                        <span>In before/at 9:00am  <br> Out Before 6:00pm</span>
+                    </div>
+
+                    <div>
+                        <td class="arrLate leftLate"><span>A</span></td>
+                        <span class="d-inline-block">In after 9:00am  <br> Out after/at 6:00pm</span>
+                    </div>
+
+                    <div>
+                        <td class="arrLate leftEarly"><span>A</span></td>
+                        <span class="d-inline-block">In after 9:00am  <br> Out before 6:00pm</span>
+                    </div>
+
+                    <div>
+                        <td class="absent"><span>A</span></td>
+                        <span>Absent</span>
                     </div>
                 </div>
             </div>
@@ -93,8 +126,10 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="userAtt in attendances">
+                                    <!--<td :class="checkClass(userAtt, day)" :title="getTitle(userAtt, day)" data-toggle="tooltip"-->
                                     <td :class="checkClass(userAtt, day)"
-                                        :title="getTitle(userAtt, day)" data-toggle="tooltip" v-for="day in columns">
+                                        @click="displayInfo(userAtt, day)"
+                                        v-for="day in columns">
                                         {{isPresent(userAtt, day)}}
                                     </td>
                                 </tr>
@@ -107,6 +142,63 @@
                     <span class="no-attendance">Kindly Select Branch, Month and, Year to get started!</span>
                 </div>
             </div>
+
+
+            <div class="modal fade" id="viewAttendance">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header py-2">
+                            <h6 class="modal-title py-1">Attendance</h6>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                                <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                            </a>
+                        </div>
+
+                        <form>
+                            <div class="modal-body">
+
+                                <div class="px-2" v-if="currAttendance">
+                                    <div class="px-4">
+                                        <div class="row">
+                                            <span><strong>Status : </strong></span>
+                                            <div class="col">{{currAttendance.is_present ? 'Present' : 'Absent'}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <span><strong>Arrival Time : </strong></span>
+                                            <div class="col">{{$timeConvert(currAttendance.arrival_time)}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <span><strong>Departure time : </strong></span>
+                                            <div class="col">{{$timeConvert(currAttendance.departure_time)}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <span><strong>Date : </strong></span>
+                                            <div class="col">{{currAttendance.date}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <span><strong>Remark : </strong></span>
+                                            <div class="col">{{currAttendance.remark}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="px-2" v-else>
+                                    <div class="px-4 row">
+                                        <span><strong>Status : </strong></span>
+                                        <div class="col">No Attendance</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                                   style="text-align: right">close dialogue</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </transition>
 </template>
@@ -122,6 +214,7 @@
             return {
                 columns: {},
                 show: false,
+                currAttendance: {},
                 query: {
                     month: '',
                     branch: '',
@@ -163,7 +256,7 @@
                 year = q.year ? q.year : dt.getFullYear(),
                 month = q.month ? q.month : dt.getMonth() + 1;
             Vue.set(this.$data.query, 'year', year);
-            Vue.set(this.$data.query, 'month', month >= 10 ? month : '0' + month);
+            Vue.set(this.$data.query, 'month', (month >= 10 || month.length === 2) ? month : '0' + month);
             if (this.completeQry) Vue.set(this.$data.query, 'branch', q.branch);
         },
         updated() {
@@ -201,13 +294,38 @@
                 if (c.length > 0) data = bool ? c[0][bool] : c[0].is_present ? 'P' : 'A';
                 return data
             },
+
+            earlyOrLate(userAtt, day) {
+                let data = [];
+                let attendance = userAtt.attendances.filter(att => att.date === day.fullDate);
+                if (attendance.length) {
+                    if (attendance[0].arrival_time > '09:00') {
+                        data[0] = 'arrLate';
+                    } else {
+                        data[0] = 'arrEarly';
+                    }
+                    if (attendance[0].departure_time < '18:00') {
+                        data[1] = 'leftEarly'
+                    } else {
+                        data[1] = 'leftLate'
+                    }
+                }
+                return data;
+            },
+
             checkClass(userAtt, day) {
                 let theClass, isPresent = this.isPresent(userAtt, day);
+                let erl = this.earlyOrLate(userAtt, day);
                 if (['Sun', 'Sat'].includes(day.dayString)) {
                     theClass = 'weekend';
                 } else {
+                    //arrEarly arrLate leftEarly leftLate
                     if (isPresent === 'P') {
-                        theClass = 'present';
+                        //theClass = 'present';
+                        if (erl.length) {
+                            theClass = erl.join(' ');
+                        }
+
                     } else {
                         if (isPresent === 'A') {
                             theClass = 'absent';
@@ -219,17 +337,34 @@
                 return theClass;
             },
 
-            getTitle(userAtt, day) {
-                let arrival, departure, aTime, aTimeCon, dTime, dTimeCon, status, isPresent;
+            /*getRemark(userAtt, day) {
+                let att = userAtt.attendances.find(obj => obj.date === day.fullDate);
+                return att ? `${att.remark ? 'Remark: <b class="text_align-left">' + att.remark + '</b><br>' : ''}` : ``;
+            },*/
+
+            /*getTitle(userAtt, day) {
+                let arrival, departure, aTime, aTimeCon, dTime, dTimeCon, status, isPresent, remark;
                 aTime = this.isPresent(userAtt, day, 'arrival_time');
                 dTime = this.isPresent(userAtt, day, 'departure_time');
                 isPresent = this.isPresent(userAtt, day, 'is_present');
+                remark = this.getRemark(userAtt, day);
                 aTimeCon = this.$timeConvert(aTime);
                 dTimeCon = this.$timeConvert(dTime);
-                arrival = aTime ? `Arrival Time : <b>${aTimeCon}</b><br>` : ``;
-                departure = dTime ? `Departure Time: <b>${dTimeCon}</b><br>` : ``;
-                status = isPresent ? `<b>Present</b>` : ``;
-                return arrival ? `${arrival} ${departure} ${status}` : null;
+                status = isPresent ? `Present<br>` : ``;
+                arrival = aTime ? `Arrival Time : ${aTimeCon}<br>` : ``;
+                departure = dTime ? `Departure Time: ${dTimeCon}<br>` : ``;
+                return arrival || remark ? `${arrival} ${departure} ${status} ${remark}` : null;
+            },*/
+
+            toggleGuide() {
+                $('#table-guide').slideToggle();
+            },
+
+            displayInfo(userAtt, day) {
+                let date = day ? day.fullDate : null, c;
+                c = userAtt.attendances.filter(att => att.date === date);
+                Vue.set(this.$data, 'currAttendance', c[0] ? c[0] : null);
+                return $(`#viewAttendance`).modal('toggle');
             }
         },
         computed: {
@@ -245,6 +380,35 @@
                 }
                 return att;
             }
-        }
+        },
+        mounted() {
+            $(document).on("hidden.bs.modal", '.modal', () => this.currAttendance = {});
+            this.toggleGuide();
+        },
     }
 </script>
+
+<style>
+    #table-guide td {
+        width        : 6rem;
+        text-align   : center;
+        height       : unset;
+        float        : left;
+        margin-right : 1rem;
+    }
+
+    #table-guide td span {
+        margin-bottom : 1rem;
+        line-height   : 2;
+        float         : left;
+        width         : 100%;
+    }
+
+    #table-guide > div > div {
+        padding : 0 4rem 3rem;
+    }
+
+    .modal-body span {
+        min-width : 10rem;
+    }
+</style>

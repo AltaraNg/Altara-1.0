@@ -97,7 +97,9 @@
                         </div>
 
                         <div class="col-6 col-xs-2 col-md-2 col-lg-2 pl-3 py-4 py-sm-0">
-                            <input :name="`remark_${index}`" class="form-control" type="text" v-model="form[index].remark">
+                            <input :name="`remark_${index}`" class="form-control" type="text"
+                                   v-validate="{ required: form[index].is_present == 0 }"
+                                   v-model="form[index].remark">
                         </div>
 
                     </div>
