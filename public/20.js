@@ -286,10 +286,10 @@ exports.default = {
         _vue2.default.set(this.$data.query, 'month', month >= 10 || month.length === 2 ? month : '0' + month);
         if (this.completeQry) _vue2.default.set(this.$data.query, 'branch', q.branch);
     },
-    updated: function updated() {
-        $('[data-toggle="tooltip"]').tooltip({ boundary: 'window', html: true });
-    },
 
+    /*updated() {
+        $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
+    },*/
     methods: {
         fetch: function fetch() {
             var _this2 = this;
@@ -436,7 +436,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n#table-guide td {\n    width        : 6rem;\n    text-align   : center;\n    height       : unset;\n    float        : left;\n    margin-right : 1rem;\n}\n#table-guide td span {\n    margin-bottom : 1rem;\n    line-height   : 2;\n    float         : left;\n    width         : 100%;\n}\n#table-guide > div > div {\n    padding : 0 4rem 3rem;\n}\n.modal-body span {\n    min-width : 10rem;\n}\n", ""]);
+exports.push([module.i, "\n#table-guide td {\n    width        : 6rem;\n    text-align   : center;\n    height       : unset;\n    float        : left;\n    margin-right : 1rem;\n}\n#table-guide td span {\n    margin-bottom : 1rem;\n    line-height   : 2;\n    float         : left;\n    width         : 100%;\n}\n#table-guide > div > div {\n    padding : 0 4rem 3rem;\n}\n", ""]);
 
 // exports
 

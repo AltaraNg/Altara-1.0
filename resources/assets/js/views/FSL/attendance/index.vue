@@ -259,9 +259,9 @@
             Vue.set(this.$data.query, 'month', (month >= 10 || month.length === 2) ? month : '0' + month);
             if (this.completeQry) Vue.set(this.$data.query, 'branch', q.branch);
         },
-        updated() {
+        /*updated() {
             $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
-        },
+        },*/
         methods: {
 
             fetch() {
@@ -406,9 +406,5 @@
 
     #table-guide > div > div {
         padding : 0 4rem 3rem;
-    }
-
-    .modal-body span {
-        min-width : 10rem;
     }
 </style>

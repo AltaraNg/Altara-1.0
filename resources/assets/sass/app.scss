@@ -712,6 +712,13 @@ form#messaging {
     }
 }
 
+#view-caution,
+#viewAttendance{
+    .modal-body span {
+        min-width : 10rem;
+    }
+}
+
 @media (max-width: 990px) {
     html {
         font-size: 59%;

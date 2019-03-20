@@ -122,11 +122,62 @@ var apiLink = function apiLink(to) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     data: function data() {
         return {
             show: false,
+            caution: null,
             cautions: {},
             columns: [{ name: 'Employee', col: 4 }, { name: 'Issued by', col: 3 }, { name: 'Reason', col: 2 }, { name: 'Penalty', col: 2 }, { name: 'Date', col: 1 }]
         };
@@ -178,7 +229,19 @@ exports.default = {
         },
         handleErr: function handleErr(e) {
             _flash2.default.setError('Error Fetching Cautions');
+        },
+        displayInfo: function displayInfo(caution) {
+            _vue2.default.set(this.$data, 'caution', caution);
+            return $("#view-caution").modal('toggle');
         }
+    },
+    updated: function updated() {
+        var _this3 = this;
+
+        $('[data-toggle="tooltip"]').tooltip({ boundary: 'window', html: true });
+        $(document).on("hidden.bs.modal", '.modal', function () {
+            return _this3.caution = '';
+        });
     }
 };
 
@@ -252,7 +315,17 @@ var render = function() {
                       "div",
                       {
                         staticClass:
-                          "mb-3 px-0 row align-items-center attendance-item"
+                          "mb-3 px-0 row align-items-center attendance-item",
+                        attrs: {
+                          "data-toggle": "tooltip",
+                          "data-placement": "top",
+                          title: "click on here to view full details!"
+                        },
+                        on: {
+                          click: function($event) {
+                            _vm.displayInfo(caution)
+                          }
+                        }
                       },
                       [
                         _c(
@@ -539,7 +612,121 @@ var render = function() {
                   _vm._v("No cautions has been issued!")
                 ])
               ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "modal fade", attrs: { id: "view-caution" } },
+          [
+            _c(
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _c("div", { staticClass: "modal-header py-2" }, [
+                    _c("h6", { staticClass: "modal-title py-1" }, [
+                      _vm._v("Attendance")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "close py-1",
+                        attrs: {
+                          "aria-label": "Close",
+                          "data-dismiss": "modal"
+                        }
+                      },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "modal-close text-danger",
+                            attrs: { "aria-hidden": "true" }
+                          },
+                          [_c("i", { staticClass: "fas fa-times" })]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("form", [
+                    _c("div", { staticClass: "modal-body" }, [
+                      _vm.caution
+                        ? _c("div", { staticClass: "px-2" }, [
+                            _c("div", { staticClass: "px-4" }, [
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Employee : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.user.full_name))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Issued by : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.issuer.full_name))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Reason : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.reason))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Penalty : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.penalty))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [_c("strong", [_vm._v("Date : ")])]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.date_text))
+                                ])
+                              ])
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "text-link mt-3 w-100",
+                          staticStyle: { "text-align": "right" },
+                          attrs: {
+                            "data-dismiss": "modal",
+                            href: "javascript:"
+                          }
+                        },
+                        [_vm._v("close dialogue")]
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            )
+          ]
+        )
       ]
     )
   ])

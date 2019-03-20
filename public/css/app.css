@@ -16830,6 +16830,11 @@ form#messaging textarea {
   padding: .4rem 1.5rem;
 }
 
+#view-caution .modal-body span,
+#viewAttendance .modal-body span {
+  min-width: 10rem;
+}
+
 @media (max-width: 990px) {
   html {
     font-size: 59%;
