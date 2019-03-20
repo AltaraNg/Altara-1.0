@@ -21,8 +21,8 @@
                             </div>
                             <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                                 <label>Issued by</label>
-                                <select class="custom-select w-100" disabled
-                                        data-vv-validate-on="blur"
+                                <select class="custom-select w-100" data-vv-validate-on="blur"
+                                        disabled
                                         name="issued_by"
                                         v-model="form.issuer_id" v-validate="'required'">
                                     <option :value="issuer.id">{{issuer.full_name}}</option>
@@ -91,7 +91,21 @@
                 show: false,
                 form: {},
                 error: {},
-                issuer:{},
+                issuer: {},
+                cautions: [
+                    {reason: 'Lateness to work', penalty: 'NO BONUS PAY and salary deduction'},
+                    {reason: 'Absence without permission', penalty: 'NO BONUS PAY and salary deduction'},
+                    {reason: 'Poor work performance (Consistently poor KPI score)', penalty: 'NO BONUS PAY and salary deduction'},
+                    {
+                        reason: 'Not conforming with the company lay down process and procedures',
+                        penalty: 'NO BONUS PAY and salary deduction'
+                    },
+                    {
+                        reason: 'Not being in line with Altara values. (Misalignment with values)',
+                        penalty: 'NO BONUS PAY and salary deduction'
+                    },
+                    {reason: 'Mismanagement of funds', penalty: 'NO BONUS PAY and salary deduction'}
+                ]
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -134,9 +148,9 @@
                                         this.$networkErr('unique');
                                     }
                                 }).finally(() => {
-                                    this.$LIPS(false);
-                                    this.$scrollToTop();
-                                });
+                                this.$LIPS(false);
+                                this.$scrollToTop();
+                            });
                         } else this.$networkErr()
                     } else this.$networkErr('form');
                 })

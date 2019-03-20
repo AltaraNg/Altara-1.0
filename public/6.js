@@ -188,9 +188,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
 
 function initialize(to) {
-    var urls = { create: '/api/attendance/create' + (to.query.branch ? '?branch=' + to.query.branch : '') /*, edit: `/api/attendance/${to.params.id}/edit`*/ };
+    var urls = { create: '/api/attendance/create' + (to.query.branch ? '?branch=' + to.query.branch : '') };
     return urls[to.meta.mode];
 }
 
@@ -242,11 +244,15 @@ exports.default = {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
+                                if (!(this.$store.getters.auth('peoplesOps') || !this.$route.query['branch'])) {
+                                    _context.next = 12;
+                                    break;
+                                }
+
                                 this.mode = this.$route.meta.mode;
                                 //this function is used when a data is sent to this component
                                 //or this component makes a request to backend the
                                 //data received is used to prepare the form
-                                this.errors.clear();
                                 if (data.form.length) data.form.forEach(function (obj) {
                                     return obj['no_signout'] = false;
                                 });
@@ -262,13 +268,15 @@ exports.default = {
                                 return _vue2.default.set(this.$data, 'submittedToday', data.submittedToday);
 
                             case 9:
-                                /*if (this.$route.meta.mode === 'edit') {
-                                    this.store = `/api/attendance/${this.$route.params.id}`;
-                                    this.method = 'PUT';
-                                }*/
                                 this.show = !this.submittedToday;
+                                _context.next = 14;
+                                break;
 
-                            case 10:
+                            case 12:
+                                _flash2.default.setError('You cannot create attendance for a branch other than yours', 5000);
+                                this.$router.push({ path: '../home' });
+
+                            case 14:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1183,83 +1191,91 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "row justify-content-end align-items-center" },
-                [
-                  _c(
-                    "a",
+              _vm.$store.getters.auth("peoplesOps")
+                ? _c(
+                    "div",
                     {
-                      staticClass: "text-link pr-4 text-capitalize",
-                      attrs: { href: "javascript:" },
-                      on: {
-                        click: function($event) {
-                          _vm.$router.push(
-                            "" + (_vm.branch ? "?branch=" + _vm.branch : "")
-                          )
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            get attendance list for :\n                        "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.branch,
-                          expression: "branch"
-                        }
-                      ],
-                      staticClass: "custom-select",
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.branch = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        }
-                      }
+                      staticClass: "row justify-content-end align-items-center"
                     },
                     [
                       _c(
-                        "option",
-                        { attrs: { disabled: "", selected: "", value: "" } },
-                        [_vm._v("branch")]
+                        "a",
+                        {
+                          staticClass: "text-link pr-4 text-capitalize",
+                          attrs: { href: "javascript:" },
+                          on: {
+                            click: function($event) {
+                              _vm.$router.push(
+                                "" + (_vm.branch ? "?branch=" + _vm.branch : "")
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            get attendance list for :\n                        "
+                          )
+                        ]
                       ),
                       _vm._v(" "),
-                      _vm._l(_vm.$store.getters.getBranches, function(branch) {
-                        return _c(
-                          "option",
-                          { domProps: { value: branch.id } },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm._f("capitalize")(branch.name)) +
-                                "\n                            "
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.branch,
+                              expression: "branch"
+                            }
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.branch = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            {
+                              attrs: { disabled: "", selected: "", value: "" }
+                            },
+                            [_vm._v("branch")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.$store.getters.getBranches, function(
+                            branch
+                          ) {
+                            return _c(
+                              "option",
+                              { domProps: { value: branch.id } },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(_vm._f("capitalize")(branch.name)) +
+                                    "\n                            "
+                                )
+                              ]
                             )
-                          ]
-                        )
-                      })
-                    ],
-                    2
+                          })
+                        ],
+                        2
+                      )
+                    ]
                   )
-                ]
-              )
+                : _vm._e()
             ])
           ])
         ]),

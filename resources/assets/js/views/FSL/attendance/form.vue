@@ -6,7 +6,8 @@
                 <div class="mb-5 row">
                     <div class="col-12 title-con">
                         <span class="title">{{`attendance for ${today}` | capitalize}}</span>
-                        <div class="row justify-content-end align-items-center">
+
+                        <div class="row justify-content-end align-items-center" v-if="$store.getters.auth('peoplesOps')">
                             <a @click="$router.push(`${branch ? '?branch=' + branch : ''}`)"
                                class="text-link pr-4 text-capitalize" href="javascript:">
                                 get attendance list for :
@@ -18,6 +19,7 @@
                                 </option>
                             </select>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -163,8 +165,7 @@
     import {byMethod, get} from '../../../helpers/api';
 
     function initialize(to) {
-        let urls =
-            {create: `/api/attendance/create${to.query.branch ? '?branch=' + to.query.branch : ''}`/*, edit: `/api/attendance/${to.params.id}/edit`*/};
+        let urls = {create: `/api/attendance/create${to.query.branch ? '?branch=' + to.query.branch : ''}`};
         return urls[to.meta.mode];
     }
 
@@ -206,20 +207,20 @@
         },
         methods: {
             async prepareForm(data) {
-                this.mode = this.$route.meta.mode;
-                //this function is used when a data is sent to this component
-                //or this component makes a request to backend the
-                //data received is used to prepare the form
-                this.errors.clear();
-                if (data.form.length) data.form.forEach(obj => obj['no_signout'] = false);
-                await Vue.set(this.$data, 'form', data.form);
-                await Vue.set(this.$data, 'today', data.today);
-                await Vue.set(this.$data, 'submittedToday', data.submittedToday);
-                /*if (this.$route.meta.mode === 'edit') {
-                    this.store = `/api/attendance/${this.$route.params.id}`;
-                    this.method = 'PUT';
-                }*/
-                this.show = !this.submittedToday;
+                if (this.$store.getters.auth('peoplesOps') || !this.$route.query['branch']) {
+                    this.mode = this.$route.meta.mode;
+                    //this function is used when a data is sent to this component
+                    //or this component makes a request to backend the
+                    //data received is used to prepare the form
+                    if (data.form.length) data.form.forEach(obj => obj['no_signout'] = false);
+                    await Vue.set(this.$data, 'form', data.form);
+                    await Vue.set(this.$data, 'today', data.today);
+                    await Vue.set(this.$data, 'submittedToday', data.submittedToday);
+                    this.show = !this.submittedToday;
+                } else {
+                    Flash.setError('You cannot create attendance for a branch other than yours', 5000);
+                    this.$router.push({path: '../home'});
+                }
             },
 
 

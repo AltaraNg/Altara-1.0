@@ -44603,8 +44603,9 @@ _vue2.default.prototype.$getDate = function () {
     //return the current date; format : yyyy-mm-dd;
 };
 
+// Vue.prototype.$network = () => window.navigator.onLine;
 _vue2.default.prototype.$network = function () {
-    return window.navigator.onLine;
+    return true;
 };
 //return the network status(true | false) of the system if connected to a
 // network not NB: this doesn't work with internet access. it only
@@ -44774,6 +44775,7 @@ var store = exports.store = new _vuex2.default.Store({
         DVALead: [1, 2, 8, 9, 13, 16],
         DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
         HRMAccess: [1, 2, 6, 7, 8, 9],
+        peoplesOps: [1, 2, 6, 7, 8, 9],
         FSLLead: [1, 2, 8, 9, 11],
         supervisor: [1, 2, 8, 9, 11, 14],
         FSLAccess: [1, 2, 8, 9, 11, 14, 19],

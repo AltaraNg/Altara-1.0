@@ -242,7 +242,14 @@ exports.default = {
             show: false,
             form: {},
             error: {},
-            issuer: {}
+            issuer: {},
+            cautions: [{ reason: 'Lateness to work', penalty: 'NO BONUS PAY and salary deduction' }, { reason: 'Absence without permission', penalty: 'NO BONUS PAY and salary deduction' }, { reason: 'Poor work performance (Consistently poor KPI score)', penalty: 'NO BONUS PAY and salary deduction' }, {
+                reason: 'Not conforming with the company lay down process and procedures',
+                penalty: 'NO BONUS PAY and salary deduction'
+            }, {
+                reason: 'Not being in line with Altara values. (Misalignment with values)',
+                penalty: 'NO BONUS PAY and salary deduction'
+            }, { reason: 'Mismanagement of funds', penalty: 'NO BONUS PAY and salary deduction' }]
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -440,8 +447,8 @@ var render = function() {
                             ],
                             staticClass: "custom-select w-100",
                             attrs: {
-                              disabled: "",
                               "data-vv-validate-on": "blur",
+                              disabled: "",
                               name: "issued_by"
                             },
                             on: {
