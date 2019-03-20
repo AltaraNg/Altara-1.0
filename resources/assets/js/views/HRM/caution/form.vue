@@ -28,35 +28,65 @@
                                     <option :value="issuer.id">{{issuer.full_name}}</option>
                                 </select>
                             </div>
+
+                            <div class="spaceAfter"></div>
+
+                            <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                                <div class="form-check pl-3 ml-1">
+                                    <input class="form-check-input" id="reason"
+                                           type="checkbox" v-model="autoReason" value="true">
+                                    <label class="form-check-label" for="reason">Select Reason From List</label>
+                                </div>
+                                <select  v-if="autoReason"
+                                    class="custom-select w-100"
+                                        data-vv-validate-on="blur"
+                                        name="reason"
+                                        v-model="form.reason"
+                                        :disabled="!autoReason"
+                                        v-validate="'required'">
+                                    <option disabled selected value="">&#45;&#45; select reason &#45;&#45;</option>
+                                    <option :value="caution.reason" v-for="caution in cautions">{{caution.reason | capitalize}}</option>
+                                </select>
+
+                                <textarea :disabled="autoReason" v-else class="form-control"
+                                       name="reason"
+                                          rows="2"
+                                       v-model="form.reason"
+                                          v-validate="'required'"></textarea>
+                                <small v-if="errors.first('reason')">{{errors.first('reason')}}</small>
+                            </div>
+
+                            <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                                <div class="form-check pl-3 ml-1">
+                                    <input class="form-check-input" id="penalty"
+                                           type="checkbox" v-model="autoPenalty" value="true">
+                                    <label class="form-check-label" for="penalty">Add Penalty Automatically</label>
+                                </div>
+                                <input v-if="autoPenalty"
+                                    :disabled="autoPenalty"
+                                       class="form-control"
+                                       name="penalty"
+                                       v-model="form.penalty"
+                                       v-validate="'required'">
+
+                                <textarea :disabled="autoPenalty" v-else class="form-control"
+                                          rows="2"
+                                       name="penalty"
+                                       v-model="form.penalty"
+                                          v-validate="'required'"></textarea>
+
+                                <small v-if="errors.first('penalty')">{{errors.first('penalty') }}</small>
+                            </div>
+
                             <div class="spaceBefore"></div>
+
                             <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                                 <label>Date</label>
                                 <input class="form-control" data-vv-as="date" name="date" type="date"
                                        v-model="form.date" v-validate="'required'">
                                 <small v-if="errors.first('date')">{{errors.first('date')}}</small>
                             </div>
-                            <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                                <label>Penalty</label>
-                                <select class="custom-select w-100"
-                                        data-vv-validate-on="blur"
-                                        name="penalty"
-                                        v-model="form.penalty" v-validate="'required'">
-                                    <option selected value="">-- select penalty --</option>
-                                    <option value="1">penalties</option>
-                                </select>
-                                <small v-if="errors.first('penalty')">{{errors.first('penalty') }}</small>
-                            </div>
-                            <div class="spaceBefore"></div>
-                            <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                                <label>Reason</label>
-                                <textarea class="form-control w-100"
-                                          name="reason"
-                                          placeholder="reason for caution"
-                                          rows="2"
-                                          v-model="form.reason"
-                                          v-validate="'required|max:255'"></textarea>
-                                <small v-if="errors.first('reason')">{{errors.first('reason')}}</small>
-                            </div>
+
                         </div>
                         <div class="mb-5 px-0 row align-items-center">
                             <div class="w-100 mb-4 mt-5 mx-0 hr"></div>
@@ -92,20 +122,9 @@
                 form: {},
                 error: {},
                 issuer: {},
-                cautions: [
-                    {reason: 'Lateness to work', penalty: 'NO BONUS PAY and salary deduction'},
-                    {reason: 'Absence without permission', penalty: 'NO BONUS PAY and salary deduction'},
-                    {reason: 'Poor work performance (Consistently poor KPI score)', penalty: 'NO BONUS PAY and salary deduction'},
-                    {
-                        reason: 'Not conforming with the company lay down process and procedures',
-                        penalty: 'NO BONUS PAY and salary deduction'
-                    },
-                    {
-                        reason: 'Not being in line with Altara values. (Misalignment with values)',
-                        penalty: 'NO BONUS PAY and salary deduction'
-                    },
-                    {reason: 'Mismanagement of funds', penalty: 'NO BONUS PAY and salary deduction'}
-                ]
+                autoPenalty: true,
+                autoReason: true,
+                cautions: null
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -158,6 +177,7 @@
             prepareForm(data) {
                 Vue.set(this.$data, 'form', data.form);
                 Vue.set(this.$data, 'users', data.users);
+                Vue.set(this.$data, 'cautions', data.cautionsList);
                 this.issuer = data.users.find(obj => obj.id === data.form.issuer_id);
                 this.show = true;
                 this.$LIPS(false);
@@ -165,6 +185,15 @@
             handleErr(e) {
                 Flash.setError('Error Preparing form');
             },
-        }
+        },
+        watch: {
+            form: {
+                handler: function (val) {
+                    let caution = this.cautions.find(obj => obj.reason === val.reason);
+                    Vue.set(this.$data.form, 'penalty', caution ? caution.penalty : '');
+                },
+                deep: true
+            }
+        },
     }
 </script>

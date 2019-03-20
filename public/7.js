@@ -232,6 +232,36 @@ var apiLink = function apiLink() {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default },
@@ -243,13 +273,9 @@ exports.default = {
             form: {},
             error: {},
             issuer: {},
-            cautions: [{ reason: 'Lateness to work', penalty: 'NO BONUS PAY and salary deduction' }, { reason: 'Absence without permission', penalty: 'NO BONUS PAY and salary deduction' }, { reason: 'Poor work performance (Consistently poor KPI score)', penalty: 'NO BONUS PAY and salary deduction' }, {
-                reason: 'Not conforming with the company lay down process and procedures',
-                penalty: 'NO BONUS PAY and salary deduction'
-            }, {
-                reason: 'Not being in line with Altara values. (Misalignment with values)',
-                penalty: 'NO BONUS PAY and salary deduction'
-            }, { reason: 'Mismanagement of funds', penalty: 'NO BONUS PAY and salary deduction' }]
+            autoPenalty: true,
+            autoReason: true,
+            cautions: null
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -311,6 +337,7 @@ exports.default = {
         prepareForm: function prepareForm(data) {
             _vue2.default.set(this.$data, 'form', data.form);
             _vue2.default.set(this.$data, 'users', data.users);
+            _vue2.default.set(this.$data, 'cautions', data.cautionsList);
             this.issuer = data.users.find(function (obj) {
                 return obj.id === data.form.issuer_id;
             });
@@ -319,6 +346,17 @@ exports.default = {
         },
         handleErr: function handleErr(e) {
             _flash2.default.setError('Error Preparing form');
+        }
+    },
+    watch: {
+        form: {
+            handler: function handler(val) {
+                var caution = this.cautions.find(function (obj) {
+                    return obj.reason === val.reason;
+                });
+                _vue2.default.set(this.$data.form, 'penalty', caution ? caution.penalty : '');
+            },
+            deep: true
         }
     }
 };
@@ -482,6 +520,329 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
+                    _c("div", { staticClass: "spaceAfter" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                      },
+                      [
+                        _c("div", { staticClass: "form-check pl-3 ml-1" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.autoReason,
+                                expression: "autoReason"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              id: "reason",
+                              type: "checkbox",
+                              value: "true"
+                            },
+                            domProps: {
+                              checked: Array.isArray(_vm.autoReason)
+                                ? _vm._i(_vm.autoReason, "true") > -1
+                                : _vm.autoReason
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.autoReason,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "true",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.autoReason = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.autoReason = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.autoReason = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "reason" }
+                            },
+                            [_vm._v("Select Reason From List")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm.autoReason
+                          ? _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.reason,
+                                    expression: "form.reason"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "custom-select w-100",
+                                attrs: {
+                                  "data-vv-validate-on": "blur",
+                                  name: "reason",
+                                  disabled: !_vm.autoReason
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "reason",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      disabled: "",
+                                      selected: "",
+                                      value: ""
+                                    }
+                                  },
+                                  [_vm._v("-- select reason --")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.cautions, function(caution) {
+                                  return _c(
+                                    "option",
+                                    { domProps: { value: caution.reason } },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("capitalize")(caution.reason)
+                                        )
+                                      )
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          : _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.reason,
+                                  expression: "form.reason"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                disabled: _vm.autoReason,
+                                name: "reason",
+                                rows: "2"
+                              },
+                              domProps: { value: _vm.form.reason },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "reason",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                        _vm._v(" "),
+                        _vm.errors.first("reason")
+                          ? _c("small", [
+                              _vm._v(_vm._s(_vm.errors.first("reason")))
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                      },
+                      [
+                        _c("div", { staticClass: "form-check pl-3 ml-1" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.autoPenalty,
+                                expression: "autoPenalty"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              id: "penalty",
+                              type: "checkbox",
+                              value: "true"
+                            },
+                            domProps: {
+                              checked: Array.isArray(_vm.autoPenalty)
+                                ? _vm._i(_vm.autoPenalty, "true") > -1
+                                : _vm.autoPenalty
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.autoPenalty,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "true",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.autoPenalty = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.autoPenalty = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.autoPenalty = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "penalty" }
+                            },
+                            [_vm._v("Add Penalty Automatically")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm.autoPenalty
+                          ? _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.penalty,
+                                  expression: "form.penalty"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                disabled: _vm.autoPenalty,
+                                name: "penalty"
+                              },
+                              domProps: { value: _vm.form.penalty },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "penalty",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          : _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.penalty,
+                                  expression: "form.penalty"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                disabled: _vm.autoPenalty,
+                                rows: "2",
+                                name: "penalty"
+                              },
+                              domProps: { value: _vm.form.penalty },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "penalty",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                        _vm._v(" "),
+                        _vm.errors.first("penalty")
+                          ? _c("small", [
+                              _vm._v(_vm._s(_vm.errors.first("penalty")))
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
                     _c("div", { staticClass: "spaceBefore" }),
                     _vm._v(" "),
                     _c(
@@ -528,129 +889,6 @@ var render = function() {
                         _vm.errors.first("date")
                           ? _c("small", [
                               _vm._v(_vm._s(_vm.errors.first("date")))
-                            ])
-                          : _vm._e()
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                      },
-                      [
-                        _c("label", [_vm._v("Penalty")]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.penalty,
-                                expression: "form.penalty"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required",
-                                expression: "'required'"
-                              }
-                            ],
-                            staticClass: "custom-select w-100",
-                            attrs: {
-                              "data-vv-validate-on": "blur",
-                              name: "penalty"
-                            },
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.form,
-                                  "penalty",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
-                            }
-                          },
-                          [
-                            _c(
-                              "option",
-                              { attrs: { selected: "", value: "" } },
-                              [_vm._v("-- select penalty --")]
-                            ),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "1" } }, [
-                              _vm._v("penalties")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm.errors.first("penalty")
-                          ? _c("small", [
-                              _vm._v(_vm._s(_vm.errors.first("penalty")))
-                            ])
-                          : _vm._e()
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "spaceBefore" }),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                      },
-                      [
-                        _c("label", [_vm._v("Reason")]),
-                        _vm._v(" "),
-                        _c("textarea", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.reason,
-                              expression: "form.reason"
-                            },
-                            {
-                              name: "validate",
-                              rawName: "v-validate",
-                              value: "required|max:255",
-                              expression: "'required|max:255'"
-                            }
-                          ],
-                          staticClass: "form-control w-100",
-                          attrs: {
-                            name: "reason",
-                            placeholder: "reason for caution",
-                            rows: "2"
-                          },
-                          domProps: { value: _vm.form.reason },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.form, "reason", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.first("reason")
-                          ? _c("small", [
-                              _vm._v(_vm._s(_vm.errors.first("reason")))
                             ])
                           : _vm._e()
                       ]
