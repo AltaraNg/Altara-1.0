@@ -23,6 +23,29 @@ class UpdateTable extends Migration
             $table->string('guarantor_relationship_2')->nullable();
             $table->string('cv_url')->after('guarantor_relationship_2')->nullable();
         });*/
+
+
+        Schema::table('dsa_daily_registration', function ($table) {
+            $table->dropForeign(['captain_id']);
+
+            $table->foreign('captain_id')
+                ->references('staff_id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+
+        Schema::table('logs', function ($table) {
+            $table->dropForeign(['staff_id']);
+
+            $table->foreign('staff_id')
+                ->references('staff_id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
     }
 
     /**

@@ -46,4 +46,16 @@ class Caution extends Model
             'date' => date('Y-m-d'),
         ];
     }
+
+    public static function cautions()
+    {
+        return [
+            ['reason' => 'Lateness to work', 'penalty' => 'salary deduction'],
+            ['reason' => 'Absence without permission', 'penalty' => 'salary deduction'],
+            ['reason' => 'Poor work performance (Consistently poor KPI score)', 'penalty' => 'NO BONUS PAY'],
+            ['reason' => 'Not conforming with the company lay down process and procedures', 'penalty' => 'NO BONUS PAY'],
+            ['reason' => 'Not being in line with Altara values. (Misalignment with values)', 'penalty' => 'NO BONUS PAY'],
+            ['reason' => 'Mismanagement of funds', 'penalty' => 'salary deduction'],
+        ];
+    }
 }

@@ -13,7 +13,7 @@
             </router-link>
         </div>
         <div class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
-            <a href="http://catalog-altara.herokuapp.com/" target="_blank" class="card">
+            <a href="http://catalog.altaracredit.com/" target="_blank" class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center">
                     <h6>Altara Catalogue</h6>
                 </ul>

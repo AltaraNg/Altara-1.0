@@ -14,6 +14,12 @@ export default {
       this.message = `Password reset successful! if your did not request for a new password kindly report back immediately, your staff ID is ${details.staff_id}, new password: ${details.password}`;
       this.send(details);
    },
+
+   transfer(details) {
+      this.message = `Transfer Successful, your new staff ID is ${details.loginID} `;
+      this.send(details);
+   },
+
    dvaMessage(details) {
       this.message = details.message;
       this.send(details);

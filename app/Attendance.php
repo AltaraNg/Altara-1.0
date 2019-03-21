@@ -19,10 +19,10 @@ class Attendance extends Model
             }])
             ->get();
 
-        $form = [];
+        $form = array();
 
         for ($i = 0; $i < count($users); $i++) {
-            if(!isset($users[$i]->date_of_exit)){
+            if (!isset($users[$i]->date_of_exit)) {
                 $userForm = [
                     'user' => $users[$i],
                     'user_id' => $users[$i]->id,
@@ -33,7 +33,7 @@ class Attendance extends Model
                     'is_present' => 1,
                     'remark' => '',
                 ];
-                $form[$i] = $userForm;
+                array_push($form, $userForm);
             }
         }
         return $form;

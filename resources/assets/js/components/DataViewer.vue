@@ -58,13 +58,13 @@
                                     <tr v-for="model in model.data">
                                         <td v-for="(value,key) in model">{{value}}</td>
                                         <td v-if="user">
-                                            <button @click="$router.push(`/hrm/employee/${model.id}/edit`)"
+                                            <router-link :to="`employee/${model.id}/edit`"
                                                     class="text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round"
                                                     data-placement="top"
                                                     data-toggle="tooltip"
                                                     title="Edit Employee Detail">
                                                 <i class="fas fa-user-edit"></i>
-                                            </button>
+                                            </router-link>
                                             <button :class="{ 'btn-success' : accessStatus(model.portal_access),
                                             'btn-danger' :  !accessStatus(model.portal_access)}"
                                                     @click="update(model,'editPortalAccess')"
@@ -110,7 +110,7 @@
                                     </ul>
                                     <span class="float-left">
                                         <span class="py-2 pr-3 float-left">Rows Per Page </span>
-                                        <input @keyup.enter="fetchIndexData()" class="form-control float-left" placeholder="search..."
+                                        <input @keyup.enter="fetchIndexData()" class="form-control w-25" placeholder="search..."
                                                type="text" v-model="query.per_page">
                                     </span>
                                 </span>
@@ -128,7 +128,7 @@
                                     <form>
                                         <div class="modal-body">
                                             <div class="form-group col-12 float-left mt-0 mb-2">
-                                                <span class="mb-2 w-100 float-left pl-1 text-center" style="font-size: 14px">
+                                                <span class="mb-2 w-100 float-left pl-1 text-center">
                                                    Please Verify you selected the right access before clicking <br>
                                                    <strong>Save Changes </strong>!
                                                 </span>

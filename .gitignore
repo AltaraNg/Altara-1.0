@@ -1,10 +1,5 @@
 /node_modules
-/public/hot
-/public/storage
-/public/js
-/public/js/app.js
-/public/css
-/public/css/app.css
+/public
 /storage/*.key
 /vendor
 /.idea
