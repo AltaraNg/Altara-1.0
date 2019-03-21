@@ -14304,7 +14304,9 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm._f("capitalize")(
-                                        _vm.customer.user.full_name
+                                        _vm.customer.user
+                                          ? _vm.customer.user.full_name
+                                          : "user not in record"
                                       )
                                     )
                                   )

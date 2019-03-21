@@ -71,7 +71,7 @@
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 far fa-user-circle"></i>Registered By</th>
-                                    <td>{{customer.user.full_name | capitalize}}</td>
+                                    <td>{{customer.user ? customer.user.full_name : 'user not in record'| capitalize}}</td>
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 far fa-building"></i>Branch</th>
