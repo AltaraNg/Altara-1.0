@@ -31,6 +31,7 @@
     }
 </script>
 <style lang="scss">
+    @import '../../sass/app/variables';
     .portal-card {
         transition: all .2s;
         &:hover {
@@ -40,7 +41,7 @@
         border-radius : .7rem;
         overflow      : hidden;
         p {
-            font-size   : 1.7rem;
+            font-size   : 1.5rem;
             font-weight : 300;
         }
         .portion {
@@ -54,7 +55,7 @@
         }
         .portal-title {
             color       : #074a74;
-            font-size   : 20px;
+            font-size   : 1.5 * $default-font-size;
             padding-top : 1.5rem;
             float       : left;
         }

@@ -112,7 +112,7 @@
                             </div>
                             <form @submit.prevent="validate('address')" :data-vv-scope="'address'">
                                 <div class="modal-body p-5">
-                                    <table class="mb-3 w-100">
+                                    <table class="mb-3 w-100 info-table">
                                         <tbody class="px-3">
                                         <tr>
                                             <th><i class="fas fa-map-marker-alt mx-4"></i></th>
@@ -352,7 +352,7 @@
                             </div>
                             <form @submit.prevent="validate(type)" v-if="customer" :data-vv-scope="type">
                                 <div class="modal-body">
-                                    <table class="mb-3" v-if="type !== 'processing_fee'">
+                                    <table class="mb-3 info-table" v-if="type !== 'processing_fee'">
                                         <tbody>
                                         <tr>
                                             <th><i class="fas fa-map-marker-alt"></i></th>
@@ -706,25 +706,6 @@
     }
 </script>
 <style scoped lang="scss">
-    tr {
-        margin-bottom    : .4rem;
-        float            : left;
-        width            : 100%;
-        font-weight      : 400;
-        background-color : rgba(7, 74, 116, .1);
-    }
-
-    tbody tr th {
-        width        : 4rem;
-        text-align   : center;
-        border-right : .4rem solid white;
-        border-left  : .3rem solid rgba(7, 74, 116, .7);
-    }
-
-    tbody tr td {
-        padding : .4rem 1.5rem;
-    }
-
     .verification {
         .card-stats .icon {
             margin : 0 1.5rem;
@@ -754,7 +735,7 @@
 
         h4.info-title {
             margin    : 0;
-            font-size : 2.2rem;
+            font-size : 2rem;
         }
 
         .no-success .icon.icon-warning.icon-circle {

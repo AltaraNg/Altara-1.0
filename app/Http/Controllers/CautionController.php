@@ -36,7 +36,8 @@ class CautionController extends Controller
         $users = User::select('id', 'full_name', 'staff_id')->get();
         return response()->json([
             'form' => Caution::form(),
-            'users' => $users
+            'users' => $users,
+            'cautionsList' => Caution::cautions()
         ]);
     }
 
@@ -54,7 +55,8 @@ class CautionController extends Controller
         return response()->json([
             'saved' => true,
             'form' => Caution::form(),
-            'users' => $users
+            'users' => $users,
+            'cautionsList' => Caution::cautions(),
         ]);
     }
 

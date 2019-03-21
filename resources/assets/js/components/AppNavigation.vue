@@ -48,7 +48,7 @@
             margin-top : .8rem;
             position   : absolute;
             i {
-                font-size : 1.2*$default-font-size-icon
+                font-size : 1.1*$default-font-size-icon
             }
         }
         .forward, .back {
@@ -62,7 +62,7 @@
         #index {
             a#back, a#forward {
                 i {
-                    font-size : 1.3* $default-font-size-icon
+                    font-size : 1.2* $default-font-size-icon
                 }
             }
         }

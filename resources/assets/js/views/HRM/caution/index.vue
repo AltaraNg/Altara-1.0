@@ -20,7 +20,9 @@
             </div>
             <div class="mt-1 attendance-body">
                 <div v-if="show">
-                    <div class="mb-3 px-0 row align-items-center attendance-item" v-for="(caution,index) in cautions.data">
+                    <div class="mb-3 px-0 row align-items-center attendance-item" v-for="(caution,index) in cautions.data"
+                         @click="displayInfo(caution)" data-toggle="tooltip" data-placement="top"
+                         title="click on here to view full details!">
                         <div class="col-12 col-xs-4 col-md-4 col-lg-4">
                             <div class="row align-items-center">
                                 <div class="ml-5 mr-3 sm-hide">
@@ -92,6 +94,54 @@
                     <span class="no-attendance">No cautions has been issued!</span>
                 </div>
             </div>
+
+            <div class="modal fade" id="view-caution">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header py-2">
+                            <h6 class="modal-title py-1">Attendance</h6>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                                <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                            </a>
+                        </div>
+
+                        <form>
+                            <div class="modal-body">
+
+                                <div class="px-2" v-if="caution">
+                                    <div class="px-4">
+                                        <div class="row">
+                                            <span><strong>Employee : </strong></span>
+                                            <div class="col">{{caution.user.full_name}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <span><strong>Issued by : </strong></span>
+                                            <div class="col">{{caution.issuer.full_name}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <span><strong>Reason : </strong></span>
+                                            <div class="col">{{caution.reason}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <span><strong>Penalty : </strong></span>
+                                            <div class="col">{{caution.penalty}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <span><strong>Date : </strong></span>
+                                            <div class="col">{{caution.date_text}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                                   style="text-align: right">close dialogue</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </transition>
 </template>
@@ -106,6 +156,7 @@
         data() {
             return {
                 show: false,
+                caution:null,
                 cautions: {},
                 columns: [
                     {name: 'Employee', col: 4},
@@ -156,6 +207,14 @@
             handleErr(e) {
                 Flash.setError('Error Fetching Cautions');
             },
+            displayInfo(caution) {
+                Vue.set(this.$data, 'caution', caution);
+                return $(`#view-caution`).modal('toggle');
+            }
+        },
+        updated() {
+            $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
+            $(document).on("hidden.bs.modal", '.modal', () => this.caution = '');
         }
     }
 </script>
