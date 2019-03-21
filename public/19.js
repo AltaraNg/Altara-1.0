@@ -152,7 +152,7 @@ var staticRenderFns = [
           {
             staticClass: "card",
             attrs: {
-              href: "http://catalog-altara.herokuapp.com/",
+              href: "http://catalog.altaracredit.com/",
               target: "_blank"
             }
           },

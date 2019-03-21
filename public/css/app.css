@@ -16097,7 +16097,7 @@ body {
           box-sizing: border-box;
   font-family: "Raleway", sans-serif;
   height: 100vh;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 500;
   color: #575958;
   background-color: #f5f6fa;
@@ -16151,7 +16151,7 @@ body {
 
 .side-nav-header a {
   min-width: 5rem;
-  font-size: 2rem;
+  font-size: 1.6rem;
   padding: 1rem 0;
   color: #074a74;
 }
@@ -16266,7 +16266,7 @@ hr.style-two {
   background-color: rgba(7, 74, 116, 0.07);
   padding: .6rem 1.5rem;
   border-radius: 3px;
-  font-size: 1.6rem !important;
+  font-size: 1.3rem !important;
   font-weight: 600;
   -webkit-box-shadow: 0 0 0.5rem 0 rgba(7, 74, 116, 0.08) inset;
           box-shadow: 0 0 0.5rem 0 rgba(7, 74, 116, 0.08) inset;
@@ -16340,25 +16340,25 @@ hr.style-two {
 button, input, optgroup, select, textarea, .form-control::-webkit-input-placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 1.2rem !important;
 }
 
 button, input, optgroup, select, textarea, .form-control:-ms-input-placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 1.2rem !important;
 }
 
 button, input, optgroup, select, textarea, .form-control::-ms-input-placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 1.2rem !important;
 }
 
 button, input, optgroup, select, textarea, .form-control::placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 1.2rem !important;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -16400,7 +16400,7 @@ a:hover, a:active, a:visited {
 }
 
 small.text-muted, form small:not(.error-control) {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #c81618 !important;
   float: left;
   width: 100%;
@@ -16520,11 +16520,11 @@ textarea.form-control.is-invalid:focus {
 }
 
 .modal-close {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 
 .modal-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .modal small {
@@ -16535,8 +16535,13 @@ textarea.form-control.is-invalid:focus {
   margin-bottom: 2rem;
 }
 
-table button i {
-  font-size: 1.5rem;
+table button i, table a i {
+  font-size: 1.3rem;
+}
+
+table a i {
+  line-height: 2.75rem !important;
+  color: white;
 }
 
 .btn-success.btn-round {
@@ -16616,7 +16621,7 @@ form#messaging textarea {
 }
 
 .attendance-view .heading.day {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .attendance-view .daily-attendance {
@@ -16663,28 +16668,40 @@ form#messaging textarea {
   padding: 0 1.5rem 0 4rem;
 }
 
-.attendance-view td.present::after {
+.attendance-view td.arrEarly::before, .attendance-view td.arrLate::before, .attendance-view td.leftEarly::after, .attendance-view td.leftLate::after, .attendance-view td.absent::before {
   content: '';
   height: 2px;
   border-radius: 3rem;
-  width: 80%;
+  width: 38%;
   position: absolute;
   bottom: 15%;
-  right: 10%;
-  background-color: #b5d4ad;
   z-index: 3;
 }
 
-.attendance-view td.absent::after {
-  content: '';
-  height: 2px;
-  border-radius: 3rem;
-  width: 80%;
-  position: absolute;
-  bottom: 15%;
+.attendance-view td.arrEarly::before, .attendance-view td.arrLate::before {
+  left: 10%;
+}
+
+.attendance-view td.leftEarly::after, .attendance-view td.leftLate::after {
   right: 10%;
-  background-color: #e49797;
-  z-index: 3;
+}
+
+.attendance-view td.arrEarly::before, .attendance-view td.leftLate::after {
+  background-color: #6ca669;
+}
+
+.attendance-view td.arrLate::before, .attendance-view td.leftEarly::after {
+  background-color: #f7b900;
+}
+
+.attendance-view td.arrEarly.leftLate::before, .attendance-view td.arrEarly.leftLate::after {
+  width: 41%;
+}
+
+.attendance-view td.absent::before {
+  width: 80%;
+  left: 10%;
+  background-color: #ff4c4c;
 }
 
 .attendance-body {
@@ -16716,13 +16733,13 @@ form#messaging textarea {
 }
 
 .attendance .no-attendance {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: #a4a5ab;
 }
 
 .title {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: bold;
   padding-bottom: 1.5rem;
   position: relative;
@@ -16764,12 +16781,12 @@ form#messaging textarea {
 }
 
 .user-icon {
-  font-size: 2rem;
+  font-size: 1.8rem;
   line-height: 4rem;
 }
 
 .user-name {
-  font-size: 1.6rem;
+  font-size: 1.43rem;
   font-weight: 600;
 }
 
@@ -16792,6 +16809,30 @@ form#messaging textarea {
 .shadow-sm {
   -webkit-box-shadow: 0 0.15rem 0.3rem rgba(0, 0, 0, 0.05) !important;
           box-shadow: 0 0.15rem 0.3rem rgba(0, 0, 0, 0.05) !important;
+}
+
+.modal .info-table tr {
+  margin-bottom: .4rem;
+  float: left;
+  width: 100%;
+  font-weight: 400;
+  background-color: rgba(7, 74, 116, 0.1);
+}
+
+.modal .info-table tbody tr th {
+  width: 4rem;
+  text-align: center;
+  border-right: .4rem solid white;
+  border-left: 0.3rem solid rgba(7, 74, 116, 0.7);
+}
+
+.modal .info-table tbody tr td {
+  padding: .4rem 1.5rem;
+}
+
+#view-caution .modal-body span,
+#viewAttendance .modal-body span {
+  min-width: 10rem;
 }
 
 @media (max-width: 990px) {
@@ -16837,7 +16878,7 @@ form#messaging textarea {
             transform: scale(1.005);
   }
   .attendance .no-attendance {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
   .attendance-body {
     margin-left: 3rem;
@@ -16858,7 +16899,7 @@ form#messaging textarea {
     padding: 0.2rem 0.6rem;
   }
   .title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     padding-bottom: 1rem;
     border-bottom: .3rem solid #2975a5;
   }
