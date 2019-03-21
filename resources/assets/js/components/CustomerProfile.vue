@@ -47,11 +47,9 @@
                                 </h4>
                             </div>
                             <div class="float-left p-0 m-0 col-md-4 col-12 d-flex justify-content-center">
-                                <span class="status mt-md-5 my-sm-2 mt-0 approved shadow-sm" v-if="approved">
-                                    APPROVED<i class="ml-3 fas fa-check"></i>
-                                </span>
-                                <span class="status mt-md-5 my-sm-2 mt-0 not-approved shadow-sm" v-else>
-                                    NOT APPROVED<i class="ml-3 fas fa-times"></i>
+                                <span :class="`status mt-md-5 my-sm-2 mt-0 ${approved ? 'approved' : 'not-approved'}`">
+                                    {{approved ? 'APPROVED' : 'NOT APPROVED'}}
+                                    <i :class="`ml-3 fas fa-${approved ? 'check' : 'times'}`"></i>
                                 </span>
                             </div>
                         </div>
@@ -98,6 +96,7 @@
     import {EventBus} from "../helpers/event-bus";
     import CustomerProfile from './CustomerProfile';
     import AppNavigation from '../components/AppNavigation';
+    import {getCustomerAddress as address, getCustomerApprovalStatus as status, getCustomerFullName as name} from '../helpers/helpers';
 
     const DVA = () => store.getters.auth('DVAAccess');
 
@@ -115,29 +114,16 @@
                 return `https://s3.eu-west-2.amazonaws.com/altara-one/${this.customer.document.passport_url}`;
             },
             name() {
-                return `${this.customer.first_name} ${this.customer.last_name}`;
+                return name(this.customer);
             },
             branch() {
                 return `${this.customer.branch.description} ${this.customer.branch.name}`;
             },
             address() {
-                return `${this.customer.add_houseno} ${this.customer.add_street} ${this.customer.area_address}, ${this.customer.city}, ${this.customer.state}.`;
+                return address(this.customer);
             },
             approved() {
-                return (this.customer.verification.address === 1 &&
-                    this.customer.verification.id_card === 1 &&
-                    this.customer.verification.passport === 1 &&
-                    this.customer.verification.processing_fee === 1 &&
-                    this.customer.verification.work_guarantor === 1 &&
-                    this.customer.verification.personal_guarantor === 1);
-                /*This component is the customer profile proper. for optimal result.
-                * The data passed to this should be a response
-                * from the CustomerController@show
-                * this method is used to check the approval
-                * status for any customer details
-                * supplied to it.
-                * NB all the params above must be
-                * 1 for a customer t be approved*/
+                return status(this.customer.verification);
             }
         },
         created() {
@@ -148,19 +134,19 @@
             });
         },
         beforeRouteEnter(to, from, next) {
-            if(DVA()){
+            if (DVA()) {
                 get(`/api/customer/${to.params.id}`).then(res => {
                     next(vm => vm.setCustomer(res.data.customer));
                 });
-            }else next('/');
+            } else next('/');
         },
         beforeRouteUpdate(to, from, next) {
-            if(DVA()){
+            if (DVA()) {
                 get(`/api/customer/${to.params.id}`).then(res => {
                     this.setCustomer(res.data.customer);
                     next();
                 });
-            }else next('/');
+            } else next('/');
         },
         methods: {
             setCustomer(customer) {
@@ -185,24 +171,6 @@
         td, .data {
             font-size: $default-font-size;
             font-weight: 500;
-        }
-
-        .status {
-            padding: 1.2rem 3rem;
-            float: left;
-            color: white;
-            border-radius: .5rem;
-            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
-            font-weight: 700;
-            font-size: $default-font-size;
-
-            &.approved {
-                background-color: $color-green;
-            }
-
-            &.not-approved {
-                background-color: $color-red;
-            }
         }
 
         .design {

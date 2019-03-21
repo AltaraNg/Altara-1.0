@@ -1,8 +1,8 @@
 <template>
     <transition name="fade">
         <div :class="$route.meta.appModel === 'customer' ? 'px-md-4 px-2' : ''">
-            <app-navigation :forward="{ path: $routerHistory.next().path }" :previous="{ path: $routerHistory.previous().path }"
-                            :pageTitle="`${$route.meta.appModel} List` | capitalize" pageTitleSmall="Cust. List"
+            <app-navigation :forward="{ path: $routerHistory.next().path }" :pageTitle="`${$route.meta.appModel} List` | capitalize"
+                            :previous="{ path: $routerHistory.previous().path }" pageTitleSmall="Cust. List"
                             v-if="$route.meta.appModel === 'customer'"/>
             <div class="pt-md-3 pt-2" id="employeeEdit">
                 <div class="card" style="border-top: 3px solid #0e5f92; border-radius: .2rem .2rem .4rem .4rem">
@@ -51,18 +51,28 @@
                                                 <span v-else>&darr;</span>
                                             </span>
                                         </th>
-                                        <th scope="col" v-if="user || branch || customer"><span>Action</span></th>
+                                        <th scope="col"><span>Action</span></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="model in model.data">
-                                        <td v-for="(value,key) in model">{{value}}</td>
+                                        <td v-for="(value,key) in model">
+                                            <span v-if="key !== 'verification'">{{value}}</span>
+                                            <router-link
+                                                :class="`status mx-auto status-sm shadow-sm ${value ? 'approved' : 'not-approved'}`"
+                                                :to="$store.getters.auth('DVAAccess') ? `dva/verification?id=${model.id}` : ''"
+                                                v-else>
+                                                {{value ? 'APPROVED' : 'NOT APPROVED'}}
+                                                <i :class="`ml-3 fas fa-${value ? 'check' : 'times'}`"></i>
+                                            </router-link>
+                                        </td>
+
                                         <td v-if="user">
                                             <router-link :to="`employee/${model.id}/edit`"
-                                                    class="text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round"
-                                                    data-placement="top"
-                                                    data-toggle="tooltip"
-                                                    title="Edit Employee Detail">
+                                                         class="text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round"
+                                                         data-placement="top"
+                                                         data-toggle="tooltip"
+                                                         title="Edit Employee Detail">
                                                 <i class="fas fa-user-edit"></i>
                                             </router-link>
                                             <button :class="{ 'btn-success' : accessStatus(model.portal_access),
@@ -82,18 +92,15 @@
                                                 <i class="fas fa-key"></i>
                                             </button>
                                         </td>
-                                        <td v-if="branch || customer">
-                                            <button :title="`${branch ? 'update branch details' : 'view details'}`"
-                                                    data-toggle="tooltip"
-                                                    @click="branch ? $router.push(`/fsl/branch/${model.id}/edit`) : $router.push(`/customer/${model.id}`)"
+                                        <!--<td v-if="branch || customer">-->
+                                        <td v-if="branch">
+                                            <button @click="$router.push(`/fsl/branch/${model.id}/edit`)"
                                                     class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
                                                     data-placement="top"
-                                                    >
-                                                    <!--v-if="branch || (customer && $store.getters.auth('DVAAccess'))">-->
-                                                <i class="fas fa-cog" v-if="branch"></i>
-                                                <i class="far fa-user" v-if="customer"></i>
+                                                    data-toggle="tooltip"
+                                                    title="update details">
+                                                <i class="fas fa-cog"></i>
                                             </button>
-                                            <!--<div v-else>HERE</div>-->
                                         </td>
                                     </tr>
                                     </tbody>
@@ -121,6 +128,9 @@
                                 </span>
                             </nav>
                         </div>
+                        <!--data viewer ends here-->
+
+                        <!--employ portal access update modal starts here-->
                         <div class="modal fade" id="editPortalAccess">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -201,7 +211,7 @@
     import SMS from '../helpers/sms';
     import {log} from "../helpers/log";
     import {byMethod, get} from '../helpers/api';
-    import {store} from '../store/store';
+    import {getCustomerApprovalStatus as status} from '../helpers/helpers';
     import Flash from '../helpers/flash';
 
     import AppNavigation from '../components/AppNavigation';
@@ -309,8 +319,11 @@
                         * instead of showing state id as a number*/
                         if (data.length) {
                             data.forEach(curr => {
-                                 if(data[0].state_id) curr.state_id = store.getters.getStates.find(obj => obj.id === curr.state_id).name;
-                                 if(data[0].branch_id) curr.branch_id = store.getters.getBranches.find(obj => obj.id === curr.branch_id).name;
+                                if (data[0].state_id) curr.state_id =
+                                    this.$store.getters.getStates.find(obj => obj.id === curr.state_id).name;
+                                if (data[0].branch_id) curr.branch_id =
+                                    this.$store.getters.getBranches.find(obj => obj.id === curr.branch_id).name;
+                                if (this.customer) curr.verification = status(curr.verification);
                             });
                         }
                         Vue.set(this.$data, 'model', res.data.model);
