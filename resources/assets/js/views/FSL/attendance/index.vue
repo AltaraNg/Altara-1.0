@@ -299,16 +299,25 @@
                 let data = [];
                 let attendance = userAtt.attendances.filter(att => att.date === day.fullDate);
                 if (attendance.length) {
-                    if (attendance[0].arrival_time > '09:00') {
+                    /*if (attendance[0].arrival_time > '09:00') {
                         data[0] = 'arrLate';
                     } else {
                         data[0] = 'arrEarly';
-                    }
-                    if (attendance[0].departure_time < '18:00') {
-                        data[1] = 'leftEarly'
-                    } else {
-                        data[1] = 'leftLate'
-                    }
+                    }*/
+
+                    data[0] = attendance[0].arrival_time > '09:00' ? 'arrLate' : 'arrEarly';
+
+                    if(attendance[0].departure_time){
+                        /*if (attendance[0].departure_time < '18:00') {
+                            data[1] = 'leftEarly'
+                        } else {
+                            data[1] = 'leftLate'
+                        }*/
+
+                        data[1] = attendance[0].departure_time < '18:00' ? 'leftEarly' : 'leftLate';
+
+                    }else data[1] = 'didNotSignOut'
+
                 }
                 return data;
             },

@@ -5,7 +5,7 @@
                             :pageTitle="`${$route.meta.appModel} List` | capitalize" pageTitleSmall="Cust. List"
                             v-if="$route.meta.appModel === 'customer'"/>
             <div class="pt-md-3 pt-2" id="employeeEdit">
-                <div class="card" style="border-top: 4px solid #0e5f92;">
+                <div class="card" style="border-top: 3px solid #0e5f92; border-radius: .2rem .2rem .4rem .4rem">
                     <div class="px-5 py-4">
                         <div class="px-3 clearfix">
                             <h5 class="h5-custom float-left m-0">{{$route.meta.appModel | capitalize}} Management</h5>
@@ -83,12 +83,17 @@
                                             </button>
                                         </td>
                                         <td v-if="branch || customer">
-                                            <button :title="`${branch ? 'update branch details' : 'view details'}`" data-toggle="tooltip"
+                                            <button :title="`${branch ? 'update branch details' : 'view details'}`"
+                                                    data-toggle="tooltip"
                                                     @click="branch ? $router.push(`/fsl/branch/${model.id}/edit`) : $router.push(`/customer/${model.id}`)"
-                                                    class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round" data-placement="top">
+                                                    class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
+                                                    data-placement="top"
+                                                    >
+                                                    <!--v-if="branch || (customer && $store.getters.auth('DVAAccess'))">-->
                                                 <i class="fas fa-cog" v-if="branch"></i>
                                                 <i class="far fa-user" v-if="customer"></i>
                                             </button>
+                                            <!--<div v-else>HERE</div>-->
                                         </td>
                                     </tr>
                                     </tbody>
@@ -245,6 +250,7 @@
 
         created() {
             this.$prepareStates();
+            this.$prepareBranches();
             this.fetchIndexData();
             $(document).on('click', 'tr', function () {
                 $('tr.current').removeClass('current');
@@ -301,9 +307,11 @@
                         * hence the code below is used to get the state name
                         * corresponding to the state id and display it
                         * instead of showing state id as a number*/
-                        if (data.length && data[0].state_id) {
-                            data.forEach(curr => curr.state_id =
-                                store.getters.getStates.find(obj => obj.id === curr.state_id).name)
+                        if (data.length) {
+                            data.forEach(curr => {
+                                 if(data[0].state_id) curr.state_id = store.getters.getStates.find(obj => obj.id === curr.state_id).name;
+                                 if(data[0].branch_id) curr.branch_id = store.getters.getBranches.find(obj => obj.id === curr.branch_id).name;
+                            });
                         }
                         Vue.set(this.$data, 'model', res.data.model);
                         Vue.set(this.$data, 'columns', res.data.columns);

@@ -117,6 +117,7 @@ exports.default = {
     },
     created: function created() {
         this.$prepareStates();
+        this.$prepareBranches();
         this.fetchIndexData();
         $(document).on('click', 'tr', function () {
             $('tr.current').removeClass('current');
@@ -161,10 +162,13 @@ exports.default = {
                 * hence the code below is used to get the state name
                 * corresponding to the state id and display it
                 * instead of showing state id as a number*/
-                if (data.length && data[0].state_id) {
+                if (data.length) {
                     data.forEach(function (curr) {
-                        return curr.state_id = _store.store.getters.getStates.find(function (obj) {
+                        if (data[0].state_id) curr.state_id = _store.store.getters.getStates.find(function (obj) {
                             return obj.id === curr.state_id;
+                        }).name;
+                        if (data[0].branch_id) curr.branch_id = _store.store.getters.getBranches.find(function (obj) {
+                            return obj.id === curr.branch_id;
                         }).name;
                     });
                 }
@@ -250,6 +254,11 @@ exports.default = {
         }
     }
 }; //
+//
+//
+//
+//
+//
 //
 //
 //
@@ -587,7 +596,10 @@ var render = function() {
               "div",
               {
                 staticClass: "card",
-                staticStyle: { "border-top": "4px solid #0e5f92" }
+                staticStyle: {
+                  "border-top": "3px solid #0e5f92",
+                  "border-radius": ".2rem .2rem .4rem .4rem"
+                }
               },
               [
                 _c("div", { staticClass: "px-5 py-4" }, [
