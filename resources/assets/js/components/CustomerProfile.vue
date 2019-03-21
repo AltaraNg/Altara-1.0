@@ -94,9 +94,12 @@
 <script>
     import Vue from 'vue';
     import {get} from '../helpers/api';
+    import {store} from '../store/store';
     import {EventBus} from "../helpers/event-bus";
     import CustomerProfile from './CustomerProfile';
     import AppNavigation from '../components/AppNavigation';
+
+    const DVA = () => store.getters.auth('DVAAccess');
 
     export default {
         props: ['viewCustomer'],
@@ -145,15 +148,19 @@
             });
         },
         beforeRouteEnter(to, from, next) {
-            get(`/api/customer/${to.params.id}`).then(res => {
-                next(vm => vm.setCustomer(res.data.customer));
-            });
+            if(DVA()){
+                get(`/api/customer/${to.params.id}`).then(res => {
+                    next(vm => vm.setCustomer(res.data.customer));
+                });
+            }else next('/');
         },
         beforeRouteUpdate(to, from, next) {
-            get(`/api/customer/${to.params.id}`).then(res => {
-                this.setCustomer(res.data.customer);
-                next();
-            });
+            if(DVA()){
+                get(`/api/customer/${to.params.id}`).then(res => {
+                    this.setCustomer(res.data.customer);
+                    next();
+                });
+            }else next('/');
         },
         methods: {
             setCustomer(customer) {

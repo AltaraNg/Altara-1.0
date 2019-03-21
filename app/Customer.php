@@ -17,7 +17,7 @@ class Customer extends Model
 
    /** columns to be used to render the list(Data viewer) of customers in the view*/
     public static $columns = [
-       'id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration'
+       'id', 'first_name', 'last_name', 'employee_name', 'branch', 'date_of_registration'
     ];
 
    /** this is the user object form, it is sent to the js

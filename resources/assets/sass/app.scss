@@ -563,7 +563,12 @@ form#messaging {
             padding: 0 1.5rem 0 4rem;
         }
 
-        td.arrEarly::before, td.arrLate::before, td.leftEarly::after, td.leftLate::after, td.absent::before{
+        td.arrEarly::before,
+        td.arrLate::before,
+        td.leftEarly::after,
+        td.leftLate::after,
+        td.absent::before,
+        td.didNotSignOut::after{
             content: '';
             height: 2px;
             border-radius: 3rem;
@@ -576,6 +581,7 @@ form#messaging {
         td.leftEarly::after, td.leftLate::after{right:10%;}
         td.arrEarly::before, td.leftLate::after {background-color: #6ca669;}
         td.arrLate::before, td.leftEarly::after{background-color: #f7b900;}
+        td.didNotSignOut::after{background-color: #ff4c4c;right:10%;}
 
         td.arrEarly.leftLate::before,td.arrEarly.leftLate::after{width: 41%;}
 

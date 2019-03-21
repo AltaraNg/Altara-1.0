@@ -16668,7 +16668,12 @@ form#messaging textarea {
   padding: 0 1.5rem 0 4rem;
 }
 
-.attendance-view td.arrEarly::before, .attendance-view td.arrLate::before, .attendance-view td.leftEarly::after, .attendance-view td.leftLate::after, .attendance-view td.absent::before {
+.attendance-view td.arrEarly::before,
+.attendance-view td.arrLate::before,
+.attendance-view td.leftEarly::after,
+.attendance-view td.leftLate::after,
+.attendance-view td.absent::before,
+.attendance-view td.didNotSignOut::after {
   content: '';
   height: 2px;
   border-radius: 3rem;
@@ -16692,6 +16697,11 @@ form#messaging textarea {
 
 .attendance-view td.arrLate::before, .attendance-view td.leftEarly::after {
   background-color: #f7b900;
+}
+
+.attendance-view td.didNotSignOut::after {
+  background-color: #ff4c4c;
+  right: 10%;
 }
 
 .attendance-view td.arrEarly.leftLate::before, .attendance-view td.arrEarly.leftLate::after {

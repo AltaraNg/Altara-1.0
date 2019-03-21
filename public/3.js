@@ -59,6 +59,8 @@ var _vue2 = _interopRequireDefault(_vue);
 
 var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
+var _store = __webpack_require__("./resources/assets/js/store/store.js");
+
 var _eventBus = __webpack_require__("./resources/assets/js/helpers/event-bus.js");
 
 var _CustomerProfile = __webpack_require__("./resources/assets/js/components/CustomerProfile.vue");
@@ -70,6 +72,104 @@ var _AppNavigation = __webpack_require__("./resources/assets/js/components/AppNa
 var _AppNavigation2 = _interopRequireDefault(_AppNavigation);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var DVA = function DVA() {
+    return _store.store.getters.auth('DVAAccess');
+};
 
 exports.default = {
     props: ['viewCustomer'],
@@ -116,19 +216,23 @@ exports.default = {
         });
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
-            next(function (vm) {
-                return vm.setCustomer(res.data.customer);
+        if (DVA()) {
+            (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
+                next(function (vm) {
+                    return vm.setCustomer(res.data.customer);
+                });
             });
-        });
+        } else next('/');
     },
     beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
         var _this2 = this;
 
-        (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
-            _this2.setCustomer(res.data.customer);
-            next();
-        });
+        if (DVA()) {
+            (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
+                _this2.setCustomer(res.data.customer);
+                next();
+            });
+        } else next('/');
     },
 
     methods: {
@@ -137,99 +241,7 @@ exports.default = {
             this.show = true;
         }
     }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+};
 
 /***/ }),
 
