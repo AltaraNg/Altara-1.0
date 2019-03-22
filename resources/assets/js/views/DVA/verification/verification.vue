@@ -6,7 +6,7 @@
                     <h6>{{action | capitalize}} Customer</h6>
                 </ul>
                 <div class="card-body p-4">
-                    <form @submit.prevent="$router.push(`verification?id=${customer_id}`)">
+                    <form @submit.prevent="processForm">
                         <div class="m-0 p-0 col-12 form-group clearfix">
                             <label class="w-100">Customer ID</label>
                             <input @onkeyUp="check"
@@ -583,6 +583,7 @@
                 * success and no-success*/
             },
             updateView(data) {
+                console.log(data);
                 this.$emit('update', data.customer);
                 /*$emit update event is used to send data to the parent component where this serves as a child
                 * component. eg. dsa utility form. NB: The customer registration component(form)
@@ -623,6 +624,15 @@
                         //the empty_work_guarantor is returned from backend when no work guarantor has been added.
                     })
                 } else Flash.setError(data.message, 5000);
+            },
+            processForm(){
+                if(this.$route.name === 'verification') this.$router.push(`verification?id=${this.customer_id}`);
+                if(this.$route.name === 'customerUpdate'){
+                    this.$router.push(`update?id=${this.customer_id}`);
+                    get(init(this.$route))
+                        .then(res => this.updateView(res.data))
+                        .catch(e => this.updateView(e.response.data))
+                }
             },
             validate(type) {
                 let acc = this.$editAccess(this.user, this.customer);

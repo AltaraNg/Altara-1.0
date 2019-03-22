@@ -964,6 +964,7 @@ exports.default = {
         updateView: function updateView(data) {
             var _this2 = this;
 
+            console.log(data);
             this.$emit('update', data.customer);
             /*$emit update event is used to send data to the parent component where this serves as a child
             * component. eg. dsa utility form. NB: The customer registration component(form)
@@ -990,8 +991,21 @@ exports.default = {
                 });
             } else _flash2.default.setError(data.message, 5000);
         },
-        validate: function validate(type) {
+        processForm: function processForm() {
             var _this3 = this;
+
+            if (this.$route.name === 'verification') this.$router.push('verification?id=' + this.customer_id);
+            if (this.$route.name === 'customerUpdate') {
+                this.$router.push('update?id=' + this.customer_id);
+                (0, _api.get)(init(this.$route)).then(function (res) {
+                    return _this3.updateView(res.data);
+                }).catch(function (e) {
+                    return _this3.updateView(e.response.data);
+                });
+            }
+        },
+        validate: function validate(type) {
+            var _this4 = this;
 
             var acc = this.$editAccess(this.user, this.customer);
             if (acc) {
@@ -1020,34 +1034,34 @@ exports.default = {
                                             }
 
                                             _context.next = 3;
-                                            return (0, _api.post)('/api/' + type, _this3[type]).then(function (res) {
-                                                _this3.updateView(res.data.response);
-                                                var id = 'Customer ID : ' + _this3.customer.id,
-                                                    typeCaps = _this3.$options.filters.capitalize(type),
+                                            return (0, _api.post)('/api/' + type, _this4[type]).then(function (res) {
+                                                _this4.updateView(res.data.response);
+                                                var id = 'Customer ID : ' + _this4.customer.id,
+                                                    typeCaps = _this4.$options.filters.capitalize(type),
                                                     action = 'Customer' + typeCaps + 'Verification';
-                                                if (type === 'address') action += _this3.address.approval_status ? 'Passed' : 'NotPassed';
+                                                if (type === 'address') action += _this4.address.approval_status ? 'Passed' : 'NotPassed';
                                                 (0, _log.log)(action, id);
                                                 _flash2.default.setSuccess(typeCaps + ' status updated!');
-                                                _this3.modal(type + '_modal');
+                                                _this4.modal(type + '_modal');
                                             }).catch(function (e) {
                                                 return _flash2.default.setError(e.response.data.message);
                                             });
 
                                         case 3:
-                                            _this3.$LIPS(false);
-                                            _this3.$scrollToTop();
+                                            _this4.$LIPS(false);
+                                            _this4.$scrollToTop();
                                             _context.next = 8;
                                             break;
 
                                         case 7:
-                                            _this3.$networkErr('form');
+                                            _this4.$networkErr('form');
 
                                         case 8:
                                         case 'end':
                                             return _context.stop();
                                     }
                                 }
-                            }, _callee, _this3);
+                            }, _callee, _this4);
                         }));
 
                         return function (_x) {
@@ -1062,7 +1076,7 @@ exports.default = {
         },
         save: function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(document, modal) {
-                var _this4 = this;
+                var _this5 = this;
 
                 var acc, form;
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
@@ -1082,12 +1096,12 @@ exports.default = {
                                 form = (0, _form.toMulipartedForm)(this.form, 'edit');
                                 _context2.next = 8;
                                 return (0, _api.post)(this.storeURL, form).then(function (res) {
-                                    _this4.updateView(res.data.response);
-                                    (0, _log.log)('Customer' + _this4.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + _this4.customer.id);
-                                    _this4.modal(modal);
+                                    _this5.updateView(res.data.response);
+                                    (0, _log.log)('Customer' + _this5.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + _this5.customer.id);
+                                    _this5.modal(modal);
                                     _flash2.default.setSuccess('Document Updated Successfully!');
                                 }).catch(function (e) {
-                                    return _this4.error = e.response.data.errors;
+                                    return _this5.error = e.response.data.errors;
                                 });
 
                             case 8:
@@ -1121,10 +1135,10 @@ exports.default = {
         }
     },
     mounted: function mounted() {
-        var _this5 = this;
+        var _this6 = this;
 
         $(document).on("hidden.bs.modal", '.modal', function () {
-            _this5.verification = JSON.parse(JSON.stringify(_this5.customer.verification));
+            _this6.verification = JSON.parse(JSON.stringify(_this6.customer.verification));
             /*this.verification holds a copy of the this.customer.verification. this.verification is what is used to style
             * the card. this.customer.verification on the other hand is used to calculate the approval status, when
             * changing the status on the front end the this.verification is what is changed but when it is
@@ -3493,7 +3507,7 @@ var render = function() {
                 on: {
                   submit: function($event) {
                     $event.preventDefault()
-                    _vm.$router.push("verification?id=" + _vm.customer_id)
+                    return _vm.processForm($event)
                   }
                 }
               },
