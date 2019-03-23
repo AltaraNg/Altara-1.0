@@ -99,7 +99,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">Attendance</h6>
+                            <h6 class="modal-title py-1">Caution</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                                 <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
                             </a>

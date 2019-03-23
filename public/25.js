@@ -625,7 +625,7 @@ var render = function() {
                 _c("div", { staticClass: "modal-content" }, [
                   _c("div", { staticClass: "modal-header py-2" }, [
                     _c("h6", { staticClass: "modal-title py-1" }, [
-                      _vm._v("Attendance")
+                      _vm._v("Caution")
                     ]),
                     _vm._v(" "),
                     _c(
