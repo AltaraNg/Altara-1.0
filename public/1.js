@@ -71,105 +71,103 @@ var _AppNavigation = __webpack_require__("./resources/assets/js/components/AppNa
 
 var _AppNavigation2 = _interopRequireDefault(_AppNavigation);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _helpers = __webpack_require__("./resources/assets/js/helpers/helpers.js");
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var DVA = function DVA() {
     return _store.store.getters.auth('DVAAccess');
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     props: ['viewCustomer'],
@@ -186,24 +184,16 @@ exports.default = {
             return 'https://s3.eu-west-2.amazonaws.com/altara-one/' + this.customer.document.passport_url;
         },
         name: function name() {
-            return this.customer.first_name + ' ' + this.customer.last_name;
+            return (0, _helpers.getCustomerFullName)(this.customer);
         },
         branch: function branch() {
             return this.customer.branch.description + ' ' + this.customer.branch.name;
         },
         address: function address() {
-            return this.customer.add_houseno + ' ' + this.customer.add_street + ' ' + this.customer.area_address + ', ' + this.customer.city + ', ' + this.customer.state + '.';
+            return (0, _helpers.getCustomerAddress)(this.customer);
         },
         approved: function approved() {
-            return this.customer.verification.address === 1 && this.customer.verification.id_card === 1 && this.customer.verification.passport === 1 && this.customer.verification.processing_fee === 1 && this.customer.verification.work_guarantor === 1 && this.customer.verification.personal_guarantor === 1;
-            /*This component is the customer profile proper. for optimal result.
-            * The data passed to this should be a response
-            * from the CustomerController@show
-            * this method is used to check the approval
-            * status for any customer details
-            * supplied to it.
-            * NB all the params above must be
-            * 1 for a customer t be approved*/
+            return (0, _helpers.getCustomerApprovalStatus)(this.customer.verification);
         }
     },
     created: function created() {
@@ -873,6 +863,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 
+var init = function init(to) {
+    return '/api/customer/' + to.query.id;
+};
+
 exports.default = {
     props: {
         action: { default: 'verify'
@@ -914,6 +908,28 @@ exports.default = {
             personal_guarantor_address: ''
         };
     },
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        if (to.query.id) (0, _api.get)(init(to)).then(function (res) {
+            return next(function (vm) {
+                return vm.updateView(res.data);
+            });
+        }).catch(function (e) {
+            return next(function (vm) {
+                return vm.updateView(e.response.data);
+            });
+        });else next();
+    },
+    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+        var _this = this;
+
+        if (to.query.id) (0, _api.get)(init(to)).then(function (res) {
+            return _this.updateView(res.data);
+        }).catch(function (e) {
+            return _this.updateView(e.response.data);
+        }).finally(function () {
+            return next();
+        });else next();
+    },
 
     methods: {
         modal: function modal(name) {
@@ -945,21 +961,10 @@ exports.default = {
                 * success and no-success*/
             };
         },
-        returnToInitialValues: function returnToInitialValues() {
-            this.verification = JSON.parse(JSON.stringify(this.customer.verification));
-            /*this.verification holds a copy of the this.customer.verification. this.verification is what is used to style
-            * the card. this.customer.verification on the other hand is used to calculate the approval status, when
-            * changing the status on the front end the this.verification is what is changed but when it is
-            * reflected in the backend then the changes will be reflected on this.customer.verification
-            * after going to database and returning the data again. NB: the purpose of this method
-            * is revert the values of the this.verification to this.customer.verification
-            * values, when a user selects a different option but doesn't submit
-            * it after opening and closing the modal responsible for that
-            * particular action*/
-        },
-        buttonStatus: function buttonStatus(data) {
-            var _this = this;
+        updateView: function updateView(data) {
+            var _this2 = this;
 
+            console.log(data);
             this.$emit('update', data.customer);
             /*$emit update event is used to send data to the parent component where this serves as a child
             * component. eg. dsa utility form. NB: The customer registration component(form)
@@ -967,7 +972,7 @@ exports.default = {
             this.user = data.hasOwnProperty('user') ? data.user : null;
             _vue2.default.set(this.$data, 'customer', data.customer);
             _eventBus.EventBus.$emit('customer', data.customer);
-            if (data.customer != '') {
+            if (data.customer) {
                 this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                 this.form.id_card = data.customer.document.id_card_url;
                 this.form.passport = data.customer.document.passport_url;
@@ -976,64 +981,31 @@ exports.default = {
                 this.personal_guarantor_address = this.customer.pguaadd_houseno + ',\n                    ' + this.customer.pguaadd_street + ',\n                    ' + this.customer.pgua_area + ',\n                    ' + this.customer.personal_guarantor_city + ',\n                    ' + this.customer.personal_guarantor_state;
                 this.veriData.forEach(function (e) {
                     //e is the current array element during the foreach call;
-                    _this[e + 'Btns'] = !!!data.customer[e];
+                    _this2[e + 'Btns'] = !!!data.customer[e];
                     //eg this.work_guarantorBtns = if (data.customer.work_guarantor) {return true} else {return false}
                     //and anything the if return will be inverted.
-                    _this[e] = !!data.customer[e] ? data.customer[e] : data['empty_' + e];
+                    _this2[e] = !!data.customer[e] ? data.customer[e] : data['empty_' + e];
                     //eg this.work_guarantor = if(data.customer.work_guarantor){ return data.customer.work_guarantor }
                     // else {return data.empty_work_guarantor}
                     //the empty_work_guarantor is returned from backend when no work guarantor has been added.
                 });
+            } else _flash2.default.setError(data.message, 5000);
+        },
+        processForm: function processForm() {
+            var _this3 = this;
+
+            if (this.$route.name === 'verification') this.$router.push('verification?id=' + this.customer_id);
+            if (this.$route.name === 'customerUpdate') {
+                this.$router.push('update?id=' + this.customer_id);
+                (0, _api.get)(init(this.$route)).then(function (res) {
+                    return _this3.updateView(res.data);
+                }).catch(function (e) {
+                    return _this3.updateView(e.response.data);
+                });
             }
         },
-        fetchCustomer: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-                var _this2 = this;
-
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                if (!this.$network()) {
-                                    _context.next = 8;
-                                    break;
-                                }
-
-                                this.$LIPS(true);
-                                _context.next = 4;
-                                return (0, _api.get)('/api/customer/' + this.customer_id).then(function (res) {
-                                    return _this2.buttonStatus(res.data);
-                                }).catch(function (e) {
-                                    e = e.response;
-                                    if (e.status === 422) _this2.buttonStatus(e.data);
-                                    _flash2.default.setError(e.data.message);
-                                });
-
-                            case 4:
-                                this.$scrollToTop();
-                                this.$LIPS(false);
-                                _context.next = 9;
-                                break;
-
-                            case 8:
-                                this.$networkErr();
-
-                            case 9:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function fetchCustomer() {
-                return _ref.apply(this, arguments);
-            }
-
-            return fetchCustomer;
-        }(),
         validate: function validate(type) {
-            var _this3 = this;
+            var _this4 = this;
 
             var acc = this.$editAccess(this.user, this.customer);
             if (acc) {
@@ -1051,49 +1023,49 @@ exports.default = {
                     this[type].user_id = this.user.id;
                     this[type].staff_name = this.user.full_name;
                     this.$validator.validateAll(type).then(function () {
-                        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(result) {
-                            return _regenerator2.default.wrap(function _callee2$(_context2) {
+                        var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
+                            return _regenerator2.default.wrap(function _callee$(_context) {
                                 while (1) {
-                                    switch (_context2.prev = _context2.next) {
+                                    switch (_context.prev = _context.next) {
                                         case 0:
                                             if (!result) {
-                                                _context2.next = 7;
+                                                _context.next = 7;
                                                 break;
                                             }
 
-                                            _context2.next = 3;
-                                            return (0, _api.post)('/api/' + type, _this3[type]).then(function (res) {
-                                                _this3.buttonStatus(res.data.response);
-                                                var id = 'Customer ID : ' + _this3.customer.id,
-                                                    typeCaps = _this3.$options.filters.capitalize(type),
+                                            _context.next = 3;
+                                            return (0, _api.post)('/api/' + type, _this4[type]).then(function (res) {
+                                                _this4.updateView(res.data.response);
+                                                var id = 'Customer ID : ' + _this4.customer.id,
+                                                    typeCaps = _this4.$options.filters.capitalize(type),
                                                     action = 'Customer' + typeCaps + 'Verification';
-                                                if (type === 'address') action += _this3.address.approval_status ? 'Passed' : 'NotPassed';
+                                                if (type === 'address') action += _this4.address.approval_status ? 'Passed' : 'NotPassed';
                                                 (0, _log.log)(action, id);
                                                 _flash2.default.setSuccess(typeCaps + ' status updated!');
-                                                _this3.modal(type + '_modal');
+                                                _this4.modal(type + '_modal');
                                             }).catch(function (e) {
                                                 return _flash2.default.setError(e.response.data.message);
                                             });
 
                                         case 3:
-                                            _this3.$LIPS(false);
-                                            _this3.$scrollToTop();
-                                            _context2.next = 8;
+                                            _this4.$LIPS(false);
+                                            _this4.$scrollToTop();
+                                            _context.next = 8;
                                             break;
 
                                         case 7:
-                                            _this3.$networkErr('form');
+                                            _this4.$networkErr('form');
 
                                         case 8:
                                         case 'end':
-                                            return _context2.stop();
+                                            return _context.stop();
                                     }
                                 }
-                            }, _callee2, _this3);
+                            }, _callee, _this4);
                         }));
 
                         return function (_x) {
-                            return _ref2.apply(this, arguments);
+                            return _ref.apply(this, arguments);
                         };
                     }());
                 } else this.$networkErr();
@@ -1103,18 +1075,18 @@ exports.default = {
             }
         },
         save: function () {
-            var _ref3 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee3(document, modal) {
-                var _this4 = this;
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(document, modal) {
+                var _this5 = this;
 
                 var acc, form;
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context2.prev = _context2.next) {
                             case 0:
                                 acc = this.$editAccess(this.user, this.customer);
 
                                 if (!acc) {
-                                    _context3.next = 12;
+                                    _context2.next = 12;
                                     break;
                                 }
 
@@ -1122,20 +1094,20 @@ exports.default = {
                                 this.$LIPS(true);
                                 this.form.document = document;
                                 form = (0, _form.toMulipartedForm)(this.form, 'edit');
-                                _context3.next = 8;
+                                _context2.next = 8;
                                 return (0, _api.post)(this.storeURL, form).then(function (res) {
-                                    _this4.buttonStatus(res.data.response);
-                                    (0, _log.log)('Customer' + _this4.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + _this4.customer.id);
-                                    _this4.modal(modal);
+                                    _this5.updateView(res.data.response);
+                                    (0, _log.log)('Customer' + _this5.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + _this5.customer.id);
+                                    _this5.modal(modal);
                                     _flash2.default.setSuccess('Document Updated Successfully!');
                                 }).catch(function (e) {
-                                    return _this4.error = e.response.data.errors;
+                                    return _this5.error = e.response.data.errors;
                                 });
 
                             case 8:
                                 this.$LIPS(false);
                                 this.$scrollToTop();
-                                _context3.next = 14;
+                                _context2.next = 14;
                                 break;
 
                             case 12:
@@ -1144,14 +1116,14 @@ exports.default = {
 
                             case 14:
                             case 'end':
-                                return _context3.stop();
+                                return _context2.stop();
                         }
                     }
-                }, _callee3, this);
+                }, _callee2, this);
             }));
 
             function save(_x2, _x3) {
-                return _ref3.apply(this, arguments);
+                return _ref2.apply(this, arguments);
             }
 
             return save;
@@ -1163,7 +1135,20 @@ exports.default = {
         }
     },
     mounted: function mounted() {
-        $(document).on("hidden.bs.modal", '.modal', this.returnToInitialValues);
+        var _this6 = this;
+
+        $(document).on("hidden.bs.modal", '.modal', function () {
+            _this6.verification = JSON.parse(JSON.stringify(_this6.customer.verification));
+            /*this.verification holds a copy of the this.customer.verification. this.verification is what is used to style
+            * the card. this.customer.verification on the other hand is used to calculate the approval status, when
+            * changing the status on the front end the this.verification is what is changed but when it is
+            * reflected in the backend then the changes will be reflected on this.customer.verification
+            * after going to database and returning the data again. NB: the purpose of this method
+            * is revert the values of the this.verification to this.customer.verification
+            * values, when a user selects a different option but doesn't submit
+            * it after opening and closing the modal responsible for that
+            * particular action*/
+        });
     }
 };
 
@@ -1215,7 +1200,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.customer-profile {\n  position: relative;\n}\n.customer-profile th {\n    width: auto;\n    font-weight: normal;\n}\n.customer-profile td, .customer-profile .data {\n    font-size: 1.3rem;\n    font-weight: 500;\n}\n.customer-profile .status {\n    padding: 1.2rem 3rem;\n    float: left;\n    color: white;\n    border-radius: .5rem;\n    -webkit-box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);\n            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);\n    font-weight: 700;\n    font-size: 1.3rem;\n}\n.customer-profile .status.approved {\n      background-color: #00a368;\n}\n.customer-profile .status.not-approved {\n      background-color: #c81618;\n}\n.customer-profile .design {\n    position: absolute;\n    top: 13rem;\n    bottom: 0;\n    left: 0;\n    width: 101%;\n    height: calc(100% - 8.1rem);\n    z-index: 0;\n    background: linear-gradient(45deg, #dedede 0%, #ffffff 100%);\n}\n.customer-profile .profile-picture, .customer-profile .no-image {\n    height: 16rem;\n    width: 16rem;\n    -webkit-box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);\n            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);\n}\n.customer-profile .no-image {\n    background-color: #e3e3e3;\n    border-radius: 50%;\n    line-height: 16rem;\n    text-align: center;\n    font-size: 8rem;\n    color: rgba(0, 0, 0, 0.15);\n}\n.customer-profile .img-border {\n    padding: 1.1rem;\n    background-color: white;\n    border-radius: 50%;\n}\n.customer-profile .separator {\n    position: absolute;\n    left: 50%;\n    height: 70%;\n    width: 1px;\n    background-color: rgba(0, 0, 0, 0.1);\n    top: 3%;\n}\n@media (max-width: 600px) {\n.customer-profile .design {\n    background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#ffffff));\n    background: linear-gradient(180deg, #dedede 0%, #ffffff 100%);\n}\n.customer-profile .separator {\n    top: -11%;\n}\n.customer-profile .small-center {\n    text-align: center;\n}\n.customer-profile th {\n    width: 35%;\n}\n.customer-profile tbody {\n    padding: 1rem 1rem 0;\n    float: left;\n}\n}\n", ""]);
+exports.push([module.i, "\n.customer-profile {\n  position: relative;\n}\n.customer-profile th {\n    width: auto;\n    font-weight: normal;\n}\n.customer-profile td, .customer-profile .data {\n    font-size: 1.3rem;\n    font-weight: 500;\n}\n.customer-profile .design {\n    position: absolute;\n    top: 13rem;\n    bottom: 0;\n    left: 0;\n    width: 101%;\n    height: calc(100% - 8.1rem);\n    z-index: 0;\n    background: linear-gradient(45deg, #dedede 0%, #ffffff 100%);\n}\n.customer-profile .profile-picture, .customer-profile .no-image {\n    height: 16rem;\n    width: 16rem;\n    -webkit-box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);\n            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);\n}\n.customer-profile .no-image {\n    background-color: #e3e3e3;\n    border-radius: 50%;\n    line-height: 16rem;\n    text-align: center;\n    font-size: 8rem;\n    color: rgba(0, 0, 0, 0.15);\n}\n.customer-profile .img-border {\n    padding: 1.1rem;\n    background-color: white;\n    border-radius: 50%;\n}\n.customer-profile .separator {\n    position: absolute;\n    left: 50%;\n    height: 70%;\n    width: 1px;\n    background-color: rgba(0, 0, 0, 0.1);\n    top: 3%;\n}\n@media (max-width: 600px) {\n.customer-profile .design {\n    background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#ffffff));\n    background: linear-gradient(180deg, #dedede 0%, #ffffff 100%);\n}\n.customer-profile .separator {\n    top: -11%;\n}\n.customer-profile .small-center {\n    text-align: center;\n}\n.customer-profile th {\n    width: 35%;\n}\n.customer-profile tbody {\n    padding: 1rem 1rem 0;\n    float: left;\n}\n}\n", ""]);
 
 // exports
 
@@ -2031,7 +2016,7 @@ var render = function() {
                 on: {
                   submit: function($event) {
                     $event.preventDefault()
-                    return _vm.fetchCustomer($event)
+                    return _vm.processForm($event)
                   }
                 }
               },
@@ -2088,7 +2073,7 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-block bg-default my-1",
-                            attrs: { type: "submit", disabled: _vm.check }
+                            attrs: { disabled: _vm.check, type: "submit" }
                           },
                           [
                             _vm._v(
@@ -2343,9 +2328,9 @@ var render = function() {
                               {
                                 staticClass: "close py-1",
                                 attrs: {
-                                  href: "javascript:",
+                                  "aria-label": "Close",
                                   "data-dismiss": "modal",
-                                  "aria-label": "Close"
+                                  href: "javascript:"
                                 }
                               },
                               [
@@ -2415,8 +2400,8 @@ var render = function() {
                                       {
                                         staticClass: "m-2 btn btn-secondary",
                                         attrs: {
-                                          type: "button",
-                                          "data-dismiss": "modal"
+                                          "data-dismiss": "modal",
+                                          type: "button"
                                         }
                                       },
                                       [
@@ -2431,8 +2416,8 @@ var render = function() {
                                       {
                                         staticClass: "m-2 btn bg-default",
                                         attrs: {
-                                          type: "submit",
-                                          disabled: _vm.$isProcessing
+                                          disabled: _vm.$isProcessing,
+                                          type: "submit"
                                         }
                                       },
                                       [
@@ -2551,9 +2536,9 @@ var render = function() {
                                         ],
                                         staticClass: "form-control",
                                         attrs: {
-                                          type: "date",
+                                          "data-vv-as": "date of visit",
                                           name: "date_of_visit",
-                                          "data-vv-as": "date of visit"
+                                          type: "date"
                                         },
                                         domProps: {
                                           value: _vm.address.date_of_visit
@@ -2614,9 +2599,9 @@ var render = function() {
                                         ],
                                         staticClass: "form-control",
                                         attrs: {
-                                          type: "time",
+                                          "data-vv-as": "time of visit",
                                           name: "time_of_visit",
-                                          "data-vv-as": "time of visit"
+                                          type: "time"
                                         },
                                         domProps: {
                                           value: _vm.address.time_of_visit
@@ -2678,11 +2663,11 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
-                                          type: "radio",
-                                          name: "customer_meetup",
+                                          "data-vv-as": "customer meetup",
                                           id: "yes",
-                                          value: "yes",
-                                          "data-vv-as": "customer meetup"
+                                          name: "customer_meetup",
+                                          type: "radio",
+                                          value: "yes"
                                         },
                                         domProps: {
                                           checked: _vm._q(
@@ -2718,9 +2703,9 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
-                                          type: "radio",
-                                          name: "customer_meetup",
                                           id: "no",
+                                          name: "customer_meetup",
+                                          type: "radio",
                                           value: "no"
                                         },
                                         domProps: {
@@ -2790,9 +2775,9 @@ var render = function() {
                                         ],
                                         attrs: {
                                           "data-vv-as": "confirm address",
+                                          id: "add_yes",
                                           name: "confirm_address",
                                           type: "radio",
-                                          id: "add_yes",
                                           value: "yes"
                                         },
                                         domProps: {
@@ -2831,9 +2816,9 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
+                                          id: "add_no",
                                           name: "confirm_address",
                                           type: "radio",
-                                          id: "add_no",
                                           value: "no"
                                         },
                                         domProps: {
@@ -2901,10 +2886,10 @@ var render = function() {
                                       ],
                                       staticClass: "form-control",
                                       attrs: {
-                                        type: "text",
-                                        placeholder: "comment here...",
+                                        "data-vv-as": "what he sells",
                                         name: "what_he_sells",
-                                        "data-vv-as": "what he sells"
+                                        placeholder: "comment here...",
+                                        type: "text"
                                       },
                                       domProps: {
                                         value: _vm.address.what_he_sells
@@ -2952,24 +2937,24 @@ var render = function() {
                                     _c("textarea", {
                                       directives: [
                                         {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        },
-                                        {
                                           name: "model",
                                           rawName: "v-model",
                                           value: _vm.address.business_info,
                                           expression: "address.business_info"
+                                        },
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
                                         }
                                       ],
                                       staticClass: "form-control",
                                       attrs: {
-                                        placeholder: "comment here...",
-                                        rows: "1",
+                                        "data-vv-as": "business info",
                                         name: "business_info",
-                                        "data-vv-as": "business info"
+                                        placeholder: "comment here...",
+                                        rows: "1"
                                       },
                                       domProps: {
                                         value: _vm.address.business_info
@@ -3017,24 +3002,24 @@ var render = function() {
                                     _c("textarea", {
                                       directives: [
                                         {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        },
-                                        {
                                           name: "model",
                                           rawName: "v-model",
                                           value: _vm.address.product_info,
                                           expression: "address.product_info"
+                                        },
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
                                         }
                                       ],
                                       staticClass: "form-control w-100",
                                       attrs: {
-                                        placeholder: "comment here...",
-                                        rows: "1",
                                         "data-vv-as": "product info",
-                                        name: "product_info"
+                                        name: "product_info",
+                                        placeholder: "comment here...",
+                                        rows: "1"
                                       },
                                       domProps: {
                                         value: _vm.address.product_info
@@ -3096,10 +3081,10 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
-                                          name: "aware_of_plan",
-                                          type: "radio",
                                           "data-vv-as": "aware of plan",
                                           id: "pay_yes",
+                                          name: "aware_of_plan",
+                                          type: "radio",
                                           value: "yes"
                                         },
                                         domProps: {
@@ -3137,9 +3122,9 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
+                                          id: "pay_no",
                                           name: "aware_of_plan",
                                           type: "radio",
-                                          id: "pay_no",
                                           value: "no"
                                         },
                                         domProps: {
@@ -3209,10 +3194,10 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
-                                          name: "info_from_neighbors",
-                                          type: "radio",
                                           "data-vv-as": "info from neighbors",
                                           id: "neigh_yes",
+                                          name: "info_from_neighbors",
+                                          type: "radio",
                                           value: "yes"
                                         },
                                         domProps: {
@@ -3246,9 +3231,9 @@ var render = function() {
                                           }
                                         ],
                                         attrs: {
+                                          id: "neigh_no",
                                           name: "info_from_neighbors",
                                           type: "radio",
-                                          id: "neigh_no",
                                           value: "no"
                                         },
                                         domProps: {
@@ -3292,12 +3277,6 @@ var render = function() {
                                           _c("textarea", {
                                             directives: [
                                               {
-                                                name: "validate",
-                                                rawName: "v-validate",
-                                                value: "required",
-                                                expression: "'required'"
-                                              },
-                                              {
                                                 name: "model",
                                                 rawName: "v-model",
                                                 value:
@@ -3305,15 +3284,21 @@ var render = function() {
                                                     .info_from_neighbors_desc,
                                                 expression:
                                                   "address.info_from_neighbors_desc"
+                                              },
+                                              {
+                                                name: "validate",
+                                                rawName: "v-validate",
+                                                value: "required",
+                                                expression: "'required'"
                                               }
                                             ],
                                             staticClass: "form-control",
                                             attrs: {
-                                              placeholder: "comment here...",
-                                              rows: "1",
-                                              name: "info_from_neighbors_desc",
                                               "data-vv-as":
-                                                "info from neighbors desc"
+                                                "info from neighbors desc",
+                                              name: "info_from_neighbors_desc",
+                                              placeholder: "comment here...",
+                                              rows: "1"
                                             },
                                             domProps: {
                                               value:
@@ -3367,12 +3352,6 @@ var render = function() {
                                     _c("textarea", {
                                       directives: [
                                         {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        },
-                                        {
                                           name: "model",
                                           rawName: "v-model",
                                           value:
@@ -3380,15 +3359,21 @@ var render = function() {
                                               .business_or_work_duration,
                                           expression:
                                             "address.business_or_work_duration"
+                                        },
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
                                         }
                                       ],
                                       staticClass: "form-control",
                                       attrs: {
-                                        placeholder: "address",
-                                        rows: "1",
-                                        name: "business_or_work_duration",
                                         "data-vv-as":
-                                          "business or work duration"
+                                          "business or work duration",
+                                        name: "business_or_work_duration",
+                                        placeholder: "address",
+                                        rows: "1"
                                       },
                                       domProps: {
                                         value:
@@ -3438,8 +3423,8 @@ var render = function() {
                                               staticClass:
                                                 "btn btn-success btn-lg btn-block",
                                               attrs: {
-                                                type: "submit",
-                                                disabled: _vm.$isProcessing
+                                                disabled: _vm.$isProcessing,
+                                                type: "submit"
                                               },
                                               on: {
                                                 click: function($event) {
@@ -3505,8 +3490,8 @@ var render = function() {
                                                   staticClass:
                                                     "m-0 btn btn-lg btn-block btn-primary",
                                                   attrs: {
-                                                    type: "submit",
-                                                    disabled: _vm.$isProcessing
+                                                    disabled: _vm.$isProcessing,
+                                                    type: "submit"
                                                   },
                                                   on: {
                                                     click: function($event) {
@@ -3573,9 +3558,9 @@ var render = function() {
                               {
                                 staticClass: "close py-1",
                                 attrs: {
-                                  href: "javascript:",
+                                  "aria-label": "Close",
                                   "data-dismiss": "modal",
-                                  "aria-label": "Close"
+                                  href: "javascript:"
                                 }
                               },
                               [
@@ -3775,8 +3760,8 @@ var render = function() {
                                                     ],
                                                     staticClass: "form-control",
                                                     attrs: {
-                                                      type: "date",
-                                                      name: "date_of_call"
+                                                      name: "date_of_call",
+                                                      type: "date"
                                                     },
                                                     domProps: {
                                                       value:
@@ -3819,8 +3804,8 @@ var render = function() {
                                                     ],
                                                     staticClass: "form-control",
                                                     attrs: {
-                                                      type: "date",
-                                                      name: "date_of_call"
+                                                      name: "date_of_call",
+                                                      type: "date"
                                                     },
                                                     domProps: {
                                                       value:
@@ -3920,8 +3905,8 @@ var render = function() {
                                                     ],
                                                     staticClass: "form-control",
                                                     attrs: {
-                                                      type: "time",
-                                                      name: "time_of_call"
+                                                      name: "time_of_call",
+                                                      type: "time"
                                                     },
                                                     domProps: {
                                                       value:
@@ -3964,8 +3949,8 @@ var render = function() {
                                                     ],
                                                     staticClass: "form-control",
                                                     attrs: {
-                                                      type: "time",
-                                                      name: "time_collected"
+                                                      name: "time_collected",
+                                                      type: "time"
                                                     },
                                                     domProps: {
                                                       value:
@@ -4076,10 +4061,10 @@ var render = function() {
                                                         }
                                                       ],
                                                       attrs: {
-                                                        type: "radio",
                                                         id: type + "_yes",
-                                                        value: "1",
-                                                        name: "consent"
+                                                        name: "consent",
+                                                        type: "radio",
+                                                        value: "1"
                                                       },
                                                       domProps: {
                                                         checked: _vm._q(
@@ -4133,10 +4118,10 @@ var render = function() {
                                                         }
                                                       ],
                                                       attrs: {
-                                                        type: "radio",
                                                         id: type + "_no",
-                                                        value: "0",
-                                                        name: "consent"
+                                                        name: "consent",
+                                                        type: "radio",
+                                                        value: "0"
                                                       },
                                                       domProps: {
                                                         checked: _vm._q(
@@ -4220,9 +4205,9 @@ var render = function() {
                                                       staticClass:
                                                         "form-control",
                                                       attrs: {
-                                                        type: "number",
                                                         disabled: "",
-                                                        name: "amount"
+                                                        name: "amount",
+                                                        type: "number"
                                                       },
                                                       domProps: {
                                                         value:
@@ -4287,9 +4272,9 @@ var render = function() {
                                             ],
                                             staticClass: "form-control w-100",
                                             attrs: {
+                                              name: "report",
                                               placeholder: "comment here...",
-                                              rows: "3",
-                                              name: "report"
+                                              rows: "3"
                                             },
                                             domProps: {
                                               value: _vm.$data[type].report
@@ -4337,8 +4322,8 @@ var render = function() {
                                               staticClass:
                                                 "m-2 btn btn-secondary",
                                               attrs: {
-                                                type: "button",
-                                                "data-dismiss": "modal"
+                                                "data-dismiss": "modal",
+                                                type: "button"
                                               }
                                             },
                                             [
@@ -4353,8 +4338,8 @@ var render = function() {
                                             {
                                               staticClass: "m-2 btn bg-default",
                                               attrs: {
-                                                type: "submit",
-                                                disabled: _vm.$isProcessing
+                                                disabled: _vm.$isProcessing,
+                                                type: "submit"
                                               }
                                             },
                                             [
@@ -4800,37 +4785,30 @@ var render = function() {
                                 "float-left p-0 m-0 col-md-4 col-12 d-flex justify-content-center"
                             },
                             [
-                              _vm.approved
-                                ? _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "status mt-md-5 my-sm-2 mt-0 approved shadow-sm"
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                APPROVED"
-                                      ),
-                                      _c("i", {
-                                        staticClass: "ml-3 fas fa-check"
-                                      })
-                                    ]
-                                  )
-                                : _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "status mt-md-5 my-sm-2 mt-0 not-approved shadow-sm"
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                NOT APPROVED"
-                                      ),
-                                      _c("i", {
-                                        staticClass: "ml-3 fas fa-times"
-                                      })
-                                    ]
-                                  )
+                              _c(
+                                "span",
+                                {
+                                  class:
+                                    "status mt-md-5 my-sm-2 mt-0 " +
+                                    (_vm.approved ? "approved" : "not-approved")
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.approved
+                                          ? "APPROVED"
+                                          : "NOT APPROVED"
+                                      ) +
+                                      "\n                                "
+                                  ),
+                                  _c("i", {
+                                    class:
+                                      "ml-3 fas fa-" +
+                                      (_vm.approved ? "check" : "times")
+                                  })
+                                ]
+                              )
                             ]
                           )
                         ]),
@@ -4892,7 +4870,9 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm._f("capitalize")(
-                                        _vm.customer.user.full_name
+                                        _vm.customer.user
+                                          ? _vm.customer.user.full_name
+                                          : "user not in record"
                                       )
                                     )
                                   )
@@ -5296,6 +5276,29 @@ function objectToFormData(obj, form, namespace) {
     }
     return fd;
 }
+
+/***/ }),
+
+/***/ "./resources/assets/js/helpers/helpers.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//cus stands for customer
+//ver stands for verification
+var getCustomerApprovalStatus = exports.getCustomerApprovalStatus = function getCustomerApprovalStatus(ver) {
+    return ver.address && ver.id_card && ver.passport && ver.processing_fee && ver.work_guarantor && ver.personal_guarantor;
+};
+var getCustomerFullName = exports.getCustomerFullName = function getCustomerFullName(cus) {
+    return cus.first_name + " " + cus.last_name;
+};
+var getCustomerAddress = exports.getCustomerAddress = function getCustomerAddress(cus) {
+    return cus.add_houseno + " " + cus.add_street + " " + cus.area_address + ", " + cus.city + ", " + cus.state + ".";
+};
 
 /***/ }),
 
