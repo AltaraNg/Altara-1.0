@@ -44815,7 +44815,7 @@ var store = exports.store = new _vuex2.default.Store({
 
         auth: function auth(state) {
             return function (role) {
-                return state[role].includes(state.authRole);
+                return state[role].includes(state.authRole) && state.api_token;
             };
         },
 

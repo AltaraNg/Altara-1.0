@@ -190,7 +190,7 @@ class UserController extends Controller
     {
         $DSAs = User::whereIn('role_id', [17, 18])
             ->where('branch_id', auth('api')->user()->branch_id)
-            ->select('id', 'staff_id', 'full_name')
+            ->select('id', 'staff_id', 'full_name','branch_id')
             ->get();
         return response()->json([
             'DSAs' => $DSAs,
