@@ -964,7 +964,6 @@ exports.default = {
         updateView: function updateView(data) {
             var _this2 = this;
 
-            console.log(data);
             this.$emit('update', data.customer);
             /*$emit update event is used to send data to the parent component where this serves as a child
             * component. eg. dsa utility form. NB: The customer registration component(form)
@@ -1187,6 +1186,26 @@ var _verification2 = _interopRequireDefault(_verification);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5928,933 +5947,916 @@ var render = function() {
                 },
                 [
                   _vm.mode === "register"
+                    ? _c("div", [
+                        _c("h5", [_vm._v("Employee Details")]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Employee Name")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.employee_name,
+                                  expression: "newCustomer.employee_name"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required|max:50",
+                                  expression: "'required|max:50'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                "data-vv-name": "employee name",
+                                disabled: "",
+                                name: "emp_name",
+                                placeholder: "Enter Employee name here",
+                                type: "text"
+                              },
+                              domProps: {
+                                value: _vm.newCustomer.employee_name
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "employee_name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("emp_name")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("emp_name")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Employee ID (Staff ID)")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.employee_id,
+                                  expression: "newCustomer.employee_id"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                "data-vv-as": "employee phone number",
+                                disabled: "",
+                                name: "employee_id",
+                                placeholder: "Enter Employee number here",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.employee_id },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "employee_id",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("employee_id")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("employee_id")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Date")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.date_of_registration,
+                                  expression: "newCustomer.date_of_registration"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                "data-vv-as": "Date of Registration",
+                                disabled: "",
+                                name: "date_of_registration",
+                                type: "date"
+                              },
+                              domProps: {
+                                value: _vm.newCustomer.date_of_registration
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "date_of_registration",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("date_of_registration")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("date_of_registration")
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spaceAfter" }),
+                        _vm._v(" "),
+                        _c("h5", [_vm._v("Customer Personal Details")]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("First Name")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.first_name,
+                                  expression: "newCustomer.first_name"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required|max:25",
+                                  expression: "'required|max:25'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                "data-vv-as": "first name",
+                                name: "first_name",
+                                placeholder: "Enter First name here..",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.first_name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "first_name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("first_name")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("first_name")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Middle Name")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.middle_name,
+                                  expression: "newCustomer.middle_name"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                placeholder: "Enter Middle name here..",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.middle_name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "middle_name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Last Name")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.last_name,
+                                  expression: "newCustomer.last_name"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required|max:25",
+                                  expression: "'required|max:25'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                "data-vv-as": "last name",
+                                name: "last_name",
+                                placeholder: "Enter Last name here..",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.last_name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "last_name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("last_name")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("last_name")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spaceAfter" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", { staticClass: "w-100 float-left" }, [
+                              _vm._v("Gender")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.gender, function(sex) {
+                              return _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "radio p-0 col-md-6 col-6 float-left"
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.newCustomer.gender,
+                                        expression: "newCustomer.gender"
+                                      },
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
+                                    attrs: {
+                                      id: sex,
+                                      name: "gender",
+                                      type: "radio"
+                                    },
+                                    domProps: {
+                                      value: sex,
+                                      checked: _vm._q(
+                                        _vm.newCustomer.gender,
+                                        sex
+                                      )
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        _vm.$set(_vm.newCustomer, "gender", sex)
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", { attrs: { for: sex } }, [
+                                    _vm._v(_vm._s(sex))
+                                  ])
+                                ]
+                              )
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("gender")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("gender")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-8 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Phone Number")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.telephone,
+                                  expression: "newCustomer.telephone"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required|numeric|max:11|min:11",
+                                  expression: "'required|numeric|max:11|min:11'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "telephone",
+                                placeholder: "Enter Phone number here..",
+                                type: "tel"
+                              },
+                              domProps: { value: _vm.newCustomer.telephone },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "telephone",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("telephone")
+                              ? _c("small", [
+                                  _vm._v(_vm._s(_vm.errors.first("telephone")))
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.error.telephone
+                              ? _c("small", [
+                                  _vm._v(_vm._s(_vm.error.telephone[0]))
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spaceAfter" })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.mode === "register" ||
+                  _vm.$store.getters.auth("DVAAccess")
+                    ? _c("div", [
+                        _c("h5", [_vm._v("Address")]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Street Name")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.add_street,
+                                  expression: "newCustomer.add_street"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required|max:25",
+                                  expression: "'required|max:25'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                "data-vv-as": "street name",
+                                name: "street_name",
+                                placeholder: "Enter street name here..",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.add_street },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "add_street",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("street_name")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("street_name")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("House Number")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.add_houseno,
+                                  expression: "newCustomer.add_houseno"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                "data-vv-as": "house number",
+                                name: "house_number",
+                                placeholder: "Enter House number here..",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.add_houseno },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "add_houseno",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("house_number")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("house_number")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Nearest Bus Stop")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.add_nbstop,
+                                  expression: "newCustomer.add_nbstop"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                "data-vv-as": "nearest bus stop",
+                                name: "nearest_bus_stop",
+                                placeholder: "Enter nearest bus stop here..",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.add_nbstop },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "add_nbstop",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("nearest_bus_stop")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.errors.first("nearest_bus_stop")
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spaceAfter" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Area")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.area_address,
+                                  expression: "newCustomer.area_address"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required|max:25",
+                                  expression: "'required|max:25'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "area",
+                                placeholder: "Enter area here..",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.area_address },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "area_address",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("area")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("area")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("City")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newCustomer.city,
+                                  expression: "newCustomer.city"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required|max:25",
+                                  expression: "'required|max:25'"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "city",
+                                placeholder: "Enter city here..",
+                                type: "text"
+                              },
+                              domProps: { value: _vm.newCustomer.city },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "city",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.first("city")
+                              ? _c("small", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.errors.first("city")) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-4 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("State")]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.newCustomer.state,
+                                    expression: "newCustomer.state"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required",
+                                    expression: "'required'"
+                                  }
+                                ],
+                                staticClass: "custom-select w-100",
+                                attrs: {
+                                  "data-vv-validate-on": "blur",
+                                  name: "state"
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.newCustomer,
+                                      "state",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("select state")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.states, function(state) {
+                                  return _c(
+                                    "option",
+                                    { domProps: { value: state.name } },
+                                    [_vm._v(_vm._s(state.name))]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _vm.errors.first("state")
+                              ? _c("small", [
+                                  _vm._v(_vm._s(_vm.errors.first("state")))
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spaceAfter" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group col-md-12 px-md-3 px-1 float-left"
+                          },
+                          [
+                            _c("label", [_vm._v("Describe Location")]),
+                            _vm._v(" "),
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.newCustomer.add_addinfo_description,
+                                  expression:
+                                    "newCustomer.add_addinfo_description"
+                                }
+                              ],
+                              staticClass: "form-control col-sm-12",
+                              attrs: {
+                                placeholder: "Describe the Location",
+                                rows: "1"
+                              },
+                              domProps: {
+                                value: _vm.newCustomer.add_addinfo_description
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.newCustomer,
+                                    "add_addinfo_description",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spaceAfter" })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.mode === "register"
                     ? _c(
                         "div",
                         [
-                          _c("h5", [_vm._v("Employee Details")]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Employee Name")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.employee_name,
-                                    expression: "newCustomer.employee_name"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required|max:50",
-                                    expression: "'required|max:50'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  "data-vv-name": "employee name",
-                                  disabled: "",
-                                  name: "emp_name",
-                                  placeholder: "Enter Employee name here",
-                                  type: "text"
-                                },
-                                domProps: {
-                                  value: _vm.newCustomer.employee_name
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "employee_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("emp_name")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.errors.first("emp_name")) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Employee ID (Staff ID)")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.employee_id,
-                                    expression: "newCustomer.employee_id"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  "data-vv-as": "employee phone number",
-                                  disabled: "",
-                                  name: "employee_id",
-                                  placeholder: "Enter Employee number here",
-                                  type: "text"
-                                },
-                                domProps: {
-                                  value: _vm.newCustomer.employee_id
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "employee_id",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("employee_id")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(
-                                          _vm.errors.first("employee_id")
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Date")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.date_of_registration,
-                                    expression:
-                                      "newCustomer.date_of_registration"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  "data-vv-as": "Date of Registration",
-                                  disabled: "",
-                                  name: "date_of_registration",
-                                  type: "date"
-                                },
-                                domProps: {
-                                  value: _vm.newCustomer.date_of_registration
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "date_of_registration",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("date_of_registration")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(
-                                          _vm.errors.first(
-                                            "date_of_registration"
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "spaceAfter" }),
-                          _vm._v(" "),
-                          _c("h5", [_vm._v("Customer Personal Details")]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("First Name")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.first_name,
-                                    expression: "newCustomer.first_name"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required|max:25",
-                                    expression: "'required|max:25'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  "data-vv-as": "first name",
-                                  name: "first_name",
-                                  placeholder: "Enter First name here..",
-                                  type: "text"
-                                },
-                                domProps: { value: _vm.newCustomer.first_name },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "first_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("first_name")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.errors.first("first_name")) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Middle Name")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.middle_name,
-                                    expression: "newCustomer.middle_name"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  placeholder: "Enter Middle name here..",
-                                  type: "text"
-                                },
-                                domProps: {
-                                  value: _vm.newCustomer.middle_name
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "middle_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Last Name")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.last_name,
-                                    expression: "newCustomer.last_name"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required|max:25",
-                                    expression: "'required|max:25'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  "data-vv-as": "last name",
-                                  name: "last_name",
-                                  placeholder: "Enter Last name here..",
-                                  type: "text"
-                                },
-                                domProps: { value: _vm.newCustomer.last_name },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "last_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("last_name")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.errors.first("last_name")) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "spaceAfter" }),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", { staticClass: "w-100 float-left" }, [
-                                _vm._v("Gender")
-                              ]),
-                              _vm._v(" "),
-                              _vm._l(_vm.gender, function(sex) {
-                                return _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "radio p-0 col-md-6 col-6 float-left"
-                                  },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.newCustomer.gender,
-                                          expression: "newCustomer.gender"
-                                        },
-                                        {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        }
-                                      ],
-                                      attrs: {
-                                        id: sex,
-                                        name: "gender",
-                                        type: "radio"
-                                      },
-                                      domProps: {
-                                        value: sex,
-                                        checked: _vm._q(
-                                          _vm.newCustomer.gender,
-                                          sex
-                                        )
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          _vm.$set(
-                                            _vm.newCustomer,
-                                            "gender",
-                                            sex
-                                          )
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("label", { attrs: { for: sex } }, [
-                                      _vm._v(_vm._s(sex))
-                                    ])
-                                  ]
-                                )
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("gender")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.errors.first("gender")) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-8 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Phone Number")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.telephone,
-                                    expression: "newCustomer.telephone"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required|numeric|max:11|min:11",
-                                    expression:
-                                      "'required|numeric|max:11|min:11'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  name: "telephone",
-                                  placeholder: "Enter Phone number here..",
-                                  type: "tel"
-                                },
-                                domProps: { value: _vm.newCustomer.telephone },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "telephone",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("telephone")
-                                ? _c("small", [
-                                    _vm._v(
-                                      _vm._s(_vm.errors.first("telephone"))
-                                    )
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.error.telephone
-                                ? _c("small", [
-                                    _vm._v(_vm._s(_vm.error.telephone[0]))
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "spaceAfter" }),
-                          _vm._v(" "),
-                          _c("h5", [_vm._v("Address")]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Street Name")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.add_street,
-                                    expression: "newCustomer.add_street"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required|max:25",
-                                    expression: "'required|max:25'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  "data-vv-as": "street name",
-                                  name: "street_name",
-                                  placeholder: "Enter street name here..",
-                                  type: "text"
-                                },
-                                domProps: { value: _vm.newCustomer.add_street },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "add_street",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("street_name")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(
-                                          _vm.errors.first("street_name")
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("House Number")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.add_houseno,
-                                    expression: "newCustomer.add_houseno"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  "data-vv-as": "house number",
-                                  name: "house_number",
-                                  placeholder: "Enter House number here..",
-                                  type: "text"
-                                },
-                                domProps: {
-                                  value: _vm.newCustomer.add_houseno
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "add_houseno",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("house_number")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(
-                                          _vm.errors.first("house_number")
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Nearest Bus Stop")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.add_nbstop,
-                                    expression: "newCustomer.add_nbstop"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  "data-vv-as": "nearest bus stop",
-                                  name: "nearest_bus_stop",
-                                  placeholder: "Enter nearest bus stop here..",
-                                  type: "text"
-                                },
-                                domProps: { value: _vm.newCustomer.add_nbstop },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "add_nbstop",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("nearest_bus_stop")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(
-                                          _vm.errors.first("nearest_bus_stop")
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "spaceAfter" }),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Area")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.area_address,
-                                    expression: "newCustomer.area_address"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required|max:25",
-                                    expression: "'required|max:25'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  name: "area",
-                                  placeholder: "Enter area here..",
-                                  type: "text"
-                                },
-                                domProps: {
-                                  value: _vm.newCustomer.area_address
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "area_address",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("area")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.errors.first("area")) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("City")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.newCustomer.city,
-                                    expression: "newCustomer.city"
-                                  },
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required|max:25",
-                                    expression: "'required|max:25'"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  name: "city",
-                                  placeholder: "Enter city here..",
-                                  type: "text"
-                                },
-                                domProps: { value: _vm.newCustomer.city },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "city",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.first("city")
-                                ? _c("small", [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(_vm.errors.first("city")) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-4 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("State")]),
-                              _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.newCustomer.state,
-                                      expression: "newCustomer.state"
-                                    },
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  staticClass: "custom-select w-100",
-                                  attrs: {
-                                    "data-vv-validate-on": "blur",
-                                    name: "state"
-                                  },
-                                  on: {
-                                    change: function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.$set(
-                                        _vm.newCustomer,
-                                        "state",
-                                        $event.target.multiple
-                                          ? $$selectedVal
-                                          : $$selectedVal[0]
-                                      )
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("option", { attrs: { value: "" } }, [
-                                    _vm._v("select state")
-                                  ]),
-                                  _vm._v(" "),
-                                  _vm._l(_vm.states, function(state) {
-                                    return _c(
-                                      "option",
-                                      { domProps: { value: state.name } },
-                                      [_vm._v(_vm._s(state.name))]
-                                    )
-                                  })
-                                ],
-                                2
-                              ),
-                              _vm._v(" "),
-                              _vm.errors.first("state")
-                                ? _c("small", [
-                                    _vm._v(_vm._s(_vm.errors.first("state")))
-                                  ])
-                                : _vm._e()
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "spaceAfter" }),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "form-group col-md-12 px-md-3 px-1 float-left"
-                            },
-                            [
-                              _c("label", [_vm._v("Describe Location")]),
-                              _vm._v(" "),
-                              _c("textarea", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value:
-                                      _vm.newCustomer.add_addinfo_description,
-                                    expression:
-                                      "newCustomer.add_addinfo_description"
-                                  }
-                                ],
-                                staticClass: "form-control col-sm-12",
-                                attrs: {
-                                  placeholder: "Describe the Location",
-                                  rows: "1"
-                                },
-                                domProps: {
-                                  value: _vm.newCustomer.add_addinfo_description
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.newCustomer,
-                                      "add_addinfo_description",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "spaceAfter" }),
-                          _vm._v(" "),
                           _c("h5", [_vm._v("Others")]),
                           _vm._v(" "),
                           _c(

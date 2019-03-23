@@ -964,7 +964,6 @@ exports.default = {
         updateView: function updateView(data) {
             var _this2 = this;
 
-            console.log(data);
             this.$emit('update', data.customer);
             /*$emit update event is used to send data to the parent component where this serves as a child
             * component. eg. dsa utility form. NB: The customer registration component(form)

@@ -7,7 +7,9 @@
             </ul>
             <div class="card-body pl-4 pr-4 clearfix">
                 <form @submit.prevent="register">
+                    <!--form section for register starts here-->
                     <div v-if="mode === 'register'">
+
                         <h5>Employee Details</h5>
 
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
@@ -91,8 +93,12 @@
                             <small v-if="errors.first('telephone')">{{errors.first('telephone')}}</small>
                             <small v-if="error.telephone">{{error.telephone[0]}}</small>
                         </div>
-
                         <div class="spaceAfter"></div>
+                    </div>
+                    <!--form section for register stops here-->
+
+                    <!--form section for register and update starts here-->
+                    <div v-if="mode === 'register' || $store.getters.auth('DVAAccess')">
                         <h5>Address</h5>
 
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
@@ -165,6 +171,13 @@
                         </div>
 
                         <div class="spaceAfter"></div>
+                    </div>
+                    <!--form section for register and update stops here-->
+
+                    <!--form section for register starts here-->
+                    <div v-if="mode === 'register'">
+
+
                         <h5>Others</h5>
 
                         <div class="form-group col-md-2 px-md-3 px-1 float-left">
@@ -396,7 +409,8 @@
                                            name="office_phone"
                                            placeholder="Enter Phone Number here"
                                            type="tel"
-                                           v-model="newCustomer.working_individual_Phone_number" v-validate="'required|numeric|max:11|min:11'">
+                                           v-model="newCustomer.working_individual_Phone_number"
+                                           v-validate="'required|numeric|max:11|min:11'">
                                     <small v-if="errors.first('office_phone')">
                                         {{errors.first('office_phone')}}
                                     </small>
@@ -470,7 +484,8 @@
                                     <select class="custom-select w-100"
                                             data-vv-as="work duration"
                                             data-vv-validate-on="blur"
-                                            name="work_duration" v-model="newCustomer.years_of_existence_or_work_duration" v-validate="'required'">
+                                            name="work_duration" v-model="newCustomer.years_of_existence_or_work_duration"
+                                            v-validate="'required'">
                                         <option value="">select duration</option>
                                         <option :value="duration" v-for="duration in durations">{{duration}}</option>
                                     </select>
@@ -610,7 +625,8 @@
                                            name="office_phone"
                                            placeholder="Enter Phone Number here"
                                            type="tel"
-                                           v-model="newCustomer.working_individual_Phone_number" v-validate="'required|numeric|max:11|min:11'">
+                                           v-model="newCustomer.working_individual_Phone_number"
+                                           v-validate="'required|numeric|max:11|min:11'">
                                     <small v-if="errors.first('office_phone')">
                                         {{errors.first('office_phone')}}
                                     </small>
@@ -905,9 +921,10 @@
                         </div>
 
                     </div>
+                    <!--form section for register stops here-->
 
+                    <!--form section for register and update starts here-->
                     <div class="spaceAfter"></div>
-
                     <h5>
                         <input class="form-check-input ml-1 mr-2" type="checkbox" v-model="fillWorkGuarantor"
                                value="true">Work Guarantor Personal Info
@@ -945,7 +962,8 @@
                             <label class="w-100 float-left pl-1">Relationship</label>
                             <div class="radio p-0 col-md-3 col-6 float-left" v-for="rela in relationshipWG">
                                 <input :id="rela+'wg'" :value="rela"
-                                       data-vv-as="work guarantor relationship" name="relationshipwg" type="radio" v-model="newCustomer.work_guarantor_relationship"
+                                       data-vv-as="work guarantor relationship" name="relationshipwg" type="radio"
+                                       v-model="newCustomer.work_guarantor_relationship"
                                        v-validate="'required'">
                                 <label :for="rela+'wg'">{{rela}}</label>
                             </div>
@@ -1109,7 +1127,8 @@
                             <label class="w-100 float-left pl-1">Relationship</label>
                             <div class="radio p-0 col-md-3 col-6 float-left" v-for="rela in relationshipPG">
                                 <input :id="rela+'pg'" :value="rela"
-                                       data-vv-as="personal guarantor relationship" name="relationshippg" type="radio" v-model="newCustomer.personal_guarantor_relationship"
+                                       data-vv-as="personal guarantor relationship" name="relationshippg" type="radio"
+                                       v-model="newCustomer.personal_guarantor_relationship"
                                        v-validate="'required'">
                                 <label :for="rela+'pg'">{{rela}}</label>
                             </div>
@@ -1290,6 +1309,7 @@
                         </div>
 
                     </div>
+                    <!--form section for register and update ends here-->
 
                     <hr class="style-two">
                     <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3 float-right">
@@ -1357,7 +1377,7 @@
                                 let acc = this.$editAccess(this.user, this.newCustomer);
                                 if (!acc) return this.$networkErr('edit');
                             }
-                            await post(`/api/customer${this.mode === 'update' ? '/'+this.newCustomer.id:''}`, this.newCustomer)
+                            await post(`/api/customer${this.mode === 'update' ? '/' + this.newCustomer.id : ''}`, this.newCustomer)
                                 .then(res => {
                                     Flash.setSuccess(`Customer ${this.mode}d successful! Customer ID is: ${res.data.customer.id}`, 30000);
                                     log(`${this.mode}dCustomer`, `Customer ID :${res.data.customer.id}`);
