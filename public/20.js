@@ -1,124 +1,23 @@
 webpackJsonp([20],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+   value: true
 });
-
-var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
 
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var apiLink = function apiLink(query) {
-    return "/attendance?branch=" + query.branch + "&month=" + query.month + "&year=" + query.year;
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -231,226 +130,646 @@ var apiLink = function apiLink(query) {
 //
 
 exports.default = {
-    data: function data() {
-        return {
-            columns: {},
-            show: false,
-            currAttendance: {},
-            query: {
-                month: '',
-                branch: '',
-                year: ''
-            },
-            attendances: {}
-        };
-    },
-    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        //1. make request to back-end
-        if (to.query.branch) {
-            (0, _api.get)("/api" + apiLink(to.query)).then(function (res) {
-                //2 send to the method to prepare form
-                next(function (vm) {
-                    return vm.prepareForm(res.data);
-                });
-            }).catch(function (err) {
-                next(function (vm) {
-                    return vm.handleErr(err);
-                });
-            });
-        } else next();
-    },
-    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-        var _this = this;
+   data: function data() {
 
-        this.show = false;
-        //1. make request to back-end
-        if (to.query.branch) {
-            this.$LIPS(true);
-            (0, _api.get)("/api" + apiLink(to.query)).then(function (res) {
-                //2 send to the method to prepare form
-                _this.prepareForm(res.data);
-                next();
-            }).catch(function (err) {
-                _this.handleErr(err);
-                next();
-            });
-        } else next();
-    },
-    created: function created() {
-        this.$prepareBranches();
-        var q = this.$route.query,
-            dt = new Date(),
-            year = q.year ? q.year : dt.getFullYear(),
-            month = q.month ? q.month : dt.getMonth() + 1;
-        _vue2.default.set(this.$data.query, 'year', year);
-        _vue2.default.set(this.$data.query, 'month', month >= 10 || month.length === 2 ? month : '0' + month);
-        if (this.completeQry) _vue2.default.set(this.$data.query, 'branch', q.branch);
-    },
+      return {
+         // duration: 'daily',
+         /** duration is used a to toggle the "to date"
+          * to make if disabled when the user
+          * wants a daily report*/
+         users: null,
+         report: null
+      };
+   },
 
-    /*updated() {
-        $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
-    },*/
-    methods: {
-        fetch: function fetch() {
-            var _this2 = this;
 
-            this.$validator.validateAll().then(function (result) {
-                if (result) {
-                    if (_this2.$network()) {
-                        _this2.$router.push("/hrm" + apiLink(_this2.query));
-                    } else _this2.$networkErr();
-                } else _this2.$networkErr('form');
-            });
-        },
-        prepareForm: function prepareForm(data) {
-            if (data) {
-                _vue2.default.set(this.$data, 'columns', data.columns);
-                _vue2.default.set(this.$data, 'attendances', data.attendances);
-                _vue2.default.set(this.$data.query, 'branch', data.branch[0].id);
-                this.show = true;
+   methods: {
+      initForm: function initForm() {
+         this.report = {
+            user_id: '',
+            date: this.$getDate(),
+            number_on_portal: '',
+            number_to_captain: '',
+            remark: ''
+         };
+      },
+
+
+      /*generateReport() {
+          /!** check if the required fields have a value *!/
+         this.$validator.validateAll().then(result => {
+             if (result) {
+               /!** if the result from the check is truthy*!/
+                if (this.$network()) {
+                  /!** check network connectivity*!/
+                   let branch;
+                   this.$LIPS(true);
+                   /!** check is the user select "for all branches is where value is 0"*!/
+                  if (this.report.branch.id !== 0) {
+                     /!** if it he doesnt want for all branches*!/
+                      /!** find the branch where the value of the branch input field matches with the branch id
+                      * NB: the branches are stored in the store for use globally in the app*!/
+                     branch = store.state.branches.find(obj => obj.id === this.report.branch.id);
+                      /!**when u get the branch set the report branch to the branch retrieved above*!/
+                     this.report.branch = branch;
+                  }
+                   /!** if
+                   * (
+                   *    (the duration is daily) and (the report.from is not today's date)
+                   *    (NB: this.$getDate() is a vue prototype i created to return the current date)
+                   * ) or (
+                   *    report.from is greater than report.to
+                   *    (NB: this implies that report.from must be earlier(in date) than the report to)
+                   * )
+                   * then reset the report.to to the report.from.
+                   * The above ensure
+                   * 1. that when a user selects daily that the both dates are the same date.
+                   * 2. That the report.from must be earlier(in date) than the report to
+                   * *!/
+                  if ((this.duration === 'daily' && this.report.from !== this.$getDate()) || (this.report.from > this.report.to))
+                     this.report.to = this.report.from;
+                   postD(`/api/report/daily`, this.report)
+                     .then(res => {
+                         const url = window.URL.createObjectURL(new Blob([res.data]));
+                         const link = document.createElement('a');
+                         link.href = url;
+                         link.setAttribute('download',
+                            `report from ${this.report.from} to ${this.report.to}.xlsx`);
+                         document.body.appendChild(link);
+                         link.click();
+                         this.$LIPS(false);
+                     });
+               } else this.$networkErr();
             }
-            this.$LIPS(false);
-        },
-        handleErr: function handleErr(e) {
-            _flash2.default.setError('Error Fetching Attendance');
-        },
-        isPresent: function isPresent(userAtt, day) {
-            var bool = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+            if (!result) this.$networkErr('form');
+         });
+      },*/
 
-            var date = day ? day.fullDate : null,
-                data = null;
-            var c = userAtt.attendances.filter(function (att) {
-                return att.date === date;
-            });
-            if (c.length > 0) data = bool ? c[0][bool] : c[0].is_present ? 'P' : 'A';
-            return data;
-        },
-        earlyOrLate: function earlyOrLate(userAtt, day) {
-            var data = [];
-            var attendance = userAtt.attendances.filter(function (att) {
-                return att.date === day.fullDate;
-            });
-            if (attendance.length) {
-                /*if (attendance[0].arrival_time > '09:00') {
-                    data[0] = 'arrLate';
-                } else {
-                    data[0] = 'arrEarly';
-                }*/
+      submitReport: function submitReport() {
+         var _this = this;
 
-                data[0] = attendance[0].arrival_time > '09:00' ? 'arrLate' : 'arrEarly';
-
-                if (attendance[0].departure_time) {
-                    /*if (attendance[0].departure_time < '18:00') {
-                        data[1] = 'leftEarly'
-                    } else {
-                        data[1] = 'leftLate'
-                    }*/
-
-                    data[1] = attendance[0].departure_time < '18:00' ? 'leftEarly' : 'leftLate';
-                } else data[1] = 'didNotSignOut';
+         /** validate form*/
+         this.$validator.validateAll().then(function (result) {
+            /** if validation is successful*/
+            if (result) {
+               /** check is network is available*/
+               if (_this.$network()) {
+                  /** if network is available*/
+                  _this.$LIPS(true);
+                  /** make a request to the backend*/
+                  (0, _api.post)('/api/dsa_daily_registration', _this.report).then(function (res) {
+                     document.getElementById('dsaDailyReportForm').reset();
+                     _this.$validator.reset();
+                     _this.initForm();
+                     _this.$scrollToTop();
+                     _this.$LIPS(false);
+                     if (res.data.submitted) _flash2.default.setSuccess(res.data.message);
+                  }).catch(function () {
+                     return _flash2.default.setError('Error logging report please try again later!');
+                  });
+               } else _this.$networkErr();
             }
-            return data;
-        },
-        checkClass: function checkClass(userAtt, day) {
-            var theClass = void 0,
-                isPresent = this.isPresent(userAtt, day);
-            var erl = this.earlyOrLate(userAtt, day);
-            if (['Sun', 'Sat'].includes(day.dayString)) {
-                theClass = 'weekend';
-            } else {
-                //arrEarly arrLate leftEarly leftLate
-                if (isPresent === 'P') {
-                    //theClass = 'present';
-                    if (erl.length) {
-                        theClass = erl.join(' ');
-                    }
-                } else {
-                    if (isPresent === 'A') {
-                        theClass = 'absent';
-                    } else {
-                        theClass = '';
-                    }
-                }
-            }
-            return theClass;
-        },
+            if (!result) _this.$networkErr('form');
+         });
+      }
+   },
+
+   created: function created() {
+      var _this2 = this;
+
+      /** get the details of the current user */
+      /*get(`/api/user/${this.$store.state.user_id}`)
+         .then(res => this.report.branch = res.data.user.branch);*/
+      this.initForm();
+      (0, _api.get)('/api/user/getBranchUsers').then(function (res) {
+         return _this2.users = res.data.DSAs;
+      });
+
+      /** set the branch for the daily report form to the current users branch.
+       * This is to reduce the time the user spend on selecting
+       * options on the form*/
+   },
 
 
-        /*getRemark(userAtt, day) {
-            let att = userAtt.attendances.find(obj => obj.date === day.fullDate);
-            return att ? `${att.remark ? 'Remark: <b class="text_align-left">' + att.remark + '</b><br>' : ''}` : ``;
-        },*/
-
-        /*getTitle(userAtt, day) {
-            let arrival, departure, aTime, aTimeCon, dTime, dTimeCon, status, isPresent, remark;
-            aTime = this.isPresent(userAtt, day, 'arrival_time');
-            dTime = this.isPresent(userAtt, day, 'departure_time');
-            isPresent = this.isPresent(userAtt, day, 'is_present');
-            remark = this.getRemark(userAtt, day);
-            aTimeCon = this.$timeConvert(aTime);
-            dTimeCon = this.$timeConvert(dTime);
-            status = isPresent ? `Present<br>` : ``;
-            arrival = aTime ? `Arrival Time : ${aTimeCon}<br>` : ``;
-            departure = dTime ? `Departure Time: ${dTimeCon}<br>` : ``;
-            return arrival || remark ? `${arrival} ${departure} ${status} ${remark}` : null;
-        },*/
-
-        toggleGuide: function toggleGuide() {
-            $('#table-guide').slideToggle();
-        },
-        displayInfo: function displayInfo(userAtt, day) {
-            var date = day ? day.fullDate : null,
-                c = void 0;
-            c = userAtt.attendances.filter(function (att) {
-                return att.date === date;
-            });
-            _vue2.default.set(this.$data, 'currAttendance', c[0] ? c[0] : null);
-            return $("#viewAttendance").modal('toggle');
-        }
-    },
-    computed: {
-        completeQry: function completeQry() {
-            return this.$route.query.year && this.$route.query.month && this.$route.query.branch;
-        },
-        title: function title() {
-            var att = 'Attendance';
-            if (this.completeQry) {
-                var qryMonth = this.$route.query.month,
-                    qryYear = this.$route.query.year;
-                var month = qryMonth ? ' - ' + this.$store.getters.getMonths[parseInt(qryMonth) - 1].name : '';
-                att += " " + month + " " + (qryYear ? qryYear : '');
-            }
-            return att;
-        }
-    },
-    mounted: function mounted() {
-        var _this3 = this;
-
-        $(document).on("hidden.bs.modal", '.modal', function () {
-            return _this3.currAttendance = {};
-        });
-        this.toggleGuide();
-    }
+   watch: {
+      /* duration: function (val) {
+          /!** ifi the current option select by the user is "daily" set the TO to current date*!/
+           if (val === 'daily') this.report.to = this.$getDate();
+       }*/
+   }
 };
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/report.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
+"use strict";
 
 
-// module
-exports.push([module.i, "\n#table-guide td {\n    width        : 6rem;\n    text-align   : center;\n    height       : unset;\n    float        : left;\n    margin-right : 1rem;\n}\n#table-guide td span {\n    margin-bottom : 1rem;\n    line-height   : 2;\n    float         : left;\n    width         : 100%;\n}\n#table-guide > div > div {\n    padding : 0 4rem 3rem;\n}\n", ""]);
+Object.defineProperty(exports, "__esModule", {
+   value: true
+});
 
-// exports
+var _dailyReport = __webpack_require__("./resources/assets/js/views/DSA/report/dailyReport.vue");
 
+var _dailyReport2 = _interopRequireDefault(_dailyReport);
+
+var _store = __webpack_require__("./resources/assets/js/store/store.js");
+
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+   components: { DailyReport: _dailyReport2.default },
+   beforeCreate: function beforeCreate() {
+      if (!this.$store.getters.verifyDSACaptain) this.$networkErr('page');
+      /** this component can only be accessed by the dsa leads and captains hence this route guard
+      * if the role of the dsa agent logged in is contained in the
+      * array of the dsa lead then access will be granted*/
+      this.$prepareBranches();
+   },
+   data: function data() {
+      return {
+         types: [{
+            name: "sales report",
+            slug: "sales_report"
+         }, {
+            name: "score card",
+            slug: "score_card"
+         }, {
+            name: "weekly operations",
+            slug: "weekly_operations"
+         }],
+         report: {
+            to: '',
+            from: '',
+            branch: {
+               id: '',
+               name: ''
+            },
+            employee: '',
+            type: ''
+         }
+      };
+   },
+   created: function created() {
+      this.setDates();
+   },
+
+   methods: {
+      generateReport: function generateReport() {
+         var _this = this;
+
+         this.$validator.validateAll().then(function (result) {
+            if (result) {
+               if (_this.$network()) {
+                  var branch = _store.store.state.branches.find(function (obj) {
+                     return obj.id === _this.report.branch.id;
+                  });
+                  _this.report.branch = branch;
+                  (0, _api.postD)('/api/report', _this.report).then(function (res) {
+                     var url = window.URL.createObjectURL(new Blob([res.data]));
+                     var link = document.createElement('a');
+                     link.href = url;
+                     link.setAttribute('download', _this.report.type + '_for_' + branch.name + '.xlsx');
+                     document.body.appendChild(link);
+                     link.click();
+                  });
+               } else _this.$networkErr();
+            }
+            if (!result) _this.$networkErr('form');
+         });
+      },
+      setDates: function setDates() {
+         /** this function computes and set the FROM and TO date to the
+          * Monday and Friday of the current Week
+          * PURPOSE: For better UX */
+         var toTwoDigs = function toTwoDigs(num) {
+            return num < 10 ? '0' + num : num;
+         };
+         var reformatDate = function reformatDate(d) {
+            return d.getFullYear() + '-' + toTwoDigs(d.getMonth() + 1) + '-' + toTwoDigs(d.getDate());
+         },
+             d = new Date(),
+             day = d.getDay(),
+             diff = d.getDate() - day + (day === 0 ? -6 : 1),
+             m = new Date(d.setDate(diff)),
+             f = new Date();
+         f.setDate(m.getDate() + 5);
+         this.report.from = m = reformatDate(m);
+         this.report.to = f = reformatDate(f);
+         /** this function returns the monday ie this.report.from
+         * and the saturday of the : this.report.to of the
+         * current week*/
+      }
+   }
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-92afc2ae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4e31093c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body px-4" }, [
+      _c(
+        "form",
+        {
+          attrs: { id: "dsaDailyReportForm" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.submitReport($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "my-4 clearfix" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("DSA (Name-ID)")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.report.user_id,
+                        expression: "report.user_id"
+                      },
+                      {
+                        name: "validate",
+                        rawName: "v-validate",
+                        value: "required",
+                        expression: "'required'"
+                      }
+                    ],
+                    staticClass: "custom-select w-100",
+                    attrs: { "data-vv-validate-on": "blur", name: "dsa" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.report,
+                          "user_id",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [
+                      _vm._v("select DSA")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.users, function(user) {
+                      return _c("option", { domProps: { value: user.id } }, [
+                        _vm._v(
+                          _vm._s(user.full_name + " - (" + user.staff_id + ")")
+                        )
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _vm.errors.first("dsa")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("dsa")))])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Date")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.date,
+                      expression: "report.date"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|date_format:MM/DD/YYYY",
+                      expression: "'required|date_format:MM/DD/YYYY'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { name: "date", type: "date" },
+                  domProps: { value: _vm.report.date },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.report, "date", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("date")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("date")))])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Number of forms registered on portal")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.number_on_portal,
+                      expression: "report.number_on_portal"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|integer|min:0",
+                      expression: "'required|integer|min:0'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    "data-vv-as": "number on portal",
+                    name: "number_on_portal",
+                    type: "number"
+                  },
+                  domProps: { value: _vm.report.number_on_portal },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.report,
+                        "number_on_portal",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("number_on_portal")
+                  ? _c("small", [
+                      _vm._v(_vm._s(_vm.errors.first("number_on_portal")))
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", [_vm._v("Number of forms submitted to captain")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.number_to_captain,
+                      expression: "report.number_to_captain"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|integer|min:0",
+                      expression: "'required|integer|min:0'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    "data-vv-as": "number to captain",
+                    name: "number_to_captain",
+                    type: "number"
+                  },
+                  domProps: { value: _vm.report.number_to_captain },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.report,
+                        "number_to_captain",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("number_to_captain")
+                  ? _c("small", [
+                      _vm._v(_vm._s(_vm.errors.first("number_to_captain")))
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "spaceAfter" }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+              },
+              [
+                _c("label", { staticClass: "w-100 float-left" }, [
+                  _vm._v("Remark/Comment")
+                ]),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.report.remark,
+                      expression: "report.remark"
+                    },
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|max:255",
+                      expression: "'required|max:255'"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { cols: "3", name: "remark" },
+                  domProps: { value: _vm.report.remark },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.report, "remark", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.first("remark")
+                  ? _c("small", [_vm._v(_vm._s(_vm.errors.first("remark")))])
+                  : _vm._e()
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4" },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-block btn-lg bg-default",
+                  attrs: { disabled: _vm.$isProcessing, type: "submit" }
+                },
+                [
+                  _vm._v("\n               Log Report "),
+                  _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                ]
+              )
+            ]
+          )
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      { staticClass: "nav nav-tabs justify-content-center bg-default" },
+      [_c("h6", [_vm._v("Daily Report (Captains)")])]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4e31093c", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53ac12f5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/report.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -460,516 +779,348 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
-      {
-        staticClass: "pt-md-3 pt-2 attendance attendance-view",
-        attrs: { id: "index" }
-      },
+      { staticClass: "pt-md-3 pt-2", attrs: { id: "employeeRegister" } },
       [
-        _c("div", { staticClass: "mt-5 attendance-head" }, [
-          _c("div", { staticClass: "mb-5 row align-items-center" }, [
-            _c("div", { staticClass: "col-12 title-con" }, [
-              _c("span", { staticClass: "title" }, [_vm._v(_vm._s(_vm.title))]),
+        _vm.$store.getters.verifyDSALead
+          ? _c("div", { staticClass: "card" }, [
+              _c(
+                "ul",
+                {
+                  staticClass: "nav nav-tabs justify-content-center bg-default"
+                },
+                [_c("h6", [_vm._v("Report Generation")])]
+              ),
               _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-end" }, [
+              _c("div", { staticClass: "card-body px-4" }, [
                 _c(
-                  "a",
+                  "form",
                   {
-                    staticClass: "text-link mt-3",
-                    attrs: { href: "javascript:" },
                     on: {
-                      click: function($event) {
-                        _vm.$router.push("attendance/create")
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.generateReport($event)
                       }
                     }
                   },
                   [
-                    _vm._v(
-                      "\n                            click here to create attendance!"
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("span", { staticClass: "mx-4 mt-3" }, [_vm._v("||")]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-link mt-3",
-                    attrs: { href: "javascript:" },
-                    on: { click: _vm.toggleGuide }
-                  },
-                  [_vm._v("\n                            view table guide!")]
-                )
-              ])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "attendance-body", attrs: { id: "table-guide" } },
-          [
-            _c(
-              "div",
-              {
-                staticClass: "pt-5 row bg-white shadow-sm",
-                staticStyle: { "border-radius": ".5rem" }
-              },
-              [
-                _c("div", [
-                  _c("td", { staticClass: "arrEarly leftLate" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [
-                    _vm._v("In before/at 9:00am "),
-                    _c("br"),
-                    _vm._v(" Out after/at 6:00pm")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("td", { staticClass: "arrEarly leftEarly" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [
-                    _vm._v("In before/at 9:00am  "),
-                    _c("br"),
-                    _vm._v(" Out Before 6:00pm")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("td", { staticClass: "arrLate leftLate" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "d-inline-block" }, [
-                    _vm._v("In after 9:00am  "),
-                    _c("br"),
-                    _vm._v(" Out after/at 6:00pm")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("td", { staticClass: "arrLate leftEarly" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "d-inline-block" }, [
-                    _vm._v("In after 9:00am  "),
-                    _c("br"),
-                    _vm._v(" Out before 6:00pm")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("td", { staticClass: "absent" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("Absent")])
-                ])
-              ]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "mt-5 row attendance-head" },
-          _vm._l(["Branch", "Month", "Year"], function(capt) {
-            return _c("div", { staticClass: "col-4 col-sm-3" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "light-heading" }, [
-                  _c("span", { staticClass: "d-none d-sm-inline" }, [
-                    _vm._v("Select")
-                  ]),
-                  _vm._v(" " + _vm._s(capt))
-                ])
-              ])
-            ])
-          })
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "mt-2 mt-lg-3 row attendance-head" },
-          [
-            _vm._l(["branch", "month", "year"], function(caption) {
-              return _c("div", { staticClass: "col-4 col-sm-3" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
+                    _c("div", { staticClass: "my-4 clearfix" }, [
+                      _c(
+                        "div",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.query[caption],
-                          expression: "query[caption]"
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
                         },
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      staticClass: "custom-select",
-                      attrs: { name: caption, "data-vv-validate-on": "blur" },
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.query,
-                            caption,
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        }
-                      }
-                    },
-                    [
-                      _c(
-                        "option",
-                        { attrs: { disabled: "", selected: "", value: "" } },
-                        [_vm._v(_vm._s(caption))]
-                      ),
-                      _vm._v(" "),
-                      _vm._l(_vm.$store.getters.getBranches, function(branch) {
-                        return caption === "branch"
-                          ? _c("option", { domProps: { value: branch.id } }, [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(_vm._f("capitalize")(branch.name)) +
-                                  "\n                        "
-                              )
-                            ])
-                          : _vm._e()
-                      }),
-                      _vm._v(" "),
-                      _vm._l(_vm.$store.getters.getMonths, function(month) {
-                        return caption === "month"
-                          ? _c("option", { domProps: { value: month.id } }, [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(month.name) +
-                                  "\n                        "
-                              )
-                            ])
-                          : _vm._e()
-                      }),
-                      _vm._v(" "),
-                      _vm._l(_vm.$store.getters.getYears, function(year) {
-                        return caption === "year"
-                          ? _c("option", { domProps: { value: year } }, [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(year) +
-                                  "\n                        "
-                              )
-                            ])
-                          : _vm._e()
-                      })
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _vm.errors.first(caption)
-                    ? _c("small", { staticClass: "text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first(caption)))
-                      ])
-                    : _vm._e()
-                ])
-              ])
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 col-sm-3" }, [
-              _c("div", { staticClass: "row d-flex justify-content-end" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary bg-default mt-0 myBtn",
-                    on: {
-                      click: function($event) {
-                        _vm.fetch()
-                      }
-                    }
-                  },
-                  [_vm._v("View Attendance")]
-                )
-              ])
-            ])
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "attendance-body" }, [
-          _vm.show
-            ? _c("div", { staticClass: "mt-5 row" }, [
-                _c("div", { staticClass: "card" }, [
-                  _c("div", { staticClass: "image-and-names float-left" }, [
-                    _c("table", { staticClass: "table table-names" }, [
-                      _c("thead", [
-                        _c("tr", [
-                          _c("th", { staticClass: "ml-5" }, [
-                            _vm._v("Employee Name")
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(_vm.attendances, function(user) {
-                          return _c("tr", [
-                            _c("td", [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "row align-items-center m-0 user-details"
-                                },
-                                [
-                                  _c("span", { staticClass: "user mx-auto" }, [
-                                    _c("i", {
-                                      staticClass: "user-icon fas fa-user-alt"
-                                    })
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: " col user-name" }, [
-                                    _vm._v(_vm._s("" + user.full_name))
-                                  ])
-                                ]
-                              )
-                            ])
-                          ])
-                        })
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "float-left daily-attendance" }, [
-                    _c(
-                      "table",
-                      { staticClass: "table table-details table-bordered" },
-                      [
-                        _c("thead", [
+                        [
+                          _c("label", [_vm._v("Report Type")]),
+                          _vm._v(" "),
                           _c(
-                            "tr",
-                            _vm._l(_vm.columns, function(col) {
-                              return _c("th", { staticClass: "text-center" }, [
-                                _c("span", [
-                                  _vm._v(_vm._s(col.month + " " + col.date))
-                                ]),
-                                _c("br"),
-                                _c(
-                                  "span",
-                                  { staticClass: "light-heading day" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s("" + col.dayString) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              ])
-                            })
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          _vm._l(_vm.attendances, function(userAtt) {
-                            return _c(
-                              "tr",
-                              _vm._l(_vm.columns, function(day) {
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.report.type,
+                                  expression: "report.type"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "custom-select w-100",
+                              attrs: {
+                                "data-vv-as": "report type",
+                                "data-vv-validate-on": "blur",
+                                name: "report_type"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.report,
+                                    "type",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "" } }, [
+                                _vm._v("select type")
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.types, function(type) {
                                 return _c(
-                                  "td",
-                                  {
-                                    class: _vm.checkClass(userAtt, day),
-                                    on: {
-                                      click: function($event) {
-                                        _vm.displayInfo(userAtt, day)
-                                      }
-                                    }
-                                  },
+                                  "option",
+                                  { domProps: { value: type.slug } },
                                   [
                                     _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(_vm.isPresent(userAtt, day)) +
-                                        "\n                                "
+                                      _vm._s(_vm._f("capitalize")(type.name))
                                     )
                                   ]
                                 )
                               })
-                            )
-                          })
-                        )
-                      ]
-                    )
-                  ])
-                ])
-              ])
-            : _c("div", { staticClass: "row attendance-item p-5 my-5" }, [
-                _c("span", { staticClass: "no-attendance" }, [
-                  _vm._v(
-                    "Kindly Select Branch, Month and, Year to get started!"
-                  )
-                ])
-              ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "modal fade", attrs: { id: "viewAttendance" } },
-          [
-            _c(
-              "div",
-              { staticClass: "modal-dialog", attrs: { role: "document" } },
-              [
-                _c("div", { staticClass: "modal-content" }, [
-                  _c("div", { staticClass: "modal-header py-2" }, [
-                    _c("h6", { staticClass: "modal-title py-1" }, [
-                      _vm._v("Attendance")
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _vm.errors.first("report_type")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("report_type")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Branch")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.report.branch.id,
+                                  expression: "report.branch.id"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "custom-select w-100",
+                              attrs: {
+                                "data-vv-as": "office branch",
+                                name: "branch_id",
+                                "data-vv-validate-on": "blur"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.report.branch,
+                                    "id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "" } }, [
+                                _vm._v("select branch")
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.$store.state.branches, function(
+                                branch
+                              ) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: branch.id } },
+                                  [
+                                    _vm._v(
+                                      "\n                           " +
+                                        _vm._s(branch.name) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _vm.errors.first("branch_id")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("branch_id")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Date from:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.report.from,
+                                expression: "report.from"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|date_format:MM/DD/YYYY",
+                                expression: "'required|date_format:MM/DD/YYYY'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "date",
+                              "data-vv-as": "Date from",
+                              name: "date_from"
+                            },
+                            domProps: { value: _vm.report.from },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.report,
+                                  "from",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("date_from")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("date_from")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group col-md-3 col-sm-6 px-md-3 px-1 float-left"
+                        },
+                        [
+                          _c("label", [_vm._v("Date To:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.report.to,
+                                expression: "report.to"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required|date_format:MM/DD/YYYY",
+                                expression: "'required|date_format:MM/DD/YYYY'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "date",
+                              "data-vv-as": "Date to",
+                              name: "date_to"
+                            },
+                            domProps: { value: _vm.report.to },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.report, "to", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.first("date_to")
+                            ? _c("small", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.errors.first("date_to")) +
+                                    "\n                     "
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      )
                     ]),
                     _vm._v(" "),
                     _c(
-                      "a",
+                      "div",
                       {
-                        staticClass: "close py-1",
-                        attrs: {
-                          "aria-label": "Close",
-                          "data-dismiss": "modal"
-                        }
+                        staticClass:
+                          "col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4"
                       },
                       [
                         _c(
-                          "span",
+                          "button",
                           {
-                            staticClass: "modal-close text-danger",
-                            attrs: { "aria-hidden": "true" }
+                            staticClass: "btn btn-block btn-lg bg-default",
+                            attrs: {
+                              type: "submit",
+                              disabled: _vm.$isProcessing
+                            }
                           },
-                          [_c("i", { staticClass: "fas fa-times" })]
+                          [
+                            _vm._v("\n                     Generate Report "),
+                            _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                          ]
                         )
                       ]
                     )
-                  ]),
-                  _vm._v(" "),
-                  _c("form", [
-                    _c("div", { staticClass: "modal-body" }, [
-                      _vm.currAttendance
-                        ? _c("div", { staticClass: "px-2" }, [
-                            _c("div", { staticClass: "px-4" }, [
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [
-                                  _c("strong", [_vm._v("Status : ")])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.currAttendance.is_present
-                                        ? "Present"
-                                        : "Absent"
-                                    )
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [
-                                  _c("strong", [_vm._v("Arrival Time : ")])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.$timeConvert(
-                                        _vm.currAttendance.arrival_time
-                                      )
-                                    )
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [
-                                  _c("strong", [_vm._v("Departure time : ")])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.$timeConvert(
-                                        _vm.currAttendance.departure_time
-                                      )
-                                    )
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [_c("strong", [_vm._v("Date : ")])]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(_vm._s(_vm.currAttendance.date))
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [
-                                  _c("strong", [_vm._v("Remark : ")])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(_vm._s(_vm.currAttendance.remark))
-                                ])
-                              ])
-                            ])
-                          ])
-                        : _c("div", { staticClass: "px-2" }, [
-                            _c("div", { staticClass: "px-4 row" }, [
-                              _c("span", [_c("strong", [_vm._v("Status : ")])]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "col" }, [
-                                _vm._v("No Attendance")
-                              ])
-                            ])
-                          ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "modal-footer" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "text-link mt-3 w-100",
-                          staticStyle: { "text-align": "right" },
-                          attrs: {
-                            "data-dismiss": "modal",
-                            href: "javascript:"
-                          }
-                        },
-                        [_vm._v("close dialogue")]
-                      )
-                    ])
-                  ])
-                ])
-              ]
-            )
-          ]
-        )
-      ]
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.$store.getters.verifyDSACaptain ? _c("daily-report") : _vm._e()
+      ],
+      1
     )
   ])
 }
@@ -979,56 +1130,25 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-92afc2ae", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-53ac12f5", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3dab5bf4", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ "./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ "./resources/assets/js/views/DSA/report/dailyReport.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
-}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-92afc2ae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4e31093c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/dailyReport.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -1041,7 +1161,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\attendance\\index.vue"
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\report\\dailyReport.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1050,9 +1170,57 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-92afc2ae", Component.options)
+    hotAPI.createRecord("data-v-4e31093c", Component.options)
   } else {
-    hotAPI.reload("data-v-92afc2ae", Component.options)
+    hotAPI.reload("data-v-4e31093c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/DSA/report/report.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/report/report.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53ac12f5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/report/report.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\report\\report.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-53ac12f5", Component.options)
+  } else {
+    hotAPI.reload("data-v-53ac12f5", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

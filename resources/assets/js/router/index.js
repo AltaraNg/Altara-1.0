@@ -40,11 +40,13 @@ const BranchForm = () => import('../views/FSL/branch/form.vue');
 const Attendance = () => import('../views/FSL/attendance/index.vue');
 const AttendanceForm = () => import('../views/FSL/attendance/form.vue');
 
-const Inventory = () => import('../views/FSL/inventory/inventory.vue');
-const SuppliersForm = () => import('../views/FSL/supplier/form.vue');
-const BrandForm = () => import('../views/FSL/brand/form.vue');
-const CategoryForm = () => import('../views/FSL/category/form.vue');
-const ProductForm = () => import('../views/FSL/product/form.vue');
+const LOG = () => import('../views/LOG/index.vue');
+const LOGHome = () => import('../views/LOG/HomePage.vue');
+const Inventory = () => import('../views/LOG/inventory/inventory.vue');
+const SuppliersForm = () => import('../views/LOG/supplier/form.vue');
+const BrandForm = () => import('../views/LOG/brand/form.vue');
+const CategoryForm = () => import('../views/LOG/category/form.vue');
+const ProductForm = () => import('../views/LOG/product/form.vue');
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -103,10 +105,16 @@ const router = new VueRouter({
         {
             path: '/fsl', component: FSL, meta: {FSL: true}, children: [
                 {path: 'home', component: FSLHome, name: 'FSLHome'},
-                {path: 'inventory', component: Inventory, name: 'inventory'},
-                {path: 'branch', component: DataViewer, meta: {appModel: 'branch', source: '/api/branch', new: '/fsl/branch'}},
+                {path: 'branch', component: DataViewer, meta: {appModel: 'branch', source: '/api/branch', new: '/log/branch'}},
                 {path: 'branch/:id/edit', component: BranchForm, meta: {mode: 'edit'}},
                 {path: 'branch/create', component: BranchForm, meta: {mode: 'create'}},
+                {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateFsl', meta: {mode: 'create'}}
+            ]
+        },
+        {
+            path: '/log', component: LOG, meta: {LOG: true}, children: [
+                {path: 'home', component: LOGHome, name: 'LOGHome'},
+                {path: 'inventory', component: Inventory, name: 'inventory'},
                 {path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: {mode: 'edit'}},
                 {path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: {mode: 'create'}},
                 {path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: {mode: 'edit'}},
@@ -115,9 +123,9 @@ const router = new VueRouter({
                 {path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: {mode: 'create'}},
                 {path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: {mode: 'edit'}},
                 {path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: {mode: 'create'}},
-                {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateFsl', meta: {mode: 'create'}}
             ]
         },
+
         {path: '/customer', component: DataViewer, meta: {appModel: 'customer', source: '/api/customer', new: '/dsa/customer'}},
         {path: '/customer/:id', component: CustomerProfile, meta: {mode: 'full'}},
         {path: '/not-found', component: NotFound},

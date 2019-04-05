@@ -1,13 +1,13 @@
 webpackJsonp([30],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/brand/form.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+   value: true
 });
 
 var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
@@ -17,83 +17,82 @@ var _vue2 = _interopRequireDefault(_vue);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    props: {},
-    data: function data() {
-        return {
-            form: {
-                brand_id: 'BR-0001', //Expected to come from a counter in the db
-                brand_name: null
-            },
-            mode: null,
-            error: {},
-            show: false,
-            resource: 'brands',
-            store: '/api/brands',
-            method: 'POST',
-            title: 'Create'
-        };
-    },
-    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        //1. make request to back end for the form to be used
+   props: {},
+   data: function data() {
+      return {
+         form: {
+            category_id: 'CT-0001', //Expected to come from a counter in the db
+            category_name: null
+         },
+         mode: null,
+         error: {},
+         show: false,
+         resource: 'categories',
+         store: '/api/categories',
+         method: 'POST',
+         title: 'Create'
+      };
+   },
+   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+      //1. make request to back end for the form to be used
 
-        //2 send to the method in this component that will handle it when component is created
+      //2 send to the method in this component that will handle it when component is created
 
+      //3. set the current mode of the form
+      next(function (vm) {
+         return vm.setMode(to.meta.mode);
+      });
+   },
+   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+      //1. make request to back end for the form to be used
 
-        //3. set the current mode of the form
-        next(function (vm) {
-            return vm.setMode(to.meta.mode);
-        });
-    },
-    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-        //1. make request to back end for the form to be used
+      //2 send to the method in this component that will handle it when component is created
 
-        //2 send to the method in this component that will handle it when component is created
+      //3. Edit data that will be used for api update call
+      this.store = '/api/category/' + this.$route.params.id;
+      this.method = 'PUT';
 
-        //3. Edit data that will be used for api update call
-        this.store = '/api/brands/' + this.$route.params.id;
-        this.method = 'PUT';
+      //3. set the current mode of the form
+      this.setMode(to.meta.mode);
+      next();
+   },
 
-        //3. set the current mode of the form
-        this.setMode(to.meta.mode);
-        next();
-    },
+   methods: {
+      setMode: function setMode(mode) {
+         this.show = false;
+         /** set the current mode of the form*/
+         _vue2.default.set(this.$data, 'mode', mode);
+      },
+      onCancel: function onCancel() {},
+      onSave: function onSave() {
+         var _this = this;
 
-    methods: {
-        setMode: function setMode(mode) {
-            this.show = false;
-            /** set the current mode of the form*/
-            _vue2.default.set(this.$data, 'mode', mode);
-        },
-        onCancel: function onCancel() {},
-        onSave: function onSave() {
-            var _this = this;
+         /** 1. Validate form*/
+         this.$validator.validateAll().then(function (result) {
+            /** 2.if validation is successful*/
+            if (result) {
+               /** 3. Check is there is network*/
+               if (_this.$network()) {
+                  //There is network
+                  /** 4. Show loader and set isProcessing to true*/
+                  _this.$LIPS(true);
+                  /** 5. Clear errors*/
+                  _this.error = {};
+                  /** 6 make request to BE*/
+                  console.log(_this.form);
 
-            /** 1. Validate form*/
-            this.$validator.validateAll().then(function (result) {
-                /** 2.if validation is successful*/
-                if (result) {
-                    /** 3. Check is there is network*/
-                    if (_this.$network()) {
-                        //There is network
-                        /** 4. Show loader and set isProcessing to true*/
-                        _this.$LIPS(true);
-                        /** 5. Clear errors*/
-                        _this.error = {};
-                        /** 6 make request to BE*/
-                        console.log(_this.form);
+                  _this.$LIPS(false);
 
-                        _this.$LIPS(false);
+                  /** 7. Log the process*/
 
-                        /** 7. Log the process*/
+                  /** 8. Throw success message*/
 
-                        /** 8. Throw success message*/
-
-                        /** 9. Take to the page view of the current supplier created*/
-                    } else _this.$networkErr();
-                } else _this.$networkErr('form');
-            });
-        }
-    }
+                  /** 9. Take to the page view of the current supplier created*/
+               } else _this.$networkErr();
+            } else _this.$networkErr('form');
+         });
+      }
+   }
 }; //
 //
 //
@@ -144,7 +143,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4cd41d03\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/brand/form.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0e6ca50d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -160,7 +159,7 @@ var render = function() {
           _c(
             "ul",
             { staticClass: "nav nav-tabs justify-content-center bg-default" },
-            [_c("h6", [_vm._v(_vm._s(_vm.mode) + " Brand")])]
+            [_c("h6", [_vm._v(_vm._s(_vm.mode) + " Category")])]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "card-body pl-4 pr-4" }, [
@@ -175,7 +174,7 @@ var render = function() {
                 }
               },
               [
-                _c("h5", [_vm._v("Brand Details")]),
+                _c("h5", [_vm._v("Category Details")]),
                 _vm._v(" "),
                 _c("div", { staticClass: "clearfix" }, [
                   _c(
@@ -185,15 +184,15 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Brand ID")]),
+                      _c("label", [_vm._v("Category ID")]),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.brand_id,
-                            expression: "form.brand_id"
+                            value: _vm.form.category_id,
+                            expression: "form.category_id"
                           },
                           {
                             name: "validate",
@@ -204,26 +203,30 @@ var render = function() {
                         ],
                         staticClass: "form-control",
                         attrs: {
-                          "data-vv-as": "brand id",
-                          disabled: "",
-                          name: "brand_id",
-                          placeholder: "brand id",
-                          type: "text"
+                          "data-vv-as": "category id",
+                          name: "category_id",
+                          placeholder: "category id",
+                          type: "text",
+                          disabled: ""
                         },
-                        domProps: { value: _vm.form.brand_id },
+                        domProps: { value: _vm.form.category_id },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.form, "brand_id", $event.target.value)
+                            _vm.$set(
+                              _vm.form,
+                              "category_id",
+                              $event.target.value
+                            )
                           }
                         }
                       }),
                       _vm._v(" "),
-                      _vm.errors.first("brand_id")
+                      _vm.errors.first("category_id")
                         ? _c("small", [
-                            _vm._v(_vm._s(_vm.errors.first("brand_id")))
+                            _vm._v(_vm._s(_vm.errors.first("category_id")))
                           ])
                         : _vm._e()
                     ]
@@ -236,15 +239,15 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Brand name")]),
+                      _c("label", [_vm._v("Category name")]),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.brand_name,
-                            expression: "form.brand_name"
+                            value: _vm.form.category_name,
+                            expression: "form.category_name"
                           },
                           {
                             name: "validate",
@@ -255,12 +258,12 @@ var render = function() {
                         ],
                         staticClass: "form-control",
                         attrs: {
-                          "data-vv-as": "brand name",
-                          name: "brand_name",
-                          placeholder: "brand name",
+                          "data-vv-as": "category name",
+                          name: "category_name",
+                          placeholder: "category name",
                           type: "text"
                         },
-                        domProps: { value: _vm.form.brand_name },
+                        domProps: { value: _vm.form.category_name },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
@@ -268,16 +271,16 @@ var render = function() {
                             }
                             _vm.$set(
                               _vm.form,
-                              "brand_name",
+                              "category_name",
                               $event.target.value
                             )
                           }
                         }
                       }),
                       _vm._v(" "),
-                      _vm.errors.first("brand_name")
+                      _vm.errors.first("category_name")
                         ? _c("small", [
-                            _vm._v(_vm._s(_vm.errors.first("brand_name")))
+                            _vm._v(_vm._s(_vm.errors.first("category_name")))
                           ])
                         : _vm._e()
                     ]
@@ -322,9 +325,9 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                                " +
+                              "\n                        " +
                                 _vm._s(_vm._f("capitalize")(_vm.mode)) +
-                                " Brand "
+                                " Category "
                             ),
                             _c("i", { staticClass: "far fa-paper-plane ml-1" })
                           ]
@@ -347,21 +350,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4cd41d03", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-0e6ca50d", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/FSL/brand/form.vue":
+/***/ "./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/brand/form.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/category/form.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4cd41d03\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/brand/form.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0e6ca50d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/category/form.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -378,7 +381,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\brand\\form.vue"
+Component.options.__file = "resources\\assets\\js\\views\\LOG\\category\\form.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -387,9 +390,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4cd41d03", Component.options)
+    hotAPI.createRecord("data-v-0e6ca50d", Component.options)
   } else {
-    hotAPI.reload("data-v-4cd41d03", Component.options)
+    hotAPI.reload("data-v-0e6ca50d", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

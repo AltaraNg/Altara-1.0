@@ -28,6 +28,8 @@ export const store = new Vuex.Store({
         FSLLead: [1, 2, 8, 9, 11],
         supervisor: [1, 2, 8, 9, 11, 14],
         FSLAccess: [1, 2, 8, 9, 11, 14, 19],
+        LOGLead: [1, 2, 8, 9, 11, 14, 19],
+        LOGAccess: [1, 2, 8, 9, 11, 14, 19],
         authRole: parseInt(localStorage.getItem('role')),
         api_token: localStorage.getItem('api_token'),
         user_id: localStorage.getItem('user_id'),
@@ -54,7 +56,7 @@ export const store = new Vuex.Store({
         getProfileAccess: state => state.ProfileAccess,
         getProfileEditAccess: state => state.ProfileEditAccess,
         verifyFSLLead: state => state.FSLLead.includes(state.authRole),
-
+        verifyLOGLead: state => state.LOGLead.includes(state.authRole),
         auth: state => role => state[role].includes(state.authRole),
 
         verifyDSALead: state => state.DSALead.includes(state.authRole),
@@ -63,6 +65,7 @@ export const store = new Vuex.Store({
         verifyDVAAccess: state => state.DVAAccess.includes(state.authRole) && state.api_token,
         verifyHRMAccess: state => state.HRMAccess.includes(state.authRole) && state.api_token,
         verifyFSLAccess: state => state.FSLAccess.includes(state.authRole) && state.api_token,
+        verifyLOGAccess: state => state.LOGAccess.includes(state.authRole) && state.api_token,
     },
     mutations: {
         mutateAuth: state => {

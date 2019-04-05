@@ -260,8 +260,6 @@ var apiLink = function apiLink() {
 //
 //
 //
-//
-//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default },

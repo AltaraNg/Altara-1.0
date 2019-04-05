@@ -36,8 +36,9 @@
                 cards: [
                     {name: 'DSA', url: 'dsa/home', icon: ['fa-id-card']},
                     {name: 'DVA', url: 'dva/home', icon: ['fa-file-signature']},
-                    {name: 'HRM', url: 'hrm/home', icon: ['fa-female', 'fa-male']},
-                    {name: 'FSL', url: 'fsl/home', icon: ['fa-box']}
+                    {name: 'HRM', url: 'hrm/home', icon: ['fa-user']},
+                    {name: 'FSL', url: 'fsl/home', icon: ['fa-box']},
+                    {name: 'LOG', url: 'log/home', icon: ['fa-truck']}
                 ]
             }
         },
