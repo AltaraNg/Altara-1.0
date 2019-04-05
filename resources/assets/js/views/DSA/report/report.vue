@@ -1,117 +1,184 @@
 <template>
    <transition name="fade">
-      <div class="pt-md-3 pt-2" id="employeeRegister">
-         <div class="card" v-if="$store.getters.verifyDSALead">
-            <ul class="nav nav-tabs justify-content-center bg-default"><h6>Report Generation</h6></ul>
-            <div class="card-body px-4">
-               <form @submit.prevent="generateReport">
-                  <div class="my-4 clearfix">
+         <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
+            <div class="mt-5 attendance-head">
+               <div class="mb-5 row align-items-center">
+                  <div class="col-12 title-con">
+                     <span class="title">Generate Report</span>
+                  </div>
+               </div>
+            </div>
+            <div class="attendance-body">
+               <form @submit.prevent="generateReport" :data-vv-scope="'f1'">
+                  <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+
                      <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
-                        <label>Report Type</label>
+                        <label>Type</label>
                         <select class="custom-select w-100" v-model="report.type"
-                                v-validate="'required'" data-vv-as="report type" data-vv-validate-on="blur"
-                                name="report_type">
+                                v-validate="'required'" data-vv-as="report type" data-vv-validate-on="blur" name="report_type">
                            <option value="">select type</option>
                            <option :value="type.slug" v-for="type in types">{{type.name | capitalize}}</option>
                         </select>
-                        <small v-if="errors.first('report_type')">
-                           {{errors.first('report_type')}}
-                        </small>
+                        <small v-if="errors.first('f1.report_type')">{{errors.first('f1.report_type')}}</small>
                      </div>
+
                      <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                         <label>Branch</label>
                         <select class="custom-select w-100" v-model="report.branch.id"
                                 v-validate="'required'" data-vv-as="office branch" name="branch_id"
-                                data-vv-validate-on="blur">
+                                data-vv-validate-on="blur" :disabled="!$store.getters.auth('DSALead')">
                            <option value="">select branch</option>
-                           <option :value="branch.id" v-for="branch in $store.state.branches">
+                           <option :value="branch.id"
+                                   v-for="branch in ($store.getters.auth('DSALead') ? $store.state.branches : pageBranch)">
                               {{branch.name}}
                            </option>
                         </select>
-                        <small v-if="errors.first('branch_id')">
-                           {{errors.first('branch_id')}}
-                        </small>
+                        <small v-if="errors.first('f1.branch_id')">{{errors.first('f1.branch_id')}}</small>
                      </div>
+
                      <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                         <label>Date from:</label>
                         <input type="date" class="form-control" v-model="report.from"
-                               v-validate="'required|date_format:MM/DD/YYYY'" data-vv-as="Date from"
-                               name="date_from">
-                        <small v-if="errors.first('date_from')">
-                           {{errors.first('date_from')}}
-                        </small>
+                               v-validate="'required|date_format:MM/DD/YYYY'" data-vv-as="Date from" name="date_from">
+                        <small v-if="errors.first('f1.date_from')">{{errors.first('f1.date_from')}}</small>
                      </div>
+
                      <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                         <label>Date To:</label>
                         <input type="date" class="form-control" v-model="report.to"
                                v-validate="'required|date_format:MM/DD/YYYY'" data-vv-as="Date to"
                                name="date_to">
-                        <small v-if="errors.first('date_to')">
-                           {{errors.first('date_to')}}
-                        </small>
+                        <small v-if="errors.first('f1.date_to')">{{errors.first('f1.date_to')}}</small>
+                     </div>
+
+                  </div>
+                  <div class="mb-5 px-0 row align-items-center">
+                     <div class="clearfix d-flex justify-content-end w-100">
+                        <button :disabled="$isProcessing" class="btn bg-default" type="submit">
+                           Generate Report <i class="far fa-paper-plane ml-1"></i>
+                        </button>
                      </div>
                   </div>
-                  <div class="col-sm-12 mx-auto mt-md-2 mt-0 px-md-3 px-1 mb-4">
-                     <button type="submit" class="btn btn-block btn-lg bg-default" :disabled="$isProcessing">
-                        Generate Report <i class="far fa-paper-plane ml-1"></i>
-                     </button>
+               </form>
+            </div>
+
+            <div class="mt-5 attendance-head">
+               <div class="mb-5 row align-items-center">
+                  <div class="col-12 title-con">
+                     <span class="title">Send Daily Report</span>
+                  </div>
+               </div>
+            </div>
+            <div class="attendance-body">
+               <form @submit.prevent="submitReport" id="dsaDailyReportForm" :data-vv-scope="'f2'">
+                  <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+
+                     <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                        <label>DSA (Name-ID)</label>
+                        <select class="custom-select w-100" data-vv-validate-on="blur" name="dsa" v-model="dailyReport.user_id"
+                                v-validate="'required'">
+                           <option value="">select DSA</option>
+                           <option :value="user.id" v-for="user in users">{{`${user.full_name} - (${user.staff_id})`}}</option>
+                        </select>
+                        <small v-if="errors.first('f2.dsa')">{{errors.first('f2.dsa')}}</small>
+                     </div>
+
+                     <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
+                        <label>Date</label>
+                        <input class="form-control" name="date" type="date" v-model="dailyReport.date" v-validate="'required|date_format:MM/DD/YYYY'">
+                        <small v-if="errors.first('f2.date')">{{errors.first('f2.date')}}</small>
+                     </div>
+
+                     <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
+                        <label>Forms registered on portal</label>
+                        <input class="form-control" data-vv-as="number on portal" name="number_on_portal" type="number"
+                               v-model="dailyReport.number_on_portal" v-validate="'required|integer|min:0'">
+                        <small v-if="errors.first('f2.number_on_portal')">{{errors.first('f2.number_on_portal')}}</small>
+                     </div>
+
+                     <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
+                        <label>Forms submitted to captain</label>
+                        <input class="form-control" data-vv-as="number to captain" name="number_to_captain" type="number"
+                               v-model="dailyReport.number_to_captain" v-validate="'required|integer|min:0'">
+                        <small v-if="errors.first('f2.number_to_captain')">{{errors.first('f2.number_to_captain')}}</small>
+                     </div>
+
+                     <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
+                        <label class="w-100 float-left">Remark/Comment</label>
+                        <textarea class="form-control"
+                                  cols="1"
+                                  name="remark"
+                                  v-model="dailyReport.remark"
+                                  v-validate="'required|max:255'"></textarea>
+                        <small v-if="errors.first('f2.remark')">{{errors.first('f2.remark')}}</small>
+                     </div>
+
+                  </div>
+                  <div class="mb-5 px-0 row align-items-center">
+                     <div class="clearfix d-flex justify-content-end w-100">
+                        <button :disabled="$isProcessing" class="btn bg-default" type="submit">
+                           Log Report <i class="far fa-paper-plane ml-1"></i>
+                        </button>
+                     </div>
                   </div>
                </form>
             </div>
          </div>
-         <daily-report v-if="$store.getters.verifyDSACaptain"/>
-      </div>
    </transition>
 </template>
 <script>
-   import DailyReport from './dailyReport';
-   import {store} from '../../../store/store';
-   import {postD} from '../../../helpers/api';
+   import Flash from '../../../helpers/flash';
+   import {postD, get, post} from '../../../helpers/api';
 
    export default {
-      components: {DailyReport},
-      beforeCreate() {
-         if (!this.$store.getters.verifyDSACaptain) this.$networkErr('page');
-         /** this component can only be accessed by the dsa leads and captains hence this route guard
-         * if the role of the dsa agent logged in is contained in the
-         * array of the dsa lead then access will be granted*/
+      beforeCreate(){
+         if (!this.$store.getters.auth('DSACaptain')) this.$networkErr('page');
+         get(`/api/user/${this.$store.state.user_id}`).then(res => {
+            this.report.branch = res.data.user.branch;
+            this.pageBranch.push(res.data.user.branch);
+         });
+         get(`/api/user/getBranchUsers`).then(res => this.users = res.data.DSAs);
          this.$prepareBranches();
+      },
+      created() {
+         this.setDates();
+         this.initForm();
       },
       data() {
          return {
             types: [
-               {
-                  name: "sales report",
-                  slug: "sales_report"
-               }, {
-                  name: "score card",
-                  slug: "score_card"
-               }, {
-                  name: "weekly operations",
-                  slug: "weekly_operations"
-               }
+               {name: "sales report",slug: "sales_report"},
+               {name: "score card",slug: "score_card"},
+               {name: "weekly operations",slug: "weekly_operations"}
             ],
             report: {
                to: '',
                from: '',
-               branch: {
-                  id: '',
-                  name: ''
-               },
+               branch: {id: '',name: ''},
                employee: '',
                type: ''
             },
+            //for daily report
+            users: null,
+            dailyReport: null,
+            pageBranch : []
          }
       },
-      created() {
-         this.setDates();
-      },
       methods: {
+         initForm(){
+            this.dailyReport = {
+               user_id: '',
+               date: this.$getDate(),
+               number_on_portal: '',
+               number_to_captain: '',
+               remark: ''
+            };
+         },
          generateReport() {
-            this.$validator.validateAll().then(result => {
+            this.$validator.validateAll('f1').then(result => {
                if (result) {
                   if (this.$network()) {
-                     let branch = store.state.branches.find(obj => obj.id === this.report.branch.id);
+                     let branch = this.$store.state.branches.find(obj => obj.id === this.report.branch.id);
                      this.report.branch = branch;
                      postD('/api/report', this.report).then(res => {
                         const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -122,8 +189,7 @@
                         link.click();
                      });
                   } else this.$networkErr();
-               }
-               if (!result) this.$networkErr('form');
+               }else this.$networkErr('form');
             });
          },
          setDates() {
@@ -144,6 +210,28 @@
             * and the saturday of the : this.report.to of the
             * current week*/
          },
+         submitReport() {
+            /** validate form*/
+            this.$validator.validateAll('f2').then(result => {
+               /** if validation is successful*/
+               if (result) {
+                  /** check is network is available*/
+                  if (this.$network()) {
+                     /** if network is available*/
+                     this.$LIPS(true);
+                     /** make a request to the backend*/
+                     post(`/api/dsa_daily_registration`, this.dailyReport)
+                         .then(res => {
+                            this.$validator.reset();
+                            this.initForm();
+                            this.$scrollToTop();
+                            this.$LIPS(false);
+                            if (res.data.submitted) Flash.setSuccess(res.data.message);
+                         }).catch(() => Flash.setError('Error logging report please try again later!'));
+                  } else this.$networkErr();
+               } else this.$networkErr('form');
+            });
+         }
       }
    }
 </script>
