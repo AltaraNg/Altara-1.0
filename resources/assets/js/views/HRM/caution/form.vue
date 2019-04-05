@@ -28,9 +28,7 @@
                                     <option :value="issuer.id">{{issuer.full_name}}</option>
                                 </select>
                             </div>
-
                             <div class="spaceAfter"></div>
-
                             <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                                 <div class="form-check pl-3 ml-1">
                                     <input class="form-check-input" id="reason"

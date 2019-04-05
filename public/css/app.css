@@ -16668,7 +16668,12 @@ form#messaging textarea {
   padding: 0 1.5rem 0 4rem;
 }
 
-.attendance-view td.arrEarly::before, .attendance-view td.arrLate::before, .attendance-view td.leftEarly::after, .attendance-view td.leftLate::after, .attendance-view td.absent::before {
+.attendance-view td.arrEarly::before,
+.attendance-view td.arrLate::before,
+.attendance-view td.leftEarly::after,
+.attendance-view td.leftLate::after,
+.attendance-view td.absent::before,
+.attendance-view td.didNotSignOut::after {
   content: '';
   height: 2px;
   border-radius: 3rem;
@@ -16692,6 +16697,11 @@ form#messaging textarea {
 
 .attendance-view td.arrLate::before, .attendance-view td.leftEarly::after {
   background-color: #f7b900;
+}
+
+.attendance-view td.didNotSignOut::after {
+  background-color: #ff4c4c;
+  right: 10%;
 }
 
 .attendance-view td.arrEarly.leftLate::before, .attendance-view td.arrEarly.leftLate::after {
@@ -16907,6 +16917,31 @@ form#messaging textarea {
 
 tr.current {
   background-color: #f1f4f7;
+}
+
+.status {
+  padding: 1.2rem 3rem;
+  float: left;
+  color: white !important;
+  border-radius: .5rem;
+  -webkit-box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.status-sm {
+  padding: .5rem 1rem;
+  border-radius: .4rem;
+  font-size: 1.17rem;
+}
+
+.status.approved {
+  background-color: #00a368;
+}
+
+.status.not-approved {
+  background-color: #c81618;
 }
 
 @media (max-width: 600px) {

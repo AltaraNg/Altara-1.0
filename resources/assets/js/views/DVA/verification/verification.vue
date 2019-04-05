@@ -6,17 +6,17 @@
                     <h6>{{action | capitalize}} Customer</h6>
                 </ul>
                 <div class="card-body p-4">
-                    <form @submit.prevent="fetchCustomer">
+                    <form @submit.prevent="processForm">
                         <div class="m-0 p-0 col-12 form-group clearfix">
                             <label class="w-100">Customer ID</label>
-                            <input class="form-control col-lg-9 col-md-8 col-sm-8 col-12 float-left mt-1"
-                                   v-model="customer_id"
-                                   v-validate="'required|numeric'"
+                            <input @onkeyUp="check"
+                                   class="form-control col-lg-9 col-md-8 col-sm-8 col-12 float-left mt-1"
                                    data-vv-as="customer id"
                                    name="customer_id"
-                                   @onkeyUp="check">
+                                   v-model="customer_id"
+                                   v-validate="'required|numeric'">
                             <div class="col-lg-3 col-md-4 col-sm-4 col-12 float-right px-md-3 mt-md-0 px-sm-3 mt-sm-0 mt-2 px-0">
-                                <button type="submit" class="btn btn-block bg-default my-1" :disabled="check">
+                                <button :disabled="check" class="btn btn-block bg-default my-1" type="submit">
                                     Fetch customer details <i class="far fa-paper-plane ml-1"></i>
                                 </button>
                             </div>
@@ -32,14 +32,14 @@
                     <customer-profile :view-customer="customer"/>
                     <div v-if="action !== 'update'">
                         <div class="float-left col-lg-3 col-sm-6 px-0 px-sm-3" v-for="type in cardView">
-                            <div class="card card-stats" :class="DivClass(type)">
+                            <div :class="DivClass(type)" class="card card-stats">
                                 <div class="card-body ">
                                     <div class="statistics statistics-horizontal">
                                         <div class="info info-horizontal">
                                             <div class="row">
                                                 <div class="col-4">
                                                     <div class="icon icon-warning icon-circle position-relative">
-                                                        <i class="fas" :class="IconClass(type)"></i>
+                                                        <i :class="IconClass(type)" class="fas"></i>
                                                     </div>
                                                 </div>
                                                 <div class="col-8 text-right">
@@ -52,11 +52,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer pointer" @click="modal(type+'_modal')">
+                                <div @click="modal(type+'_modal')" class="card-footer pointer">
                                     <i class="now-ui-icons ui-1_calendar-60 pr-1"></i>
                                     {{key(type) ? 'Verified' : 'Not Verified'}}
                                     <small v-if="! key(type)">(Click here to update status!)</small>
-                                    <span style="font-size: 10px" v-else class="float-right">
+                                    <span class="float-right" style="font-size: 10px" v-else>
                                             by - {{type == 'passport' || type == 'id_card' ?
                                         customer['document'].staff_name : customer[type].staff_name | capitalize}}
                                     </span>
@@ -68,12 +68,12 @@
                 </div>
             </transition>
             <div v-if="action !== 'update'">
-                <div class="modal fade" v-for="type in picsView" :id="type+'_modal'">
+                <div :id="type+'_modal'" class="modal fade" v-for="type in picsView">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header py-2">
                                 <h6 class="modal-title py-1">{{type | capitalize}} Verification Status</h6>
-                                <a href="javascript:" class="close py-1" data-dismiss="modal" aria-label="Close">
+                                <a aria-label="Close" class="close py-1" data-dismiss="modal" href="javascript:">
                                 <span aria-hidden="true" class="modal-close text-danger">
                                     <i class="fas fa-times"></i>
                                 </span>
@@ -89,10 +89,10 @@
                                     <small v-if="error[type]">{{error[type][0]}}</small>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">
+                                    <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">
                                         cancel
                                     </button>
-                                    <button type="submit" class="m-2 btn bg-default" :disabled="$isProcessing">
+                                    <button :disabled="$isProcessing" class="m-2 btn bg-default" type="submit">
                                         Save changes <i class="far fa-paper-plane ml-1"></i>
                                     </button>
                                 </div>
@@ -110,7 +110,7 @@
                                     <span class="text-danger"><i class="fas fa-times"></i></span>
                                 </a>
                             </div>
-                            <form @submit.prevent="validate('address')" :data-vv-scope="'address'">
+                            <form :data-vv-scope="'address'" @submit.prevent="validate('address')">
                                 <div class="modal-body p-5">
                                     <table class="mb-3 w-100 info-table">
                                         <tbody class="px-3">
@@ -124,9 +124,9 @@
                                         <div class="clearfix">
                                             <div class="form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0">
                                                 <label>Date of Visitation</label>
-                                                <input type="date" class="form-control" name="date_of_visit"
-                                                       v-model="address.date_of_visit" v-validate="'required'"
-                                                       data-vv-as="date of visit">
+                                                <input class="form-control" data-vv-as="date of visit" name="date_of_visit"
+                                                       type="date" v-model="address.date_of_visit"
+                                                       v-validate="'required'">
 
                                                 <small v-if="errors.first('address.date_of_visit')">
                                                     {{errors.first('address.date_of_visit')}}
@@ -134,9 +134,9 @@
                                             </div>
                                             <div class="form-group float-left  col-md-6 col-12  pl-md-3 pl-0 pr-0">
                                                 <label>Time of Visit</label>
-                                                <input v-model="address.time_of_visit" type="time"
-                                                       class="form-control" v-validate="'required'"
-                                                       name="time_of_visit" data-vv-as="time of visit">
+                                                <input class="form-control" data-vv-as="time of visit"
+                                                       name="time_of_visit" type="time"
+                                                       v-model="address.time_of_visit" v-validate="'required'">
                                                 <small v-if="errors.first('address.time_of_visit')">
                                                     {{errors.first('address.time_of_visit')}}
                                                 </small>
@@ -146,14 +146,14 @@
                                         <div class="form-group clearfix">
                                             <label>1. Did you meet the customer?</label>
                                             <span class="radio mx-5">
-                                                <input v-model="address.customer_meetup"
-                                                       type="radio" name="customer_meetup" id="yes" value="yes"
-                                                       v-validate="'required'" data-vv-as="customer meetup">
+                                                <input data-vv-as="customer meetup"
+                                                       id="yes" name="customer_meetup" type="radio" v-model="address.customer_meetup"
+                                                       v-validate="'required'" value="yes">
                                                 <label for="yes">Yes</label>
                                             </span>
                                             <span class="radio ml-5">
-                                                <input v-model="address.customer_meetup"
-                                                       type="radio" name="customer_meetup" id="no" value="no">
+                                                <input id="no"
+                                                       name="customer_meetup" type="radio" v-model="address.customer_meetup" value="no">
                                                 <label for="no">No</label>
                                             </span>
 
@@ -167,14 +167,14 @@
                                                 2. Is the address/location same with what you have in the application form?
                                             </label>
                                             <span class="radio mx-5">
-                                                <input v-model="address.confirm_address" v-validate="'required'"
-                                                       data-vv-as="confirm address"
-                                                       name="confirm_address" type="radio" id="add_yes" value="yes">
+                                                <input data-vv-as="confirm address" id="add_yes"
+                                                       name="confirm_address"
+                                                       type="radio" v-model="address.confirm_address" v-validate="'required'" value="yes">
                                                 <label for="add_yes">Yes</label>
                                             </span>
                                             <span class="radio ml-5">
-                                                <input v-model="address.confirm_address"
-                                                       name="confirm_address" type="radio" id="add_no" value="no">
+                                                <input id="add_no"
+                                                       name="confirm_address" type="radio" v-model="address.confirm_address" value="no">
                                                 <label for="add_no">No</label>
                                             </span>
                                             <small v-if="errors.first('address.confirm_address')">
@@ -184,10 +184,10 @@
 
                                         <div class="form-group clearfix">
                                             <label>3. What does he/she do or sell?</label>
-                                            <input type="text" class="form-control" placeholder="comment here..."
-                                                   v-model="address.what_he_sells" name="what_he_sells"
-                                                   v-validate="'required'"
-                                                   data-vv-as="what he sells">
+                                            <input class="form-control" data-vv-as="what he sells" name="what_he_sells"
+                                                   placeholder="comment here..." type="text"
+                                                   v-model="address.what_he_sells"
+                                                   v-validate="'required'">
                                             <small v-if="errors.first('address.what_he_sells')">
                                                 {{errors.first('address.what_he_sells')}}
                                             </small>
@@ -197,10 +197,10 @@
                                             <label>4. Look around the shop and check the nature and condition of the
                                                    business. Write down what you see in terms of address, stock value, premise, type of shop or business, sales etc.</label>
                                             <textarea class="form-control"
-                                                      placeholder="comment here..."
-                                                      rows="1" v-validate="'required'"
-                                                      v-model="address.business_info"
-                                                      name="business_info" data-vv-as="business info"></textarea>
+                                                      data-vv-as="business info"
+                                                      name="business_info" placeholder="comment here..."
+                                                      rows="1"
+                                                      v-model="address.business_info" v-validate="'required'"></textarea>
                                             <small v-if="errors.first('address.business_info')">
                                                 {{errors.first('address.business_info')}}
                                             </small>
@@ -212,10 +212,10 @@
                                                    SMART or HOT 4 IPHONE
                                             </label>
                                             <textarea class="form-control w-100"
-                                                      placeholder="comment here..."
-                                                      rows="1" v-validate="'required'" data-vv-as="product info"
+                                                      data-vv-as="product info"
+                                                      name="product_info" placeholder="comment here..." rows="1"
                                                       v-model="address.product_info"
-                                                      name="product_info"></textarea>
+                                                      v-validate="'required'"></textarea>
                                             <small v-if="errors.first('address.product_info')">
                                                 {{errors.first('address.product_info')}}
                                             </small>
@@ -226,18 +226,18 @@
                                                 6. Are you aware of the payment plan?
                                             </label>
                                             <span class="radio mx-5">
-                                                <input v-model="address.aware_of_plan"
-                                                       name="aware_of_plan"
-                                                       type="radio" v-validate="'required'" data-vv-as="aware of plan"
+                                                <input data-vv-as="aware of plan"
                                                        id="pay_yes"
+                                                       name="aware_of_plan" type="radio" v-model="address.aware_of_plan"
+                                                       v-validate="'required'"
                                                        value="yes">
                                                 <label for="pay_yes">yes</label>
                                             </span>
                                             <span class="radio ml-5">
-                                                <input v-model="address.aware_of_plan"
+                                                <input id="pay_no"
                                                        name="aware_of_plan"
                                                        type="radio"
-                                                       id="pay_no"
+                                                       v-model="address.aware_of_plan"
                                                        value="no">
                                                 <label for="pay_no">no</label>
                                             </span>
@@ -251,34 +251,34 @@
                                                 7. Did you get information about the customer from his/her neighbours?
                                             </label>
                                             <span class="radio mx-5">
-                                                <input v-model="info_from_neighbors"
-                                                       name="info_from_neighbors"
-                                                       type="radio" v-validate="'required'"
-                                                       data-vv-as="info from neighbors"
+                                                <input data-vv-as="info from neighbors"
                                                        id="neigh_yes"
+                                                       name="info_from_neighbors" type="radio"
+                                                       v-model="info_from_neighbors"
+                                                       v-validate="'required'"
                                                        value="yes">
                                                 <label for="neigh_yes">yes</label>
                                             </span>
                                             <span class="radio ml-5">
-                                                <input v-model="info_from_neighbors"
+                                                <input id="neigh_no"
                                                        name="info_from_neighbors"
                                                        type="radio"
-                                                       id="neigh_no"
+                                                       v-model="info_from_neighbors"
                                                        value="no">
                                                 <label for="neigh_no">no</label>
                                             </span>
                                             <small
-                                                    v-if="errors.first('address.info_from_neighbors')">
+                                                v-if="errors.first('address.info_from_neighbors')">
                                                 {{errors.first('address.info_from_neighbors')}}
                                             </small>
 
                                             <div v-if="info_from_neighbors == 'yes'">
                                                 <textarea class="form-control"
-                                                          placeholder="comment here..."
-                                                          rows="1" v-validate="'required'"
+                                                          data-vv-as="info from neighbors desc"
+                                                          name="info_from_neighbors_desc" placeholder="comment here..."
+                                                          rows="1"
                                                           v-model="address.info_from_neighbors_desc"
-                                                          name="info_from_neighbors_desc"
-                                                          data-vv-as="info from neighbors desc"></textarea>
+                                                          v-validate="'required'"></textarea>
                                                 <small v-if="errors.first('address.info_from_neighbors_desc')">
                                                     {{errors.first('address.info_from_neighbors_desc')}}
                                                 </small>
@@ -290,11 +290,11 @@
                                             <label>8. And how long has he/she been working/trading in that particular place?
                                             </label>
                                             <textarea class="form-control"
-                                                      placeholder="address"
-                                                      rows="1" v-validate="'required'"
+                                                      data-vv-as="business or work duration"
+                                                      name="business_or_work_duration" placeholder="address"
+                                                      rows="1"
                                                       v-model="address.business_or_work_duration"
-                                                      name="business_or_work_duration"
-                                                      data-vv-as="business or work duration"></textarea>
+                                                      v-validate="'required'"></textarea>
                                             <small v-if="errors.first('address.business_or_work_duration')">
                                                 {{errors.first('address.business_or_work_duration')}}
                                             </small>
@@ -302,10 +302,10 @@
 
                                         <div v-if="addressBtns">
                                             <div class="w-100 clearfix">
-                                                <button type="submit"
+                                                <button :disabled="$isProcessing"
                                                         @click="address.approval_status = 1"
                                                         class="btn btn-success btn-lg btn-block"
-                                                        :disabled="$isProcessing">
+                                                        type="submit">
                                                     Successful - Update Details
                                                     <i class="far fa-paper-plane ml-1"></i>
                                                 </button>
@@ -313,17 +313,17 @@
 
                                             <div class="pt-2 w-100 clearfix">
                                                 <div class="pr-2 pl-md-0 pl-2 col-md-6 col-12 m-0 float-left">
-                                                    <button type="button"
-                                                            @click="modal('address_modal')"
-                                                            class="m-0 btn btn-lg btn-block btn-secondary">
+                                                    <button @click="modal('address_modal')"
+                                                            class="m-0 btn btn-lg btn-block btn-secondary"
+                                                            type="button">
                                                         Cancel
                                                     </button>
                                                 </div>
                                                 <div class="pl-2 pr-md-0 pr-2 col-md-6 col-12 float-left">
-                                                    <button type="submit"
+                                                    <button :disabled="$isProcessing"
                                                             @click="address.approval_status = 0"
                                                             class="m-0 btn btn-lg btn-block btn-primary"
-                                                            :disabled="$isProcessing">
+                                                            type="submit">
                                                         Not-Successful - Update Details
                                                         <i class="far fa-paper-plane ml-1"></i>
                                                     </button>
@@ -339,18 +339,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" v-for="type in veriView" :id="type+'_modal'">
+                <div :id="type+'_modal'" class="modal fade" v-for="type in veriView">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header py-2">
                                 <h6 class="modal-title py-1">
                                     {{type | capitalize }} {{(type !== 'processing_fee') ? 'Verification' : ''}} Status
                                 </h6>
-                                <a href="javascript:" class="close py-1" data-dismiss="modal" aria-label="Close">
+                                <a aria-label="Close" class="close py-1" data-dismiss="modal" href="javascript:">
                                     <span class="modal-close text-danger"><i class="fas fa-times"></i></span>
                                 </a>
                             </div>
-                            <form @submit.prevent="validate(type)" v-if="customer" :data-vv-scope="type">
+                            <form :data-vv-scope="type" @submit.prevent="validate(type)" v-if="customer">
                                 <div class="modal-body">
                                     <table class="mb-3 info-table" v-if="type !== 'processing_fee'">
                                         <tbody>
@@ -385,12 +385,12 @@
                                                 <label>
                                                     Date {{(type !== 'processing_fee') ? 'of Call' : 'Collected'}}
                                                 </label>
-                                                <input v-if="type !== 'processing_fee'" type="date" class="form-control"
-                                                       v-model="$data[type].date_of_call" v-validate="'required'"
-                                                       name="date_of_call">
-                                                <input v-else type="date" class="form-control"
-                                                       v-model="$data[type].date_collected" v-validate="'required'"
-                                                       name="date_of_call">
+                                                <input class="form-control" name="date_of_call" type="date"
+                                                       v-if="type !== 'processing_fee'" v-model="$data[type].date_of_call"
+                                                       v-validate="'required'">
+                                                <input class="form-control" name="date_of_call" type="date"
+                                                       v-else v-model="$data[type].date_collected"
+                                                       v-validate="'required'">
 
                                                 <small v-if="errors.first(type+'.date_of_call')">
                                                     {{errors.first(type+'.date_of_call')}}
@@ -405,12 +405,12 @@
                                                 <label>
                                                     Time {{(type !== 'processing_fee') ? 'of Call' : 'Collected'}}
                                                 </label>
-                                                <input v-if="type !== 'processing_fee'" type="time" class="form-control"
-                                                       v-model="$data[type].time_of_call"
-                                                       name="time_of_call" v-validate="'required'">
-                                                <input v-else type="time" class="form-control"
-                                                       v-model="$data[type].time_collected"
-                                                       name="time_collected" v-validate="'required'">
+                                                <input class="form-control" name="time_of_call" type="time"
+                                                       v-if="type !== 'processing_fee'"
+                                                       v-model="$data[type].time_of_call" v-validate="'required'">
+                                                <input class="form-control" name="time_collected" type="time"
+                                                       v-else
+                                                       v-model="$data[type].time_collected" v-validate="'required'">
 
 
                                                 <small v-if="errors.first(type+'.time_of_call')">
@@ -430,13 +430,13 @@
                                             </label>
                                             <div v-if="type !== 'processing_fee'">
                                                 <div class="radio p-0 col-6 float-left">
-                                                    <input v-model="$data[type].consent" type="radio" :id="type+'_yes'"
-                                                           value="1" name="consent" v-validate="'required'">
+                                                    <input :id="type+'_yes'" name="consent" type="radio"
+                                                           v-model="$data[type].consent" v-validate="'required'" value="1">
                                                     <label :for="type+'_yes'">Gave Consent</label>
                                                 </div>
                                                 <div class="radio p-0 col-6 float-left">
-                                                    <input v-model="$data[type].consent" type="radio" :id="type+'_no'"
-                                                           value="0" name="consent">
+                                                    <input :id="type+'_no'" name="consent" type="radio"
+                                                           v-model="$data[type].consent" value="0">
                                                     <label :for="type+'_no'">Did not Give Consent</label>
                                                 </div>
                                                 <small v-if="errors.first(type+'.consent')">
@@ -447,8 +447,8 @@
 
                                             <div v-else>
                                                 <div class="radio p-0 col-6 float-left">
-                                                    <input v-model="$data[type].amount" class="form-control"
-                                                           type="number" disabled name="amount" v-validate="'required'">
+                                                    <input class="form-control" disabled
+                                                           name="amount" type="number" v-model="$data[type].amount" v-validate="'required'">
                                                 </div>
                                                 <small v-if="errors.first(type+'.amount')">
                                                     {{errors.first(type+'.amount')}}
@@ -457,9 +457,9 @@
                                         </div>
                                         <div class="clearfix">
                                             <label>Report</label>
-                                            <textarea class="form-control w-100" placeholder="comment here..." rows="3"
-                                                      v-model="$data[type].report" v-validate="'required'"
-                                                      name="report"></textarea>
+                                            <textarea class="form-control w-100" name="report" placeholder="comment here..."
+                                                      rows="3" v-model="$data[type].report"
+                                                      v-validate="'required'"></textarea>
                                             <small v-if="errors.first(type+'.report')">
                                                 {{errors.first(type+'.report')}}
                                             </small>
@@ -467,9 +467,9 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer" v-if="$data[type+'Btns']">
-                                    <button type="button" class="m-2 btn btn-secondary" data-dismiss="modal">cancel
+                                    <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">cancel
                                     </button>
-                                    <button type="submit" class="m-2 btn bg-default" :disabled="$isProcessing">
+                                    <button :disabled="$isProcessing" class="m-2 btn bg-default" type="submit">
                                         Save changes <i class="far fa-paper-plane ml-1"></i>
                                     </button>
                                 </div>
@@ -493,6 +493,8 @@
     import {toMulipartedForm} from '../../../helpers/form';
     import ImageUpload from '../../../components/ImageUpload';
     import CustomerProfile from '../../../components/CustomerProfile';
+
+    const init = to => `/api/customer/${to.query.id}`;
 
     export default {
         props: {
@@ -535,6 +537,21 @@
                 personal_guarantor_address: ''
             }
         },
+        beforeRouteEnter(to, from, next) {
+            if(to.query.id)
+            get(init(to))
+                .then(res => next(vm => vm.updateView(res.data)))
+                .catch(e => next(vm => vm.updateView(e.response.data)));
+            else next();
+        },
+        beforeRouteUpdate(to, from, next) {
+            if(to.query.id)
+            get(init(to))
+                .then(res => this.updateView(res.data))
+                .catch(e => this.updateView(e.response.data))
+                .finally(() => next());
+            else next();
+        },
         methods: {
             modal(name) {
                 $(`#${name}`).modal('toggle');
@@ -565,19 +582,8 @@
                 * that it return a different class
                 * success and no-success*/
             },
-            returnToInitialValues() {
-                this.verification = JSON.parse(JSON.stringify(this.customer.verification));
-                /*this.verification holds a copy of the this.customer.verification. this.verification is what is used to style
-                * the card. this.customer.verification on the other hand is used to calculate the approval status, when
-                * changing the status on the front end the this.verification is what is changed but when it is
-                * reflected in the backend then the changes will be reflected on this.customer.verification
-                * after going to database and returning the data again. NB: the purpose of this method
-                * is revert the values of the this.verification to this.customer.verification
-                * values, when a user selects a different option but doesn't submit
-                * it after opening and closing the modal responsible for that
-                * particular action*/
-            },
-            buttonStatus(data) {
+            updateView(data) {
+                console.log(data);
                 this.$emit('update', data.customer);
                 /*$emit update event is used to send data to the parent component where this serves as a child
                 * component. eg. dsa utility form. NB: The customer registration component(form)
@@ -585,7 +591,7 @@
                 this.user = data.hasOwnProperty('user') ? data.user : null;
                 Vue.set(this.$data, 'customer', data.customer);
                 EventBus.$emit('customer', data.customer);
-                if (data.customer != '') {
+                if (data.customer) {
                     this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                     this.form.id_card = data.customer.document.id_card_url;
                     this.form.passport = data.customer.document.passport_url;
@@ -617,21 +623,16 @@
                         // else {return data.empty_work_guarantor}
                         //the empty_work_guarantor is returned from backend when no work guarantor has been added.
                     })
-                }
+                } else Flash.setError(data.message, 5000);
             },
-            async fetchCustomer() {
-                if (this.$network()) {
-                    this.$LIPS(true);
-                    await get(`/api/customer/${this.customer_id}`)
-                        .then(res => this.buttonStatus(res.data))
-                        .catch(e => {
-                            e = e.response;
-                            if (e.status === 422) this.buttonStatus(e.data);
-                            Flash.setError(e.data.message);
-                        });
-                    this.$scrollToTop();
-                    this.$LIPS(false);
-                } else this.$networkErr();
+            processForm(){
+                if(this.$route.name === 'verification') this.$router.push(`verification?id=${this.customer_id}`);
+                if(this.$route.name === 'customerUpdate'){
+                    this.$router.push(`update?id=${this.customer_id}`);
+                    get(init(this.$route))
+                        .then(res => this.updateView(res.data))
+                        .catch(e => this.updateView(e.response.data))
+                }
             },
             validate(type) {
                 let acc = this.$editAccess(this.user, this.customer);
@@ -653,7 +654,7 @@
                             if (result) {
                                 await post(`/api/${type}`, this[type])
                                     .then(res => {
-                                        this.buttonStatus(res.data.response);
+                                        this.updateView(res.data.response);
                                         let id = `Customer ID : ${this.customer.id}`,
                                             typeCaps = this.$options.filters.capitalize(type),
                                             action = `Customer${typeCaps}Verification`;
@@ -666,7 +667,7 @@
                                     .catch(e => Flash.setError(e.response.data.message));
                                 this.$LIPS(false);
                                 this.$scrollToTop();
-                            }else this.$networkErr('form');
+                            } else this.$networkErr('form');
                         });
                     } else this.$networkErr();
                 } else {
@@ -682,7 +683,7 @@
                     this.form.document = document;
                     const form = toMulipartedForm(this.form, 'edit');
                     await post(this.storeURL, form).then(res => {
-                        this.buttonStatus(res.data.response);
+                        this.updateView(res.data.response);
                         log(`Customer${this.$options.filters.capitalize(document)}Upload`, `Customer ID : ${this.customer.id}`);
                         this.modal(modal);
                         Flash.setSuccess('Document Updated Successfully!');
@@ -701,76 +702,87 @@
             },
         },
         mounted() {
-            $(document).on("hidden.bs.modal", '.modal', this.returnToInitialValues);
+            $(document).on("hidden.bs.modal", '.modal', () => {
+                this.verification = JSON.parse(JSON.stringify(this.customer.verification));
+                /*this.verification holds a copy of the this.customer.verification. this.verification is what is used to style
+                * the card. this.customer.verification on the other hand is used to calculate the approval status, when
+                * changing the status on the front end the this.verification is what is changed but when it is
+                * reflected in the backend then the changes will be reflected on this.customer.verification
+                * after going to database and returning the data again. NB: the purpose of this method
+                * is revert the values of the this.verification to this.customer.verification
+                * values, when a user selects a different option but doesn't submit
+                * it after opening and closing the modal responsible for that
+                * particular action*/
+            });
         },
     }
 </script>
 <style scoped lang="scss">
     .verification {
         .card-stats .icon {
-            margin : 0 1.5rem;
+            margin: 0 1.5rem;
         }
 
         .info .icon.icon-circle {
-            width         : 8rem;
-            height        : 8rem;
-            border-radius : 50%;
+            width: 8rem;
+            height: 8rem;
+            border-radius: 50%;
         }
 
         .info-horizontal .icon.icon-circle i {
-            display     : table;
-            margin      : 0 auto;
-            line-height : 8rem;
-            font-size   : 2.4rem;
+            display: table;
+            margin: 0 auto;
+            line-height: 8rem;
+            font-size: 2.4rem;
         }
 
         .stats-title {
-            font-weight : 300;
-            font-size   : 1.2rem;
+            font-weight: 300;
+            font-size: 1.2rem;
         }
 
         .card-footer:hover {
-            background-image : linear-gradient(to bottom, rgb(255, 255, 255), #eeeeee);
+            background-image: linear-gradient(to bottom, rgb(255, 255, 255), #eeeeee);
         }
 
         h4.info-title {
-            margin    : 0;
-            font-size : 2rem;
+            margin: 0;
+            font-size: 2rem;
         }
 
         .no-success .icon.icon-warning.icon-circle {
-            border     : 1px solid #b30000;
-            box-shadow : 0 .9rem 1.5rem -.6rem rgba(179, 0, 0, 0.5) !important;
+            border: 1px solid #b30000;
+            box-shadow: 0 .9rem 1.5rem -.6rem rgba(179, 0, 0, 0.5) !important;
         }
 
         .success .icon.icon-warning.icon-circle {
-            border     : 1px solid #488413;
-            box-shadow : 0 .9rem 1.5rem -.6rem rgba(72, 132, 19, 0.5) !important;
+            border: 1px solid #488413;
+            box-shadow: 0 .9rem 1.5rem -.6rem rgba(72, 132, 19, 0.5) !important;
         }
 
         .card.card-stats::before {
-            content  : '';
-            width    : 3px;
-            height   : 100%;
-            position : absolute;
-            left     : 0;
-            top      : 0;
+            content: '';
+            width: 3px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
 
         .success::before {
-            background : linear-gradient(45deg, #8ef985 0%, #01af13 100%);
+            background: linear-gradient(45deg, #8ef985 0%, #01af13 100%);
         }
 
         .no-success::before {
-            background : linear-gradient(45deg, #ff9b83 0%, #a40000 100%);
+            background: linear-gradient(45deg, #ff9b83 0%, #a40000 100%);
         }
 
         .success i {
-            color : #63b61a;
+            color: #63b61a;
         }
 
         .no-success i {
-            color : #c70000;
+            color: #c70000;
         }
     }
 

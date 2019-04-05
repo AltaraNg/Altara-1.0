@@ -65,7 +65,7 @@ var _log = __webpack_require__("./resources/assets/js/helpers/log.js");
 
 var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
-var _store = __webpack_require__("./resources/assets/js/store/store.js");
+var _helpers = __webpack_require__("./resources/assets/js/helpers/helpers.js");
 
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 
@@ -117,6 +117,7 @@ exports.default = {
     },
     created: function created() {
         this.$prepareStates();
+        this.$prepareBranches();
         this.fetchIndexData();
         $(document).on('click', 'tr', function () {
             $('tr.current').removeClass('current');
@@ -161,11 +162,15 @@ exports.default = {
                 * hence the code below is used to get the state name
                 * corresponding to the state id and display it
                 * instead of showing state id as a number*/
-                if (data.length && data[0].state_id) {
+                if (data.length) {
                     data.forEach(function (curr) {
-                        return curr.state_id = _store.store.getters.getStates.find(function (obj) {
+                        if (data[0].state_id) curr.state_id = _this.$store.getters.getStates.find(function (obj) {
                             return obj.id === curr.state_id;
                         }).name;
+                        if (data[0].branch_id) curr.branch_id = _this.$store.getters.getBranches.find(function (obj) {
+                            return obj.id === curr.branch_id;
+                        }).name;
+                        if (_this.customer) curr.verification = (0, _helpers.getCustomerApprovalStatus)(curr.verification);
                     });
                 }
                 _vue2.default.set(_this.$data, 'model', res.data.model);
@@ -250,6 +255,21 @@ exports.default = {
         }
     }
 }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -570,10 +590,10 @@ var render = function() {
           ? _c("app-navigation", {
               attrs: {
                 forward: { path: _vm.$routerHistory.next().path },
-                previous: { path: _vm.$routerHistory.previous().path },
                 pageTitle: _vm._f("capitalize")(
                   _vm.$route.meta.appModel + " List"
                 ),
+                previous: { path: _vm.$routerHistory.previous().path },
                 pageTitleSmall: "Cust. List"
               }
             })
@@ -587,7 +607,10 @@ var render = function() {
               "div",
               {
                 staticClass: "card",
-                staticStyle: { "border-top": "4px solid #0e5f92" }
+                staticStyle: {
+                  "border-top": "3px solid #0e5f92",
+                  "border-radius": ".2rem .2rem .4rem .4rem"
+                }
               },
               [
                 _c("div", { staticClass: "px-5 py-4" }, [
@@ -859,11 +882,9 @@ var render = function() {
                                     )
                                   }),
                                   _vm._v(" "),
-                                  _vm.user || _vm.branch || _vm.customer
-                                    ? _c("th", { attrs: { scope: "col" } }, [
-                                        _c("span", [_vm._v("Action")])
-                                      ])
-                                    : _vm._e()
+                                  _c("th", { attrs: { scope: "col" } }, [
+                                    _c("span", [_vm._v("Action")])
+                                  ])
                                 ],
                                 2
                               )
@@ -876,7 +897,52 @@ var render = function() {
                                   "tr",
                                   [
                                     _vm._l(model, function(value, key) {
-                                      return _c("td", [_vm._v(_vm._s(value))])
+                                      return _c(
+                                        "td",
+                                        [
+                                          key !== "verification"
+                                            ? _c("span", [
+                                                _vm._v(_vm._s(value))
+                                              ])
+                                            : _c(
+                                                "router-link",
+                                                {
+                                                  class:
+                                                    "status mx-auto status-sm shadow-sm " +
+                                                    (value
+                                                      ? "approved"
+                                                      : "not-approved"),
+                                                  attrs: {
+                                                    to: _vm.$store.getters.auth(
+                                                      "DVAAccess"
+                                                    )
+                                                      ? "dva/verification?id=" +
+                                                        model.id
+                                                      : ""
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                            " +
+                                                      _vm._s(
+                                                        value
+                                                          ? "APPROVED"
+                                                          : "NOT APPROVED"
+                                                      ) +
+                                                      "\n                                            "
+                                                  ),
+                                                  _c("i", {
+                                                    class:
+                                                      "ml-3 fas fa-" +
+                                                      (value
+                                                        ? "check"
+                                                        : "times")
+                                                  })
+                                                ]
+                                              )
+                                        ],
+                                        1
+                                      )
                                     }),
                                     _vm._v(" "),
                                     _vm.user
@@ -979,7 +1045,7 @@ var render = function() {
                                         )
                                       : _vm._e(),
                                     _vm._v(" "),
-                                    _vm.branch || _vm.customer
+                                    _vm.branch
                                       ? _c("td", [
                                           _c(
                                             "button",
@@ -987,40 +1053,24 @@ var render = function() {
                                               staticClass:
                                                 "text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round",
                                               attrs: {
-                                                title:
-                                                  "" +
-                                                  (_vm.branch
-                                                    ? "update branch details"
-                                                    : "view details"),
+                                                "data-placement": "top",
                                                 "data-toggle": "tooltip",
-                                                "data-placement": "top"
+                                                title: "update details"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  _vm.branch
-                                                    ? _vm.$router.push(
-                                                        "/fsl/branch/" +
-                                                          model.id +
-                                                          "/edit"
-                                                      )
-                                                    : _vm.$router.push(
-                                                        "/customer/" + model.id
-                                                      )
+                                                  _vm.$router.push(
+                                                    "/fsl/branch/" +
+                                                      model.id +
+                                                      "/edit"
+                                                  )
                                                 }
                                               }
                                             },
                                             [
-                                              _vm.branch
-                                                ? _c("i", {
-                                                    staticClass: "fas fa-cog"
-                                                  })
-                                                : _vm._e(),
-                                              _vm._v(" "),
-                                              _vm.customer
-                                                ? _c("i", {
-                                                    staticClass: "far fa-user"
-                                                  })
-                                                : _vm._e()
+                                              _c("i", {
+                                                staticClass: "fas fa-cog"
+                                              })
                                             ]
                                           )
                                         ])
@@ -1626,6 +1676,29 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
+
+/***/ }),
+
+/***/ "./resources/assets/js/helpers/helpers.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//cus stands for customer
+//ver stands for verification
+var getCustomerApprovalStatus = exports.getCustomerApprovalStatus = function getCustomerApprovalStatus(ver) {
+    return ver.address && ver.id_card && ver.passport && ver.processing_fee && ver.work_guarantor && ver.personal_guarantor;
+};
+var getCustomerFullName = exports.getCustomerFullName = function getCustomerFullName(cus) {
+    return cus.first_name + " " + cus.last_name;
+};
+var getCustomerAddress = exports.getCustomerAddress = function getCustomerAddress(cus) {
+    return cus.add_houseno + " " + cus.add_street + " " + cus.area_address + ", " + cus.city + ", " + cus.state + ".";
+};
 
 /***/ }),
 

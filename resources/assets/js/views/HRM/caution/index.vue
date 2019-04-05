@@ -170,6 +170,7 @@
         beforeRouteEnter(to, from, next) {
             get(`/api${apiLink(to)}`).then(res => {
                 next(vm => vm.prepareForm(res.data));
+                console.log(res.data)
             }).catch(err => {
                 next(vm => vm.handleErr(err));
             });

@@ -20,12 +20,16 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $currentCustomer = '';
+
     public function index()
     {
         /** gets list of customers(paginated), searchPaginateAndOrder is a custom
          * query scope used by all the models that use data viewer trait
          * in this application */
-        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'civil_status', 'telephone', 'date_of_registration')
+        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration')
+            ->with('verification')
             ->searchPaginateAndOrder();
         /** the columns used to render the data viewer for customers list*/
         $columns = Customer::$columns;
@@ -240,6 +244,14 @@ class CustomerController extends Controller
     {
         //
     }
+
+
+
+public function getVerificationButton(){
+        return 1;
+}
+
+
     /**
      * - Before running the correct query below
      * rerun the old one for the
