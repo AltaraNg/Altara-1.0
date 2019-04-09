@@ -17,7 +17,7 @@ class Branch extends Model
     protected $hidden = [];
 
     /** columns to be used to render the list(Data viewer) of branches in the view*/
-    public static $columns = ['id', 'name', 'state_id', 'phone_english', 'phone_yoruba', 'email', 'description', 'status'];
+    public static $columns = ['id', 'name', 'state_id','category', 'phone_english', 'phone_yoruba', 'email', 'description', 'status'];
 
     protected $table = 'branches';
 
@@ -32,6 +32,7 @@ class Branch extends Model
             'employee_id' => $user->staff_id,
             'user_id' => $user->id,
             'name' => '',
+            'category' => '',
             'phone_english' => '',
             'phone_yoruba' => '',
             'account_name' => '',
