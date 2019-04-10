@@ -19,7 +19,7 @@ class BranchController extends Controller
       /** gets list of branches(paginated), searchPaginateAndOrder is a custom
        * query scope used by all the models that use data viewer trait
        * in this application */
-      $model = Branch::select('id', 'name', 'state_id', 'phone_english', 'phone_yoruba', 'email', 'description', 'status')
+      $model = Branch::select('id', 'name', 'state_id','category', 'phone_english', 'phone_yoruba', 'email', 'description', 'status')
          ->searchPaginateAndOrder();
       /** the columns used to render the data viewer for branches*/
       $columns = Branch::$columns;

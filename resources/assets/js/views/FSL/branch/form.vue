@@ -62,6 +62,18 @@
                      </div>
                      <div class="spaceAfter"></div>
 
+                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                        <label>Category</label>
+                        <select class="custom-select w-100" data-vv-validate-on="blur" name="category"
+                                v-model="form.category" v-validate="'required'">
+                           <option selected value="">select Category</option>
+                           <option :value="category" v-for="category in ['lifestyle','appliances']">{{category | capitalize}}</option>
+                        </select>
+                        <small v-if="errors.first('category')">{{errors.first('category') }}</small>
+                     </div>
+
+                     <div class="spaceAfter"></div>
+
                      <h5>Account Details</h5>
                      <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                         <label>Email</label>

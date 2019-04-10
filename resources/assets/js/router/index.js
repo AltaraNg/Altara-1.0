@@ -97,7 +97,6 @@ const router = new VueRouter({
                 {path: 'employee/:id/edit', component: EmployeeForm, meta: {mode: 'edit'}},
                 {path: 'attendance', component: Attendance},
                 {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateHrm', meta: {mode: 'create'}},
-
                 {path: 'caution', component: Caution},
                 {path: 'caution/create', component: CautionForm, name: 'createCaution', meta: {mode: 'create'}}
             ]
@@ -105,7 +104,7 @@ const router = new VueRouter({
         {
             path: '/fsl', component: FSL, meta: {FSL: true}, children: [
                 {path: 'home', component: FSLHome, name: 'FSLHome'},
-                {path: 'branch', component: DataViewer, meta: {appModel: 'branch', source: '/api/branch', new: '/log/branch'}},
+                {path: 'branch', component: DataViewer, meta: {appModel: 'branch', source: '/api/branch', new: '/fsl/branch'}},
                 {path: 'branch/:id/edit', component: BranchForm, meta: {mode: 'edit'}},
                 {path: 'branch/create', component: BranchForm, meta: {mode: 'create'}},
                 {path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateFsl', meta: {mode: 'create'}}

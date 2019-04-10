@@ -12,7 +12,7 @@ class UpdateTable extends Migration
      */
     public function up()
     {
-        /*Schema::table('users', function ($table) {
+        Schema::table('users', function ($table) {
             $table->string('guarantor_name')->after('next_of_kin_phone_no')->nullable();
             $table->string('guarantor_phone_no')->nullable();
             $table->string('guarantor_address')->nullable();
@@ -22,12 +22,11 @@ class UpdateTable extends Migration
             $table->string('guarantor_address_2')->nullable();
             $table->string('guarantor_relationship_2')->nullable();
             $table->string('cv_url')->after('guarantor_relationship_2')->nullable();
-        });*/
+        });
 
 
         Schema::table('dsa_daily_registration', function ($table) {
             $table->dropForeign(['captain_id']);
-
             $table->foreign('captain_id')
                 ->references('staff_id')
                 ->on('users')
@@ -38,12 +37,15 @@ class UpdateTable extends Migration
 
         Schema::table('logs', function ($table) {
             $table->dropForeign(['staff_id']);
-
             $table->foreign('staff_id')
                 ->references('staff_id')
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+        });
+
+        Schema::table('branches', function ($table) {
+            $table->string('category')->after('status');
         });
 
     }

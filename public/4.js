@@ -252,6 +252,12 @@ exports.default = {
             /*return true if the context
             * of the data viewer is
             * for customer*/
+        },
+        supplier: function supplier() {
+            return this.$route.meta.appModel === 'supplier';
+            /*return true if the context
+            * of the data viewer is
+            * for customer*/
         }
     }
 }; //
@@ -1691,7 +1697,7 @@ Object.defineProperty(exports, "__esModule", {
 //cus stands for customer
 //ver stands for verification
 var getCustomerApprovalStatus = exports.getCustomerApprovalStatus = function getCustomerApprovalStatus(ver) {
-    return ver.address && ver.id_card && ver.passport && ver.processing_fee && ver.work_guarantor && ver.personal_guarantor;
+    return !!ver ? ver.address && ver.id_card && ver.passport && ver.processing_fee && ver.work_guarantor && ver.personal_guarantor : false;
 };
 var getCustomerFullName = exports.getCustomerFullName = function getCustomerFullName(cus) {
     return cus.first_name + " " + cus.last_name;
