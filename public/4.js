@@ -252,6 +252,12 @@ exports.default = {
             /*return true if the context
             * of the data viewer is
             * for customer*/
+        },
+        supplier: function supplier() {
+            return this.$route.meta.appModel === 'supplier';
+            /*return true if the context
+            * of the data viewer is
+            * for customer*/
         }
     }
 }; //
