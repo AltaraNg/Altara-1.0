@@ -6,28 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-   protected $fillable = [
-      'sku',
-      'name',
-      'description',
-      'user_id',
-      'sold_by',
-      'received_by',
-      'branch_id',
-      'brand_id',
-      'category_id',
-      'supplier_id',
-      'invoice_id',
-      'purchase_order_id',
-      'price',
-      'supplier_price',
-      'availability_status',
-      'date_sold',
-      'date_received',
-      'date_supplied'
-   ];
+   protected $fillable = ['name','feature','user_id','brand_id','category_id','retail_price'];
 
-   public function adder()
+   /*public function adder()
    {
       return $this->belongsTo(User::class, 'user_id', 'id');
    }
@@ -60,6 +41,6 @@ class Product extends Model
    public function supplier()
    {
       return $this->belongsTo(Supplier::class);
-   }
+   }*/
 
 }

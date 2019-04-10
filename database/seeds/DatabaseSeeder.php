@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
             BanksTableSeeder::class,
             EmployeeCategorySeeder::class,
             BrandsTableSeeder::class,
-            CategoriesTableSeeder::class,
+            CategoriesTableSeeder::class,*/
             ProductsTableSeeder::class,
-            BrandCategoryTableSeeder::class,
+            /*BrandCategoryTableSeeder::class,
             SupplierCategorySeeder::class,
             AttendanceTableSeeder::class,
             CautionTableSeeder::class,*/
