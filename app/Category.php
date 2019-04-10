@@ -10,24 +10,24 @@ class Category extends Model
 
    protected $fillable = ['name'];
 
-   public function brands()
+  /* public function brands()
    {
       return $this->belongsToMany(Brand::class, 'brand_category', 'category_id', 'brand_id');
-   }
+   }*/
 
-   public function products()
+  /* public function products()
    {
       return $this->hasMany(Product::class);
-   }
+   }*/
 
    /*public function suppliers()
    {
       return $this->hasMany(Supplier::class);
    }*/
 
-    public function suppliers()
+  /*  public function suppliers()
     {
         return $this->belongsToMany(Supplier::class, 'supplier_category', 'category_id', 'supplier_id');
-    }
+    }*/
 
 }
