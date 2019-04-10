@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             /*CustomerTableSeeder::class,
             BanksTableSeeder::class,
-            EmployeeCategorySeeder::class,
+            EmployeeCategorySeeder::class,*/
             BrandsTableSeeder::class,
-            CategoriesTableSeeder::class,*/
+            CategoriesTableSeeder::class,
             ProductsTableSeeder::class,
             /*BrandCategoryTableSeeder::class,
             SupplierCategorySeeder::class,

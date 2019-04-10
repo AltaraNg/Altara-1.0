@@ -10,7 +10,7 @@ class Brand extends Model
 
    protected $fillable = ['name'];
 
-   public function categories()
+   /*public function categories()
    {
       return $this->belongsToMany(Category::class, 'brand_category', 'brand_id', 'category_id');
    }
@@ -18,6 +18,6 @@ class Brand extends Model
    public function products()
    {
       return $this->hasMany(Product::class);
-   }
+   }*/
 
 }
