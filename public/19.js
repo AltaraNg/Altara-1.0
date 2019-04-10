@@ -142,6 +142,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function initialize(to) {
    var urls = { create: '/api/branch/create', edit: '/api/branch/' + to.params.id + '/edit' };
@@ -1487,6 +1499,87 @@ var render = function() {
                         _vm.errors.first("description")
                           ? _c("small", [
                               _vm._v(_vm._s(_vm.errors.first("description")))
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spaceAfter" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                      },
+                      [
+                        _c("label", [_vm._v("Category")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.category,
+                                expression: "form.category"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required",
+                                expression: "'required'"
+                              }
+                            ],
+                            staticClass: "custom-select w-100",
+                            attrs: {
+                              "data-vv-validate-on": "blur",
+                              name: "category"
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.form,
+                                  "category",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "option",
+                              { attrs: { selected: "", value: "" } },
+                              [_vm._v("select Category")]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(["lifestyle", "appliances"], function(
+                              category
+                            ) {
+                              return _c(
+                                "option",
+                                { domProps: { value: category } },
+                                [_vm._v(_vm._s(_vm._f("capitalize")(category)))]
+                              )
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _vm.errors.first("category")
+                          ? _c("small", [
+                              _vm._v(_vm._s(_vm.errors.first("category")))
                             ])
                           : _vm._e()
                       ]

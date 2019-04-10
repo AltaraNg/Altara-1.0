@@ -16,17 +16,17 @@ class DatabaseSeeder extends Seeder
             BranchesTableSeeder::class,
             RolesTableSeeder::class,
             UsersTableSeeder::class,
-            CustomerTableSeeder::class,
+            /*CustomerTableSeeder::class,
             BanksTableSeeder::class,
             EmployeeCategorySeeder::class,
             BrandsTableSeeder::class,
             CategoriesTableSeeder::class,
-            SuppliersTableSeeder::class,
             ProductsTableSeeder::class,
             BrandCategoryTableSeeder::class,
             SupplierCategorySeeder::class,
             AttendanceTableSeeder::class,
-            CautionTableSeeder::class,
+            CautionTableSeeder::class,*/
+            SuppliersTableSeeder::class
         ]);
     }
 }
