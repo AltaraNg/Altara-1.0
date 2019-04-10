@@ -1280,7 +1280,7 @@
                         </div>
 
 
-                        <div class="form-group col-md-4 px-md-3 px-1 float-left">
+                        <!-- <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label class="w-100 float-left pl-1">Category</label>
                             <div class="radio p-0 col-6 float-left">
                                 <input :value="true" id="lifestyle" type="radio" v-model="isLifestyle">
@@ -1290,9 +1290,9 @@
                                 <input :value="false" id="appliance" type="radio" v-model="isLifestyle">
                                 <label for="appliance">appliance</label>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="spaceBetween"></div>
+                        <!-- <div class="spaceBetween"></div> -->
 
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
                             <label>Office Branch</label>
@@ -1411,9 +1411,10 @@
             * states, branches and the currently logged in dsa details*/
         },
         watch: {
-            isLifestyle(value) {
-                this.newCustomer.branch_id = value ? 8 : this.user.branch_id;
-            }
+            // isLifestyle(value) {
+            //     console.log(value)
+            //     this.newCustomer.branch_id = value ? 8 : this.user.branch_id;
+            // }
         }
     }
 </script>
