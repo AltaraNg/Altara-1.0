@@ -60,7 +60,7 @@
                                     <th class="text-muted"><i class="mr-3 fas fa-mobile-alt"></i>Phone Number</th>
                                     <td>{{customer.telephone}}</td>
                                 </tr>
-                                <tr>
+                                <tr v-if="$store.getters.auth('DVAAccess')">
                                     <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Address</th>
                                     <td>{{address | capitalize }}
                                     </td>
