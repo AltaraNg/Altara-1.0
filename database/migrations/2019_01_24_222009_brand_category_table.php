@@ -16,12 +16,14 @@ class BrandCategoryTable extends Migration
        Schema::create('brand_category', function (Blueprint $table) {
           $table->engine = 'InnoDB';
           $table->increments('id');
+
           $table->unsignedInteger('brand_id')->index()->nullable();
           $table->unsignedInteger('category_id')->index()->nullable();
        });
 
        Schema::table('brand_category', function ($table) {
           $table->engine = 'InnoDB';
+
           $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
           $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
        });

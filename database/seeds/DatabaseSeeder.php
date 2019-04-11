@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             BrandsTableSeeder::class,
             CategoriesTableSeeder::class,
             ProductsTableSeeder::class,
-            /*BrandCategoryTableSeeder::class,
-            SupplierCategorySeeder::class,
+            BrandCategoryTableSeeder::class,
+            /*SupplierCategorySeeder::class,
             AttendanceTableSeeder::class,
             CautionTableSeeder::class,*/
             SuppliersTableSeeder::class
