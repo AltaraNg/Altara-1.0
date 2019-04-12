@@ -2,13 +2,25 @@
 
 namespace App;
 
+use App\Helper\DataViewer;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    use DataViewer;
+
     public $timestamps = false;
 
     protected $fillable = ['name'];
+
+    public static $columns = ['id', 'name'];
+
+    public static function form()
+    {
+        return [
+            'name' => ''
+        ];
+    }
 
     public function brands()
     {

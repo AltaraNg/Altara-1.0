@@ -114,19 +114,22 @@ const router = new VueRouter({
             path: '/log', component: LOG, meta: {LOG: true}, children: [
                 {path: 'home', component: LOGHome, name: 'LOGHome'},
                 {path: 'inventory', component: Inventory, name: 'inventory'},
+
+                {path: 'brands', component: DataViewer, meta: {appModel: 'brand', source: '/api/brand', new: '/log/brands'}},
                 {path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: {mode: 'edit'}},
                 {path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: {mode: 'create'}},
 
 
                 {path: 'products', component: DataViewer, meta: {appModel: 'product', source: '/api/product', new: '/log/products'}},
-
-
                 {path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: {mode: 'edit'}},
                 {path: 'products/create', component: ProductForm, name: 'productCreate', meta: {mode: 'create'}},
 
 
+                {path: 'categories', component: DataViewer, meta: {appModel: 'category', source: '/api/category', new: '/log/categories'}},
                 {path: 'categories/:id/edit', component: CategoryForm, name: 'categoryEdit', meta: {mode: 'edit'}},
                 {path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: {mode: 'create'}},
+
+
                 {path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: {mode: 'edit'}},
                 {path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: {mode: 'create'}},
             ]

@@ -44,7 +44,7 @@
                     </div>
                     <div class="mb-5 px-0 row align-items-center">
                         <div class="clearfix d-flex justify-content-end w-100">
-                            <button @click="onCancel" class="mx-3 btn btn-secondary" type="button" v-if="mode ==='edit'">Cancel</button>
+                            <router-link to="/log/products" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">Cancel</router-link>
                             <button :disabled="$isProcessing" class="btn bg-default" type="submit">
                                 {{mode | capitalize}} Product <i class="far fa-paper-plane ml-1"></i>
                             </button>
@@ -118,7 +118,6 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            console.log(this.method, this.store, this.form);
                             byMethod(this.method, this.store, this.form)
                                 .then(({data}) => {
                                     if (data.saved || data.updated) {

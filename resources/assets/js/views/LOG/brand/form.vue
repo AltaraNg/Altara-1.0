@@ -1,123 +1,112 @@
 <template>
     <transition name="fade">
-        <div class="pt-md-3 pt-2" id="employeeRegister">
-            <div class="card">
-                <ul class="nav nav-tabs justify-content-center bg-default"><h6>{{mode}} Brand</h6></ul>
-                <div class="card-body pl-4 pr-4">
-                    <form @submit.prevent="onSave">
-                        <h5>Brand Details</h5>
-                        <div class="clearfix">
-                            <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                                <label>Brand ID</label>
-                                <input class="form-control"
-                                       data-vv-as="brand id"
-                                       disabled
-                                       name="brand_id"
-                                       placeholder="brand id"
-                                       type="text"
-                                       v-model="form.brand_id" v-validate="'required|max:50'">
-                                <small v-if="errors.first('brand_id')">{{ errors.first('brand_id') }}</small>
-                            </div>
-                            <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                                <label>Brand name</label>
-                                <input class="form-control"
-                                       data-vv-as="brand name"
-                                       name="brand_name"
-                                       placeholder="brand name"
-                                       type="text"
-                                       v-model="form.brand_name" v-validate="'required|max:150'">
-                                <small v-if="errors.first('brand_name')">{{ errors.first('brand_name') }}</small>
-                            </div>
-                            <div class="spaceBetween mb-md-2 mb-0"></div>
-                            <hr class="style-two">
+        <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
+            <div class="mt-5 attendance-head">
+                <div class="mb-5 row align-items-center">
+                    <div class="col-12 title-con">
+                        <span class="title">{{mode | capitalize}} Brand</span>
+                        <div class="row justify-content-end">
+                            <router-link class="text-link mt-3" to="/log/brands">view all brands!</router-link>
                         </div>
-                        <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3">
-                            <div class="clearfix d-flex justify-content-end">
-                                <button @click="onCancel" class="mx-3 btn btn-secondary" type="button" v-if="mode ==='edit'">Cancel</button>
-                                <button :disabled="$isProcessing" class="mx-3 btn bg-default" type="submit">
-                                    {{mode | capitalize}} Brand <i class="far fa-paper-plane ml-1"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
+            </div>
+            <div class="attendance-body">
+                <form @submit.prevent="onSave">
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+                        <div class="form-group col-12 float-left px-0 px-md-3">
+                            <label>Brand name</label>
+                            <input class="form-control mb-2" placeholder="brand name" name="brand name" type="text" v-model="form.name"
+                                   v-validate="'required|max:50'">
+                            <small v-if="errors.first('brand name')">{{ errors.first('brand name') }}</small>
+                            <small v-if="error.name">{{error.name[0]}}</small>
+                        </div>
+                    </div>
+                    <div class="mb-5 px-0 row align-items-center">
+                        <div class="clearfix d-flex justify-content-end w-100">
+                            <router-link to="/log/brands" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">Cancel</router-link>
+                            <button :disabled="$isProcessing" class="btn bg-default" type="submit">
+                                {{mode | capitalize}} Brand <i class="far fa-paper-plane ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </transition>
 </template>
 <script>
     import Vue from 'vue';
+    import Flash from "../../../helpers/flash";
+    import {byMethod, get} from '../../../helpers/api';
+    import {log} from "../../../helpers/log";
+
+    function initialize(to) {
+        let urls = {create: `/api/brand/create`, edit: `/api/brand/${to.params.id}/edit`};
+        return urls[to.meta.mode];
+    }
 
     export default {
-        props: {},
         data() {
             return {
-                form: {
-                    brand_id: 'BR-0001',//Expected to come from a counter in the db
-                    brand_name: null,
-                },
+                form: {},
                 mode: null,
                 error: {},
                 show: false,
-                resource: 'brands',
-                store: '/api/brands',
+                store: '/api/brand',
                 method: 'POST',
-                title: 'Create',
             }
         },
         beforeRouteEnter(to, from, next) {
-            //1. make request to back end for the form to be used
-
-            //2 send to the method in this component that will handle it when component is created
-
-
-            //3. set the current mode of the form
-            next(vm => vm.setMode(to.meta.mode));
+            get(initialize(to))
+                .then(({data}) => next(vm => vm.prepareForm(data)))
+                .catch(({response}) => next(vm => vm.handleErr(response)));
         },
         beforeRouteUpdate(to, from, next) {
-            //1. make request to back end for the form to be used
-
-            //2 send to the method in this component that will handle it when component is created
-
-            //3. Edit data that will be used for api update call
-            this.store = `/api/brands/${this.$route.params.id}`;
-            this.method = 'PUT';
-
-            //3. set the current mode of the form
-            this.setMode(to.meta.mode);
-            next();
+            this.show = false;
+            get(initialize(to))
+                .then(({data}) => this.prepareForm(data))
+                .catch(({response}) => vm.handleErr(response));
         },
         methods: {
-            setMode(mode) {
-                this.show = false;
-                /** set the current mode of the form*/
-                Vue.set(this.$data, 'mode', mode);
+            handleErr(e) {
+                Flash.setError('Error Preparing form');
             },
-            onCancel() {
-
+            prepareForm(data) {
+                this.show = false;
+                this.error = {};
+                Vue.set(this.$data, 'mode', this.$route.meta.mode);
+                Vue.set(this.$data, 'form', data.form);
+                if (this.mode === 'edit') {
+                    this.store = `/api/brand/${this.$route.params.id}`;
+                    this.method = 'PUT';
+                }
+                this.show = true;
             },
             onSave() {
-                /** 1. Validate form*/
                 this.$validator.validateAll().then(result => {
-                    /** 2.if validation is successful*/
                     if (result) {
-                        /** 3. Check is there is network*/
                         if (this.$network()) {
-                            //There is network
-                            /** 4. Show loader and set isProcessing to true*/
                             this.$LIPS(true);
-                            /** 5. Clear errors*/
-                            this.error = {};
-                            /** 6 make request to BE*/
-                            console.log(this.form);
-
-                            this.$LIPS(false);
-
-                            /** 7. Log the process*/
-
-                            /** 8. Throw success message*/
-
-                            /** 9. Take to the page view of the current supplier created*/
+                            byMethod(this.method, this.store, this.form)
+                                .then(({data}) => {
+                                    if (data.saved || data.updated) {
+                                        log(data.log, data.staff_id);
+                                        Vue.set(this.$data, 'form', data.form);
+                                        Flash.setSuccess(data.message, 5000);
+                                        if (data['updated']) this.$router.push('/log/brands');
+                                    }
+                                    this.error= {};
+                                })
+                                .catch(({response}) => {
+                                    if (response.status === 422) {
+                                        this.error = response.data.errors ? response.data.errors : response.data;
+                                        this.$networkErr('unique');
+                                    }
+                                }).finally(() => {
+                                this.$scrollToTop();
+                                this.$LIPS(false);
+                            });
                         } else this.$networkErr()
                     } else this.$networkErr('form');
                 })

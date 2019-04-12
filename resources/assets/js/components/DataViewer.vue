@@ -92,7 +92,7 @@
                                                 <i class="fas fa-key"></i>
                                             </button>
                                         </td>
-                                        <td v-if="branch || product">
+                                        <td v-if="branch || product || brand || category">
                                             <button @click="$router.push(`${$route.meta.new}/${model.id}/edit`)"
                                                     class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
                                                     data-placement="top" data-toggle="tooltip" title="update details">
@@ -385,6 +385,8 @@
             customer() {return this.$route.meta.appModel === 'customer'},
             supplier() {return this.$route.meta.appModel === 'supplier'},
             product() {return this.$route.meta.appModel === 'product'},
+            brand() {return this.$route.meta.appModel === 'brand'},
+            category() {return this.$route.meta.appModel === 'category'},
         },
     }
 </script>
