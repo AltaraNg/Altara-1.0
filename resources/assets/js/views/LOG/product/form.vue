@@ -1,253 +1,156 @@
 <template>
-   <transition name="fade">
-      <div class="pt-md-3 pt-2" id="employeeRegister">
-         <div class="card">
-            <ul class="nav nav-tabs justify-content-center bg-default"><h6>{{mode}} Product</h6></ul>
-            <div class="card-body pl-4 pr-4">
-               <form @submit.prevent="onSave">
-                  <h5>Product Details</h5>
-                  <div class="clearfix">
-
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Product ID</label>
-                        <input class="form-control"
-                               data-vv-as="product id"
-                               name="product_id"
-                               placeholder="product id"
-                               type="text"
-                               disabled
-                               v-model="form.product_id" v-validate="'required|max:50'">
-                        <small v-if="errors.first('product_id')">{{ errors.first('product_id') }}</small>
-                     </div>
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Product name</label>
-                        <input class="form-control"
-                               data-vv-as="product name"
-                               name="product_name"
-                               placeholder="product name"
-                               type="text"
-                               v-model="form.product_name" v-validate="'required|max:150'">
-                        <small v-if="errors.first('product_name')">{{ errors.first('product_name') }}</small>
-                     </div>
-                     <div class="spaceBetween mb-md-2 mb-0"></div>
-
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Product description</label>
-                        <input class="form-control"
-                               data-vv-as="product description"
-                               name="product_desc"
-                               placeholder="product desc"
-                               type="text"
-                               v-model="form.product_desc" v-validate="'required|max:50'">
-                        <small v-if="errors.first('product_desc')">{{ errors.first('product_desc') }}</small>
-                     </div>
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Category ID</label>
-                        <select name="category_id" class="custom-select w-100" v-model="form.category_id"
-                                v-validate="'required'" data-vv-validate-on="blur" data-vv-as="category id">
-                           <option value="" selected>-- select category --</option>
-                           <option v-for="category in categories" :value="category.id">{{category.name | capitalize}}</option>
-                        </select>
-                        <small v-if="errors.first('category_id')">{{ errors.first('category_id') }}</small>
-                     </div>
-                     <div class="spaceBetween mb-md-2 mb-0"></div>
-
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Supplier ID</label>
-                        <select name="supplier_id" class="custom-select w-100" v-model="form.supplier_id"
-                                v-validate="'required'" data-vv-validate-on="blur" data-vv-as="supplier id">
-                           <option value="" selected>-- select supplier --</option>
-                           <option v-for="supplier in suppliers" :value="supplier.id">{{supplier.name | capitalize}}</option>
-                        </select>
-                        <small v-if="errors.first('supplier_id')">{{ errors.first('supplier_id') }}</small>
-                     </div>
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Brand ID</label>
-                        <select name="brand_id" class="custom-select w-100" v-model="form.brand_id"
-                                v-validate="'required'" data-vv-validate-on="blur" data-vv-as="brand id">
-                           <option value="" selected>-- select brand --</option>
-                           <option v-for="brand in brands" :value="brand.id">{{brand.name | capitalize}}</option>
-                        </select>
-                        <small v-if="errors.first('brand_id')">{{ errors.first('brand_id') }}</small>
-                     </div>
-                     <div class="spaceBetween mb-md-2 mb-0"></div>
-
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Date supplied</label>
-                        <input class="form-control"
-                               data-vv-as="date supplied"
-                               name="date_supplied"
-                               type="date"
-                               v-model="form.date_supplied"
-                               v-validate="'required'">
-                        <small v-if="errors.first('date_supplied')">{{errors.first('date_supplied')}}</small>
-                     </div>
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Date sold</label>
-                        <input class="form-control"
-                               data-vv-as="date sold"
-                               name="date_sold"
-                               type="date"
-                               v-model="form.date_sold"
-                               v-validate="'required'">
-                        <small v-if="errors.first('date_sold')">{{errors.first('date_sold')}}</small>
-                     </div>
-                     <div class="spaceBetween mb-md-2 mb-0"></div>
-
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Sold by</label>
-                        <select name="sold_by" class="custom-select w-100" v-model="form.sold_by"
-                                v-validate="'required'" data-vv-validate-on="blur" data-vv-as="sold by">
-                           <option value="" selected>-- select floor agent --</option>
-                           <option v-for="agent in floorAgents" :value="agent.id">{{agent.name | capitalize}}</option>
-                        </select>
-                        <small v-if="errors.first('sold_by')">{{ errors.first('sold_by') }}</small>
-                     </div>
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Inventory agent</label>
-                        <select name="inventory_agent" class="custom-select w-100" v-model="form.inventory_agent"
-                                v-validate="'required'" data-vv-validate-on="blur" data-vv-as="inventory agent">
-                           <option value="" selected>-- select inventory agents --</option>
-                           <option v-for="agent in inventoryAgents" :value="agent.id">{{agent.name | capitalize}}</option>
-                        </select>
-                        <small v-if="errors.first('inventory_agent')">{{ errors.first('inventory_agent') }}</small>
-                     </div>
-                     <div class="spaceBetween mb-md-2 mb-0"></div>
-                     <hr class="style-two">
-                  </div>
-                  <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3">
-                     <div class="clearfix d-flex justify-content-end">
-                        <button @click="onCancel" class="mx-3 btn btn-secondary" type="button" v-if="mode ==='edit'">Cancel</button>
-                        <button :disabled="$isProcessing" class="mx-3 btn bg-default" type="submit">
-                           {{mode | capitalize}} Product <i class="far fa-paper-plane ml-1"></i>
-                        </button>
-                     </div>
-                  </div>
-               </form>
+    <transition name="fade">
+        <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
+            <div class="mt-5 attendance-head">
+                <div class="mb-5 row align-items-center">
+                    <div class="col-12 title-con">
+                        <span class="title">{{mode | capitalize}} Product</span>
+                        <div class="row justify-content-end">
+                            <router-link class="text-link mt-3" to="/log/products">view all Products!</router-link>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </transition>
+            <div class="attendance-body">
+                <form @submit.prevent="onSave">
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Product name</label>
+                            <input class="form-control" disabled placeholder="product name" type="text" v-model="form.name">
+                            <small v-if="error.name">{{error.name[0]}}</small>
+                        </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Product feature</label>
+                            <input class="form-control" name="feature" placeholder="product feature"
+                                   type="text" v-model="form.feature" v-validate="'required|max:50'">
+                            <small v-if="errors.first('feature')">{{ errors.first('feature') }}</small>
+                        </div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Brand ID</label>
+                            <typeahead :options="brands" caption="name" v-model="form.brand_id"/>
+                        </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Category ID</label>
+                            <typeahead :options="categories" caption="name" v-model="form.category_id"/>
+                        </div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Retail Price</label>
+                            <input class="form-control" name="price" placeholder="retail price"
+                                   type="number" v-model="form.retail_price" v-validate="'required|max:50'">
+                            <small v-if="errors.first('price')">{{ errors.first('price') }}</small>
+                        </div>
+                    </div>
+                    <div class="mb-5 px-0 row align-items-center">
+                        <div class="clearfix d-flex justify-content-end w-100">
+                            <button @click="onCancel" class="mx-3 btn btn-secondary" type="button" v-if="mode ==='edit'">Cancel</button>
+                            <button :disabled="$isProcessing" class="btn bg-default" type="submit">
+                                {{mode | capitalize}} Product <i class="far fa-paper-plane ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </transition>
 </template>
 <script>
-   import Vue from 'vue';
+    import Vue from 'vue';
+    import Flash from "../../../helpers/flash";
+    import {byMethod, get} from '../../../helpers/api';
+    import Typeahead from '../../../components/Typeahead';
+    import {log} from "../../../helpers/log";
 
-   export default {
-      props: {},
-      data() {
-         return {
-            form: {
-               product_id: 'PID-0001',//expected to be generated automatically from the backend
-               product_name: null,
-               product_desc:null,
-               category_id:'',
-               supplier_id:'',
-               brand_id:'',
-               date_supplied:this.$getDate(),
-               date_sold:null,
-               sold_by:'',
-               inventory_agent:'',
-            },
-            categories:[
-               /*this list will come from the backend*/
-               {id:1,name:'Fans'},
-               {id:2,name:'Refrigerators'},
-               {id:3,name:'Sound systems'},
-               {id:4,name:'Phones'}
-            ],
-            suppliers:[
-               /*this list will come from the backend*/
-               {id:1,name:'Supplier 1'},
-               {id:2,name:'Supplier 2'},
-               {id:3,name:'Supplier 3'},
-               {id:4,name:'Supplier 4'}
-            ],
-            brands:[
-               /*this list will come from the backend*/
-               {id:1,name:'synix'},
-               {id:2,name:'samsung'},
-               {id:3,name:'toshiba'},
-               {id:4,name:'panasoni'}
-            ],
-            floorAgents:[
-               /*this list will come from the backend - list of shop floor agents, and for best use will be defaulted to the logged in user*/
-               {id:1,name:'agent-name-1'},
-               {id:2,name:'agent-name-1'},
-               {id:3,name:'agent-name-1'},
-               {id:4,name:'agent-name-1'}
-            ],
-            inventoryAgents:[
-               /*this will come from the backend*/
-               {id:1,name:'officer-name-1'},
-               {id:2,name:'officer-name-1'},
-               {id:3,name:'officer-name-1'},
-               {id:4,name:'officer-name-1'}
-            ],
-            mode: null,
-            error: {},
-            show: false,
-            resource: 'products',
-            store: '/api/products',
-            method: 'POST',
-            title: 'Create',
-         }
-      },
-      beforeRouteEnter(to, from, next) {
-         //1. make request to back end for the form to be used
+    function initialize(to) {
+        let urls = {create: `/api/product/create`, edit: `/api/product/${to.params.id}/edit`};
+        return urls[to.meta.mode];
+    }
 
-         //2 send to the method in this component that will handle it when component is created
-
-         //3. set the current mode of the form
-         next(vm => vm.setMode(to.meta.mode));
-      },
-      beforeRouteUpdate(to, from, next) {
-         //1. make request to back end for the form to be used
-
-         //2 send to the method in this component that will handle it when component is created
-
-         //3. Edit data that will be used for api update call
-         this.store = `/api/products/${this.$route.params.id}`;
-         this.method = 'PUT';
-
-         //3. set the current mode of the form
-         this.setMode(to.meta.mode);
-         next();
-      },
-      methods: {
-         setMode(mode) {
+    export default {
+        components: {Typeahead},
+        props: {},
+        data() {
+            return {
+                form: {},
+                categories: [],
+                brands: [],
+                mode: null,
+                error: {},
+                show: false,
+                store: '/api/product',
+                method: 'POST',
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            get(initialize(to))
+                .then(({data}) => next(vm => vm.prepareForm(data)))
+                .catch(({response}) => next(vm => vm.handleErr(response)));
+        },
+        beforeRouteUpdate(to, from, next) {
             this.show = false;
-            /** set the current mode of the form*/
-            Vue.set(this.$data, 'mode', mode);
-         },
-         onCancel() {
+            get(initialize(to))
+                .then(({data}) => this.prepareForm(data))
+                .catch(({response}) => vm.handleErr(response)).finally(() => next());
+        },
+        methods: {
+            handleErr(e) {
+                Flash.setError('Error Preparing form');
+            },
+            onCancel() {
 
-         },
-         onSave() {
-            /** 1. Validate form*/
-            this.$validator.validateAll().then(result => {
-               /** 2.if validation is successful*/
-               if (result) {
-                  /** 3. Check is there is network*/
-                  if (this.$network()) {
-                     //There is network
-                     /** 4. Show loader and set isProcessing to true*/
-                     this.$LIPS(true);
-                     /** 5. Clear errors*/
-                     this.error = {};
-                     /** 6 make request to BE*/
-                     console.log(this.form);
-
-                     this.$LIPS(false);
-
-                     /** 7. Log the process*/
-
-                     /** 8. Throw success message*/
-
-                     /** 9. Take to the page view of the current supplier created*/
-                  } else this.$networkErr()
-               } else this.$networkErr('form');
-            })
-         }
-      }
-   }
+            },
+            prepareForm(data) {
+                this.show = false;
+                this.error = {};
+                Vue.set(this.$data, 'mode', this.$route.meta.mode);
+                Vue.set(this.$data, 'form', data.form);
+                Vue.set(this.$data, 'brands', data.brands);
+                Vue.set(this.$data, 'categories', data.categories);
+                if (this.mode === 'edit') {
+                    this.store = `/api/product/${this.$route.params.id}`;
+                    this.method = 'PUT';
+                }
+                this.show = true;
+            },
+            onSave() {
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        if (this.$network()) {
+                            this.$LIPS(true);
+                            console.log(this.method, this.store, this.form);
+                            byMethod(this.method, this.store, this.form)
+                                .then(({data}) => {
+                                    if (data.saved || data.updated) {
+                                        log(data.log, data.staff_id);
+                                        Vue.set(this.$data, 'form', data.form);
+                                        Flash.setSuccess(data.message, 5000);
+                                        if(data['updated']) this.$router.push('/log/products');
+                                    }
+                                })
+                                .catch(({response}) => {
+                                    if (response.status === 422) {
+                                        this.error = response.data.errors ? response.data.errors : response.data;
+                                        this.$networkErr('unique');
+                                    }
+                                }).finally(() => {
+                                this.$scrollToTop();
+                                this.$LIPS(false);
+                            });
+                        } else this.$networkErr()
+                    } else this.$networkErr('form');
+                })
+            }
+        },
+        watch: {
+            form: {
+                handler: function (val) {
+                    const brand = this.brands.find(b => b.id === val.brand_id);
+                    const category = this.categories.find(c => c.id === val.category_id);
+                    Vue.set(this.$data.form, 'name', `${val.feature} ${brand ? brand.name : ''} ${category ? category.name : ''}`);
+                },
+                deep: true
+            }
+        }
+    }
 </script>

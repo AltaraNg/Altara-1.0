@@ -28,7 +28,7 @@
                         url: 'categories/create', title: 'Manage Categories', url_c: 'Create/Update Categories',
                         desc: 'Manage all the category details!',
                     }, {
-                        url: 'products/create', title: 'Manage Products', url_c: 'Create/Update Products',
+                        url: 'products', title: 'Manage Products', url_c: 'Create/Update Products',
                         desc: 'Manage all the product details!',
                     }
                 ]

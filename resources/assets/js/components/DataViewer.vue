@@ -92,13 +92,10 @@
                                                 <i class="fas fa-key"></i>
                                             </button>
                                         </td>
-                                        <!--<td v-if="branch || customer">-->
-                                        <td v-if="branch">
-                                            <button @click="$router.push(`/fsl/branch/${model.id}/edit`)"
+                                        <td v-if="branch || product">
+                                            <button @click="$router.push(`${$route.meta.new}/${model.id}/edit`)"
                                                     class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
-                                                    data-placement="top"
-                                                    data-toggle="tooltip"
-                                                    title="update details">
+                                                    data-placement="top" data-toggle="tooltip" title="update details">
                                                 <i class="fas fa-cog"></i>
                                             </button>
                                         </td>
@@ -383,30 +380,11 @@
             /*methods exclusive to hrm data viewer stops here*/
         },
         computed: {
-            user() {
-                return this.$route.meta.appModel === 'user';
-                /*return true if the context
-                * of the data viewer is
-                * for employees*/
-            },
-            branch() {
-                return this.$route.meta.appModel === 'branch';
-                /*return true if the context
-                * of the data viewer is
-                * for branch*/
-            },
-            customer() {
-                return this.$route.meta.appModel === 'customer';
-                /*return true if the context
-                * of the data viewer is
-                * for customer*/
-            },
-            supplier() {
-                return this.$route.meta.appModel === 'supplier';
-                /*return true if the context
-                * of the data viewer is
-                * for customer*/
-            }
+            user() {return this.$route.meta.appModel === 'user'},
+            branch() {return this.$route.meta.appModel === 'branch'},
+            customer() {return this.$route.meta.appModel === 'customer'},
+            supplier() {return this.$route.meta.appModel === 'supplier'},
+            product() {return this.$route.meta.appModel === 'product'},
         },
     }
 </script>

@@ -20,10 +20,10 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function suppliers()
+    /*public function suppliers()
     {
         return $this->hasMany(Supplier::class);
-    }
+    }*/
 
     /*public function suppliers()
       {
