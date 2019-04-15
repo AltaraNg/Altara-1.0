@@ -1,310 +1,192 @@
 <template>
-  <transition name="fade">
-    <div class="pt-md-3 pt-2" id="employeeRegister">
-      <div class="card">
-        <ul class="nav nav-tabs justify-content-center bg-default">
-          <h6>{{mode}} Supplier</h6>
-        </ul>
-        <div class="card-body pl-4 pr-4">
-          <form @submit.prevent="onSave" id="supplierReportform">
-            <h5>Supplier Details</h5>
-            <div class="clearfix">
-              <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Supplier ID</label>
-                <input
-                  class="form-control"
-                  data-vv-as="supplier id"
-                  name="supplier_id"
-                  placeholder="supplier id"
-                  type="text"
-                  disabled
-                  v-model="form.supplier_id"
-                  v-validate="'required|max:50'"
-                >
-                <small v-if="errors.first('supplier_id')">{{ errors.first('supplier_id') }}</small>
-              </div>
-              
-              <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Supplier Name</label>
-                <input
-                  class="form-control"
-                  data-vv-as="supplier name"
-                  name="supplier_name"
-                  placeholder="supplier name"
-                  type="text"
-                  v-model="form.supplier_name"
-                  v-validate="'required|max:150'"
-                >
-                <small v-if="errors.first('supplier_name')">{{ errors.first('supplier_name') }}</small>
-              </div>
-
-               <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Phone Number</label>
-                <input
-                  :class="{'is-invalid': error.phone_number }"
-                  class="form-control"
-                  data-vv-as="phone number"
-                  name="phone_number"
-                  placeholder="081xxxxxxxx"
-                  type="tel"
-                  v-model="form.contact_phone_no"
-                  v-validate="'required|numeric|max:11|min:11'">
-
-                <small v-if="errors.first('phone_number')">{{errors.first('phone_number') }}</small>
-                <small v-if="error.contact_phone_no">{{error.contact_phone_no[0]}}</small>
-              </div>
-
-
-<div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Contact Person Name</label>
-                <input
-                  class="form-control"
-                  data-vv-as="contact person name"
-                  name="contact_person_name"
-                  placeholder="enter contact name here"
-                  type="text"
-                  v-model="form.contact_person_name"
-                  v-validate="'required|max:50'">
-
-                <small v-if="errors.first('contact_person_name')">{{errors.first('contact_person_name') }}</small>
-              </div>
-
-              <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Address</label>
-                <textarea
-                  class="form-control w-100"
-                  name="address"
-                  placeholder="address"
-                  rows="1"
-                  v-model="form.address"
-                  v-validate="'required|max:255'"
-                ></textarea>
-                <small v-if="errors.first('address')">{{errors.first('address')}}</small>
-              </div>
-
-              <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Date of registration</label>
-                <input
-                  class="form-control"
-                  data-vv-as="date of reg"
-                  name="date_of_reg"
-                  type="date"
-                  v-model="form.date_of_reg"
-                  v-validate="'required'">
-
-                <small v-if="errors.first('date_of_reg')">{{errors.first('date_of_reg')}}</small>
-              </div>
-
-
-<div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Email</label>
-                <input
-                  class="form-control"
-                  data-vv-as="email"
-                  name="email"
-                  placeholder="enter bank account name here"
-                  type="email"
-                  v-model="form.email"
-                  v-validate="'required|max:50'"
-                >
-                <!-- <small
-                           v-if="errors.first('bank_account_name')">
-                           {{errors.first('bank_account_name') }}
-                </small>-->
-              </div>
-
-
-
-              <div class="spaceBetween mb-md-2 mb-0"></div>
-            
-<h5>Supplier Account Details</h5>
-            
-              <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Bank</label>
-                <select
-                  class="custom-select w-100"
-                  data-vv-validate-on="blur"
-                  name="bank"
-                  v-model="form.bank_id"
-                  v-validate="'required'"
-                >
-                  <option selected value>-- select bank --</option>
-                  <option
-                    :value="bank.id"
-                    v-for="bank in banks"
-                  >{{bank.name | capitalize}}</option>
-                </select>
-                <small v-if="errors.first('bank')">{{errors.first('bank') }}</small>
-              </div>
-
- <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Bank Account Number</label>
-                <input
-                  class="form-control"
-                  data-vv-as="bank account no"
-                  name="bank_account_no"
-                  placeholder="enter full name here"
-                  type="number"
-                  v-model="form.bank_account_no"
-                  v-validate="'required|max:50'"
-                >
-                <small v-if="errors.first('bank_account_no')">{{errors.first('bank_account_no') }}</small>
-              </div>
-
-              <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label>Bank Account Name</label>
-                <input
-                  class="form-control"
-                  data-vv-as="bank account name"
-                  name="bank_account_name"
-                  placeholder="enter bank account name here"
-                  type="text"
-                  v-model="form.bank_account_name"
-                  v-validate="'required|max:50'">
-
-                <small
-                  v-if="errors.first('bank_account_name')"
-                >{{errors.first('bank_account_name') }}</small>
-              </div>
-
-              <div class="spaceBetween mb-md-2 mb-0"></div>
-  <h5>Supplier Status</h5>
-
-<div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                <label class="w-100 float-left pl-1">Status</label>
-                <div class="radio p-0 col-md-6 col-6 float-left" v-for="status in statuses">
-                  <input
-                    :id="status"
-                    :value="status"
-                    name="status"
-                    type="radio"
-                    v-model="form.status"
-                    v-validate="'required'">
-                  <label :for="status">{{status}}</label>
+    <transition name="fade">
+        <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
+            <div class="mt-5 attendance-head">
+                <div class="mb-5 row align-items-center">
+                    <div class="col-12 title-con">
+                        <span class="title">{{mode | capitalize}} Supplier</span>
+                        <div class="row justify-content-end">
+                            <router-link class="text-link mt-3" to="/log/suppliers">view all Suppliers!</router-link>
+                        </div>
+                    </div>
                 </div>
-                <small v-if="errors.first('status')">{{errors.first('status')}}</small>
-              </div>
-
-              <hr class="style-two">
             </div>
-
-            <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3">
-              <div class="clearfix d-flex justify-content-end">
-                <button
-                  @click="onCancel"
-                  class="mx-3 btn btn-secondary"
-                  type="button"
-                  v-if="mode ==='edit'"
-                >Cancel</button>
-                <button :disabled="$isProcessing" class="mx-3 btn bg-default" type="submit">
-                  {{mode | capitalize}} Supplier
-                  <i class="far fa-paper-plane ml-1"></i>
-                </button>
-              </div>
+            <div class="attendance-body">
+                <form @submit.prevent="onSave">
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>SKU</label>
+                            <input class="form-control" disabled name="sku" placeholder="supplier sku" type="text" v-model="form.sku">
+                            <small v-if="errors.first('sku')">{{ errors.first('sku') }}</small>
+                            <small v-if="error.sku">{{error.sku[0]}}</small>
+                        </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Full Name</label>
+                            <input class="form-control" name="name" placeholder="supplier name"
+                                   type="text" v-model="form.name" v-validate="'required|max:50'">
+                            <small v-if="errors.first('name')">{{ errors.first('name') }}</small>
+                            <small v-if="error.sku">{{error.name[0]}}</small>
+                        </div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Email</label>
+                            <input class="form-control" name="email" placeholder="email" type="email"
+                                   v-model="form.email" v-validate="'required|email|max:100'">
+                            <small v-if="errors.first('email')">{{ errors.first('email') }}</small>
+                        </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Date of registration</label>
+                            <input class="form-control" name="date" type="date" v-model="form.date_of_reg" v-validate="'required'">
+                            <small v-if="errors.first('date')">{{ errors.first('date') }}</small>
+                        </div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Phone</label>
+                            <input class="form-control" name="phone" placeholder="phone"
+                                   type="text" v-model="form.phone_number" v-validate="'required|max:20'">
+                            <small v-if="errors.first('phone')">{{ errors.first('phone') }}</small>
+                        </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Contact person phone</label>
+                            <input class="form-control" data-vv-as="contact person phone" name="contact_phone" placeholder="phone"
+                                   type="text" v-model="form.contact_person_name" v-validate="'required|max:20'">
+                            <small v-if="errors.first('contact_phone')">{{ errors.first('contact_phone') }}</small>
+                        </div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label class="w-100 float-left">Status</label>
+                            <div class="radio p-0 col-md-6 col-6 float-left" v-for="status in statuses">
+                                <input :id="status.name" :value="status.value" name="status" type="radio" v-model="form.status"
+                                       v-validate="'required'">
+                                <label :for="status.name">{{status.name}}</label>
+                            </div>
+                            <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
+                        </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Address</label>
+                            <textarea class="form-control" placeholder="address" name="address" rows="1" v-validate="'required|max:255'"
+                                      v-model="form.address"></textarea>
+                            <small v-if="errors.first('address')">{{ errors.first('address') }}</small>
+                        </div>
+                        <div class="spaceAfter"></div>
+                        <h5 class="m-3">Bank Details</h5>
+                        <div class="spaceAfter"></div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Bank Name</label>
+                            <select class="custom-select w-100" data-vv-as="bank name"
+                                    data-vv-validate-on="blur" name="bank_name" v-model="form.bank_name" v-validate="'required'">
+                                <option disabled value="">-- select duration --</option>
+                                <option :value="bank.name" v-for="bank in banks">{{bank.name}}</option>
+                            </select>
+                            <small v-if="errors.first('bank_name')">{{ errors.first('bank_name') }}</small>
+                        </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Bank account name</label>
+                            <input class="form-control" data-vv-as="account name" name="account_name" placeholder="account name"
+                                   type="number" v-model="form.bank_account_name" v-validate="'required|max:50'">
+                            <small v-if="errors.first('account_name')">{{ errors.first('account_name') }}</small>
+                        </div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label>Bank account number</label>
+                            <input class="form-control" data-vv-as="account number" name="account_number" placeholder="account number"
+                                   type="number" v-model="form.bank_account_no" v-validate="'required|max:50'">
+                            <small v-if="errors.first('account_number')">{{ errors.first('account_number') }}</small>
+                        </div>
+                        <div class="spaceBetween mb-md-2 mb-0"></div>
+                    </div>
+                    <div class="mb-5 px-0 row align-items-center">
+                        <div class="clearfix d-flex justify-content-end w-100">
+                            <router-link class="mx-5 text-link mt-4 pt-2" to="/log/suppliers" v-if="mode ==='edit'">Cancel</router-link>
+                            <button :disabled="$isProcessing" class="btn bg-default" type="submit">
+                                {{mode | capitalize}} Supplier <i class="far fa-paper-plane ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </form>
         </div>
-      </div>
-    </div>
-  </transition>
+    </transition>
 </template>
 <script>
-import Vue from "vue";
-import Flash from "../../../helpers/flash";
+    import Vue from 'vue';
+    import Flash from "../../../helpers/flash";
+    import {byMethod, get} from '../../../helpers/api';
+    import {log} from "../../../helpers/log";
 
-export default {
-  props: {},
-  data() {
-    return {
-      form: {
-        supplier_id: "ALTS/001/POL/18", //this will come from a counter in the db
-        supplier_name: null,
-        date_of_reg: this.$getDate(),
-        status: "active",
-        address: null,
-        contact_phone_no: null,
-        contact_person_name: null,
-        bank_name: null,
-        bank_account_no: null,
-        bank_account_name: null,
-        email: null
-      },
-      mode: null,
-      error: {},
-      show: false,
-      resource: "suppliers",
-      store: "/api/suppliers",
-      method: "POST",
-      title: "Create",
-      statuses: ["active", "suspended"],
-      banks: [
-        /*this object is temporary pending when catagory if fetched from backend*/
-        { id: 1, name: "First bank" },
-        { id: 2, name: "Second bank" }
-      ]
-    };
-  },
-  beforeRouteEnter(to, from, next) {
-    //1. make request to back end for the form to be used
-
-    //2 send to the method in this component that will handle it when component is created
-
-    //3. set the current mode of the form
-    next(vm => vm.setMode(to.meta.mode));
-  },
-  beforeRouteUpdate(to, from, next) {
-    //1. make request to back end for the form to be used
-
-    //2 send to the method in this component that will handle it when component is created
-
-    //3. Edit data that will be used for api update call
-    this.store = `/api/suppliers/${this.$route.params.id}`;
-    this.method = "PUT";
-
-    //3. set the current mode of the form
-    this.setMode(to.meta.mode);
-    next();
-  },
-  methods: {
-    setMode(mode) {
-      this.show = false;
-      /** set the current mode of the form*/
-      Vue.set(this.$data, "mode", mode);
-    },
-    onCancel() {},
-    onSave() {
-      /** 1. Validate form*/
-      this.$validator.validateAll().then(result => {
-        /** 2.if validation is successful*/
-        if (result) {
-          /** 3. Check is there is network*/
-          if (this.$network()) {
-            //There is network
-            /** 4. Show loader and set isProcessing to true*/
-            this.$LIPS(true);
-            /** 5. Clear errors*/
-            this.error = {};
-            /** 6 make request to BE*/
-            console.log(this.form);
-
-            this.$LIPS(false);
-
-            /** 7. Log the process*/
-
-            document.getElementById("supplierReportform").reset();
-            this.$validator.reset();
-            // this.initForm();
-            this.$scrollToTop();
-            this.$LIPS(false);
-            Flash.setSuccess("Supplier Added");
-
-            /** 8. Throw success message*/
-
-            /** 9. Take to the page view of the current supplier created*/
-          } else this.$networkErr();
-        } else this.$networkErr("form");
-      });
+    function initialize(to) {
+        let urls = {create: `/api/supplier/create`, edit: `/api/supplier/${to.params.id}/edit`};
+        return urls[to.meta.mode];
     }
-  }
-};
+
+    export default {
+        props: {},
+        data() {
+            return {
+                form: {},
+                banks: '',
+                mode: null,
+                error: {},
+                show: false,
+                store: '/api/supplier',
+                method: 'POST',
+                statuses: [{name: 'active', value: 1}, {name: 'inactive', value: 0}]
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            get(initialize(to))
+                .then(({data}) => next(vm => vm.prepareForm(data)))
+                .catch(({response}) => next(vm => vm.handleErr(response)));
+        },
+        beforeRouteUpdate(to, from, next) {
+            this.show = false;c
+            get(initialize(to))
+                .then(({data}) => this.prepareForm(data))
+                .catch(({response}) => vm.handleErr(response)).finally(() => next());
+        },
+        methods: {
+            handleErr(e) {
+                Flash.setError('Error Preparing form');
+            },
+            prepareForm(data) {
+                this.show = false;
+                this.error = {};
+                Vue.set(this.$data, 'mode', this.$route.meta.mode);
+                Vue.set(this.$data, 'form', data.form);
+                Vue.set(this.$data, 'banks', data.banks);
+                if (this.mode === 'edit') {
+                    this.store = `/api/supplier/${this.$route.params.id}`;
+                    this.method = 'PUT';
+                }
+                this.show = true;
+            },
+            onSave() {
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        if (this.$network()) {
+                            this.$LIPS(true);
+                            byMethod(this.method, this.store, this.form)
+                                .then(({data}) => {
+                                    if (data.saved || data.updated) {
+                                        log(data.log, data.staff_id);
+                                        Vue.set(this.$data, 'form', data.form);
+                                        Flash.setSuccess(data.message, 5000);
+                                        if (data['updated']) this.$router.push('/log/suppliers');
+                                    }
+                                })
+                                .catch(({response}) => {
+                                    if (response.status === 422) {
+                                        this.error = response.data.errors ? response.data.errors : response.data;
+                                        this.$networkErr('unique');
+                                    }
+                                }).finally(() => {
+                                this.$scrollToTop();
+                                this.$LIPS(false);
+                            });
+                        } else this.$networkErr()
+                    } else this.$networkErr('form');
+                })
+            }
+        }
+    }
 </script>

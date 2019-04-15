@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'customer' => 'CustomerController',
         'category' => 'CategoryController',
         'document' => 'DocumentController',
+        'supplier' => 'SupplierController',
         'attendance' => 'AttendanceController',
         'verification' => 'VerificationController',
         'work_guarantor' => 'WorkGuarantorController',

@@ -119,17 +119,15 @@ const router = new VueRouter({
                 {path: 'brands/:id/edit', component: BrandForm, name: 'BrandEdit', meta: {mode: 'edit'}},
                 {path: 'brands/create', component: BrandForm, name: 'BrandCreate', meta: {mode: 'create'}},
 
-
                 {path: 'products', component: DataViewer, meta: {appModel: 'product', source: '/api/product', new: '/log/products'}},
                 {path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: {mode: 'edit'}},
                 {path: 'products/create', component: ProductForm, name: 'productCreate', meta: {mode: 'create'}},
-
 
                 {path: 'categories', component: DataViewer, meta: {appModel: 'category', source: '/api/category', new: '/log/categories'}},
                 {path: 'categories/:id/edit', component: CategoryForm, name: 'categoryEdit', meta: {mode: 'edit'}},
                 {path: 'categories/create', component: CategoryForm, name: 'categoryCreate', meta: {mode: 'create'}},
 
-
+                {path: 'suppliers', component: DataViewer, meta: {appModel: 'supplier', source: '/api/supplier', new: '/log/suppliers'}},
                 {path: 'suppliers/:id/edit', component: SuppliersForm, name: 'suppliersEdit', meta: {mode: 'edit'}},
                 {path: 'suppliers/create', component: SuppliersForm, name: 'suppliersCreate', meta: {mode: 'create'}},
             ]

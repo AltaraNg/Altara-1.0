@@ -19,7 +19,7 @@
                         url: 'inventory', title: 'Inventory', url_c: 'View Inventory!',
                         desc: 'For inventory and management'
                     }, {
-                        url: 'suppliers/create', title: 'Manage Suppliers', url_c: 'Create/Update Supplier',
+                        url: 'suppliers', title: 'Manage Suppliers', url_c: 'Create/Update Supplier',
                         desc: 'Manage all the suppliers details!',
                     }, {
                         url: 'brands', title: 'Manage Brands', url_c: 'Create/Update Brands',

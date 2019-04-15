@@ -1,9 +1,9 @@
 <template>
     <transition name="fade">
-        <div :class="$route.meta.appModel === 'customer' ? 'px-md-4 px-2' : ''">
+        <div :class="isModel('customer') ? 'px-md-4 px-2' : ''">
             <app-navigation :forward="{ path: $routerHistory.next().path }" :pageTitle="`${$route.meta.appModel} List` | capitalize"
-                            :previous="{ path: $routerHistory.previous().path }" pageTitleSmall="Cust. List"
-                            v-if="$route.meta.appModel === 'customer'"/>
+                            :previous="{ path: $routerHistory.previous().path }" :pageTitleSmall="`${$route.meta.appModel}. List` | capitalize"
+                            v-if="isModel('customer')"/>
             <div class="pt-md-3 pt-2" id="employeeEdit">
                 <div class="card" style="border-top: 3px solid #0e5f92; border-radius: .2rem .2rem .4rem .4rem">
                     <div class="px-5 py-4">
@@ -67,7 +67,7 @@
                                             </router-link>
                                         </td>
 
-                                        <td v-if="user">
+                                        <td v-if="isModel('user')">
                                             <router-link :to="`employee/${model.id}/edit`"
                                                          class="text-center mx-2 btn btn-dark btn-icon btn-sm float-left btn-round"
                                                          data-placement="top"
@@ -92,7 +92,12 @@
                                                 <i class="fas fa-key"></i>
                                             </button>
                                         </td>
-                                        <td v-if="branch || product || brand || category">
+                                        <td v-if="
+                                        isModel('branch') ||
+                                        isModel('product') ||
+                                        isModel('brand') ||
+                                        isModel('category') ||
+                                        isModel('supplier')">
                                             <button @click="$router.push(`${$route.meta.new}/${model.id}/edit`)"
                                                     class="text-center mx-2 btn btn-success btn-icon btn-sm float-left btn-round"
                                                     data-placement="top" data-toggle="tooltip" title="update details">
@@ -320,7 +325,7 @@
                                     this.$store.getters.getStates.find(obj => obj.id === curr.state_id).name;
                                 if (data[0].branch_id) curr.branch_id =
                                     this.$store.getters.getBranches.find(obj => obj.id === curr.branch_id).name;
-                                if (this.customer) curr.verification = status(curr.verification);
+                                if (this.isModel('customer')) curr.verification = status(curr.verification);
                             });
                         }
                         Vue.set(this.$data, 'model', res.data.model);
@@ -376,17 +381,40 @@
                 this.$scrollToTop();
                 this.$LIPS(false);
                 $('.modal').modal('hide');
-            }
+            },
             /*methods exclusive to hrm data viewer stops here*/
-        },
+
+            isModel(m) {
+                return this.$route.meta.appModel === m;
+            },
+        }/*,
         computed: {
-            user() {return this.$route.meta.appModel === 'user'},
-            branch() {return this.$route.meta.appModel === 'branch'},
-            customer() {return this.$route.meta.appModel === 'customer'},
-            supplier() {return this.$route.meta.appModel === 'supplier'},
-            product() {return this.$route.meta.appModel === 'product'},
-            brand() {return this.$route.meta.appModel === 'brand'},
-            category() {return this.$route.meta.appModel === 'category'},
-        },
+            isModel(m)2 {
+                return this.$route.meta.appModel === m;
+            },
+
+
+            user() {
+                return this.$route.meta.appModel === 'user'
+            },
+            branch() {
+                return this.$route.meta.appModel === 'branch'
+            },
+            customer() {
+                return this.$route.meta.appModel === 'customer'
+            },
+            supplier() {
+                return this.$route.meta.appModel === 'supplier'
+            },
+            product() {
+                return this.$route.meta.appModel === 'product'
+            },
+            brand() {
+                return this.$route.meta.appModel === 'brand'
+            },
+            category() {
+                return this.$route.meta.appModel === 'category'
+            },
+        },*/
     }
 </script>
