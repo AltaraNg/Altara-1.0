@@ -135,7 +135,7 @@
 
             <div class="mt-5 attendance-head">
 
-                <div class="w-100 my-5 mx-0 hr" data-v-6defbd3d=""></div>
+                <div class="w-100 my-5 mx-0 hr"></div>
 
                 <div class="pt-3 pb-4 align-items-center">
                     <div class="light-heading d-flex">

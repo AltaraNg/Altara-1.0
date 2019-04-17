@@ -3499,7 +3499,7 @@ body {
     margin-right: 5px;
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: 30px;
+    /*border-radius: 30px;*/
     font-size: 14px;
     padding: 11px 23px;
     line-height: 1.5;

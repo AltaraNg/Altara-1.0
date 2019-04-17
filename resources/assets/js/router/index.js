@@ -20,6 +20,7 @@ const DVA = () => import( '../views/DVA/index.vue');
 const DVAHome = () => import( '../views/DVA/HomePage.vue');
 const DVAMessage = () => import( '../views/DVA/messaging/message.vue');
 const DVAVerification = () => import( '../views/DVA/verification/verification.vue');
+const DVAReminder = () => import( '../views/DVA/reminder/reminder.vue');
 
 const Profile = () => import( '../views/profile/Index.vue');
 const ProfileEdit = () => import( '../views/profile/Edit.vue');
@@ -86,6 +87,7 @@ const router = new VueRouter({
                     name: 'customerUpdate'
                 },
                 {path: 'verification', component: DVAVerification, name: 'verification'},
+                {path: 'reminder', component: DVAReminder, name: 'reminder'},
             ]
         },
         {
