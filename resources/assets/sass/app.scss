@@ -645,6 +645,11 @@ form#messaging {
 
 }
 
+/*.modal .attendance-item{
+    background-color: rgb(247, 248, 252);
+    border: 1px solid rgb(240, 241, 245);
+}*/
+
 .title {
     font-size: 2rem;
     font-weight: bold;
@@ -738,6 +743,7 @@ form#messaging {
 }
 
 #view-caution,
+#reminder,
 #viewAttendance {
     .modal-body span {
         min-width: 10rem;
@@ -781,6 +787,27 @@ form#messaging {
 
     [role="tablist"] {
         border-bottom: .5px solid #e9ebf3
+    }
+}
+
+.modal-xl {
+    max-width: 1140px;
+}
+
+.repayment{
+    .paid{
+        background-color: rgba($color-green,0.05);
+        color: $color-green;
+    }
+
+    .missed{
+        background-color: rgba($color-red,0.05);
+        color: $color-red;
+    }
+
+    .pending{
+        background-color: rgba($default-color,0.05);
+        color: $default-color;
     }
 }
 
