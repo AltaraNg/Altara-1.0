@@ -390,6 +390,94 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     data: function data() {
@@ -402,11 +490,20 @@ exports.default = {
                 orders: [{ id: 223131, date: '09-09-2017' }]
             },
             viewMore: {},
-            customers: [{ check: false }, { check: false }, { check: false }, { check: false }, { check: false }]
+            customers: [{ check: false, category: 'Formal' }, { check: false, category: 'Informal' }, { check: false, category: 'Informal' }, { check: false, category: 'Formal' }, { check: false, category: 'Formal' }]
         };
     },
 
     methods: {
+        getModalType: function getModalType(category) {
+            var cat = category.toLowerCase();
+            switch (cat) {
+                case 'formal':
+                    return 'repaymentFormal';
+                case 'informal':
+                    return 'repaymentInformal';
+            }
+        },
         displayDetails: function displayDetails(customer) {
             var modal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'viewMore';
 
@@ -580,7 +677,13 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("\n                    ID: 4875\n                ")]
+                [
+                  _vm._v(
+                    "\n                    ID: 4875 - " +
+                      _vm._s(customer.category) +
+                      "\n                "
+                  )
+                ]
               ),
               _vm._v(" "),
               _c(
@@ -590,7 +693,10 @@ var render = function() {
                   attrs: { "data-hoverable": "true" },
                   on: {
                     click: function($event) {
-                      _vm.displayDetails(customer, "repayment")
+                      _vm.displayDetails(
+                        customer,
+                        _vm.getModalType(customer.category)
+                      )
                     }
                   }
                 },
@@ -954,7 +1060,9 @@ var render = function() {
     _vm._v(" "),
     _vm._m(9),
     _vm._v(" "),
-    _vm._m(10)
+    _vm._m(10),
+    _vm._v(" "),
+    _vm._m(11)
   ])
 }
 var staticRenderFns = [
@@ -1159,6 +1267,12 @@ var staticRenderFns = [
                           _c("th", [_vm._v("Total amount to Pay (₦)")]),
                           _vm._v(" "),
                           _c("td", [_vm._v("149,000")])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Processed by")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Durojaiye Oluwafemi")])
                         ])
                       ])
                     ]
@@ -1250,7 +1364,13 @@ var staticRenderFns = [
                         _c("tr", [
                           _c("th", [_vm._v("Category")]),
                           _vm._v(" "),
-                          _c("td", [_vm._v("Informal")])
+                          _c("td", [_vm._v("Informal or Informal")])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Verified by")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Dorca Taiwo")])
                         ])
                       ])
                     ]
@@ -1281,7 +1401,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "modal fade repayment", attrs: { id: "repayment" } },
+      { staticClass: "modal fade repayment", attrs: { id: "repaymentFormal" } },
       [
         _c(
           "div",
@@ -1290,7 +1410,7 @@ var staticRenderFns = [
             _c("div", { staticClass: "modal-content" }, [
               _c("div", { staticClass: "modal-header py-2" }, [
                 _c("h6", { staticClass: "modal-title py-1" }, [
-                  _vm._v("Repayment Plan/Summary")
+                  _vm._v("Repayment Plan/Summary - Formal")
                 ]),
                 _vm._v(" "),
                 _c(
@@ -1531,6 +1651,243 @@ var staticRenderFns = [
       "div",
       {
         staticClass: "modal fade repayment",
+        attrs: { id: "repaymentInformal" }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header py-2" }, [
+                _c("h6", { staticClass: "modal-title py-1" }, [
+                  _vm._v("Repayment Plan/Summary - Informal")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "close py-1",
+                    attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+                  },
+                  [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "modal-close text-danger",
+                        attrs: { "aria-hidden": "true" }
+                      },
+                      [_c("i", { staticClass: "fas fa-times" })]
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c("table", { staticClass: "table table-bordered" }, [
+                    _c("tbody", { staticClass: "text-center" }, [
+                      _c("tr", [
+                        _c("th", [_vm._v("Repayment")]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("1"),
+                          _c("sup", [_vm._v("st")])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2"),
+                          _c("sup", [_vm._v("nd")])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("3"),
+                          _c("sup", [_vm._v("rd")])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("4"),
+                          _c("sup", [_vm._v("th")])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("5"),
+                          _c("sup", [_vm._v("th")])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("6"),
+                          _c("sup", [_vm._v("th")])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("th", [_vm._v("Due date")]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-2-19")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-2-19")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-2-19")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-2-19")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-2-19")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-2-19")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("th", [_vm._v("Status")]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "paid", attrs: { colspan: "2" } },
+                          [_c("i", { staticClass: "fas fa-check" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "paid", attrs: { colspan: "2" } },
+                          [_c("i", { staticClass: "fas fa-check" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "missed", attrs: { colspan: "2" } },
+                          [_c("i", { staticClass: "fas fa-times" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "missed", attrs: { colspan: "2" } },
+                          [_c("i", { staticClass: "fas fa-times" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "pending", attrs: { colspan: "2" } },
+                          [_c("i", { staticClass: "fas fa-hourglass-start" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "pending", attrs: { colspan: "2" } },
+                          [_c("i", { staticClass: "fas fa-hourglass-start" })]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("th", [_vm._v("Pay Date")]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-02-18")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-02-18")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-02-18")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("2019-02-18")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("th", [_vm._v("Amount Paid (₦)")]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("4200.00")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("4200.00")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("4200.00")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [
+                          _vm._v("4200.00")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("th", [_vm._v("Summary (₦)")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Grand Total")]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { colspan: "3" } }, [
+                          _vm._v("4200.00")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Total Paid")]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { colspan: "3" } }, [
+                          _vm._v("4200.00")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Total Debt")]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { colspan: "3" } }, [
+                          _vm._v("4200.00")
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "text-link mt-3 w-100",
+                    staticStyle: { "text-align": "right" },
+                    attrs: { "data-dismiss": "modal", href: "javascript:" }
+                  },
+                  [_vm._v("close dialogue")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal fade repayment",
         attrs: { id: "reminder_history" }
       },
       [
@@ -1575,7 +1932,9 @@ var staticRenderFns = [
                           _vm._v(" "),
                           _c("th", [_vm._v("Date")]),
                           _vm._v(" "),
-                          _c("th", [_vm._v("Comment")])
+                          _c("th", [_vm._v("Comment")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("sender")])
                         ])
                       ]),
                       _vm._v(" "),
@@ -1587,9 +1946,11 @@ var staticRenderFns = [
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              "This man...he is a debtor niccur. Yeah does it sound like a comment This\n                                    man...he is a debtor niccur. Yeah\n                                    does it sound like a comment This man...he is a debtor niccur. Yeah does it\n                                    sound like a commentThis man.\n                                "
+                              "This man...he is a debtor niccur. Yeah does it sound like a comment\n                                "
                             )
-                          ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Ibeanu Hillary")])
                         ]),
                         _vm._v(" "),
                         _c("tr", [
@@ -1601,7 +1962,9 @@ var staticRenderFns = [
                             _vm._v(
                               "This man...he is a debtor niccur. Yeah does it sound like a comment"
                             )
-                          ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Ibeanu Hillary")])
                         ]),
                         _vm._v(" "),
                         _c("tr", [
@@ -1613,7 +1976,9 @@ var staticRenderFns = [
                             _vm._v(
                               "This man...he is a debtor niccur. Yeah does it sound like a comment"
                             )
-                          ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Ibeanu Hillary")])
                         ])
                       ])
                     ]

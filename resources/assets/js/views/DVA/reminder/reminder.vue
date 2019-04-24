@@ -42,9 +42,9 @@
                     </div>
                     <div @click="displayDetails(customer,'customer_info')" class="col-12 col-xs-3 col-md col-lg"
                          data-hoverable="true">
-                        ID: 4875
+                        ID: 4875 - {{customer.category}}
                     </div>
-                    <div @click="displayDetails(customer, 'repayment')" class="col-12 col-xs-2 col-md col-lg"
+                    <div @click="displayDetails(customer, getModalType(customer.category))" class="col-12 col-xs-2 col-md col-lg"
                          data-hoverable="true">
                         Paid: 20,000 Debt: 49,000
                     </div>
@@ -164,6 +164,10 @@
                                     <th>Total amount to Pay (&#8358;)</th>
                                     <td>149,000</td>
                                 </tr>
+                                <tr>
+                                    <th>Processed by</th>
+                                    <td>Durojaiye Oluwafemi</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -203,7 +207,11 @@
                                 </tr>
                                 <tr>
                                     <th>Category</th>
-                                    <td>Informal</td>
+                                    <td>Informal or Informal</td>
+                                </tr>
+                                <tr>
+                                    <th>Verified by</th>
+                                    <td>Dorca Taiwo</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -217,11 +225,120 @@
             </div>
         </div>
 
-        <div class="modal fade repayment" id="repayment">
+        <div class="modal fade repayment" id="repaymentFormal">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header py-2">
+                    <h6 class="modal-title py-1">Repayment Plan/Summary - Formal</h6>
+                    <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                        <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody class="text-center">
+                            <tr>
+                                <th>Repayment</th>
+                                <td>1<sup>st</sup></td>
+                                <td>2<sup>nd</sup></td>
+                                <td>3<sup>rd</sup></td>
+                                <td>4<sup>th</sup></td>
+                                <td>5<sup>th</sup></td>
+                                <td>6<sup>th</sup></td>
+                                <td>7<sup>th</sup></td>
+                                <td>8<sup>th</sup></td>
+                                <td>9<sup>th</sup></td>
+                                <td>10<sup>th</sup></td>
+                                <td>11<sup>th</sup></td>
+                                <td>12<sup>th</sup></td>
+                            </tr>
+                            <tr>
+                                <th>Due date</th>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                                <td>2019-2-19</td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td class="paid"><i class="fas fa-check"></i></td>
+                                <td class="paid"><i class="fas fa-check"></i></td>
+                                <td class="paid"><i class="fas fa-check"></i></td>
+                                <td class="paid"><i class="fas fa-check"></i></td>
+                                <td class="missed"><i class="fas fa-times"></i></td>
+                                <td class="missed"><i class="fas fa-times"></i></td>
+                                <td class="missed"><i class="fas fa-times"></i></td>
+                                <td class="missed"><i class="fas fa-times"></i></td>
+                                <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                            </tr>
+                            <tr>
+                                <th>Pay Date</th>
+                                <td>2019-02-18</td>
+                                <td>2019-02-18</td>
+                                <td>2019-02-18</td>
+                                <td>2019-02-18</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Amount Paid (&#8358;)</th>
+                                <td>4200.00</td>
+                                <td>4200.00</td>
+                                <td>4200.00</td>
+                                <td>4200.00</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Summary (&#8358;)</th>
+                                <td>Grand Total</td>
+                                <th colspan="3">4200.00</th>
+                                <td>Total Paid</td>
+                                <th colspan="3">4200.00</th>
+                                <td>Total Debt</td>
+                                <th colspan="3">4200.00</th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                       style="text-align: right">close dialogue</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="modal fade repayment" id="repaymentInformal">
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header py-2">
-                        <h6 class="modal-title py-1">Repayment Plan/Summary</h6>
+                        <h6 class="modal-title py-1">Repayment Plan/Summary - Informal</h6>
                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
                             <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
                         </a>
@@ -232,78 +349,48 @@
                                 <tbody class="text-center">
                                 <tr>
                                     <th>Repayment</th>
-                                    <td>1<sup>st</sup></td>
-                                    <td>2<sup>nd</sup></td>
-                                    <td>3<sup>rd</sup></td>
-                                    <td>4<sup>th</sup></td>
-                                    <td>5<sup>th</sup></td>
-                                    <td>6<sup>th</sup></td>
-                                    <td>7<sup>th</sup></td>
-                                    <td>8<sup>th</sup></td>
-                                    <td>9<sup>th</sup></td>
-                                    <td>10<sup>th</sup></td>
-                                    <td>11<sup>th</sup></td>
-                                    <td>12<sup>th</sup></td>
+                                    <td colspan="2">1<sup>st</sup></td>
+                                    <td colspan="2">2<sup>nd</sup></td>
+                                    <td colspan="2">3<sup>rd</sup></td>
+                                    <td colspan="2">4<sup>th</sup></td>
+                                    <td colspan="2">5<sup>th</sup></td>
+                                    <td colspan="2">6<sup>th</sup></td>
                                 </tr>
                                 <tr>
                                     <th>Due date</th>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
-                                    <td>2019-2-19</td>
+                                    <td colspan="2">2019-2-19</td>
+                                    <td colspan="2">2019-2-19</td>
+                                    <td colspan="2">2019-2-19</td>
+                                    <td colspan="2">2019-2-19</td>
+                                    <td colspan="2">2019-2-19</td>
+                                    <td colspan="2">2019-2-19</td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td class="paid"><i class="fas fa-check"></i></td>
-                                    <td class="paid"><i class="fas fa-check"></i></td>
-                                    <td class="paid"><i class="fas fa-check"></i></td>
-                                    <td class="paid"><i class="fas fa-check"></i></td>
-                                    <td class="missed"><i class="fas fa-times"></i></td>
-                                    <td class="missed"><i class="fas fa-times"></i></td>
-                                    <td class="missed"><i class="fas fa-times"></i></td>
-                                    <td class="missed"><i class="fas fa-times"></i></td>
-                                    <td class="pending"><i class="fas fa-hourglass-start"></i></td>
-                                    <td class="pending"><i class="fas fa-hourglass-start"></i></td>
-                                    <td class="pending"><i class="fas fa-hourglass-start"></i></td>
-                                    <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                    <td colspan="2" class="paid"><i class="fas fa-check"></i></td>
+                                    <td colspan="2" class="paid"><i class="fas fa-check"></i></td>
+                                    <td colspan="2" class="missed"><i class="fas fa-times"></i></td>
+                                    <td colspan="2" class="missed"><i class="fas fa-times"></i></td>
+                                    <td colspan="2" class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                    <td colspan="2" class="pending"><i class="fas fa-hourglass-start"></i></td>
                                 </tr>
                                 <tr>
                                     <th>Pay Date</th>
-                                    <td>2019-02-18</td>
-                                    <td>2019-02-18</td>
-                                    <td>2019-02-18</td>
-                                    <td>2019-02-18</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td colspan="2">2019-02-18</td>
+                                    <td colspan="2">2019-02-18</td>
+                                    <td colspan="2">2019-02-18</td>
+                                    <td colspan="2">2019-02-18</td>
+                                    <td colspan="2">-</td>
+                                    <td colspan="2">-</td>
                                 </tr>
                                 <tr>
                                     <th>Amount Paid (&#8358;)</th>
-                                    <td>4200.00</td>
-                                    <td>4200.00</td>
-                                    <td>4200.00</td>
-                                    <td>4200.00</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td colspan="2">4200.00</td>
+                                    <td colspan="2">4200.00</td>
+                                    <td colspan="2">4200.00</td>
+                                    <td colspan="2">4200.00</td>
+                                    <td colspan="2">-</td>
+                                    <td colspan="2">-</td>
                                 </tr>
                                 <tr>
                                     <th>Summary (&#8358;)</th>
@@ -343,27 +430,28 @@
                                     <th>S/N</th>
                                     <th>Date</th>
                                     <th>Comment</th>
+                                    <th>sender</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <th>1</th>
                                     <td>20/03/2018</td>
-                                    <td>This man...he is a debtor niccur. Yeah does it sound like a comment This
-                                        man...he is a debtor niccur. Yeah
-                                        does it sound like a comment This man...he is a debtor niccur. Yeah does it
-                                        sound like a commentThis man.
+                                    <td>This man...he is a debtor niccur. Yeah does it sound like a comment
                                     </td>
+                                    <td>Ibeanu Hillary</td>
                                 </tr>
                                 <tr>
                                     <th>2</th>
                                     <td>20/03/2018</td>
                                     <td>This man...he is a debtor niccur. Yeah does it sound like a comment</td>
+                                    <td>Ibeanu Hillary</td>
                                 </tr>
                                 <tr>
                                     <th>3</th>
                                     <td>20/03/2018</td>
                                     <td>This man...he is a debtor niccur. Yeah does it sound like a comment</td>
+                                    <td>Ibeanu Hillary</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -398,20 +486,29 @@
                 },
                 viewMore: {},
                 customers: [
-                    {check: false},
-                    {check: false},
-                    {check: false},
-                    {check: false},
-                    {check: false},
+                    {check: false, category: 'Formal'},
+                    {check: false, category: 'Informal'},
+                    {check: false, category: 'Informal'},
+                    {check: false, category: 'Formal'},
+                    {check: false, category: 'Formal'},
                 ]
             }
         },
         methods: {
+            getModalType(category) {
+                const cat = category.toLowerCase();
+                switch (cat) {
+                    case 'formal':
+                        return 'repaymentFormal';
+                    case 'informal':
+                        return 'repaymentInformal';
+                }
+            },
             displayDetails(customer, modal = 'viewMore') {
                 return $(`#${modal}`).modal('toggle');
             },
             selectAll() {
-                this.customers.forEach(customer =>customer.check = true);
+                this.customers.forEach(customer => customer.check = true);
             }
         },
         mounted() {
