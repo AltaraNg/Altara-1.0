@@ -478,6 +478,9 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
 
 exports.default = {
     data: function data() {
@@ -490,7 +493,8 @@ exports.default = {
                 orders: [{ id: 223131, date: '09-09-2017' }]
             },
             viewMore: {},
-            customers: [{ check: false, category: 'Formal' }, { check: false, category: 'Informal' }, { check: false, category: 'Informal' }, { check: false, category: 'Formal' }, { check: false, category: 'Formal' }]
+            customers: [{ check: false, category: 'Formal' }, { check: false, category: 'Informal' }, { check: false, category: 'Informal' }, { check: false, category: 'Formal' }, { check: false, category: 'Formal' }],
+            doSelectAll: false
         };
     },
 
@@ -510,16 +514,19 @@ exports.default = {
             return $("#" + modal).modal('toggle');
         },
         selectAll: function selectAll() {
+            var _this = this;
+
+            this.doSelectAll = !this.doSelectAll;
             this.customers.forEach(function (customer) {
-                return customer.check = true;
+                return customer.check = _this.doSelectAll;
             });
         }
     },
     mounted: function mounted() {
-        var _this = this;
+        var _this2 = this;
 
         $(document).on("hidden.bs.modal", '.modal', function () {
-            return _this.viewMore = {};
+            return _this2.viewMore = {};
         });
     }
 };
@@ -541,11 +548,17 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass: "col text-link",
+            staticClass: "col p-0 text-link",
             staticStyle: { "max-width": "120px" },
             on: { click: _vm.selectAll }
           },
-          [_vm._v("Click to Select all")]
+          [
+            _vm._v(
+              "\n                Click to " +
+                _vm._s(_vm.doSelectAll ? "Select" : "De-select") +
+                " all\n            "
+            )
+          ]
         ),
         _vm._v(" "),
         _c("div", { staticClass: "col light-heading" }, [

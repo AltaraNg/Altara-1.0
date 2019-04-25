@@ -16820,6 +16820,7 @@ form#messaging textarea {
 .text-link:hover {
   color: #2975a5 !important;
   text-decoration: underline !important;
+  cursor: pointer;
 }
 
 .sm-show {

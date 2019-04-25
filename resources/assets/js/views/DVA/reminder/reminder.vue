@@ -18,7 +18,9 @@
         </div>
         <div class="mt-5 mb-3 attendance-head">
             <div class="row px-4 pt-3 pb-4 text-center">
-                <div class="col text-link" @click="selectAll" style="max-width: 120px">Click to Select all</div>
+                <div class="col p-0 text-link" @click="selectAll" style="max-width: 120px">
+                    Click to {{doSelectAll ? 'Select' : 'De-select'}} all
+                </div>
                 <div class="col light-heading">Order Number</div>
                 <div class="col light-heading">Order Summary</div>
                 <div class="col light-heading">Customer Info Summary</div>
@@ -44,7 +46,8 @@
                          data-hoverable="true">
                         ID: 4875 - {{customer.category}}
                     </div>
-                    <div @click="displayDetails(customer, getModalType(customer.category))" class="col-12 col-xs-2 col-md col-lg"
+                    <div @click="displayDetails(customer, getModalType(customer.category))"
+                         class="col-12 col-xs-2 col-md col-lg"
                          data-hoverable="true">
                         Paid: 20,000 Debt: 49,000
                     </div>
@@ -226,113 +229,113 @@
         </div>
 
         <div class="modal fade repayment" id="repaymentFormal">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header py-2">
-                    <h6 class="modal-title py-1">Repayment Plan/Summary - Formal</h6>
-                    <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                        <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
-                    </a>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <tbody class="text-center">
-                            <tr>
-                                <th>Repayment</th>
-                                <td>1<sup>st</sup></td>
-                                <td>2<sup>nd</sup></td>
-                                <td>3<sup>rd</sup></td>
-                                <td>4<sup>th</sup></td>
-                                <td>5<sup>th</sup></td>
-                                <td>6<sup>th</sup></td>
-                                <td>7<sup>th</sup></td>
-                                <td>8<sup>th</sup></td>
-                                <td>9<sup>th</sup></td>
-                                <td>10<sup>th</sup></td>
-                                <td>11<sup>th</sup></td>
-                                <td>12<sup>th</sup></td>
-                            </tr>
-                            <tr>
-                                <th>Due date</th>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                                <td>2019-2-19</td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td class="paid"><i class="fas fa-check"></i></td>
-                                <td class="paid"><i class="fas fa-check"></i></td>
-                                <td class="paid"><i class="fas fa-check"></i></td>
-                                <td class="paid"><i class="fas fa-check"></i></td>
-                                <td class="missed"><i class="fas fa-times"></i></td>
-                                <td class="missed"><i class="fas fa-times"></i></td>
-                                <td class="missed"><i class="fas fa-times"></i></td>
-                                <td class="missed"><i class="fas fa-times"></i></td>
-                                <td class="pending"><i class="fas fa-hourglass-start"></i></td>
-                                <td class="pending"><i class="fas fa-hourglass-start"></i></td>
-                                <td class="pending"><i class="fas fa-hourglass-start"></i></td>
-                                <td class="pending"><i class="fas fa-hourglass-start"></i></td>
-                            </tr>
-                            <tr>
-                                <th>Pay Date</th>
-                                <td>2019-02-18</td>
-                                <td>2019-02-18</td>
-                                <td>2019-02-18</td>
-                                <td>2019-02-18</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <th>Amount Paid (&#8358;)</th>
-                                <td>4200.00</td>
-                                <td>4200.00</td>
-                                <td>4200.00</td>
-                                <td>4200.00</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <th>Summary (&#8358;)</th>
-                                <td>Grand Total</td>
-                                <th colspan="3">4200.00</th>
-                                <td>Total Paid</td>
-                                <th colspan="3">4200.00</th>
-                                <td>Total Debt</td>
-                                <th colspan="3">4200.00</th>
-                            </tr>
-                            </tbody>
-                        </table>
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header py-2">
+                        <h6 class="modal-title py-1">Repayment Plan/Summary - Formal</h6>
+                        <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                        </a>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
-                       style="text-align: right">close dialogue</a>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody class="text-center">
+                                <tr>
+                                    <th>Repayment</th>
+                                    <td>1<sup>st</sup></td>
+                                    <td>2<sup>nd</sup></td>
+                                    <td>3<sup>rd</sup></td>
+                                    <td>4<sup>th</sup></td>
+                                    <td>5<sup>th</sup></td>
+                                    <td>6<sup>th</sup></td>
+                                    <td>7<sup>th</sup></td>
+                                    <td>8<sup>th</sup></td>
+                                    <td>9<sup>th</sup></td>
+                                    <td>10<sup>th</sup></td>
+                                    <td>11<sup>th</sup></td>
+                                    <td>12<sup>th</sup></td>
+                                </tr>
+                                <tr>
+                                    <th>Due date</th>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                    <td>2019-2-19</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td class="paid"><i class="fas fa-check"></i></td>
+                                    <td class="paid"><i class="fas fa-check"></i></td>
+                                    <td class="paid"><i class="fas fa-check"></i></td>
+                                    <td class="paid"><i class="fas fa-check"></i></td>
+                                    <td class="missed"><i class="fas fa-times"></i></td>
+                                    <td class="missed"><i class="fas fa-times"></i></td>
+                                    <td class="missed"><i class="fas fa-times"></i></td>
+                                    <td class="missed"><i class="fas fa-times"></i></td>
+                                    <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                    <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                    <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                    <td class="pending"><i class="fas fa-hourglass-start"></i></td>
+                                </tr>
+                                <tr>
+                                    <th>Pay Date</th>
+                                    <td>2019-02-18</td>
+                                    <td>2019-02-18</td>
+                                    <td>2019-02-18</td>
+                                    <td>2019-02-18</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <th>Amount Paid (&#8358;)</th>
+                                    <td>4200.00</td>
+                                    <td>4200.00</td>
+                                    <td>4200.00</td>
+                                    <td>4200.00</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <th>Summary (&#8358;)</th>
+                                    <td>Grand Total</td>
+                                    <th colspan="3">4200.00</th>
+                                    <td>Total Paid</td>
+                                    <th colspan="3">4200.00</th>
+                                    <td>Total Debt</td>
+                                    <th colspan="3">4200.00</th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                           style="text-align: right">close dialogue</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <div class="modal fade repayment" id="repaymentInformal">
             <div class="modal-dialog modal-xl" role="document">
@@ -491,7 +494,8 @@
                     {check: false, category: 'Informal'},
                     {check: false, category: 'Formal'},
                     {check: false, category: 'Formal'},
-                ]
+                ],
+                doSelectAll: false,
             }
         },
         methods: {
@@ -508,7 +512,8 @@
                 return $(`#${modal}`).modal('toggle');
             },
             selectAll() {
-                this.customers.forEach(customer => customer.check = true);
+                this.doSelectAll = !this.doSelectAll;
+                this.customers.forEach(customer => customer.check = this.doSelectAll);
             }
         },
         mounted() {
