@@ -16480,6 +16480,8 @@ nav #navigation .nav-link i.fas {
 
 textarea.form-control {
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  padding: .5rem .75rem;
+  line-height: 1.25;
 }
 
 .form-control:focus,
@@ -16859,12 +16861,12 @@ form#messaging textarea {
 
 #reminder .attendance-item {
   overflow: hidden;
-  min-height: 48px;
+  min-height: 56px;
 }
 
 #reminder .attendance-item div {
-  min-height: 48px;
-  line-height: 48px;
+  min-height: 56px;
+  line-height: 56px;
 }
 
 #reminder .attendance-item div[data-hoverable="true"]:hover {

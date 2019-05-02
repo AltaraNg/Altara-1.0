@@ -5,7 +5,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Supplier::class, function (Faker $faker) {
     return [
-        'user_id' => rand(1, 100),
+        'user_id' => rand(20, 100),
         'sku' => rand(1, 100),
         'name' => $faker->firstName . ' ' . $faker->lastName,
         'address' => $faker->streetAddress,

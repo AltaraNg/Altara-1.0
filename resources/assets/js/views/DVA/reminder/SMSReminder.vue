@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="reminder-2" role="tabpanel">
+            <div class="tab-pane text-center" id="reminder-2" role="tabpanel">
                 <div class="mb-3 row align-items-center attendance-item" v-for="customer in customers">
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
                         <input class="form-check-input my-0 mx-4 float-left position-relative" type="checkbox"
@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="reminder-3" role="tabpanel">
+            <div class="tab-pane text-center" id="reminder-3" role="tabpanel">
                 <div class="mb-3 row align-items-center attendance-item" v-for="customer in customers">
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
                         <input class="form-check-input my-0 mx-4 float-left position-relative" type="checkbox"
@@ -432,6 +432,7 @@
                                 <tr>
                                     <th>S/N</th>
                                     <th>Date</th>
+                                    <th>Type</th>
                                     <th>Comment</th>
                                     <th>sender</th>
                                 </tr>
@@ -440,19 +441,21 @@
                                 <tr>
                                     <th>1</th>
                                     <td>20/03/2018</td>
-                                    <td>This man...he is a debtor niccur. Yeah does it sound like a comment
-                                    </td>
+                                    <td>Call</td>
+                                    <td>This man...he is a debtor niccur. Yeah does it sound like a comment</td>
                                     <td>Ibeanu Hillary</td>
                                 </tr>
                                 <tr>
                                     <th>2</th>
                                     <td>20/03/2018</td>
+                                    <td>SMS</td>
                                     <td>This man...he is a debtor niccur. Yeah does it sound like a comment</td>
                                     <td>Ibeanu Hillary</td>
                                 </tr>
                                 <tr>
                                     <th>3</th>
                                     <td>20/03/2018</td>
+                                    <td>SMS</td>
                                     <td>This man...he is a debtor niccur. Yeah does it sound like a comment</td>
                                     <td>Ibeanu Hillary</td>
                                 </tr>
@@ -471,7 +474,28 @@
 </template>
 
 <script>
+    import {get} from "../../../helpers/api";
+
     export default {
+
+        beforeRouteEnter(to, from, next) {
+            //1. make request to back-end
+            get('/api/reminder/create').then(({data}) => {
+                //2 send to the method to prepare form//
+                next(vm => /*vm.prepareForm(res.data)*/ console.log(data));
+            });
+        },
+        beforeRouteUpdate(to, from, next) {
+            //this.show = false;
+            //1. make request to back-end
+            get('/api/reminder/create').then(({data}) => {
+                //2 send to the method to prepare form
+                //this.prepareForm(res.data);
+                console.log(data);
+                next();
+            });
+        },
+
         data() {
             return {
                 customer: {

@@ -1,28 +1,29 @@
 <?php
 
 namespace App;
+
 use App\Helper\DataViewer;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-   /** this is a generic trait created to serve as a generic
-    * scope for fetching and paginating the
-    * model where it is called */
+    /** this is a generic trait created to serve as a generic
+     * scope for fetching and paginating the
+     * model where it is called */
     use DataViewer;
 
     protected $guarded = [];
 
     protected $hidden = [];
 
-   /** columns to be used to render the list(Data viewer) of customers in the view*/
+    /** columns to be used to render the list(Data viewer) of customers in the view*/
     public static $columns = [
-       'id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration'
+        'id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration'
     ];
 
-   /** this is the user object form, it is sent to the js
-    * view when the customer creation
-    * form is required */
+    /** this is the user object form, it is sent to the js
+     * view when the customer creation
+     * form is required */
     public static function form()
     {
         $user = auth('api')->user();
@@ -164,6 +165,21 @@ class Customer extends Model
     public function processingFee()
     {
         return $this->hasOne(ProcessingFee::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
+    public function repayment()
+    {
+        return $this->hasMany(Repayment::class);
+    }
+
+    public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
     }
 
 }

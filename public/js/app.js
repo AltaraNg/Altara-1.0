@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		34: 0
+/******/ 		35: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -44348,7 +44348,7 @@ var DSAHome = function DSAHome() {
     return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
 };
 var DSAReport = function DSAReport() {
-    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
+    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
 };
 var CustomerForm = function CustomerForm() {
     return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, "./resources/assets/js/views/shared/customerForm.vue"));
@@ -44369,8 +44369,11 @@ var DVAMessage = function DVAMessage() {
 var DVAVerification = function DVAVerification() {
     return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
 };
-var DVAReminder = function DVAReminder() {
-    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/reminder.vue"));
+var DVASMSReminder = function DVASMSReminder() {
+    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/SMSReminder.vue"));
+};
+var DVACallReminder = function DVACallReminder() {
+    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/callReminder.vue"));
 };
 
 var Profile = function Profile() {
@@ -44460,7 +44463,7 @@ var router = new _vueRouter2.default({
             meta: { mode: 'update' },
             alias: '/dsa/customer/update',
             name: 'customerUpdate'
-        }, { path: 'verification', component: DVAVerification, name: 'verification' }, { path: 'reminder', component: DVAReminder, name: 'reminder' }]
+        }, { path: 'verification', component: DVAVerification, name: 'verification' }, { path: 'reminder/sms', component: DVASMSReminder, name: 'sms-reminder' }, { path: 'reminder/call', component: DVACallReminder, name: 'call-reminder' }]
     }, {
         path: '/hrm', component: HRM, meta: { HRM: true }, children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: HRMHome, name: 'HRMHome' }, { path: 'employee', component: DataViewer, meta: { appModel: 'user', source: '/api/user', new: '/hrm/employee' } }, { path: 'employee/create', component: EmployeeForm, meta: { mode: 'create' } }, { path: 'employee/:id/edit', component: EmployeeForm, meta: { mode: 'edit' } }, { path: 'attendance', component: Attendance }, { path: 'attendance/create', component: AttendanceForm, name: 'attendanceCreateHrm', meta: { mode: 'create' } }, { path: 'caution', component: Caution }, { path: 'caution/create', component: CautionForm, name: 'createCaution', meta: { mode: 'create' } }]
     }, {

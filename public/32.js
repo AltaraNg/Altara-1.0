@@ -1,6 +1,6 @@
 webpackJsonp([32],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/reminder.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/callReminder.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9,20 +9,6 @@ webpackJsonp([32],{
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -533,7 +519,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-426fb2d2\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/reminder.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-37057f60\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/callReminder.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -581,7 +567,11 @@ var render = function() {
           _vm._v("Reminder History")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [_vm._v("Comment")])
+        _c("div", { staticClass: "col light-heading" }, [_vm._v("Comment")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Promise Date")
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -738,7 +728,9 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(2, true)
+              _vm._m(2, true),
+              _vm._v(" "),
+              _vm._m(3, true)
             ]
           )
         })
@@ -747,7 +739,7 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "tab-pane",
+          staticClass: "tab-pane text-center",
           attrs: { id: "reminder-2", role: "tabpanel" }
         },
         _vm._l(_vm.customers, function(customer) {
@@ -806,7 +798,7 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _vm._m(3, true)
+                  _vm._m(4, true)
                 ]
               ),
               _vm._v(" "),
@@ -887,156 +879,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(4, true)
-            ]
-          )
-        })
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "tab-pane",
-          attrs: { id: "reminder-3", role: "tabpanel" }
-        },
-        _vm._l(_vm.customers, function(customer) {
-          return _c(
-            "div",
-            { staticClass: "mb-3 row align-items-center attendance-item" },
-            [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "col-12 col-xs-2 col-md col-lg d-flex align-items-center",
-                  staticStyle: { "max-width": "120px" }
-                },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: customer.check,
-                        expression: "customer.check"
-                      }
-                    ],
-                    staticClass:
-                      "form-check-input my-0 mx-4 float-left position-relative",
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(customer.check)
-                        ? _vm._i(customer.check, null) > -1
-                        : customer.check
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = customer.check,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(customer, "check", $$a.concat([$$v]))
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                customer,
-                                "check",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(customer, "check", $$c)
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(5, true)
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg user-name",
-                  attrs: { "data-reminder-1": "1" }
-                },
-                [_vm._v("LSB0839432")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "purchase_order")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    20th, June 2018\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-3 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "customer_info")
-                    }
-                  }
-                },
-                [_vm._v("\n                    ID: 4875\n                ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "repayment")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    Paid: 20,000 Debt: 49,000\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "reminder_history")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    3 Reminders sent\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _vm._m(6, true)
+              _vm._m(5, true)
             ]
           )
         })
@@ -1067,15 +910,15 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
+    _vm._m(6),
+    _vm._v(" "),
     _vm._m(7),
     _vm._v(" "),
     _vm._m(8),
     _vm._v(" "),
     _vm._m(9),
     _vm._v(" "),
-    _vm._m(10),
-    _vm._v(" "),
-    _vm._m(11)
+    _vm._m(10)
   ])
 }
 var staticRenderFns = [
@@ -1137,6 +980,42 @@ var staticRenderFns = [
               },
               [_vm._v("3"), _c("sup", [_vm._v("rd")]), _vm._v(" Reminder")]
             )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  "aria-selected": "false",
+                  "data-toggle": "tab",
+                  href: "#reminder-4",
+                  role: "tab"
+                }
+              },
+              [_vm._v("4"), _c("sup", [_vm._v("th")]), _vm._v(" Reminder")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  "aria-selected": "false",
+                  "data-toggle": "tab",
+                  href: "#reminder-5",
+                  role: "tab"
+                }
+              },
+              [
+                _vm._v("5"),
+                _c("sup", [_vm._v("th")]),
+                _vm._v(" Reminder (Promise Call)")
+              ]
+            )
           ])
         ]
       )
@@ -1159,16 +1038,8 @@ var staticRenderFns = [
       {
         staticClass: "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
       },
-      [_c("input", { staticClass: "form-control", attrs: { type: "text" } })]
+      [_c("textarea", { staticClass: "form-control", attrs: { rows: "1" } })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "user mx-auto" }, [
-      _c("i", { staticClass: "user-icon fas fa-user-alt" })
-    ])
   },
   function() {
     var _vm = this
@@ -1179,7 +1050,7 @@ var staticRenderFns = [
       {
         staticClass: "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
       },
-      [_c("input", { staticClass: "form-control", attrs: { type: "text" } })]
+      [_c("input", { staticClass: "form-control", attrs: { type: "date" } })]
     )
   },
   function() {
@@ -1945,6 +1816,8 @@ var staticRenderFns = [
                           _vm._v(" "),
                           _c("th", [_vm._v("Date")]),
                           _vm._v(" "),
+                          _c("th", [_vm._v("Type")]),
+                          _vm._v(" "),
                           _c("th", [_vm._v("Comment")]),
                           _vm._v(" "),
                           _c("th", [_vm._v("sender")])
@@ -1957,9 +1830,11 @@ var staticRenderFns = [
                           _vm._v(" "),
                           _c("td", [_vm._v("20/03/2018")]),
                           _vm._v(" "),
+                          _c("td", [_vm._v("Call")]),
+                          _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              "This man...he is a debtor niccur. Yeah does it sound like a comment\n                                "
+                              "This man...he is a debtor niccur. Yeah does it sound like a comment"
                             )
                           ]),
                           _vm._v(" "),
@@ -1970,6 +1845,8 @@ var staticRenderFns = [
                           _c("th", [_vm._v("2")]),
                           _vm._v(" "),
                           _c("td", [_vm._v("20/03/2018")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("SMS")]),
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
@@ -1984,6 +1861,8 @@ var staticRenderFns = [
                           _c("th", [_vm._v("3")]),
                           _vm._v(" "),
                           _c("td", [_vm._v("20/03/2018")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("SMS")]),
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
@@ -2022,21 +1901,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-426fb2d2", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-37057f60", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/DVA/reminder/reminder.vue":
+/***/ "./resources/assets/js/views/DVA/reminder/callReminder.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/reminder.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/callReminder.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-426fb2d2\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/reminder.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-37057f60\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/callReminder.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2053,7 +1932,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\reminder\\reminder.vue"
+Component.options.__file = "resources\\assets\\js\\views\\DVA\\reminder\\callReminder.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2062,9 +1941,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-426fb2d2", Component.options)
+    hotAPI.createRecord("data-v-37057f60", Component.options)
   } else {
-    hotAPI.reload("data-v-426fb2d2", Component.options)
+    hotAPI.reload("data-v-37057f60", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

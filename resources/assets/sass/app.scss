@@ -357,6 +357,8 @@ nav {
 
 textarea.form-control {
     border: 1px solid rgba($color-black, 0.1) !important;
+    padding: .5rem .75rem;
+    line-height:1.25;
 }
 
 .form-control:focus,
@@ -754,10 +756,10 @@ form#messaging {
 #reminder {
     .attendance-item{
         overflow: hidden;
-        min-height: 48px;
+        min-height: 56px;
         div{
-            min-height: 48px;
-            line-height: 48px;
+            min-height: 56px;
+            line-height: 56px;
             &[data-hoverable="true"]:hover{
                 background-color: rgba($default-color, 0.05);
                 text-decoration: underline;

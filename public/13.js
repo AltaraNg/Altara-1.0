@@ -73,8 +73,11 @@ exports.default = {
                 url: 'message', title: 'Messaging', url_c: 'Send messages!',
                 desc: 'For sending messages to customers'
             }, {
-                url: 'reminder', title: 'Customer Reminder', url_c: 'View reminders',
-                desc: 'View all due/sent reminders!'
+                url: 'reminder/sms', title: 'Customer SMS Reminder', url_c: 'View SMS reminders',
+                desc: 'View all due/sent SMS reminders!'
+            }, {
+                url: 'reminder/call', title: 'Customer Call Reminder', url_c: 'View Call reminders',
+                desc: 'View all due Call reminders!'
             }, {
                 url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                 desc: 'View all registered customers!'

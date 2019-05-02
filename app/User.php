@@ -145,7 +145,12 @@ class User extends Authenticatable
 
     public function cautionsIssued()
     {
-        return $this->hasMany(Caution::class, 'issuer_id','id');
+        return $this->hasMany(Caution::class, 'issuer_id', 'id');
     }
+
+    /*public function counterSales()
+    {
+        return $this->hasMany(Purchase::class, 'sales_agent_id', 'staff_id');
+    }*/
 
 }
