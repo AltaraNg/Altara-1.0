@@ -24,12 +24,26 @@ class ReminderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public static function getDateForReminder($list){
+//        $date = date('Y-m-d');
+        $date = '2019-04-29';
+        switch($list){
+            case 2:
+                return date('Y-m-d', strtotime($date . ' - 7 days'));
+            case 3:
+                return date('Y-m-d', strtotime($date . ' - 1 month'));
+            default:
+                return $date;
+        }
+    }
+
     public function create()
     {
-        //return 1;
-
-        $result = Purchase::where('order_date', '=', date('Y-m-d'))->with
-        (['repayment', 'reminders',
+        $result = Purchase::where('order_date', '=', $this->getDateForReminder(request('list')))->with
+        (['repayment', 'reminders' => function($query){
+            return $query->with('user');//remember to select only name and id here later
+        },
             'floorAgent' => function ($q) {
                 return $q->select('id', 'staff_id', 'full_name');
             },
@@ -48,15 +62,12 @@ class ReminderController extends Controller
                     'state',
                     'telephone',
                     'civil_status',
-                    'employment_status');
+                    'employment_status')->with('branch');//remember to select only name and id here later
             }])->get();
 
-
         return response()->json([
-            'data' => $result
+            'orders' => $result
         ]);
-
-
     }
 
     /**

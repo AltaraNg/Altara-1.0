@@ -172,7 +172,6 @@
     export default {
         data() {
             return {
-                window,
                 form: {},
                 mode: null,
                 show: false,

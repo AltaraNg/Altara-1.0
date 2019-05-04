@@ -7,6 +7,16 @@ import {get} from '../helpers/api'
 // on the project(vue components)
 // by using this.$functionName
 
+Vue.prototype.$getCustomerFullName = cus => {
+    if(cus) return`${cus.first_name} ${cus.last_name}`;
+    return null;
+};
+Vue.prototype.$getCustomerAddress = cus => {
+    if(cus) return`${cus.add_houseno} ${cus.add_street} ${cus.area_address}, ${cus.city}, ${cus.state}.`;
+    return null;
+};
+
+
 Vue.prototype.$isProcessing = false;
 //this is basically used in any form to avoid submitting
 // forms more than once or repeatedly

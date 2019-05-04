@@ -1,6 +1,6 @@
 webpackJsonp([32],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/callReminder.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/caution/index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9,317 +9,22 @@ webpackJsonp([32],{
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+
+var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
+
+var _flash2 = _interopRequireDefault(_flash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var apiLink = function apiLink(to) {
+    return "/caution" + (to.query.page ? '?page=' + to.query.page : '');
+}; //
 //
 //
 //
@@ -471,1451 +176,583 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     data: function data() {
         return {
-            customer: {
-                id: 1,
-                name: 'Ibeanu Hillary',
-                messages: [{ id: 1, body: "This is the body of the random message sent to a customer!" }, { id: 2, body: "This is the body of the random message sent to a customer!" }, { id: 3, body: "This is the body of the random message sent to a customer!" }],
-                repayments: [],
-                orders: [{ id: 223131, date: '09-09-2017' }]
-            },
-            viewMore: {},
-            customers: [{ check: false, category: 'Formal' }, { check: false, category: 'Informal' }, { check: false, category: 'Informal' }, { check: false, category: 'Formal' }, { check: false, category: 'Formal' }],
-            doSelectAll: false
+            show: false,
+            caution: null,
+            cautions: {},
+            columns: [{ name: 'Employee', col: 4 }, { name: 'Issued by', col: 3 }, { name: 'Reason', col: 2 }, { name: 'Penalty', col: 2 }, { name: 'Date', col: 1 }]
         };
+    },
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        (0, _api.get)("/api" + apiLink(to)).then(function (res) {
+            next(function (vm) {
+                return vm.prepareForm(res.data);
+            });
+            console.log(res.data);
+        }).catch(function (err) {
+            next(function (vm) {
+                return vm.handleErr(err);
+            });
+        });
+    },
+    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+        var _this = this;
+
+        this.show = false;
+        this.$LIPS(true);
+        (0, _api.get)("/api" + apiLink(to)).then(function (res) {
+            _this.prepareForm(res.data);
+            next();
+        }).catch(function (err) {
+            _this.handleErr(err);
+            next();
+        });
     },
 
     methods: {
-        getModalType: function getModalType(category) {
-            var cat = category.toLowerCase();
-            switch (cat) {
-                case 'formal':
-                    return 'repaymentFormal';
-                case 'informal':
-                    return 'repaymentInformal';
-            }
-        },
-        displayDetails: function displayDetails(customer) {
-            var modal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'viewMore';
+        fetch: function fetch() {
+            var _this2 = this;
 
-            return $("#" + modal).modal('toggle');
-        },
-        selectAll: function selectAll() {
-            var _this = this;
-
-            this.doSelectAll = !this.doSelectAll;
-            this.customers.forEach(function (customer) {
-                return customer.check = _this.doSelectAll;
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this2.$network()) {
+                        _this2.$router.push("/hrm" + apiLink(_this2.query));
+                    } else _this2.$networkErr();
+                } else _this2.$networkErr('form');
             });
+        },
+        prepareForm: function prepareForm(data) {
+            if (data.cautions.data.length < 1 && data.cautions.total !== 0) this.$router.push({ query: { page: data.cautions.last_page } });
+            if (data.cautions.data.length) {
+                _vue2.default.set(this.$data, 'cautions', data.cautions);
+                this.show = true;
+            }
+            this.$LIPS(false);
+        },
+        handleErr: function handleErr(e) {
+            _flash2.default.setError('Error Fetching Cautions');
+        },
+        displayInfo: function displayInfo(caution) {
+            _vue2.default.set(this.$data, 'caution', caution);
+            return $("#view-caution").modal('toggle');
         }
     },
-    mounted: function mounted() {
-        var _this2 = this;
+    updated: function updated() {
+        var _this3 = this;
 
+        $('[data-toggle="tooltip"]').tooltip({ boundary: 'window', html: true });
         $(document).on("hidden.bs.modal", '.modal', function () {
-            return _this2.viewMore = {};
+            return _this3.caution = '';
         });
     }
 };
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-37057f60\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/callReminder.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-42f2c96b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/caution/index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "reminder" } }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
-      _c("div", { staticClass: "row px-4 pt-3 pb-4 text-center" }, [
-        _c(
-          "div",
-          {
-            staticClass: "col p-0 text-link",
-            staticStyle: { "max-width": "120px" },
-            on: { click: _vm.selectAll }
-          },
-          [
-            _vm._v(
-              "\n                Click to " +
-                _vm._s(_vm.doSelectAll ? "Select" : "De-select") +
-                " all\n            "
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "pt-md-3 pt-2 attendance attendance-view",
+        attrs: { id: "index" }
+      },
+      [
+        _c("div", { staticClass: "mt-5 attendance-head" }, [
+          _c("div", { staticClass: "mb-5 row align-items-center" }, [
+            _c("div", { staticClass: "col-12 title-con" }, [
+              _c("span", { staticClass: "title" }, [
+                _vm._v("Caution Register")
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "row justify-content-end" },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "text-link mt-3",
+                      attrs: { to: "caution/create" }
+                    },
+                    [_vm._v("click here to send caution a staff!")]
+                  )
+                ],
+                1
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.show
+          ? _c(
+              "div",
+              { staticClass: "mt-5 row attendance-head mb-4" },
+              _vm._l(_vm.columns, function(capt) {
+                return _c("div", { class: "col-" + capt.col }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "light-heading" }, [
+                      _c("span", { staticClass: "d-none d-sm-inline" }),
+                      _vm._v(" " + _vm._s(capt.name))
+                    ])
+                  ])
+                ])
+              })
             )
-          ]
-        ),
+          : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Order Number")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Order Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Customer Info Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Repayment Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Reminder History")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [_vm._v("Comment")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Promise Date")
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
-      _c(
-        "div",
-        {
-          staticClass: "tab-pane active text-center",
-          attrs: { id: "reminder-1", role: "tabpanel" }
-        },
-        _vm._l(_vm.customers, function(customer) {
-          return _c(
-            "div",
-            { staticClass: "mb-3 row align-items-center attendance-item" },
-            [
-              _c(
+        _c("div", { staticClass: "mt-1 attendance-body" }, [
+          _vm.show
+            ? _c(
                 "div",
-                {
-                  staticClass:
-                    "col-12 col-xs-2 col-md col-lg d-flex align-items-center",
-                  staticStyle: { "max-width": "120px" }
-                },
                 [
-                  _c("input", {
-                    directives: [
+                  _vm._l(_vm.cautions.data, function(caution, index) {
+                    return _c(
+                      "div",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: customer.check,
-                        expression: "customer.check"
-                      }
-                    ],
-                    staticClass:
-                      "form-check-input my-0 mx-4 float-left position-relative",
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(customer.check)
-                        ? _vm._i(customer.check, null) > -1
-                        : customer.check
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = customer.check,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(customer, "check", $$a.concat([$$v]))
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                customer,
-                                "check",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
+                        staticClass:
+                          "mb-3 px-0 row align-items-center attendance-item",
+                        attrs: {
+                          "data-toggle": "tooltip",
+                          "data-placement": "top",
+                          title: "click on here to view full details!"
+                        },
+                        on: {
+                          click: function($event) {
+                            _vm.displayInfo(caution)
                           }
-                        } else {
-                          _vm.$set(customer, "check", $$c)
                         }
-                      }
-                    }
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "col-12 col-xs-4 col-md-4 col-lg-4" },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "row align-items-center" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "ml-5 mr-3 sm-hide" },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "user mx-auto" },
+                                      [
+                                        _vm._v(
+                                          "\n                                    " +
+                                            _vm._s(
+                                              index +
+                                                1 +
+                                                (_vm.cautions.current_page -
+                                                  1) *
+                                                  10
+                                            ) +
+                                            "\n                                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _c("span", { staticClass: "user-name" }, [
+                                    _vm._v(_vm._s(caution.user.full_name))
+                                  ])
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-12 col-xs-3 col-md-3 col-lg-3" },
+                          [
+                            _c("div", { staticClass: "row" }, [
+                              _c("span", [
+                                _vm._v(_vm._s(caution.issuer.full_name))
+                              ])
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-12 col-xs-2 col-md-2 col-lg-2 sm-hide"
+                          },
+                          [
+                            _c("div", { staticClass: "row" }, [
+                              _c("span", [_vm._v(_vm._s(caution.reason_min))])
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-6 col-xs-2 col-md-2 col-lg-2 pr-3 py-4 py-sm-0 px-sm-0 px-lg-4 sm-hide"
+                          },
+                          [
+                            _c("div", { staticClass: "row" }, [
+                              _c("span", [_vm._v(_vm._s(caution.penalty_min))])
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-6 col-xs-1 col-md-1 col-lg-1 pl-3 py-4 py-sm-0"
+                          },
+                          [
+                            _c("div", { staticClass: "row" }, [
+                              _c("span", [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(caution.date_text) +
+                                    "\n                            "
+                                )
+                              ])
+                            ])
+                          ]
+                        )
+                      ]
+                    )
                   }),
                   _vm._v(" "),
-                  _vm._m(1, true)
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg user-name",
-                  attrs: { "data-reminder-1": "1" }
-                },
-                [_vm._v("LSB0839432")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "purchase_order")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    20th, June 2018\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-3 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "customer_info")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    ID: 4875 - " +
-                      _vm._s(customer.category) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(
-                        customer,
-                        _vm.getModalType(customer.category)
-                      )
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    Paid: 20,000 Debt: 49,000\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "reminder_history")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    3 Reminders sent\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _vm._m(2, true),
-              _vm._v(" "),
-              _vm._m(3, true)
-            ]
-          )
-        })
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "tab-pane text-center",
-          attrs: { id: "reminder-2", role: "tabpanel" }
-        },
-        _vm._l(_vm.customers, function(customer) {
-          return _c(
-            "div",
-            { staticClass: "mb-3 row align-items-center attendance-item" },
-            [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "col-12 col-xs-2 col-md col-lg d-flex align-items-center",
-                  staticStyle: { "max-width": "120px" }
-                },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: customer.check,
-                        expression: "customer.check"
-                      }
-                    ],
-                    staticClass:
-                      "form-check-input my-0 mx-4 float-left position-relative",
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(customer.check)
-                        ? _vm._i(customer.check, null) > -1
-                        : customer.check
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = customer.check,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(customer, "check", $$a.concat([$$v]))
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                customer,
-                                "check",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                  _c(
+                    "div",
+                    { staticClass: "mb-5 px-0 row align-items-center" },
+                    [
+                      _c("div", { staticClass: "w-100 mb-4 mt-5 mx-0 hr" }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "clearfix w-100 mt-4" }, [
+                        _c("div", { staticClass: "float-left" }, [
+                          _c(
+                            "strong",
+                            { staticClass: "light-heading float-left" },
+                            [
+                              _vm._v(
+                                "\n                                Displaying: " +
+                                  _vm._s(_vm.cautions.from) +
+                                  " - " +
+                                  _vm._s(_vm.cautions.to) +
+                                  " of " +
+                                  _vm._s(_vm.cautions.total) +
+                                  "\n                            "
                               )
-                          }
-                        } else {
-                          _vm.$set(customer, "check", $$c)
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(4, true)
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg user-name",
-                  attrs: { "data-reminder-1": "1" }
-                },
-                [_vm._v("LSB0839432")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "purchase_order")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    20th, June 2018\n                "
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "nav",
+                          {
+                            staticClass: "float-right",
+                            attrs: { "aria-label": "Page navigation example" }
+                          },
+                          [
+                            _c(
+                              "ul",
+                              {
+                                staticClass:
+                                  "pagination pagination-lg float-left"
+                              },
+                              [
+                                _c(
+                                  "li",
+                                  {
+                                    staticClass: "page-item",
+                                    class: !_vm.cautions.first_page_url
+                                      ? "disabled"
+                                      : ""
+                                  },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        staticClass: "page-link",
+                                        attrs: { to: { query: { page: 1 } } }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                        First\n                                    "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "li",
+                                  {
+                                    staticClass: "page-item",
+                                    class: !_vm.cautions.prev_page_url
+                                      ? "disabled"
+                                      : ""
+                                  },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        staticClass: "page-link",
+                                        attrs: {
+                                          to: {
+                                            query: {
+                                              page:
+                                                _vm.cautions.current_page - 1
+                                            }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                        Previous\n                                    "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c("li", { staticClass: "page-item" }, [
+                                  _c("span", { staticClass: "page-link" }, [
+                                    _vm._v(
+                                      "Current Page: " +
+                                        _vm._s(_vm.cautions.current_page)
+                                    )
+                                  ])
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "li",
+                                  {
+                                    staticClass: "page-item",
+                                    class: !_vm.cautions.next_page_url
+                                      ? "disabled"
+                                      : ""
+                                  },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        staticClass: "page-link",
+                                        attrs: {
+                                          to: {
+                                            query: {
+                                              page:
+                                                _vm.cautions.current_page + 1
+                                            }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                        Next\n                                    "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "li",
+                                  {
+                                    staticClass: "page-item",
+                                    class: !_vm.cautions.last_page_url
+                                      ? "disabled"
+                                      : ""
+                                  },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        staticClass: "page-link",
+                                        attrs: {
+                                          to: {
+                                            query: {
+                                              page: _vm.cautions.last_page
+                                            }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                        Last\n                                    "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    ]
                   )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-3 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "customer_info")
-                    }
-                  }
-                },
-                [_vm._v("\n                    ID: 4875\n                ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "repayment")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    Paid: 20,000 Debt: 49,000\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-12 col-xs-2 col-md col-lg",
-                  attrs: { "data-hoverable": "true" },
-                  on: {
-                    click: function($event) {
-                      _vm.displayDetails(customer, "reminder_history")
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    3 Reminders sent\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _vm._m(5, true)
-            ]
-          )
-        })
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mt-1 attendance-body" }, [
-      _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
-        _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
+                ],
+                2
+              )
+            : _c("div", { staticClass: "row attendance-item p-5 mb-5" }, [
+                _c("span", { staticClass: "no-attendance" }, [
+                  _vm._v("No cautions has been issued!")
+                ])
+              ])
+        ]),
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "clearfix d-flex justify-content-end w-100" },
+          { staticClass: "modal fade", attrs: { id: "view-caution" } },
           [
             _c(
-              "button",
-              {
-                staticClass: "btn bg-default",
-                attrs: { disabled: _vm.$isProcessing }
-              },
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
-                _vm._v("\n                    Send Reminder(s) "),
-                _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                _c("div", { staticClass: "modal-content" }, [
+                  _c("div", { staticClass: "modal-header py-2" }, [
+                    _c("h6", { staticClass: "modal-title py-1" }, [
+                      _vm._v("Caution")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "close py-1",
+                        attrs: {
+                          "aria-label": "Close",
+                          "data-dismiss": "modal"
+                        }
+                      },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "modal-close text-danger",
+                            attrs: { "aria-hidden": "true" }
+                          },
+                          [_c("i", { staticClass: "fas fa-times" })]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("form", [
+                    _c("div", { staticClass: "modal-body" }, [
+                      _vm.caution
+                        ? _c("div", { staticClass: "px-2" }, [
+                            _c("div", { staticClass: "px-4" }, [
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Employee : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.user.full_name))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Issued by : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.issuer.full_name))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Reason : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.reason))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Penalty : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.penalty))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [_c("strong", [_vm._v("Date : ")])]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.caution.date_text))
+                                ])
+                              ])
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "text-link mt-3 w-100",
+                          staticStyle: { "text-align": "right" },
+                          attrs: {
+                            "data-dismiss": "modal",
+                            href: "javascript:"
+                          }
+                        },
+                        [_vm._v("close dialogue")]
+                      )
+                    ])
+                  ])
+                ])
               ]
             )
           ]
         )
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(6),
-    _vm._v(" "),
-    _vm._m(7),
-    _vm._v(" "),
-    _vm._m(8),
-    _vm._v(" "),
-    _vm._m(9),
-    _vm._v(" "),
-    _vm._m(10)
+      ]
+    )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
-      _c(
-        "ul",
-        {
-          staticClass: "nav nav-tabs justify-content-center p-0",
-          attrs: { role: "tablist" }
-        },
-        [
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link active",
-                attrs: {
-                  "aria-selected": "true",
-                  "data-toggle": "tab",
-                  href: "#reminder-1",
-                  role: "tab"
-                }
-              },
-              [_vm._v("1"), _c("sup", [_vm._v("st")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-2",
-                  role: "tab"
-                }
-              },
-              [_vm._v("2"), _c("sup", [_vm._v("nd")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-3",
-                  role: "tab"
-                }
-              },
-              [_vm._v("3"), _c("sup", [_vm._v("rd")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-4",
-                  role: "tab"
-                }
-              },
-              [_vm._v("4"), _c("sup", [_vm._v("th")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-5",
-                  role: "tab"
-                }
-              },
-              [
-                _vm._v("5"),
-                _c("sup", [_vm._v("th")]),
-                _vm._v(" Reminder (Promise Call)")
-              ]
-            )
-          ])
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "user mx-auto" }, [
-      _c("i", { staticClass: "user-icon fas fa-user-alt" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
-      },
-      [_c("textarea", { staticClass: "form-control", attrs: { rows: "1" } })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
-      },
-      [_c("input", { staticClass: "form-control", attrs: { type: "date" } })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "user mx-auto" }, [
-      _c("i", { staticClass: "user-icon fas fa-user-alt" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
-      },
-      [_c("input", { staticClass: "form-control", attrs: { type: "text" } })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "modal fade", attrs: { id: "purchase_order" } },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header py-2" }, [
-                _c("h6", { staticClass: "modal-title py-1" }, [
-                  _vm._v("Purchase Order Summary")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "close py-1",
-                    attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-                  },
-                  [
-                    _c(
-                      "span",
-                      {
-                        staticClass: "modal-close text-danger",
-                        attrs: { "aria-hidden": "true" }
-                      },
-                      [_c("i", { staticClass: "fas fa-times" })]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c(
-                    "table",
-                    { staticClass: "table table-bordered table-striped" },
-                    [
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("th", [_vm._v("Order ID")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("EFS002243")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Product")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("21 inches Samsung LED TV")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Repayment (₦)")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("45,600")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Down Payment (%)")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("40")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Discount (₦)")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("-")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Total amount to Pay (₦)")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("149,000")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Processed by")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Durojaiye Oluwafemi")])
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-link mt-3 w-100",
-                    staticStyle: { "text-align": "right" },
-                    attrs: { "data-dismiss": "modal", href: "javascript:" }
-                  },
-                  [_vm._v("close dialogue")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "modal fade", attrs: { id: "customer_info" } },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header py-2" }, [
-                _c("h6", { staticClass: "modal-title py-1" }, [
-                  _vm._v("Customer Info. Summary")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "close py-1",
-                    attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-                  },
-                  [
-                    _c(
-                      "span",
-                      {
-                        staticClass: "modal-close text-danger",
-                        attrs: { "aria-hidden": "true" }
-                      },
-                      [_c("i", { staticClass: "fas fa-times" })]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c(
-                    "table",
-                    { staticClass: "table table-bordered table-striped" },
-                    [
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("th", [_vm._v("Full Name")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("EFS002243")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Address")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v("53 Akpo Street Achara Layout Enugu Nigeria")
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Branch")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Challenge Branch")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Category")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Informal or Informal")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Verified by")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Dorca Taiwo")])
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-link mt-3 w-100",
-                    staticStyle: { "text-align": "right" },
-                    attrs: { "data-dismiss": "modal", href: "javascript:" }
-                  },
-                  [_vm._v("close dialogue")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "modal fade repayment", attrs: { id: "repaymentFormal" } },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header py-2" }, [
-                _c("h6", { staticClass: "modal-title py-1" }, [
-                  _vm._v("Repayment Plan/Summary - Formal")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "close py-1",
-                    attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-                  },
-                  [
-                    _c(
-                      "span",
-                      {
-                        staticClass: "modal-close text-danger",
-                        attrs: { "aria-hidden": "true" }
-                      },
-                      [_c("i", { staticClass: "fas fa-times" })]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c("table", { staticClass: "table table-bordered" }, [
-                    _c("tbody", { staticClass: "text-center" }, [
-                      _c("tr", [
-                        _c("th", [_vm._v("Repayment")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("1"), _c("sup", [_vm._v("st")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2"), _c("sup", [_vm._v("nd")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("3"), _c("sup", [_vm._v("rd")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("4"), _c("sup", [_vm._v("th")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("5"), _c("sup", [_vm._v("th")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("6"), _c("sup", [_vm._v("th")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("7"), _c("sup", [_vm._v("th")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("8"), _c("sup", [_vm._v("th")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("9"), _c("sup", [_vm._v("th")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("10"), _c("sup", [_vm._v("th")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("11"), _c("sup", [_vm._v("th")])]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("12"), _c("sup", [_vm._v("th")])])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Due date")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-2-19")])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Status")]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "paid" }, [
-                          _c("i", { staticClass: "fas fa-check" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "paid" }, [
-                          _c("i", { staticClass: "fas fa-check" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "paid" }, [
-                          _c("i", { staticClass: "fas fa-check" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "paid" }, [
-                          _c("i", { staticClass: "fas fa-check" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "missed" }, [
-                          _c("i", { staticClass: "fas fa-times" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "missed" }, [
-                          _c("i", { staticClass: "fas fa-times" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "missed" }, [
-                          _c("i", { staticClass: "fas fa-times" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "missed" }, [
-                          _c("i", { staticClass: "fas fa-times" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "pending" }, [
-                          _c("i", { staticClass: "fas fa-hourglass-start" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "pending" }, [
-                          _c("i", { staticClass: "fas fa-hourglass-start" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "pending" }, [
-                          _c("i", { staticClass: "fas fa-hourglass-start" })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "pending" }, [
-                          _c("i", { staticClass: "fas fa-hourglass-start" })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Pay Date")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-02-18")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-02-18")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-02-18")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("2019-02-18")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Amount Paid (₦)")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("4200.00")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("4200.00")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("4200.00")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("4200.00")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("-")])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Summary (₦)")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Grand Total")]),
-                        _vm._v(" "),
-                        _c("th", { attrs: { colspan: "3" } }, [
-                          _vm._v("4200.00")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Total Paid")]),
-                        _vm._v(" "),
-                        _c("th", { attrs: { colspan: "3" } }, [
-                          _vm._v("4200.00")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Total Debt")]),
-                        _vm._v(" "),
-                        _c("th", { attrs: { colspan: "3" } }, [
-                          _vm._v("4200.00")
-                        ])
-                      ])
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-link mt-3 w-100",
-                    staticStyle: { "text-align": "right" },
-                    attrs: { "data-dismiss": "modal", href: "javascript:" }
-                  },
-                  [_vm._v("close dialogue")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade repayment",
-        attrs: { id: "repaymentInformal" }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header py-2" }, [
-                _c("h6", { staticClass: "modal-title py-1" }, [
-                  _vm._v("Repayment Plan/Summary - Informal")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "close py-1",
-                    attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-                  },
-                  [
-                    _c(
-                      "span",
-                      {
-                        staticClass: "modal-close text-danger",
-                        attrs: { "aria-hidden": "true" }
-                      },
-                      [_c("i", { staticClass: "fas fa-times" })]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c("table", { staticClass: "table table-bordered" }, [
-                    _c("tbody", { staticClass: "text-center" }, [
-                      _c("tr", [
-                        _c("th", [_vm._v("Repayment")]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("1"),
-                          _c("sup", [_vm._v("st")])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2"),
-                          _c("sup", [_vm._v("nd")])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("3"),
-                          _c("sup", [_vm._v("rd")])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("4"),
-                          _c("sup", [_vm._v("th")])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("5"),
-                          _c("sup", [_vm._v("th")])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("6"),
-                          _c("sup", [_vm._v("th")])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Due date")]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-2-19")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-2-19")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-2-19")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-2-19")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-2-19")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-2-19")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Status")]),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "paid", attrs: { colspan: "2" } },
-                          [_c("i", { staticClass: "fas fa-check" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "paid", attrs: { colspan: "2" } },
-                          [_c("i", { staticClass: "fas fa-check" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "missed", attrs: { colspan: "2" } },
-                          [_c("i", { staticClass: "fas fa-times" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "missed", attrs: { colspan: "2" } },
-                          [_c("i", { staticClass: "fas fa-times" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "pending", attrs: { colspan: "2" } },
-                          [_c("i", { staticClass: "fas fa-hourglass-start" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "pending", attrs: { colspan: "2" } },
-                          [_c("i", { staticClass: "fas fa-hourglass-start" })]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Pay Date")]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-02-18")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-02-18")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-02-18")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("2019-02-18")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Amount Paid (₦)")]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("4200.00")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("4200.00")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("4200.00")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [
-                          _vm._v("4200.00")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("th", [_vm._v("Summary (₦)")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Grand Total")]),
-                        _vm._v(" "),
-                        _c("th", { attrs: { colspan: "3" } }, [
-                          _vm._v("4200.00")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Total Paid")]),
-                        _vm._v(" "),
-                        _c("th", { attrs: { colspan: "3" } }, [
-                          _vm._v("4200.00")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Total Debt")]),
-                        _vm._v(" "),
-                        _c("th", { attrs: { colspan: "3" } }, [
-                          _vm._v("4200.00")
-                        ])
-                      ])
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-link mt-3 w-100",
-                    staticStyle: { "text-align": "right" },
-                    attrs: { "data-dismiss": "modal", href: "javascript:" }
-                  },
-                  [_vm._v("close dialogue")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade repayment",
-        attrs: { id: "reminder_history" }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header py-2" }, [
-                _c("h6", { staticClass: "modal-title py-1" }, [
-                  _vm._v("Reminder History")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "close py-1",
-                    attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-                  },
-                  [
-                    _c(
-                      "span",
-                      {
-                        staticClass: "modal-close text-danger",
-                        attrs: { "aria-hidden": "true" }
-                      },
-                      [_c("i", { staticClass: "fas fa-times" })]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c(
-                    "table",
-                    { staticClass: "table table-bordered table-striped" },
-                    [
-                      _c("thead", [
-                        _c("tr", [
-                          _c("th", [_vm._v("S/N")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Date")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Type")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Comment")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("sender")])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("th", [_vm._v("1")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("20/03/2018")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Call")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "This man...he is a debtor niccur. Yeah does it sound like a comment"
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Ibeanu Hillary")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("2")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("20/03/2018")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("SMS")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "This man...he is a debtor niccur. Yeah does it sound like a comment"
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Ibeanu Hillary")])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("3")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("20/03/2018")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("SMS")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "This man...he is a debtor niccur. Yeah does it sound like a comment"
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Ibeanu Hillary")])
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-link mt-3 w-100",
-                    staticStyle: { "text-align": "right" },
-                    attrs: { "data-dismiss": "modal", href: "javascript:" }
-                  },
-                  [_vm._v("close dialogue")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-37057f60", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-42f2c96b", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/DVA/reminder/callReminder.vue":
+/***/ "./resources/assets/js/views/HRM/caution/index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/callReminder.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/caution/index.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-37057f60\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/callReminder.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-42f2c96b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/caution/index.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1932,7 +769,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\reminder\\callReminder.vue"
+Component.options.__file = "resources\\assets\\js\\views\\HRM\\caution\\index.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1941,9 +778,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-37057f60", Component.options)
+    hotAPI.createRecord("data-v-42f2c96b", Component.options)
   } else {
-    hotAPI.reload("data-v-37057f60", Component.options)
+    hotAPI.reload("data-v-42f2c96b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

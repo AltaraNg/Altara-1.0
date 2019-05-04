@@ -153,4 +153,9 @@ class User extends Authenticatable
         return $this->hasMany(Purchase::class, 'sales_agent_id', 'staff_id');
     }*/
 
+    /*public function reminders()
+    {
+        return $this->hasMany(Reminder::class, 'id','dva_id');
+    }*/
+
 }

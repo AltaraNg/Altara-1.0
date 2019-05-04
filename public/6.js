@@ -199,7 +199,6 @@ function initialize(to) {
 exports.default = {
     data: function data() {
         return {
-            window: window,
             form: {},
             mode: null,
             show: false,

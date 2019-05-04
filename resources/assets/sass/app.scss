@@ -759,7 +759,6 @@ form#messaging {
         min-height: 56px;
         div{
             min-height: 56px;
-            line-height: 56px;
             &[data-hoverable="true"]:hover{
                 background-color: rgba($default-color, 0.05);
                 text-decoration: underline;
