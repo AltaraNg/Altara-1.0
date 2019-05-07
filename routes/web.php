@@ -1,12 +1,12 @@
 <?php
 
-use App\Customer;
-use App\Purchase;
+/*use App\Customer;
+use App\Purchase;*/
 
-Route::get("reminder", function () {
+/*Route::get("reminder", function () {
 
 
-    $result = Purchase::where('order_date', '=', /*date('Y-m-d')*/'2019-04-29'/*'2018-12-21'*/)->with
+    $result = Purchase::where('order_date', '=', date('Y-m-d'),'2019-04-29','2018-12-21')->with
     (['repayment', 'reminders'  => function($query){
         return $query->with('user');
     },
@@ -32,7 +32,7 @@ Route::get("reminder", function () {
         }])->get();
     return $result;
 
-});
+});*/
 
 Route::get('/{vue?}', function () {
     return view('welcome');

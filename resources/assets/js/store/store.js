@@ -15,7 +15,7 @@ export const store = new Vuex.Store({
         states: null,
         branches: null,
         lifestyleBranches: [8]/*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/,
-        loader: true,
+        loader: false,
         ProfileAccess: [],
         ProfileEditAccess: [],
         DSALead: [1, 2, 8, 9, 15],

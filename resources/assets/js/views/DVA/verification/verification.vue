@@ -634,8 +634,8 @@
                 }
             },
             validate(type) {
-                let acc = this.$editAccess(this.user, this.customer);
-                if (acc) {
+                /*let acc = this.$editAccess(this.user, this.customer);
+                if (acc) {*/
                     if (this.$network()) {
                         this.$LIPS(true);
                         if ((this.veriView.includes(type)) && !(this.customer.work_guarantor_first_name)) {
@@ -669,14 +669,14 @@
                             } else this.$networkErr('form');
                         });
                     } else this.$networkErr();
-                } else {
+                /*} else {
                     this.$networkErr('edit');
                     $('.modal').modal('hide')
-                }
+                }*/
             },
             async save(document, modal) {
-                let acc = this.$editAccess(this.user, this.customer);
-                if (acc) {
+                /*let acc = this.$editAccess(this.user, this.customer);
+                if (acc) {*/
                     this.storeURL = `/api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
                     this.$LIPS(true);
                     this.form.document = document;
@@ -689,10 +689,10 @@
                     }).catch(e => this.error = e.response.data.errors);
                     this.$LIPS(false);
                     this.$scrollToTop();
-                } else {
+               /* } else {
                     this.$networkErr('edit');
                     $('.modal').modal('hide')
-                }
+                }*/
             },
         },
         computed: {
