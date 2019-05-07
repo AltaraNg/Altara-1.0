@@ -36,12 +36,19 @@ class CreateRepaymentFormalsTable extends Migration
             $table->double('5th_pay',10,2);
             $table->double('6th_pay',10,2);
 
-            $table->unsignedInteger('1st_payment_method')->nullable();
-            $table->unsignedInteger('2nd_payment_method')->nullable();
-            $table->unsignedInteger('3rd_payment_method')->nullable();
-            $table->unsignedInteger('4th_payment_method')->nullable();
-            $table->unsignedInteger('5th_payment_method')->nullable();
-            $table->unsignedInteger('6th_payment_method')->nullable();
+            $table->unsignedInteger('1st_payment_method');
+            $table->unsignedInteger('2nd_payment_method');
+            $table->unsignedInteger('3rd_payment_method');
+            $table->unsignedInteger('4th_payment_method');
+            $table->unsignedInteger('5th_payment_method');
+            $table->unsignedInteger('6th_payment_method');
+
+            $table->unsignedInteger('1st_payment_bank')->nullable();
+            $table->unsignedInteger('2nd_payment_bank')->nullable();
+            $table->unsignedInteger('3rd_payment_bank')->nullable();
+            $table->unsignedInteger('4th_payment_bank')->nullable();
+            $table->unsignedInteger('5th_payment_bank')->nullable();
+            $table->unsignedInteger('6th_payment_bank')->nullable();
 
             $table->timestamps();
         });

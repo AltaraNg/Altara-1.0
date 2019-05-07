@@ -48,18 +48,31 @@ class CreateRepaymentInformalsTable extends Migration
             $table->double('11th_pay',10,2);
             $table->double('12th_pay',10,2);
 
-            $table->unsignedInteger('1st_payment_method')->nullable();
-            $table->unsignedInteger('2nd_payment_method')->nullable();
-            $table->unsignedInteger('3rd_payment_method')->nullable();
-            $table->unsignedInteger('4th_payment_method')->nullable();
-            $table->unsignedInteger('5th_payment_method')->nullable();
-            $table->unsignedInteger('6th_payment_method')->nullable();
-            $table->unsignedInteger('7th_payment_method')->nullable();
-            $table->unsignedInteger('8th_payment_method')->nullable();
-            $table->unsignedInteger('9th_payment_method')->nullable();
-            $table->unsignedInteger('10th_payment_method')->nullable();
-            $table->unsignedInteger('11th_payment_method')->nullable();
-            $table->unsignedInteger('12th_payment_method')->nullable();
+            $table->unsignedInteger('1st_payment_method');
+            $table->unsignedInteger('2nd_payment_method');
+            $table->unsignedInteger('3rd_payment_method');
+            $table->unsignedInteger('4th_payment_method');
+            $table->unsignedInteger('5th_payment_method');
+            $table->unsignedInteger('6th_payment_method');
+            $table->unsignedInteger('7th_payment_method');
+            $table->unsignedInteger('8th_payment_method');
+            $table->unsignedInteger('9th_payment_method');
+            $table->unsignedInteger('10th_payment_method');
+            $table->unsignedInteger('11th_payment_method');
+            $table->unsignedInteger('12th_payment_method');
+
+            $table->unsignedInteger('1st_payment_bank')->nullable();
+            $table->unsignedInteger('2nd_payment_bank')->nullable();
+            $table->unsignedInteger('3rd_payment_bank')->nullable();
+            $table->unsignedInteger('4th_payment_bank')->nullable();
+            $table->unsignedInteger('5th_payment_bank')->nullable();
+            $table->unsignedInteger('6th_payment_bank')->nullable();
+            $table->unsignedInteger('7th_payment_bank')->nullable();
+            $table->unsignedInteger('8th_payment_bank')->nullable();
+            $table->unsignedInteger('9th_payment_bank')->nullable();
+            $table->unsignedInteger('10th_payment_bank')->nullable();
+            $table->unsignedInteger('11th_payment_bank')->nullable();
+            $table->unsignedInteger('12th_payment_bank')->nullable();
 
             $table->timestamps();
         });
