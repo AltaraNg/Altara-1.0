@@ -27,7 +27,15 @@ class DatabaseSeeder extends Seeder
 //            AttendanceTableSeeder::class,
 //            CautionTableSeeder::class,
             SuppliersTableSeeder::class,
-            ReminderTableSeeder::class
+            ReminderTableSeeder::class,
+
+
+            //
+            PurchaseTableSeeder::class,
+            DiscountsTableSeeder::class,
+            SalesCategoriesTableSeeder::class,
+            SalesTypesTableSeeder::class,
+            PaymentMethodsTableSeeder::class
         ]);
     }
 }

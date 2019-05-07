@@ -14,6 +14,7 @@ class CreateRemindersTable extends Migration
     public function up()
     {
         Schema::create('reminders', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('customer_id')->index()->nullable();
             $table->unsignedInteger('order_id')->index()->nullable();

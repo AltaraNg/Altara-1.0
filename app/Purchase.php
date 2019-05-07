@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
-    protected $table = "purchase";
+    //protected $table = "purchase";
+    protected $table = "purchases";
+
+    protected $primaryKey ='order_id';
+
+    protected $incrementing = false;
 
     public function customer()
     {

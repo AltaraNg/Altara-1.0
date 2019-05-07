@@ -1,1 +1,2592 @@
-webpackJsonp([21],{"1kOv":function(t,e){t.exports={render:function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("div",{attrs:{id:"reminder"}},[a("div",{staticClass:"mt-5 mb-3 attendance-head"},[a("ul",{staticClass:"nav nav-tabs justify-content-center p-0",attrs:{role:"tablist"}},[a("li",{staticClass:"col p-0 nav-item mb-0"},[a("a",{staticClass:"nav-link",class:{active:"1"===t.$route.query.list||!t.$route.query.list},attrs:{"aria-selected":"true","data-toggle":"tab",href:"#reminder-panel",role:"tab"},on:{click:function(e){t.getReminderList(1)}}},[t._v("1"),a("sup",[t._v("st")]),t._v(" Reminder")])]),t._v(" "),a("li",{staticClass:"col p-0 nav-item mb-0"},[a("a",{staticClass:"nav-link",class:{active:"2"===t.$route.query.list},attrs:{"aria-selected":"false","data-toggle":"tab",href:"#reminder-panel",role:"tab"},on:{click:function(e){t.getReminderList(2)}}},[t._v("2"),a("sup",[t._v("nd")]),t._v(" Reminder")])]),t._v(" "),a("li",{staticClass:"col p-0 nav-item mb-0"},[a("a",{staticClass:"nav-link",class:{active:"3"===t.$route.query.list},attrs:{"aria-selected":"false","data-toggle":"tab",href:"#reminder-panel",role:"tab"},on:{click:function(e){t.getReminderList(3)}}},[t._v("3"),a("sup",[t._v("rd")]),t._v(" Reminder")])])])]),t._v(" "),a("div",{staticClass:"mt-5 mb-3 attendance-head"},[a("div",{staticClass:"row px-4 pt-3 pb-4 text-center"},[a("div",{staticClass:"col p-0 text-link",staticStyle:{"max-width":"120px"},on:{click:t.selectAll}},[t._v("\n                Click to "+t._s(t.doSelectAll?"Select":"De-select")+" all\n            ")]),t._v(" "),a("div",{staticClass:"col light-heading"},[t._v("Order Number")]),t._v(" "),a("div",{staticClass:"col light-heading"},[t._v("Order Summary")]),t._v(" "),a("div",{staticClass:"col light-heading"},[t._v("Customer Info Summary")]),t._v(" "),a("div",{staticClass:"col light-heading"},[t._v("Repayment Summary")]),t._v(" "),a("div",{staticClass:"col light-heading"},[t._v("Reminder History")]),t._v(" "),a("div",{staticClass:"col light-heading"},[t._v("Comment")])])]),t._v(" "),t.show?a("div",{staticClass:"tab-content mt-1 attendance-body"},[a("div",{staticClass:"tab-pane active text-center",attrs:{id:"reminder-panel",role:"tabpanel"}},t._l(t.orders,function(e,r){return a("div",{staticClass:"mb-3 row attendance-item"},[a("div",{staticClass:"col-12 col-xs-2 col-md col-lg d-flex align-items-center ",staticStyle:{"max-width":"120px"}},[a("input",{staticClass:"form-check-input my-0 mx-4 float-left position-relative",attrs:{type:"checkbox"}}),t._v(" "),a("span",{staticClass:"user mx-auto"},[t._v(t._s(r+1))])]),t._v(" "),a("div",{staticClass:"col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center",attrs:{"data-reminder-1":"1"}},[t._v(t._s(e.order_id)+"\n                ")]),t._v(" "),a("div",{staticClass:"col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",attrs:{"data-hoverable":"true"},on:{click:function(a){t.displayDetails(e,"purchase_order")}}},[t._v("\n                    "+t._s(e.order_date)+"\n                ")]),t._v(" "),a("div",{staticClass:"col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center",attrs:{"data-hoverable":"true"},on:{click:function(a){t.displayDetails(e,"customer_info")}}},[t._v("\n                    ID: "+t._s(e.customer.id)+" - "+t._s(t._f("capitalize")(e.customer.employment_status))+"\n                ")]),t._v(" "),a("div",{staticClass:"col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",attrs:{"data-hoverable":"true"},on:{click:function(a){t.displayDetails(e,t.getModalType(e.customer.employment_status))}}},[t._v("\n                    "+t._s(t.getFinancialStatus(e))+"\n                ")]),t._v(" "),a("div",{staticClass:"col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",attrs:{"data-hoverable":"true"},on:{click:function(a){t.displayDetails(e,"reminder_history")}}},[t._v("\n                    "+t._s(e.reminders.length)+" reminder(s) sent\n                ")]),t._v(" "),t._m(0,!0)])}))]):t._e(),t._v(" "),a("div",{staticClass:"mt-1 attendance-body"},[a("div",{staticClass:"mb-5 px-0 row align-items-center"},[a("div",{staticClass:"w-100 my-5 mx-0 hr"}),t._v(" "),a("div",{staticClass:"clearfix d-flex justify-content-end w-100"},[a("button",{staticClass:"btn bg-default",attrs:{disabled:t.$isProcessing}},[t._v("\n                    Send Reminder(s) "),a("i",{staticClass:"far fa-paper-plane ml-1"})])])])]),t._v(" "),a("div",{staticClass:"modal fade",attrs:{id:"purchase_order"}},[a("div",{staticClass:"modal-dialog",attrs:{role:"document"}},[a("div",{staticClass:"modal-content"},[t._m(1),t._v(" "),t.showModalContent?a("div",{staticClass:"modal-body"},[a("div",{staticClass:"table-responsive"},[a("table",{staticClass:"table table-bordered table-striped"},[a("tbody",[a("tr",[a("th",[t._v("Order ID")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.order_id))])]),t._v(" "),a("tr",[a("th",[t._v("Order date")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.order_date))])]),t._v(" "),a("tr",[a("th",[t._v("Product")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.product_name))])]),t._v(" "),a("tr",[a("th",[t._v("Repayment (₦)")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.product_price))])]),t._v(" "),a("tr",[a("th",[t._v("Down Payment (%)")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.order_type))])]),t._v(" "),t._m(2),t._v(" "),a("tr",[a("th",[t._v("Total amount to Pay (₦)")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.product_price))])]),t._v(" "),a("tr",[a("th",[t._v("Processed by")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.floor_agent?t.currentOrder.floor_agent.full_name:null))])])])])])]):t._e(),t._v(" "),t._m(3)])])]),t._v(" "),a("div",{staticClass:"modal fade",attrs:{id:"customer_info"}},[a("div",{staticClass:"modal-dialog",attrs:{role:"document"}},[a("div",{staticClass:"modal-content"},[t._m(4),t._v(" "),t.showModalContent?a("div",{staticClass:"modal-body"},[a("div",{staticClass:"table-responsive"},[a("table",{staticClass:"table table-bordered table-striped"},[a("tbody",[a("tr",[a("th",[t._v("Customer ID")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.customer.id))])]),t._v(" "),a("tr",[a("th",[t._v("Full Name")]),t._v(" "),a("td",[t._v(t._s(t.$getCustomerFullName(t.currentOrder.customer)))])]),t._v(" "),a("tr",[a("th",[t._v("Address")]),t._v(" "),a("td",[t._v(t._s(t.$getCustomerAddress(t.currentOrder.customer)))])]),t._v(" "),a("tr",[a("th",[t._v("Branch")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.customer.branch.name))])]),t._v(" "),a("tr",[a("th",[t._v("Category")]),t._v(" "),a("td",[t._v(t._s(t.currentOrder.customer.employment_status))])]),t._v(" "),t._m(5)])])])]):t._e(),t._v(" "),t._m(6)])])]),t._v(" "),a("div",{staticClass:"modal fade repayment",attrs:{id:"repaymentInformal"}},[a("div",{staticClass:"modal-dialog modal-xl",attrs:{role:"document"}},[a("div",{staticClass:"modal-content"},[t._m(7),t._v(" "),t.showModalContent?a("div",{staticClass:"modal-body"},[a("div",{staticClass:"table-responsive"},[a("table",{staticClass:"table table-bordered"},[a("tbody",{staticClass:"text-center"},[t._m(8),t._v(" "),a("tr",[a("th",[t._v("Due date")]),t._v(" "),t._l(t.getRepayment(t.currentOrder,"_date"),function(e){return a("td",[t._v(t._s(e))])})],2),t._v(" "),a("tr",[a("th",[t._v("Status")]),t._v(" "),t._l(t.getPaymentStatusClasses(t.currentOrder),function(t){return a("td",{class:t.class},[a("i",{staticClass:"fas",class:t.icon})])})],2),t._v(" "),a("tr",[a("th",[t._v("Amount Paid (₦)")]),t._v(" "),t._l(t.getRepayment(t.currentOrder,"_pay"),function(e){return a("td",[t._v(t._s(e))])})],2),t._v(" "),a("tr",[a("th",[t._v("Summary (₦)")]),t._v(" "),a("td",[t._v("Grand Total")]),t._v(" "),a("th",{attrs:{colspan:"3"}},[t._v(t._s(t.currentOrder.product_price))]),t._v(" "),a("td",[t._v("Total Paid")]),t._v(" "),a("th",{attrs:{colspan:"3"}},[t._v(t._s(t.getAmountPaidAndOutStandingDebt(t.currentOrder).amountPaid))]),t._v(" "),a("td",[t._v("Total Debt")]),t._v(" "),a("th",{attrs:{colspan:"3"}},[t._v(t._s(t.getAmountPaidAndOutStandingDebt(t.currentOrder).outstandingDebt)+"\n                                ")])])])])])]):t._e(),t._v(" "),t._m(9)])])]),t._v(" "),a("div",{staticClass:"modal fade repayment",attrs:{id:"repaymentFormal"}},[a("div",{staticClass:"modal-dialog modal-xl",attrs:{role:"document"}},[a("div",{staticClass:"modal-content"},[t._m(10),t._v(" "),t.showModalContent?a("div",{staticClass:"modal-body"},[a("div",{staticClass:"table-responsive"},[a("table",{staticClass:"table table-bordered"},[a("tbody",{staticClass:"text-center"},[t._m(11),t._v(" "),t._m(12),t._v(" "),t._m(13),t._v(" "),t._m(14),t._v(" "),t._m(15),t._v(" "),a("tr",[a("th",[t._v("Summary (₦)")]),t._v(" "),a("td",[t._v("Grand Total")]),t._v(" "),a("th",{attrs:{colspan:"3"}},[t._v(t._s(t.currentOrder.product_price))]),t._v(" "),a("td",[t._v("Total Paid")]),t._v(" "),a("th",{attrs:{colspan:"3"}},[t._v(t._s(t.getAmountPaidAndOutStandingDebt(t.currentOrder).amountPaid))]),t._v(" "),a("td",[t._v("Total Debt")]),t._v(" "),a("th",{attrs:{colspan:"3"}},[t._v(t._s(t.getAmountPaidAndOutStandingDebt(t.currentOrder).outstandingDebt)+"\n                                ")])])])])])]):t._e(),t._v(" "),t._m(16)])])]),t._v(" "),a("div",{staticClass:"modal fade repayment",attrs:{id:"reminder_history"}},[a("div",{staticClass:"modal-dialog modal-lg",attrs:{role:"document"}},[a("div",{staticClass:"modal-content"},[t._m(17),t._v(" "),t.showModalContent?a("div",{staticClass:"modal-body"},[a("div",{staticClass:"table-responsive"},[t.currentOrder.reminders.length?a("table",{staticClass:"table table-bordered table-striped"},[t._m(18),t._v(" "),a("tbody",t._l(t.currentOrder.reminders,function(e,r){return a("tr",[a("th",[t._v(t._s(r+1))]),t._v(" "),a("td",[t._v(t._s(e.date))]),t._v(" "),a("td",[t._v(t._s(e.type))]),t._v(" "),a("td",[t._v(t._s(e.feedback))]),t._v(" "),a("td",[t._v(t._s(e.user.full_name))])])}))]):a("div",{staticClass:"my-4 text-center"},[t._v("\n                            no reminders have been sent yet!\n                        ")])])]):t._e(),t._v(" "),t._m(19)])])])])},staticRenderFns:[function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"},[e("input",{staticClass:"form-control",attrs:{type:"text"}})])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-header py-2"},[e("h6",{staticClass:"modal-title py-1"},[this._v("Purchase Order Summary")]),this._v(" "),e("a",{staticClass:"close py-1",attrs:{"aria-label":"Close","data-dismiss":"modal"}},[e("span",{staticClass:"modal-close text-danger",attrs:{"aria-hidden":"true"}},[e("i",{staticClass:"fas fa-times"})])])])},function(){var t=this.$createElement,e=this._self._c||t;return e("tr",[e("th",[this._v("Discount (₦)")]),this._v(" "),e("td",[this._v("-")])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-footer"},[e("a",{staticClass:"text-link mt-3 w-100",staticStyle:{"text-align":"right"},attrs:{"data-dismiss":"modal",href:"javascript:"}},[this._v("close dialogue")])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-header py-2"},[e("h6",{staticClass:"modal-title py-1"},[this._v("Customer Info. Summary")]),this._v(" "),e("a",{staticClass:"close py-1",attrs:{"aria-label":"Close","data-dismiss":"modal"}},[e("span",{staticClass:"modal-close text-danger",attrs:{"aria-hidden":"true"}},[e("i",{staticClass:"fas fa-times"})])])])},function(){var t=this.$createElement,e=this._self._c||t;return e("tr",[e("th",[this._v("Verified by")]),this._v(" "),e("td",[this._v("--")])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-footer"},[e("a",{staticClass:"text-link mt-3 w-100",staticStyle:{"text-align":"right"},attrs:{"data-dismiss":"modal",href:"javascript:"}},[this._v("close dialogue")])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-header py-2"},[e("h6",{staticClass:"modal-title py-1"},[this._v("Repayment Plan/Summary - Informal")]),this._v(" "),e("a",{staticClass:"close py-1",attrs:{"aria-label":"Close","data-dismiss":"modal"}},[e("span",{staticClass:"modal-close text-danger",attrs:{"aria-hidden":"true"}},[e("i",{staticClass:"fas fa-times"})])])])},function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("tr",[a("th",[t._v("Repayment")]),t._v(" "),a("td",[t._v("1"),a("sup",[t._v("st")])]),t._v(" "),a("td",[t._v("2"),a("sup",[t._v("nd")])]),t._v(" "),a("td",[t._v("3"),a("sup",[t._v("rd")])]),t._v(" "),a("td",[t._v("4"),a("sup",[t._v("th")])]),t._v(" "),a("td",[t._v("5"),a("sup",[t._v("th")])]),t._v(" "),a("td",[t._v("6"),a("sup",[t._v("th")])]),t._v(" "),a("td",[t._v("7"),a("sup",[t._v("th")])]),t._v(" "),a("td",[t._v("8"),a("sup",[t._v("th")])]),t._v(" "),a("td",[t._v("9"),a("sup",[t._v("th")])]),t._v(" "),a("td",[t._v("10"),a("sup",[t._v("th")])]),t._v(" "),a("td",[t._v("11"),a("sup",[t._v("th")])]),t._v(" "),a("td",[t._v("12"),a("sup",[t._v("th")])])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-footer"},[e("a",{staticClass:"text-link mt-3 w-100",staticStyle:{"text-align":"right"},attrs:{"data-dismiss":"modal",href:"javascript:"}},[this._v("close dialogue")])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-header py-2"},[e("h6",{staticClass:"modal-title py-1"},[this._v("Repayment Plan/Summary - Formal")]),this._v(" "),e("a",{staticClass:"close py-1",attrs:{"aria-label":"Close","data-dismiss":"modal"}},[e("span",{staticClass:"modal-close text-danger",attrs:{"aria-hidden":"true"}},[e("i",{staticClass:"fas fa-times"})])])])},function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("tr",[a("th",[t._v("Repayment")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("1"),a("sup",[t._v("st")])]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2"),a("sup",[t._v("nd")])]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("3"),a("sup",[t._v("rd")])]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("4"),a("sup",[t._v("th")])]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("5"),a("sup",[t._v("th")])]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("6"),a("sup",[t._v("th")])])])},function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("tr",[a("th",[t._v("Due date")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-2-19")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-2-19")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-2-19")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-2-19")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-2-19")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-2-19")])])},function(){var t=this.$createElement,e=this._self._c||t;return e("tr",[e("th",[this._v("Status")]),this._v(" "),e("td",{staticClass:"paid",attrs:{colspan:"2"}},[e("i",{staticClass:"fas fa-check"})]),this._v(" "),e("td",{staticClass:"paid",attrs:{colspan:"2"}},[e("i",{staticClass:"fas fa-check"})]),this._v(" "),e("td",{staticClass:"missed",attrs:{colspan:"2"}},[e("i",{staticClass:"fas fa-times"})]),this._v(" "),e("td",{staticClass:"missed",attrs:{colspan:"2"}},[e("i",{staticClass:"fas fa-times"})]),this._v(" "),e("td",{staticClass:"pending",attrs:{colspan:"2"}},[e("i",{staticClass:"fas fa-hourglass-start"})]),this._v(" "),e("td",{staticClass:"pending",attrs:{colspan:"2"}},[e("i",{staticClass:"fas fa-hourglass-start"})])])},function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("tr",[a("th",[t._v("Pay Date")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-02-18")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-02-18")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-02-18")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("2019-02-18")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("-")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("-")])])},function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("tr",[a("th",[t._v("Amount Paid (₦)")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("4200.00")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("4200.00")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("4200.00")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("4200.00")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("-")]),t._v(" "),a("td",{attrs:{colspan:"2"}},[t._v("-")])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-footer"},[e("a",{staticClass:"text-link mt-3 w-100",staticStyle:{"text-align":"right"},attrs:{"data-dismiss":"modal",href:"javascript:"}},[this._v("close dialogue")])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-header py-2"},[e("h6",{staticClass:"modal-title py-1"},[this._v("Reminder History")]),this._v(" "),e("a",{staticClass:"close py-1",attrs:{"aria-label":"Close","data-dismiss":"modal"}},[e("span",{staticClass:"modal-close text-danger",attrs:{"aria-hidden":"true"}},[e("i",{staticClass:"fas fa-times"})])])])},function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("thead",[a("tr",[a("th",[t._v("S/N")]),t._v(" "),a("th",[t._v("Date")]),t._v(" "),a("th",[t._v("Type")]),t._v(" "),a("th",[t._v("Comment")]),t._v(" "),a("th",[t._v("sender")])])])},function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"modal-footer"},[e("a",{staticClass:"text-link mt-3 w-100",staticStyle:{"text-align":"right"},attrs:{"data-dismiss":"modal",href:"javascript:"}},[this._v("close dialogue")])])}]}},SldL:function(t,e){!function(e){"use strict";var a,r=Object.prototype,s=r.hasOwnProperty,n="function"==typeof Symbol?Symbol:{},i=n.iterator||"@@iterator",o=n.asyncIterator||"@@asyncIterator",l=n.toStringTag||"@@toStringTag",c="object"==typeof t,d=e.regeneratorRuntime;if(d)c&&(t.exports=d);else{(d=e.regeneratorRuntime=c?t.exports:{}).wrap=C;var u="suspendedStart",v="suspendedYield",_="executing",h="completed",m={},f={};f[i]=function(){return this};var p=Object.getPrototypeOf,y=p&&p(p(D([])));y&&y!==r&&s.call(y,i)&&(f=y);var g=O.prototype=x.prototype=Object.create(f);w.prototype=g.constructor=O,O.constructor=w,O[l]=w.displayName="GeneratorFunction",d.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===w||"GeneratorFunction"===(e.displayName||e.name))},d.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,O):(t.__proto__=O,l in t||(t[l]="GeneratorFunction")),t.prototype=Object.create(g),t},d.awrap=function(t){return{__await:t}},S(E.prototype),E.prototype[o]=function(){return this},d.AsyncIterator=E,d.async=function(t,e,a,r){var s=new E(C(t,e,a,r));return d.isGeneratorFunction(e)?s:s.next().then(function(t){return t.done?t.value:s.next()})},S(g),g[l]="Generator",g[i]=function(){return this},g.toString=function(){return"[object Generator]"},d.keys=function(t){var e=[];for(var a in t)e.push(a);return e.reverse(),function a(){for(;e.length;){var r=e.pop();if(r in t)return a.value=r,a.done=!1,a}return a.done=!0,a}},d.values=D,$.prototype={constructor:$,reset:function(t){if(this.prev=0,this.next=0,this.sent=this._sent=a,this.done=!1,this.delegate=null,this.method="next",this.arg=a,this.tryEntries.forEach(L),!t)for(var e in this)"t"===e.charAt(0)&&s.call(this,e)&&!isNaN(+e.slice(1))&&(this[e]=a)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(t){if(this.done)throw t;var e=this;function r(r,s){return o.type="throw",o.arg=t,e.next=r,s&&(e.method="next",e.arg=a),!!s}for(var n=this.tryEntries.length-1;n>=0;--n){var i=this.tryEntries[n],o=i.completion;if("root"===i.tryLoc)return r("end");if(i.tryLoc<=this.prev){var l=s.call(i,"catchLoc"),c=s.call(i,"finallyLoc");if(l&&c){if(this.prev<i.catchLoc)return r(i.catchLoc,!0);if(this.prev<i.finallyLoc)return r(i.finallyLoc)}else if(l){if(this.prev<i.catchLoc)return r(i.catchLoc,!0)}else{if(!c)throw new Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return r(i.finallyLoc)}}}},abrupt:function(t,e){for(var a=this.tryEntries.length-1;a>=0;--a){var r=this.tryEntries[a];if(r.tryLoc<=this.prev&&s.call(r,"finallyLoc")&&this.prev<r.finallyLoc){var n=r;break}}n&&("break"===t||"continue"===t)&&n.tryLoc<=e&&e<=n.finallyLoc&&(n=null);var i=n?n.completion:{};return i.type=t,i.arg=e,n?(this.method="next",this.next=n.finallyLoc,m):this.complete(i)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),m},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var a=this.tryEntries[e];if(a.finallyLoc===t)return this.complete(a.completion,a.afterLoc),L(a),m}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var a=this.tryEntries[e];if(a.tryLoc===t){var r=a.completion;if("throw"===r.type){var s=r.arg;L(a)}return s}}throw new Error("illegal catch attempt")},delegateYield:function(t,e,r){return this.delegate={iterator:D(t),resultName:e,nextLoc:r},"next"===this.method&&(this.arg=a),m}}}function C(t,e,a,r){var s=e&&e.prototype instanceof x?e:x,n=Object.create(s.prototype),i=new $(r||[]);return n._invoke=function(t,e,a){var r=u;return function(s,n){if(r===_)throw new Error("Generator is already running");if(r===h){if("throw"===s)throw n;return R()}for(a.method=s,a.arg=n;;){var i=a.delegate;if(i){var o=k(i,a);if(o){if(o===m)continue;return o}}if("next"===a.method)a.sent=a._sent=a.arg;else if("throw"===a.method){if(r===u)throw r=h,a.arg;a.dispatchException(a.arg)}else"return"===a.method&&a.abrupt("return",a.arg);r=_;var l=b(t,e,a);if("normal"===l.type){if(r=a.done?h:v,l.arg===m)continue;return{value:l.arg,done:a.done}}"throw"===l.type&&(r=h,a.method="throw",a.arg=l.arg)}}}(t,a,i),n}function b(t,e,a){try{return{type:"normal",arg:t.call(e,a)}}catch(t){return{type:"throw",arg:t}}}function x(){}function w(){}function O(){}function S(t){["next","throw","return"].forEach(function(e){t[e]=function(t){return this._invoke(e,t)}})}function E(t){var e;this._invoke=function(a,r){function n(){return new Promise(function(e,n){!function e(a,r,n,i){var o=b(t[a],t,r);if("throw"!==o.type){var l=o.arg,c=l.value;return c&&"object"==typeof c&&s.call(c,"__await")?Promise.resolve(c.__await).then(function(t){e("next",t,n,i)},function(t){e("throw",t,n,i)}):Promise.resolve(c).then(function(t){l.value=t,n(l)},i)}i(o.arg)}(a,r,e,n)})}return e=e?e.then(n,n):n()}}function k(t,e){var r=t.iterator[e.method];if(r===a){if(e.delegate=null,"throw"===e.method){if(t.iterator.return&&(e.method="return",e.arg=a,k(t,e),"throw"===e.method))return m;e.method="throw",e.arg=new TypeError("The iterator does not provide a 'throw' method")}return m}var s=b(r,t.iterator,e.arg);if("throw"===s.type)return e.method="throw",e.arg=s.arg,e.delegate=null,m;var n=s.arg;return n?n.done?(e[t.resultName]=n.value,e.next=t.nextLoc,"return"!==e.method&&(e.method="next",e.arg=a),e.delegate=null,m):n:(e.method="throw",e.arg=new TypeError("iterator result is not an object"),e.delegate=null,m)}function P(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function L(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function $(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(P,this),this.reset(!0)}function D(t){if(t){var e=t[i];if(e)return e.call(t);if("function"==typeof t.next)return t;if(!isNaN(t.length)){var r=-1,n=function e(){for(;++r<t.length;)if(s.call(t,r))return e.value=t[r],e.done=!1,e;return e.value=a,e.done=!0,e};return n.next=n}}return{next:R}}function R(){return{value:a,done:!0}}}(function(){return this}()||Function("return this")())},WkZv:function(t,e,a){var r=a("VU/8")(a("hX/b"),a("1kOv"),!1,null,null,null);t.exports=r.exports},Xxa5:function(t,e,a){t.exports=a("jyFz")},"hX/b":function(t,e,a){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=i(a("Xxa5")),s=i(a("I3G/")),n=a("uD8u");function i(t){return t&&t.__esModule?t:{default:t}}function o(t){return{create:"/api/reminder/create"+(t.query.list?"?list="+t.query.list:"")}.create}e.default={beforeRouteEnter:function(t,e,a){(0,n.get)(o(t)).then(function(t){var e=t.data;a(function(t){return t.prepareForm(e)})})},beforeRouteUpdate:function(t,e,a){var r=this;this.show=!1,this.showModalContent=!1,(0,n.get)(o(t)).then(function(t){var e=t.data;r.prepareForm(e),a()})},data:function(){return{form:{},show:!1,showModalContent:!1,isFormal:!1,orders:{},currentOrder:{},doSelectAll:!1}},methods:{getReminderList:function(t){this.$router.push({query:{list:t}}),this.$route.query.list!=t&&this.$LIPS(!0)},prepareForm:function(t){var e=t.orders;this.show=!1,this.showModalContent=!1,this.orders=e,s.default.set(this.$data,"orders",e),this.show=!0,this.$LIPS(!1)},isPaymentDue:function(t){return new Date>new Date(t)},getPaymentStatusClasses:function(t){if(!t.repayment)return null;for(var e=t.repayment,a=[],r=1;r<13;r++){var s={class:null,icon:null},n=this.getColumn(r),i=this.isPaymentDue(e[n+"_date"]),o=parseInt(e[n+"_pay"]);o?(s.class="paid",s.icon="fa-check"):i&&!o?(s.class="missed",s.icon="fa-times"):i||(s.class="pending",s.icon="fa-hourglass-start"),a.push(s)}return a},getColumn:function(t){var e=null;switch(t){case 1:e=t+"st";break;case 2:e=t+"nd";break;case 3:e=t+"rd";break;default:e=t+"th"}return e},getAmountPaidAndOutStandingDebt:function(t){for(var e=0,a=1;a<13;a++)e+=t.repayment[this.getColumn(a)+"_pay"];return{amountPaid:e,outstandingDebt:parseInt(t.product_price)-e}},getFinancialStatus:function(t){if(!t.repayment)return"no repayment detail";var e=this.getAmountPaidAndOutStandingDebt(t);return"paid: "+e.amountPaid+" debt: "+e.outstandingDebt},getRepayment:function(t,e){if(!t.repayment)return null;for(var a=t.repayment,r=[],s=1;s<13;s++)r.push(a[this.getColumn(s)+e]);return r},onSave:function(){var t,e=(t=r.default.mark(function t(){return r.default.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:case"end":return t.stop()}},t,this)}),function(){var e=t.apply(this,arguments);return new Promise(function(t,a){return function r(s,n){try{var i=e[s](n),o=i.value}catch(t){return void a(t)}if(!i.done)return Promise.resolve(o).then(function(t){r("next",t)},function(t){r("throw",t)});t(o)}("next")})});return function(){return e.apply(this,arguments)}}(),getModalType:function(t){switch(t.toLowerCase()){case"formal":case"salaried":return"repaymentFormal";case"informal(business)":return"repaymentInformal";case"unemployed":return null}},displayDetails:function(t,e){return this.isFormal="repaymentFormal"===e,s.default.set(this.$data,"currentOrder",t),this.showModalContent=!0,$("#"+e).modal("toggle")},selectAll:function(){var t=this;this.doSelectAll=!this.doSelectAll,this.customers.forEach(function(e){return e.check=t.doSelectAll})}},mounted:function(){var t=this;$(document).on("hidden.bs.modal",".modal",function(){t.currentOrder=null,t.showModalContent=!1})}}},jyFz:function(t,e,a){var r=function(){return this}()||Function("return this")(),s=r.regeneratorRuntime&&Object.getOwnPropertyNames(r).indexOf("regeneratorRuntime")>=0,n=s&&r.regeneratorRuntime;if(r.regeneratorRuntime=void 0,t.exports=a("SldL"),s)r.regeneratorRuntime=n;else try{delete r.regeneratorRuntime}catch(t){r.regeneratorRuntime=void 0}}});
+webpackJsonp([21],{
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+function initialize(to) {
+    var urls = { create: '/api/reminder/create' + (to.query.list ? '?list=' + to.query.list : '') };
+    return urls.create;
+}
+
+exports.default = {
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        //1. make request to back-end
+        (0, _api.get)(initialize(to)).then(function (_ref) {
+            var data = _ref.data;
+
+            //2 send to the method to prepare form//
+            next(function (vm) {
+                return vm.prepareForm(data);
+            });
+        });
+    },
+    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+        var _this = this;
+
+        this.show = false;
+        this.showModalContent = false;
+        //1. make request to back-end
+        (0, _api.get)(initialize(to)).then(function (_ref2) {
+            var data = _ref2.data;
+
+            //2 send to the method to prepare form
+            _this.prepareForm(data);
+            next();
+        });
+    },
+    data: function data() {
+        return {
+            form: {},
+            show: false,
+            showModalContent: false,
+            isFormal: false,
+            orders: {},
+            currentOrder: {},
+            doSelectAll: false
+        };
+    },
+
+    methods: {
+        getReminderList: function getReminderList(list) {
+            this.$router.push({ query: { list: list } });
+            if (this.$route.query.list != list) this.$LIPS(true);
+        },
+        prepareForm: function prepareForm(_ref3) {
+            var orders = _ref3.orders;
+
+            this.show = false;
+            this.showModalContent = false;
+            //this function is used when a data is sent to this component
+            //or this component makes a request to backend the
+            //data received is used to prepare the form
+            this.orders = orders;
+            _vue2.default.set(this.$data, 'orders', orders);
+            this.show = true;
+            this.$LIPS(false);
+        },
+        isPaymentDue: function isPaymentDue(date) {
+            return new Date() > new Date(date);
+        },
+        getPaymentStatusClasses: function getPaymentStatusClasses(order) {
+            if (!order['repayment']) return null;
+            var repayment = order.repayment,
+                data = [];
+            for (var i = 1; i < 13; i++) {
+                var status = { class: null, icon: null };
+                var position = this.getColumn(i);
+                var isDue = this.isPaymentDue(repayment[position + '_date']);
+                var amountPaid = parseInt(repayment[position + '_pay']);
+                if (amountPaid) {
+                    status.class = 'paid';
+                    status.icon = 'fa-check';
+                } else if (isDue && !amountPaid) {
+                    status.class = 'missed';
+                    status.icon = 'fa-times';
+                } else if (!isDue) {
+                    status.class = 'pending';
+                    status.icon = 'fa-hourglass-start';
+                }
+                data.push(status);
+            }
+            return data;
+        },
+        getColumn: function getColumn(i) {
+            var column = null;
+            switch (i) {
+                case 1:
+                    column = i + 'st';
+                    break;
+                case 2:
+                    column = i + 'nd';
+                    break;
+                case 3:
+                    column = i + 'rd';
+                    break;
+                default:
+                    column = i + 'th';
+                    break;
+            }
+            return column;
+        },
+        getAmountPaidAndOutStandingDebt: function getAmountPaidAndOutStandingDebt(order) {
+            var amountPaid = 0,
+                outstandingDebt = 0;
+            for (var i = 1; i < 13; i++) {
+                amountPaid += order["repayment"][this.getColumn(i) + '_pay'];
+            }outstandingDebt = parseInt(order["product_price"]) - amountPaid;
+            return { amountPaid: amountPaid, outstandingDebt: outstandingDebt };
+        },
+        getFinancialStatus: function getFinancialStatus(order) {
+            if (!order['repayment']) return 'no repayment detail';
+            var values = this.getAmountPaidAndOutStandingDebt(order);
+            return 'paid: ' + values.amountPaid + ' debt: ' + values.outstandingDebt;
+        },
+        getRepayment: function getRepayment(order, clause) {
+            if (!order["repayment"]) return null;
+            var repayment = order.repayment;
+
+            var data = [];
+            for (var i = 1; i < 13; i++) {
+                data.push(repayment[this.getColumn(i) + clause]);
+            }return data;
+        },
+        onSave: function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function onSave() {
+                return _ref4.apply(this, arguments);
+            }
+
+            return onSave;
+        }(),
+        getModalType: function getModalType(category) {
+            var cat = category.toLowerCase();
+            switch (cat) {
+                case 'formal':
+                case 'salaried':
+                    return 'repaymentFormal';
+                case 'informal(business)':
+                    return 'repaymentInformal';
+                case 'unemployed':
+                    return null;
+            }
+        },
+        displayDetails: function displayDetails(order, modal) {
+            this.isFormal = 'repaymentFormal' === modal;
+            _vue2.default.set(this.$data, 'currentOrder', order);
+            this.showModalContent = true;
+            return $('#' + modal).modal('toggle');
+        },
+        selectAll: function selectAll() {
+            var _this2 = this;
+
+            this.doSelectAll = !this.doSelectAll;
+            this.customers.forEach(function (customer) {
+                return customer.check = _this2.doSelectAll;
+            });
+        }
+    },
+    mounted: function mounted() {
+        var _this3 = this;
+
+        $(document).on("hidden.bs.modal", '.modal', function () {
+            _this3.currentOrder = null;
+            _this3.showModalContent = false;
+        });
+    }
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-runtime/regenerator/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime-module.js");
+
+
+/***/ }),
+
+/***/ "./node_modules/regenerator-runtime/runtime-module.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// This method of obtaining a reference to the global object needs to be
+// kept identical to the way it is obtained in runtime.js
+var g = (function() { return this })() || Function("return this")();
+
+// Use `getOwnPropertyNames` because not all browsers support calling
+// `hasOwnProperty` on the global `self` object in a worker. See #183.
+var hadRuntime = g.regeneratorRuntime &&
+  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
+
+// Save the old regeneratorRuntime in case it needs to be restored later.
+var oldRuntime = hadRuntime && g.regeneratorRuntime;
+
+// Force reevalutation of runtime.js.
+g.regeneratorRuntime = undefined;
+
+module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime.js");
+
+if (hadRuntime) {
+  // Restore the original runtime.
+  g.regeneratorRuntime = oldRuntime;
+} else {
+  // Remove the global property added by runtime.js.
+  try {
+    delete g.regeneratorRuntime;
+  } catch(e) {
+    g.regeneratorRuntime = undefined;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/regenerator-runtime/runtime.js":
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+!(function(global) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  var inModule = typeof module === "object";
+  var runtime = global.regeneratorRuntime;
+  if (runtime) {
+    if (inModule) {
+      // If regeneratorRuntime is defined globally and we're in a module,
+      // make the exports object identical to regeneratorRuntime.
+      module.exports = runtime;
+    }
+    // Don't bother evaluating the rest of this file if the runtime was
+    // already defined globally.
+    return;
+  }
+
+  // Define the runtime globally (as expected by generated code) as either
+  // module.exports (if we're in a module) or a new, empty object.
+  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  runtime.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  runtime.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  runtime.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  runtime.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration. If the Promise is rejected, however, the
+          // result for this iteration will be rejected with the same
+          // reason. Note that rejections of yielded Promises are not
+          // thrown back into the generator function, as is the case
+          // when an awaited Promise is rejected. This difference in
+          // behavior between yield and await is important, because it
+          // allows the consumer to decide what to do with the yielded
+          // rejection (swallow it and continue, manually .throw it back
+          // into the generator, abandon iteration, whatever). With
+          // await, by contrast, there is no opportunity to examine the
+          // rejection reason outside the generator function, so the
+          // only option is to throw it from the await expression, and
+          // let the generator function handle the exception.
+          result.value = unwrapped;
+          resolve(result);
+        }, reject);
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  runtime.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList)
+    );
+
+    return runtime.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        if (delegate.iterator.return) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  runtime.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  runtime.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+})(
+  // In sloppy mode, unbound `this` refers to the global object, fallback to
+  // Function constructor if we're in global strict mode. That is sadly a form
+  // of indirect eval which violates Content Security Policy.
+  (function() { return this })() || Function("return this")()
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-633d941b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "reminder" } }, [
+    _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
+      _c(
+        "ul",
+        {
+          staticClass: "nav nav-tabs justify-content-center p-0",
+          attrs: { role: "tablist" }
+        },
+        [
+          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                class: {
+                  active:
+                    _vm.$route.query.list === "1" || !_vm.$route.query.list
+                },
+                attrs: {
+                  "aria-selected": "true",
+                  "data-toggle": "tab",
+                  href: "#reminder-panel",
+                  role: "tab"
+                },
+                on: {
+                  click: function($event) {
+                    _vm.getReminderList(1)
+                  }
+                }
+              },
+              [_vm._v("1"), _c("sup", [_vm._v("st")]), _vm._v(" Reminder")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                class: { active: _vm.$route.query.list === "2" },
+                attrs: {
+                  "aria-selected": "false",
+                  "data-toggle": "tab",
+                  href: "#reminder-panel",
+                  role: "tab"
+                },
+                on: {
+                  click: function($event) {
+                    _vm.getReminderList(2)
+                  }
+                }
+              },
+              [_vm._v("2"), _c("sup", [_vm._v("nd")]), _vm._v(" Reminder")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                class: { active: _vm.$route.query.list === "3" },
+                attrs: {
+                  "aria-selected": "false",
+                  "data-toggle": "tab",
+                  href: "#reminder-panel",
+                  role: "tab"
+                },
+                on: {
+                  click: function($event) {
+                    _vm.getReminderList(3)
+                  }
+                }
+              },
+              [_vm._v("3"), _c("sup", [_vm._v("rd")]), _vm._v(" Reminder")]
+            )
+          ])
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
+      _c("div", { staticClass: "row px-4 pt-3 pb-4 text-center" }, [
+        _c(
+          "div",
+          {
+            staticClass: "col p-0 text-link",
+            staticStyle: { "max-width": "120px" },
+            on: { click: _vm.selectAll }
+          },
+          [
+            _vm._v(
+              "\n                Click to " +
+                _vm._s(_vm.doSelectAll ? "Select" : "De-select") +
+                " all\n            "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Order Number")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Order Summary")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Customer Info Summary")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Repayment Summary")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Reminder History")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [_vm._v("Comment")])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.show
+      ? _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane active text-center",
+              attrs: { id: "reminder-panel", role: "tabpanel" }
+            },
+            _vm._l(_vm.orders, function(order, index) {
+              return _c("div", { staticClass: "mb-3 row attendance-item" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center ",
+                    staticStyle: { "max-width": "120px" }
+                  },
+                  [
+                    _c("input", {
+                      staticClass:
+                        "form-check-input my-0 mx-4 float-left position-relative",
+                      attrs: { type: "checkbox" }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "user mx-auto" }, [
+                      _vm._v(_vm._s(index + 1))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center",
+                    attrs: { "data-reminder-1": "1" }
+                  },
+                  [_vm._v(_vm._s(order.order_id) + "\n                ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+                    attrs: { "data-hoverable": "true" },
+                    on: {
+                      click: function($event) {
+                        _vm.displayDetails(order, "purchase_order")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(order.order_date) +
+                        "\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center",
+                    attrs: { "data-hoverable": "true" },
+                    on: {
+                      click: function($event) {
+                        _vm.displayDetails(order, "customer_info")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    ID: " +
+                        _vm._s(order.customer.id) +
+                        " - " +
+                        _vm._s(
+                          _vm._f("capitalize")(order.customer.employment_status)
+                        ) +
+                        "\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+                    attrs: { "data-hoverable": "true" },
+                    on: {
+                      click: function($event) {
+                        _vm.displayDetails(
+                          order,
+                          _vm.getModalType(order.customer.employment_status)
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.getFinancialStatus(order)) +
+                        "\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+                    attrs: { "data-hoverable": "true" },
+                    on: {
+                      click: function($event) {
+                        _vm.displayDetails(order, "reminder_history")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(order.reminders.length) +
+                        " reminder(s) sent\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(0, true)
+              ])
+            })
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "mt-1 attendance-body" }, [
+      _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
+        _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "clearfix d-flex justify-content-end w-100" },
+          [
+            _c(
+              "button",
+              {
+                staticClass: "btn bg-default",
+                attrs: { disabled: _vm.$isProcessing }
+              },
+              [
+                _vm._v("\n                    Send Reminder(s) "),
+                _c("i", { staticClass: "far fa-paper-plane ml-1" })
+              ]
+            )
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal fade", attrs: { id: "purchase_order" } }, [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _vm.showModalContent
+            ? _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    { staticClass: "table table-bordered table-striped" },
+                    [
+                      _c("tbody", [
+                        _c("tr", [
+                          _c("th", [_vm._v("Order ID")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(_vm.currentOrder.order_id))])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Order date")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.order_date))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Product")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.product_name))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Repayment (₦)")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.product_price))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Down Payment (%)")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.order_type))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Total amount to Pay (₦)")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.product_price))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Processed by")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder["floor_agent"]
+                                  ? _vm.currentOrder.floor_agent.full_name
+                                  : null
+                              )
+                            )
+                          ])
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(3)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal fade", attrs: { id: "customer_info" } }, [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(4),
+          _vm._v(" "),
+          _vm.showModalContent
+            ? _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    { staticClass: "table table-bordered table-striped" },
+                    [
+                      _c("tbody", [
+                        _c("tr", [
+                          _c("th", [_vm._v("Customer ID")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.customer.id))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Full Name")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$getCustomerFullName(
+                                  _vm.currentOrder.customer
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Address")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$getCustomerAddress(
+                                  _vm.currentOrder.customer
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Branch")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(_vm.currentOrder.customer.branch.name)
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Category")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer.employment_status
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(5)
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(6)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade repayment",
+        attrs: { id: "repaymentInformal" }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(7),
+              _vm._v(" "),
+              _vm.showModalContent
+                ? _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "table-responsive" }, [
+                      _c("table", { staticClass: "table table-bordered" }, [
+                        _c("tbody", { staticClass: "text-center" }, [
+                          _vm._m(8),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            [
+                              _c("th", [_vm._v("Due date")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getRepayment(_vm.currentOrder, "_date"),
+                                function(date) {
+                                  return _c("td", [_vm._v(_vm._s(date))])
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            [
+                              _c("th", [_vm._v("Status")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getPaymentStatusClasses(_vm.currentOrder),
+                                function(status) {
+                                  return _c("td", { class: status.class }, [
+                                    _c("i", {
+                                      staticClass: "fas",
+                                      class: status.icon
+                                    })
+                                  ])
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            [
+                              _c("th", [_vm._v("Amount Paid (₦)")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getRepayment(_vm.currentOrder, "_pay"),
+                                function(payment) {
+                                  return _c("td", [_vm._v(_vm._s(payment))])
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("th", [_vm._v("Summary (₦)")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Grand Total")]),
+                            _vm._v(" "),
+                            _c("th", { attrs: { colspan: "3" } }, [
+                              _vm._v(_vm._s(_vm.currentOrder["product_price"]))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Paid")]),
+                            _vm._v(" "),
+                            _c("th", { attrs: { colspan: "3" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.getAmountPaidAndOutStandingDebt(
+                                    _vm.currentOrder
+                                  ).amountPaid
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Debt")]),
+                            _vm._v(" "),
+                            _c("th", { attrs: { colspan: "3" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.getAmountPaidAndOutStandingDebt(
+                                    _vm.currentOrder
+                                  ).outstandingDebt
+                                ) + "\n                                "
+                              )
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(9)
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "modal fade repayment", attrs: { id: "repaymentFormal" } },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(10),
+              _vm._v(" "),
+              _vm.showModalContent
+                ? _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "table-responsive" }, [
+                      _c("table", { staticClass: "table table-bordered" }, [
+                        _c("tbody", { staticClass: "text-center" }, [
+                          _vm._m(11),
+                          _vm._v(" "),
+                          _vm._m(12),
+                          _vm._v(" "),
+                          _vm._m(13),
+                          _vm._v(" "),
+                          _vm._m(14),
+                          _vm._v(" "),
+                          _vm._m(15),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("th", [_vm._v("Summary (₦)")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Grand Total")]),
+                            _vm._v(" "),
+                            _c("th", { attrs: { colspan: "3" } }, [
+                              _vm._v(_vm._s(_vm.currentOrder["product_price"]))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Paid")]),
+                            _vm._v(" "),
+                            _c("th", { attrs: { colspan: "3" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.getAmountPaidAndOutStandingDebt(
+                                    _vm.currentOrder
+                                  ).amountPaid
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Debt")]),
+                            _vm._v(" "),
+                            _c("th", { attrs: { colspan: "3" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.getAmountPaidAndOutStandingDebt(
+                                    _vm.currentOrder
+                                  ).outstandingDebt
+                                ) + "\n                                "
+                              )
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(16)
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade repayment",
+        attrs: { id: "reminder_history" }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(17),
+              _vm._v(" "),
+              _vm.showModalContent
+                ? _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "table-responsive" }, [
+                      _vm.currentOrder.reminders.length
+                        ? _c(
+                            "table",
+                            {
+                              staticClass: "table table-bordered table-striped"
+                            },
+                            [
+                              _vm._m(18),
+                              _vm._v(" "),
+                              _c(
+                                "tbody",
+                                _vm._l(_vm.currentOrder.reminders, function(
+                                  reminder,
+                                  index
+                                ) {
+                                  return _c("tr", [
+                                    _c("th", [_vm._v(_vm._s(index + 1))]),
+                                    _vm._v(" "),
+                                    _c("td", [_vm._v(_vm._s(reminder.date))]),
+                                    _vm._v(" "),
+                                    _c("td", [_vm._v(_vm._s(reminder.type))]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm._v(_vm._s(reminder.feedback))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm._v(_vm._s(reminder.user.full_name))
+                                    ])
+                                  ])
+                                })
+                              )
+                            ]
+                          )
+                        : _c("div", { staticClass: "my-4 text-center" }, [
+                            _vm._v(
+                              "\n                            no reminders have been sent yet!\n                        "
+                            )
+                          ])
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(19)
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+      },
+      [_c("input", { staticClass: "form-control", attrs: { type: "text" } })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Purchase Order Summary")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Discount (₦)")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("-")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100",
+          staticStyle: { "text-align": "right" },
+          attrs: { "data-dismiss": "modal", href: "javascript:" }
+        },
+        [_vm._v("close dialogue")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Customer Info. Summary")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Verified by")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("--")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100",
+          staticStyle: { "text-align": "right" },
+          attrs: { "data-dismiss": "modal", href: "javascript:" }
+        },
+        [_vm._v("close dialogue")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Repayment Plan/Summary - Informal")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Repayment")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("1"), _c("sup", [_vm._v("st")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("2"), _c("sup", [_vm._v("nd")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("3"), _c("sup", [_vm._v("rd")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("4"), _c("sup", [_vm._v("th")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("5"), _c("sup", [_vm._v("th")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("6"), _c("sup", [_vm._v("th")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("7"), _c("sup", [_vm._v("th")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("8"), _c("sup", [_vm._v("th")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("9"), _c("sup", [_vm._v("th")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("10"), _c("sup", [_vm._v("th")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("11"), _c("sup", [_vm._v("th")])]),
+      _vm._v(" "),
+      _c("td", [_vm._v("12"), _c("sup", [_vm._v("th")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100",
+          staticStyle: { "text-align": "right" },
+          attrs: { "data-dismiss": "modal", href: "javascript:" }
+        },
+        [_vm._v("close dialogue")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Repayment Plan/Summary - Formal")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Repayment")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [
+        _vm._v("1"),
+        _c("sup", [_vm._v("st")])
+      ]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [
+        _vm._v("2"),
+        _c("sup", [_vm._v("nd")])
+      ]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [
+        _vm._v("3"),
+        _c("sup", [_vm._v("rd")])
+      ]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [
+        _vm._v("4"),
+        _c("sup", [_vm._v("th")])
+      ]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [
+        _vm._v("5"),
+        _c("sup", [_vm._v("th")])
+      ]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [
+        _vm._v("6"),
+        _c("sup", [_vm._v("th")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Due date")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-2-19")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-2-19")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-2-19")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-2-19")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-2-19")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-2-19")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("td", { staticClass: "paid", attrs: { colspan: "2" } }, [
+        _c("i", { staticClass: "fas fa-check" })
+      ]),
+      _vm._v(" "),
+      _c("td", { staticClass: "paid", attrs: { colspan: "2" } }, [
+        _c("i", { staticClass: "fas fa-check" })
+      ]),
+      _vm._v(" "),
+      _c("td", { staticClass: "missed", attrs: { colspan: "2" } }, [
+        _c("i", { staticClass: "fas fa-times" })
+      ]),
+      _vm._v(" "),
+      _c("td", { staticClass: "missed", attrs: { colspan: "2" } }, [
+        _c("i", { staticClass: "fas fa-times" })
+      ]),
+      _vm._v(" "),
+      _c("td", { staticClass: "pending", attrs: { colspan: "2" } }, [
+        _c("i", { staticClass: "fas fa-hourglass-start" })
+      ]),
+      _vm._v(" "),
+      _c("td", { staticClass: "pending", attrs: { colspan: "2" } }, [
+        _c("i", { staticClass: "fas fa-hourglass-start" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Pay Date")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-02-18")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-02-18")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-02-18")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("2019-02-18")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Amount Paid (₦)")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("4200.00")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("4200.00")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("4200.00")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("4200.00")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")]),
+      _vm._v(" "),
+      _c("td", { attrs: { colspan: "2" } }, [_vm._v("-")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100",
+          staticStyle: { "text-align": "right" },
+          attrs: { "data-dismiss": "modal", href: "javascript:" }
+        },
+        [_vm._v("close dialogue")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Reminder History")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("S/N")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Comment")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("sender")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100",
+          staticStyle: { "text-align": "right" },
+          attrs: { "data-dismiss": "modal", href: "javascript:" }
+        },
+        [_vm._v("close dialogue")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-633d941b", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-633d941b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\DVA\\reminder\\SMSReminder.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-633d941b", Component.options)
+  } else {
+    hotAPI.reload("data-v-633d941b", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ })
+
+});

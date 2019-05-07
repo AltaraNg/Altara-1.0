@@ -13,8 +13,10 @@ class CreateRepaymentInformalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('repayment_informals', function (Blueprint $table) {
-            //$table->increments('id');
+        Schema::create('repayment_informal', function (Blueprint $table) {
+
+            $table->engine = 'InnoDB';
+
             $table->string('repayment_id')->primary();
 
             $table->date('date_of_last_payment');
@@ -46,6 +48,19 @@ class CreateRepaymentInformalsTable extends Migration
             $table->double('11th_pay',10,2);
             $table->double('12th_pay',10,2);
 
+            $table->unsignedInteger('1st_payment_method')->nullable();
+            $table->unsignedInteger('2nd_payment_method')->nullable();
+            $table->unsignedInteger('3rd_payment_method')->nullable();
+            $table->unsignedInteger('4th_payment_method')->nullable();
+            $table->unsignedInteger('5th_payment_method')->nullable();
+            $table->unsignedInteger('6th_payment_method')->nullable();
+            $table->unsignedInteger('7th_payment_method')->nullable();
+            $table->unsignedInteger('8th_payment_method')->nullable();
+            $table->unsignedInteger('9th_payment_method')->nullable();
+            $table->unsignedInteger('10th_payment_method')->nullable();
+            $table->unsignedInteger('11th_payment_method')->nullable();
+            $table->unsignedInteger('12th_payment_method')->nullable();
+
             $table->timestamps();
         });
     }
@@ -57,6 +72,6 @@ class CreateRepaymentInformalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repayment_informals');
+        Schema::dropIfExists('repayment_informal');
     }
 }
