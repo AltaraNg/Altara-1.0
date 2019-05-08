@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalesTypesTable extends Migration
+class CreateSalesCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateSalesTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sales_types', function (Blueprint $table) {
+        Schema::create('sales_categories', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
-            $table->integer('percentage_discount');
         });
     }
 
@@ -27,6 +27,6 @@ class CreateSalesTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales_types');
+        Schema::dropIfExists('sales_categories');
     }
 }

@@ -32,12 +32,8 @@ class BrandsTableSeeder extends Seeder
             'Hp'
         ];
 
-        $length = count($brands);
-
-        for ($i = 0; $i < $length; $i++) {
-            Brand::create([
-                'name' => $brands[$i]
-            ]);
+        foreach ($brands as $brand) {
+            Brand::create(['name' => $brand]);
         }
     }
 }

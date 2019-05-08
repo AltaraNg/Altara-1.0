@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalesCategoriesTable extends Migration
+class CreatePaymentMethodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,8 @@ class CreateSalesCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sales_categories', function (Blueprint $table) {
+        Schema::create('payment_methods', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
         });
@@ -26,6 +27,6 @@ class CreateSalesCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales_categories');
+        Schema::dropIfExists('payment_methods');
     }
 }

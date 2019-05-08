@@ -6,30 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
-    //protected $table = "purchase";
-    protected $table = "purchases";
-
-    protected $primaryKey ='order_id';
-
-    protected $incrementing = false;
-
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
-
-    public function floorAgent()
-    {
-        return $this->belongsTo(User::class, 'sales_agent_id', 'staff_id');
-    }
-
-    public function repayment()
-    {
-        return $this->hasOne(Repayment::class, 'repayment_id', 'order_id');
-    }
-
-    public function reminders()
-    {
-        return $this->hasMany(Reminder::class,'order_id','order_id');
-    }
+    //please note this model is temporary
+    //it is to enable me use the old purchase table "purchase" and map it to eloquent ORM
+    //it is not to be used in production code
+    protected $table = 'purchase';
 }

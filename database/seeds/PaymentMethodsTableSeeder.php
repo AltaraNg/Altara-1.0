@@ -14,10 +14,10 @@ class PaymentMethodsTableSeeder extends Seeder
      */
     public function run()
     {
-        $nameArray = array('cash', 'transfer','pos');
+        $methods = ['cash', 'transfer', 'pos'];
         DB::table('payment_methods')->delete();
-        for ($i = 0; $i < count($nameArray); $i++) {
-            PaymentMethod::create(['name' => $nameArray[$i]]);
+        foreach ($methods as $method) {
+            PaymentMethod::create(['name' => $method]);
         }
     }
 }

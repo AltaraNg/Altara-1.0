@@ -14,8 +14,8 @@ class SalesTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        $percentageArray = array(0, 0, 5, 10, 0, 5);
-        $nameArray = array('new/normal purchase', 'sala promo', 'group of 5', 'group of 10', 'Christmas promo', 'renewal');
+        $percentageArray = [0, 0, 5, 10, 0, 5];
+        $nameArray = ['new/normal purchase', 'sala promo', 'group of 5', 'group of 10', 'Christmas promo', 'renewal'];
         DB::table('sales_types')->delete();
         for ($i = 0; $i < count($nameArray); $i++) {
             SalesType::create([

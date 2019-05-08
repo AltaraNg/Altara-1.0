@@ -14,12 +14,10 @@ class SalesCategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $nameArray = array('new sales', 'renewal');
+        $categories = ['new sales', 'renewal'];
         DB::table('sales_categories')->delete();
-        for ($i = 0; $i < count($nameArray); $i++) {
-            SalesCategory::create([
-                'name' => $nameArray[$i],
-            ]);
+        foreach ($categories as $category) {
+            SalesCategory::create(['name' => $category]);
         }
     }
 }

@@ -17,7 +17,7 @@ class CreateRemindersTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('customer_id')->index()->nullable();
-            $table->unsignedInteger('order_id')->index()->nullable();
+            $table->string('order_id');
             $table->unsignedInteger('sms_id')->index()->nullable();
             $table->string('repayment_level');
             $table->string('feedback');
@@ -29,7 +29,7 @@ class CreateRemindersTable extends Migration
 
         Schema::table('reminders', function ($table) {
             $table->foreign('customer_id')->references('id')->on('customers');
-            //$table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('dva_id')->references('id')->on('users');
         });
     }

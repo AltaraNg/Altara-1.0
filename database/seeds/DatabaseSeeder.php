@@ -12,30 +12,28 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-//            StatesTableSeeder::class,
-//            BranchesTableSeeder::class,
-//            RolesTableSeeder::class,
-//            UsersTableSeeder::class,
-//            CustomerTableSeeder::class,
-//            BanksTableSeeder::class,
-//            EmployeeCategorySeeder::class,
+            //StatesTableSeeder::class,
+            //BranchesTableSeeder::class,
+            //RolesTableSeeder::class,
+            //UsersTableSeeder::class,
+            //CustomerTableSeeder::class,
+            //BanksTableSeeder::class,
+            //EmployeeCategorySeeder::class,
             BrandsTableSeeder::class,
             CategoriesTableSeeder::class,
             ProductsTableSeeder::class,
             BrandCategoryTableSeeder::class,
-//            SupplierCategorySeeder::class,
-//            AttendanceTableSeeder::class,
-//            CautionTableSeeder::class,
+            //SupplierCategorySeeder::class,
+            //AttendanceTableSeeder::class,
+            //CautionTableSeeder::class,
             SuppliersTableSeeder::class,
-            ReminderTableSeeder::class,
-
-
-            //
-            PurchaseTableSeeder::class,
-            DiscountsTableSeeder::class,
+            /*newest*/
             SalesCategoriesTableSeeder::class,
             SalesTypesTableSeeder::class,
-            PaymentMethodsTableSeeder::class
+            DiscountsTableSeeder::class,
+            PaymentMethodsTableSeeder::class,
+            OrdersTableSeeder::class,
+            ReminderTableSeeder::class,
         ]);
     }
 }

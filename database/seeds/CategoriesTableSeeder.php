@@ -32,11 +32,8 @@ class CategoriesTableSeeder extends Seeder
           'Laptop Computers'
        ];
 
-       $length  = count($categories);
-       for ($i = 0; $i < $length; $i++){
-          Category::create([
-             'name' => $categories[$i]
-          ]);
+       foreach ($categories as $category){
+          Category::create(['name' => $category]);
        }
     }
 }
