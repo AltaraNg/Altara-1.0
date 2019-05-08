@@ -13,9 +13,9 @@ class Reminder extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function purchase()
+    public function order()
     {
-        return $this->belongsTo(Purchase::class, 'order_id', 'order_id');
+        return $this->belongsTo(Order::class);
     }
 
     public function user()

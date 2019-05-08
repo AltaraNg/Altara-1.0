@@ -43,7 +43,17 @@ class Order extends Model
 
     public function repayment()
     {
-        return $this->hasOne(Repayment::class, 'repayment_id', 'order_id');
+        return $this->hasOne(Repayment::class, 'repayment_id', 'id');
+    }
+
+    public function repaymentFormal()
+    {
+        return $this->hasOne(RepaymentFormal::class, 'repayment_id', 'id');
+    }
+
+    public function repaymentInformal()
+    {
+        return $this->hasOne(RepaymentInformal::class, 'repayment_id', 'id');
     }
 
     public function reminders()

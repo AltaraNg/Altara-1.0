@@ -167,9 +167,9 @@ class Customer extends Model
         return $this->hasOne(ProcessingFee::class);
     }
 
-    public function purchases()
+    public function Orders()
     {
-        return $this->hasMany(Purchase::class);
+        return $this->hasMany(Order::class);
     }
 
     public function repayment()

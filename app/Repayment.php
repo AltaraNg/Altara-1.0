@@ -10,7 +10,8 @@ class Repayment extends Model
         return $this->belongsTo(Customer::class);
     }*/
 
-    public function purchase(){
-        return $this->hasOne(Purchase::class,'repayment_id','order_id');
+    public function order()
+    {
+        return $this->hasOne(Order::class,'repayment_id','id');
     }
 }

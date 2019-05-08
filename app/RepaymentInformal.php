@@ -10,6 +10,5 @@ class RepaymentInformal extends Model
 
     protected $primaryKey ='repayment_id';
 
-    protected $incrementing = false;
-
+    public $incrementing = false;
 }

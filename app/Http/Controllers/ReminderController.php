@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\Order;
 use App\Purchase;
 use App\Reminder;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class ReminderController extends Controller
 
     public function create()
     {
-        $result = Purchase::where('order_date', '=', $this->getDateForReminder(request('list')))->with
+        $result = Order::where('order_date', '=', $this->getDateForReminder(request('list')))->with
         (['repayment', 'reminders' => function($query){
             return $query->with('user');//remember to select only name and id here later
         },

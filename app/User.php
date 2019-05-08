@@ -150,7 +150,7 @@ class User extends Authenticatable
 
     /*public function counterSales()
     {
-        return $this->hasMany(Purchase::class, 'sales_agent_id', 'staff_id');
+        return $this->hasMany(Order::class, 'sales_agent_id', 'staff_id');
     }*/
 
     /*public function reminders()
