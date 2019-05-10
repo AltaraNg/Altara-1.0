@@ -23,6 +23,7 @@
                 </li>
             </ul>
         </div>
+
         <div class="mt-5 mb-3 attendance-head">
             <div class="row px-4 pt-3 pb-4 text-center">
                 <div class="col p-0 text-link" @click="selectAll" style="max-width: 120px">
@@ -33,19 +34,19 @@
                 <div class="col light-heading">Customer Info Summary</div>
                 <div class="col light-heading">Repayment Summary</div>
                 <div class="col light-heading">Reminder History</div>
-                <div class="col light-heading">Comment</div>
             </div>
         </div>
+
         <div class="tab-content mt-1 attendance-body" v-if="show">
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <div class="mb-3 row attendance-item" v-for="(order, index) in orders">
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center " style="max-width: 120px">
-                        <input class="form-check-input my-0 mx-4 float-left position-relative" type="checkbox">
-                        <!-- v-model="customer.check">-->
+                        <input class="form-check-input my-0 mx-4 float-left position-relative" type="checkbox"
+                               v-model="reminder[index].selected">
                         <span class="user mx-auto">{{index+1}}</span>
                     </div>
                     <div class="col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center"
-                         data-reminder-1="1">{{order.order_id}}
+                         data-reminder-1="1">{{order.id}}
                     </div>
                     <div @click="displayDetails(order, 'purchase_order')"
                          class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
@@ -57,7 +58,7 @@
                          data-hoverable="true">
                         ID: {{order.customer.id}} - {{order.customer.employment_status | capitalize}}
                     </div>
-                    <div @click="displayDetails(order, getModalType(order.customer.employment_status))"
+                    <div @click="displayDetails(order, 'repayment')"
                          class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
                          data-hoverable="true">
                         {{getFinancialStatus(order)}}
@@ -67,19 +68,15 @@
                          data-hoverable="true">
                         {{order.reminders.length}} reminder(s) sent
                     </div>
-                    <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                        <input class="form-control" type="text">
-                    </div>
                 </div>
             </div>
         </div>
-
 
         <div class="mt-1 attendance-body">
             <div class="mb-5 px-0 row align-items-center">
                 <div class="w-100 my-5 mx-0 hr"></div>
                 <div class="clearfix d-flex justify-content-end w-100">
-                    <button :disabled="$isProcessing" class="btn bg-default">
+                    <button :disabled="$isProcessing" class="btn bg-default" @click="processSelected">
                         Send Reminder(s) <i class="far fa-paper-plane ml-1"></i>
                     </button>
                 </div>
@@ -101,7 +98,7 @@
                                 <tbody>
                                 <tr>
                                     <th>Order ID</th>
-                                    <td>{{currentOrder.order_id}}</td>
+                                    <td>{{currentOrder.id}}</td>
                                 </tr>
                                 <tr>
                                     <th>Order date</th>
@@ -109,19 +106,19 @@
                                 </tr>
                                 <tr>
                                     <th>Product</th>
-                                    <td>{{currentOrder.product_name}}</td>
+                                    <td>{{currentOrder.store_product.product_name}}</td>
                                 </tr>
                                 <tr>
                                     <th>Repayment (&#8358;)</th>
-                                    <td>{{currentOrder.product_price}}</td>
+                                    <td>{{currentOrder.repayment_amount}}</td>
                                 </tr>
                                 <tr>
                                     <th>Down Payment (%)</th>
-                                    <td>{{currentOrder.order_type}}</td>
+                                    <td>{{currentOrder.down_payment}}</td>
                                 </tr>
                                 <tr>
                                     <th>Discount (&#8358;)</th>
-                                    <td>-</td>
+                                    <td>{{getDiscount(currentOrder)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Total amount to Pay (&#8358;)</th>
@@ -192,16 +189,17 @@
             </div>
         </div>
 
-        <div class="modal fade repayment" id="repaymentInformal">
+        <div class="modal fade repayment" id="repayment">
             <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
+                <div class="modal-content" v-if="showModalContent">
                     <div class="modal-header py-2">
-                        <h6 class="modal-title py-1">Repayment Plan/Summary - Informal</h6>
+                        <h6 class="modal-title py-1">Repayment Plan/Summary - {{currentOrder.customer.employment_status
+                            | capitalize}}</h6>
                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
                             <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
                         </a>
                     </div>
-                    <div class="modal-body" v-if="showModalContent">
+                    <div class="modal-body">
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <tbody class="text-center">
@@ -213,12 +211,12 @@
                                     <td>4<sup>th</sup></td>
                                     <td>5<sup>th</sup></td>
                                     <td>6<sup>th</sup></td>
-                                    <td>7<sup>th</sup></td>
-                                    <td>8<sup>th</sup></td>
-                                    <td>9<sup>th</sup></td>
-                                    <td>10<sup>th</sup></td>
-                                    <td>11<sup>th</sup></td>
-                                    <td>12<sup>th</sup></td>
+                                    <td v-if="isCurrentOrderInformal">7<sup>th</sup></td>
+                                    <td v-if="isCurrentOrderInformal">8<sup>th</sup></td>
+                                    <td v-if="isCurrentOrderInformal">9<sup>th</sup></td>
+                                    <td v-if="isCurrentOrderInformal">10<sup>th</sup></td>
+                                    <td v-if="isCurrentOrderInformal">11<sup>th</sup></td>
+                                    <td v-if="isCurrentOrderInformal">12<sup>th</sup></td>
                                 </tr>
                                 <tr>
                                     <th>Due date</th>
@@ -235,93 +233,30 @@
                                     <td v-for="payment in getRepayment(currentOrder,'_pay')">{{payment}}</td>
                                 </tr>
                                 <tr>
+                                    <th>Payment Method</th>
+                                    <td class="text-capitalize"
+                                        v-for="repaymentMethod in getRepayment(currentOrder,'_payment_method')">
+                                        {{convertPaymentMethodOrBankToName(repaymentMethod, 'payment')}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Bank</th>
+                                    <td class="text-capitalize"
+                                        v-for="repaymentBank in getRepayment(currentOrder,'_payment_bank')">
+                                        {{convertPaymentMethodOrBankToName(repaymentBank, 'bank')}}
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>Summary (&#8358;)</th>
                                     <td>Grand Total</td>
-                                    <th colspan="3">{{currentOrder["product_price"]}}</th>
+                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">{{currentOrder["product_price"]}}</th>
                                     <td>Total Paid</td>
-                                    <th colspan="3">{{getAmountPaidAndOutStandingDebt(currentOrder).amountPaid}}</th>
-                                    <td>Total Debt</td>
-                                    <th colspan="3">{{getAmountPaidAndOutStandingDebt(currentOrder).outstandingDebt}}
+                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
+                                        {{getAmountPaidAndOutStandingDebt(currentOrder).amountPaid}}
                                     </th>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
-                           style="text-align: right">close dialogue</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade repayment" id="repaymentFormal">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header py-2">
-                        <h6 class="modal-title py-1">Repayment Plan/Summary - Formal</h6>
-                        <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
-                        </a>
-                    </div>
-                    <div class="modal-body" v-if="showModalContent">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <tbody class="text-center">
-                                <tr>
-                                    <th>Repayment</th>
-                                    <td colspan="2">1<sup>st</sup></td>
-                                    <td colspan="2">2<sup>nd</sup></td>
-                                    <td colspan="2">3<sup>rd</sup></td>
-                                    <td colspan="2">4<sup>th</sup></td>
-                                    <td colspan="2">5<sup>th</sup></td>
-                                    <td colspan="2">6<sup>th</sup></td>
-                                </tr>
-                                <tr>
-                                    <th>Due date</th>
-                                    <td colspan="2">2019-2-19</td>
-                                    <td colspan="2">2019-2-19</td>
-                                    <td colspan="2">2019-2-19</td>
-                                    <td colspan="2">2019-2-19</td>
-                                    <td colspan="2">2019-2-19</td>
-                                    <td colspan="2">2019-2-19</td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td colspan="2" class="paid"><i class="fas fa-check"></i></td>
-                                    <td colspan="2" class="paid"><i class="fas fa-check"></i></td>
-                                    <td colspan="2" class="missed"><i class="fas fa-times"></i></td>
-                                    <td colspan="2" class="missed"><i class="fas fa-times"></i></td>
-                                    <td colspan="2" class="pending"><i class="fas fa-hourglass-start"></i></td>
-                                    <td colspan="2" class="pending"><i class="fas fa-hourglass-start"></i></td>
-                                </tr>
-                                <tr>
-                                    <th>Pay Date</th>
-                                    <td colspan="2">2019-02-18</td>
-                                    <td colspan="2">2019-02-18</td>
-                                    <td colspan="2">2019-02-18</td>
-                                    <td colspan="2">2019-02-18</td>
-                                    <td colspan="2">-</td>
-                                    <td colspan="2">-</td>
-                                </tr>
-                                <tr>
-                                    <th>Amount Paid (&#8358;)</th>
-                                    <td colspan="2">4200.00</td>
-                                    <td colspan="2">4200.00</td>
-                                    <td colspan="2">4200.00</td>
-                                    <td colspan="2">4200.00</td>
-                                    <td colspan="2">-</td>
-                                    <td colspan="2">-</td>
-                                </tr>
-                                <tr>
-                                    <th>Summary (&#8358;)</th>
-                                    <td>Grand Total</td>
-                                    <th colspan="3">{{currentOrder["product_price"]}}</th>
-                                    <td>Total Paid</td>
-                                    <th colspan="3">{{getAmountPaidAndOutStandingDebt(currentOrder).amountPaid}}</th>
                                     <td>Total Debt</td>
-                                    <th colspan="3">{{getAmountPaidAndOutStandingDebt(currentOrder).outstandingDebt}}
+                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
+                                        {{getAmountPaidAndOutStandingDebt(currentOrder).outstandingDebt}}
                                     </th>
                                 </tr>
                                 </tbody>
@@ -384,7 +319,9 @@
 
 <script>
     import Vue from 'vue';
-    import {get} from "../../../helpers/api";
+    import {get, post} from "../../../helpers/api";
+    import SMS from "../../../helpers/sms";
+    import Flash from "../../../helpers/flash";
 
     function initialize(to) {
         let urls = {create: `/api/reminder/create${to.query.list ? '?list=' + to.query.list : ''}`};
@@ -415,56 +352,92 @@
                 form: {},
                 show: false,
                 showModalContent: false,
-                isFormal: false,
                 orders: {},
                 currentOrder: {},
                 doSelectAll: false,
+                banks: null,
+                payment_methods: null,
+                isCurrentOrderInformal: null,
+                reminder: [],
             }
         },
         methods: {
-            getReminderList(list) {
-                this.$router.push({query: {list}});
-                if(this.$route.query.list != list)this.$LIPS(true);
-            },
-            prepareForm({orders}) {
+            prepareForm(res) {
                 this.show = false;
                 this.showModalContent = false;
                 //this function is used when a data is sent to this component
                 //or this component makes a request to backend the
                 //data received is used to prepare the form
-                this.orders = orders;
-                Vue.set(this.$data, 'orders', orders);
-                this.show = true;
-                this.$LIPS(false);
+                [this.orders, this.payment_methods, this.banks, this.dva_id] = [res.orders, res.payment_methods, res.banks, res.dva_id];
+                this.initializeReminders() && (this.show = true);
             },
 
-
-            isPaymentDue(date) {
-                return new Date() > new Date(date);
+            initializeReminders(){
+                const today = new Date();
+                this.orders.forEach(order => {
+                    this.reminder.push({
+                        'selected': false,
+                        'customer_id': order.customer.id,
+                        'phone': order.customer.telephone,
+                        'order_id': order.id,
+                        'sms_id': null,
+                        'repayment_level': this.getRepaymentLevel(order),
+                        'feedback': null,
+                        'dva_id': this.dva_id,
+                        'type': 'sms',
+                        'date': today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(),
+                    });
+                });
+                return true;
             },
 
-            getPaymentStatusClasses(order) {
-                if (!order['repayment']) return null;
-                let {repayment} = order, data = [];
-                for (let i = 1; i < 13; i++) {
-                    let status = {class: null, icon: null};
-                    let position = this.getColumn(i);
-                    let isDue = this.isPaymentDue(repayment[position + '_date']);
-                    let amountPaid = parseInt(repayment[position + '_pay']);
-                    if (amountPaid) {
-                        status.class = 'paid';
-                        status.icon = 'fa-check';
-                    } else if (isDue && !amountPaid) {
-                        status.class = 'missed';
-                        status.icon = 'fa-times';
-                    } else if (!isDue) {
-                        status.class = 'pending';
-                        status.icon = 'fa-hourglass-start';
-                    }
-                    data.push(status);
+            selectAll() {
+                this.doSelectAll = !this.doSelectAll;
+                this.reminder.forEach(order => order.selected = this.doSelectAll);
+            },
+
+            processSelected() {
+                let SMSContactList = this.reminder
+                    .filter(obj => !!obj.selected)
+                    .map(obj => '234' + obj.phone.trim().substr(1));
+                if (!!SMSContactList.length) SMS.sendFirstReminder({SMSContactList}, this.saveReminders);
+                else {
+                    this.$scrollToTop();
+                    Flash.setError('please select at least one order!', 50000);
                 }
-                return data;
             },
+
+            saveReminders({messages}) {
+                let contactsSentSMSFromReminderList = this.reminder.filter(obj => !!obj.selected);
+                contactsSentSMSFromReminderList.forEach((value, index) => {
+                    value.sms_id = messages[index].messageId;
+                    value.feedback = 'sms sent';
+                    delete value.phone;
+                    delete value.selected;
+                });
+                post('/api/reminder', {reminders: contactsSentSMSFromReminderList}).then(({data}) => {
+                    this.initializeReminders() && this.$scrollToTop();
+                    if(data.saved) Flash.setSuccess('Reminders have been sent successfully!',10000);
+                })
+            },
+
+            isPaymentDue(dueDate) {
+                return new Date() > new Date(dueDate);
+            },
+
+            getDiscount({discount}) {
+                return `${discount.name} (${discount.percentage})`;
+            },
+
+            isOrderRepaymentValid(order) {
+                return !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']);
+            },
+
+            getReminderList(list) {
+                this.$router.push({query: {list}});
+                if (this.$route.query.list != list) this.$LIPS(true);
+            },
+
             getColumn(i) {
                 let column = null;
                 switch (i) {
@@ -483,71 +456,79 @@
                 }
                 return column;
             },
-            getAmountPaidAndOutStandingDebt(order) {
-                let amountPaid = 0, outstandingDebt = 0;
-                for (let i = 1; i < 13; i++) amountPaid += order["repayment"][this.getColumn(i) + '_pay'];
-                outstandingDebt = parseInt(order["product_price"]) - amountPaid;
-                return {amountPaid, outstandingDebt};
-            },
-            getFinancialStatus(order) {
-                if (!order['repayment']) return 'no repayment detail';
-                let values = this.getAmountPaidAndOutStandingDebt(order);
-                return 'paid: ' + values.amountPaid + ' debt: ' + values.outstandingDebt;
-            },
-            getRepayment(order, clause) {
-                if (!order["repayment"]) return null;
-                const {repayment} = order;
-                let data = [];
-                for (let i = 1; i < 13; i++) data.push(repayment[this.getColumn(i) + clause]);
-                return data;
-            },
-            async onSave() {
-                /*this.$validator.validateAll().then(result => {
-                    if (result) {
-                        if (this.$network()) {
-                            this.$LIPS(true);
-                            this.form.forEach(obj => delete obj.no_signout);
-                            byMethod(this.method, this.store, {form: this.form})
-                                .then(res => {
-                                    if (res.data.saved || res.data.updated) {
-                                        log(`Attendance ${this.mode}d`, `${res.employee_id}`);
-                                        Flash.setSuccess(`Attendance Submitted successfully!`, 3000);
-                                        this.$router.push('/');
-                                    }
-                                })
-                                .catch(e => {
-                                    e = e.response;
-                                    if (e.status === 422) Flash.setError(e.data.message ? e.data.message : e.data);
-                                })
-                                .finally(() => {
-                                    this.$LIPS(false);
-                                    this.$scrollToTop();
-                                });
-                        } else this.$networkErr();
-                    } else this.$networkErr('form');
-                });*/
-            },
-            getModalType(category) {
-                const cat = category.toLowerCase();
-                switch (cat) {
-                    case 'formal':
-                    case'salaried':
-                        return 'repaymentFormal';
-                    case 'informal(business)':
-                        return 'repaymentInformal';
-                    case 'unemployed':
-                        return null;
-                }
-            },
+
             displayDetails(order, modal) {
-                this.isFormal = 'repaymentFormal' === modal;
                 Vue.set(this.$data, 'currentOrder', order);
+                this.isCurrentOrderInformal = order.customer.employment_status === 'informal(business)';
                 this.showModalContent = true;
                 return $(`#${modal}`).modal('toggle');
             },
-            selectAll() {
-                this.doSelectAll = !this.doSelectAll;
-                this.customers.forEach(customer => customer.check = this.doSelectAll);
+
+            getCountAndRepaymentData(order) {
+                let count = 0, repaymentData = null, {repayment_formal, repayment_informal} = order;
+                if (order['repayment_formal'] != null) {
+                    count = 7;
+                    repaymentData = repayment_formal;
+                }
+                if (order['repayment_informal'] != null) {
+                    count = 13;
+                    repaymentData = repayment_informal;
+                }
+                return {count, repaymentData};
+            },
+
+            getAmountPaidAndOutStandingDebt(order) {
+                let amountPaid = 0, outstandingDebt = 0, {count, repaymentData} = this.getCountAndRepaymentData(order);
+                for (let i = 1; i < count; i++) amountPaid += repaymentData[this.getColumn(i) + '_pay'];
+                outstandingDebt = parseInt(order["product_price"]) - amountPaid;
+                return {amountPaid, outstandingDebt};
+            },
+
+            getFinancialStatus(order) {
+                if (!this.isOrderRepaymentValid(order)) return 'no repayment detail';
+                let values = this.getAmountPaidAndOutStandingDebt(order);
+                return 'paid: ' + values.amountPaid + ' debt: ' + values.outstandingDebt;
+            },
+
+            getRepayment(order, clause) {
+                if (!this.isOrderRepaymentValid(order)) return null;
+                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order);
+                for (let i = 1; i < count; i++) data.push(repaymentData[this.getColumn(i) + clause]);
+                return data;
+            },
+
+            getPaymentStatusClasses(order) {
+                if (!this.isOrderRepaymentValid(order)) return null;
+                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order);
+                for (let i = 1; i < count; i++) {
+                    let status = {class: null, icon: null};
+                    let position = this.getColumn(i);
+                    let isDue = this.isPaymentDue(repaymentData[position + '_date']);
+                    let amountPaid = parseInt(repaymentData[position + '_pay']);
+                    if (amountPaid) {
+                        status.class = 'paid';
+                        status.icon = 'fa-check';
+                    } else if (isDue && !amountPaid) {
+                        status.class = 'missed';
+                        status.icon = 'fa-times';
+                    } else if (!isDue) {
+                        status.class = 'pending';
+                        status.icon = 'fa-hourglass-start';
+                    }
+                    data.push(status);
+                }
+                return data;
+            },
+
+            getRepaymentLevel(order) {
+                if (!this.isOrderRepaymentValid(order)) return 0;
+                let level = 0, {count, repaymentData} = this.getCountAndRepaymentData(order);
+                for (let i = 1; i < count; i++) if (repaymentData[this.getColumn(i) + '_pay'] > 0) level++;
+                return level + "/" + (count - 1);
+            },
+
+            convertPaymentMethodOrBankToName(id, type) {
+                return (!id) ? null : this.$data[type === 'bank' ? 'banks' : 'payment_methods'].find(obj => obj.id === id).name;
             },
         },
         mounted() {

@@ -24,10 +24,25 @@ export default {
       this.message = details.message;
       this.send(details);
    },
-   send(details) {
+
+   sendFirstReminder(details, callback){
+      this.message = "Thanks for patronizing us. lol its working";
+      details.phone = details.SMSContactList.join(',');
+      delete details.SMSContactList;
+      return this.send(details, callback);
+   },
+
+   send(details, callback) {
+      get(`/api/message/create?to=${details.phone}&message=${this.message}`).then(res => {
+         if (res.status === 200) console.log("sms sent successfully");
+         return callback(JSON.parse(res.data));
+      });
+   },
+
+   /*send(details) {
       get(`/api/message/create?to=234${details.phone}&message=${this.message}`).then(res => {
          let data = JSON.parse(res.data);
          if (data.messages[0].status.groupId === 1) console.log("sms sent successfully");
       });
-   }
+   }*/
 };

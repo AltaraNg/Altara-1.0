@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
+use App\Attendance;
+use App\Bank;
 use App\Order;
-use App\Purchase;
+use App\PaymentMethod;
 use App\Reminder;
 use Illuminate\Http\Request;
 
@@ -20,16 +21,11 @@ class ReminderController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public static function getDateForReminder($list){
-//        $date = date('Y-m-d');
-        $date = '2019-04-29';
-        switch($list){
+    public static function getDateForReminder($list)
+    {
+        //$date = date('Y-m-d');
+        $date = '2019-04-23';
+        switch ($list) {
             case 2:
                 return date('Y-m-d', strtotime($date . ' - 7 days'));
             case 3:
@@ -39,10 +35,17 @@ class ReminderController extends Controller
         }
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
     public function create()
     {
+
         $result = Order::where('order_date', '=', $this->getDateForReminder(request('list')))->with
-        (['repayment', 'reminders' => function($query){
+        (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'reminders' => function ($query) {
             return $query->with('user');//remember to select only name and id here later
         },
             'floorAgent' => function ($q) {
@@ -67,6 +70,9 @@ class ReminderController extends Controller
             }])->get();
 
         return response()->json([
+            'payment_methods' => PaymentMethod::all(),
+            'banks' => Bank::all(),
+            'dva_id' => auth('api')->user()->id,
             'orders' => $result
         ]);
     }
@@ -74,18 +80,20 @@ class ReminderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $reminders = request('reminders');
+        Reminder::insert($reminders);
+        return response()->json(['saved' => true]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Reminder  $reminder
+     * @param \App\Reminder $reminder
      * @return \Illuminate\Http\Response
      */
     public function show(Reminder $reminder)
@@ -96,7 +104,7 @@ class ReminderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Reminder  $reminder
+     * @param \App\Reminder $reminder
      * @return \Illuminate\Http\Response
      */
     public function edit(Reminder $reminder)
@@ -107,8 +115,8 @@ class ReminderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Reminder  $reminder
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Reminder $reminder
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Reminder $reminder)
@@ -119,7 +127,7 @@ class ReminderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Reminder  $reminder
+     * @param \App\Reminder $reminder
      * @return \Illuminate\Http\Response
      */
     public function destroy(Reminder $reminder)

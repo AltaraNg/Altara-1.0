@@ -27,7 +27,8 @@ class ReminderTableSeeder extends Seeder
                 "repayment_level" => rand(1, 12),
                 "feedback" => $faker->paragraph,
                 "dva_id" => $order->floorAgent->id,
-                "type" => $type[rand(0, 1)]
+                "type" => $type[rand(0, 1)],
+                "date" => date('Y-m-d')
             ]);
         }
     }

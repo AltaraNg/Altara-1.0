@@ -18,7 +18,7 @@ class CreateRemindersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('customer_id')->index()->nullable();
             $table->string('order_id');
-            $table->unsignedInteger('sms_id')->index()->nullable();
+            $table->string('sms_id')->nullable();
             $table->string('repayment_level');
             $table->string('feedback');
             $table->unsignedInteger('dva_id');

@@ -58,6 +58,16 @@ class Order extends Model
 
     public function reminders()
     {
-        return $this->hasMany(Reminder::class, 'order_id', 'order_id');
+        return $this->hasMany(Reminder::class, 'order_id', 'id');
+    }
+
+    public function storeProduct()
+    {
+        return $this->hasOne(StoreProduct::class, 'product_id', 'product_sku');
+    }
+
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
     }
 }

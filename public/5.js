@@ -7,7 +7,7 @@ webpackJsonp([5],{
 
 
 Object.defineProperty(exports, "__esModule", {
-   value: true
+    value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -59,78 +59,78 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 
 exports.default = {
-   data: function data() {
-      return {
-         contacts: '',
-         sentData: {},
-         form: {}
-      };
-   },
+    data: function data() {
+        return {
+            contacts: '',
+            sentData: {},
+            form: {}
+        };
+    },
 
-   methods: {
-      sendMessage: function sendMessage() {
-         var _this = this;
+    methods: {
+        sendMessage: function sendMessage() {
+            var _this = this;
 
-         this.$validator.validateAll().then(function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
-               var contacts;
-               return _regenerator2.default.wrap(function _callee$(_context) {
-                  while (1) {
-                     switch (_context.prev = _context.next) {
-                        case 0:
-                           if (result) {
-                              if (_this.$network()) {
-                                 _this.$LIPS(true);
-                                 contacts = _this.contacts.split(",").filter(function (str) {
-                                    return (/\S/.test(str)
-                                    );
-                                 });
+            this.$validator.validateAll().then(function () {
+                var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
+                    var contacts;
+                    return _regenerator2.default.wrap(function _callee$(_context) {
+                        while (1) {
+                            switch (_context.prev = _context.next) {
+                                case 0:
+                                    if (result) {
+                                        if (_this.$network()) {
+                                            _this.$LIPS(true);
+                                            contacts = _this.contacts.split(",").filter(function (str) {
+                                                return (/\S/.test(str)
+                                                );
+                                            });
 
-                                 contacts.forEach(function (el) {
-                                    _this.sentData.phone = el.trim().substr(1);
-                                    _sms2.default.dvaMessage(_this.sentData);
-                                 });
-                                 _this.done(contacts);
-                              } else _this.$networkErr();
-                           } else _this.$networkErr('form');
+                                            contacts.forEach(function (el) {
+                                                _this.sentData.phone = el.trim().substr(1);
+                                                _sms2.default.dvaMessage(_this.sentData);
+                                            });
+                                            _this.done(contacts);
+                                        } else _this.$networkErr();
+                                    } else _this.$networkErr('form');
 
-                        case 1:
-                        case 'end':
-                           return _context.stop();
-                     }
-                  }
-               }, _callee, _this);
-            }));
+                                case 1:
+                                case 'end':
+                                    return _context.stop();
+                            }
+                        }
+                    }, _callee, _this);
+                }));
 
-            return function (_x) {
-               return _ref.apply(this, arguments);
-            };
-         }());
-      },
-      done: function done(contacts) {
-         var _this2 = this;
+                return function (_x) {
+                    return _ref.apply(this, arguments);
+                };
+            }());
+        },
+        done: function done(contacts) {
+            var _this2 = this;
 
-         this.$LIPS(false);
-         _flash2.default.setSuccess('Messages sent!');
-         this.form.contacts = contacts;
-         this.form.contact_count = contacts.length;
-         this.form.message = this.sentData.message;
-         this.form.pages = Math.ceil(this.form.message.length / 160);
-         var remaining = this.form.message.length % 160;
-         if (remaining > 0) this.form.pages += 1;
-         (0, _api.post)('/api/message', this.form).then(function () {
-            return _this2.resetData();
-         });
-      },
-      resetData: function resetData() {
-         this.contacts = '';
-         this.sentData = { message: '', phone: '' };
-         this.form = { pages: 0, user_id: '', message: '', contacts: [], contact_count: 0 };
-      }
-   },
-   created: function created() {
-      this.resetData();
-   }
+            this.$LIPS(false);
+            _flash2.default.setSuccess('Messages sent!');
+            this.form.contacts = contacts;
+            this.form.contact_count = contacts.length;
+            this.form.message = this.sentData.message;
+            this.form.pages = Math.ceil(this.form.message.length / 160);
+            var remaining = this.form.message.length % 160;
+            if (remaining > 0) this.form.pages += 1;
+            (0, _api.post)('/api/message', this.form).then(function () {
+                return _this2.resetData();
+            });
+        },
+        resetData: function resetData() {
+            this.contacts = '';
+            this.sentData = { message: '', phone: '' };
+            this.form = { pages: 0, user_id: '', message: '', contacts: [], contact_count: 0 };
+        }
+    },
+    created: function created() {
+        this.resetData();
+    }
 };
 
 /***/ }),
@@ -1080,7 +1080,7 @@ var render = function() {
                         attrs: { disabled: _vm.$isProcessing, type: "submit" }
                       },
                       [
-                        _vm._v("\n                     Send messages "),
+                        _vm._v("\n                            Send messages "),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
                     )
@@ -1167,10 +1167,16 @@ exports.default = {
       this.message = details.message;
       this.send(details);
    },
-   send: function send(details) {
-      (0, _api.get)("/api/message/create?to=234" + details.phone + "&message=" + this.message).then(function (res) {
-         var data = JSON.parse(res.data);
-         if (data.messages[0].status.groupId === 1) console.log("sms sent successfully");
+   sendFirstReminder: function sendFirstReminder(details, callback) {
+      this.message = "Thanks for patronizing us. lol its working";
+      details.phone = details.SMSContactList.join(',');
+      delete details.SMSContactList;
+      return this.send(details, callback);
+   },
+   send: function send(details, callback) {
+      (0, _api.get)("/api/message/create?to=" + details.phone + "&message=" + this.message).then(function (res) {
+         if (res.status === 200) console.log("sms sent successfully");
+         return callback(JSON.parse(res.data));
       });
    }
 };
