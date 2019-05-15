@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -20,11 +21,13 @@ class CreateRemindersTable extends Migration
             $table->string('order_id');
             $table->string('sms_id')->nullable();
             $table->string('repayment_level');
-            $table->string('feedback');
+            $table->string('feedback')->nullable();
             $table->unsignedInteger('dva_id');
             $table->string('type');
             $table->dateTime('date');
-            $table->timestamps();
+            //$table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
 
         Schema::table('reminders', function ($table) {

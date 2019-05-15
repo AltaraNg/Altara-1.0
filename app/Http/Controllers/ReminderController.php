@@ -46,7 +46,7 @@ class ReminderController extends Controller
 
         $result = Order::where('order_date', '=', $this->getDateForReminder(request('list')))->with
         (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'reminders' => function ($query) {
-            return $query->with('user');//remember to select only name and id here later
+            return $query->with('user', 'sms');//remember to select only name and id here later
         },
             'floorAgent' => function ($q) {
                 return $q->select('id', 'staff_id', 'full_name');

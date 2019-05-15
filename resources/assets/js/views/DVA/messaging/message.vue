@@ -7,14 +7,17 @@
                     <form @submit.prevent="sendMessage" class="clearfix" id="messaging">
                         <div class="form-group col-md-12 px-md-3 px-1 float-left">
                             <label>Phone Numbers</label>
-                            <textarea class="form-control col-sm-12" name="contacts" v-model="contacts" v-validate="'required'"
-                                      placeholder="Kindly add the number and seperate each with a semi-colon ';'" rows="3" ></textarea>
+                            <textarea class="form-control col-sm-12" name="contacts" v-model="contacts"
+                                      v-validate="'required'"
+                                      placeholder="Kindly add the number and seperate each with a semi-colon ';'"
+                                      rows="3"></textarea>
                             <small v-if="errors.first('contacts')">{{errors.first('contacts')}}</small>
                         </div>
                         <div class="form-group col-md-12 px-md-3 px-1 float-left">
                             <label>Message Body</label>
                             <textarea class="form-control col-sm-12" name="message" v-validate="'required'"
-                                      placeholder="the content of the message goes here" rows="3" v-model="sentData.message"></textarea>
+                                      placeholder="the content of the message goes here" rows="3"
+                                      v-model="message"></textarea>
                             <small v-if="errors.first('message')">{{errors.first('message')}}</small>
                         </div>
                         <hr class="style-two">
@@ -38,7 +41,7 @@
         data() {
             return {
                 contacts: '',
-                sentData: {},
+                message: '',
                 form: {}
             }
         },
@@ -48,31 +51,31 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            let contacts = this.contacts.split(",").filter(str => /\S/.test(str));
-                            contacts.forEach(el => {
-                                this.sentData.phone = el.trim().substr(1);
-                                SMS.dvaMessage(this.sentData);
+                            let contacts = this.contacts.split(",").filter(e => /\S/.test(e))
+                                .map(contact => '234' + contact.trim().substr(1));
+                            SMS.dvaMessage({message: this.message, contacts}, res => {
+                                res.status === 200 && this.done(contacts);
                             });
-                            this.done(contacts);
                         } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
             },
             done(contacts) {
+                this.$scrollToTop();
                 this.$LIPS(false);
                 Flash.setSuccess('Messages sent!');
-                this.form.contacts = contacts;
-                this.form.contact_count = contacts.length;
-                this.form.message = this.sentData.message;
-                this.form.pages = Math.ceil(this.form.message.length / 160);
-                let remaining = this.form.message.length % 160;
-                if (remaining > 0) this.form.pages += 1;
+                this.form = {
+                    contacts: contacts.join(','),
+                    contact_count: contacts.length,
+                    message: this.message,
+                    pages: Math.ceil(this.message.length / 160),
+                };
                 post('/api/message', this.form).then(() => this.resetData());
             },
             resetData() {
-                this.contacts = '';
-                this.sentData = {message: '', phone: ''};
-                this.form = {pages: 0, user_id: '', message: '', contacts: [], contact_count: 0};
+                this.contacts = null;
+                this.message = null;
+                for (let key in this.form) this.form[key] = null;
             },
         },
         created() {
@@ -86,7 +89,7 @@
 
     #messaging {
         textarea {
-            font: 500 1.5rem $default-font;
+            font: 500 1.5rem $default-font !important;
         }
     }
 </style>

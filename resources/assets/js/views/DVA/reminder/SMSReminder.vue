@@ -3,20 +3,23 @@
         <div class="mt-5 mb-3 attendance-head">
             <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
                 <li class="col p-0 nav-item mb-0">
-                    <a aria-selected="true" class="nav-link"
-                       :class="{'active':$route.query.list === '1' || !($route.query.list)}" data-toggle="tab"
+                    <!--                    :class="{'active':$route.query.list === '1' || !($route.query.list)}" data-toggle="tab"-->
+                    <a aria-selected="true" class="nav-link active"
+                       data-toggle="tab"
                        href="#reminder-panel"
                        @click="getReminderList(1)"
                        role="tab">1<sup>st</sup> Reminder</a>
                 </li>
                 <li class="col p-0 nav-item mb-0">
-                    <a aria-selected="false" class="nav-link" :class="{'active':$route.query.list === '2'}"
+                    <!--                    <a aria-selected="false" class="nav-link" :class="{'active':$route.query.list === '2'}"-->
+                    <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
                        @click="getReminderList(2)"
                        role="tab">2<sup>nd</sup> Reminder</a>
                 </li>
                 <li class="col p-0 nav-item mb-0">
-                    <a aria-selected="false" class="nav-link" :class="{'active':$route.query.list === '3'}"
+                    <!--                    <a aria-selected="false" class="nav-link" :class="{'active':$route.query.list === '3'}"-->
+                    <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
                        @click="getReminderList(3)"
                        role="tab">3<sup>rd</sup> Reminder</a>
@@ -297,7 +300,9 @@
                                     <th>{{index+1}}</th>
                                     <td>{{reminder.date}}</td>
                                     <td>{{reminder.type}}</td>
-                                    <td>{{reminder.feedback}}</td>
+                                    <td>{{reminder['sms'] ? reminder.sms.message : 'call feedback: ' + reminder.feedback
+                                        }}
+                                    </td>
                                     <td>{{reminder.user.full_name}}</td>
                                 </tr>
                                 </tbody>
@@ -319,9 +324,10 @@
 
 <script>
     import Vue from 'vue';
-    import {get, post} from "../../../helpers/api";
     import SMS from "../../../helpers/sms";
     import Flash from "../../../helpers/flash";
+    import {Message} from "../../../helpers/sms";
+    import {get, post} from "../../../helpers/api";
 
     function initialize(to) {
         let urls = {create: `/api/reminder/create${to.query.list ? '?list=' + to.query.list : ''}`};
@@ -330,18 +336,14 @@
 
     export default {
         beforeRouteEnter(to, from, next) {
-            //1. make request to back-end
             get(initialize(to)).then(({data}) => {
-                //2 send to the method to prepare form//
                 next(vm => vm.prepareForm(data));
             });
         },
         beforeRouteUpdate(to, from, next) {
             this.show = false;
             this.showModalContent = false;
-            //1. make request to back-end
             get(initialize(to)).then(({data}) => {
-                //2 send to the method to prepare form
                 this.prepareForm(data);
                 next();
             });
@@ -350,30 +352,29 @@
         data() {
             return {
                 form: {},
-                show: false,
-                showModalContent: false,
                 orders: {},
+                show: false,
+                banks: null,
+                reminder: null,
                 currentOrder: {},
                 doSelectAll: false,
-                banks: null,
                 payment_methods: null,
-                isCurrentOrderInformal: null,
-                reminder: [],
+                showModalContent: false,
+                isCurrentOrderInformal: null
             }
         },
         methods: {
             prepareForm(res) {
                 this.show = false;
                 this.showModalContent = false;
-                //this function is used when a data is sent to this component
-                //or this component makes a request to backend the
-                //data received is used to prepare the form
-                [this.orders, this.payment_methods, this.banks, this.dva_id] = [res.orders, res.payment_methods, res.banks, res.dva_id];
+                [this.orders, this.payment_methods, this.banks, this.dva_id]
+                    = [res.orders, res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
             },
 
-            initializeReminders(){
+            initializeReminders() {
                 const today = new Date();
+                this.reminder = [];
                 this.orders.forEach(order => {
                     this.reminder.push({
                         'selected': false,
@@ -388,7 +389,14 @@
                         'date': today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(),
                     });
                 });
+                this.$LIPS(false);
                 return true;
+            },
+
+            displayErrorMessage(error) {
+                this.$scrollToTop();
+                Flash.setError(error, 50000);
+                this.$LIPS(true);
             },
 
             selectAll() {
@@ -396,30 +404,137 @@
                 this.reminder.forEach(order => order.selected = this.doSelectAll);
             },
 
-            processSelected() {
-                let SMSContactList = this.reminder
-                    .filter(obj => !!obj.selected)
-                    .map(obj => '234' + obj.phone.trim().substr(1));
-                if (!!SMSContactList.length) SMS.sendFirstReminder({SMSContactList}, this.saveReminders);
-                else {
-                    this.$scrollToTop();
-                    Flash.setError('please select at least one order!', 50000);
-                }
+            /*processSelected() {
+                this.$LIPS(true);
+                //get the list of the selected reminders
+                let selectedList = this.reminder.filter(obj => !!obj.selected);
+                //prepare an array for the contact list and format the numbers like so
+                // eg. 08163145041 changes to +2348163145041
+                /!*let SMSContactList = selectedList.map(obj => '234' + obj.phone.trim().substr(1));*!/
+
+                //generate 2 array for contact list and message
+                // list for each of the contacts generated
+                /!*let messageBodyList = selectedList.map(obj => {
+                    //get the order object for each of the selected reminders
+                    let order = this.orders.find(order => order.id === obj.order_id);
+                    //generate a custom reminder message for that order
+                    return this.generateCustomMessage(order);
+                });*!/
+
+
+                let contactsAndMessages = selectedList.map(obj => {
+                    let phone = '234' + obj.phone.trim().substr(1);
+                    let order = this.orders.find(order => order.id === obj.order_id);
+                    let message =  this.generateCustomMessage(order);
+                    return {phone, message};
+                });
+
+
+                if (!!contactsAndMessages.length) this.sendSMSReminders(selectedList, contactsAndMessages);
+                // if (!!SMSContactList.length) this.sendSMSReminders(selectedList, SMSContactList);
+                else this.displayErrorMessage('please select at least one!');
+            },*/
+
+            generateCustomMessage(order) {
+                return 'For another testing clinsmann : ' + order.customer.telephone;
             },
 
-            saveReminders({messages}) {
-                let contactsSentSMSFromReminderList = this.reminder.filter(obj => !!obj.selected);
-                contactsSentSMSFromReminderList.forEach((value, index) => {
-                    value.sms_id = messages[index].messageId;
-                    value.feedback = 'sms sent';
+
+            processSelected() {
+                this.$LIPS(true);
+                let smsContactList = this.reminder
+                    .filter(obj => !!obj.selected)
+                    .map(obj => {
+                        let newObject = JSON.parse(JSON.stringify(obj));
+                        newObject.phone = '234' + obj.phone.trim().substr(1);
+                        newObject.order = this.orders.find(order => order.id === obj.order_id);
+                        newObject.message = this.generateCustomMessage(newObject.order);
+                        newObject.isSent = false;
+                        return newObject;
+                    });
+                if (!!smsContactList.length) this.sendSMSReminders(smsContactList);
+                else this.displayErrorMessage('please select at least one!');
+            },
+
+            sendSMSReminders(smsContactList) {
+                smsContactList.forEach((value, index) => {
+                    SMS.sendFirstReminder(value, res => {
+                        value.isSent = res.status === 200;
+                        if ((index + 1) === smsContactList.length) {
+                            this.logSentMessages(smsContactList);
+                        }
+                    });
+                });
+            },
+
+            logSentMessages(smsContactList) {
+                let messages = [];
+                smsContactList.forEach((obj, index) => {
+                    obj.isSent && messages.push(new Message(obj.dva_id, obj.message, obj.phone));
+                    if ((index + 1) === smsContactList.length) {
+                        if (messages.length > 0) {
+                            post('/api/message', {messages, bulk: true}).then(({data}) => {
+                                let {sentAndLogged, ids} = data;
+                                if (sentAndLogged) this.logSentReminders(smsContactList, ids);
+                                else this.displayErrorMessage('Error Logging sent sms details!');
+                            });
+                        } else this.displayErrorMessage('Error sending messages!');
+                    }
+                });
+            },
+
+            logSentReminders(selectedList, ids) {
+                ids.reverse();
+                let newList = JSON.parse(JSON.stringify(selectedList));
+                newList.forEach((value, index) => {
+                    value.sms_id = ids[index];
+                    delete value.isSent;
+                    delete value.message;
+                    delete value.order;
                     delete value.phone;
                     delete value.selected;
                 });
-                post('/api/reminder', {reminders: contactsSentSMSFromReminderList}).then(({data}) => {
-                    this.initializeReminders() && this.$scrollToTop();
-                    if(data.saved) Flash.setSuccess('Reminders have been sent successfully!',10000);
-                })
+                if (ids.length > 0) {
+                    post('/api/reminder', {reminders: newList}).then(({data}) => {
+                        this.initializeReminders() && this.$scrollToTop();
+                        if (data.saved) Flash.setSuccess('Reminders have been sent successfully!', 50000);
+                        else this.displayErrorMessage('Error sending reminders!');
+                    })
+                } else this.displayErrorMessage('Error logging sent messages!');
             },
+
+
+            /*sendSMSReminders(selectedList, SMSContactList) {
+                SMS.sendFirstReminder({SMSContactList}, ({status}) => {
+                    if (status === 200) this.logSentMessages(selectedList);
+                    else this.displayErrorMessage('Error Sending SMS to contact(s)!');
+                });
+            },*/
+
+            /*logSentMessages(selectedList) {
+                let messages = [];
+                selectedList.forEach(reminder => {
+                    messages.push(new Message(reminder.dva_id, 'message', reminder.phone));
+                    delete reminder.phone;
+                    delete reminder.selected;
+                });
+                post('/api/message', {messages, bulk: true}).then(({data}) => {
+                    let {sentAndLogged, ids} = data;
+                    if (sentAndLogged) this.logSentReminders(selectedList, ids);
+                    else this.displayErrorMessage('Error Logging sent sms details!');
+                });
+            },*/
+
+            /* logSentReminders(selectedList, ids) {
+                 ids.reverse();
+                 selectedList.forEach((value, index) => value.sms_id = ids[index]);
+                 post('/api/reminder', {reminders: selectedList}).then(({data}) => {
+                     this.initializeReminders() && this.$scrollToTop();
+                     if (data.saved) Flash.setSuccess('Reminders have been sent successfully!', 50000);
+                     else this.displayErrorMessage('Reminders have been sent successfully!');
+                 })
+             },*/
+
 
             isPaymentDue(dueDate) {
                 return new Date() > new Date(dueDate);
@@ -434,8 +549,7 @@
             },
 
             getReminderList(list) {
-                this.$router.push({query: {list}});
-                if (this.$route.query.list != list) this.$LIPS(true);
+                return null;
             },
 
             getColumn(i) {

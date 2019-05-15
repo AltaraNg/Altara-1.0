@@ -4026,45 +4026,93 @@ function log(action, description) {
 
 
 Object.defineProperty(exports, "__esModule", {
-   value: true
+    value: true
 });
+exports.Message = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Message = exports.Message = function () {
+    function Message(userId, message, contacts) {
+        _classCallCheck(this, Message);
+
+        this.user_id = userId;
+        this.message = message;
+        this.contacts = contacts;
+        this.setPages();
+        this.setContactCount();
+    }
+
+    _createClass(Message, [{
+        key: "setContactCount",
+        value: function setContactCount() {
+            if (this.contacts.constructor === String) this.contact_count = this.contacts.split(',').length;
+            if (this.contacts.constructor === Array) this.contact_count = this.contacts.length;
+        }
+    }, {
+        key: "setPages",
+        value: function setPages() {
+            this.pages = Math.ceil(this.message.length / 160);
+        }
+    }]);
+
+    return Message;
+}();
+
 exports.default = {
-   message: "",
-   welcome: function welcome(details) {
-      this.message = "Welcome to Altara credit. Please secure your login details. Staff ID: " + details.loginID + ", password: " + details.loginPassword;
-      this.send(details);
-   },
-   customerReg: function customerReg(details) {
-      this.message = "Dear " + details.first_name + " " + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact: " + details.branch.phone_yoruba + ". Your customer id is: " + details.id;
-      this.send({ phone: details.telephone.substr(1) });
-   },
-   passwordReset: function passwordReset(details) {
-      this.message = "Password reset successful! if your did not request for a new password kindly report back immediately, your staff ID is " + details.staff_id + ", new password: " + details.password;
-      this.send(details);
-   },
-   transfer: function transfer(details) {
-      this.message = "Transfer Successful, your new staff ID is " + details.loginID + " ";
-      this.send(details);
-   },
-   dvaMessage: function dvaMessage(details) {
-      this.message = details.message;
-      this.send(details);
-   },
-   sendFirstReminder: function sendFirstReminder(details, callback) {
-      this.message = "Thanks for patronizing us. lol its working";
-      details.phone = details.SMSContactList.join(',');
-      delete details.SMSContactList;
-      return this.send(details, callback);
-   },
-   send: function send(details, callback) {
-      (0, _api.get)("/api/message/create?to=" + details.phone + "&message=" + this.message).then(function (res) {
-         if (res.status === 200) console.log("sms sent successfully");
-         return callback(JSON.parse(res.data));
-      });
-   }
+    message: "",
+    welcome: function welcome(details) {
+        this.message = "Welcome to Altara credit. Please secure your login details. Staff ID: " + details.loginID + ", password: " + details.loginPassword;
+        this.send(details);
+    },
+    customerReg: function customerReg(details) {
+        this.message = "Dear " + details.first_name + " " + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact: " + details.branch.phone_yoruba + ". Your customer id is: " + details.id;
+        this.send({ phone: details.telephone.substr(1) });
+    },
+    passwordReset: function passwordReset(details) {
+        this.message = "Password reset successful! if your did not request for a new password kindly report back immediately, your staff ID is " + details.staff_id + ", new password: " + details.password;
+        this.send(details);
+    },
+    transfer: function transfer(details) {
+        this.message = "Transfer Successful, your new staff ID is " + details.loginID + " ";
+        this.send(details);
+    },
+    dvaMessage: function dvaMessage(details, callback) {
+        this.message = details.message;
+        this.sendWithCallback(details, callback);
+    },
+
+
+    /*sendFirstReminder(details, callback) {
+        this.message = "Thanks for patronizing us. lol its working";
+        details.contacts = details.SMSContactList.join(',');
+        delete details.SMSContactList;
+        return this.sendWithCallback(details, callback);
+    },*/
+
+    sendFirstReminder: function sendFirstReminder(details, callback) {
+        this.message = details.message;
+        return this.sendWithCallback(details, callback);
+    },
+    sendWithCallback: function sendWithCallback(_ref, callback) {
+        var phone = _ref.phone;
+
+        (0, _api.get)("/api/message/create?to=" + phone + "&message=" + this.message).then(function (res) {
+            res.status === 200 && console.log("sms sent successfully");
+            return !!callback && callback(res);
+        }).catch(function (err) {
+            return !!callback && callback(err);
+        });
+    },
+    send: function send(details) {
+        (0, _api.get)("/api/message/create?to=234" + details.phone + "&message=" + this.message).then(function (res) {
+            res.status === 200 && console.log("sms sent successfully");
+        });
+    }
 };
 
 /***/ }),
