@@ -1813,15 +1813,6 @@ exports.default = {
         this.message = details.message;
         this.sendWithCallback(details, callback);
     },
-
-
-    /*sendFirstReminder(details, callback) {
-        this.message = "Thanks for patronizing us. lol its working";
-        details.contacts = details.SMSContactList.join(',');
-        delete details.SMSContactList;
-        return this.sendWithCallback(details, callback);
-    },*/
-
     sendFirstReminder: function sendFirstReminder(details, callback) {
         this.message = details.message;
         return this.sendWithCallback(details, callback);

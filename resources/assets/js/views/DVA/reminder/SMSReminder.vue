@@ -404,41 +404,31 @@
                 this.reminder.forEach(order => order.selected = this.doSelectAll);
             },
 
-            /*processSelected() {
-                this.$LIPS(true);
-                //get the list of the selected reminders
-                let selectedList = this.reminder.filter(obj => !!obj.selected);
-                //prepare an array for the contact list and format the numbers like so
-                // eg. 08163145041 changes to +2348163145041
-                /!*let SMSContactList = selectedList.map(obj => '234' + obj.phone.trim().substr(1));*!/
-
-                //generate 2 array for contact list and message
-                // list for each of the contacts generated
-                /!*let messageBodyList = selectedList.map(obj => {
-                    //get the order object for each of the selected reminders
-                    let order = this.orders.find(order => order.id === obj.order_id);
-                    //generate a custom reminder message for that order
-                    return this.generateCustomMessage(order);
-                });*!/
-
-
-                let contactsAndMessages = selectedList.map(obj => {
-                    let phone = '234' + obj.phone.trim().substr(1);
-                    let order = this.orders.find(order => order.id === obj.order_id);
-                    let message =  this.generateCustomMessage(order);
-                    return {phone, message};
-                });
-
-
-                if (!!contactsAndMessages.length) this.sendSMSReminders(selectedList, contactsAndMessages);
-                // if (!!SMSContactList.length) this.sendSMSReminders(selectedList, SMSContactList);
-                else this.displayErrorMessage('please select at least one!');
-            },*/
-
-            generateCustomMessage(order) {
-                return 'For another testing clinsmann : ' + order.customer.telephone;
+            isOrderFormal({repayment_informal}) {
+                return repayment_informal === null;
             },
 
+            generateDates({startDate, interval, count}) {
+                let dates = [];
+                for (let i = 0; i < count; i++) {
+                    let orderDate = (new Date(startDate)).addDays(i * interval);
+                    let dateString = orderDate.getFullYear() + '-' + orderDate.getMonth() + '-' + orderDate.getDate();
+                    dates.push(dateString);
+                }
+                return dates;
+            },
+
+            generateCustomMessage(order) {
+                let message = 'Thanks for patronizing us. Repayment Schedule as follows:%0a';
+                let isFormal = this.isOrderFormal(order);
+                let genDateArgs = {};
+                if (isFormal) genDateArgs = {startDate: order.order_date, interval: 28, count: 6};
+                if (!isFormal) genDateArgs = {startDate: order.order_date, interval: 14, count: 12};
+                let dates = this.generateDates(genDateArgs);
+                if (dates.length > 0)
+                    dates.forEach((date, index) => message += this.getColumn(index + 1) + ": " + date + "%0a");
+                return message;
+            },
 
             processSelected() {
                 this.$LIPS(true);
@@ -502,39 +492,6 @@
                     })
                 } else this.displayErrorMessage('Error logging sent messages!');
             },
-
-
-            /*sendSMSReminders(selectedList, SMSContactList) {
-                SMS.sendFirstReminder({SMSContactList}, ({status}) => {
-                    if (status === 200) this.logSentMessages(selectedList);
-                    else this.displayErrorMessage('Error Sending SMS to contact(s)!');
-                });
-            },*/
-
-            /*logSentMessages(selectedList) {
-                let messages = [];
-                selectedList.forEach(reminder => {
-                    messages.push(new Message(reminder.dva_id, 'message', reminder.phone));
-                    delete reminder.phone;
-                    delete reminder.selected;
-                });
-                post('/api/message', {messages, bulk: true}).then(({data}) => {
-                    let {sentAndLogged, ids} = data;
-                    if (sentAndLogged) this.logSentReminders(selectedList, ids);
-                    else this.displayErrorMessage('Error Logging sent sms details!');
-                });
-            },*/
-
-            /* logSentReminders(selectedList, ids) {
-                 ids.reverse();
-                 selectedList.forEach((value, index) => value.sms_id = ids[index]);
-                 post('/api/reminder', {reminders: selectedList}).then(({data}) => {
-                     this.initializeReminders() && this.$scrollToTop();
-                     if (data.saved) Flash.setSuccess('Reminders have been sent successfully!', 50000);
-                     else this.displayErrorMessage('Reminders have been sent successfully!');
-                 })
-             },*/
-
 
             isPaymentDue(dueDate) {
                 return new Date() > new Date(dueDate);
@@ -650,6 +607,13 @@
                 this.currentOrder = null;
                 this.showModalContent = false;
             });
+
+            //this is linked to the function that generates dates
+            Date.prototype.addDays = function (days) {
+                var date = new Date(this.valueOf());
+                date.setDate(date.getDate() + days);
+                return date;
+            };
         },
     }
 </script>
