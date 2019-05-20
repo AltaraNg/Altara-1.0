@@ -17,7 +17,7 @@ class CreateDiscountsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
-            $table->integer('percentage');
+            $table->integer('percentage_discount');
         });
     }
 

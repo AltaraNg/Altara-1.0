@@ -44,6 +44,7 @@
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <div class="mb-3 row attendance-item" v-for="(order, index) in orders">
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center " style="max-width: 120px">
+                        <div class="check-box-overlay" @click="checkIfAlreadySentReminder(index)"></div>
                         <input class="form-check-input my-0 mx-4 float-left position-relative" type="checkbox"
                                v-model="reminder[index].selected">
                         <span class="user mx-auto">{{index+1}}</span>
@@ -360,7 +361,8 @@
                 doSelectAll: false,
                 payment_methods: null,
                 showModalContent: false,
-                isCurrentOrderInformal: null
+                isCurrentOrderInformal: null,
+                currentOrderRepaymentDates: null
             }
         },
         methods: {
@@ -373,7 +375,6 @@
             },
 
             initializeReminders() {
-                const today = new Date();
                 this.reminder = [];
                 this.orders.forEach(order => {
                     this.reminder.push({
@@ -386,7 +387,8 @@
                         'feedback': null,
                         'dva_id': this.dva_id,
                         'type': 'sms',
-                        'date': today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(),
+                        'date': this.getDateString(),
+                        'canBeSelected': this.isReminderSent(order),
                     });
                 });
                 this.$LIPS(false);
@@ -396,12 +398,17 @@
             displayErrorMessage(error) {
                 this.$scrollToTop();
                 Flash.setError(error, 50000);
-                this.$LIPS(true);
+                this.$LIPS(false);
+            },
+
+            checkIfAlreadySentReminder(index) {
+                if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;
+                else alert('sorry a reminder has already been sent to user!');
             },
 
             selectAll() {
                 this.doSelectAll = !this.doSelectAll;
-                this.reminder.forEach(order => order.selected = this.doSelectAll);
+                this.reminder.forEach(order => order.canBeSelected && (order.selected = this.doSelectAll));
             },
 
             isOrderFormal({repayment_informal}) {
@@ -412,21 +419,48 @@
                 let dates = [];
                 for (let i = 0; i < count; i++) {
                     let orderDate = (new Date(startDate)).addDays(i * interval);
-                    let dateString = orderDate.getFullYear() + '-' + orderDate.getMonth() + '-' + orderDate.getDate();
+                    let dateString = this.getDateString(orderDate);
                     dates.push(dateString);
                 }
                 return dates;
             },
 
+            getDateString(date = new Date(), monthStartsFromZero = true) {
+                return date.getFullYear() + '-' + (date.getMonth() + (monthStartsFromZero && 1)) + '-' + date.getDate();
+            },
+
+            isReminderSent(order) {
+                var value = true, date;
+                if (!!order) {
+                    if (order.reminders.length > 0) {
+                        let today = this.getDateString();
+                        order.reminders.forEach(reminder => {
+                            //refactor below by using regx characters to split
+                            let reminderDateTimeArr = reminder.date.split(' ');//(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
+                            let dateArr = reminderDateTimeArr[0].split('-');//'2019-03-24' -> ['2019','03','24']
+                            let timeArr = reminderDateTimeArr[1].split(':');//'02:00:00' -> ['02','00','00']
+                            let arr = [...dateArr, ...timeArr] // ['2019','03','24','02','00','00']
+                                .map(item => parseInt(item, 10)); //[2019,3,24,2,0,0]
+                            date = this.getDateString(new Date(Date.UTC(...arr)), false);
+                            date === today && (value = false);
+                        });
+                    }
+                }
+                return value;
+            },
+
             generateCustomMessage(order) {
-                let message = 'Thanks for patronizing us. Repayment Schedule as follows:%0a';
+                let message = 'Thanks for patronizing us. Repayment Schedule for ' + order.store_product.product_name + ' are as follows:%0a';
                 let isFormal = this.isOrderFormal(order);
                 let genDateArgs = {};
                 if (isFormal) genDateArgs = {startDate: order.order_date, interval: 28, count: 6};
                 if (!isFormal) genDateArgs = {startDate: order.order_date, interval: 14, count: 12};
                 let dates = this.generateDates(genDateArgs);
                 if (dates.length > 0)
-                    dates.forEach((date, index) => message += this.getColumn(index + 1) + ": " + date + "%0a");
+                    dates.forEach((date, index) =>
+                        message += this.getColumn(index + 1) + ": " + date + " => N" +
+                            (index === 0 ? order.down_payment : order.repayment_amount) + "%0a"
+                    );
                 return message;
             },
 
@@ -448,6 +482,7 @@
 
             sendSMSReminders(smsContactList) {
                 smsContactList.forEach((value, index) => {
+                    console.log(value);
                     SMS.sendFirstReminder(value, res => {
                         value.isSent = res.status === 200;
                         if ((index + 1) === smsContactList.length) {
@@ -483,14 +518,24 @@
                     delete value.order;
                     delete value.phone;
                     delete value.selected;
+                    delete value.canBeSelected;
                 });
                 if (ids.length > 0) {
                     post('/api/reminder', {reminders: newList}).then(({data}) => {
                         this.initializeReminders() && this.$scrollToTop();
-                        if (data.saved) Flash.setSuccess('Reminders have been sent successfully!', 50000);
-                        else this.displayErrorMessage('Error sending reminders!');
+                        if (data.saved) {
+                            Flash.setSuccess('Reminders have been sent successfully!', 50000);
+                            this.fetchList();
+                        } else this.displayErrorMessage('Error sending reminders!');
                     })
                 } else this.displayErrorMessage('Error logging sent messages!');
+            },
+
+            fetchList() {
+                this.$LIPS(true);
+                get(initialize(this.$route)).then(({data}) => {
+                    this.prepareForm(data);
+                });
             },
 
             isPaymentDue(dueDate) {
@@ -564,6 +609,16 @@
             getRepayment(order, clause) {
                 if (!this.isOrderRepaymentValid(order)) return null;
                 let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order);
+                if (clause === '_date')
+                {
+                    let dueDates = this.generateDates({
+                        startDate: order.order_date,
+                        interval: count === 7 ? 28 : 14,
+                        count: count - 1
+                    });
+                    this.currentOrderRepaymentDates = dueDates;
+                    return dueDates;
+                }
                 for (let i = 1; i < count; i++) data.push(repaymentData[this.getColumn(i) + clause]);
                 return data;
             },
@@ -617,3 +672,13 @@
         },
     }
 </script>
+
+<style scoped type="scss">
+    .check-box-overlay {
+        height: 100%;
+        width: 100%;
+        float: left;
+        position: absolute;
+        z-index: 1;
+    }
+</style>

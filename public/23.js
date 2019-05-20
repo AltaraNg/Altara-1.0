@@ -26,333 +26,336 @@ var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 function initialize(to) {
     var urls = { create: "/api/reminder/create" + (to.query.list ? '?list=' + to.query.list : '') };
     return urls.create;
-} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+}
 
 exports.default = {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -387,7 +390,8 @@ exports.default = {
             doSelectAll: false,
             payment_methods: null,
             showModalContent: false,
-            isCurrentOrderInformal: null
+            isCurrentOrderInformal: null,
+            currentOrderRepaymentDates: null
         };
     },
 
@@ -406,7 +410,6 @@ exports.default = {
         initializeReminders: function initializeReminders() {
             var _this2 = this;
 
-            var today = new Date();
             this.reminder = [];
             this.orders.forEach(function (order) {
                 _this2.reminder.push({
@@ -419,7 +422,8 @@ exports.default = {
                     'feedback': null,
                     'dva_id': _this2.dva_id,
                     'type': 'sms',
-                    'date': today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+                    'date': _this2.getDateString(),
+                    'canBeSelected': _this2.isReminderSent(order)
                 });
             });
             this.$LIPS(false);
@@ -428,14 +432,17 @@ exports.default = {
         displayErrorMessage: function displayErrorMessage(error) {
             this.$scrollToTop();
             _flash2.default.setError(error, 50000);
-            this.$LIPS(true);
+            this.$LIPS(false);
+        },
+        checkIfAlreadySentReminder: function checkIfAlreadySentReminder(index) {
+            if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;else alert('sorry a reminder has already been sent to user!');
         },
         selectAll: function selectAll() {
             var _this3 = this;
 
             this.doSelectAll = !this.doSelectAll;
             this.reminder.forEach(function (order) {
-                return order.selected = _this3.doSelectAll;
+                return order.canBeSelected && (order.selected = _this3.doSelectAll);
             });
         },
         isOrderFormal: function isOrderFormal(_ref4) {
@@ -451,27 +458,57 @@ exports.default = {
             var dates = [];
             for (var i = 0; i < count; i++) {
                 var orderDate = new Date(startDate).addDays(i * interval);
-                var dateString = orderDate.getFullYear() + '-' + orderDate.getMonth() + '-' + orderDate.getDate();
+                var dateString = this.getDateString(orderDate);
                 dates.push(dateString);
             }
             return dates;
         },
-        generateCustomMessage: function generateCustomMessage(order) {
+        getDateString: function getDateString() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
+            var monthStartsFromZero = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+            return date.getFullYear() + '-' + (date.getMonth() + (monthStartsFromZero && 1)) + '-' + date.getDate();
+        },
+        isReminderSent: function isReminderSent(order) {
             var _this4 = this;
 
-            var message = 'Thanks for patronizing us. Repayment Schedule as follows:%0a';
+            var value = true,
+                date;
+            if (!!order) {
+                if (order.reminders.length > 0) {
+                    var today = this.getDateString();
+                    order.reminders.forEach(function (reminder) {
+                        //refactor below by using regx characters to split
+                        var reminderDateTimeArr = reminder.date.split(' '); //(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
+                        var dateArr = reminderDateTimeArr[0].split('-'); //'2019-03-24' -> ['2019','03','24']
+                        var timeArr = reminderDateTimeArr[1].split(':'); //'02:00:00' -> ['02','00','00']
+                        var arr = [].concat(_toConsumableArray(dateArr), _toConsumableArray(timeArr)) // ['2019','03','24','02','00','00']
+                        .map(function (item) {
+                            return parseInt(item, 10);
+                        }); //[2019,3,24,2,0,0]
+                        date = _this4.getDateString(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
+                        date === today && (value = false);
+                    });
+                }
+            }
+            return value;
+        },
+        generateCustomMessage: function generateCustomMessage(order) {
+            var _this5 = this;
+
+            var message = 'Thanks for patronizing us. Repayment Schedule for ' + order.store_product.product_name + ' are as follows:%0a';
             var isFormal = this.isOrderFormal(order);
             var genDateArgs = {};
             if (isFormal) genDateArgs = { startDate: order.order_date, interval: 28, count: 6 };
             if (!isFormal) genDateArgs = { startDate: order.order_date, interval: 14, count: 12 };
             var dates = this.generateDates(genDateArgs);
             if (dates.length > 0) dates.forEach(function (date, index) {
-                return message += _this4.getColumn(index + 1) + ": " + date + "%0a";
+                return message += _this5.getColumn(index + 1) + ": " + date + " => N" + (index === 0 ? order.down_payment : order.repayment_amount) + "%0a";
             });
             return message;
         },
         processSelected: function processSelected() {
-            var _this5 = this;
+            var _this6 = this;
 
             this.$LIPS(true);
             var smsContactList = this.reminder.filter(function (obj) {
@@ -479,29 +516,30 @@ exports.default = {
             }).map(function (obj) {
                 var newObject = JSON.parse(JSON.stringify(obj));
                 newObject.phone = '234' + obj.phone.trim().substr(1);
-                newObject.order = _this5.orders.find(function (order) {
+                newObject.order = _this6.orders.find(function (order) {
                     return order.id === obj.order_id;
                 });
-                newObject.message = _this5.generateCustomMessage(newObject.order);
+                newObject.message = _this6.generateCustomMessage(newObject.order);
                 newObject.isSent = false;
                 return newObject;
             });
             if (!!smsContactList.length) this.sendSMSReminders(smsContactList);else this.displayErrorMessage('please select at least one!');
         },
         sendSMSReminders: function sendSMSReminders(smsContactList) {
-            var _this6 = this;
+            var _this7 = this;
 
             smsContactList.forEach(function (value, index) {
+                console.log(value);
                 _sms2.default.sendFirstReminder(value, function (res) {
                     value.isSent = res.status === 200;
                     if (index + 1 === smsContactList.length) {
-                        _this6.logSentMessages(smsContactList);
+                        _this7.logSentMessages(smsContactList);
                     }
                 });
             });
         },
         logSentMessages: function logSentMessages(smsContactList) {
-            var _this7 = this;
+            var _this8 = this;
 
             var messages = [];
             smsContactList.forEach(function (obj, index) {
@@ -513,14 +551,14 @@ exports.default = {
                             var sentAndLogged = data.sentAndLogged,
                                 ids = data.ids;
 
-                            if (sentAndLogged) _this7.logSentReminders(smsContactList, ids);else _this7.displayErrorMessage('Error Logging sent sms details!');
+                            if (sentAndLogged) _this8.logSentReminders(smsContactList, ids);else _this8.displayErrorMessage('Error Logging sent sms details!');
                         });
-                    } else _this7.displayErrorMessage('Error sending messages!');
+                    } else _this8.displayErrorMessage('Error sending messages!');
                 }
             });
         },
         logSentReminders: function logSentReminders(selectedList, ids) {
-            var _this8 = this;
+            var _this9 = this;
 
             ids.reverse();
             var newList = JSON.parse(JSON.stringify(selectedList));
@@ -531,21 +569,35 @@ exports.default = {
                 delete value.order;
                 delete value.phone;
                 delete value.selected;
+                delete value.canBeSelected;
             });
             if (ids.length > 0) {
                 (0, _api.post)('/api/reminder', { reminders: newList }).then(function (_ref7) {
                     var data = _ref7.data;
 
-                    _this8.initializeReminders() && _this8.$scrollToTop();
-                    if (data.saved) _flash2.default.setSuccess('Reminders have been sent successfully!', 50000);else _this8.displayErrorMessage('Error sending reminders!');
+                    _this9.initializeReminders() && _this9.$scrollToTop();
+                    if (data.saved) {
+                        _flash2.default.setSuccess('Reminders have been sent successfully!', 50000);
+                        _this9.fetchList();
+                    } else _this9.displayErrorMessage('Error sending reminders!');
                 });
             } else this.displayErrorMessage('Error logging sent messages!');
+        },
+        fetchList: function fetchList() {
+            var _this10 = this;
+
+            this.$LIPS(true);
+            (0, _api.get)(initialize(this.$route)).then(function (_ref8) {
+                var data = _ref8.data;
+
+                _this10.prepareForm(data);
+            });
         },
         isPaymentDue: function isPaymentDue(dueDate) {
             return new Date() > new Date(dueDate);
         },
-        getDiscount: function getDiscount(_ref8) {
-            var discount = _ref8.discount;
+        getDiscount: function getDiscount(_ref9) {
+            var discount = _ref9.discount;
 
             return discount.name + " (" + discount.percentage + ")";
         },
@@ -616,6 +668,15 @@ exports.default = {
                 _getCountAndRepayment2 = this.getCountAndRepaymentData(order),
                 count = _getCountAndRepayment2.count,
                 repaymentData = _getCountAndRepayment2.repaymentData;
+            if (clause === '_date') {
+                var dueDates = this.generateDates({
+                    startDate: order.order_date,
+                    interval: count === 7 ? 28 : 14,
+                    count: count - 1
+                });
+                this.currentOrderRepaymentDates = dueDates;
+                return dueDates;
+            }
             for (var i = 1; i < count; i++) {
                 data.push(repaymentData[this.getColumn(i) + clause]);
             }return data;
@@ -662,11 +723,11 @@ exports.default = {
         }
     },
     mounted: function mounted() {
-        var _this9 = this;
+        var _this11 = this;
 
         $(document).on("hidden.bs.modal", '.modal', function () {
-            _this9.currentOrder = null;
-            _this9.showModalContent = false;
+            _this11.currentOrder = null;
+            _this11.showModalContent = false;
         });
 
         //this is linked to the function that generates dates
@@ -680,7 +741,22 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-633d941b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.check-box-overlay[data-v-633d941b] {\n    height: 100%;\n    width: 100%;\n    float: left;\n    position: absolute;\n    z-index: 1;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-633d941b\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -820,6 +896,15 @@ var render = function() {
                     staticStyle: { "max-width": "120px" }
                   },
                   [
+                    _c("div", {
+                      staticClass: "check-box-overlay",
+                      on: {
+                        click: function($event) {
+                          _vm.checkIfAlreadySentReminder(index)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -1782,6 +1867,33 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("40b58e5a", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SMSReminder.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SMSReminder.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
 /***/ "./resources/assets/js/helpers/sms.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1875,17 +1987,21 @@ exports.default = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
+}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-633d941b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-633d941b\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-633d941b"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(

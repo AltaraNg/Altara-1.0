@@ -27,6 +27,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('discount_id')->index()->nullable();
             $table->double('repayment_amount', 10, 2);
             $table->string('sales_agent_id');
+            $table->unsignedInteger('referrer')->nullable();
             $table->unsignedInteger('payment_method_id')->index()->nullable();
             $table->unsignedInteger('deposit_to')->index()->nullable();
             $table->boolean('return');
@@ -39,6 +40,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('sales_type_id')->references('id')->on('sales_types');
             $table->foreign('discount_id')->references('id')->on('discounts');
             $table->foreign('sales_agent_id')->references('staff_id')->on('users');
+            $table->foreign('referrer')->references('id')->on('customers');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->foreign('deposit_to')->references('id')->on('banks');
         });

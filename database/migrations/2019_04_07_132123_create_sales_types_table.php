@@ -17,7 +17,7 @@ class CreateSalesTypesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
-            $table->integer('percentage_discount');
+            $table->integer('percentage');
         });
     }
 

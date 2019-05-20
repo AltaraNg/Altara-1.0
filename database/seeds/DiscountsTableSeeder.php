@@ -1,6 +1,7 @@
 <?php
 
 use App\Discount;
+use App\SalesType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,13 +14,13 @@ class DiscountsTableSeeder extends Seeder
      */
     public function run()
     {
-        $percentageArray = [0, 20, 40, 60, 80];
-        $nameArray = ['zero-percent', 'twenty-percent', 'forty-percent', 'sixty-percent', 'eighty-percent'];
+        $percentageArray = [0, 0, 5, 10, 0, 5];
+        $nameArray = ['new/normal purchase', 'sala promo', 'group of 5', 'group of 10', 'Christmas promo', 'renewal'];
         DB::table('discounts')->delete();
         for ($i = 0; $i < count($nameArray); $i++) {
             Discount::create([
                 'name' => $nameArray[$i],
-                'percentage' => $percentageArray[$i]
+                'percentage_discount' => $percentageArray[$i]
             ]);
         }
     }

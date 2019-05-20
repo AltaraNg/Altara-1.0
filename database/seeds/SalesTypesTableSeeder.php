@@ -1,5 +1,6 @@
 <?php
 
+use App\Discount;
 use App\SalesCategory;
 use App\SalesType;
 use Illuminate\Database\Seeder;
@@ -14,13 +15,13 @@ class SalesTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        $percentageArray = [0, 0, 5, 10, 0, 5];
-        $nameArray = ['new/normal purchase', 'sala promo', 'group of 5', 'group of 10', 'Christmas promo', 'renewal'];
+        $percentageArray = [0, 20, 40, 60, 80];
+        $nameArray = ['zero-percent', 'twenty-percent', 'forty-percent', 'sixty-percent', 'eighty-percent'];
         DB::table('sales_types')->delete();
         for ($i = 0; $i < count($nameArray); $i++) {
             SalesType::create([
                 'name' => $nameArray[$i],
-                'percentage_discount' => $percentageArray[$i]
+                'percentage' => $percentageArray[$i]
             ]);
         }
     }
