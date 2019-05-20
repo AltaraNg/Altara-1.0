@@ -1,6 +1,6 @@
 webpackJsonp([23],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14,19 +14,17 @@ var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _sms = __webpack_require__("./resources/assets/js/helpers/sms.js");
-
-var _sms2 = _interopRequireDefault(_sms);
+var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
 
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+var apiLink = function apiLink(query) {
+    return "/attendance?branch=" + query.branch + "&month=" + query.month + "&year=" + query.year;
+}; //
 //
 //
 //
@@ -231,517 +229,213 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-function initialize(to) {
-    var urls = { create: "/api/reminder/create" + (to.query.list ? '?list=' + to.query.list : '') };
-    return urls.create;
-}
 
 exports.default = {
+    data: function data() {
+        return {
+            columns: {},
+            show: false,
+            currAttendance: {},
+            query: {
+                month: '',
+                branch: '',
+                year: ''
+            },
+            attendances: {}
+        };
+    },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        (0, _api.get)(initialize(to)).then(function (_ref) {
-            var data = _ref.data;
-
-            next(function (vm) {
-                return vm.prepareForm(data);
+        //1. make request to back-end
+        if (to.query.branch) {
+            (0, _api.get)("/api" + apiLink(to.query)).then(function (res) {
+                //2 send to the method to prepare form
+                next(function (vm) {
+                    return vm.prepareForm(res.data);
+                });
+            }).catch(function (err) {
+                next(function (vm) {
+                    return vm.handleErr(err);
+                });
             });
-        });
+        } else next();
     },
     beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
         var _this = this;
 
         this.show = false;
-        this.showModalContent = false;
-        (0, _api.get)(initialize(to)).then(function (_ref2) {
-            var data = _ref2.data;
-
-            _this.prepareForm(data);
-            next();
-        });
+        //1. make request to back-end
+        if (to.query.branch) {
+            this.$LIPS(true);
+            (0, _api.get)("/api" + apiLink(to.query)).then(function (res) {
+                //2 send to the method to prepare form
+                _this.prepareForm(res.data);
+                next();
+            }).catch(function (err) {
+                _this.handleErr(err);
+                next();
+            });
+        } else next();
     },
-    data: function data() {
-        return {
-            form: {},
-            orders: {},
-            show: false,
-            banks: null,
-            reminder: null,
-            currentOrder: {},
-            doSelectAll: false,
-            payment_methods: null,
-            showModalContent: false,
-            isCurrentOrderInformal: null,
-            currentOrderRepaymentDates: null
-        };
+    created: function created() {
+        this.$prepareBranches();
+        var q = this.$route.query,
+            dt = new Date(),
+            year = q.year ? q.year : dt.getFullYear(),
+            month = q.month ? q.month : dt.getMonth() + 1;
+        _vue2.default.set(this.$data.query, 'year', year);
+        _vue2.default.set(this.$data.query, 'month', month >= 10 || month.length === 2 ? month : '0' + month);
+        if (this.completeQry) _vue2.default.set(this.$data.query, 'branch', q.branch);
     },
 
+    /*updated() {
+        $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
+    },*/
     methods: {
-        prepareForm: function prepareForm(res) {
-            this.show = false;
-            this.showModalContent = false;
-            var _ref3 = [res.orders, res.payment_methods, res.banks, res.dva_id];
-            this.orders = _ref3[0];
-            this.payment_methods = _ref3[1];
-            this.banks = _ref3[2];
-            this.dva_id = _ref3[3];
-
-            this.initializeReminders() && (this.show = true);
-        },
-        initializeReminders: function initializeReminders() {
+        fetch: function fetch() {
             var _this2 = this;
 
-            this.reminder = [];
-            this.orders.forEach(function (order) {
-                _this2.reminder.push({
-                    'selected': false,
-                    'customer_id': order.customer.id,
-                    'phone': order.customer.telephone,
-                    'order_id': order.id,
-                    'sms_id': null,
-                    'repayment_level': _this2.getRepaymentLevel(order),
-                    'feedback': null,
-                    'dva_id': _this2.dva_id,
-                    'type': 'sms',
-                    'date': _this2.getDateString(),
-                    'canBeSelected': _this2.isReminderSent(order)
-                });
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this2.$network()) {
+                        _this2.$router.push("/hrm" + apiLink(_this2.query));
+                    } else _this2.$networkErr();
+                } else _this2.$networkErr('form');
             });
-            this.$LIPS(false);
-            return true;
         },
-        displayErrorMessage: function displayErrorMessage(error) {
-            this.$scrollToTop();
-            _flash2.default.setError(error, 50000);
+        prepareForm: function prepareForm(data) {
+            if (data) {
+                _vue2.default.set(this.$data, 'columns', data.columns);
+                _vue2.default.set(this.$data, 'attendances', data.attendances);
+                _vue2.default.set(this.$data.query, 'branch', data.branch[0].id);
+                this.show = true;
+            }
             this.$LIPS(false);
         },
-        checkIfAlreadySentReminder: function checkIfAlreadySentReminder(index) {
-            if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;else alert('sorry a reminder has already been sent to user!');
+        handleErr: function handleErr(e) {
+            _flash2.default.setError('Error Fetching Attendance');
         },
-        selectAll: function selectAll() {
-            var _this3 = this;
+        isPresent: function isPresent(userAtt, day) {
+            var bool = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
-            this.doSelectAll = !this.doSelectAll;
-            this.reminder.forEach(function (order) {
-                return order.canBeSelected && (order.selected = _this3.doSelectAll);
+            var date = day ? day.fullDate : null,
+                data = null;
+            var c = userAtt.attendances.filter(function (att) {
+                return att.date === date;
             });
+            if (c.length > 0) data = bool ? c[0][bool] : c[0].is_present ? 'P' : 'A';
+            return data;
         },
-        isOrderFormal: function isOrderFormal(_ref4) {
-            var repayment_informal = _ref4.repayment_informal;
-
-            return repayment_informal === null;
-        },
-        generateDates: function generateDates(_ref5) {
-            var startDate = _ref5.startDate,
-                interval = _ref5.interval,
-                count = _ref5.count;
-
-            var dates = [];
-            for (var i = 0; i < count; i++) {
-                var orderDate = new Date(startDate).addDays(i * interval);
-                var dateString = this.getDateString(orderDate);
-                dates.push(dateString);
-            }
-            return dates;
-        },
-        getDateString: function getDateString() {
-            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
-            var monthStartsFromZero = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-            return date.getFullYear() + '-' + (date.getMonth() + (monthStartsFromZero && 1)) + '-' + date.getDate();
-        },
-        isReminderSent: function isReminderSent(order) {
-            var _this4 = this;
-
-            var value = true,
-                date;
-            if (!!order) {
-                if (order.reminders.length > 0) {
-                    var today = this.getDateString();
-                    order.reminders.forEach(function (reminder) {
-                        //refactor below by using regx characters to split
-                        var reminderDateTimeArr = reminder.date.split(' '); //(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
-                        var dateArr = reminderDateTimeArr[0].split('-'); //'2019-03-24' -> ['2019','03','24']
-                        var timeArr = reminderDateTimeArr[1].split(':'); //'02:00:00' -> ['02','00','00']
-                        var arr = [].concat(_toConsumableArray(dateArr), _toConsumableArray(timeArr)) // ['2019','03','24','02','00','00']
-                        .map(function (item) {
-                            return parseInt(item, 10);
-                        }); //[2019,3,24,2,0,0]
-                        date = _this4.getDateString(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
-                        date === today && (value = false);
-                    });
-                }
-            }
-            return value;
-        },
-        generateCustomMessage: function generateCustomMessage(order) {
-            var _this5 = this;
-
-            var message = 'Thanks for patronizing us. Repayment Schedule for ' + order.store_product.product_name + ' are as follows:%0a';
-            var isFormal = this.isOrderFormal(order);
-            var genDateArgs = {};
-            if (isFormal) genDateArgs = { startDate: order.order_date, interval: 28, count: 6 };
-            if (!isFormal) genDateArgs = { startDate: order.order_date, interval: 14, count: 12 };
-            var dates = this.generateDates(genDateArgs);
-            if (dates.length > 0) dates.forEach(function (date, index) {
-                return message += _this5.getColumn(index + 1) + ": " + date + " => N" + (index === 0 ? order.down_payment : order.repayment_amount) + "%0a";
+        earlyOrLate: function earlyOrLate(userAtt, day) {
+            var data = [];
+            var attendance = userAtt.attendances.filter(function (att) {
+                return att.date === day.fullDate;
             });
-            return message;
-        },
-        processSelected: function processSelected() {
-            var _this6 = this;
+            if (attendance.length) {
+                /*if (attendance[0].arrival_time > '09:00') {
+                    data[0] = 'arrLate';
+                } else {
+                    data[0] = 'arrEarly';
+                }*/
 
-            this.$LIPS(true);
-            var smsContactList = this.reminder.filter(function (obj) {
-                return !!obj.selected;
-            }).map(function (obj) {
-                var newObject = JSON.parse(JSON.stringify(obj));
-                newObject.phone = '234' + obj.phone.trim().substr(1);
-                newObject.order = _this6.orders.find(function (order) {
-                    return order.id === obj.order_id;
-                });
-                newObject.message = _this6.generateCustomMessage(newObject.order);
-                newObject.isSent = false;
-                return newObject;
-            });
-            if (!!smsContactList.length) this.sendSMSReminders(smsContactList);else this.displayErrorMessage('please select at least one!');
-        },
-        sendSMSReminders: function sendSMSReminders(smsContactList) {
-            var _this7 = this;
+                data[0] = attendance[0].arrival_time > '09:00' ? 'arrLate' : 'arrEarly';
 
-            smsContactList.forEach(function (value, index) {
-                console.log(value);
-                _sms2.default.sendFirstReminder(value, function (res) {
-                    value.isSent = res.status === 200;
-                    if (index + 1 === smsContactList.length) {
-                        _this7.logSentMessages(smsContactList);
-                    }
-                });
-            });
-        },
-        logSentMessages: function logSentMessages(smsContactList) {
-            var _this8 = this;
+                if (attendance[0].departure_time) {
+                    /*if (attendance[0].departure_time < '18:00') {
+                        data[1] = 'leftEarly'
+                    } else {
+                        data[1] = 'leftLate'
+                    }*/
 
-            var messages = [];
-            smsContactList.forEach(function (obj, index) {
-                obj.isSent && messages.push(new _sms.Message(obj.dva_id, obj.message, obj.phone));
-                if (index + 1 === smsContactList.length) {
-                    if (messages.length > 0) {
-                        (0, _api.post)('/api/message', { messages: messages, bulk: true }).then(function (_ref6) {
-                            var data = _ref6.data;
-                            var sentAndLogged = data.sentAndLogged,
-                                ids = data.ids;
-
-                            if (sentAndLogged) _this8.logSentReminders(smsContactList, ids);else _this8.displayErrorMessage('Error Logging sent sms details!');
-                        });
-                    } else _this8.displayErrorMessage('Error sending messages!');
-                }
-            });
-        },
-        logSentReminders: function logSentReminders(selectedList, ids) {
-            var _this9 = this;
-
-            ids.reverse();
-            var newList = JSON.parse(JSON.stringify(selectedList));
-            newList.forEach(function (value, index) {
-                value.sms_id = ids[index];
-                delete value.isSent;
-                delete value.message;
-                delete value.order;
-                delete value.phone;
-                delete value.selected;
-                delete value.canBeSelected;
-            });
-            if (ids.length > 0) {
-                (0, _api.post)('/api/reminder', { reminders: newList }).then(function (_ref7) {
-                    var data = _ref7.data;
-
-                    _this9.initializeReminders() && _this9.$scrollToTop();
-                    if (data.saved) {
-                        _flash2.default.setSuccess('Reminders have been sent successfully!', 50000);
-                        _this9.fetchList();
-                    } else _this9.displayErrorMessage('Error sending reminders!');
-                });
-            } else this.displayErrorMessage('Error logging sent messages!');
-        },
-        fetchList: function fetchList() {
-            var _this10 = this;
-
-            this.$LIPS(true);
-            (0, _api.get)(initialize(this.$route)).then(function (_ref8) {
-                var data = _ref8.data;
-
-                _this10.prepareForm(data);
-            });
-        },
-        isPaymentDue: function isPaymentDue(dueDate) {
-            return new Date() > new Date(dueDate);
-        },
-        getDiscount: function getDiscount(_ref9) {
-            var discount = _ref9.discount;
-
-            return discount.name + " (" + discount.percentage + ")";
-        },
-        isOrderRepaymentValid: function isOrderRepaymentValid(order) {
-            return !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']);
-        },
-        getReminderList: function getReminderList(list) {
-            return null;
-        },
-        getColumn: function getColumn(i) {
-            var column = null;
-            switch (i) {
-                case 1:
-                    column = i + 'st';
-                    break;
-                case 2:
-                    column = i + 'nd';
-                    break;
-                case 3:
-                    column = i + 'rd';
-                    break;
-                default:
-                    column = i + 'th';
-                    break;
-            }
-            return column;
-        },
-        displayDetails: function displayDetails(order, modal) {
-            _vue2.default.set(this.$data, 'currentOrder', order);
-            this.isCurrentOrderInformal = order.customer.employment_status === 'informal(business)';
-            this.showModalContent = true;
-            return $("#" + modal).modal('toggle');
-        },
-        getCountAndRepaymentData: function getCountAndRepaymentData(order) {
-            var count = 0,
-                repaymentData = null,
-                repayment_formal = order.repayment_formal,
-                repayment_informal = order.repayment_informal;
-            if (order['repayment_formal'] != null) {
-                count = 7;
-                repaymentData = repayment_formal;
-            }
-            if (order['repayment_informal'] != null) {
-                count = 13;
-                repaymentData = repayment_informal;
-            }
-            return { count: count, repaymentData: repaymentData };
-        },
-        getAmountPaidAndOutStandingDebt: function getAmountPaidAndOutStandingDebt(order) {
-            var amountPaid = 0,
-                outstandingDebt = 0,
-                _getCountAndRepayment = this.getCountAndRepaymentData(order),
-                count = _getCountAndRepayment.count,
-                repaymentData = _getCountAndRepayment.repaymentData;
-            for (var i = 1; i < count; i++) {
-                amountPaid += repaymentData[this.getColumn(i) + '_pay'];
-            }outstandingDebt = parseInt(order["product_price"]) - amountPaid;
-            return { amountPaid: amountPaid, outstandingDebt: outstandingDebt };
-        },
-        getFinancialStatus: function getFinancialStatus(order) {
-            if (!this.isOrderRepaymentValid(order)) return 'no repayment detail';
-            var values = this.getAmountPaidAndOutStandingDebt(order);
-            return 'paid: ' + values.amountPaid + ' debt: ' + values.outstandingDebt;
-        },
-        getRepayment: function getRepayment(order, clause) {
-            if (!this.isOrderRepaymentValid(order)) return null;
-            var data = [],
-                _getCountAndRepayment2 = this.getCountAndRepaymentData(order),
-                count = _getCountAndRepayment2.count,
-                repaymentData = _getCountAndRepayment2.repaymentData;
-            if (clause === '_date') {
-                var dueDates = this.generateDates({
-                    startDate: order.order_date,
-                    interval: count === 7 ? 28 : 14,
-                    count: count - 1
-                });
-                this.currentOrderRepaymentDates = dueDates;
-                return dueDates;
-            }
-            for (var i = 1; i < count; i++) {
-                data.push(repaymentData[this.getColumn(i) + clause]);
-            }return data;
-        },
-        getPaymentStatusClasses: function getPaymentStatusClasses(order) {
-            if (!this.isOrderRepaymentValid(order)) return null;
-            var data = [],
-                _getCountAndRepayment3 = this.getCountAndRepaymentData(order),
-                count = _getCountAndRepayment3.count,
-                repaymentData = _getCountAndRepayment3.repaymentData;
-            for (var i = 1; i < count; i++) {
-                var status = { class: null, icon: null };
-                var position = this.getColumn(i);
-                var isDue = this.isPaymentDue(repaymentData[position + '_date']);
-                var amountPaid = parseInt(repaymentData[position + '_pay']);
-                if (amountPaid) {
-                    status.class = 'paid';
-                    status.icon = 'fa-check';
-                } else if (isDue && !amountPaid) {
-                    status.class = 'missed';
-                    status.icon = 'fa-times';
-                } else if (!isDue) {
-                    status.class = 'pending';
-                    status.icon = 'fa-hourglass-start';
-                }
-                data.push(status);
+                    data[1] = attendance[0].departure_time < '18:00' ? 'leftEarly' : 'leftLate';
+                } else data[1] = 'didNotSignOut';
             }
             return data;
         },
-        getRepaymentLevel: function getRepaymentLevel(order) {
-            if (!this.isOrderRepaymentValid(order)) return 0;
-            var level = 0,
-                _getCountAndRepayment4 = this.getCountAndRepaymentData(order),
-                count = _getCountAndRepayment4.count,
-                repaymentData = _getCountAndRepayment4.repaymentData;
-            for (var i = 1; i < count; i++) {
-                if (repaymentData[this.getColumn(i) + '_pay'] > 0) level++;
-            }return level + "/" + (count - 1);
+        checkClass: function checkClass(userAtt, day) {
+            var theClass = void 0,
+                isPresent = this.isPresent(userAtt, day);
+            var erl = this.earlyOrLate(userAtt, day);
+            if (['Sun', 'Sat'].includes(day.dayString)) {
+                theClass = 'weekend';
+            } else {
+                //arrEarly arrLate leftEarly leftLate
+                if (isPresent === 'P') {
+                    //theClass = 'present';
+                    if (erl.length) {
+                        theClass = erl.join(' ');
+                    }
+                } else {
+                    if (isPresent === 'A') {
+                        theClass = 'absent';
+                    } else {
+                        theClass = '';
+                    }
+                }
+            }
+            return theClass;
         },
-        convertPaymentMethodOrBankToName: function convertPaymentMethodOrBankToName(id, type) {
-            return !id ? null : this.$data[type === 'bank' ? 'banks' : 'payment_methods'].find(function (obj) {
-                return obj.id === id;
-            }).name;
+
+
+        /*getRemark(userAtt, day) {
+            let att = userAtt.attendances.find(obj => obj.date === day.fullDate);
+            return att ? `${att.remark ? 'Remark: <b class="text_align-left">' + att.remark + '</b><br>' : ''}` : ``;
+        },*/
+
+        /*getTitle(userAtt, day) {
+            let arrival, departure, aTime, aTimeCon, dTime, dTimeCon, status, isPresent, remark;
+            aTime = this.isPresent(userAtt, day, 'arrival_time');
+            dTime = this.isPresent(userAtt, day, 'departure_time');
+            isPresent = this.isPresent(userAtt, day, 'is_present');
+            remark = this.getRemark(userAtt, day);
+            aTimeCon = this.$timeConvert(aTime);
+            dTimeCon = this.$timeConvert(dTime);
+            status = isPresent ? `Present<br>` : ``;
+            arrival = aTime ? `Arrival Time : ${aTimeCon}<br>` : ``;
+            departure = dTime ? `Departure Time: ${dTimeCon}<br>` : ``;
+            return arrival || remark ? `${arrival} ${departure} ${status} ${remark}` : null;
+        },*/
+
+        toggleGuide: function toggleGuide() {
+            $('#table-guide').slideToggle();
+        },
+        displayInfo: function displayInfo(userAtt, day) {
+            var date = day ? day.fullDate : null,
+                c = void 0;
+            c = userAtt.attendances.filter(function (att) {
+                return att.date === date;
+            });
+            _vue2.default.set(this.$data, 'currAttendance', c[0] ? c[0] : null);
+            return $("#viewAttendance").modal('toggle');
+        }
+    },
+    computed: {
+        completeQry: function completeQry() {
+            return this.$route.query.year && this.$route.query.month && this.$route.query.branch;
+        },
+        title: function title() {
+            var att = 'Attendance';
+            if (this.completeQry) {
+                var qryMonth = this.$route.query.month,
+                    qryYear = this.$route.query.year;
+                var month = qryMonth ? ' - ' + this.$store.getters.getMonths[parseInt(qryMonth) - 1].name : '';
+                att += " " + month + " " + (qryYear ? qryYear : '');
+            }
+            return att;
         }
     },
     mounted: function mounted() {
-        var _this11 = this;
+        var _this3 = this;
 
         $(document).on("hidden.bs.modal", '.modal', function () {
-            _this11.currentOrder = null;
-            _this11.showModalContent = false;
+            return _this3.currAttendance = {};
         });
-
-        //this is linked to the function that generates dates
-        Date.prototype.addDays = function (days) {
-            var date = new Date(this.valueOf());
-            date.setDate(date.getDate() + days);
-            return date;
-        };
+        this.toggleGuide();
     }
 };
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -749,1141 +443,565 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.check-box-overlay[data-v-633d941b] {\n    height: 100%;\n    width: 100%;\n    float: left;\n    position: absolute;\n    z-index: 1;\n}\n", ""]);
+exports.push([module.i, "\n#table-guide td {\n    width        : 6rem;\n    text-align   : center;\n    height       : unset;\n    float        : left;\n    margin-right : 1rem;\n}\n#table-guide td span {\n    margin-bottom : 1rem;\n    line-height   : 2;\n    float         : left;\n    width         : 100%;\n}\n#table-guide > div > div {\n    padding : 0 4rem 3rem;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-633d941b\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-92afc2ae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "reminder" } }, [
-    _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
-      _c(
-        "ul",
-        {
-          staticClass: "nav nav-tabs justify-content-center p-0",
-          attrs: { role: "tablist" }
-        },
-        [
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link active",
-                attrs: {
-                  "aria-selected": "true",
-                  "data-toggle": "tab",
-                  href: "#reminder-panel",
-                  role: "tab"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.getReminderList(1)
-                  }
-                }
-              },
-              [_vm._v("1"), _c("sup", [_vm._v("st")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-panel",
-                  role: "tab"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.getReminderList(2)
-                  }
-                }
-              },
-              [_vm._v("2"), _c("sup", [_vm._v("nd")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-panel",
-                  role: "tab"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.getReminderList(3)
-                  }
-                }
-              },
-              [_vm._v("3"), _c("sup", [_vm._v("rd")]), _vm._v(" Reminder")]
-            )
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "pt-md-3 pt-2 attendance attendance-view",
+        attrs: { id: "index" }
+      },
+      [
+        _c("div", { staticClass: "mt-5 attendance-head" }, [
+          _c("div", { staticClass: "mb-5 row align-items-center" }, [
+            _c("div", { staticClass: "col-12 title-con" }, [
+              _c("span", { staticClass: "title" }, [_vm._v(_vm._s(_vm.title))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row justify-content-end" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "text-link mt-3",
+                    attrs: { href: "javascript:" },
+                    on: {
+                      click: function($event) {
+                        _vm.$router.push("attendance/create")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                            click here to create attendance!"
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "mx-4 mt-3" }, [_vm._v("||")]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "text-link mt-3",
+                    attrs: { href: "javascript:" },
+                    on: { click: _vm.toggleGuide }
+                  },
+                  [_vm._v("\n                            view table guide!")]
+                )
+              ])
+            ])
           ])
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
-      _c("div", { staticClass: "row px-4 pt-3 pb-4 text-center" }, [
+        ]),
+        _vm._v(" "),
         _c(
           "div",
-          {
-            staticClass: "col p-0 text-link",
-            staticStyle: { "max-width": "120px" },
-            on: { click: _vm.selectAll }
-          },
+          { staticClass: "attendance-body", attrs: { id: "table-guide" } },
           [
-            _vm._v(
-              "\n                Click to " +
-                _vm._s(_vm.doSelectAll ? "Select" : "De-select") +
-                " all\n            "
+            _c(
+              "div",
+              {
+                staticClass: "pt-5 row bg-white shadow-sm",
+                staticStyle: { "border-radius": ".5rem" }
+              },
+              [
+                _c("div", [
+                  _c("td", { staticClass: "arrEarly leftLate" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v("In before/at 9:00am "),
+                    _c("br"),
+                    _vm._v(" Out after/at 6:00pm")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("td", { staticClass: "arrEarly leftEarly" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v("In before/at 9:00am  "),
+                    _c("br"),
+                    _vm._v(" Out Before 6:00pm")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("td", { staticClass: "arrLate leftLate" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "d-inline-block" }, [
+                    _vm._v("In after 9:00am  "),
+                    _c("br"),
+                    _vm._v(" Out after/at 6:00pm")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("td", { staticClass: "arrLate leftEarly" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "d-inline-block" }, [
+                    _vm._v("In after 9:00am  "),
+                    _c("br"),
+                    _vm._v(" Out before 6:00pm")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("td", { staticClass: "absent" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [_vm._v("Absent")])
+                ])
+              ]
             )
           ]
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Order Number")
-        ]),
+        _c(
+          "div",
+          { staticClass: "mt-5 row attendance-head" },
+          _vm._l(["Branch", "Month", "Year"], function(capt) {
+            return _c("div", { staticClass: "col-4 col-sm-3" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "light-heading" }, [
+                  _c("span", { staticClass: "d-none d-sm-inline" }, [
+                    _vm._v("Select")
+                  ]),
+                  _vm._v(" " + _vm._s(capt))
+                ])
+              ])
+            ])
+          })
+        ),
         _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Order Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Customer Info Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Repayment Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Reminder History")
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm.show
-      ? _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
-          _c(
-            "div",
-            {
-              staticClass: "tab-pane active text-center",
-              attrs: { id: "reminder-panel", role: "tabpanel" }
-            },
-            _vm._l(_vm.orders, function(order, index) {
-              return _c("div", { staticClass: "mb-3 row attendance-item" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center ",
-                    staticStyle: { "max-width": "120px" }
-                  },
-                  [
-                    _c("div", {
-                      staticClass: "check-box-overlay",
-                      on: {
-                        click: function($event) {
-                          _vm.checkIfAlreadySentReminder(index)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
+        _c(
+          "div",
+          { staticClass: "mt-2 mt-lg-3 row attendance-head" },
+          [
+            _vm._l(["branch", "month", "year"], function(caption) {
+              return _c("div", { staticClass: "col-4 col-sm-3" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "select",
+                    {
                       directives: [
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.reminder[index].selected,
-                          expression: "reminder[index].selected"
+                          value: _vm.query[caption],
+                          expression: "query[caption]"
+                        },
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
                         }
                       ],
-                      staticClass:
-                        "form-check-input my-0 mx-4 float-left position-relative",
-                      attrs: { type: "checkbox" },
-                      domProps: {
-                        checked: Array.isArray(_vm.reminder[index].selected)
-                          ? _vm._i(_vm.reminder[index].selected, null) > -1
-                          : _vm.reminder[index].selected
-                      },
+                      staticClass: "custom-select",
+                      attrs: { name: caption, "data-vv-validate-on": "blur" },
                       on: {
                         change: function($event) {
-                          var $$a = _vm.reminder[index].selected,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = null,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(
-                                  _vm.reminder[index],
-                                  "selected",
-                                  $$a.concat([$$v])
-                                )
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.reminder[index],
-                                  "selected",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.reminder[index], "selected", $$c)
-                          }
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.query,
+                            caption,
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
                         }
                       }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "user mx-auto" }, [
-                      _vm._v(_vm._s(index + 1))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
+                    },
+                    [
+                      _c(
+                        "option",
+                        { attrs: { disabled: "", selected: "", value: "" } },
+                        [_vm._v(_vm._s(caption))]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.$store.getters.getBranches, function(branch) {
+                        return caption === "branch"
+                          ? _c("option", { domProps: { value: branch.id } }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm._f("capitalize")(branch.name)) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      }),
+                      _vm._v(" "),
+                      _vm._l(_vm.$store.getters.getMonths, function(month) {
+                        return caption === "month"
+                          ? _c("option", { domProps: { value: month.id } }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(month.name) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      }),
+                      _vm._v(" "),
+                      _vm._l(_vm.$store.getters.getYears, function(year) {
+                        return caption === "year"
+                          ? _c("option", { domProps: { value: year } }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(year) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _vm.errors.first(caption)
+                    ? _c("small", { staticClass: "text-muted" }, [
+                        _vm._v(_vm._s(_vm.errors.first(caption)))
+                      ])
+                    : _vm._e()
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-12 col-sm-3" }, [
+              _c("div", { staticClass: "row d-flex justify-content-end" }, [
                 _c(
-                  "div",
+                  "button",
                   {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center",
-                    attrs: { "data-reminder-1": "1" }
-                  },
-                  [_vm._v(_vm._s(order.id) + "\n                ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
-                    attrs: { "data-hoverable": "true" },
+                    staticClass: "btn btn-primary bg-default mt-0 myBtn",
                     on: {
                       click: function($event) {
-                        _vm.displayDetails(order, "purchase_order")
+                        _vm.fetch()
                       }
                     }
                   },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(order.order_date) +
-                        "\n                "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center",
-                    attrs: { "data-hoverable": "true" },
-                    on: {
-                      click: function($event) {
-                        _vm.displayDetails(order, "customer_info")
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    ID: " +
-                        _vm._s(order.customer.id) +
-                        " - " +
-                        _vm._s(
-                          _vm._f("capitalize")(order.customer.employment_status)
-                        ) +
-                        "\n                "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
-                    attrs: { "data-hoverable": "true" },
-                    on: {
-                      click: function($event) {
-                        _vm.displayDetails(order, "repayment")
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(_vm.getFinancialStatus(order)) +
-                        "\n                "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
-                    attrs: { "data-hoverable": "true" },
-                    on: {
-                      click: function($event) {
-                        _vm.displayDetails(order, "reminder_history")
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(order.reminders.length) +
-                        " reminder(s) sent\n                "
-                    )
-                  ]
+                  [_vm._v("View Attendance")]
                 )
               ])
-            })
-          )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "mt-1 attendance-body" }, [
-      _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
-        _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
+            ])
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "attendance-body" }, [
+          _vm.show
+            ? _c("div", { staticClass: "mt-5 row" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "image-and-names float-left" }, [
+                    _c("table", { staticClass: "table table-names" }, [
+                      _c("thead", [
+                        _c("tr", [
+                          _c("th", { staticClass: "ml-5" }, [
+                            _vm._v("Employee Name")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.attendances, function(user) {
+                          return _c("tr", [
+                            _c("td", [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "row align-items-center m-0 user-details"
+                                },
+                                [
+                                  _c("span", { staticClass: "user mx-auto" }, [
+                                    _c("i", {
+                                      staticClass: "user-icon fas fa-user-alt"
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: " col user-name" }, [
+                                    _vm._v(_vm._s("" + user.full_name))
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        })
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "float-left daily-attendance" }, [
+                    _c(
+                      "table",
+                      { staticClass: "table table-details table-bordered" },
+                      [
+                        _c("thead", [
+                          _c(
+                            "tr",
+                            _vm._l(_vm.columns, function(col) {
+                              return _c("th", { staticClass: "text-center" }, [
+                                _c("span", [
+                                  _vm._v(_vm._s(col.month + " " + col.date))
+                                ]),
+                                _c("br"),
+                                _c(
+                                  "span",
+                                  { staticClass: "light-heading day" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s("" + col.dayString) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              ])
+                            })
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.attendances, function(userAtt) {
+                            return _c(
+                              "tr",
+                              _vm._l(_vm.columns, function(day) {
+                                return _c(
+                                  "td",
+                                  {
+                                    class: _vm.checkClass(userAtt, day),
+                                    on: {
+                                      click: function($event) {
+                                        _vm.displayInfo(userAtt, day)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.isPresent(userAtt, day)) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              })
+                            )
+                          })
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ])
+            : _c("div", { staticClass: "row attendance-item p-5 my-5" }, [
+                _c("span", { staticClass: "no-attendance" }, [
+                  _vm._v(
+                    "Kindly Select Branch, Month and, Year to get started!"
+                  )
+                ])
+              ])
+        ]),
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "clearfix d-flex justify-content-end w-100" },
+          { staticClass: "modal fade", attrs: { id: "viewAttendance" } },
           [
             _c(
-              "button",
-              {
-                staticClass: "btn bg-default",
-                attrs: { disabled: _vm.$isProcessing },
-                on: { click: _vm.processSelected }
-              },
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
-                _vm._v("\n                    Send Reminder(s) "),
-                _c("i", { staticClass: "far fa-paper-plane ml-1" })
-              ]
-            )
-          ]
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "modal fade", attrs: { id: "purchase_order" } }, [
-      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _vm.showModalContent
-            ? _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c(
-                    "table",
-                    { staticClass: "table table-bordered table-striped" },
-                    [
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("th", [_vm._v("Order ID")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.currentOrder.id))])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Order date")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.currentOrder.order_date))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Product")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.currentOrder.store_product.product_name
-                              )
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Repayment (₦)")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.currentOrder.repayment_amount))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Down Payment (%)")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.currentOrder.down_payment))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Discount (₦)")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.getDiscount(_vm.currentOrder)))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Total amount to Pay (₦)")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.currentOrder.product_price))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Processed by")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.currentOrder["floor_agent"]
-                                  ? _vm.currentOrder.floor_agent.full_name
-                                  : null
-                              )
-                            )
-                          ])
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm._m(1)
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "modal fade", attrs: { id: "customer_info" } }, [
-      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _vm._m(2),
-          _vm._v(" "),
-          _vm.showModalContent
-            ? _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c(
-                    "table",
-                    { staticClass: "table table-bordered table-striped" },
-                    [
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("th", [_vm._v("Customer ID")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.currentOrder.customer.id))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Full Name")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.$getCustomerFullName(
-                                  _vm.currentOrder.customer
-                                )
-                              )
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Address")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.$getCustomerAddress(
-                                  _vm.currentOrder.customer
-                                )
-                              )
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Branch")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(_vm.currentOrder.customer.branch.name)
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", [_vm._v("Category")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.currentOrder.customer.employment_status
-                              )
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _vm._m(3)
-                      ])
-                    ]
-                  )
-                ])
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm._m(4)
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "modal fade repayment", attrs: { id: "repayment" } },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
-          [
-            _vm.showModalContent
-              ? _c("div", { staticClass: "modal-content" }, [
+                _c("div", { staticClass: "modal-content" }, [
                   _c("div", { staticClass: "modal-header py-2" }, [
                     _c("h6", { staticClass: "modal-title py-1" }, [
-                      _vm._v(
-                        "Repayment Plan/Summary - " +
-                          _vm._s(
-                            _vm._f("capitalize")(
-                              _vm.currentOrder.customer.employment_status
-                            )
-                          )
-                      )
+                      _vm._v("Attendance")
                     ]),
                     _vm._v(" "),
-                    _vm._m(5)
+                    _c(
+                      "a",
+                      {
+                        staticClass: "close py-1",
+                        attrs: {
+                          "aria-label": "Close",
+                          "data-dismiss": "modal"
+                        }
+                      },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "modal-close text-danger",
+                            attrs: { "aria-hidden": "true" }
+                          },
+                          [_c("i", { staticClass: "fas fa-times" })]
+                        )
+                      ]
+                    )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "table-responsive" }, [
-                      _c("table", { staticClass: "table table-bordered" }, [
-                        _c("tbody", { staticClass: "text-center" }, [
-                          _c("tr", [
-                            _c("th", [_vm._v("Repayment")]),
-                            _vm._v(" "),
-                            _vm._m(6),
-                            _vm._v(" "),
-                            _vm._m(7),
-                            _vm._v(" "),
-                            _vm._m(8),
-                            _vm._v(" "),
-                            _vm._m(9),
-                            _vm._v(" "),
-                            _vm._m(10),
-                            _vm._v(" "),
-                            _vm._m(11),
-                            _vm._v(" "),
-                            _vm.isCurrentOrderInformal
-                              ? _c("td", [
-                                  _vm._v("7"),
-                                  _c("sup", [_vm._v("th")])
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.isCurrentOrderInformal
-                              ? _c("td", [
-                                  _vm._v("8"),
-                                  _c("sup", [_vm._v("th")])
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.isCurrentOrderInformal
-                              ? _c("td", [
-                                  _vm._v("9"),
-                                  _c("sup", [_vm._v("th")])
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.isCurrentOrderInformal
-                              ? _c("td", [
-                                  _vm._v("10"),
-                                  _c("sup", [_vm._v("th")])
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.isCurrentOrderInformal
-                              ? _c("td", [
-                                  _vm._v("11"),
-                                  _c("sup", [_vm._v("th")])
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.isCurrentOrderInformal
-                              ? _c("td", [
-                                  _vm._v("12"),
-                                  _c("sup", [_vm._v("th")])
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "tr",
-                            [
-                              _c("th", [_vm._v("Due date")]),
-                              _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(_vm.currentOrder, "_date"),
-                                function(date) {
-                                  return _c("td", [_vm._v(_vm._s(date))])
-                                }
-                              )
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "tr",
-                            [
-                              _c("th", [_vm._v("Status")]),
-                              _vm._v(" "),
-                              _vm._l(
-                                _vm.getPaymentStatusClasses(_vm.currentOrder),
-                                function(status) {
-                                  return _c("td", { class: status.class }, [
-                                    _c("i", {
-                                      staticClass: "fas",
-                                      class: status.icon
-                                    })
-                                  ])
-                                }
-                              )
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "tr",
-                            [
-                              _c("th", [_vm._v("Amount Paid (₦)")]),
-                              _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(_vm.currentOrder, "_pay"),
-                                function(payment) {
-                                  return _c("td", [_vm._v(_vm._s(payment))])
-                                }
-                              )
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "tr",
-                            [
-                              _c("th", [_vm._v("Payment Method")]),
-                              _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(
-                                  _vm.currentOrder,
-                                  "_payment_method"
-                                ),
-                                function(repaymentMethod) {
-                                  return _c(
-                                    "td",
-                                    { staticClass: "text-capitalize" },
-                                    [
-                                      _vm._v(
-                                        "\n                                    " +
-                                          _vm._s(
-                                            _vm.convertPaymentMethodOrBankToName(
-                                              repaymentMethod,
-                                              "payment"
-                                            )
-                                          ) +
-                                          "\n                                "
-                                      )
-                                    ]
-                                  )
-                                }
-                              )
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "tr",
-                            [
-                              _c("th", [_vm._v("Bank")]),
-                              _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(
-                                  _vm.currentOrder,
-                                  "_payment_bank"
-                                ),
-                                function(repaymentBank) {
-                                  return _c(
-                                    "td",
-                                    { staticClass: "text-capitalize" },
-                                    [
-                                      _vm._v(
-                                        "\n                                    " +
-                                          _vm._s(
-                                            _vm.convertPaymentMethodOrBankToName(
-                                              repaymentBank,
-                                              "bank"
-                                            )
-                                          ) +
-                                          "\n                                "
-                                      )
-                                    ]
-                                  )
-                                }
-                              )
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("th", [_vm._v("Summary (₦)")]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v("Grand Total")]),
-                            _vm._v(" "),
-                            _c(
-                              "th",
-                              {
-                                attrs: {
-                                  colspan: _vm.isCurrentOrderInformal ? 3 : 1
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(_vm.currentOrder["product_price"])
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("td", [_vm._v("Total Paid")]),
-                            _vm._v(" "),
-                            _c(
-                              "th",
-                              {
-                                attrs: {
-                                  colspan: _vm.isCurrentOrderInformal ? 3 : 1
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                                    " +
+                  _c("form", [
+                    _c("div", { staticClass: "modal-body" }, [
+                      _vm.currAttendance
+                        ? _c("div", { staticClass: "px-2" }, [
+                            _c("div", { staticClass: "px-4" }, [
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Status : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(
                                     _vm._s(
-                                      _vm.getAmountPaidAndOutStandingDebt(
-                                        _vm.currentOrder
-                                      ).amountPaid
-                                    ) +
-                                    "\n                                "
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("td", [_vm._v("Total Debt")]),
-                            _vm._v(" "),
-                            _c(
-                              "th",
-                              {
-                                attrs: {
-                                  colspan: _vm.isCurrentOrderInformal ? 3 : 1
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(
-                                      _vm.getAmountPaidAndOutStandingDebt(
-                                        _vm.currentOrder
-                                      ).outstandingDebt
-                                    ) +
-                                    "\n                                "
-                                )
-                              ]
-                            )
-                          ])
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(12)
-                ])
-              : _vm._e()
-          ]
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade repayment",
-        attrs: { id: "reminder_history" }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _vm._m(13),
-              _vm._v(" "),
-              _vm.showModalContent
-                ? _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "table-responsive" }, [
-                      _vm.currentOrder.reminders.length
-                        ? _c(
-                            "table",
-                            {
-                              staticClass: "table table-bordered table-striped"
-                            },
-                            [
-                              _vm._m(14),
+                                      _vm.currAttendance.is_present
+                                        ? "Present"
+                                        : "Absent"
+                                    )
+                                  )
+                                ])
+                              ]),
                               _vm._v(" "),
-                              _c(
-                                "tbody",
-                                _vm._l(_vm.currentOrder.reminders, function(
-                                  reminder,
-                                  index
-                                ) {
-                                  return _c("tr", [
-                                    _c("th", [_vm._v(_vm._s(index + 1))]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(reminder.date))]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(reminder.type))]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(
-                                        _vm._s(
-                                          reminder["sms"]
-                                            ? reminder.sms.message
-                                            : "call feedback: " +
-                                              reminder.feedback
-                                        ) + "\n                                "
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Arrival Time : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$timeConvert(
+                                        _vm.currAttendance.arrival_time
                                       )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(_vm._s(reminder.user.full_name))
-                                    ])
-                                  ])
-                                })
-                              )
-                            ]
-                          )
-                        : _c("div", { staticClass: "my-4 text-center" }, [
-                            _vm._v(
-                              "\n                            no reminders have been sent yet!\n                        "
-                            )
+                                    )
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Departure time : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$timeConvert(
+                                        _vm.currAttendance.departure_time
+                                      )
+                                    )
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [_c("strong", [_vm._v("Date : ")])]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.currAttendance.date))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Remark : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.currAttendance.remark))
+                                ])
+                              ])
+                            ])
                           ])
+                        : _c("div", { staticClass: "px-2" }, [
+                            _c("div", { staticClass: "px-4 row" }, [
+                              _c("span", [_c("strong", [_vm._v("Status : ")])]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col" }, [
+                                _vm._v("No Attendance")
+                              ])
+                            ])
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "text-link mt-3 w-100",
+                          staticStyle: { "text-align": "right" },
+                          attrs: {
+                            "data-dismiss": "modal",
+                            href: "javascript:"
+                          }
+                        },
+                        [_vm._v("close dialogue")]
+                      )
                     ])
                   ])
-                : _vm._e(),
-              _vm._v(" "),
-              _vm._m(15)
-            ])
+                ])
+              ]
+            )
           ]
         )
       ]
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header py-2" }, [
-      _c("h6", { staticClass: "modal-title py-1" }, [
-        _vm._v("Purchase Order Summary")
-      ]),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "close py-1",
-          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-        },
-        [
-          _c(
-            "span",
-            {
-              staticClass: "modal-close text-danger",
-              attrs: { "aria-hidden": "true" }
-            },
-            [_c("i", { staticClass: "fas fa-times" })]
-          )
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "a",
-        {
-          staticClass: "text-link mt-3 w-100",
-          staticStyle: { "text-align": "right" },
-          attrs: { "data-dismiss": "modal", href: "javascript:" }
-        },
-        [_vm._v("close dialogue")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header py-2" }, [
-      _c("h6", { staticClass: "modal-title py-1" }, [
-        _vm._v("Customer Info. Summary")
-      ]),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "close py-1",
-          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-        },
-        [
-          _c(
-            "span",
-            {
-              staticClass: "modal-close text-danger",
-              attrs: { "aria-hidden": "true" }
-            },
-            [_c("i", { staticClass: "fas fa-times" })]
-          )
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_vm._v("Verified by")]),
-      _vm._v(" "),
-      _c("td", [_vm._v("--")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "a",
-        {
-          staticClass: "text-link mt-3 w-100",
-          staticStyle: { "text-align": "right" },
-          attrs: { "data-dismiss": "modal", href: "javascript:" }
-        },
-        [_vm._v("close dialogue")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "close py-1",
-        attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-      },
-      [
-        _c(
-          "span",
-          {
-            staticClass: "modal-close text-danger",
-            attrs: { "aria-hidden": "true" }
-          },
-          [_c("i", { staticClass: "fas fa-times" })]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_vm._v("1"), _c("sup", [_vm._v("st")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_vm._v("2"), _c("sup", [_vm._v("nd")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_vm._v("3"), _c("sup", [_vm._v("rd")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_vm._v("4"), _c("sup", [_vm._v("th")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_vm._v("5"), _c("sup", [_vm._v("th")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_vm._v("6"), _c("sup", [_vm._v("th")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "a",
-        {
-          staticClass: "text-link mt-3 w-100",
-          staticStyle: { "text-align": "right" },
-          attrs: { "data-dismiss": "modal", href: "javascript:" }
-        },
-        [_vm._v("close dialogue")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header py-2" }, [
-      _c("h6", { staticClass: "modal-title py-1" }, [
-        _vm._v("Reminder History")
-      ]),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "close py-1",
-          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
-        },
-        [
-          _c(
-            "span",
-            {
-              staticClass: "modal-close text-danger",
-              attrs: { "aria-hidden": "true" }
-            },
-            [_c("i", { staticClass: "fas fa-times" })]
-          )
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("S/N")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Date")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Type")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Comment")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("sender")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "a",
-        {
-          staticClass: "text-link mt-3 w-100",
-          staticStyle: { "text-align": "right" },
-          attrs: { "data-dismiss": "modal", href: "javascript:" }
-        },
-        [_vm._v("close dialogue")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-633d941b", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-92afc2ae", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("40b58e5a", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3dab5bf4", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SMSReminder.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SMSReminder.vue");
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -1894,114 +1012,25 @@ if(false) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/sms.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Message = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Message = exports.Message = function () {
-    function Message(userId, message, contacts) {
-        _classCallCheck(this, Message);
-
-        this.user_id = userId;
-        this.message = message;
-        this.contacts = contacts;
-        this.setPages();
-        this.setContactCount();
-    }
-
-    _createClass(Message, [{
-        key: "setContactCount",
-        value: function setContactCount() {
-            if (this.contacts.constructor === String) this.contact_count = this.contacts.split(',').length;
-            if (this.contacts.constructor === Array) this.contact_count = this.contacts.length;
-        }
-    }, {
-        key: "setPages",
-        value: function setPages() {
-            this.pages = Math.ceil(this.message.length / 160);
-        }
-    }]);
-
-    return Message;
-}();
-
-exports.default = {
-    message: "",
-    welcome: function welcome(details) {
-        this.message = "Welcome to Altara credit. Please secure your login details. Staff ID: " + details.loginID + ", password: " + details.loginPassword;
-        this.send(details);
-    },
-    customerReg: function customerReg(details) {
-        this.message = "Dear " + details.first_name + " " + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact: " + details.branch.phone_yoruba + ". Your customer id is: " + details.id;
-        this.send({ phone: details.telephone.substr(1) });
-    },
-    passwordReset: function passwordReset(details) {
-        this.message = "Password reset successful! if your did not request for a new password kindly report back immediately, your staff ID is " + details.staff_id + ", new password: " + details.password;
-        this.send(details);
-    },
-    transfer: function transfer(details) {
-        this.message = "Transfer Successful, your new staff ID is " + details.loginID + " ";
-        this.send(details);
-    },
-    dvaMessage: function dvaMessage(details, callback) {
-        this.message = details.message;
-        this.sendWithCallback(details, callback);
-    },
-    sendFirstReminder: function sendFirstReminder(details, callback) {
-        this.message = details.message;
-        return this.sendWithCallback(details, callback);
-    },
-    sendWithCallback: function sendWithCallback(_ref, callback) {
-        var phone = _ref.phone;
-
-        (0, _api.get)("/api/message/create?to=" + phone + "&message=" + this.message).then(function (res) {
-            res.status === 200 && console.log("sms sent successfully");
-            return !!callback && callback(res);
-        }).catch(function (err) {
-            return !!callback && callback(err);
-        });
-    },
-    send: function send(details) {
-        (0, _api.get)("/api/message/create?to=234" + details.phone + "&message=" + this.message).then(function (res) {
-            res.status === 200 && console.log("sms sent successfully");
-        });
-    }
-};
-
-/***/ }),
-
-/***/ "./resources/assets/js/views/DVA/reminder/SMSReminder.vue":
+/***/ "./resources/assets/js/views/FSL/attendance/index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-633d941b\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-633d941b\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/reminder/SMSReminder.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-92afc2ae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-633d941b"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -2012,7 +1041,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\reminder\\SMSReminder.vue"
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\attendance\\index.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2021,9 +1050,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-633d941b", Component.options)
+    hotAPI.createRecord("data-v-92afc2ae", Component.options)
   } else {
-    hotAPI.reload("data-v-633d941b", Component.options)
+    hotAPI.reload("data-v-92afc2ae", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

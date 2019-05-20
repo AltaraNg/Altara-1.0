@@ -70,4 +70,14 @@ class Order extends Model
     {
         return $this->belongsTo(Discount::class);
     }
+
+    public function salesCategory()
+    {
+        return $this->belongsTo(SalesCategory::class);
+    }
+
+    public function salesType()
+    {
+        return $this->belongsTo(SalesType::class);
+    }
 }

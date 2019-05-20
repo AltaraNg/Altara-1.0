@@ -49,6 +49,10 @@ Vue.prototype.$network = () => true;
 //detects the system is connected to a network
 
 
+//currency formatter
+const formatter = (new Intl.NumberFormat('en-NG', {style: 'currency', currency: 'NGN', minimumFractionDigits: 2}));
+Vue.prototype.$format = price => !!price ? formatter.format(price) : null;
+
 Vue.prototype.$networkErr = function (err = '') {
     this.$scrollToTop();
     this.$LIPS(false);

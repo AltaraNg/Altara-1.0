@@ -113,20 +113,24 @@
                                     <td>{{currentOrder.store_product.product_name}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Repayment (&#8358;)</th>
-                                    <td>{{currentOrder.repayment_amount}}</td>
+                                    <th>Repayment</th>
+                                    <td>{{$format(currentOrder.repayment_amount)}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Down Payment (%)</th>
-                                    <td>{{currentOrder.down_payment}}</td>
+                                    <th>Down Payment</th>
+                                    <td>{{$format(currentOrder.down_payment)}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Discount (&#8358;)</th>
-                                    <td>{{getDiscount(currentOrder)}}</td>
+                                    <th>Discount (%)</th>
+                                    <td>{{getDiscount(currentOrder) | capitalize}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Total amount to Pay (&#8358;)</th>
-                                    <td>{{currentOrder.product_price}}</td>
+                                    <th>Sale Type</th>
+                                    <td>{{currentOrder.sales_type.name | capitalize}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Total amount to Pay</th>
+                                    <td>{{$format(currentOrder.product_price)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Processed by</th>
@@ -222,21 +226,31 @@
                                     <td v-if="isCurrentOrderInformal">11<sup>th</sup></td>
                                     <td v-if="isCurrentOrderInformal">12<sup>th</sup></td>
                                 </tr>
-                                <tr>
-                                    <th>Due date</th>
-                                    <td v-for="date in getRepayment(currentOrder,'_date')">{{date}}</td>
+                                <tr class="table-separator">
+                                    <th>Due Date</th>
+                                    <td v-for="date in getRepayment(currentOrder)">{{date}}</td>
                                 </tr>
                                 <tr>
+                                    <th>Actual Pay Day</th>
+                                    <td v-for="date in getRepayment(currentOrder, '_date')">{{date}}</td>
+                                </tr>
+                                <tr class="table-separator">
                                     <th>Status</th>
                                     <td :class="status.class" v-for="status in getPaymentStatusClasses(currentOrder)">
                                         <i class="fas" :class="status.icon"></i>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>Amount Paid (&#8358;)</th>
-                                    <td v-for="payment in getRepayment(currentOrder,'_pay')">{{payment}}</td>
+                                <tr class="table-separator">
+                                    <th>Repayment Amount</th>
+                                    <td v-for="payment in getRepayment(currentOrder,'repayments')">
+                                        {{$format(payment)}}
+                                    </td>
                                 </tr>
                                 <tr>
+                                    <th>Actual Amount Paid</th>
+                                    <td v-for="payment in getRepayment(currentOrder,'_pay')">{{$format(payment)}}</td>
+                                </tr>
+                                <tr class="table-separator">
                                     <th>Payment Method</th>
                                     <td class="text-capitalize"
                                         v-for="repaymentMethod in getRepayment(currentOrder,'_payment_method')">
@@ -250,17 +264,43 @@
                                         {{convertPaymentMethodOrBankToName(repaymentBank, 'bank')}}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>Summary (&#8358;)</th>
-                                    <td>Grand Total</td>
-                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">{{currentOrder["product_price"]}}</th>
+                                <tr class="table-separator">
+                                    <th>Summary</th>
+                                    <td>Discount Detail (%)</td>
+                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
+                                        {{currentOrder["discount"]["name"] | capitalize}}
+                                        -
+                                        ({{currentOrder["discount"]["percentage_discount"]}})
+                                    </th>
+                                    <td>Total Before Discount</td>
+                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
+                                        {{$format(currentOrder["product_price"])}}
+                                    </th>
                                     <td>Total Paid</td>
                                     <th :colspan="isCurrentOrderInformal ? 3 : 1">
-                                        {{getAmountPaidAndOutStandingDebt(currentOrder).amountPaid}}
+                                        {{$format(getPaymentSummary(currentOrder).amountPaid)}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>Discount Amount</td>
+                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
+                                        {{$format(getPaymentSummary(currentOrder).discountAmount)}}
+                                    </th>
+                                    <td>Total After Discount</td>
+                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
+                                        {{$format(getPaymentSummary(currentOrder).discountedTotal)}}
                                     </th>
                                     <td>Total Debt</td>
                                     <th :colspan="isCurrentOrderInformal ? 3 : 1">
-                                        {{getAmountPaidAndOutStandingDebt(currentOrder).outstandingDebt}}
+                                        {{$format(getPaymentSummary(currentOrder).outstandingDebt)}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>Down Payment</td>
+                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
+                                        {{$format(currentOrder.down_payment)}}
                                     </th>
                                 </tr>
                                 </tbody>
@@ -301,9 +341,7 @@
                                     <th>{{index+1}}</th>
                                     <td>{{reminder.date}}</td>
                                     <td>{{reminder.type}}</td>
-                                    <td>{{reminder['sms'] ? reminder.sms.message : 'call feedback: ' + reminder.feedback
-                                        }}
-                                    </td>
+                                    <td v-html="renderMessage(reminder)"></td>
                                     <td>{{reminder.user.full_name}}</td>
                                 </tr>
                                 </tbody>
@@ -418,7 +456,7 @@
             generateDates({startDate, interval, count}) {
                 let dates = [];
                 for (let i = 0; i < count; i++) {
-                    let orderDate = (new Date(startDate)).addDays(i * interval);
+                    let orderDate = (new Date(startDate)).addDays((i + 1) * interval);
                     let dateString = this.getDateString(orderDate);
                     dates.push(dateString);
                 }
@@ -447,6 +485,12 @@
                     }
                 }
                 return value;
+            },
+
+            renderMessage(reminder) {
+                return reminder['sms'] ?
+                    reminder.sms.message.replace(/%0a/g, '</br>')
+                    : 'call feedback: ' + reminder.feedback;
             },
 
             generateCustomMessage(order) {
@@ -482,7 +526,6 @@
 
             sendSMSReminders(smsContactList) {
                 smsContactList.forEach((value, index) => {
-                    console.log(value);
                     SMS.sendFirstReminder(value, res => {
                         value.isSent = res.status === 200;
                         if ((index + 1) === smsContactList.length) {
@@ -543,7 +586,7 @@
             },
 
             getDiscount({discount}) {
-                return `${discount.name} (${discount.percentage})`;
+                return `${discount.name} (${discount.percentage_discount})`;
             },
 
             isOrderRepaymentValid(order) {
@@ -593,31 +636,40 @@
                 return {count, repaymentData};
             },
 
-            getAmountPaidAndOutStandingDebt(order) {
-                let amountPaid = 0, outstandingDebt = 0, {count, repaymentData} = this.getCountAndRepaymentData(order);
+            getPaymentSummary(order) {
+                let amountPaid = parseInt(order.down_payment),
+                    outstandingDebt = 0,
+                    {count, repaymentData} = this.getCountAndRepaymentData(order);
                 for (let i = 1; i < count; i++) amountPaid += repaymentData[this.getColumn(i) + '_pay'];
                 outstandingDebt = parseInt(order["product_price"]) - amountPaid;
-                return {amountPaid, outstandingDebt};
+                var discountAmount = (order['discount']['percentage_discount'] / 100) * order["product_price"];
+                var discountedTotal = order["product_price"] - discountAmount;
+                return {amountPaid, outstandingDebt, discountAmount, discountedTotal};
             },
 
             getFinancialStatus(order) {
                 if (!this.isOrderRepaymentValid(order)) return 'no repayment detail';
-                let values = this.getAmountPaidAndOutStandingDebt(order);
-                return 'paid: ' + values.amountPaid + ' debt: ' + values.outstandingDebt;
+                let values = this.getPaymentSummary(order);
+                return 'Paid: ' + this.$format(values.amountPaid) + ' | Debt: ' + this.$format(values.outstandingDebt);
             },
 
-            getRepayment(order, clause) {
+            getRepayment(order, clause = null) {
                 if (!this.isOrderRepaymentValid(order)) return null;
                 let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order);
-                if (clause === '_date')
-                {
-                    let dueDates = this.generateDates({
+                if (clause === null) {
+                    data = this.generateDates({
                         startDate: order.order_date,
                         interval: count === 7 ? 28 : 14,
                         count: count - 1
                     });
-                    this.currentOrderRepaymentDates = dueDates;
-                    return dueDates;
+                    this.currentOrderRepaymentDates = data;
+                    return data;
+                }
+                if (clause === 'repayments') {
+                    let {repayment_amount} = order;
+                    for (let i = 1; i < count; i++)
+                        data.push(this.isCurrentOrderInformal ? repayment_amount : (repayment_amount * 2));
+                    return data;
                 }
                 for (let i = 1; i < count; i++) data.push(repaymentData[this.getColumn(i) + clause]);
                 return data;
@@ -680,5 +732,9 @@
         float: left;
         position: absolute;
         z-index: 1;
+    }
+
+    .table-separator {
+        border-top: 2px solid #dee1e4;
     }
 </style>

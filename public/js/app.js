@@ -44330,7 +44330,7 @@ var _vueRouterBackButton = __webpack_require__("./node_modules/vue-router-back-b
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
-    return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
+    return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
 };
 
 var Login = function Login() {
@@ -44370,7 +44370,7 @@ var DVAVerification = function DVAVerification() {
     return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
 };
 var DVASMSReminder = function DVASMSReminder() {
-    return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/SMSReminder.vue"));
+    return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/SMSReminder.vue"));
 };
 var DVACallReminder = function DVACallReminder() {
     return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/callReminder.vue"));
@@ -44417,7 +44417,7 @@ var BranchForm = function BranchForm() {
 };
 
 var Attendance = function Attendance() {
-    return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
+    return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
 };
 var AttendanceForm = function AttendanceForm() {
     return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
@@ -44681,6 +44681,12 @@ _vue2.default.prototype.$network = function () {
 // network not NB: this doesn't work with internet access. it only
 //detects the system is connected to a network
 
+
+//currency formatter
+var formatter = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 });
+_vue2.default.prototype.$format = function (price) {
+    return !!price ? formatter.format(price) : null;
+};
 
 _vue2.default.prototype.$networkErr = function () {
     var err = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
