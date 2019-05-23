@@ -619,7 +619,7 @@
 
             displayDetails(order, modal) {
                 Vue.set(this.$data, 'currentOrder', order);
-                this.isCurrentOrderInformal = !(order.customer.employment_status === 'formal');
+                this.isCurrentOrderInformal = !(['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()));
                 this.showModalContent = true;
                 return $(`#${modal}`).modal('toggle');
             },

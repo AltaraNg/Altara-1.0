@@ -668,7 +668,7 @@ exports.default = {
         },
         displayDetails: function displayDetails(order, modal) {
             _vue2.default.set(this.$data, 'currentOrder', order);
-            this.isCurrentOrderInformal = !(order.customer.employment_status === 'formal');
+            this.isCurrentOrderInformal = !['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase());
             this.showModalContent = true;
             return $("#" + modal).modal('toggle');
         },
