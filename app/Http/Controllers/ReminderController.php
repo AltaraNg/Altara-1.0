@@ -21,17 +21,20 @@ class ReminderController extends Controller
         //
     }
 
-    public static function getDateForReminder($list)
+    public function getDateForReminder($list)
     {
-        //$date = date('Y-m-d');
-        $date = '2019-04-23';
+        $today = date('Y-m-d');
         switch ($list) {
             case 2:
-                return date('Y-m-d', strtotime($date . ' - 7 days'));
+                $informal = [date('Y-m-d', strtotime($today . ' - 7 days'))];
+                for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
+                return $informal;
             case 3:
-                return date('Y-m-d', strtotime($date . ' - 1 month'));
+                $informal = [date('Y-m-d', strtotime($today . ' - 14 days'))];
+                for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
+                return $informal;
             default:
-                return $date;
+                return [$today];
         }
     }
 
@@ -43,9 +46,8 @@ class ReminderController extends Controller
 
     public function create()
     {
-
-        $result = Order::where('order_date', '=', $this->getDateForReminder(request('list')))->with
-        (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory','salesType','reminders' => function ($query) {
+        $result = Order::whereIn('order_date', $this->getDateForReminder(request('list')))->with
+        (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType', 'reminders' => function ($query) {
             return $query->with('user', 'sms');//remember to select only name and id here later
         },
             'floorAgent' => function ($q) {

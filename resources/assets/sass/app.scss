@@ -702,6 +702,11 @@ form#messaging {
         font-size: 1.1 * $default-font-size;
         font-weight: 600;
     }
+
+    &.sent-reminder{
+        background-color: $color-green;
+        color: white;
+    }
 }
 
 .text-link {

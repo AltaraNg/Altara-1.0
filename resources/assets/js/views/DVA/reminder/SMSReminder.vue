@@ -3,25 +3,22 @@
         <div class="mt-5 mb-3 attendance-head">
             <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
                 <li class="col p-0 nav-item mb-0">
-                    <!--                    :class="{'active':$route.query.list === '1' || !($route.query.list)}" data-toggle="tab"-->
                     <a aria-selected="true" class="nav-link active"
                        data-toggle="tab"
                        href="#reminder-panel"
-                       @click="getReminderList(1)"
+                       @click="fetchList(1)"
                        role="tab">1<sup>st</sup> Reminder</a>
                 </li>
                 <li class="col p-0 nav-item mb-0">
-                    <!--                    <a aria-selected="false" class="nav-link" :class="{'active':$route.query.list === '2'}"-->
                     <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
-                       @click="getReminderList(2)"
+                       @click="fetchList(2)"
                        role="tab">2<sup>nd</sup> Reminder</a>
                 </li>
                 <li class="col p-0 nav-item mb-0">
-                    <!--                    <a aria-selected="false" class="nav-link" :class="{'active':$route.query.list === '3'}"-->
                     <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
-                       @click="getReminderList(3)"
+                       @click="fetchList(3)"
                        role="tab">3<sup>rd</sup> Reminder</a>
                 </li>
             </ul>
@@ -44,9 +41,11 @@
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <div class="mb-3 row attendance-item" v-for="(order, index) in orders">
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center " style="max-width: 120px">
-                        <div class="check-box-overlay" @click="checkIfAlreadySentReminder(index)"></div>
-                        <input class="form-check-input my-0 mx-4 float-left position-relative" type="checkbox"
-                               v-model="reminder[index].selected">
+                        <div v-if="checkIfAlreadySentReminder(index)" class="d-flex align-items-center">
+                            <input class="form-check-input my-0 mx-4 float-left position-relative " type="checkbox"
+                                   v-model="reminder[index].selected" @click="toggleSelect(index)">
+                        </div>
+                        <span class="user mx-auto sent-reminder" v-else><i class="fas fa-check"></i></span>
                         <span class="user mx-auto">{{index+1}}</span>
                     </div>
                     <div class="col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center"
@@ -390,6 +389,7 @@
 
         data() {
             return {
+                list: 1,
                 form: {},
                 orders: {},
                 show: false,
@@ -439,9 +439,13 @@
                 this.$LIPS(false);
             },
 
-            checkIfAlreadySentReminder(index) {
+            toggleSelect(index) {
                 if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;
                 else alert('sorry a reminder has already been sent to user!');
+            },
+
+            checkIfAlreadySentReminder(index) {
+                return this.reminder[index].canBeSelected
             },
 
             selectAll() {
@@ -488,7 +492,7 @@
             },
 
             renderMessage(reminder) {
-                return reminder['sms'] ?
+                return !!reminder['sms'] ?
                     reminder.sms.message.replace(/%0a/g, '</br>')
                     : 'call feedback: ' + reminder.feedback;
             },
@@ -568,15 +572,16 @@
                         this.initializeReminders() && this.$scrollToTop();
                         if (data.saved) {
                             Flash.setSuccess('Reminders have been sent successfully!', 50000);
-                            this.fetchList();
+                            this.fetchList(this.list);
                         } else this.displayErrorMessage('Error sending reminders!');
                     })
                 } else this.displayErrorMessage('Error logging sent messages!');
             },
 
-            fetchList() {
+            fetchList(list) {
                 this.$LIPS(true);
-                get(initialize(this.$route)).then(({data}) => {
+                this.list = list;
+                get(initialize({query: {list}})).then(({data}) => {
                     this.prepareForm(data);
                 });
             },
@@ -591,10 +596,6 @@
 
             isOrderRepaymentValid(order) {
                 return !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']);
-            },
-
-            getReminderList(list) {
-                return null;
             },
 
             getColumn(i) {
@@ -618,7 +619,7 @@
 
             displayDetails(order, modal) {
                 Vue.set(this.$data, 'currentOrder', order);
-                this.isCurrentOrderInformal = order.customer.employment_status === 'informal(business)';
+                this.isCurrentOrderInformal = !(order.customer.employment_status === 'formal');
                 this.showModalContent = true;
                 return $(`#${modal}`).modal('toggle');
             },

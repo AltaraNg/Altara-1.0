@@ -388,7 +388,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
-//
 
 function initialize(to) {
     var urls = { create: "/api/reminder/create" + (to.query.list ? '?list=' + to.query.list : '') };
@@ -419,6 +418,7 @@ exports.default = {
     },
     data: function data() {
         return {
+            list: 1,
             form: {},
             orders: {},
             show: false,
@@ -472,8 +472,11 @@ exports.default = {
             _flash2.default.setError(error, 50000);
             this.$LIPS(false);
         },
-        checkIfAlreadySentReminder: function checkIfAlreadySentReminder(index) {
+        toggleSelect: function toggleSelect(index) {
             if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;else alert('sorry a reminder has already been sent to user!');
+        },
+        checkIfAlreadySentReminder: function checkIfAlreadySentReminder(index) {
+            return this.reminder[index].canBeSelected;
         },
         selectAll: function selectAll() {
             var _this3 = this;
@@ -532,7 +535,7 @@ exports.default = {
             return value;
         },
         renderMessage: function renderMessage(reminder) {
-            return reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : 'call feedback: ' + reminder.feedback;
+            return !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : 'call feedback: ' + reminder.feedback;
         },
         generateCustomMessage: function generateCustomMessage(order) {
             var _this5 = this;
@@ -618,16 +621,17 @@ exports.default = {
                     _this9.initializeReminders() && _this9.$scrollToTop();
                     if (data.saved) {
                         _flash2.default.setSuccess('Reminders have been sent successfully!', 50000);
-                        _this9.fetchList();
+                        _this9.fetchList(_this9.list);
                     } else _this9.displayErrorMessage('Error sending reminders!');
                 });
             } else this.displayErrorMessage('Error logging sent messages!');
         },
-        fetchList: function fetchList() {
+        fetchList: function fetchList(list) {
             var _this10 = this;
 
             this.$LIPS(true);
-            (0, _api.get)(initialize(this.$route)).then(function (_ref8) {
+            this.list = list;
+            (0, _api.get)(initialize({ query: { list: list } })).then(function (_ref8) {
                 var data = _ref8.data;
 
                 _this10.prepareForm(data);
@@ -643,9 +647,6 @@ exports.default = {
         },
         isOrderRepaymentValid: function isOrderRepaymentValid(order) {
             return !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']);
-        },
-        getReminderList: function getReminderList(list) {
-            return null;
         },
         getColumn: function getColumn(i) {
             var column = null;
@@ -667,7 +668,7 @@ exports.default = {
         },
         displayDetails: function displayDetails(order, modal) {
             _vue2.default.set(this.$data, 'currentOrder', order);
-            this.isCurrentOrderInformal = order.customer.employment_status === 'informal(business)';
+            this.isCurrentOrderInformal = !(order.customer.employment_status === 'formal');
             this.showModalContent = true;
             return $("#" + modal).modal('toggle');
         },
@@ -837,7 +838,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    _vm.getReminderList(1)
+                    _vm.fetchList(1)
                   }
                 }
               },
@@ -858,7 +859,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    _vm.getReminderList(2)
+                    _vm.fetchList(2)
                   }
                 }
               },
@@ -879,7 +880,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    _vm.getReminderList(3)
+                    _vm.fetchList(3)
                   }
                 }
               },
@@ -948,61 +949,76 @@ var render = function() {
                     staticStyle: { "max-width": "120px" }
                   },
                   [
-                    _c("div", {
-                      staticClass: "check-box-overlay",
-                      on: {
-                        click: function($event) {
-                          _vm.checkIfAlreadySentReminder(index)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.reminder[index].selected,
-                          expression: "reminder[index].selected"
-                        }
-                      ],
-                      staticClass:
-                        "form-check-input my-0 mx-4 float-left position-relative",
-                      attrs: { type: "checkbox" },
-                      domProps: {
-                        checked: Array.isArray(_vm.reminder[index].selected)
-                          ? _vm._i(_vm.reminder[index].selected, null) > -1
-                          : _vm.reminder[index].selected
-                      },
-                      on: {
-                        change: function($event) {
-                          var $$a = _vm.reminder[index].selected,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = null,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(
-                                  _vm.reminder[index],
-                                  "selected",
-                                  $$a.concat([$$v])
+                    _vm.checkIfAlreadySentReminder(index)
+                      ? _c(
+                          "div",
+                          { staticClass: "d-flex align-items-center" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.reminder[index].selected,
+                                  expression: "reminder[index].selected"
+                                }
+                              ],
+                              staticClass:
+                                "form-check-input my-0 mx-4 float-left position-relative ",
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: Array.isArray(
+                                  _vm.reminder[index].selected
                                 )
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.reminder[index],
-                                  "selected",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.reminder[index], "selected", $$c)
-                          }
-                        }
-                      }
-                    }),
+                                  ? _vm._i(_vm.reminder[index].selected, null) >
+                                    -1
+                                  : _vm.reminder[index].selected
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.toggleSelect(index)
+                                },
+                                change: function($event) {
+                                  var $$a = _vm.reminder[index].selected,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.reminder[index],
+                                          "selected",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.reminder[index],
+                                          "selected",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(
+                                      _vm.reminder[index],
+                                      "selected",
+                                      $$c
+                                    )
+                                  }
+                                }
+                              }
+                            })
+                          ]
+                        )
+                      : _c(
+                          "span",
+                          { staticClass: "user mx-auto sent-reminder" },
+                          [_c("i", { staticClass: "fas fa-check" })]
+                        ),
                     _vm._v(" "),
                     _c("span", { staticClass: "user mx-auto" }, [
                       _vm._v(_vm._s(index + 1))

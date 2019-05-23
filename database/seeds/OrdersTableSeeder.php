@@ -49,7 +49,7 @@ class OrdersTableSeeder extends Seeder
                         'date_of_last_payment' => $newDate,
                         'date_of_next_payment' => date('Y-m-d', strtotime($newDate . ' + 28 days')),
                         '1st_date' => $newDate,
-                        '1st_pay' => $storedOrder->down_payment,
+                        '1st_pay' => $storedOrder->repayment_amount,
                         '1st_payment_method' => rand(1, 3),
                         '1st_payment_bank' => rand(1, 18),
                     ]);
@@ -59,7 +59,7 @@ class OrdersTableSeeder extends Seeder
                         'date_of_last_payment' => $newDate,
                         'date_of_next_payment' => date('Y-m-d', strtotime($newDate . ' + 14 days')),
                         '1st_date' => $newDate,
-                        '1st_pay' => $storedOrder->down_payment,
+                        '1st_pay' => $storedOrder->repayment_amount,
                         '1st_payment_method' => rand(1, 3),
                         '1st_payment_bank' => rand(1, 18),
                     ]);
