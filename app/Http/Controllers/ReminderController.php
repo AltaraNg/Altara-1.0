@@ -23,14 +23,15 @@ class ReminderController extends Controller
 
     public function getDateForReminder($list)
     {
-        $today = date('Y-m-d');
+        //$today = date('Y-m-d');
+        $today = '2019-05-13';
         switch ($list) {
             case 2:
                 $informal = [date('Y-m-d', strtotime($today . ' - 7 days'))];
                 for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
                 return $informal;
             case 3:
-                $informal = [date('Y-m-d', strtotime($today . ' - 14 days'))];
+                $informal = [date('Y-m-d', strtotime($today . ' - 11 days'))];
                 for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
                 return $informal;
             default:
@@ -46,6 +47,8 @@ class ReminderController extends Controller
 
     public function create()
     {
+        $user = auth('api')->user();
+
         $result = Order::whereIn('order_date', $this->getDateForReminder(request('list')))->with
         (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType', 'reminders' => function ($query) {
             return $query->with('user', 'sms');//remember to select only name and id here later
@@ -74,7 +77,8 @@ class ReminderController extends Controller
         return response()->json([
             'payment_methods' => PaymentMethod::all(),
             'banks' => Bank::all(),
-            'dva_id' => auth('api')->user()->id,
+            'dva_id' => $user->id,
+            'branch' => $user->branch_id,
             'orders' => $result
         ]);
     }

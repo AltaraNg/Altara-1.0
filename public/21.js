@@ -388,6 +388,16 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function initialize(to) {
     var urls = { create: "/api/reminder/create" + (to.query.list ? '?list=' + to.query.list : '') };
@@ -437,7 +447,8 @@ exports.default = {
         prepareForm: function prepareForm(res) {
             this.show = false;
             this.showModalContent = false;
-            var _ref3 = [res.orders, res.payment_methods, res.banks, res.dva_id];
+            var _ref3 = [res.orders /*.filter(order => order.customer.branch.id === res.branch)*/
+            , res.payment_methods, res.banks, res.dva_id];
             this.orders = _ref3[0];
             this.payment_methods = _ref3[1];
             this.banks = _ref3[2];
@@ -473,18 +484,24 @@ exports.default = {
             this.$LIPS(false);
         },
         toggleSelect: function toggleSelect(index) {
-            if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;else alert('sorry a reminder has already been sent to user!');
+            if (this.reminder.length > 0) {
+                if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;else alert('sorry a reminder has already been sent to user!');
+            }
         },
         checkIfAlreadySentReminder: function checkIfAlreadySentReminder(index) {
-            return this.reminder[index].canBeSelected;
+            if (this.reminder.length > 0) {
+                return this.reminder[index].canBeSelected;
+            }
         },
         selectAll: function selectAll() {
             var _this3 = this;
 
-            this.doSelectAll = !this.doSelectAll;
-            this.reminder.forEach(function (order) {
-                return order.canBeSelected && (order.selected = _this3.doSelectAll);
-            });
+            if (this.reminder.length > 0) {
+                this.doSelectAll = !this.doSelectAll;
+                this.reminder.forEach(function (order) {
+                    return order.canBeSelected && (order.selected = _this3.doSelectAll);
+                });
+            }
         },
         isOrderFormal: function isOrderFormal(_ref4) {
             var repayment_informal = _ref4.repayment_informal;
@@ -540,16 +557,30 @@ exports.default = {
         generateCustomMessage: function generateCustomMessage(order) {
             var _this5 = this;
 
-            var message = 'Thanks for patronizing us. Repayment Schedule for ' + order.store_product.product_name + ' are as follows:%0a';
+            var customer = order.customer,
+                store_product = order.store_product,
+                order_date = order.order_date,
+                product_price = order.product_price,
+                repayment_amount = order.repayment_amount;
+            var product_name = store_product.product_name,
+                first_name = customer.first_name,
+                last_name = customer.last_name;
+            var message = void 0;
             var isFormal = this.isOrderFormal(order);
             var genDateArgs = {};
-            if (isFormal) genDateArgs = { startDate: order.order_date, interval: 28, count: 6 };
-            if (!isFormal) genDateArgs = { startDate: order.order_date, interval: 14, count: 12 };
+            if (isFormal) genDateArgs = { startDate: order_date, interval: 28, count: 6 };
+            if (!isFormal) genDateArgs = { startDate: order_date, interval: 14, count: 12 };
             var dates = this.generateDates(genDateArgs);
-            if (dates.length > 0) dates.forEach(function (date, index) {
-                return message += _this5.getColumn(index + 1) + ": " + date + " => N" + (index === 0 ? order.down_payment : order.repayment_amount) + "%0a";
-            });
-            return message;
+            var repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
+            if (this.list === 1) {
+                message = "Hello " + first_name + " " + last_name + ", thanks for patronizing us." + " The following is the breakdown of the repayment plan for" + (" the purchase of " + product_name + ":%0a");
+                if (dates.length > 0) dates.forEach(function (date, index) {
+                    return message += _this5.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a";
+                });
+            } else {
+                message = "Hello " + first_name + " " + last_name + ", This is to remind you that your" + (" " + this.getColumn(repaymentLevel) + " repayment of " + product_price + " for " + product_name) + (" will be due on " + dates[repaymentLevel] + ". we will be expecting you.");
+            }
+            return message + "Thank you.";
         },
         processSelected: function processSelected() {
             var _this6 = this;
@@ -903,7 +934,7 @@ var render = function() {
           [
             _vm._v(
               "\n                Click to " +
-                _vm._s(_vm.doSelectAll ? "Select" : "De-select") +
+                _vm._s(_vm.doSelectAll ? "De-select" : "Select") +
                 " all\n            "
             )
           ]
@@ -931,7 +962,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _vm.show
+    _vm.show && !!_vm.orders.length
       ? _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
           _c(
             "div",
@@ -940,224 +971,234 @@ var render = function() {
               attrs: { id: "reminder-panel", role: "tabpanel" }
             },
             _vm._l(_vm.orders, function(order, index) {
-              return _c("div", { staticClass: "mb-3 row attendance-item" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center ",
-                    staticStyle: { "max-width": "120px" }
-                  },
-                  [
-                    _vm.checkIfAlreadySentReminder(index)
-                      ? _c(
-                          "div",
-                          { staticClass: "d-flex align-items-center" },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.reminder[index].selected,
-                                  expression: "reminder[index].selected"
-                                }
-                              ],
-                              staticClass:
-                                "form-check-input my-0 mx-4 float-left position-relative ",
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                checked: Array.isArray(
-                                  _vm.reminder[index].selected
-                                )
-                                  ? _vm._i(_vm.reminder[index].selected, null) >
-                                    -1
-                                  : _vm.reminder[index].selected
-                              },
-                              on: {
-                                click: function($event) {
-                                  _vm.toggleSelect(index)
-                                },
-                                change: function($event) {
-                                  var $$a = _vm.reminder[index].selected,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          _vm.reminder[index],
-                                          "selected",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          _vm.reminder[index],
-                                          "selected",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
+              return !!_vm.orders.length
+                ? _c("div", { staticClass: "mb-3 row attendance-item" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-12 col-xs-2 col-md col-lg d-flex align-items-center",
+                        staticStyle: { "max-width": "120px" }
+                      },
+                      [
+                        _vm.checkIfAlreadySentReminder(index)
+                          ? _c(
+                              "div",
+                              { staticClass: "d-flex align-items-center" },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.reminder[index].selected,
+                                      expression: "reminder[index].selected"
                                     }
-                                  } else {
-                                    _vm.$set(
-                                      _vm.reminder[index],
-                                      "selected",
-                                      $$c
+                                  ],
+                                  staticClass:
+                                    "form-check-input my-0 mx-4 float-left position-relative ",
+                                  attrs: { type: "checkbox" },
+                                  domProps: {
+                                    checked: Array.isArray(
+                                      _vm.reminder[index].selected
                                     )
+                                      ? _vm._i(
+                                          _vm.reminder[index].selected,
+                                          null
+                                        ) > -1
+                                      : _vm.reminder[index].selected
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.toggleSelect(index)
+                                    },
+                                    change: function($event) {
+                                      var $$a = _vm.reminder[index].selected,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              _vm.reminder[index],
+                                              "selected",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              _vm.reminder[index],
+                                              "selected",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(
+                                          _vm.reminder[index],
+                                          "selected",
+                                          $$c
+                                        )
+                                      }
+                                    }
                                   }
-                                }
-                              }
-                            })
-                          ]
-                        )
-                      : _c(
-                          "span",
-                          { staticClass: "user mx-auto sent-reminder" },
-                          [_c("i", { staticClass: "fas fa-check" })]
-                        ),
+                                })
+                              ]
+                            )
+                          : _c(
+                              "span",
+                              { staticClass: "user mx-auto sent-reminder" },
+                              [_c("i", { staticClass: "fas fa-check" })]
+                            ),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "user mx-auto" }, [
+                          _vm._v(_vm._s(index + 1))
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("span", { staticClass: "user mx-auto" }, [
-                      _vm._v(_vm._s(index + 1))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center",
-                    attrs: { "data-reminder-1": "1" }
-                  },
-                  [_vm._v(_vm._s(order.id) + "\n                ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
-                    attrs: { "data-hoverable": "true" },
-                    on: {
-                      click: function($event) {
-                        _vm.displayDetails(order, "purchase_order")
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(order.order_date) +
-                        "\n                "
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center",
+                        attrs: { "data-reminder-1": "1" }
+                      },
+                      [_vm._v(_vm._s(order.id) + "\n                ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+                        attrs: { "data-hoverable": "true" },
+                        on: {
+                          click: function($event) {
+                            _vm.displayDetails(order, "purchase_order")
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(order.order_date) +
+                            "\n                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center",
+                        attrs: { "data-hoverable": "true" },
+                        on: {
+                          click: function($event) {
+                            _vm.displayDetails(order, "customer_info")
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    ID: " +
+                            _vm._s(order.customer.id) +
+                            " - " +
+                            _vm._s(
+                              _vm._f("capitalize")(
+                                order.customer.employment_status
+                              )
+                            ) +
+                            "\n                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+                        attrs: { "data-hoverable": "true" },
+                        on: {
+                          click: function($event) {
+                            _vm.displayDetails(order, "repayment")
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.getFinancialStatus(order)) +
+                            "\n                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+                        attrs: { "data-hoverable": "true" },
+                        on: {
+                          click: function($event) {
+                            _vm.displayDetails(order, "reminder_history")
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(order.reminders.length) +
+                            " reminder(s) sent\n                "
+                        )
+                      ]
                     )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center",
-                    attrs: { "data-hoverable": "true" },
-                    on: {
-                      click: function($event) {
-                        _vm.displayDetails(order, "customer_info")
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    ID: " +
-                        _vm._s(order.customer.id) +
-                        " - " +
-                        _vm._s(
-                          _vm._f("capitalize")(order.customer.employment_status)
-                        ) +
-                        "\n                "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
-                    attrs: { "data-hoverable": "true" },
-                    on: {
-                      click: function($event) {
-                        _vm.displayDetails(order, "repayment")
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(_vm.getFinancialStatus(order)) +
-                        "\n                "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
-                    attrs: { "data-hoverable": "true" },
-                    on: {
-                      click: function($event) {
-                        _vm.displayDetails(order, "reminder_history")
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(order.reminders.length) +
-                        " reminder(s) sent\n                "
-                    )
-                  ]
-                )
-              ])
+                  ])
+                : _vm._e()
             })
           )
         ])
-      : _vm._e(),
+      : _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
+          _vm._m(0)
+        ]),
     _vm._v(" "),
-    _c("div", { staticClass: "mt-1 attendance-body" }, [
-      _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
-        _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "clearfix d-flex justify-content-end w-100" },
-          [
+    !!_vm.orders.length
+      ? _c("div", { staticClass: "mt-1 attendance-body" }, [
+          _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
+            _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
+            _vm._v(" "),
             _c(
-              "button",
-              {
-                staticClass: "btn bg-default",
-                attrs: { disabled: _vm.$isProcessing },
-                on: { click: _vm.processSelected }
-              },
+              "div",
+              { staticClass: "clearfix d-flex justify-content-end w-100" },
               [
-                _vm._v("\n                    Send Reminder(s) "),
-                _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn bg-default",
+                    attrs: { disabled: _vm.$isProcessing },
+                    on: { click: _vm.processSelected }
+                  },
+                  [
+                    _vm._v("\n                    Send Reminder(s) "),
+                    _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                  ]
+                )
               ]
             )
-          ]
-        )
-      ])
-    ]),
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "modal fade", attrs: { id: "purchase_order" } }, [
       _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0),
+          _vm._m(1),
           _vm._v(" "),
           _vm.showModalContent
             ? _c("div", { staticClass: "modal-body" }, [
@@ -1275,7 +1316,7 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
-          _vm._m(1)
+          _vm._m(2)
         ])
       ])
     ]),
@@ -1283,7 +1324,7 @@ var render = function() {
     _c("div", { staticClass: "modal fade", attrs: { id: "customer_info" } }, [
       _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(2),
+          _vm._m(3),
           _vm._v(" "),
           _vm.showModalContent
             ? _c("div", { staticClass: "modal-body" }, [
@@ -1351,7 +1392,7 @@ var render = function() {
                           ])
                         ]),
                         _vm._v(" "),
-                        _vm._m(3)
+                        _vm._m(4)
                       ])
                     ]
                   )
@@ -1359,7 +1400,7 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
-          _vm._m(4)
+          _vm._m(5)
         ])
       ])
     ]),
@@ -1386,7 +1427,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(5)
+                    _vm._m(6)
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
@@ -1395,8 +1436,6 @@ var render = function() {
                         _c("tbody", { staticClass: "text-center" }, [
                           _c("tr", [
                             _c("th", [_vm._v("Repayment")]),
-                            _vm._v(" "),
-                            _vm._m(6),
                             _vm._v(" "),
                             _vm._m(7),
                             _vm._v(" "),
@@ -1407,6 +1446,8 @@ var render = function() {
                             _vm._m(10),
                             _vm._v(" "),
                             _vm._m(11),
+                            _vm._v(" "),
+                            _vm._m(12),
                             _vm._v(" "),
                             _vm.isCurrentOrderInformal
                               ? _c("td", [
@@ -1790,7 +1831,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(12)
+                  _vm._m(13)
                 ])
               : _vm._e()
           ]
@@ -1810,7 +1851,7 @@ var render = function() {
           { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(13),
+              _vm._m(14),
               _vm._v(" "),
               _vm.showModalContent
                 ? _c("div", { staticClass: "modal-body" }, [
@@ -1822,7 +1863,7 @@ var render = function() {
                               staticClass: "table table-bordered table-striped"
                             },
                             [
-                              _vm._m(14),
+                              _vm._m(15),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -1862,7 +1903,7 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm._m(15)
+              _vm._m(16)
             ])
           ]
         )
@@ -1871,6 +1912,23 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "tab-pane active text-center" }, [
+      _c("div", { staticClass: "mb-3 row attendance-item" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "col d-flex light-heading align-items-center justify-content-center"
+          },
+          [_vm._v("\n                    No records found!\n                ")]
+        )
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

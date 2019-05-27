@@ -27,7 +27,7 @@
         <div class="mt-5 mb-3 attendance-head">
             <div class="row px-4 pt-3 pb-4 text-center">
                 <div class="col p-0 text-link" @click="selectAll" style="max-width: 120px">
-                    Click to {{doSelectAll ? 'Select' : 'De-select'}} all
+                    Click to {{doSelectAll ? 'De-select' : 'Select'}} all
                 </div>
                 <div class="col light-heading">Order Number</div>
                 <div class="col light-heading">Order Summary</div>
@@ -37,10 +37,10 @@
             </div>
         </div>
 
-        <div class="tab-content mt-1 attendance-body" v-if="show">
+        <div class="tab-content mt-1 attendance-body" v-if="show && !!orders.length">
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
-                <div class="mb-3 row attendance-item" v-for="(order, index) in orders">
-                    <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center " style="max-width: 120px">
+                <div class="mb-3 row attendance-item" v-if="!!orders.length" v-for="(order, index) in orders">
+                    <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
                         <div v-if="checkIfAlreadySentReminder(index)" class="d-flex align-items-center">
                             <input class="form-check-input my-0 mx-4 float-left position-relative " type="checkbox"
                                    v-model="reminder[index].selected" @click="toggleSelect(index)">
@@ -75,7 +75,17 @@
             </div>
         </div>
 
-        <div class="mt-1 attendance-body">
+        <div class="tab-content mt-1 attendance-body" v-else>
+            <div class="tab-pane active text-center">
+                <div class="mb-3 row attendance-item">
+                    <div class="col d-flex light-heading align-items-center justify-content-center">
+                        No records found!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-1 attendance-body" v-if="!!orders.length">
             <div class="mb-5 px-0 row align-items-center">
                 <div class="w-100 my-5 mx-0 hr"></div>
                 <div class="clearfix d-flex justify-content-end w-100">
@@ -407,8 +417,9 @@
             prepareForm(res) {
                 this.show = false;
                 this.showModalContent = false;
-                [this.orders, this.payment_methods, this.banks, this.dva_id]
-                    = [res.orders, res.payment_methods, res.banks, res.dva_id];
+                [this.orders, this.payment_methods, this.banks, this.dva_id] = [
+                    res.orders/*.filter(order => order.customer.branch.id === res.branch)*/,
+                    res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
             },
 
@@ -440,17 +451,23 @@
             },
 
             toggleSelect(index) {
-                if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;
-                else alert('sorry a reminder has already been sent to user!');
+                if (this.reminder.length > 0) {
+                    if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;
+                    else alert('sorry a reminder has already been sent to user!');
+                }
             },
 
             checkIfAlreadySentReminder(index) {
-                return this.reminder[index].canBeSelected
+                if (this.reminder.length > 0) {
+                    return this.reminder[index].canBeSelected;
+                }
             },
 
             selectAll() {
-                this.doSelectAll = !this.doSelectAll;
-                this.reminder.forEach(order => order.canBeSelected && (order.selected = this.doSelectAll));
+                if (this.reminder.length > 0) {
+                    this.doSelectAll = !this.doSelectAll;
+                    this.reminder.forEach(order => order.canBeSelected && (order.selected = this.doSelectAll));
+                }
             },
 
             isOrderFormal({repayment_informal}) {
@@ -498,18 +515,28 @@
             },
 
             generateCustomMessage(order) {
-                let message = 'Thanks for patronizing us. Repayment Schedule for ' + order.store_product.product_name + ' are as follows:%0a';
+                const {customer, store_product, order_date, product_price, repayment_amount} = order;
+                const {product_name} = store_product, {first_name, last_name} = customer;
+                let message;
                 let isFormal = this.isOrderFormal(order);
                 let genDateArgs = {};
-                if (isFormal) genDateArgs = {startDate: order.order_date, interval: 28, count: 6};
-                if (!isFormal) genDateArgs = {startDate: order.order_date, interval: 14, count: 12};
+                if (isFormal) genDateArgs = {startDate: order_date, interval: 28, count: 6};
+                if (!isFormal) genDateArgs = {startDate: order_date, interval: 14, count: 12};
                 let dates = this.generateDates(genDateArgs);
-                if (dates.length > 0)
-                    dates.forEach((date, index) =>
-                        message += this.getColumn(index + 1) + ": " + date + " => N" +
-                            (index === 0 ? order.down_payment : order.repayment_amount) + "%0a"
-                    );
-                return message;
+                let repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
+                if (this.list === 1) {
+                    message = `Hello ${first_name} ${last_name}, thanks for patronizing us.`
+                        + ` The following is the breakdown of the repayment plan for`
+                        + ` the purchase of ${product_name}:%0a`;
+                    if (dates.length > 0)
+                        dates.forEach((date, index) =>
+                            message += this.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a");
+                } else {
+                    message = `Hello ${first_name} ${last_name}, This is to remind you that your`
+                        + ` ${this.getColumn(repaymentLevel)} repayment of ${product_price} for ${product_name}`
+                        + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
+                }
+                return message + "Thank you.";
             },
 
             processSelected() {
