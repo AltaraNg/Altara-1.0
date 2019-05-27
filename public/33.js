@@ -448,7 +448,7 @@ exports.default = {
     },
     data: function data() {
         return {
-            list: 1,
+            list: 4,
             form: {},
             orders: {},
             show: false,
@@ -890,7 +890,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    _vm.fetchList(1)
+                    _vm.fetchList(4)
                   }
                 }
               },

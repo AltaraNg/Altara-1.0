@@ -447,8 +447,9 @@ exports.default = {
         prepareForm: function prepareForm(res) {
             this.show = false;
             this.showModalContent = false;
-            var _ref3 = [res.orders /*.filter(order => order.customer.branch.id === res.branch)*/
-            , res.payment_methods, res.banks, res.dva_id];
+            var _ref3 = [res.orders.filter(function (order) {
+                return order.customer.branch.id === res.branch;
+            }), res.payment_methods, res.banks, res.dva_id];
             this.orders = _ref3[0];
             this.payment_methods = _ref3[1];
             this.banks = _ref3[2];

@@ -6,7 +6,7 @@
                 <li class="col p-0 nav-item mb-0">
                     <a aria-selected="true" class="nav-link active"
                        data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(1)"
+                       @click="fetchList(4)"
                        role="tab">1<sup>st</sup> Reminder</a>
                 </li>
                 <li class="col p-0 nav-item mb-0">
@@ -419,7 +419,7 @@
 
         data() {
             return {
-                list: 1,
+                list: 4,
                 form: {},
                 orders: {},
                 show: false,

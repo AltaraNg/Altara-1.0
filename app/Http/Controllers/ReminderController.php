@@ -26,12 +26,19 @@ class ReminderController extends Controller
         //$today = date('Y-m-d');
         $today = '2019-05-13';
         switch ($list) {
+            case 1:
+                return [$today];
             case 2:
                 $informal = [date('Y-m-d', strtotime($today . ' - 7 days'))];
                 for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
                 return $informal;
             case 3:
+                //$informal = [date('Y-m-d', strtotime($today . ' - 14 days'))];
                 $informal = [date('Y-m-d', strtotime($today . ' - 11 days'))];
+                for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
+                return $informal;
+            case 4:
+                $informal = [date('Y-m-d', strtotime($today . ' - 14 days'))];
                 for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
                 return $informal;
             default:
