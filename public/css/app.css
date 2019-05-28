@@ -16585,6 +16585,12 @@ form#messaging textarea {
   font: 500 1.5rem "Raleway", sans-serif;
 }
 
+.attendance {
+  /*&-item.active{
+        background-color: #ffffe4;
+    }*/
+}
+
 .attendance-create th {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -16814,6 +16820,11 @@ form#messaging textarea {
 
 .user.sent-reminder {
   background-color: #00a368;
+  color: white;
+}
+
+.user.waiting-reminder {
+  background-color: #FFBF00;
   color: white;
 }
 

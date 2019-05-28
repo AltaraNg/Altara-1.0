@@ -14,10 +14,6 @@ var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _sms = __webpack_require__("./resources/assets/js/helpers/sms.js");
-
-var _sms2 = _interopRequireDefault(_sms);
-
 var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
@@ -412,21 +408,14 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
-function initialize(to) {
-    var urls = { create: "/api/reminder/create" + (to.query.list ? '?list=' + to.query.list : '') };
-    return urls.create;
-}
+var url = function url(to) {
+    return "/api/reminder/create?list=" + to.query.list;
+};
 
 exports.default = {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        (0, _api.get)(initialize(to)).then(function (_ref) {
+        (0, _api.get)(url({ query: { list: 4 } })).then(function (_ref) {
             var data = _ref.data;
 
             next(function (vm) {
@@ -439,7 +428,7 @@ exports.default = {
 
         this.show = false;
         this.showModalContent = false;
-        (0, _api.get)(initialize(to)).then(function (_ref2) {
+        (0, _api.get)(url({ query: { list: 4 } })).then(function (_ref2) {
             var data = _ref2.data;
 
             _this.prepareForm(data);
@@ -449,13 +438,12 @@ exports.default = {
     data: function data() {
         return {
             list: 4,
-            form: {},
             orders: {},
             show: false,
             banks: null,
             reminder: null,
             currentOrder: {},
-            doSelectAll: false,
+            promiseCalls: null,
             payment_methods: null,
             showModalContent: false,
             isCurrentOrderInformal: null,
@@ -463,13 +451,12 @@ exports.default = {
         };
     },
 
+
     methods: {
         prepareForm: function prepareForm(res) {
             this.show = false;
             this.showModalContent = false;
-            var _ref3 = [res.orders.filter(function (order) {
-                return order.customer.branch.id === res.branch;
-            }), res.payment_methods, res.banks, res.dva_id];
+            var _ref3 = [res.orders.filter(this.ordersFilter, res.branch), res.payment_methods, res.banks, res.dva_id];
             this.orders = _ref3[0];
             this.payment_methods = _ref3[1];
             this.banks = _ref3[2];
@@ -477,23 +464,38 @@ exports.default = {
 
             this.initializeReminders() && (this.show = true);
         },
+        ordersFilter: function ordersFilter(order, index, arr) {
+
+            console.log(order, index, arr, this);
+
+            return true;
+
+            /*let hasMissedPayment = () => {
+             }
+             let isMyBranch = () => order.customer.branch.id === res.branch;
+             return isMyBranch() && hasMissedPayment();*/
+            //order => order.customer.branch.id === res.branch
+        },
         initializeReminders: function initializeReminders() {
             var _this2 = this;
 
             this.reminder = [];
+            this.promiseCalls = [];
             this.orders.forEach(function (order) {
                 _this2.reminder.push({
-                    'selected': false,
                     'customer_id': order.customer.id,
-                    'phone': order.customer.telephone,
                     'order_id': order.id,
-                    'sms_id': null,
                     'repayment_level': _this2.getRepaymentLevel(order),
-                    'feedback': null,
                     'dva_id': _this2.dva_id,
-                    'type': 'sms',
-                    'date': _this2.getDateString(),
+                    'type': 'call',
+                    'date': _this2.getDateString(), //double check this it might be unnecessary
                     'canBeSelected': _this2.isReminderSent(order)
+                });
+                _this2.promiseCalls.push({
+                    order_id: order.id,
+                    user_id: _this2.dva_id,
+                    customer_id: order.customer.id,
+                    date: null
                 });
             });
             this.$LIPS(false);
@@ -504,24 +506,9 @@ exports.default = {
             _flash2.default.setError(error, 50000);
             this.$LIPS(false);
         },
-        toggleSelect: function toggleSelect(index) {
-            if (this.reminder.length > 0) {
-                if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;else alert('sorry a reminder has already been sent to user!');
-            }
-        },
         checkIfAlreadySentReminder: function checkIfAlreadySentReminder(index) {
             if (this.reminder.length > 0) {
                 return this.reminder[index].canBeSelected;
-            }
-        },
-        selectAll: function selectAll() {
-            var _this3 = this;
-
-            if (this.reminder.length > 0) {
-                this.doSelectAll = !this.doSelectAll;
-                this.reminder.forEach(function (order) {
-                    return order.canBeSelected && (order.selected = _this3.doSelectAll);
-                });
             }
         },
         isOrderFormal: function isOrderFormal(_ref4) {
@@ -549,7 +536,7 @@ exports.default = {
             return date.getFullYear() + '-' + (date.getMonth() + (monthStartsFromZero && 1)) + '-' + date.getDate();
         },
         isReminderSent: function isReminderSent(order) {
-            var _this4 = this;
+            var _this3 = this;
 
             var value = true,
                 date;
@@ -565,7 +552,7 @@ exports.default = {
                         .map(function (item) {
                             return parseInt(item, 10);
                         }); //[2019,3,24,2,0,0]
-                        date = _this4.getDateString(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
+                        date = _this3.getDateString(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
                         date === today && (value = false);
                     });
                 }
@@ -575,118 +562,42 @@ exports.default = {
         renderMessage: function renderMessage(reminder) {
             return !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : 'call feedback: ' + reminder.feedback;
         },
-        generateCustomMessage: function generateCustomMessage(order) {
+        logReminder: function logReminder(index) {
+            var _this4 = this;
+
+            var reminder = this.reminder[index];
+            delete reminder.order;
+            delete reminder.canBeSelected;
+            (0, _api.post)('/api/reminder', { reminders: [reminder] }).then(function (_ref6) {
+                var data = _ref6.data;
+                return data.saved ? _this4.logPromiseCall(_this4.promiseCalls[index]) : _this4.displayErrorMessage('Error Logging reminders!');
+            });
+        },
+        logPromiseCall: function logPromiseCall(promiseCall) {
             var _this5 = this;
 
-            var customer = order.customer,
-                store_product = order.store_product,
-                order_date = order.order_date,
-                product_price = order.product_price,
-                repayment_amount = order.repayment_amount;
-            var product_name = store_product.product_name,
-                first_name = customer.first_name,
-                last_name = customer.last_name;
-            var message = void 0;
-            var isFormal = this.isOrderFormal(order);
-            var genDateArgs = {};
-            if (isFormal) genDateArgs = { startDate: order_date, interval: 28, count: 6 };
-            if (!isFormal) genDateArgs = { startDate: order_date, interval: 14, count: 12 };
-            var dates = this.generateDates(genDateArgs);
-            var repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
-            if (this.list === 1) {
-                message = "Hello " + first_name + " " + last_name + ", thanks for patronizing us." + " The following is the breakdown of the repayment plan for" + (" the purchase of " + product_name + ":%0a");
-                if (dates.length > 0) dates.forEach(function (date, index) {
-                    return message += _this5.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a";
+            if (!!promiseCall.date) {
+                console.log(promiseCall);
+                (0, _api.post)('/api/promise_call', promiseCall).then(function (_ref7) {
+                    var data = _ref7.data;
+                    return data.saved ? _this5.done("Reminder Logged!, Promise call added!") : _this5.displayErrorMessage('Error Logging promise call!');
                 });
-            } else {
-                message = "Hello " + first_name + " " + last_name + ", This is to remind you that your" + (" " + this.getColumn(repaymentLevel) + " repayment of " + product_price + " for " + product_name) + (" will be due on " + dates[repaymentLevel] + ". we will be expecting you.");
-            }
-            return message + "Thank you.";
+            } else this.done("Reminder Logged!");
         },
-        processSelected: function processSelected() {
+        done: function done(message) {
+            this.initializeReminders() && this.$scrollToTop();
+            _flash2.default.setSuccess(message, 5000);
+            this.fetchList(this.list);
+        },
+        fetchList: function fetchList(list) {
             var _this6 = this;
 
             this.$LIPS(true);
-            var smsContactList = this.reminder.filter(function (obj) {
-                return !!obj.selected;
-            }).map(function (obj) {
-                var newObject = JSON.parse(JSON.stringify(obj));
-                newObject.phone = '234' + obj.phone.trim().substr(1);
-                newObject.order = _this6.orders.find(function (order) {
-                    return order.id === obj.order_id;
-                });
-                newObject.message = _this6.generateCustomMessage(newObject.order);
-                newObject.isSent = false;
-                return newObject;
-            });
-            if (!!smsContactList.length) this.sendSMSReminders(smsContactList);else this.displayErrorMessage('please select at least one!');
-        },
-        sendSMSReminders: function sendSMSReminders(smsContactList) {
-            var _this7 = this;
-
-            smsContactList.forEach(function (value, index) {
-                _sms2.default.sendFirstReminder(value, function (res) {
-                    value.isSent = res.status === 200;
-                    if (index + 1 === smsContactList.length) {
-                        _this7.logSentMessages(smsContactList);
-                    }
-                });
-            });
-        },
-        logSentMessages: function logSentMessages(smsContactList) {
-            var _this8 = this;
-
-            var messages = [];
-            smsContactList.forEach(function (obj, index) {
-                obj.isSent && messages.push(new _sms.Message(obj.dva_id, obj.message, obj.phone));
-                if (index + 1 === smsContactList.length) {
-                    if (messages.length > 0) {
-                        (0, _api.post)('/api/message', { messages: messages, bulk: true }).then(function (_ref6) {
-                            var data = _ref6.data;
-                            var sentAndLogged = data.sentAndLogged,
-                                ids = data.ids;
-
-                            if (sentAndLogged) _this8.logSentReminders(smsContactList, ids);else _this8.displayErrorMessage('Error Logging sent sms details!');
-                        });
-                    } else _this8.displayErrorMessage('Error sending messages!');
-                }
-            });
-        },
-        logSentReminders: function logSentReminders(selectedList, ids) {
-            var _this9 = this;
-
-            ids.reverse();
-            var newList = JSON.parse(JSON.stringify(selectedList));
-            newList.forEach(function (value, index) {
-                value.sms_id = ids[index];
-                delete value.isSent;
-                delete value.message;
-                delete value.order;
-                delete value.phone;
-                delete value.selected;
-                delete value.canBeSelected;
-            });
-            if (ids.length > 0) {
-                (0, _api.post)('/api/reminder', { reminders: newList }).then(function (_ref7) {
-                    var data = _ref7.data;
-
-                    _this9.initializeReminders() && _this9.$scrollToTop();
-                    if (data.saved) {
-                        _flash2.default.setSuccess('Reminders have been sent successfully!', 50000);
-                        _this9.fetchList(_this9.list);
-                    } else _this9.displayErrorMessage('Error sending reminders!');
-                });
-            } else this.displayErrorMessage('Error logging sent messages!');
-        },
-        fetchList: function fetchList(list) {
-            var _this10 = this;
-
-            this.$LIPS(true);
             this.list = list;
-            (0, _api.get)(initialize({ query: { list: list } })).then(function (_ref8) {
+            (0, _api.get)(url({ query: { list: list } })).then(function (_ref8) {
                 var data = _ref8.data;
 
-                _this10.prepareForm(data);
+                _this6.prepareForm(data);
             });
         },
         isPaymentDue: function isPaymentDue(dueDate) {
@@ -827,12 +738,13 @@ exports.default = {
             }).name;
         }
     },
+
     mounted: function mounted() {
-        var _this11 = this;
+        var _this7 = this;
 
         $(document).on("hidden.bs.modal", '.modal', function () {
-            _this11.currentOrder = null;
-            _this11.showModalContent = false;
+            _this7.currentOrder = null;
+            _this7.showModalContent = false;
         });
 
         //this is linked to the function that generates dates
@@ -911,7 +823,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    _vm.fetchList(2)
+                    _vm.fetchList(5)
                   }
                 }
               },
@@ -932,7 +844,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    _vm.fetchList(3)
+                    _vm.fetchList(6)
                   }
                 }
               },
@@ -953,7 +865,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    _vm.fetchList(4)
+                    _vm.fetchList(7)
                   }
                 }
               },
@@ -974,7 +886,7 @@ var render = function() {
                 },
                 on: {
                   click: function($event) {
-                    _vm.fetchList(5)
+                    _vm.fetchList(8)
                   }
                 }
               },
@@ -985,51 +897,7 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
-      _c("div", { staticClass: "row px-4 pt-3 pb-4 text-center" }, [
-        _c(
-          "div",
-          {
-            staticClass: "col p-0 text-link",
-            staticStyle: { "max-width": "120px" },
-            on: { click: _vm.selectAll }
-          },
-          [
-            _vm._v(
-              "\n                Click to " +
-                _vm._s(_vm.doSelectAll ? "De-select" : "Select") +
-                " all\n            "
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Order Number")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Order Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Customer Info Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Repayment Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Reminder History")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [_vm._v("Comment")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Promise Date")
-        ])
-      ])
-    ]),
+    _vm._m(0),
     _vm._v(" "),
     _vm.show && !!_vm.orders.length
       ? _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
@@ -1052,68 +920,18 @@ var render = function() {
                       [
                         _vm.checkIfAlreadySentReminder(index)
                           ? _c(
-                              "div",
-                              { staticClass: "d-flex align-items-center" },
-                              [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.reminder[index].selected,
-                                      expression: "reminder[index].selected"
-                                    }
-                                  ],
-                                  staticClass:
-                                    "form-check-input my-0 mx-4 float-left position-relative ",
-                                  attrs: { type: "checkbox" },
-                                  domProps: {
-                                    checked: Array.isArray(
-                                      _vm.reminder[index].selected
-                                    )
-                                      ? _vm._i(
-                                          _vm.reminder[index].selected,
-                                          null
-                                        ) > -1
-                                      : _vm.reminder[index].selected
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.toggleSelect(index)
-                                    },
-                                    change: function($event) {
-                                      var $$a = _vm.reminder[index].selected,
-                                        $$el = $event.target,
-                                        $$c = $$el.checked ? true : false
-                                      if (Array.isArray($$a)) {
-                                        var $$v = null,
-                                          $$i = _vm._i($$a, $$v)
-                                        if ($$el.checked) {
-                                          $$i < 0 &&
-                                            _vm.$set(
-                                              _vm.reminder[index],
-                                              "selected",
-                                              $$a.concat([$$v])
-                                            )
-                                        } else {
-                                          $$i > -1 &&
-                                            _vm.$set(
-                                              _vm.reminder[index],
-                                              "selected",
-                                              $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1))
-                                            )
-                                        }
-                                      } else {
-                                        _vm.$set(
-                                          _vm.reminder[index],
-                                          "selected",
-                                          $$c
-                                        )
-                                      }
-                                    }
+                              "span",
+                              {
+                                staticClass: "user mx-auto waiting-reminder",
+                                on: {
+                                  click: function($event) {
+                                    _vm.logReminder(index)
                                   }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fas fa-hourglass-start"
                                 })
                               ]
                             )
@@ -1229,49 +1047,96 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _vm._m(0, true),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
+                      },
+                      [
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.reminder[index].feedback,
+                              expression: "reminder[index].feedback"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            rows: "1",
+                            disabled: !_vm.reminder[index].canBeSelected
+                          },
+                          domProps: { value: _vm.reminder[index].feedback },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.reminder[index],
+                                "feedback",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]
+                    ),
                     _vm._v(" "),
-                    _vm._m(1, true)
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.promiseCalls[index].date,
+                              expression: "promiseCalls[index].date"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "date",
+                            disabled: !_vm.reminder[index].canBeSelected
+                          },
+                          domProps: { value: _vm.promiseCalls[index].date },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.promiseCalls[index],
+                                "date",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]
+                    )
                   ])
                 : _vm._e()
             })
           )
         ])
       : _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
-          _vm._m(2)
+          _vm._m(1)
         ]),
     _vm._v(" "),
-    !!_vm.orders.length
-      ? _c("div", { staticClass: "mt-1 attendance-body" }, [
-          _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
-            _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "clearfix d-flex justify-content-end w-100" },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn bg-default",
-                    attrs: { disabled: _vm.$isProcessing },
-                    on: { click: _vm.processSelected }
-                  },
-                  [
-                    _vm._v("\n                    Send Reminder(s) "),
-                    _c("i", { staticClass: "far fa-paper-plane ml-1" })
-                  ]
-                )
-              ]
-            )
-          ])
-        ])
-      : _vm._e(),
+    _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
     _vm._v(" "),
     _c("div", { staticClass: "modal fade", attrs: { id: "purchase_order" } }, [
       _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(3),
+          _vm._m(2),
           _vm._v(" "),
           _vm.showModalContent
             ? _c("div", { staticClass: "modal-body" }, [
@@ -1389,7 +1254,7 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
-          _vm._m(4)
+          _vm._m(3)
         ])
       ])
     ]),
@@ -1397,7 +1262,7 @@ var render = function() {
     _c("div", { staticClass: "modal fade", attrs: { id: "customer_info" } }, [
       _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(5),
+          _vm._m(4),
           _vm._v(" "),
           _vm.showModalContent
             ? _c("div", { staticClass: "modal-body" }, [
@@ -1444,6 +1309,14 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("tr", [
+                          _c("th", [_vm._v("Phone")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.customer.telephone))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
                           _c("th", [_vm._v("Branch")]),
                           _vm._v(" "),
                           _c("td", [
@@ -1465,7 +1338,7 @@ var render = function() {
                           ])
                         ]),
                         _vm._v(" "),
-                        _vm._m(6)
+                        _vm._m(5)
                       ])
                     ]
                   )
@@ -1473,7 +1346,7 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
-          _vm._m(7)
+          _vm._m(6)
         ])
       ])
     ]),
@@ -1500,7 +1373,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(8)
+                    _vm._m(7)
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
@@ -1509,6 +1382,8 @@ var render = function() {
                         _c("tbody", { staticClass: "text-center" }, [
                           _c("tr", [
                             _c("th", [_vm._v("Repayment")]),
+                            _vm._v(" "),
+                            _vm._m(8),
                             _vm._v(" "),
                             _vm._m(9),
                             _vm._v(" "),
@@ -1519,8 +1394,6 @@ var render = function() {
                             _vm._m(12),
                             _vm._v(" "),
                             _vm._m(13),
-                            _vm._v(" "),
-                            _vm._m(14),
                             _vm._v(" "),
                             _vm.isCurrentOrderInformal
                               ? _c("td", [
@@ -1904,7 +1777,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(15)
+                  _vm._m(14)
                 ])
               : _vm._e()
           ]
@@ -1924,7 +1797,7 @@ var render = function() {
           { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(16),
+              _vm._m(15),
               _vm._v(" "),
               _vm.showModalContent
                 ? _c("div", { staticClass: "modal-body" }, [
@@ -1936,7 +1809,7 @@ var render = function() {
                               staticClass: "table table-bordered table-striped"
                             },
                             [
-                              _vm._m(17),
+                              _vm._m(16),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -1976,7 +1849,7 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm._m(18)
+              _vm._m(17)
             ])
           ]
         )
@@ -1989,25 +1862,44 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
-      },
-      [_c("textarea", { staticClass: "form-control", attrs: { rows: "1" } })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
-      },
-      [_c("input", { staticClass: "form-control", attrs: { type: "date" } })]
-    )
+    return _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
+      _c("div", { staticClass: "row px-4 pt-3 pb-4 text-center" }, [
+        _c(
+          "div",
+          {
+            staticClass: "col light-heading",
+            staticStyle: { "max-width": "120px" }
+          },
+          [_vm._v("Action")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Order Number")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Order Summary")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Customer Info Summary")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Repayment Summary")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Reminder History")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [_vm._v("Feedback")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col light-heading" }, [
+          _vm._v("Promise Date")
+        ])
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -2296,95 +2188,6 @@ if(false) {
  // When the module is disposed, remove the <style> tags
  module.hot.dispose(function() { update(); });
 }
-
-/***/ }),
-
-/***/ "./resources/assets/js/helpers/sms.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Message = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Message = exports.Message = function () {
-    function Message(userId, message, contacts) {
-        _classCallCheck(this, Message);
-
-        this.user_id = userId;
-        this.message = message;
-        this.contacts = contacts;
-        this.setPages();
-        this.setContactCount();
-    }
-
-    _createClass(Message, [{
-        key: "setContactCount",
-        value: function setContactCount() {
-            if (this.contacts.constructor === String) this.contact_count = this.contacts.split(',').length;
-            if (this.contacts.constructor === Array) this.contact_count = this.contacts.length;
-        }
-    }, {
-        key: "setPages",
-        value: function setPages() {
-            this.pages = Math.ceil(this.message.length / 160);
-        }
-    }]);
-
-    return Message;
-}();
-
-exports.default = {
-    message: "",
-    welcome: function welcome(details) {
-        this.message = "Welcome to Altara credit. Please secure your login details. Staff ID: " + details.loginID + ", password: " + details.loginPassword;
-        this.send(details);
-    },
-    customerReg: function customerReg(details) {
-        this.message = "Dear " + details.first_name + " " + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact: " + details.branch.phone_yoruba + ". Your customer id is: " + details.id;
-        this.send({ phone: details.telephone.substr(1) });
-    },
-    passwordReset: function passwordReset(details) {
-        this.message = "Password reset successful! if your did not request for a new password kindly report back immediately, your staff ID is " + details.staff_id + ", new password: " + details.password;
-        this.send(details);
-    },
-    transfer: function transfer(details) {
-        this.message = "Transfer Successful, your new staff ID is " + details.loginID + " ";
-        this.send(details);
-    },
-    dvaMessage: function dvaMessage(details, callback) {
-        this.message = details.message;
-        this.sendWithCallback(details, callback);
-    },
-    sendFirstReminder: function sendFirstReminder(details, callback) {
-        this.message = details.message;
-        return this.sendWithCallback(details, callback);
-    },
-    sendWithCallback: function sendWithCallback(_ref, callback) {
-        var phone = _ref.phone;
-
-        (0, _api.get)("/api/message/create?to=" + phone + "&message=" + this.message).then(function (res) {
-            res.status === 200 && console.log("sms sent successfully");
-            return !!callback && callback(res);
-        }).catch(function (err) {
-            return !!callback && callback(err);
-        });
-    },
-    send: function send(details) {
-        (0, _api.get)("/api/message/create?to=234" + details.phone + "&message=" + this.message).then(function (res) {
-            res.status === 200 && console.log("sms sent successfully");
-        });
-    }
-};
 
 /***/ }),
 

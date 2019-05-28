@@ -24,7 +24,7 @@ class CreateRemindersTable extends Migration
             $table->string('feedback')->nullable();
             $table->unsignedInteger('dva_id');
             $table->string('type');
-            $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
             //$table->timestamps();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

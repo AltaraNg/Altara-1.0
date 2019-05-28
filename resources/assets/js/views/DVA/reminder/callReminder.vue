@@ -12,25 +12,25 @@
                 <li class="col p-0 nav-item mb-0">
                     <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(2)"
+                       @click="fetchList(5)"
                        role="tab">2<sup>nd</sup> Reminder</a>
                 </li>
                 <li class="col p-0 nav-item mb-0">
                     <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(3)"
+                       @click="fetchList(6)"
                        role="tab">3<sup>rd</sup> Reminder</a>
                 </li>
                 <li class="col p-0 nav-item mb-0">
                     <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(4)"
+                       @click="fetchList(7)"
                        role="tab">4<sup>th</sup> Reminder</a>
                 </li>
                 <li class="col p-0 nav-item mb-0">
                     <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(5)"
+                       @click="fetchList(8)"
                        role="tab">5<sup>th</sup> Reminder</a>
                 </li>
             </ul>
@@ -38,15 +38,13 @@
 
         <div class="mt-5 mb-3 attendance-head">
             <div class="row px-4 pt-3 pb-4 text-center">
-                <div class="col p-0 text-link" @click="selectAll" style="max-width: 120px">
-                    Click to {{doSelectAll ? 'De-select' : 'Select'}} all
-                </div>
+                <div class="col light-heading" style="max-width: 120px">Action</div>
                 <div class="col light-heading">Order Number</div>
                 <div class="col light-heading">Order Summary</div>
                 <div class="col light-heading">Customer Info Summary</div>
                 <div class="col light-heading">Repayment Summary</div>
                 <div class="col light-heading">Reminder History</div>
-                <div class="col light-heading">Comment</div>
+                <div class="col light-heading">Feedback</div>
                 <div class="col light-heading">Promise Date</div>
             </div>
         </div>
@@ -55,10 +53,11 @@
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <div class="mb-3 row attendance-item" v-if="!!orders.length" v-for="(order, index) in orders">
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
-                        <div v-if="checkIfAlreadySentReminder(index)" class="d-flex align-items-center">
-                            <input class="form-check-input my-0 mx-4 float-left position-relative " type="checkbox"
-                                   v-model="reminder[index].selected" @click="toggleSelect(index)">
-                        </div>
+                        <span v-if="checkIfAlreadySentReminder(index)"
+                              @click="logReminder(index)"
+                              class="user mx-auto waiting-reminder">
+                            <i class="fas fa-hourglass-start"></i>
+                        </span>
                         <span class="user mx-auto sent-reminder" v-else><i class="fas fa-check"></i></span>
                         <span class="user mx-auto">{{index+1}}</span>
                     </div>
@@ -86,10 +85,10 @@
                         {{order.reminders.length}} reminder(s) sent
                     </div>
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center">
-                        <textarea class="form-control" rows="1"></textarea>
+                        <textarea class="form-control" rows="1" v-model="reminder[index].feedback" :disabled="!reminder[index].canBeSelected"></textarea>
                     </div>
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center">
-                        <input class="form-control" type="date">
+                        <input class="form-control" type="date" v-model="promiseCalls[index].date" :disabled="!reminder[index].canBeSelected">
                     </div>
                 </div>
             </div>
@@ -105,16 +104,7 @@
             </div>
         </div>
 
-        <div class="mt-1 attendance-body" v-if="!!orders.length">
-            <div class="mb-5 px-0 row align-items-center">
-                <div class="w-100 my-5 mx-0 hr"></div>
-                <div class="clearfix d-flex justify-content-end w-100">
-                    <button :disabled="$isProcessing" class="btn bg-default" @click="processSelected">
-                        Send Reminder(s) <i class="far fa-paper-plane ml-1"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <div class="w-100 my-5 mx-0 hr"></div>
 
         <div class="modal fade" id="purchase_order">
             <div class="modal-dialog" role="document">
@@ -201,6 +191,10 @@
                                 <tr>
                                     <th>Address</th>
                                     <td>{{$getCustomerAddress(currentOrder.customer)}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone</th>
+                                    <td>{{currentOrder.customer.telephone}}</td>
                                 </tr>
                                 <tr>
                                     <th>Branch</th>
@@ -392,26 +386,22 @@
 
 <script>
     import Vue from 'vue';
-    import SMS from "../../../helpers/sms";
     import Flash from "../../../helpers/flash";
-    import {Message} from "../../../helpers/sms";
     import {get, post} from "../../../helpers/api";
 
-    function initialize(to) {
-        let urls = {create: `/api/reminder/create${to.query.list ? '?list=' + to.query.list : ''}`};
-        return urls.create;
-    }
+    let url = to => `/api/reminder/create?list=${to.query.list}`;
 
     export default {
         beforeRouteEnter(to, from, next) {
-            get(initialize(to)).then(({data}) => {
+            get(url({query: {list: 4}})).then(({data}) => {
                 next(vm => vm.prepareForm(data));
             });
         },
+
         beforeRouteUpdate(to, from, next) {
             this.show = false;
             this.showModalContent = false;
-            get(initialize(to)).then(({data}) => {
+            get(url({query: {list: 4}})).then(({data}) => {
                 this.prepareForm(data);
                 next();
             });
@@ -420,44 +410,63 @@
         data() {
             return {
                 list: 4,
-                form: {},
                 orders: {},
                 show: false,
                 banks: null,
                 reminder: null,
                 currentOrder: {},
-                doSelectAll: false,
+                promiseCalls: null,
                 payment_methods: null,
                 showModalContent: false,
                 isCurrentOrderInformal: null,
                 currentOrderRepaymentDates: null
             }
         },
+
         methods: {
             prepareForm(res) {
                 this.show = false;
                 this.showModalContent = false;
                 [this.orders, this.payment_methods, this.banks, this.dva_id] = [
-                    res.orders.filter(order => order.customer.branch.id === res.branch),
+                    res.orders.filter(this.ordersFilter, res.branch),
                     res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
             },
 
+            ordersFilter(order, index, arr){
+
+                console.log(order, index, arr, this);
+
+                return true;
+
+                /*let hasMissedPayment = () => {
+
+                }
+
+                let isMyBranch = () => order.customer.branch.id === res.branch;
+
+                return isMyBranch() && hasMissedPayment();*/
+                //order => order.customer.branch.id === res.branch
+            },
+
             initializeReminders() {
                 this.reminder = [];
+                this.promiseCalls = [];
                 this.orders.forEach(order => {
                     this.reminder.push({
-                        'selected': false,
                         'customer_id': order.customer.id,
-                        'phone': order.customer.telephone,
                         'order_id': order.id,
-                        'sms_id': null,
                         'repayment_level': this.getRepaymentLevel(order),
-                        'feedback': null,
                         'dva_id': this.dva_id,
-                        'type': 'sms',
-                        'date': this.getDateString(),
+                        'type': 'call',
+                        'date': this.getDateString(),//double check this it might be unnecessary
                         'canBeSelected': this.isReminderSent(order),
+                    });
+                    this.promiseCalls.push({
+                        order_id: order.id,
+                        user_id: this.dva_id,
+                        customer_id: order.customer.id,
+                        date: null,
                     });
                 });
                 this.$LIPS(false);
@@ -470,23 +479,9 @@
                 this.$LIPS(false);
             },
 
-            toggleSelect(index) {
-                if (this.reminder.length > 0) {
-                    if (this.reminder[index].canBeSelected) this.reminder[index].selected = !this.reminder[index].selected;
-                    else alert('sorry a reminder has already been sent to user!');
-                }
-            },
-
             checkIfAlreadySentReminder(index) {
                 if (this.reminder.length > 0) {
                     return this.reminder[index].canBeSelected;
-                }
-            },
-
-            selectAll() {
-                if (this.reminder.length > 0) {
-                    this.doSelectAll = !this.doSelectAll;
-                    this.reminder.forEach(order => order.canBeSelected && (order.selected = this.doSelectAll));
                 }
             },
 
@@ -534,101 +529,36 @@
                     : 'call feedback: ' + reminder.feedback;
             },
 
-            generateCustomMessage(order) {
-                const {customer, store_product, order_date, product_price, repayment_amount} = order;
-                const {product_name} = store_product, {first_name, last_name} = customer;
-                let message;
-                let isFormal = this.isOrderFormal(order);
-                let genDateArgs = {};
-                if (isFormal) genDateArgs = {startDate: order_date, interval: 28, count: 6};
-                if (!isFormal) genDateArgs = {startDate: order_date, interval: 14, count: 12};
-                let dates = this.generateDates(genDateArgs);
-                let repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
-                if (this.list === 1) {
-                    message = `Hello ${first_name} ${last_name}, thanks for patronizing us.`
-                        + ` The following is the breakdown of the repayment plan for`
-                        + ` the purchase of ${product_name}:%0a`;
-                    if (dates.length > 0)
-                        dates.forEach((date, index) =>
-                            message += this.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a");
-                } else {
-                    message = `Hello ${first_name} ${last_name}, This is to remind you that your`
-                        + ` ${this.getColumn(repaymentLevel)} repayment of ${product_price} for ${product_name}`
-                        + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
-                }
-                return message + "Thank you.";
+            logReminder(index) {
+                let reminder = this.reminder[index];
+                delete reminder.order;
+                delete reminder.canBeSelected;
+                post('/api/reminder', {reminders: [reminder]}).then(({data}) =>
+                    data.saved ? this.logPromiseCall(this.promiseCalls[index])
+                        : this.displayErrorMessage('Error Logging reminders!')
+                );
             },
 
-            processSelected() {
-                this.$LIPS(true);
-                let smsContactList = this.reminder
-                    .filter(obj => !!obj.selected)
-                    .map(obj => {
-                        let newObject = JSON.parse(JSON.stringify(obj));
-                        newObject.phone = '234' + obj.phone.trim().substr(1);
-                        newObject.order = this.orders.find(order => order.id === obj.order_id);
-                        newObject.message = this.generateCustomMessage(newObject.order);
-                        newObject.isSent = false;
-                        return newObject;
-                    });
-                if (!!smsContactList.length) this.sendSMSReminders(smsContactList);
-                else this.displayErrorMessage('please select at least one!');
+            logPromiseCall(promiseCall) {
+                if (!!promiseCall.date) {
+                    console.log(promiseCall);
+                    post('/api/promise_call', promiseCall).then(({data}) =>
+                        data.saved ? this.done("Reminder Logged!, Promise call added!")
+                            : this.displayErrorMessage('Error Logging promise call!')
+                    );
+                } else this.done("Reminder Logged!");
             },
 
-            sendSMSReminders(smsContactList) {
-                smsContactList.forEach((value, index) => {
-                    SMS.sendFirstReminder(value, res => {
-                        value.isSent = res.status === 200;
-                        if ((index + 1) === smsContactList.length) {
-                            this.logSentMessages(smsContactList);
-                        }
-                    });
-                });
-            },
-
-            logSentMessages(smsContactList) {
-                let messages = [];
-                smsContactList.forEach((obj, index) => {
-                    obj.isSent && messages.push(new Message(obj.dva_id, obj.message, obj.phone));
-                    if ((index + 1) === smsContactList.length) {
-                        if (messages.length > 0) {
-                            post('/api/message', {messages, bulk: true}).then(({data}) => {
-                                let {sentAndLogged, ids} = data;
-                                if (sentAndLogged) this.logSentReminders(smsContactList, ids);
-                                else this.displayErrorMessage('Error Logging sent sms details!');
-                            });
-                        } else this.displayErrorMessage('Error sending messages!');
-                    }
-                });
-            },
-
-            logSentReminders(selectedList, ids) {
-                ids.reverse();
-                let newList = JSON.parse(JSON.stringify(selectedList));
-                newList.forEach((value, index) => {
-                    value.sms_id = ids[index];
-                    delete value.isSent;
-                    delete value.message;
-                    delete value.order;
-                    delete value.phone;
-                    delete value.selected;
-                    delete value.canBeSelected;
-                });
-                if (ids.length > 0) {
-                    post('/api/reminder', {reminders: newList}).then(({data}) => {
-                        this.initializeReminders() && this.$scrollToTop();
-                        if (data.saved) {
-                            Flash.setSuccess('Reminders have been sent successfully!', 50000);
-                            this.fetchList(this.list);
-                        } else this.displayErrorMessage('Error sending reminders!');
-                    })
-                } else this.displayErrorMessage('Error logging sent messages!');
+            done(message) {
+                this.initializeReminders() && this.$scrollToTop();
+                Flash.setSuccess(message, 5000);
+                this.fetchList(this.list);
             },
 
             fetchList(list) {
                 this.$LIPS(true);
                 this.list = list;
-                get(initialize({query: {list}})).then(({data}) => {
+                get(url({query: {list}})).then(({data}) => {
                     this.prepareForm(data);
                 });
             },
@@ -757,6 +687,7 @@
                 return (!id) ? null : this.$data[type === 'bank' ? 'banks' : 'payment_methods'].find(obj => obj.id === id).name;
             },
         },
+
         mounted() {
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.currentOrder = null;

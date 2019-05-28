@@ -24,26 +24,35 @@ class ReminderController extends Controller
     public function getDateForReminder($list)
     {
         //$today = date('Y-m-d');
-        $today = '2019-05-13';
+        $today = '2018-12-11';
+        $days = 0;
         switch ($list) {
-            case 1:
+            case 1://sms reminder: 1
                 return [$today];
-            case 2:
-                $informal = [date('Y-m-d', strtotime($today . ' - 7 days'))];
-                for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
-                return $informal;
-            case 3:
-                //$informal = [date('Y-m-d', strtotime($today . ' - 14 days'))];
-                $informal = [date('Y-m-d', strtotime($today . ' - 11 days'))];
-                for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
-                return $informal;
-            case 4:
-                $informal = [date('Y-m-d', strtotime($today . ' - 14 days'))];
-                for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
-                return $informal;
+            case 2://sms reminder: 2
+                $days = 7;
+                break;
+            case 3://sms reminder: 3
+                $days = 11;
+                break;
+            case 4://call reminder: 1
+                $days = 14;
+                break;
+            case 5://call reminder: 2
+                $days = 15;
+                break;
+            case 6://call reminder: 3
+                $days = 21;
+                break;
+            case 7://call reminder: 4
+                $days = 28;
+                break;
             default:
                 return [$today];
         }
+        $informal = [date('Y-m-d', strtotime($today . ' - '.$days.' days'))];
+        for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
+        return $informal;
     }
 
     /**

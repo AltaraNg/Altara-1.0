@@ -40,6 +40,7 @@
         <div class="tab-content mt-1 attendance-body" v-if="show && !!orders.length">
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <div class="mb-3 row attendance-item" v-if="!!orders.length" v-for="(order, index) in orders">
+                     <!--:data-key="index" @click="itemClicked(index)">-->
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
                         <div v-if="checkIfAlreadySentReminder(index)" class="d-flex align-items-center">
                             <input class="form-check-input my-0 mx-4 float-left position-relative " type="checkbox"
@@ -181,6 +182,10 @@
                                 <tr>
                                     <th>Address</th>
                                     <td>{{$getCustomerAddress(currentOrder.customer)}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone</th>
+                                    <td>{{currentOrder.customer.telephone}}</td>
                                 </tr>
                                 <tr>
                                     <th>Branch</th>
@@ -377,21 +382,18 @@
     import {Message} from "../../../helpers/sms";
     import {get, post} from "../../../helpers/api";
 
-    function initialize(to) {
-        let urls = {create: `/api/reminder/create${to.query.list ? '?list=' + to.query.list : ''}`};
-        return urls.create;
-    }
+    let url = to => `/api/reminder/create?list=${to.query.list}`;
 
     export default {
         beforeRouteEnter(to, from, next) {
-            get(initialize(to)).then(({data}) => {
+            get(url({query: {list: 1}})).then(({data}) => {
                 next(vm => vm.prepareForm(data));
             });
         },
         beforeRouteUpdate(to, from, next) {
             this.show = false;
             this.showModalContent = false;
-            get(initialize(to)).then(({data}) => {
+            get(url({query: {list: 1}})).then(({data}) => {
                 this.prepareForm(data);
                 next();
             });
@@ -400,7 +402,7 @@
         data() {
             return {
                 list: 1,
-                form: {},
+                //form: {},
                 orders: {},
                 show: false,
                 banks: null,
@@ -418,7 +420,7 @@
                 this.show = false;
                 this.showModalContent = false;
                 [this.orders, this.payment_methods, this.banks, this.dva_id] = [
-                    res.orders.filter(order => order.customer.branch.id === res.branch),
+                    res.orders/*.filter(order => order.customer.branch.id === res.branch)*/,
                     res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
             },
@@ -433,10 +435,10 @@
                         'order_id': order.id,
                         'sms_id': null,
                         'repayment_level': this.getRepaymentLevel(order),
-                        'feedback': null,
+                        'feedback': null,//this may be unnecessary
                         'dva_id': this.dva_id,
                         'type': 'sms',
-                        'date': this.getDateString(),
+                        'date': this.getDateString(),//double check this it might be unnecessary
                         'canBeSelected': this.isReminderSent(order),
                     });
                 });
@@ -469,6 +471,18 @@
                     this.reminder.forEach(order => order.canBeSelected && (order.selected = this.doSelectAll));
                 }
             },
+
+            /*itemClicked(index) {
+                let elem = ".row.attendance-item";
+
+                //remove class from all attendance-item element
+                $(`${elem}:not([data-key=${index}])`).removeClass('active');
+
+                //add class .active to the .attendance-item clicked
+                $(`${elem}[data-key=${index}]`).toggleClass("active");
+
+                console.log(1);
+            },*/
 
             isOrderFormal({repayment_informal}) {
                 return repayment_informal === null;
@@ -608,7 +622,7 @@
             fetchList(list) {
                 this.$LIPS(true);
                 this.list = list;
-                get(initialize({query: {list}})).then(({data}) => {
+                get(url({query: {list}})).then(({data}) => {
                     this.prepareForm(data);
                 });
             },
@@ -648,6 +662,13 @@
                 Vue.set(this.$data, 'currentOrder', order);
                 this.isCurrentOrderInformal = !(['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()));
                 this.showModalContent = true;
+
+                /*var index = this.orders.indexOf(order);
+
+                console.log(2);
+
+                //this.itemClicked(index);*/
+
                 return $(`#${modal}`).modal('toggle');
             },
 

@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'supplier' => 'SupplierController',
         'reminder' => 'ReminderController',
         'attendance' => 'AttendanceController',
+        'promise_call' => 'PromiseCallController',
         'verification' => 'VerificationController',
         'work_guarantor' => 'WorkGuarantorController',
         'processing_fee' => 'ProcessingFeeController',

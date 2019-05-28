@@ -398,15 +398,19 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
 
-function initialize(to) {
-    var urls = { create: "/api/reminder/create" + (to.query.list ? '?list=' + to.query.list : '') };
-    return urls.create;
-}
+var url = function url(to) {
+    return "/api/reminder/create?list=" + to.query.list;
+};
 
 exports.default = {
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        (0, _api.get)(initialize(to)).then(function (_ref) {
+        (0, _api.get)(url({ query: { list: 1 } })).then(function (_ref) {
             var data = _ref.data;
 
             next(function (vm) {
@@ -419,7 +423,7 @@ exports.default = {
 
         this.show = false;
         this.showModalContent = false;
-        (0, _api.get)(initialize(to)).then(function (_ref2) {
+        (0, _api.get)(url({ query: { list: 1 } })).then(function (_ref2) {
             var data = _ref2.data;
 
             _this.prepareForm(data);
@@ -429,7 +433,7 @@ exports.default = {
     data: function data() {
         return {
             list: 1,
-            form: {},
+            //form: {},
             orders: {},
             show: false,
             banks: null,
@@ -447,9 +451,8 @@ exports.default = {
         prepareForm: function prepareForm(res) {
             this.show = false;
             this.showModalContent = false;
-            var _ref3 = [res.orders.filter(function (order) {
-                return order.customer.branch.id === res.branch;
-            }), res.payment_methods, res.banks, res.dva_id];
+            var _ref3 = [res.orders /*.filter(order => order.customer.branch.id === res.branch)*/
+            , res.payment_methods, res.banks, res.dva_id];
             this.orders = _ref3[0];
             this.payment_methods = _ref3[1];
             this.banks = _ref3[2];
@@ -469,10 +472,10 @@ exports.default = {
                     'order_id': order.id,
                     'sms_id': null,
                     'repayment_level': _this2.getRepaymentLevel(order),
-                    'feedback': null,
+                    'feedback': null, //this may be unnecessary
                     'dva_id': _this2.dva_id,
                     'type': 'sms',
-                    'date': _this2.getDateString(),
+                    'date': _this2.getDateString(), //double check this it might be unnecessary
                     'canBeSelected': _this2.isReminderSent(order)
                 });
             });
@@ -504,6 +507,17 @@ exports.default = {
                 });
             }
         },
+
+
+        /*itemClicked(index) {
+            let elem = ".row.attendance-item";
+             //remove class from all attendance-item element
+            $(`${elem}:not([data-key=${index}])`).removeClass('active');
+             //add class .active to the .attendance-item clicked
+            $(`${elem}[data-key=${index}]`).toggleClass("active");
+             console.log(1);
+        },*/
+
         isOrderFormal: function isOrderFormal(_ref4) {
             var repayment_informal = _ref4.repayment_informal;
 
@@ -663,7 +677,7 @@ exports.default = {
 
             this.$LIPS(true);
             this.list = list;
-            (0, _api.get)(initialize({ query: { list: list } })).then(function (_ref8) {
+            (0, _api.get)(url({ query: { list: list } })).then(function (_ref8) {
                 var data = _ref8.data;
 
                 _this10.prepareForm(data);
@@ -702,6 +716,11 @@ exports.default = {
             _vue2.default.set(this.$data, 'currentOrder', order);
             this.isCurrentOrderInformal = !['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase());
             this.showModalContent = true;
+
+            /*var index = this.orders.indexOf(order);
+             console.log(2);
+             //this.itemClicked(index);*/
+
             return $("#" + modal).modal('toggle');
         },
         getCountAndRepaymentData: function getCountAndRepaymentData(order) {
@@ -1368,6 +1387,14 @@ var render = function() {
                                 )
                               )
                             )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Phone")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.customer.telephone))
                           ])
                         ]),
                         _vm._v(" "),
