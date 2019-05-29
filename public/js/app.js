@@ -44338,7 +44338,7 @@ var Login = function Login() {
 };
 
 var NotFound = function NotFound() {
-    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
+    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
 };
 
 var DSA = function DSA() {
@@ -44373,17 +44373,17 @@ var DVASMSReminder = function DVASMSReminder() {
     return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/SMSReminder.vue"));
 };
 var DVACallReminder = function DVACallReminder() {
-    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/callReminder.vue"));
+    return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/callReminder.vue"));
 };
 
 var Profile = function Profile() {
-    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
+    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
 };
 var ProfileEdit = function ProfileEdit() {
-    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
+    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
 };
 var ProfileHome = function ProfileHome() {
-    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
+    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
 };
 
 var HRM = function HRM() {
@@ -44400,7 +44400,7 @@ var EmployeeForm = function EmployeeForm() {
 };
 
 var Caution = function Caution() {
-    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/index.vue"));
+    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/index.vue"));
 };
 var CautionForm = function CautionForm() {
     return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/form.vue"));
@@ -44430,16 +44430,16 @@ var LOGHome = function LOGHome() {
     return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/HomePage.vue"));
 };
 var Inventory = function Inventory() {
-    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
+    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
 };
 var SuppliersForm = function SuppliersForm() {
-    return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/supplier/form.vue"));
+    return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/supplier/form.vue"));
 };
 var BrandForm = function BrandForm() {
-    return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/brand/form.vue"));
+    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/brand/form.vue"));
 };
 var CategoryForm = function CategoryForm() {
-    return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/category/form.vue"));
+    return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/category/form.vue"));
 };
 var ProductForm = function ProductForm() {
     return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/product/form.vue"));

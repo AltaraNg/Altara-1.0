@@ -31,7 +31,7 @@
                     <a aria-selected="false" class="nav-link"
                        data-toggle="tab" href="#reminder-panel"
                        @click="fetchList(8)"
-                       role="tab">5<sup>th</sup> Reminder</a>
+                       role="tab">Promise Call</a>
                 </li>
             </ul>
         </div>
@@ -85,10 +85,12 @@
                         {{order.reminders.length}} reminder(s) sent
                     </div>
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center">
-                        <textarea class="form-control" rows="1" v-model="reminder[index].feedback" :disabled="!reminder[index].canBeSelected"></textarea>
+                        <textarea class="form-control" rows="1" v-model="reminder[index].feedback"
+                                  :disabled="!reminder[index].canBeSelected"></textarea>
                     </div>
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center">
-                        <input class="form-control" type="date" v-model="promiseCalls[index].date" :disabled="!reminder[index].canBeSelected">
+                        <input class="form-control" type="date" v-model="promiseCalls[index].date"
+                               :disabled="!reminder[index].canBeSelected">
                     </div>
                 </div>
             </div>
@@ -428,25 +430,58 @@
                 this.show = false;
                 this.showModalContent = false;
                 [this.orders, this.payment_methods, this.banks, this.dva_id] = [
-                    res.orders.filter(this.ordersFilter, res.branch),
-                    res.payment_methods, res.banks, res.dva_id];
+                    // res.orders.filter(this.ordersFilter, res.branch),
+                    res.orders.filter(order => {
+
+                        let {count, repaymentData} = this.getCountAndRepaymentData(order);
+
+                        let hasMissedPayment = () => {
+
+                            //return true;
+                            let payDay, today = new Date(/*'2019-05-14'*/);
+
+                            //step 1.
+                            for (let i = 1; i < count; i++) {
+                                let column = this.getColumn(i);
+
+                                //step 2. get the first occurrence of a vacant pay
+                                if (!(!!repaymentData[column + "_pay"])) {
+
+                                    //step 3. find the corresponding due date for the vacant pay
+                                    payDay = this.generateDates({
+                                        startDate: order.order_date,
+                                        interval: count === 7 ? 28 : 14,
+                                        count: count - 1
+                                    })[i - 1];
+                                    break;
+                                }
+                            }
+
+                            //step 4. check is the date is
+                            switch (this.list) {
+                                case 4:
+                                    //4a: same as today (for first call reminder due date = current date)
+                                    return (this.getDateString(today) === payDay);
+                                case 5:
+                                    //4a: same as today (for first call reminder due date = current date + 1 day)
+                                    return (this.getDateString(today.addDays(-1)) === payDay);
+                                case 6:
+                                    //4a: same as today (for first call reminder due date = current date + 7 days)
+                                    return (this.getDateString(today.addDays(-7)) === payDay);
+                                case 7:
+                                    //4a: same as today (for first call reminder due date = current date + 28 days)
+                                    return (this.getDateString(today.addDays(-28)) === payDay);
+                                case 8:
+                                    //for the promise calls
+                                    break;
+                            }
+                        };
+
+                        let isMyBranch = () => /* true; */ order.customer.branch.id === res.branch;
+
+                        return isMyBranch() && hasMissedPayment();
+                    }), res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
-            },
-
-            ordersFilter(order, index, arr){
-
-                console.log(order, index, arr, this);
-
-                return true;
-
-                /*let hasMissedPayment = () => {
-
-                }
-
-                let isMyBranch = () => order.customer.branch.id === res.branch;
-
-                return isMyBranch() && hasMissedPayment();*/
-                //order => order.customer.branch.id === res.branch
             },
 
             initializeReminders() {

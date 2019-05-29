@@ -420,7 +420,7 @@
                 this.show = false;
                 this.showModalContent = false;
                 [this.orders, this.payment_methods, this.banks, this.dva_id] = [
-                    res.orders/*.filter(order => order.customer.branch.id === res.branch)*/,
+                    res.orders.filter(order => order.customer.branch.id === res.branch),
                     res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
             },

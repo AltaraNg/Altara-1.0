@@ -23,8 +23,8 @@ class ReminderController extends Controller
 
     public function getDateForReminder($list)
     {
-        //$today = date('Y-m-d');
-        $today = '2018-12-11';
+        $today = date('Y-m-d');
+        //$today = '2019-05-14';
         $days = 0;
         switch ($list) {
             case 1://sms reminder: 1
