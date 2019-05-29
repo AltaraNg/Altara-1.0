@@ -511,7 +511,7 @@ exports.default = {
                 };
 
                 var isMyBranch = function isMyBranch() {
-                    return (/* true; */order.customer.branch.id === res.branch
+                    return (/*true;*/order.customer.branch.id === res.branch
                     );
                 };
 

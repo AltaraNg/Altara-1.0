@@ -420,8 +420,34 @@
                 this.show = false;
                 this.showModalContent = false;
                 [this.orders, this.payment_methods, this.banks, this.dva_id] = [
-                    res.orders.filter(order => order.customer.branch.id === res.branch),
-                    res.payment_methods, res.banks, res.dva_id];
+                    // res.orders.filter(order => order.customer.branch.id === res.branch),
+                    res.orders.filter(order => {
+                        let {count, repaymentData} = this.getCountAndRepaymentData(order);
+                        let hasMissedPayment = () => {
+                            let payDay, today = new Date();
+                            for (let i = 1; i < count; i++) {
+                                let column = this.getColumn(i);
+                                if (!(!!repaymentData[column + "_pay"])) {
+                                    payDay = this.generateDates({
+                                        startDate: order.order_date,
+                                        interval: count === 7 ? 28 : 14,
+                                        count: count - 1
+                                    })[i - 1];
+                                    break;
+                                }
+                            }
+                            switch (this.list) {
+                                case 1:
+                                    return true;
+                                case 2:
+                                    return (this.getDateString(today.addDays(7)) === payDay);
+                                case 3:
+                                    return (this.getDateString(today.addDays(3)) === payDay);
+                            }
+                        };
+                        let isMyBranch = () => /* true;*/ order.customer.branch.id === res.branch;
+                        return isMyBranch() && hasMissedPayment();
+                    }),res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
             },
 

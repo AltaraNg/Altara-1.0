@@ -477,7 +477,7 @@
                             }
                         };
 
-                        let isMyBranch = () => /* true; */ order.customer.branch.id === res.branch;
+                        let isMyBranch = () =>  /*true;*/ order.customer.branch.id === res.branch;
 
                         return isMyBranch() && hasMissedPayment();
                     }), res.payment_methods, res.banks, res.dva_id];

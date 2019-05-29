@@ -449,10 +449,45 @@ exports.default = {
 
     methods: {
         prepareForm: function prepareForm(res) {
+            var _this2 = this;
+
             this.show = false;
             this.showModalContent = false;
-            var _ref3 = [res.orders.filter(function (order) {
-                return order.customer.branch.id === res.branch;
+            var _ref3 = [
+            // res.orders.filter(order => order.customer.branch.id === res.branch),
+            res.orders.filter(function (order) {
+                var _getCountAndRepayment = _this2.getCountAndRepaymentData(order),
+                    count = _getCountAndRepayment.count,
+                    repaymentData = _getCountAndRepayment.repaymentData;
+
+                var hasMissedPayment = function hasMissedPayment() {
+                    var payDay = void 0,
+                        today = new Date();
+                    for (var i = 1; i < count; i++) {
+                        var column = _this2.getColumn(i);
+                        if (!!!repaymentData[column + "_pay"]) {
+                            payDay = _this2.generateDates({
+                                startDate: order.order_date,
+                                interval: count === 7 ? 28 : 14,
+                                count: count - 1
+                            })[i - 1];
+                            break;
+                        }
+                    }
+                    switch (_this2.list) {
+                        case 1:
+                            return true;
+                        case 2:
+                            return _this2.getDateString(today.addDays(7)) === payDay;
+                        case 3:
+                            return _this2.getDateString(today.addDays(3)) === payDay;
+                    }
+                };
+                var isMyBranch = function isMyBranch() {
+                    return (/* true;*/order.customer.branch.id === res.branch
+                    );
+                };
+                return isMyBranch() && hasMissedPayment();
             }), res.payment_methods, res.banks, res.dva_id];
             this.orders = _ref3[0];
             this.payment_methods = _ref3[1];
@@ -462,22 +497,22 @@ exports.default = {
             this.initializeReminders() && (this.show = true);
         },
         initializeReminders: function initializeReminders() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.reminder = [];
             this.orders.forEach(function (order) {
-                _this2.reminder.push({
+                _this3.reminder.push({
                     'selected': false,
                     'customer_id': order.customer.id,
                     'phone': order.customer.telephone,
                     'order_id': order.id,
                     'sms_id': null,
-                    'repayment_level': _this2.getRepaymentLevel(order),
+                    'repayment_level': _this3.getRepaymentLevel(order),
                     'feedback': null, //this may be unnecessary
-                    'dva_id': _this2.dva_id,
+                    'dva_id': _this3.dva_id,
                     'type': 'sms',
-                    'date': _this2.getDateString(), //double check this it might be unnecessary
-                    'canBeSelected': _this2.isReminderSent(order)
+                    'date': _this3.getDateString(), //double check this it might be unnecessary
+                    'canBeSelected': _this3.isReminderSent(order)
                 });
             });
             this.$LIPS(false);
@@ -499,12 +534,12 @@ exports.default = {
             }
         },
         selectAll: function selectAll() {
-            var _this3 = this;
+            var _this4 = this;
 
             if (this.reminder.length > 0) {
                 this.doSelectAll = !this.doSelectAll;
                 this.reminder.forEach(function (order) {
-                    return order.canBeSelected && (order.selected = _this3.doSelectAll);
+                    return order.canBeSelected && (order.selected = _this4.doSelectAll);
                 });
             }
         },
@@ -544,7 +579,7 @@ exports.default = {
             return date.getFullYear() + '-' + (date.getMonth() + (monthStartsFromZero && 1)) + '-' + date.getDate();
         },
         isReminderSent: function isReminderSent(order) {
-            var _this4 = this;
+            var _this5 = this;
 
             var value = true,
                 date;
@@ -560,7 +595,7 @@ exports.default = {
                         .map(function (item) {
                             return parseInt(item, 10);
                         }); //[2019,3,24,2,0,0]
-                        date = _this4.getDateString(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
+                        date = _this5.getDateString(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
                         date === today && (value = false);
                     });
                 }
@@ -571,7 +606,7 @@ exports.default = {
             return !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : 'call feedback: ' + reminder.feedback;
         },
         generateCustomMessage: function generateCustomMessage(order) {
-            var _this5 = this;
+            var _this6 = this;
 
             var customer = order.customer,
                 store_product = order.store_product,
@@ -591,7 +626,7 @@ exports.default = {
             if (this.list === 1) {
                 message = "Hello " + first_name + " " + last_name + ", thanks for patronizing us." + " The following is the breakdown of the repayment plan for" + (" the purchase of " + product_name + ":%0a");
                 if (dates.length > 0) dates.forEach(function (date, index) {
-                    return message += _this5.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a";
+                    return message += _this6.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a";
                 });
             } else {
                 message = "Hello " + first_name + " " + last_name + ", This is to remind you that your" + (" " + this.getColumn(repaymentLevel) + " repayment of " + product_price + " for " + product_name) + (" will be due on " + dates[repaymentLevel] + ". we will be expecting you.");
@@ -599,7 +634,7 @@ exports.default = {
             return message + "Thank you.";
         },
         processSelected: function processSelected() {
-            var _this6 = this;
+            var _this7 = this;
 
             this.$LIPS(true);
             var smsContactList = this.reminder.filter(function (obj) {
@@ -607,29 +642,29 @@ exports.default = {
             }).map(function (obj) {
                 var newObject = JSON.parse(JSON.stringify(obj));
                 newObject.phone = '234' + obj.phone.trim().substr(1);
-                newObject.order = _this6.orders.find(function (order) {
+                newObject.order = _this7.orders.find(function (order) {
                     return order.id === obj.order_id;
                 });
-                newObject.message = _this6.generateCustomMessage(newObject.order);
+                newObject.message = _this7.generateCustomMessage(newObject.order);
                 newObject.isSent = false;
                 return newObject;
             });
             if (!!smsContactList.length) this.sendSMSReminders(smsContactList);else this.displayErrorMessage('please select at least one!');
         },
         sendSMSReminders: function sendSMSReminders(smsContactList) {
-            var _this7 = this;
+            var _this8 = this;
 
             smsContactList.forEach(function (value, index) {
                 _sms2.default.sendFirstReminder(value, function (res) {
                     value.isSent = res.status === 200;
                     if (index + 1 === smsContactList.length) {
-                        _this7.logSentMessages(smsContactList);
+                        _this8.logSentMessages(smsContactList);
                     }
                 });
             });
         },
         logSentMessages: function logSentMessages(smsContactList) {
-            var _this8 = this;
+            var _this9 = this;
 
             var messages = [];
             smsContactList.forEach(function (obj, index) {
@@ -641,14 +676,14 @@ exports.default = {
                             var sentAndLogged = data.sentAndLogged,
                                 ids = data.ids;
 
-                            if (sentAndLogged) _this8.logSentReminders(smsContactList, ids);else _this8.displayErrorMessage('Error Logging sent sms details!');
+                            if (sentAndLogged) _this9.logSentReminders(smsContactList, ids);else _this9.displayErrorMessage('Error Logging sent sms details!');
                         });
-                    } else _this8.displayErrorMessage('Error sending messages!');
+                    } else _this9.displayErrorMessage('Error sending messages!');
                 }
             });
         },
         logSentReminders: function logSentReminders(selectedList, ids) {
-            var _this9 = this;
+            var _this10 = this;
 
             ids.reverse();
             var newList = JSON.parse(JSON.stringify(selectedList));
@@ -665,23 +700,23 @@ exports.default = {
                 (0, _api.post)('/api/reminder', { reminders: newList }).then(function (_ref7) {
                     var data = _ref7.data;
 
-                    _this9.initializeReminders() && _this9.$scrollToTop();
+                    _this10.initializeReminders() && _this10.$scrollToTop();
                     if (data.saved) {
                         _flash2.default.setSuccess('Reminders have been sent successfully!', 50000);
-                        _this9.fetchList(_this9.list);
-                    } else _this9.displayErrorMessage('Error sending reminders!');
+                        _this10.fetchList(_this10.list);
+                    } else _this10.displayErrorMessage('Error sending reminders!');
                 });
             } else this.displayErrorMessage('Error logging sent messages!');
         },
         fetchList: function fetchList(list) {
-            var _this10 = this;
+            var _this11 = this;
 
             this.$LIPS(true);
             this.list = list;
             (0, _api.get)(url({ query: { list: list } })).then(function (_ref8) {
                 var data = _ref8.data;
 
-                _this10.prepareForm(data);
+                _this11.prepareForm(data);
             });
         },
         isPaymentDue: function isPaymentDue(dueDate) {
@@ -742,9 +777,9 @@ exports.default = {
         getPaymentSummary: function getPaymentSummary(order) {
             var amountPaid = parseInt(order.down_payment),
                 outstandingDebt = 0,
-                _getCountAndRepayment = this.getCountAndRepaymentData(order),
-                count = _getCountAndRepayment.count,
-                repaymentData = _getCountAndRepayment.repaymentData;
+                _getCountAndRepayment2 = this.getCountAndRepaymentData(order),
+                count = _getCountAndRepayment2.count,
+                repaymentData = _getCountAndRepayment2.repaymentData;
 
             for (var i = 1; i < count; i++) {
                 amountPaid += repaymentData[this.getColumn(i) + '_pay'];
@@ -763,9 +798,9 @@ exports.default = {
 
             if (!this.isOrderRepaymentValid(order)) return null;
             var data = [],
-                _getCountAndRepayment2 = this.getCountAndRepaymentData(order),
-                count = _getCountAndRepayment2.count,
-                repaymentData = _getCountAndRepayment2.repaymentData;
+                _getCountAndRepayment3 = this.getCountAndRepaymentData(order),
+                count = _getCountAndRepayment3.count,
+                repaymentData = _getCountAndRepayment3.repaymentData;
             if (clause === null) {
                 data = this.generateDates({
                     startDate: order.order_date,
@@ -789,9 +824,9 @@ exports.default = {
         getPaymentStatusClasses: function getPaymentStatusClasses(order) {
             if (!this.isOrderRepaymentValid(order)) return null;
             var data = [],
-                _getCountAndRepayment3 = this.getCountAndRepaymentData(order),
-                count = _getCountAndRepayment3.count,
-                repaymentData = _getCountAndRepayment3.repaymentData;
+                _getCountAndRepayment4 = this.getCountAndRepaymentData(order),
+                count = _getCountAndRepayment4.count,
+                repaymentData = _getCountAndRepayment4.repaymentData;
             for (var i = 1; i < count; i++) {
                 var status = { class: null, icon: null };
                 var position = this.getColumn(i);
@@ -814,9 +849,9 @@ exports.default = {
         getRepaymentLevel: function getRepaymentLevel(order) {
             if (!this.isOrderRepaymentValid(order)) return 0;
             var level = 0,
-                _getCountAndRepayment4 = this.getCountAndRepaymentData(order),
-                count = _getCountAndRepayment4.count,
-                repaymentData = _getCountAndRepayment4.repaymentData;
+                _getCountAndRepayment5 = this.getCountAndRepaymentData(order),
+                count = _getCountAndRepayment5.count,
+                repaymentData = _getCountAndRepayment5.repaymentData;
             for (var i = 1; i < count; i++) {
                 if (repaymentData[this.getColumn(i) + '_pay'] > 0) level++;
             }return level + "/" + (count - 1);
@@ -828,11 +863,11 @@ exports.default = {
         }
     },
     mounted: function mounted() {
-        var _this11 = this;
+        var _this12 = this;
 
         $(document).on("hidden.bs.modal", '.modal', function () {
-            _this11.currentOrder = null;
-            _this11.showModalContent = false;
+            _this12.currentOrder = null;
+            _this12.showModalContent = false;
         });
 
         //this is linked to the function that generates dates
