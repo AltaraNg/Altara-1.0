@@ -11,4 +11,6 @@ class RepaymentInformal extends Model
     protected $primaryKey ='repayment_id';
 
     public $incrementing = false;
+
+    protected $hidden = ['created_at','updated_at'];
 }

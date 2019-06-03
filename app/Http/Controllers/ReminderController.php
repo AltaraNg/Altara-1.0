@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Attendance;
 use App\Bank;
 use App\Order;
 use App\PaymentMethod;
 use App\PromiseCall;
 use App\Reminder;
-use function foo\func;
+use GuzzleHttp\Promise\Promise;
 use Illuminate\Http\Request;
 
 class ReminderController extends Controller
@@ -20,13 +19,12 @@ class ReminderController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     public function getDateForReminder($list)
     {
         $today = date('Y-m-d');
-        //$today = '2019-05-14';
         $days = 0;
         switch ($list) {
             case 1://sms reminder: 1
@@ -52,7 +50,7 @@ class ReminderController extends Controller
             default:
                 return [$today];
         }
-        $informal = [date('Y-m-d', strtotime($today . ' - '.$days.' days'))];
+        $informal = [date('Y-m-d', strtotime($today . ' - ' . $days . ' days'))];
         for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
         return $informal;
     }
@@ -67,61 +65,52 @@ class ReminderController extends Controller
     {
         $user = auth('api')->user();
 
-        if(request('list') == '8'){
-            $result = PromiseCall::where('date','=',date('Y-m-d'))->with(['order' => function($query){
-                return $query->with
-                (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType', 'reminders' => function ($query) {
-                    return $query->with('user', 'sms');//remember to select only name and id here later
-                },
-                    'floorAgent' => function ($q) {
+        if (request('list') == '8') {
+            $result = PromiseCall::where('date', '=', date('Y-m-d'))->with(['order' => function ($query) {
+                return $query->with(['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType',
+                    'reminders' => function ($q1) {
+                        return $q1->with([
+                            'user' => function ($q2) {
+                                return $q2->select('id', 'full_name');
+                            }, 'sms' => function ($q2) {
+                                return $q2->select('id', 'message');
+                            }
+                        ]);
+                    }, 'floorAgent' => function ($q) {
                         return $q->select('id', 'staff_id', 'full_name');
-                    },
-                    'customer' => function ($customerQ) {
-                        return $customerQ->select(
-                            'id',
-                            'branch_id',
-                            'first_name',
-                            'middle_name',
-                            'last_name',
-                            'add_nbstop',
-                            'add_street',
-                            'add_houseno',
-                            'add_addinfo_description',
-                            'city',
-                            'state',
-                            'telephone',
-                            'civil_status',
-                            'employment_status')->with('branch');//remember to select only name and id here later
-                    }]);
+                    }, 'customer' => function ($customerQ) {
+                        return $customerQ
+                            ->select('id', 'branch_id', 'first_name', 'last_name', 'add_nbstop', 'add_street', 'add_houseno',
+                                'add_addinfo_description', 'city', 'state', 'telephone', 'civil_status', 'employment_status')
+                            ->with(['branch' => function ($q) {
+                                return $q->select('name', 'id');
+                            }]);
+                    }])->select('id', 'order_date', 'sales_category_id', 'customer_id', 'product_sku', 'product_price',
+                    'down_payment', 'sales_agent_id', 'sales_type_id', 'discount_id', 'repayment_amount');
             }])->get();
+        } else {
+            $result = Order::whereIn('order_date', $this->getDateForReminder(request('list')))->with([
+                'repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType',
+                'reminders' => function ($q1) {
+                    return $q1->with([
+                        'user' => function ($q2) {
+                            return $q2->select('id', 'full_name');
+                        }, 'sms' => function ($q2) {
+                            return $q2->select('id', 'message');
+                        }
+                    ]);
+                }, 'floorAgent' => function ($q) {
+                    return $q->select('id', 'staff_id', 'full_name');
+                }, 'customer' => function ($customerQ) {
+                    return $customerQ->select(
+                        'id', 'branch_id', 'first_name', 'last_name', 'add_nbstop', 'add_street', 'add_houseno',
+                        'add_addinfo_description', 'city', 'state', 'telephone', 'civil_status', 'employment_status')
+                        ->with(['branch' => function ($q) {
+                            return $q->select('name', 'id');
+                        }]);
+                }])->select('id', 'order_date', 'sales_category_id', 'customer_id', 'product_sku', 'product_price', 'down_payment',
+                'sales_agent_id', 'sales_type_id', 'discount_id', 'repayment_amount')->get();
         }
-
-        else
-
-        $result = Order::whereIn('order_date', $this->getDateForReminder(request('list')))->with
-        (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType', 'reminders' => function ($query) {
-            return $query->with('user', 'sms');//remember to select only name and id here later
-        },
-            'floorAgent' => function ($q) {
-                return $q->select('id', 'staff_id', 'full_name');
-            },
-            'customer' => function ($customerQ) {
-                return $customerQ->select(
-                    'id',
-                    'branch_id',
-                    'first_name',
-                    'middle_name',
-                    'last_name',
-                    'add_nbstop',
-                    'add_street',
-                    'add_houseno',
-                    'add_addinfo_description',
-                    'city',
-                    'state',
-                    'telephone',
-                    'civil_status',
-                    'employment_status')->with('branch');//remember to select only name and id here later
-            }])->get();
 
         return response()->json([
             'payment_methods' => PaymentMethod::all(),
