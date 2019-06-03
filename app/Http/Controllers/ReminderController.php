@@ -6,7 +6,9 @@ use App\Attendance;
 use App\Bank;
 use App\Order;
 use App\PaymentMethod;
+use App\PromiseCall;
 use App\Reminder;
+use function foo\func;
 use Illuminate\Http\Request;
 
 class ReminderController extends Controller
@@ -64,6 +66,37 @@ class ReminderController extends Controller
     public function create()
     {
         $user = auth('api')->user();
+
+        if(request('list') == '8'){
+            $result = PromiseCall::where('date','=',date('Y-m-d'))->with(['order' => function($query){
+                return $query->with
+                (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType', 'reminders' => function ($query) {
+                    return $query->with('user', 'sms');//remember to select only name and id here later
+                },
+                    'floorAgent' => function ($q) {
+                        return $q->select('id', 'staff_id', 'full_name');
+                    },
+                    'customer' => function ($customerQ) {
+                        return $customerQ->select(
+                            'id',
+                            'branch_id',
+                            'first_name',
+                            'middle_name',
+                            'last_name',
+                            'add_nbstop',
+                            'add_street',
+                            'add_houseno',
+                            'add_addinfo_description',
+                            'city',
+                            'state',
+                            'telephone',
+                            'civil_status',
+                            'employment_status')->with('branch');//remember to select only name and id here later
+                    }]);
+            }])->get();
+        }
+
+        else
 
         $result = Order::whereIn('order_date', $this->getDateForReminder(request('list')))->with
         (['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType', 'reminders' => function ($query) {

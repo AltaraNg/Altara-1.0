@@ -437,8 +437,10 @@
 
                         let hasMissedPayment = () => {
 
+                            if(this.list === 8 )return true;
+
                             //return true;
-                            let payDay, today = new Date(/*'2019-05-14'*/);
+                            let payDay, today = new Date(/*'2019-05-14'*/ /*res.today*/);
 
                             //step 1.
                             for (let i = 1; i < count; i++) {
@@ -477,7 +479,7 @@
                             }
                         };
 
-                        let isMyBranch = () =>  /*true;*/ order.customer.branch.id === res.branch;
+                        let isMyBranch = () =>  true; /*order.customer.branch.id === res.branch;*/
 
                         return isMyBranch() && hasMissedPayment();
                     }), res.payment_methods, res.banks, res.dva_id];
@@ -594,6 +596,11 @@
                 this.$LIPS(true);
                 this.list = list;
                 get(url({query: {list}})).then(({data}) => {
+                    if(list === 8){
+                        let orders = [];
+                        data.orders.forEach(promiseCall => orders.push(promiseCall.order));
+                        data.orders = orders;
+                    }
                     this.prepareForm(data);
                 });
             },

@@ -424,7 +424,7 @@
                     res.orders.filter(order => {
                         let {count, repaymentData} = this.getCountAndRepaymentData(order);
                         let hasMissedPayment = () => {
-                            let payDay, today = new Date();
+                            let payDay, today = new Date(/*res.today*/);
                             for (let i = 1; i < count; i++) {
                                 let column = this.getColumn(i);
                                 if (!(!!repaymentData[column + "_pay"])) {

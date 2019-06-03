@@ -469,6 +469,8 @@ exports.default = {
 
                 var hasMissedPayment = function hasMissedPayment() {
 
+                    if (_this2.list === 8) return true;
+
                     //return true;
                     var payDay = void 0,
                         today = new Date();
@@ -511,9 +513,8 @@ exports.default = {
                 };
 
                 var isMyBranch = function isMyBranch() {
-                    return (/*true;*/order.customer.branch.id === res.branch
-                    );
-                };
+                    return true;
+                }; /*order.customer.branch.id === res.branch;*/
 
                 return isMyBranch() && hasMissedPayment();
             }), res.payment_methods, res.banks, res.dva_id];
@@ -645,6 +646,13 @@ exports.default = {
             (0, _api.get)(url({ query: { list: list } })).then(function (_ref8) {
                 var data = _ref8.data;
 
+                if (list === 8) {
+                    var orders = [];
+                    data.orders.forEach(function (promiseCall) {
+                        return orders.push(promiseCall.order);
+                    });
+                    data.orders = orders;
+                }
                 _this7.prepareForm(data);
             });
         },
