@@ -25,10 +25,11 @@ class ReminderController extends Controller
     public function getDateForReminder($list)
     {
         $today = date('Y-m-d');
+//        $today = '2019-05-13';
+        $count = date("D") == "Mon" ? 3 : 1;
+        $informal = [];
         $days = 0;
         switch ($list) {
-            case 1://sms reminder: 1
-                return [$today];
             case 2://sms reminder: 2
                 $days = 7;
                 break;
@@ -47,12 +48,19 @@ class ReminderController extends Controller
             case 7://call reminder: 4
                 $days = 28;
                 break;
-            default:
-                return [$today];
+            default://sms reminder: 1 and  promise call
+                for ($j = 0; $j < $count; $j++)
+                    $informal[$j] = date('Y-m-d', strtotime($today . ' - ' . $j . ' days'));
+                return $informal;
         }
-        $informal = [date('Y-m-d', strtotime($today . ' - ' . $days . ' days'))];
-        for ($i = 1; $i < 12; $i++) $informal[$i] = date('Y-m-d', strtotime($informal[$i - 1] . ' - 14 days'));
-        return $informal;
+
+        for ($a = 0; $a < $count; $a++) {
+            $informal[$a] = [date('Y-m-d', strtotime($today . ' - ' . ($a + $days) . ' days'))];
+            for ($i = 1; $i < 12; $i++) $informal[$a][$i] = date('Y-m-d', strtotime($informal[$a][$i - 1] . ' - 14 days'));
+        }
+
+        $dateArr = $count == 3 ? array_merge($informal[0], $informal[1], $informal[2]) : $informal[0];
+        return $dateArr;
     }
 
     /**
@@ -66,7 +74,7 @@ class ReminderController extends Controller
         $user = auth('api')->user();
 
         if (request('list') == '8') {
-            $result = PromiseCall::where('date', '=', date('Y-m-d'))->with(['order' => function ($query) {
+            $result = PromiseCall::whereIn('date', $this->getDateForReminder(request('list')))->with(['order' => function ($query) {
                 return $query->with(['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType',
                     'reminders' => function ($q1) {
                         return $q1->with([
@@ -104,7 +112,11 @@ class ReminderController extends Controller
                 }, 'customer' => function ($customerQ) {
                     return $customerQ->select(
                         'id', 'branch_id', 'first_name', 'last_name', 'add_nbstop', 'add_street', 'add_houseno',
-                        'add_addinfo_description', 'city', 'state', 'telephone', 'civil_status', 'employment_status')
+                        'add_addinfo_description', 'city', 'state', 'telephone', 'civil_status', 'employment_status',
+                        'work_guarantor_first_name', 'work_guarantor_last_name',
+                        'work_guarantor_relationship', 'work_guarantor_telno',
+                        'personal_guarantor_first_name', 'personal_guarantor_last_name',
+                        'personal_guarantor_relationship', 'personal_guarantor_telno')
                         ->with(['branch' => function ($q) {
                             return $q->select('name', 'id');
                         }]);

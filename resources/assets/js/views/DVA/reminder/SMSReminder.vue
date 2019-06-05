@@ -40,7 +40,7 @@
         <div class="tab-content mt-1 attendance-body" v-if="show && !!orders.length">
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <div class="mb-3 row attendance-item" v-if="!!orders.length" v-for="(order, index) in orders">
-                     <!--:data-key="index" @click="itemClicked(index)">-->
+                    <!--:data-key="index" @click="itemClicked(index)">-->
                     <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
                         <div v-if="checkIfAlreadySentReminder(index)" class="d-flex align-items-center">
                             <input class="form-check-input my-0 mx-4 float-left position-relative " type="checkbox"
@@ -424,7 +424,13 @@
                     res.orders.filter(order => {
                         let {count, repaymentData} = this.getCountAndRepaymentData(order);
                         let hasMissedPayment = () => {
-                            let payDay, today = new Date(/*res.today*/);
+                            if (this.list === 1) return true;
+                            let payDay,
+                                // today = new Date('2019-05-13'),
+                                today = new Date(),
+                                isMonday = today.getDay() === 1/*remember to change this to 1*/,
+                                accumulatedDays = isMonday ? 3 : 1, dayInterval, datePool = [];
+
                             for (let i = 1; i < count; i++) {
                                 let column = this.getColumn(i);
                                 if (!(!!repaymentData[column + "_pay"])) {
@@ -436,18 +442,19 @@
                                     break;
                                 }
                             }
-                            switch (this.list) {
-                                case 1:
-                                    return true;
-                                case 2:
-                                    return (this.getDateString(today.addDays(7)) === payDay);
-                                case 3:
-                                    return (this.getDateString(today.addDays(3)) === payDay);
-                            }
+
+                            if (this.list === 2) dayInterval = 7;
+                            if (this.list === 3) dayInterval = 3;
+
+                            for (let p = 0; p < accumulatedDays; p++) datePool.push(this.getDateString(today.addDays(p + dayInterval)));
+                            return datePool.includes(payDay);
                         };
-                        let isMyBranch = () => /* true;*/ order.customer.branch.id === res.branch;
+
+
+                        let isMyBranch = () => true;
+                        //let isMyBranch = () => order.customer.branch.id === res.branch;
                         return isMyBranch() && hasMissedPayment();
-                    }),res.payment_methods, res.banks, res.dva_id];
+                    }), res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
             },
 
@@ -497,18 +504,6 @@
                     this.reminder.forEach(order => order.canBeSelected && (order.selected = this.doSelectAll));
                 }
             },
-
-            /*itemClicked(index) {
-                let elem = ".row.attendance-item";
-
-                //remove class from all attendance-item element
-                $(`${elem}:not([data-key=${index}])`).removeClass('active');
-
-                //add class .active to the .attendance-item clicked
-                $(`${elem}[data-key=${index}]`).toggleClass("active");
-
-                console.log(1);
-            },*/
 
             isOrderFormal({repayment_informal}) {
                 return repayment_informal === null;
@@ -573,9 +568,12 @@
                             message += this.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a");
                 } else {
                     message = `Hello ${first_name} ${last_name}, This is to remind you that your`
-                        + ` ${this.getColumn(repaymentLevel)} repayment of ${product_price} for ${product_name}`
+                        + ` ${this.getColumn(parseInt(repaymentLevel) + 1)} repayment of ${product_price} for ${product_name}`
                         + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
                 }
+
+                console.log(message);
+
                 return message + "Thank you.";
             },
 
@@ -591,6 +589,9 @@
                         newObject.isSent = false;
                         return newObject;
                     });
+
+                return;
+
                 if (!!smsContactList.length) this.sendSMSReminders(smsContactList);
                 else this.displayErrorMessage('please select at least one!');
             },

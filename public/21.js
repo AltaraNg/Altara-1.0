@@ -461,8 +461,17 @@ exports.default = {
                     repaymentData = _getCountAndRepayment.repaymentData;
 
                 var hasMissedPayment = function hasMissedPayment() {
+                    if (_this2.list === 1) return true;
                     var payDay = void 0,
-                        today = new Date();
+
+                    // today = new Date('2019-05-13'),
+                    today = new Date(),
+                        isMonday = today.getDay() === 1 /*remember to change this to 1*/
+                    ,
+                        accumulatedDays = isMonday ? 3 : 1,
+                        dayInterval = void 0,
+                        datePool = [];
+
                     for (var i = 1; i < count; i++) {
                         var column = _this2.getColumn(i);
                         if (!!!repaymentData[column + "_pay"]) {
@@ -474,19 +483,19 @@ exports.default = {
                             break;
                         }
                     }
-                    switch (_this2.list) {
-                        case 1:
-                            return true;
-                        case 2:
-                            return _this2.getDateString(today.addDays(7)) === payDay;
-                        case 3:
-                            return _this2.getDateString(today.addDays(3)) === payDay;
-                    }
+
+                    if (_this2.list === 2) dayInterval = 7;
+                    if (_this2.list === 3) dayInterval = 3;
+
+                    for (var p = 0; p < accumulatedDays; p++) {
+                        datePool.push(_this2.getDateString(today.addDays(p + dayInterval)));
+                    }return datePool.includes(payDay);
                 };
+
                 var isMyBranch = function isMyBranch() {
-                    return (/* true;*/order.customer.branch.id === res.branch
-                    );
+                    return true;
                 };
+                //let isMyBranch = () => order.customer.branch.id === res.branch;
                 return isMyBranch() && hasMissedPayment();
             }), res.payment_methods, res.banks, res.dva_id];
             this.orders = _ref3[0];
@@ -543,17 +552,6 @@ exports.default = {
                 });
             }
         },
-
-
-        /*itemClicked(index) {
-            let elem = ".row.attendance-item";
-             //remove class from all attendance-item element
-            $(`${elem}:not([data-key=${index}])`).removeClass('active');
-             //add class .active to the .attendance-item clicked
-            $(`${elem}[data-key=${index}]`).toggleClass("active");
-             console.log(1);
-        },*/
-
         isOrderFormal: function isOrderFormal(_ref4) {
             var repayment_informal = _ref4.repayment_informal;
 
@@ -629,8 +627,11 @@ exports.default = {
                     return message += _this6.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a";
                 });
             } else {
-                message = "Hello " + first_name + " " + last_name + ", This is to remind you that your" + (" " + this.getColumn(repaymentLevel) + " repayment of " + product_price + " for " + product_name) + (" will be due on " + dates[repaymentLevel] + ". we will be expecting you.");
+                message = "Hello " + first_name + " " + last_name + ", This is to remind you that your" + (" " + this.getColumn(parseInt(repaymentLevel) + 1) + " repayment of " + product_price + " for " + product_name) + (" will be due on " + dates[repaymentLevel] + ". we will be expecting you.");
             }
+
+            console.log(message);
+
             return message + "Thank you.";
         },
         processSelected: function processSelected() {
@@ -649,6 +650,9 @@ exports.default = {
                 newObject.isSent = false;
                 return newObject;
             });
+
+            return;
+
             if (!!smsContactList.length) this.sendSMSReminders(smsContactList);else this.displayErrorMessage('please select at least one!');
         },
         sendSMSReminders: function sendSMSReminders(smsContactList) {

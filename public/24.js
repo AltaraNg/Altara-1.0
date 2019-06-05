@@ -405,11 +405,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
-//
-//
-//
-//
-//
 
 var url = function url(to) {
     return "/api/reminder/create?list=" + to.query.list;
@@ -449,7 +444,9 @@ exports.default = {
             payment_methods: null,
             showModalContent: false,
             isCurrentOrderInformal: null,
-            currentOrderRepaymentDates: null
+            currentOrderRepaymentDates: null,
+            tabs: ["1<sup>st</sup>", "2<sup>nd</sup>", "3<sup>rd</sup>", "Guarantor's", "Promise"],
+            headings: ['Action', 'Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary', 'Reminder History', 'Feedback', 'Promise Date']
         };
     },
 
@@ -460,28 +457,26 @@ exports.default = {
 
             this.show = false;
             this.showModalContent = false;
-            var _ref3 = [
-            // res.orders.filter(this.ordersFilter, res.branch),
-            res.orders.filter(function (order) {
+            var _ref3 = [res.orders.filter(function (order) {
                 var _getCountAndRepayment = _this2.getCountAndRepaymentData(order),
                     count = _getCountAndRepayment.count,
                     repaymentData = _getCountAndRepayment.repaymentData;
 
                 var hasMissedPayment = function hasMissedPayment() {
-
                     if (_this2.list === 8) return true;
-
-                    //return true;
                     var payDay = void 0,
-                        today = new Date();
+                        today = new Date(),
+                        isMonday = today.getDay() === 1,
+                        /*1 mean mondays*/
+                    accumulatedDays = isMonday ? 3 : 1,
+                        dayInterval = void 0,
+                        datePool = [];
 
                     //step 1.
                     for (var i = 1; i < count; i++) {
                         var column = _this2.getColumn(i);
-
                         //step 2. get the first occurrence of a vacant pay
                         if (!!!repaymentData[column + "_pay"]) {
-
                             //step 3. find the corresponding due date for the vacant pay
                             payDay = _this2.generateDates({
                                 startDate: order.order_date,
@@ -492,29 +487,41 @@ exports.default = {
                         }
                     }
 
-                    //step 4. check is the date is
+                    //step 4. check if the date is
                     switch (_this2.list) {
                         case 4:
                             //4a: same as today (for first call reminder due date = current date)
-                            return _this2.getDateString(today) === payDay;
+                            //return (this.getDateString(today) === payDay);
+                            dayInterval = 0;
+                            break;
                         case 5:
                             //4a: same as today (for first call reminder due date = current date + 1 day)
-                            return _this2.getDateString(today.addDays(-1)) === payDay;
+                            //return (this.getDateString(today.addDays(-1)) === payDay);
+                            dayInterval = 1;
+                            break;
                         case 6:
                             //4a: same as today (for first call reminder due date = current date + 7 days)
-                            return _this2.getDateString(today.addDays(-7)) === payDay;
+                            //return (this.getDateString(today.addDays(-7)) === payDay);
+                            dayInterval = 7;
+                            break;
                         case 7:
                             //4a: same as today (for first call reminder due date = current date + 28 days)
-                            return _this2.getDateString(today.addDays(-28)) === payDay;
-                        case 8:
-                            //for the promise calls
+                            //return (this.getDateString(today.addDays(-28)) === payDay);
+                            dayInterval = 28;
                             break;
                     }
+
+                    for (var p = 0; p < accumulatedDays; p++) {
+                        datePool.push(_this2.getDateString(today.addDays(-(p + dayInterval))));
+                    }
+
+                    return datePool.includes(payDay);
                 };
 
                 var isMyBranch = function isMyBranch() {
                     return true;
-                }; /*order.customer.branch.id === res.branch;*/
+                };
+                //let isMyBranch = () => order.customer.branch.id === res.branch;
 
                 return isMyBranch() && hasMissedPayment();
             }), res.payment_methods, res.banks, res.dva_id];
@@ -822,7 +829,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.check-box-overlay[data-v-37057f60] {\n    height: 100%;\n    width: 100%;\n    float: left;\n    position: absolute;\n    z-index: 1;\n}\n.table-separator[data-v-37057f60] {\n    border-top: 2px solid #dee1e4;\n}\n", ""]);
+exports.push([module.i, "\n.check-box-overlay[data-v-37057f60] {\n    height: 100%;\n    width: 100%;\n    float: left;\n    position: absolute;\n    z-index: 1;\n}\n.table-separator[data-v-37057f60] {\n    border-top: 2px solid #dee1e4;\n}\n.attendance-head .light-heading[data-v-37057f60]:nth-child(1) {\n    max-width: 120px;\n}\n", ""]);
 
 // exports
 
@@ -844,116 +851,40 @@ var render = function() {
           staticClass: "nav nav-tabs justify-content-center p-0",
           attrs: { role: "tablist" }
         },
-        [
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link active",
-                attrs: {
-                  "aria-selected": "true",
-                  "data-toggle": "tab",
-                  href: "#reminder-panel",
-                  role: "tab"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.fetchList(4)
-                  }
-                }
+        _vm._l(_vm.tabs, function(tab, index) {
+          return _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
+            _c("a", {
+              staticClass: "nav-link",
+              class: index === 0 && "active",
+              attrs: {
+                "aria-selected": "true",
+                "data-toggle": "tab",
+                href: "#reminder-panel",
+                role: "tab"
               },
-              [_vm._v("1"), _c("sup", [_vm._v("st")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-panel",
-                  role: "tab"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.fetchList(5)
-                  }
+              domProps: { innerHTML: _vm._s(tab + " Call") },
+              on: {
+                click: function($event) {
+                  _vm.fetchList(index + 4)
                 }
-              },
-              [_vm._v("2"), _c("sup", [_vm._v("nd")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-panel",
-                  role: "tab"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.fetchList(6)
-                  }
-                }
-              },
-              [_vm._v("3"), _c("sup", [_vm._v("rd")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-panel",
-                  role: "tab"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.fetchList(7)
-                  }
-                }
-              },
-              [_vm._v("4"), _c("sup", [_vm._v("th")]), _vm._v(" Reminder")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "col p-0 nav-item mb-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: {
-                  "aria-selected": "false",
-                  "data-toggle": "tab",
-                  href: "#reminder-panel",
-                  role: "tab"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.fetchList(8)
-                  }
-                }
-              },
-              [_vm._v("Promise Call")]
-            )
+              }
+            })
           ])
-        ]
+        })
       )
     ]),
     _vm._v(" "),
-    _vm._m(0),
+    _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
+      _c(
+        "div",
+        { staticClass: "row px-4 pt-3 pb-4 text-center" },
+        _vm._l(_vm.headings, function(header) {
+          return _c("div", { staticClass: "col light-heading" }, [
+            _vm._v(_vm._s(header))
+          ])
+        })
+      )
+    ]),
     _vm._v(" "),
     _vm.show && !!_vm.orders.length
       ? _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
@@ -1184,7 +1115,7 @@ var render = function() {
           )
         ])
       : _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
-          _vm._m(1)
+          _vm._m(0)
         ]),
     _vm._v(" "),
     _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
@@ -1192,7 +1123,7 @@ var render = function() {
     _c("div", { staticClass: "modal fade", attrs: { id: "purchase_order" } }, [
       _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           _vm.showModalContent
             ? _c("div", { staticClass: "modal-body" }, [
@@ -1310,7 +1241,7 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
-          _vm._m(3)
+          _vm._m(2)
         ])
       ])
     ]),
@@ -1318,7 +1249,7 @@ var render = function() {
     _c("div", { staticClass: "modal fade", attrs: { id: "customer_info" } }, [
       _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(4),
+          _vm._m(3),
           _vm._v(" "),
           _vm.showModalContent
             ? _c("div", { staticClass: "modal-body" }, [
@@ -1394,7 +1325,70 @@ var render = function() {
                           ])
                         ]),
                         _vm._v(" "),
-                        _vm._m(5)
+                        _c("tr", [
+                          _c("th", [_vm._v("Work guarantor name")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer
+                                  .work_guarantor_first_name +
+                                  " " +
+                                  _vm.currentOrder.customer
+                                    .work_guarantor_last_name +
+                                  " - " +
+                                  _vm.currentOrder.customer
+                                    .work_guarantor_relationship
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Work guarantor phone")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer.work_guarantor_telno
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Personal guarantor name")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer
+                                  .personal_guarantor_first_name +
+                                  " " +
+                                  _vm.currentOrder.customer
+                                    .personal_guarantor_last_name +
+                                  " - " +
+                                  _vm.currentOrder.customer
+                                    .personal_guarantor_relationship
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Personal guarantor phone")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer
+                                  .personal_guarantor_telno
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(4)
                       ])
                     ]
                   )
@@ -1402,7 +1396,7 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
-          _vm._m(6)
+          _vm._m(5)
         ])
       ])
     ]),
@@ -1429,7 +1423,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(7)
+                    _vm._m(6)
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
@@ -1438,6 +1432,8 @@ var render = function() {
                         _c("tbody", { staticClass: "text-center" }, [
                           _c("tr", [
                             _c("th", [_vm._v("Repayment")]),
+                            _vm._v(" "),
+                            _vm._m(7),
                             _vm._v(" "),
                             _vm._m(8),
                             _vm._v(" "),
@@ -1448,8 +1444,6 @@ var render = function() {
                             _vm._m(11),
                             _vm._v(" "),
                             _vm._m(12),
-                            _vm._v(" "),
-                            _vm._m(13),
                             _vm._v(" "),
                             _vm.isCurrentOrderInformal
                               ? _c("td", [
@@ -1833,7 +1827,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(14)
+                  _vm._m(13)
                 ])
               : _vm._e()
           ]
@@ -1853,7 +1847,7 @@ var render = function() {
           { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(15),
+              _vm._m(14),
               _vm._v(" "),
               _vm.showModalContent
                 ? _c("div", { staticClass: "modal-body" }, [
@@ -1865,7 +1859,7 @@ var render = function() {
                               staticClass: "table table-bordered table-striped"
                             },
                             [
-                              _vm._m(16),
+                              _vm._m(15),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -1905,7 +1899,7 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm._m(17)
+              _vm._m(16)
             ])
           ]
         )
@@ -1914,49 +1908,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
-      _c("div", { staticClass: "row px-4 pt-3 pb-4 text-center" }, [
-        _c(
-          "div",
-          {
-            staticClass: "col light-heading",
-            staticStyle: { "max-width": "120px" }
-          },
-          [_vm._v("Action")]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Order Number")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Order Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Customer Info Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Repayment Summary")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Reminder History")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [_vm._v("Feedback")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col light-heading" }, [
-          _vm._v("Promise Date")
-        ])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

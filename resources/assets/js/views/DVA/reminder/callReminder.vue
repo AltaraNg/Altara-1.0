@@ -1,51 +1,23 @@
 <template>
     <div id="reminder">
-
         <div class="mt-5 mb-3 attendance-head">
             <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
-                <li class="col p-0 nav-item mb-0">
-                    <a aria-selected="true" class="nav-link active"
-                       data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(4)"
-                       role="tab">1<sup>st</sup> Reminder</a>
+                <li class="col p-0 nav-item mb-0" v-for="(tab,index) in tabs">
+                    <a aria-selected="true" class="nav-link" :class="index === 0 && 'active'"
+                       data-toggle="tab" href="#reminder-panel" @click="fetchList(index+4)"
+                       role="tab" v-html="tab + ' Call'"></a>
                 </li>
-                <li class="col p-0 nav-item mb-0">
-                    <a aria-selected="false" class="nav-link"
-                       data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(5)"
-                       role="tab">2<sup>nd</sup> Reminder</a>
-                </li>
-                <li class="col p-0 nav-item mb-0">
-                    <a aria-selected="false" class="nav-link"
-                       data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(6)"
-                       role="tab">3<sup>rd</sup> Reminder</a>
-                </li>
-                <li class="col p-0 nav-item mb-0">
-                    <a aria-selected="false" class="nav-link"
-                       data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(7)"
-                       role="tab">4<sup>th</sup> Reminder</a>
-                </li>
-                <li class="col p-0 nav-item mb-0">
-                    <a aria-selected="false" class="nav-link"
-                       data-toggle="tab" href="#reminder-panel"
-                       @click="fetchList(8)"
-                       role="tab">Promise Call</a>
-                </li>
+                <!--NB: the @click="fetchList(index+4) translates to
+                fetchList(4) fetchList(5) fetchList(6) fetchList(7) fetchList(8)
+                for the number of the elements in the tabs array ie. 6
+                this matches the list as a number that is sent to the backend to be
+                used to process the dates for a particular list "-->
             </ul>
         </div>
 
         <div class="mt-5 mb-3 attendance-head">
             <div class="row px-4 pt-3 pb-4 text-center">
-                <div class="col light-heading" style="max-width: 120px">Action</div>
-                <div class="col light-heading">Order Number</div>
-                <div class="col light-heading">Order Summary</div>
-                <div class="col light-heading">Customer Info Summary</div>
-                <div class="col light-heading">Repayment Summary</div>
-                <div class="col light-heading">Reminder History</div>
-                <div class="col light-heading">Feedback</div>
-                <div class="col light-heading">Promise Date</div>
+                <div class="col light-heading" v-for="header in headings">{{header}}</div>
             </div>
         </div>
 
@@ -206,6 +178,29 @@
                                     <th>Category</th>
                                     <td>{{currentOrder.customer.employment_status}}</td>
                                 </tr>
+                                <tr>
+                                    <th>Work guarantor name</th>
+                                    <td>{{currentOrder.customer.work_guarantor_first_name + " " +
+                                        currentOrder.customer.work_guarantor_last_name + " - " +
+                                        (currentOrder.customer.work_guarantor_relationship)}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Work guarantor phone</th>
+                                    <td>{{currentOrder.customer.work_guarantor_telno}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Personal guarantor name</th>
+                                    <td>{{currentOrder.customer.personal_guarantor_first_name + " " +
+                                        currentOrder.customer.personal_guarantor_last_name + " - " +
+                                        (currentOrder.customer.personal_guarantor_relationship)}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Personal guarantor phone</th>
+                                    <td>{{currentOrder.customer.personal_guarantor_telno}}</td>
+                                </tr>
+
+
                                 <tr>
                                     <th>Verified by</th>
                                     <td>--</td>
@@ -421,7 +416,10 @@
                 payment_methods: null,
                 showModalContent: false,
                 isCurrentOrderInformal: null,
-                currentOrderRepaymentDates: null
+                currentOrderRepaymentDates: null,
+                tabs: ["1<sup>st</sup>", "2<sup>nd</sup>", "3<sup>rd</sup>", "Guarantor's", "Promise"],
+                headings: ['Action', 'Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary',
+                    'Reminder History', 'Feedback', 'Promise Date']
             }
         },
 
@@ -430,25 +428,22 @@
                 this.show = false;
                 this.showModalContent = false;
                 [this.orders, this.payment_methods, this.banks, this.dva_id] = [
-                    // res.orders.filter(this.ordersFilter, res.branch),
                     res.orders.filter(order => {
-
                         let {count, repaymentData} = this.getCountAndRepaymentData(order);
-
                         let hasMissedPayment = () => {
-
-                            if(this.list === 8 )return true;
-
-                            //return true;
-                            let payDay, today = new Date(/*'2019-05-14'*/ /*res.today*/);
+                            if (this.list === 8) return true;
+                            let payDay,
+                                today = new Date(),
+                                isMonday = today.getDay() === 1, /*1 mean mondays*/
+                                accumulatedDays = isMonday ? 3 : 1,
+                                dayInterval,
+                                datePool = [];
 
                             //step 1.
                             for (let i = 1; i < count; i++) {
                                 let column = this.getColumn(i);
-
                                 //step 2. get the first occurrence of a vacant pay
                                 if (!(!!repaymentData[column + "_pay"])) {
-
                                     //step 3. find the corresponding due date for the vacant pay
                                     payDay = this.generateDates({
                                         startDate: order.order_date,
@@ -459,27 +454,39 @@
                                 }
                             }
 
-                            //step 4. check is the date is
+                            //step 4. check if the date is
                             switch (this.list) {
                                 case 4:
                                     //4a: same as today (for first call reminder due date = current date)
-                                    return (this.getDateString(today) === payDay);
+                                    //return (this.getDateString(today) === payDay);
+                                    dayInterval = 0;
+                                    break;
                                 case 5:
                                     //4a: same as today (for first call reminder due date = current date + 1 day)
-                                    return (this.getDateString(today.addDays(-1)) === payDay);
+                                    //return (this.getDateString(today.addDays(-1)) === payDay);
+                                    dayInterval = 1;
+                                    break;
                                 case 6:
                                     //4a: same as today (for first call reminder due date = current date + 7 days)
-                                    return (this.getDateString(today.addDays(-7)) === payDay);
+                                    //return (this.getDateString(today.addDays(-7)) === payDay);
+                                    dayInterval = 7;
+                                    break;
                                 case 7:
                                     //4a: same as today (for first call reminder due date = current date + 28 days)
-                                    return (this.getDateString(today.addDays(-28)) === payDay);
-                                case 8:
-                                    //for the promise calls
+                                    //return (this.getDateString(today.addDays(-28)) === payDay);
+                                    dayInterval = 28;
                                     break;
                             }
+
+                            for (let p = 0 ; p < accumulatedDays; p ++){
+                                datePool.push(this.getDateString(today.addDays(-(p+dayInterval))))
+                            }
+
+                            return datePool.includes(payDay);
                         };
 
-                        let isMyBranch = () =>  true; /*order.customer.branch.id === res.branch;*/
+                        let isMyBranch = () => true;
+                        //let isMyBranch = () => order.customer.branch.id === res.branch;
 
                         return isMyBranch() && hasMissedPayment();
                     }), res.payment_methods, res.banks, res.dva_id];
@@ -596,7 +603,7 @@
                 this.$LIPS(true);
                 this.list = list;
                 get(url({query: {list}})).then(({data}) => {
-                    if(list === 8){
+                    if (list === 8) {
                         let orders = [];
                         data.orders.forEach(promiseCall => orders.push(promiseCall.order));
                         data.orders = orders;
@@ -757,5 +764,9 @@
 
     .table-separator {
         border-top: 2px solid #dee1e4;
+    }
+
+    .attendance-head .light-heading:nth-child(1) {
+        max-width: 120px;
     }
 </style>
