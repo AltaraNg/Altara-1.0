@@ -571,9 +571,6 @@
                         + ` ${this.getColumn(parseInt(repaymentLevel) + 1)} repayment of ${product_price} for ${product_name}`
                         + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
                 }
-
-                console.log(message);
-
                 return message + "Thank you.";
             },
 
@@ -589,9 +586,6 @@
                         newObject.isSent = false;
                         return newObject;
                     });
-
-                return;
-
                 if (!!smsContactList.length) this.sendSMSReminders(smsContactList);
                 else this.displayErrorMessage('please select at least one!');
             },
@@ -689,13 +683,6 @@
                 Vue.set(this.$data, 'currentOrder', order);
                 this.isCurrentOrderInformal = !(['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()));
                 this.showModalContent = true;
-
-                /*var index = this.orders.indexOf(order);
-
-                console.log(2);
-
-                //this.itemClicked(index);*/
-
                 return $(`#${modal}`).modal('toggle');
             },
 

@@ -518,10 +518,10 @@ exports.default = {
                     return datePool.includes(payDay);
                 };
 
+                // let isMyBranch = () => true;
                 var isMyBranch = function isMyBranch() {
-                    return true;
+                    return order.customer.branch.id === res.branch;
                 };
-                //let isMyBranch = () => order.customer.branch.id === res.branch;
 
                 return isMyBranch() && hasMissedPayment();
             }), res.payment_methods, res.banks, res.dva_id];

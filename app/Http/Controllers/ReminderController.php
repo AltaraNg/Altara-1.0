@@ -25,7 +25,6 @@ class ReminderController extends Controller
     public function getDateForReminder($list)
     {
         $today = date('Y-m-d');
-//        $today = '2019-05-13';
         $count = date("D") == "Mon" ? 3 : 1;
         $informal = [];
         $days = 0;

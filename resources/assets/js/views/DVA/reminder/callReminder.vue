@@ -485,8 +485,8 @@
                             return datePool.includes(payDay);
                         };
 
-                        let isMyBranch = () => true;
-                        //let isMyBranch = () => order.customer.branch.id === res.branch;
+                        // let isMyBranch = () => true;
+                        let isMyBranch = () => order.customer.branch.id === res.branch;
 
                         return isMyBranch() && hasMissedPayment();
                     }), res.payment_methods, res.banks, res.dva_id];
