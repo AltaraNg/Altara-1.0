@@ -33,7 +33,6 @@ class DatabaseSeeder extends Seeder
             DiscountsTableSeeder::class,
             PaymentMethodsTableSeeder::class,
             OrdersTableSeeder::class,
-
             //ReminderTableSeeder::class,
         ]);
     }
