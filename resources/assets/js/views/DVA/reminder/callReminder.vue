@@ -474,7 +474,7 @@
                                 case 7:
                                     //4a: same as today (for first call reminder due date = current date + 28 days)
                                     //return (this.getDateString(today.addDays(-28)) === payDay);
-                                    dayInterval = 28;
+                                    dayInterval = 31; //28;
                                     break;
                             }
 
@@ -485,8 +485,10 @@
                             return datePool.includes(payDay);
                         };
 
-                        // let isMyBranch = () => true;
-                        let isMyBranch = () => order.customer.branch.id === res.branch;
+                        let isMyBranch = () => {
+                            if(this.$store.getters.auth('DVALead')) return true;
+                            return order.customer.branch.id === res.branch;
+                        };
 
                         return isMyBranch() && hasMissedPayment();
                     }), res.payment_methods, res.banks, res.dva_id];

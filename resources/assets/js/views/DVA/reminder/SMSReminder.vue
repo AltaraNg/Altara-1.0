@@ -449,10 +449,10 @@
                             for (let p = 0; p < accumulatedDays; p++) datePool.push(this.getDateString(today.addDays(p + dayInterval)));
                             return datePool.includes(payDay);
                         };
-
-
-                        let isMyBranch = () => true;
-                        //let isMyBranch = () => order.customer.branch.id === res.branch;
+                        let isMyBranch = () => {
+                            if(this.$store.getters.auth('DVALead')) return true;
+                            return order.customer.branch.id === res.branch;
+                        };
                         return isMyBranch() && hasMissedPayment();
                     }), res.payment_methods, res.banks, res.dva_id];
                 this.initializeReminders() && (this.show = true);
