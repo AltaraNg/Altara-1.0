@@ -51,11 +51,11 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            let contacts = this.contacts.split(",").filter(e => /\S/.test(e))
-                                .map(contact => '234' + contact.trim().substr(1));
-                            SMS.dvaMessage({message: this.message, contacts}, res => {
-                                res.status === 200 && this.done(contacts);
-                            });
+                            let phone = this.contacts
+                                .split(",").filter(e => /\S/.test(e))
+                                .map(contact => '234' + contact.trim().substr(1))
+                                .join(',');
+                            SMS.dvaMessage({message: this.message, phone}, r => r.status === 200 && this.done(phone));
                         } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
@@ -65,7 +65,7 @@
                 this.$LIPS(false);
                 Flash.setSuccess('Messages sent!');
                 this.form = {
-                    contacts: contacts.join(','),
+                    contacts,
                     contact_count: contacts.length,
                     message: this.message,
                     pages: Math.ceil(this.message.length / 160),

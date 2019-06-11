@@ -64,7 +64,7 @@ class MessageController extends Controller
         /** return the response flag(true) */
         return response()->json([
             'sentAndLogged' => true,
-            'ids' => $ids ? $ids : null
+            'ids' => isset($ids) ? $ids : null
         ]);
     }
 
