@@ -740,11 +740,11 @@
 
             getPaymentStatusClasses(order) {
                 if (!this.isOrderRepaymentValid(order)) return null;
-                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order);
+                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order), dueDates = this.getRepayment(order);
                 for (let i = 1; i < count; i++) {
                     let status = {class: null, icon: null};
                     let position = this.getColumn(i);
-                    let isDue = this.isPaymentDue(repaymentData[position + '_date']);
+                    let isDue = this.isPaymentDue(dueDates[i-1]);
                     let amountPaid = parseInt(repaymentData[position + '_pay']);
                     if (amountPaid) {
                         status.class = 'paid';

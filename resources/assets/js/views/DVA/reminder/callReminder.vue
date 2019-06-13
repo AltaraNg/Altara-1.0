@@ -469,7 +469,7 @@
                                 case 6:
                                     //4a: same as today (for first call reminder due date = current date + 7 days)
                                     //return (this.getDateString(today.addDays(-7)) === payDay);
-                                    dayInterval = 7;
+                                    dayInterval = 5;//7;
                                     break;
                                 case 7:
                                     //4a: same as today (for first call reminder due date = current date + 28 days)
@@ -706,11 +706,11 @@
 
             getPaymentStatusClasses(order) {
                 if (!this.isOrderRepaymentValid(order)) return null;
-                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order);
+                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order), dueDates = this.getRepayment(order);
                 for (let i = 1; i < count; i++) {
                     let status = {class: null, icon: null};
                     let position = this.getColumn(i);
-                    let isDue = this.isPaymentDue(repaymentData[position + '_date']);
+                    let isDue = this.isPaymentDue(dueDates[i-1]);
                     let amountPaid = parseInt(repaymentData[position + '_pay']);
                     if (amountPaid) {
                         status.class = 'paid';

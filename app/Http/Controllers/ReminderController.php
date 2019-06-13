@@ -42,10 +42,11 @@ class ReminderController extends Controller
                 $days = 15;
                 break;
             case 6://call reminder: 3
-                $days = 21;
+                $days = 19;//21;
                 break;
             case 7://call reminder: 4
-                $days = 28;
+                //$days = 28;
+                $days = 31;
                 break;
             default://sms reminder: 1 and  promise call
                 for ($j = 0; $j < $count; $j++)
