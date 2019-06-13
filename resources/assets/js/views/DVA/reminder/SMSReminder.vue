@@ -571,7 +571,7 @@
                         + ` ${this.getColumn(parseInt(repaymentLevel) + 1)} repayment of ${product_price} for ${product_name}`
                         + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
                 }
-                return message + "Thank you.";
+                return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
             },
 
             processSelected() {
