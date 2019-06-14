@@ -387,34 +387,6 @@
             isModel(m) {
                 return this.$route.meta.appModel === m;
             },
-        }/*,
-        computed: {
-            isModel(m)2 {
-                return this.$route.meta.appModel === m;
-            },
-
-
-            user() {
-                return this.$route.meta.appModel === 'user'
-            },
-            branch() {
-                return this.$route.meta.appModel === 'branch'
-            },
-            customer() {
-                return this.$route.meta.appModel === 'customer'
-            },
-            supplier() {
-                return this.$route.meta.appModel === 'supplier'
-            },
-            product() {
-                return this.$route.meta.appModel === 'product'
-            },
-            brand() {
-                return this.$route.meta.appModel === 'brand'
-            },
-            category() {
-                return this.$route.meta.appModel === 'category'
-            },
-        },*/
+        }
     }
 </script>

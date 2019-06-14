@@ -66,7 +66,7 @@
                 Flash.setSuccess('Messages sent!');
                 this.form = {
                     contacts,
-                    contact_count: contacts.length,
+                    contact_count: contacts.split(",").length,
                     message: this.message,
                     pages: Math.ceil(this.message.length / 160),
                 };

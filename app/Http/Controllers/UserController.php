@@ -142,7 +142,7 @@ class UserController extends Controller
         /** fetch the user*/
         $user = User::find($id);
         $newId = $user->staff_id;
-        $transfer = $request->category !== $user->category;
+        $transfer  = (isset($request['category'])) ? ($request['category'] !== $user->category) : null;
         if ($transfer) {
             $newId = $this->generateStaffID($request->category, $request->role_id);
         }
