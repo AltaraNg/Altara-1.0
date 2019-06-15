@@ -185,6 +185,9 @@
     .typeahead__item {
         display: block;
         border-top: 1px solid #f4f4f4;
+        &:hover{
+            background: lighten($default-color, 70%);
+        }
     }
 
     .typeahead__link {

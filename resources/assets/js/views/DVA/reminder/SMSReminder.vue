@@ -124,11 +124,11 @@
                                 </tr>
                                 <tr>
                                     <th>Repayment</th>
-                                    <td>{{$format(currentOrder.repayment_amount)}}</td>
+                                    <td>{{$formatCurrency(currentOrder.repayment_amount)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Down Payment</th>
-                                    <td>{{$format(currentOrder.down_payment)}}</td>
+                                    <td>{{$formatCurrency(currentOrder.down_payment)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Discount (%)</th>
@@ -140,7 +140,7 @@
                                 </tr>
                                 <tr>
                                     <th>Total amount to Pay</th>
-                                    <td>{{$format(currentOrder.product_price)}}</td>
+                                    <td>{{$formatCurrency(currentOrder.product_price)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Processed by</th>
@@ -197,7 +197,13 @@
                                 </tr>
                                 <tr>
                                     <th>Verified by</th>
-                                    <td>--</td>
+                                    <td>
+                                        <router-link class="text-link"
+                                                     target="_blank"
+                                                     :to="`/dva/verification?id=${currentOrder.customer.id}`">
+                                            click here to see verifications status
+                                        </router-link>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -223,6 +229,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="table-responsive">
+                            <h5 class="mt-3 mb-0">Amortization Schedule</h5>
                             <table class="table table-bordered">
                                 <tbody class="text-center">
                                 <tr>
@@ -256,13 +263,12 @@
                                 </tr>
                                 <tr class="table-separator">
                                     <th>Repayment Amount</th>
-                                    <td v-for="payment in getRepayment(currentOrder,'repayments')">
-                                        {{$format(payment)}}
+                                    <td v-for="payment in getRepayment(currentOrder,'repayments')">{{$formatCurrency(payment)}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Actual Amount Paid</th>
-                                    <td v-for="payment in getRepayment(currentOrder,'_pay')">{{$format(payment)}}</td>
+                                    <td v-for="payment in getRepayment(currentOrder,'_pay')">{{$formatCurrency(payment)}}</td>
                                 </tr>
                                 <tr class="table-separator">
                                     <th>Payment Method</th>
@@ -278,44 +284,37 @@
                                         {{convertPaymentMethodOrBankToName(repaymentBank, 'bank')}}
                                     </td>
                                 </tr>
+
+
+                                </tbody>
+                            </table>
+                            <h5 class="mt-5 mb-0">Payment Summary</h5>
+                            <table class="table table-bordered">
+                                <tbody class="text-center">
+
                                 <tr class="table-separator">
-                                    <th>Summary</th>
-                                    <td>Discount Detail (%)</td>
-                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
+                                    <td class="text-left">Discount Detail (%)</td>
+                                    <th>
                                         {{currentOrder["discount"]["name"] | capitalize}}
                                         -
                                         ({{currentOrder["discount"]["percentage_discount"]}})
                                     </th>
                                     <td>Total Before Discount</td>
-                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
-                                        {{$format(currentOrder["product_price"])}}
-                                    </th>
+                                    <th>{{$formatCurrency(currentOrder["product_price"])}}</th>
                                     <td>Total Paid</td>
-                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
-                                        {{$format(getPaymentSummary(currentOrder).amountPaid)}}
-                                    </th>
+                                    <th>{{$formatCurrency(getPaymentSummary(currentOrder).amountPaid)}}</th>
                                 </tr>
                                 <tr>
-                                    <th></th>
-                                    <td>Discount Amount</td>
-                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
-                                        {{$format(getPaymentSummary(currentOrder).discountAmount)}}
-                                    </th>
+                                    <td class="text-left">Discount Amount</td>
+                                    <th>{{$formatCurrency(getPaymentSummary(currentOrder).discountAmount)}}</th>
                                     <td>Total After Discount</td>
-                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
-                                        {{$format(getPaymentSummary(currentOrder).discountedTotal)}}
-                                    </th>
+                                    <th>{{$formatCurrency(getPaymentSummary(currentOrder).discountedTotal)}}</th>
                                     <td>Total Debt</td>
-                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
-                                        {{$format(getPaymentSummary(currentOrder).outstandingDebt)}}
-                                    </th>
+                                    <th>{{$formatCurrency(getPaymentSummary(currentOrder).outstandingDebt)}}</th>
                                 </tr>
                                 <tr>
-                                    <th></th>
-                                    <td>Down Payment</td>
-                                    <th :colspan="isCurrentOrderInformal ? 3 : 1">
-                                        {{$format(currentOrder.down_payment)}}
-                                    </th>
+                                    <td class="text-left">Down Payment</td>
+                                    <th>{{$formatCurrency(currentOrder.down_payment)}}</th>
                                 </tr>
                                 </tbody>
                             </table>
@@ -346,7 +345,7 @@
                                     <th>S/N</th>
                                     <th>Date</th>
                                     <th>Type</th>
-                                    <th>Comment</th>
+                                    <th>SMS/Feedback</th>
                                     <th>sender</th>
                                 </tr>
                                 </thead>
@@ -450,7 +449,7 @@
                             return datePool.includes(payDay);
                         };
                         let isMyBranch = () => {
-                            if(this.$store.getters.auth('DVALead')) return true;
+                            if (this.$store.getters.auth('DVALead')) return true;
                             return order.customer.branch.id === res.branch;
                         };
                         return isMyBranch() && hasMissedPayment();
@@ -565,10 +564,10 @@
                         + ` the purchase of ${product_name}:%0a`;
                     if (dates.length > 0)
                         dates.forEach((date, index) =>
-                            message += this.getColumn(index + 1) + ": " + date + " => N" + repayment_amount + "%0a");
+                            message += this.getColumn(index + 1) + ": " + date + " => " + this.$formatCurrency(repayment_amount) + "%0a");
                 } else {
                     message = `Hello ${first_name} ${last_name}, This is to remind you that your`
-                        + ` ${this.getColumn(parseInt(repaymentLevel) + 1)} repayment of ${product_price} for ${product_name}`
+                        + ` ${this.getColumn(parseInt(repaymentLevel) + 1)} repayment of ${this.$formatCurrency(product_price)} for ${product_name}`
                         + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
                 }
                 return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
@@ -713,7 +712,7 @@
             getFinancialStatus(order) {
                 if (!this.isOrderRepaymentValid(order)) return 'no repayment detail';
                 let values = this.getPaymentSummary(order);
-                return 'Paid: ' + this.$format(values.amountPaid) + ' | Debt: ' + this.$format(values.outstandingDebt);
+                return 'Paid: ' + this.$formatCurrency(values.amountPaid) + ' | Debt: ' + this.$formatCurrency(values.outstandingDebt);
             },
 
             getRepayment(order, clause = null) {
@@ -740,11 +739,12 @@
 
             getPaymentStatusClasses(order) {
                 if (!this.isOrderRepaymentValid(order)) return null;
-                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order), dueDates = this.getRepayment(order);
+                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order),
+                    dueDates = this.getRepayment(order);
                 for (let i = 1; i < count; i++) {
                     let status = {class: null, icon: null};
                     let position = this.getColumn(i);
-                    let isDue = this.isPaymentDue(dueDates[i-1]);
+                    let isDue = this.isPaymentDue(dueDates[i - 1]);
                     let amountPaid = parseInt(repaymentData[position + '_pay']);
                     if (amountPaid) {
                         status.class = 'paid';
