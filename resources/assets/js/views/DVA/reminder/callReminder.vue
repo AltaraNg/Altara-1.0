@@ -589,7 +589,6 @@
 
             logPromiseCall(promiseCall) {
                 if (!!promiseCall.date) {
-                    console.log(promiseCall);
                     post('/api/promise_call', promiseCall).then(({data}) =>
                         data.saved ? this.done("Reminder Logged!, Promise call added!")
                             : this.displayErrorMessage('Error Logging promise call!')

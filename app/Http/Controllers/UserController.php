@@ -162,7 +162,7 @@ class UserController extends Controller
          * if the user has already exited the firm, the
          * portal access cannot be granted */
         if ($request->portal_access == 1 && isset($user->date_of_exit)) {
-            return response()->json(['message' => 'Staff exited! Access cant be granted!'], 422);
+            return response()->json(['message' => 'Staff has already been exited and cannot be granted access!'], 422);
         }
         /** at this point the user must have portal access and have not exited the firm
          * if the request has date of exit set den set portal access

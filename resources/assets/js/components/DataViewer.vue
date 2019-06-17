@@ -214,7 +214,8 @@
     import SMS from '../utilities/sms';
     import {log} from "../utilities/log";
     import {byMethod, get} from '../utilities/api';
-    import {getCustomerApprovalStatus as status} from '../utilities/helpers';
+    //import {getCustomerApprovalStatus as status} from '../utilities/helpers';
+    //import {getCustomerApprovalStatus as status} from '../utilities/helpers';
     import Flash from '../utilities/flash';
 
     import AppNavigation from '../components/AppNavigation';
@@ -374,7 +375,10 @@
                             log(`PortalAccessUpdated`, String(res.data.staff_id));
                             Flash.setSuccess('Portal access updated', 20000);
                         })
-                        .catch(() => Flash.setError('Error updating status. Try again later!'))
+                        .catch(({response:r}) => {
+                            let {message} = r.data;
+                            Flash.setError(message ? message :'Error updating status. Try again later!', 10000)
+                        })
                         .finally(() => this.done());
                 } else this.$networkErr();
             },

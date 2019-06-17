@@ -462,7 +462,8 @@
                     this.reminder.push({
                         'selected': false,
                         'customer_id': order.customer.id,
-                        'phone': order.customer.telephone,
+                        //'phone': order.customer.telephone,
+                        'contacts': order.customer.telephone,
                         'order_id': order.id,
                         'sms_id': null,
                         'repayment_level': this.getRepaymentLevel(order),
@@ -528,8 +529,6 @@
 
                 for (let p = 0; p < accumulatedDays; p++) datePool.push(this.getDateString(today.addDays(-p)));
 
-                console.log(datePool);
-
                 var value = true, date;
                 if (!!order) {
                     if (order.reminders.length > 0) {
@@ -590,7 +589,8 @@
                     .map(obj => {
                         let newObject = JSON.parse(JSON.stringify(obj));
                         //newObject.phone = '234' + obj.phone.trim().substr(1);
-                        newObject.contacts = '234' + obj.phone.trim().substr(1);
+                        //newObject.contacts = '234' + obj.phone.trim().substr(1);
+                        newObject.contacts = '234' + obj.contacts.trim().substr(1);
                         newObject.order = this.orders.find(order => order.id === obj.order_id);
                         newObject.message = this.generateCustomMessage(newObject.order);
                         newObject.isSent = false;
@@ -615,7 +615,8 @@
             logSentMessages(smsContactList) {
                 let messages = [];
                 smsContactList.forEach((obj, index) => {
-                    obj.isSent && messages.push(new Message(obj.dva_id, obj.message, obj.phone));
+                    //obj.isSent && messages.push(new Message(obj.dva_id, obj.message, obj.phone));
+                    obj.isSent && messages.push(new Message(obj.dva_id, obj.message, obj.contacts));
                     if ((index + 1) === smsContactList.length) {
                         if (messages.length > 0) {
                             post('/api/message', {messages, bulk: true}).then(({data}) => {
@@ -636,7 +637,8 @@
                     delete value.isSent;
                     delete value.message;
                     delete value.order;
-                    delete value.phone;
+                    //delete value.phone;
+                    delete value.contacts;
                     delete value.selected;
                     delete value.canBeSelected;
                 });
