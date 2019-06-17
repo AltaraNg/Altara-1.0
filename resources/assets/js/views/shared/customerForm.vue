@@ -1324,10 +1324,10 @@
 </template>
 <script>
 
-    import SMS from '../../helpers/sms';
-    import {log} from '../../helpers/log';
-    import Flash from '../../helpers/flash';
-    import {get, post} from '../../helpers/api';
+    import SMS from '../../utilities/sms';
+    import {log} from '../../utilities/log';
+    import Flash from '../../utilities/flash';
+    import {get, post} from '../../utilities/api';
     import Verification from '../DVA/verification/verification'
 
     export default {

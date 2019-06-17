@@ -1,11 +1,13 @@
 <template>
     <transition name="fade">
-        <div :class="isModel('customer') ? 'px-md-4 px-2' : ''">
-            <app-navigation :forward="{ path: $routerHistory.next().path }" :pageTitle="`${$route.meta.appModel} List` | capitalize"
-                            :previous="{ path: $routerHistory.previous().path }" :pageTitleSmall="`${$route.meta.appModel}. List` | capitalize"
+        <div :class="isModel('customer') && 'px-md-4 px-2'">
+            <app-navigation :forward="{ path: $routerHistory.next().path }"
+                            :previous="{ path: $routerHistory.previous().path }"
+                            :pageTitle="`${$route.meta.appModel} List` | capitalize"
+                            :pageTitleSmall="`${$route.meta.appModel}. List` | capitalize"
                             v-if="isModel('customer')"/>
             <div class="pt-md-3 pt-2" id="employeeEdit">
-                <div class="card" style="border-top: 3px solid #0e5f92; border-radius: .2rem .2rem .4rem .4rem">
+                <div class="card">
                     <div class="px-5 py-4">
                         <div class="px-3 clearfix">
                             <h5 class="h5-custom float-left m-0">{{$route.meta.appModel | capitalize}} Management</h5>
@@ -41,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="px-0 px-md-3 mt-3 table-responsive">
-                                <table class="table m-0  table-bordered table-hover">
+                                <table class="table m-0 table-bordered table-hover">
                                     <thead class="thead-light">
                                     <tr>
                                         <th @click="toggleOrder(column)" scope="col" v-for="column in columns">
@@ -158,7 +160,6 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">cancel</button>
-                                            <!--<button :disabled="$isProcessing" @click="bus.$emit('submit',form)" class="m-2 btn bg-default"-->
                                             <button :disabled="$isProcessing" @click="myLog(form.id)" class="m-2 btn bg-default"
                                                     type="button"> Save changes <i class="far fa-paper-plane ml-1"></i>
                                             </button>
@@ -210,11 +211,11 @@
 </template>
 <script>
     import Vue from 'vue';
-    import SMS from '../helpers/sms';
-    import {log} from "../helpers/log";
-    import {byMethod, get} from '../helpers/api';
-    import {getCustomerApprovalStatus as status} from '../helpers/helpers';
-    import Flash from '../helpers/flash';
+    import SMS from '../utilities/sms';
+    import {log} from "../utilities/log";
+    import {byMethod, get} from '../utilities/api';
+    import {getCustomerApprovalStatus as status} from '../utilities/helpers';
+    import Flash from '../utilities/flash';
 
     import AppNavigation from '../components/AppNavigation';
 
@@ -255,7 +256,6 @@
                     {name: 'grant', value: 1},
                     {name: 'deny', value: 0}
                 ],
-                //sentData: {},
                 /*data peculiar to hrm portal data viewer stops here*/
             }
         },
@@ -345,7 +345,9 @@
             },
 
             update(emp, mod) {
+                //the current form data will be the emp -> employee data
                 this.form = emp;
+                //toggle the mod modal
                 $(`#${mod}`).modal('toggle');
             },
 

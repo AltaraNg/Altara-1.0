@@ -522,11 +522,11 @@
 
 </template>
 <script>
-    import SMS from '../../../helpers/sms';
-    import {log} from '../../../helpers/log';
-    import Flash from '../../../helpers/flash';
-    import {byMethod, get} from '../../../helpers/api';
-    import {toMulipartedForm} from '../../../helpers/form';
+    import SMS from '../../../utilities/sms';
+    import {log} from '../../../utilities/log';
+    import Flash from '../../../utilities/flash';
+    import {byMethod, get} from '../../../utilities/api';
+    import {toMulipartedForm} from '../../../utilities/form';
     import ImageUpload from '../../../components/ImageUpload';
 
     function initialize(to) {

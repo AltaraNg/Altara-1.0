@@ -198,6 +198,11 @@ hr.style-two {
     }
 }
 
+#employeeEdit .card{
+    border-top: 3px solid #0e5f92;
+    border-radius: .2rem .2rem .4rem .4rem;
+}
+
 .upload {
     &-image {
         min-height: 20rem;

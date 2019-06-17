@@ -57,10 +57,10 @@
 </template>
 <script>
     import Vue from 'vue';
-    import Flash from "../../../helpers/flash";
-    import {byMethod, get} from '../../../helpers/api';
+    import Flash from "../../../utilities/flash";
+    import {byMethod, get} from '../../../utilities/api';
     import Typeahead from '../../../components/Typeahead';
-    import {log} from "../../../helpers/log";
+    import {log} from "../../../utilities/log";
 
     function initialize(to) {
         let urls = {create: `/api/product/create`, edit: `/api/product/${to.params.id}/edit`};

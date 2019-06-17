@@ -376,10 +376,9 @@
 
 <script>
     import Vue from 'vue';
-    import SMS from "../../../helpers/sms";
-    import Flash from "../../../helpers/flash";
-    import {Message} from "../../../helpers/sms";
-    import {get, post} from "../../../helpers/api";
+    import Flash from "../../../utilities/flash";
+    import {get, post} from "../../../utilities/api";
+    import SMS, {Message} from "../../../utilities/sms";
 
     let url = to => `/api/reminder/create?list=${to.query.list}`;
 
@@ -523,10 +522,18 @@
             },
 
             isReminderSent(order) {
+
+                let today = new Date(), isMonday = today.getDay() === 1,
+                    accumulatedDays = isMonday ? 3 : 1, datePool = [];
+
+                for (let p = 0; p < accumulatedDays; p++) datePool.push(this.getDateString(today.addDays(-p)));
+
+                console.log(datePool);
+
                 var value = true, date;
                 if (!!order) {
                     if (order.reminders.length > 0) {
-                        let today = this.getDateString();
+                        //let today = this.getDateString();
                         order.reminders.forEach(reminder => {
                             //refactor below by using regx characters to split
                             let reminderDateTimeArr = reminder.date.split(' ');//(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
@@ -535,7 +542,10 @@
                             let arr = [...dateArr, ...timeArr] // ['2019','03','24','02','00','00']
                                 .map(item => parseInt(item, 10)); //[2019,3,24,2,0,0]
                             date = this.getDateString(new Date(Date.UTC(...arr)), false);
-                            date === today && (value = false);
+                            //date === today && (value = false);
+
+                            datePool.includes(date) && (value = false);
+
                         });
                     }
                 }
@@ -579,7 +589,8 @@
                     .filter(obj => !!obj.selected)
                     .map(obj => {
                         let newObject = JSON.parse(JSON.stringify(obj));
-                        newObject.phone = '234' + obj.phone.trim().substr(1);
+                        //newObject.phone = '234' + obj.phone.trim().substr(1);
+                        newObject.contacts = '234' + obj.phone.trim().substr(1);
                         newObject.order = this.orders.find(order => order.id === obj.order_id);
                         newObject.message = this.generateCustomMessage(newObject.order);
                         newObject.isSent = false;
@@ -591,7 +602,8 @@
 
             sendSMSReminders(smsContactList) {
                 smsContactList.forEach((value, index) => {
-                    SMS.sendFirstReminder(value, res => {
+                    // SMS.sendFirstReminder(value, res => {
+                    SMS.sendMessage(value, res => {
                         value.isSent = res.status === 200;
                         if ((index + 1) === smsContactList.length) {
                             this.logSentMessages(smsContactList);

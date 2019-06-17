@@ -7,22 +7,22 @@ webpackJsonp([44],{
 
 
 Object.defineProperty(exports, "__esModule", {
-   value: true
+    value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _auth = __webpack_require__("./resources/assets/js/store/auth.js");
+var _auth = __webpack_require__("./resources/assets/js/utilities/auth.js");
 
 var _auth2 = _interopRequireDefault(_auth);
 
-var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
-
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -74,80 +74,87 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 
 exports.default = {
-   data: function data() {
-      return {
-         form: { staff_id: '', password: '' },
-         cardMT: '',
-         error: {}
-      };
-   },
+    data: function data() {
+        return {
+            form: { staff_id: '', password: '' },
+            cardMT: '',
+            error: {}
+        };
+    },
 
-   methods: {
-      login: function login() {
-         var _this = this;
+    methods: {
+        login: function login() {
+            var _this = this;
 
-         this.$validator.validateAll().then(function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
-               return _regenerator2.default.wrap(function _callee$(_context) {
-                  while (1) {
-                     switch (_context.prev = _context.next) {
-                        case 0:
-                           if (!result) {
-                              _context.next = 10;
-                              break;
-                           }
+            this.$validator.validateAll().then(function () {
+                var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
+                    return _regenerator2.default.wrap(function _callee$(_context) {
+                        while (1) {
+                            switch (_context.prev = _context.next) {
+                                case 0:
+                                    if (!result) {
+                                        _context.next = 10;
+                                        break;
+                                    }
 
-                           if (!_this.$network()) {
-                              _context.next = 9;
-                              break;
-                           }
+                                    if (!_this.$network()) {
+                                        _context.next = 9;
+                                        break;
+                                    }
 
-                           _this.$LIPS(true);
-                           _this.error = {};
-                           _context.next = 6;
-                           return (0, _api.post)('/api/login', _this.form).then(function (res) {
-                              res = res.data;
-                              if (res.auth) {
-                                 _auth2.default.set(res);
-                                 _this.$store.dispatch('mutateAuth');
-                                 _this.$router.push('/home');
-                                 _flash2.default.setSuccess(res.message);
-                              }
-                           }).catch(function (e) {
-                              e = e.response;
-                              if (e.status === 422) _this.error = e.data.errors ? e.data.errors : e.data;
-                              _flash2.default.setError(e.data.message);
-                           });
+                                    _this.$LIPS(true);
+                                    _this.error = {};
+                                    _context.next = 6;
+                                    return (0, _api.post)('/api/login', _this.form).then(function (_ref2) {
+                                        var data = _ref2.data;
 
-                        case 6:
-                           _this.$LIPS(false);
-                           _context.next = 10;
-                           break;
+                                        if (data.auth) {
+                                            _auth2.default.set(data);
+                                            _this.$store.dispatch('mutateAuth');
+                                            _this.$router.push('/home');
+                                            _flash2.default.setSuccess(data.message);
+                                        }
+                                    })
+                                    //using destructuring to get the
+                                    //received data.response an name it r;
+                                    .catch(function (_ref3) {
+                                        var r = _ref3.response;
+                                        var data = r.data,
+                                            status = r.status;
 
-                        case 9:
-                           _this.$networkErr();
+                                        if (status === 422) _this.error = data.errors ? data.errors : data;
+                                        _flash2.default.setError(data.message);
+                                    });
 
-                        case 10:
-                        case 'end':
-                           return _context.stop();
-                     }
-                  }
-               }, _callee, _this);
-            }));
+                                case 6:
+                                    _this.$LIPS(false);
+                                    _context.next = 10;
+                                    break;
 
-            return function (_x) {
-               return _ref.apply(this, arguments);
-            };
-         }());
-      }
-   },
-   beforeCreate: function beforeCreate() {
-      if (localStorage.getItem('api_token')) this.$router.push('/home');
-   },
-   mounted: function mounted() {
-      this.cardMT = (window.innerHeight - $('#loginCard').height()) / 2;
-      this.$LIPS(false);
-   }
+                                case 9:
+                                    _this.$networkErr();
+
+                                case 10:
+                                case 'end':
+                                    return _context.stop();
+                            }
+                        }
+                    }, _callee, _this);
+                }));
+
+                return function (_x) {
+                    return _ref.apply(this, arguments);
+                };
+            }());
+        }
+    },
+    beforeCreate: function beforeCreate() {
+        !!localStorage.getItem('api_token') && this.$router.push('/home');
+    },
+    mounted: function mounted() {
+        this.cardMT = (window.innerHeight - $('#loginCard').height()) / 2;
+        this.$LIPS(false);
+    }
 };
 
 /***/ }),
@@ -1031,7 +1038,7 @@ var render = function() {
                       ? _c("small", { staticClass: "error-control" }, [
                           _vm._v(
                             _vm._s(_vm.errors.first("Staff ID")) +
-                              "\n                     "
+                              "\n                            "
                           )
                         ])
                       : _vm._e(),
@@ -1089,9 +1096,9 @@ var render = function() {
                     _vm.errors.first("password")
                       ? _c("small", { staticClass: "error-control" }, [
                           _vm._v(
-                            "\n                        " +
+                            "\n                                " +
                               _vm._s(_vm.errors.first("password")) +
-                              "\n                     "
+                              "\n                            "
                           )
                         ])
                       : _vm._e()
@@ -1108,7 +1115,7 @@ var render = function() {
                           attrs: { disabled: _vm.$isProcessing, type: "submit" }
                         },
                         [
-                          _vm._v("\n                        Login!   "),
+                          _vm._v("\n                                Login!   "),
                           _c("i", { staticClass: "far fa-paper-plane" })
                         ]
                       )

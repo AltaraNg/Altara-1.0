@@ -103,9 +103,9 @@
 
 <script>
     import Vue from 'vue';
-    import {get, post} from "../../../helpers/api";
-    import {log} from "../../../helpers/log";
-    import Flash from "../../../helpers/flash";
+    import {get, post} from "../../../utilities/api";
+    import {log} from "../../../utilities/log";
+    import Flash from "../../../utilities/flash";
 
     import Typeahead from '../../../components/Typeahead';
 

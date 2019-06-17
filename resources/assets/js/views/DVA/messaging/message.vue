@@ -9,7 +9,7 @@
                             <label>Phone Numbers</label>
                             <textarea class="form-control col-sm-12" name="contacts" v-model="contacts"
                                       v-validate="'required'"
-                                      placeholder="Kindly add the number and seperate each with a semi-colon ';'"
+                                      placeholder="Kindly add the number and separate each with a semi-colon ';'"
                                       rows="3"></textarea>
                             <small v-if="errors.first('contacts')">{{errors.first('contacts')}}</small>
                         </div>
@@ -33,9 +33,9 @@
     </transition>
 </template>
 <script>
-    import SMS from '../../../helpers/sms';
-    import {post} from '../../../helpers/api';
-    import Flash from '../../../helpers/flash';
+    import SMS,{Message} from '../../../utilities/sms';
+    import {post} from '../../../utilities/api';
+    import Flash from '../../../utilities/flash';
 
     export default {
         data() {
@@ -47,20 +47,28 @@
         },
         methods: {
             sendMessage() {
-                this.$validator.validateAll().then(async result => {
+                this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            let phone = this.contacts
+                            /*let phone = this.contacts
                                 .split(",").filter(e => /\S/.test(e))
                                 .map(contact => '234' + contact.trim().substr(1))
-                                .join(',');
-                            SMS.dvaMessage({message: this.message, phone}, r => r.status === 200 && this.done(phone));
+                                .join(',');*/
+                            //SMS.dvaMessage({message: this.message, phone}, r => r.status === 200 && this.done(phone));
+                            let message = new Message(null, this.message, this.contacts);
+                            SMS.sendMessage(message, r => r.status === 200 && this.done(message));
                         } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
             },
-            done(contacts) {
+            done(message) {
+                this.$scrollToTop();
+                this.$LIPS(false);
+                Flash.setSuccess('Messages sent!');
+                post('/api/message', message).then(() => this.resetData());
+            },
+            /*done(contacts) {
                 this.$scrollToTop();
                 this.$LIPS(false);
                 Flash.setSuccess('Messages sent!');
@@ -71,7 +79,7 @@
                     pages: Math.ceil(this.message.length / 160),
                 };
                 post('/api/message', this.form).then(() => this.resetData());
-            },
+            },*/
             resetData() {
                 this.contacts = null;
                 this.message = null;

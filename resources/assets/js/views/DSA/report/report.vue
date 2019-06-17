@@ -128,17 +128,17 @@
     </transition>
 </template>
 <script>
-    import Flash from '../../../helpers/flash';
-    import {get, post, postD} from '../../../helpers/api';
+    import Flash from '../../../utilities/flash';
+    import {get, post, postD} from '../../../utilities/api';
 
     export default {
         beforeCreate() {
-            if (!this.$store.getters.auth('DSACaptain')) this.$networkErr('page');
-            get(`/api/user/${this.$store.state.user_id}`).then(res => {
-                this.report.branch = res.data.user.branch;
-                this.pageBranch.push(res.data.user.branch);
+            !this.$store.getters.auth('DSACaptain') && this.$networkErr('page');
+            get(`/api/user/${this.$store.state.user_id}`).then(({data}) => {
+                this.report.branch = data.user.branch;
+                this.pageBranch.push(data.user.branch);
             });
-            get(`/api/user/getBranchUsers`).then(res => this.users = res.data.DSAs);
+            get(`/api/user/getBranchUsers`).then(({data}) => this.users = data.DSAs);
             this.$prepareBranches();
         },
         created() {
@@ -181,8 +181,8 @@
                         if (this.$network()) {
                             let branch = this.$store.state.branches.find(obj => obj.id === this.report.branch.id);
                             this.report.branch = branch;
-                            postD('/api/report', this.report).then(res => {
-                                const url = window.URL.createObjectURL(new Blob([res.data]));
+                            postD('/api/report', this.report).then(({data}) => {
+                                const url = window.URL.createObjectURL(new Blob([data]));
                                 const link = document.createElement('a');
                                 link.href = url;
                                 link.setAttribute('download', `${this.report.type}_for_${branch.name}.xlsx`);
@@ -212,22 +212,17 @@
                  * current week*/
             },
             submitReport() {
-                /** validate form*/
                 this.$validator.validateAll('f2').then(result => {
-                    /** if validation is successful*/
                     if (result) {
-                        /** check is network is available*/
                         if (this.$network()) {
-                            /** if network is available*/
                             this.$LIPS(true);
-                            /** make a request to the backend*/
                             post(`/api/dsa_daily_registration`, this.dailyReport)
-                                .then(res => {
+                                .then(({data}) => {
                                     this.$validator.reset();
                                     this.initForm();
                                     this.$scrollToTop();
                                     this.$LIPS(false);
-                                    if (res.data.submitted) Flash.setSuccess(res.data.message);
+                                    data.submitted && Flash.setSuccess(data.message);
                                 }).catch(() => Flash.setError('Error logging report please try again later!'));
                         } else this.$networkErr();
                     } else this.$networkErr('form');

@@ -1,4 +1,5 @@
 //noinspection JSAnnotator
+/*
 import Vue from 'vue';
 
 Vue.filter('capitalize', d => {
@@ -10,4 +11,4 @@ Vue.filter('capitalize', d => {
     return '';
 });
 
-Vue.filter('slug', e => !e ? '' : (e.replace(/ /g, '_')).toLowerCase());
+Vue.filter('slug', e => !e ? '' : (e.replace(/ /g, '_')).toLowerCase());*/

@@ -116,7 +116,8 @@
                                         <tbody class="px-3">
                                         <tr>
                                             <th><i class="fas fa-map-marker-alt mx-4"></i></th>
-                                            <td>{{customerAddress}}</td>
+<!--                                            <td>{{customerAddress}}</td>-->
+                                            <td>{{$getCustomerAddress(customer)}}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -486,11 +487,11 @@
 </template>
 <script>
     import Vue from 'vue';
-    import {log} from '../../../helpers/log';
-    import Flash from '../../../helpers/flash';
-    import {get, post} from '../../../helpers/api';
-    import {EventBus} from '../../../helpers/event-bus';
-    import {toMulipartedForm} from '../../../helpers/form';
+    import {log} from '../../../utilities/log';
+    import Flash from '../../../utilities/flash';
+    import {get, post} from '../../../utilities/api';
+    import {EventBus} from '../../../utilities/event-bus';
+    import {toMulipartedForm} from '../../../utilities/form';
     import ImageUpload from '../../../components/ImageUpload';
     import CustomerProfile from '../../../components/CustomerProfile';
 
@@ -532,7 +533,7 @@
                 error: {},
                 storeURL: '',
                 user: {},
-                customerAddress: '',
+                //customerAddress: '',
                 work_guarantor_address: '',
                 personal_guarantor_address: ''
             }
@@ -594,12 +595,12 @@
                     this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                     this.form.id_card = data.customer.document.id_card_url;
                     this.form.passport = data.customer.document.passport_url;
-                    this.customerAddress =
-                        `${this.customer.add_houseno}
+                    //this.customerAddress = this.$getCustomerAddress(this.customer);
+                        /*`${this.customer.add_houseno}
                         ${this.customer.add_street}
                         ${this.customer.area_address}
                         ${this.customer.city}
-                        ${this.customer.state}`;
+                        ${this.customer.state}`;*/
                     this.work_guarantor_address =
                         `${this.customer.guaadd_houseno},
                         ${this.customer.guaadd_street},

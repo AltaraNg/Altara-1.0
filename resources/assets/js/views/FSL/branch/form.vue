@@ -67,7 +67,7 @@
                         <select class="custom-select w-100" data-vv-validate-on="blur" name="category"
                                 v-model="form.category" v-validate="'required'">
                            <option selected value="">select Category</option>
-                           <option :value="category" v-for="category in ['lifestyle','appliances']">{{category | capitalize}}</option>
+                           <option :value="category" v-for="category in ['lifestyle','appliances','admin']">{{category | capitalize}}</option>
                         </select>
                         <small v-if="errors.first('category')">{{errors.first('category') }}</small>
                      </div>
@@ -126,9 +126,9 @@
 </template>
 <script>
    import Vue from 'vue';
-   import {log} from '../../../helpers/log';
-   import Flash from '../../../helpers/flash'
-   import {byMethod, get} from '../../../helpers/api';
+   import {log} from '../../../utilities/log';
+   import Flash from '../../../utilities/flash'
+   import {byMethod, get} from '../../../utilities/api';
 
    function initialize(to) {
       let urls = {create: `/api/branch/create`, edit: `/api/branch/${to.params.id}/edit`};

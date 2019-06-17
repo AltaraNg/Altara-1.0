@@ -39,40 +39,44 @@
 
     #index {
         a#back {
-            left : 0;
+            left: 0;
         }
+
         a#forward {
-            right : 0;
+            right: 0;
         }
+
         a#back, a#forward {
-            margin-top : .8rem;
-            position   : absolute;
+            margin-top: .8rem;
+            position: absolute;
+
             i {
-                font-size : 1.1*$default-font-size-icon
+                font-size: 1.1*$default-font-size-icon
             }
         }
+
         .forward, .back {
-            line-height : 2.4rem;
-            margin-top  : -.2rem;
-            font-weight : bold;
+            line-height: 2.4rem;
+            margin-top: -.2rem;
+            font-weight: bold;
         }
     }
 
-    @media (max-width : 990px) {
+    @media (max-width: 990px) {
         #index {
             a#back, a#forward {
                 i {
-                    font-size : 1.2* $default-font-size-icon
+                    font-size: 1.2* $default-font-size-icon
                 }
             }
         }
     }
 
-    @media (max-width : 600px) {
+    @media (max-width: 600px) {
         #index {
             a#back, a#forward, [data-title="title"] {
-                margin-top    : -.3rem;
-                margin-bottom : .3rem;
+                margin-top: -.3rem;
+                margin-bottom: .3rem;
             }
         }
     }

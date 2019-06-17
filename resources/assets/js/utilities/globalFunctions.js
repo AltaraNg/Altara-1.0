@@ -1,58 +1,80 @@
 import Vue from 'vue';
-import Flash from '../helpers/flash';
+import Flash from './flash';
 import {store} from '../store/store';
-import {get} from '../helpers/api'
-
-//NB functions her can be accessed anywhere
-// on the project(vue components)
-// by using this.$functionName
-
-Vue.prototype.$getCustomerFullName = cus => {
-    if(cus) return`${cus.first_name} ${cus.last_name}`;
-    return null;
-};
-Vue.prototype.$getCustomerAddress = cus => {
-    if(cus) return`${cus.add_houseno} ${cus.add_street} ${cus.area_address}, ${cus.city}, ${cus.state}.`;
-    return null;
-};
+import {get} from './api'
 
 
+/**custom made vue filters
+the argument s is the string u want to capitalize
+e i a -> element, index, array**/
+Vue.filter('capitalize', s => {
+    if (s) {
+        s = (s.replace(/_/g, ' ').split(" "));
+        s.forEach((e, i, a) => a[i] = e.charAt(0).toUpperCase() + e.slice(1));
+        return s.join(' ');
+    }
+    return '';
+});
+
+
+/**the argument s is the string to be converted to slug**/
+Vue.filter('slug', s => !s ? '' : s.replace(/ /g, '_').toLowerCase());
+
+
+/**NB functions her can be accessed anywhere on the project(vue components)
+ * by using this.$functionName the argument c stands for customer
+ * i used c just to reduce file size**/
+Vue.prototype.$getCustomerFullName = c => c ? `${c.first_name} ${c.last_name}` : null;
+Vue.prototype.$getCustomerAddress = c =>
+    c ? `${c.add_houseno} ${c.add_street} ${c.area_address}, ${c.city}, ${c.state}.` : null;
+/**the customer.verification is what is passed as v**/
+Vue.prototype.$getCustomerApprovalStatus = v =>
+    !!v ? (v.address && v.id_card && v.passport && v.processing_fee && v.work_guarantor && v.personal_guarantor)
+        : false;
+
+
+
+/**used in any form to avoid submitting forms more than
+ * once or repeatedly while processing already**/
 Vue.prototype.$isProcessing = false;
-//this is basically used in any form to avoid submitting
-// forms more than once or repeatedly
-// while processing already
 
-Vue.prototype.$LIPS = function (s) {
+
+/**sets the loader and isProcessing to what us true or false**/
+Vue.prototype.$LIPS = function (s) {//s is a boolean
     this.$store.state.loader = this.$isProcessing = s
 };
-//sets loader to true(show) or false(hide); isProcessing
-// if true (disables the button its called on)
-// or disables is if true
 
+
+/**scrolls to page top with animation**/
 Vue.prototype.$scrollToTop = () => $("html, body").animate({scrollTop: 0}, 500);
-//scrolls the page (with animation) to the top
 
+
+/**return the today's date - yyyy-mm-dd;**/
 Vue.prototype.$getDate = () => {
+    /**changes 2 to 02, 10 to 10**/
     const toTwoDigits = num => num < 10 ? '0' + num : num;
     let today = new Date(),
         year = today.getFullYear(),
         month = toTwoDigits(today.getMonth() + 1),
         day = toTwoDigits(today.getDate());
     return `${year}-${month}-${day}`;
-    //return the current date; format : yyyy-mm-dd;
 };
 
-// Vue.prototype.$network = () => window.navigator.onLine;
-Vue.prototype.$network = () => true;
-//return the network status(true | false) of the system if connected to a
-// network not NB: this doesn't work with internet access. it only
-//detects the system is connected to a network
+
+/**return the network status(true | false) of the system if connected to a
+ network not NB: this doesn't work with internet access. it only
+ detects the system is connected to a network**/
+Vue.prototype.$network = () => window.navigator.onLine;
+//Vue.prototype.$network = () => true;
 
 
-//currency formatter
-const formatter = (new Intl.NumberFormat('en-NG', {style: 'currency', currency: 'NGN', minimumFractionDigits: 2}));
+/**currency formatter**/
+const formatter = (new Intl.NumberFormat('en-NG',
+    {style: 'currency', currency: 'NGN', minimumFractionDigits: 2}));
 Vue.prototype.$formatCurrency = price => !!price ? formatter.format(price) : price;
 
+
+/**throws custom error messages**/
 Vue.prototype.$networkErr = function (err = '') {
     this.$scrollToTop();
     this.$LIPS(false);
@@ -65,22 +87,34 @@ Vue.prototype.$networkErr = function (err = '') {
     if (err === 'edit') msg = 'You do not have access to edit details because it is out of your jurisdiction!';
     if (err === 'unique') msg = 'Your details contains a unique field that already exists in our record change it and try again!';
     Flash.setError(msg, 10000);
-    //custom message for network "no network connection" and
-    //form field validation error
 };
 
+
+/*** this function checks for app level branch Hence the call for list of branches is done
+ * Once throughout the application lifecycle this is for memory optimization
+ * also this ensure we have 1 instance of the branches variable
+ * throughout the app which is stores with vuex*/
+/**r is the response from the request**/
 Vue.prototype.$prepareBranches = () => {
-    /*** this function checks for app level branch Hence the call for list of branches is done
-     * Once throughout the application lifecycle this is for memory optimization
-     * also this ensure we have 1 instance of the branches variable
-     * throughout the app which is stores with vuex*/
-    const branches = store.getters.getBranches;
-    if (!branches) get('/api/branches').then(res => store.dispatch('mutateBranches', res.data.branches));
+    !store.getters.getBranches && get('/api/branches')
+        .then(r => store.dispatch('mutateBranches', r.data.branches));
 };
 
+/*** this function checks for app level states Hence the call for list of states is done
+ * Once throughout the application lifecycle this is for memory optimization
+ * also this ensure we have 1 instance of the states variable
+ * throughout the app which it stores with vuex*/
+/**r is the response from the request**/
+Vue.prototype.$prepareStates = () => {
+    !store.getters.getStates && get('/api/state')
+        .then(r => store.dispatch('mutateStates', r.data.states));
+};
+
+
+/**convert a time in 24 hours format to 12 hours format**/
 Vue.prototype.$timeConvert = time => {
     // Check correct time format and split into components
-    if(time){
+    if (time) {
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
         if (time.length > 1) { // If time format correct
             time = time.slice(1);  // Remove full string match value
@@ -88,17 +122,10 @@ Vue.prototype.$timeConvert = time => {
             time[0] = +time[0] % 12 || 12; // Adjust hours
         }
         return time.join(''); // return adjusted time or original string
-    } return time;
+    }
+    return time;
 };
 
-Vue.prototype.$prepareStates = () => {
-    /*** this function checks for app level branch Hence the call for list of states is done
-     * Once throughout the application lifecycle this is for memory optimization
-     * also this ensure we have 1 instance of the states variable
-     * throughout the app which is stores with vuex*/
-    const states = store.getters.getStates;
-    if (!states) get('/api/state').then(res => store.dispatch('mutateStates', res.data.states));
-};
 
 Vue.prototype.$editAccess = function (user = '', customer = '') {
     /**this is a method for access control between dsa <=> customer and dva <=> customer**/

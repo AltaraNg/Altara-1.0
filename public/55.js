@@ -18,13 +18,13 @@ var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _log = __webpack_require__("./resources/assets/js/helpers/log.js");
+var _log = __webpack_require__("./resources/assets/js/utilities/log.js");
 
-var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
+var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
 
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1564,15 +1564,20 @@ var render = function() {
                               [_vm._v("select Category")]
                             ),
                             _vm._v(" "),
-                            _vm._l(["lifestyle", "appliances"], function(
-                              category
-                            ) {
-                              return _c(
-                                "option",
-                                { domProps: { value: category } },
-                                [_vm._v(_vm._s(_vm._f("capitalize")(category)))]
-                              )
-                            })
+                            _vm._l(
+                              ["lifestyle", "appliances", "admin"],
+                              function(category) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: category } },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm._f("capitalize")(category))
+                                    )
+                                  ]
+                                )
+                              }
+                            )
                           ],
                           2
                         ),
@@ -1913,7 +1918,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/log.js":
+/***/ "./resources/assets/js/utilities/log.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1924,7 +1929,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.log = log;
 
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 
 function log(action, description) {
     /*actions is the action performed

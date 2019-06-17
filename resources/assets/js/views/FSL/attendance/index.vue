@@ -205,8 +205,8 @@
 
 <script>
     import Vue from 'vue';
-    import {get} from "../../../helpers/api";
-    import Flash from "../../../helpers/flash";
+    import {get} from "../../../utilities/api";
+    import Flash from "../../../utilities/flash";
 
     const apiLink = query => `/attendance?branch=${query.branch}&month=${query.month}&year=${query.year}`;
     export default {

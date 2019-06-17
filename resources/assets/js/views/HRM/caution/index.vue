@@ -148,8 +148,8 @@
 
 <script>
     import Vue from 'vue';
-    import {get} from "../../../helpers/api";
-    import Flash from "../../../helpers/flash";
+    import {get} from "../../../utilities/api";
+    import Flash from "../../../utilities/flash";
 
     const apiLink = to => `/caution${to.query.page ? '?page=' + to.query.page : ''}`;
     export default {

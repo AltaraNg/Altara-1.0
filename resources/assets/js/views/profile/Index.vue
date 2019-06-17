@@ -6,8 +6,8 @@
 <script>
     import {mapActions} from 'vuex';
     import {mapGetters} from 'vuex';
-    import Auth from '../../store/auth';
-    import Flash from '../../helpers/flash';
+    import Auth from '../../utilities/auth';
+    import Flash from '../../utilities/flash';
     export default{
         data(){
             return {

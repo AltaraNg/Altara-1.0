@@ -57,7 +57,7 @@ class MessageController extends Controller
             $ids = Message::orderBy('id', 'desc')->take(count($request['messages']))->pluck('id');
         } else {
             $message = new Message($request->all());
-            $message->contacts = $request['contacts'];
+            //$message->contacts = $request['contacts'];
             $message->user_id = auth('api')->user()->id;
             $message->save();
         }

@@ -5,6 +5,6 @@ export function log(action, description) {
     * description is reference of the data the action was taken on*/
     action = (action.replace(/([A-Z])/g, ' $1')).replace(/^./, str => str.toUpperCase());
     //formats and capitalize the action performed
-    post('/api/log', {action: action, description: description});
+    post('/api/log', {action, description});
     //and logs then on the log table;
 }

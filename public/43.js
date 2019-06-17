@@ -148,11 +148,11 @@ var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 
-var _log = __webpack_require__("./resources/assets/js/helpers/log.js");
+var _log = __webpack_require__("./resources/assets/js/utilities/log.js");
 
-var _flash = __webpack_require__("./resources/assets/js/helpers/flash.js");
+var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
 
@@ -376,7 +376,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.typeahead {\n  border-radius: 3px;\n  border: 1px solid #E3E3E3;\n  position: relative;\n  z-index: 1;\n}\n.typeahead__open {\n  border: 1px solid #0d78bb;\n}\n.typeahead__open .typeahead__text {\n  opacity: 0.4;\n}\n.typeahead__toggle {\n  position: relative;\n  z-index: 1;\n  line-height: 1rem;\n}\n.typeahead__search {\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 10px;\n  width: 100%;\n  display: block;\n  cursor: text;\n  background: transparent;\n  border: none;\n  outline: none;\n  z-index: 4;\n}\n.typeahead__text {\n  min-height: 30px;\n  line-height: 1em;\n  padding: 10px;\n  display: inline-block;\n  position: relative;\n  z-index: 3;\n}\n.typeahead__list {\n  margin: 0;\n  padding: 0;\n  max-height: 240px;\n  overflow-y: scroll;\n  position: absolute;\n  background-color: white;\n  width: calc(100% + 2px);\n  border: 1px solid #0d78bb;\n  border-top: 0;\n  left: -1px;\n  right: 0;\n  border-radius: 0 0 4px 4px;\n}\n.typeahead__item {\n  display: block;\n  border-top: 1px solid #f4f4f4;\n}\n.typeahead__link {\n  display: block;\n  padding: 10px;\n  line-height: 1em;\n  cursor: pointer;\n}\n.typeahead__active {\n  background: #0d78bb;\n  color: #fff !important;\n}\n", ""]);
+exports.push([module.i, "\n.typeahead {\n  border-radius: 3px;\n  border: 1px solid #E3E3E3;\n  position: relative;\n  z-index: 1;\n}\n.typeahead__open {\n  border: 1px solid #0d78bb;\n}\n.typeahead__open .typeahead__text {\n  opacity: 0.4;\n}\n.typeahead__toggle {\n  position: relative;\n  z-index: 1;\n  line-height: 1rem;\n}\n.typeahead__search {\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 10px;\n  width: 100%;\n  display: block;\n  cursor: text;\n  background: transparent;\n  border: none;\n  outline: none;\n  z-index: 4;\n}\n.typeahead__text {\n  min-height: 30px;\n  line-height: 1em;\n  padding: 10px;\n  display: inline-block;\n  position: relative;\n  z-index: 3;\n}\n.typeahead__list {\n  margin: 0;\n  padding: 0;\n  max-height: 240px;\n  overflow-y: scroll;\n  position: absolute;\n  background-color: white;\n  width: calc(100% + 2px);\n  border: 1px solid #0d78bb;\n  border-top: 0;\n  left: -1px;\n  right: 0;\n  border-radius: 0 0 4px 4px;\n}\n.typeahead__item {\n  display: block;\n  border-top: 1px solid #f4f4f4;\n}\n.typeahead__item:hover {\n    background: #e3f3fd;\n}\n.typeahead__link {\n  display: block;\n  padding: 10px;\n  line-height: 1em;\n  cursor: pointer;\n}\n.typeahead__active {\n  background: #0d78bb;\n  color: #fff !important;\n}\n", ""]);
 
 // exports
 
@@ -1171,7 +1171,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/log.js":
+/***/ "./resources/assets/js/utilities/log.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1182,7 +1182,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.log = log;
 
-var _api = __webpack_require__("./resources/assets/js/helpers/api.js");
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 
 function log(action, description) {
     /*actions is the action performed

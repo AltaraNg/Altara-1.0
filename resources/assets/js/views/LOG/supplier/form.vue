@@ -110,9 +110,9 @@
 </template>
 <script>
     import Vue from 'vue';
-    import Flash from "../../../helpers/flash";
-    import {byMethod, get} from '../../../helpers/api';
-    import {log} from "../../../helpers/log";
+    import Flash from "../../../utilities/flash";
+    import {byMethod, get} from '../../../utilities/api';
+    import {log} from "../../../utilities/log";
 
     function initialize(to) {
         let urls = {create: `/api/supplier/create`, edit: `/api/supplier/${to.params.id}/edit`};

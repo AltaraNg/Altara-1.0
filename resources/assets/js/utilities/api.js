@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Auth from '../store/auth'
+import Auth from './auth'
 export function get(url) {
     return axios({
         method: 'GET',

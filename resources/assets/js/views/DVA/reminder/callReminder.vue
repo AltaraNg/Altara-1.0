@@ -385,8 +385,8 @@
 
 <script>
     import Vue from 'vue';
-    import Flash from "../../../helpers/flash";
-    import {get, post} from "../../../helpers/api";
+    import Flash from "../../../utilities/flash";
+    import {get, post} from "../../../utilities/api";
 
     let url = to => `/api/reminder/create?list=${to.query.list}`;
 
@@ -681,7 +681,7 @@
             getFinancialStatus(order) {
                 if (!this.isOrderRepaymentValid(order)) return 'no repayment detail';
                 let values = this.getPaymentSummary(order);
-                return 'Paid: ' + this.$format(values.amountPaid) + ' | Debt: ' + this.$format(values.outstandingDebt);
+                return 'Paid: ' + this.$formatCurrency(values.amountPaid) + ' | Debt: ' + this.$formatCurrency(values.outstandingDebt);
             },
 
             getRepayment(order, clause = null) {

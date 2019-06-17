@@ -160,9 +160,9 @@
 
 <script>
     import Vue from 'vue';
-    import {log} from '../../../helpers/log';
-    import Flash from '../../../helpers/flash.js';
-    import {byMethod, get} from '../../../helpers/api';
+    import {log} from '../../../utilities/log';
+    import Flash from '../../../utilities/flash.js';
+    import {byMethod, get} from '../../../utilities/api';
 
     function initialize(to) {
         let urls = {create: `/api/attendance/create${to.query.branch ? '?branch=' + to.query.branch : ''}`};

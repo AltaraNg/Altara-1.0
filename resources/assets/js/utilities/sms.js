@@ -4,16 +4,15 @@ export class Message {
     constructor(userId, message, contacts) {
         this.user_id = userId;
         this.message = message;
-        this.contacts = contacts;
+        this.contacts = contacts.constructor === String ? contacts.split(",").filter(e => /\S/.test(e))
+            .map(contact => '234' + contact.trim().substr(1)).join(',') : contacts;
         this.setPages();
         this.setContactCount();
     }
 
     setContactCount() {
-        if (this.contacts.constructor === String)
-            this.contact_count = this.contacts.split(',').length;
-        if (this.contacts.constructor === Array)
-            this.contact_count = this.contacts.length;
+        if (this.contacts.constructor === String) this.contact_count = this.contacts.split(',').length;
+        if (this.contacts.constructor === Array) this.contact_count = this.contacts.length;
     }
 
     setPages() {
@@ -41,18 +40,29 @@ export default {
         this.send(details);
     },
 
-    dvaMessage(details, callback) {
-        this.message = details.message;
-        this.sendWithCallback(details, callback);
-    },
+    /*dvaMessage(details, callback) {
+        //this.message = details.message;
+        //this.sendWithCallback(details, callback);
+        this.sendWithCallbackMain(details, callback);
+    },*/
 
-    sendFirstReminder(details, callback) {
+    /*sendFirstReminder(details, callback) {
         this.message = details.message;
         return this.sendWithCallback(details, callback);
-    },
+    },*/
 
     sendWithCallback({phone}, callback) {
         get(`/api/message/create?to=${phone}&message=${this.message}`).then(res => {
+            res.status === 200 && console.log("sms sent successfully");
+            return !!callback && callback(res);
+        }).catch(err => {
+            return !!callback && callback(err);
+        });
+    },
+
+
+    sendMessage({contacts, message}, callback) {
+        get(`/api/message/create?to=${contacts}&message=${message}`).then(res => {
             res.status === 200 && console.log("sms sent successfully");
             return !!callback && callback(res);
         }).catch(err => {

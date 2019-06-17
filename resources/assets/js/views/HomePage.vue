@@ -28,7 +28,7 @@
     </div>
 </template>
 <script>
-    import Auth from '../store/auth'
+    import Auth from '../utilities/auth'
 
     export default {
         data() {

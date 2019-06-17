@@ -1,8 +1,10 @@
 <template>
     <transition name="fade">
-        <div :class="$route.meta.mode === 'full' ? 'px-md-4 px-2' : ''">
-            <app-navigation :forward="{ path: $routerHistory.next().path }" :pageTitle="'Customer Profile'"
-                            :pageTitleSmall="'Customer Profile'" :previous="{ path: $routerHistory.previous().path }"
+        <div :class="$route.meta.mode === 'full' && 'px-md-4 px-2'">
+            <app-navigation :forward="{ path: $routerHistory.next().path }"
+                            :previous="{ path: $routerHistory.previous().path }"
+                            :pageTitle="'Customer Profile'"
+                            :pageTitleSmall="'Customer Profile'"
                             v-if="$route.meta.mode === 'full'"/>
             <div class="pt-md-3 pt-2 verification" id="employeeRegister" v-if="show">
                 <div class="customer-profile card position-relative">
@@ -11,7 +13,8 @@
                         <div class="pt-md-3 pt-sm-2 pt-1">
                             <div class="justify-content-center d-flex position-relative z-1">
                                 <span class="img-border">
-                                    <img :src="passport" alt="customer profile pic" class="profile-picture rounded-circle"
+                                    <img :src="passport" alt="customer profile pic"
+                                         class="profile-picture rounded-circle"
                                          v-if="customer.document.passport_url">
                                     <i class="no-image fas fa-user-alt" v-else></i>
                                 </span>
@@ -38,7 +41,8 @@
                             <div class="float-left p-0 m-0 col-md-4 col-sm-6 small-center">
                                 <h4 class="mt-0 pt-md-5 pt-sm-4 pt-0 mb-md-5 mb-sm-4 mb-3">
                                     <i class="mr-3 far fa-user-circle"></i>
-                                    <strong>{{name | capitalize}}</strong>
+<!--                                    <strong>{{name | capitalize}}</strong>-->
+                                    <strong>{{$getCustomerFullName(customer) | capitalize}}</strong>
                                 </h4>
                             </div>
                             <div class="float-left p-0 m-0 col-md-4 col-sm-6 d-flex justify-content-center">
@@ -62,7 +66,8 @@
                                 </tr>
                                 <tr v-if="$store.getters.auth('DVAAccess')">
                                     <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Address</th>
-                                    <td>{{address | capitalize }}
+<!--                                    <td>{{// address | capitalize }}-->
+                                    <td>{{$getCustomerAddress(customer) | capitalize }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -71,7 +76,8 @@
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 far fa-user-circle"></i>Registered By</th>
-                                    <td>{{customer.user ? customer.user.full_name : 'user not in record'| capitalize}}</td>
+                                    <td>{{customer.user ? customer.user.full_name : 'user not in record'| capitalize}}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 far fa-building"></i>Branch</th>
@@ -82,22 +88,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="clearfix" v-if="$route.meta.mode === 'full'">
-                    <div>This is full profile!</div>
-                </div>
+                <div v-if="$route.meta.mode === 'full'">Full Profile</div>
             </div>
         </div>
     </transition>
 </template>
 <script>
     import Vue from 'vue';
-    import {get} from '../helpers/api';
+    //import {get} from '../utilities/api';
     import {store} from '../store/store';
-    import {EventBus} from "../helpers/event-bus";
+    import {EventBus} from "../utilities/event-bus";
     import CustomerProfile from './CustomerProfile';
     import AppNavigation from '../components/AppNavigation';
-    import {getCustomerAddress as address, getCustomerApprovalStatus as status, getCustomerFullName as name} from '../helpers/helpers';
+    /*import {
+        getCustomerAddress as address,
+        getCustomerApprovalStatus as status,
+        getCustomerFullName as name
+    } from '../utilities/helpers';*/
 
+    //check if the current user is a dva
     const DVA = () => store.getters.auth('DVAAccess');
 
     export default {
@@ -111,45 +120,63 @@
         },
         computed: {
             passport() {
+                //construct the url for the passport and return it
                 return `https://s3.eu-west-2.amazonaws.com/altara-one/${this.customer.document.passport_url}`;
             },
-            name() {
+            /*name() {
+                //use a helper method to construct the customer name and return it
                 return name(this.customer);
-            },
+            },*/
             branch() {
+                //construct the branch address and return it
                 return `${this.customer.branch.description} ${this.customer.branch.name}`;
             },
-            address() {
+            /*address() {
+                //use a helper method to construct the customer address and return it
                 return address(this.customer);
-            },
-            approved() {
+            },*/
+            /*approved() {
+                //use a helper method to check the customer approval status and return it
                 return status(this.customer.verification);
+            }*/
+            approved(){
+                return this.$getCustomerApprovalStatus(this.customer.verification);
             }
         },
         created() {
             $('.tooltip').remove();
+            //if a customer is passed in as a prop pass it to the method that sets the customer.
             if (this.viewCustomer) this.setCustomer(this.viewCustomer);
+            //when a customer event is emitted via event bus
+            //this is used when a update is done on the current customer and
+            // this component need to keep track of the changes
             EventBus.$on('customer', customer => {
+                //call the setCustomer method to handle setting the new customer
+                // with the customer variable gotten from the emitted event
                 this.setCustomer(customer);
             });
         },
-        beforeRouteEnter(to, from, next) {
-            if (DVA()) {
-                get(`/api/customer/${to.params.id}`).then(res => {
-                    next(vm => vm.setCustomer(res.data.customer));
-                });
-            } else next('/');
+        /*beforeRouteEnter({params}, from, next) {
+
+            console.log(DVA(), 1);
+            DVA() ?
+                get(`/api/customer/${params.id}`).then(({data}) => {
+                    next(vm => vm.setCustomer(data.customer));
+                })
+                : next('/');
         },
-        beforeRouteUpdate(to, from, next) {
-            if (DVA()) {
-                get(`/api/customer/${to.params.id}`).then(res => {
-                    this.setCustomer(res.data.customer);
+        beforeRouteUpdate({params}, from, next) {
+            console.log(DVA(), 2);
+            DVA() ?
+                get(`/api/customer/${params.id}`).then(({data}) => {
+                    this.setCustomer(data.customer);
                     next();
-                });
-            } else next('/');
-        },
+                })
+                : next('/');
+        },*/
         methods: {
             setCustomer(customer) {
+                //set the customer variable to the customer passed
                 Vue.set(this.$data, 'customer', customer);
                 this.show = true;
             }

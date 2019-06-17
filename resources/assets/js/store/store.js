@@ -57,6 +57,7 @@ export const store = new Vuex.Store({
         getProfileEditAccess: state => state.ProfileEditAccess,
         verifyFSLLead: state => state.FSLLead.includes(state.authRole),
         verifyLOGLead: state => state.LOGLead.includes(state.authRole),
+
         auth: state => role => state[role].includes(state.authRole),
 
         verifyDSALead: state => state.DSALead.includes(state.authRole),
