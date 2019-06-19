@@ -525,10 +525,10 @@
 
 </template>
 <script>
-    import SMS, {Message} from '../../../utilities/sms';
+    import {Message} from '../../../utilities/sms';
     import {log} from '../../../utilities/log';
     import Flash from '../../../utilities/flash';
-    import {byMethod, get, post} from '../../../utilities/api';
+    import {byMethod, get} from '../../../utilities/api';
     import {toMulipartedForm} from '../../../utilities/form';
     import ImageUpload from '../../../components/ImageUpload';
 
@@ -590,7 +590,7 @@
                 this.categories = data.categories;
                 if (this.$route.meta.mode === 'edit') {
                     this.store = `/api/user/${this.$route.params.id}`;
-                    this.method = 'POST';
+                    this.method = 'PUT';
                 }
                 this.show = true;
             },

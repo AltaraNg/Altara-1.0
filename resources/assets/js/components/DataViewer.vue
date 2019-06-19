@@ -82,15 +82,15 @@
                                                          title="Edit Employee Detail">
                                                 <i class="fas fa-user-edit"></i>
                                             </router-link>
-                                            <button :class="{ 'btn-success' : accessStatus(model.portal_access),
-                                            'btn-danger' :  !accessStatus(model.portal_access)}"
+                                            <button :class="{ 'btn-success' : model.portal_access,
+                                            'btn-danger' :  !model.portal_access}"
                                                     @click="update(model,'editPortalAccess')"
                                                     class="text-center mr-2 btn btn-icon btn-sm float-left btn-round"
                                                     data-placement="top"
                                                     data-toggle="tooltip"
                                                     title="Edit Employee Portal Access">
                                                 <i class="fas fa-lock-open"
-                                                   v-if="accessStatus(model.portal_access)"></i>
+                                                   v-if="model.portal_access"></i>
                                                 <i class="fas fa-lock" v-else></i>
                                             </button>
                                             <button @click="update(model,'editPassword')"
@@ -124,20 +124,21 @@
                                 <span class="justify-content-end float-right col-md-6 col-12 px-0 mb-5 mb-md-0">
                                     <ul class="pagination m-0 float-right">
                                         <li class="page-item">
-                                            <a @click="prev()" class="page-link"><i
-                                                    class="fas fa-arrow-circle-left"></i></a>
+                                            <a @click="prev()" class="page-link">
+                                                <i class="fas fa-arrow-circle-left"></i>
+                                            </a>
                                         </li>
                                         <li class="page-item"><span class="page-link">Current Page: {{model.current_page}}</span></li>
                                         <li class="page-item">
-                                            <a @click="next()" class="page-link"><i
-                                                    class="fas fa-arrow-circle-right"></i></a>
+                                            <a @click="next()" class="page-link">
+                                                <i class="fas fa-arrow-circle-right"></i>
+                                            </a>
                                         </li>
                                     </ul>
                                     <span class="float-left">
                                         <span class="py-2 pr-3 float-left">Rows Per Page </span>
                                         <input @keyup.enter="fetchIndexData()" class="form-control w-25"
-                                               placeholder="search..."
-                                               type="text" v-model="query.per_page">
+                                               placeholder="search..." type="text" v-model="query.per_page">
                                     </span>
                                 </span>
                             </nav>
@@ -151,8 +152,9 @@
                                     <div class="modal-header py-2">
                                         <h6 class="modal-title py-1">Edit Employee Portal Access</h6>
                                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                                            <span aria-hidden="true" class="modal-close text-danger"><i
-                                                    class="fas fa-times"></i></span>
+                                            <span aria-hidden="true" class="modal-close text-danger">
+                                                <i class="fas fa-times"></i>
+                                            </span>
                                         </a>
                                     </div>
                                     <form>
@@ -163,12 +165,10 @@
                                                    <strong>Save Changes </strong>!
                                                 </span>
                                                 <div class="radio p-0 col-6 float-left text-center"
-                                                     v-for="access in portal_access">
-                                                    <input :id="access.name" :value="access.value" name="access"
-                                                           type="radio"
-                                                           v-model="form.portal_access">
-                                                    <label :for="access.name">{{access.name | capitalize}}
-                                                        Access</label>
+                                                     v-for="{name,value} in portal_access">
+                                                    <input :id="name" :value="value" name="access"
+                                                           type="radio" v-model="form.portal_access">
+                                                    <label :for="name">{{name | capitalize}} Access</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -177,8 +177,9 @@
                                                 cancel
                                             </button>
                                             <button :disabled="$isProcessing" @click="myLog(form.id)"
-                                                    class="m-2 btn bg-default"
-                                                    type="button"> Save changes <i class="far fa-paper-plane ml-1"></i>
+                                                    class="m-2 btn bg-default" type="button">
+                                                Save changes
+                                                <i class="far fa-paper-plane ml-1"></i>
                                             </button>
                                         </div>
                                     </form>
@@ -194,8 +195,9 @@
                                     <div class="modal-header py-2">
                                         <h6 class="modal-title py-1">Reset Employee Password</h6>
                                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                                            <span aria-hidden="true" class="modal-close text-danger"><i
-                                                    class="fas fa-times"></i></span>
+                                            <span aria-hidden="true" class="modal-close text-danger">
+                                                <i class="fas fa-times"></i>
+                                            </span>
                                         </a>
                                     </div>
                                     <form>
@@ -233,12 +235,10 @@
 </template>
 <script>
     import Vue from 'vue';
-    import {Message} from '../utilities/sms';
     import {log} from "../utilities/log";
-    import {byMethod, get/*, post*/} from '../utilities/api';
-    //import {getCustomerApprovalStatus as status} from '../utilities/helpers';
-    //import {getCustomerApprovalStatus as status} from '../utilities/helpers';
     import Flash from '../utilities/flash';
+    import {Message} from '../utilities/sms';
+    import {byMethod, get} from '../utilities/api';
 
     import AppNavigation from '../components/AppNavigation';
 
@@ -273,7 +273,6 @@
                 /*data generic to data viewer stops here*/
 
                 /*data peculiar to hrm portal data viewer starts here*/
-                bus: new Vue(),
                 form: {},
                 portal_access: [
                     {name: 'grant', value: 1},
@@ -360,17 +359,8 @@
             /*methods exclusive to data viewer stop here*/
 
             /*methods exclusive to hrm data viewer starts here*/
-            accessStatus(status) {
-                return Boolean(Number(status));
-                /*returns true or false for the portal
-                access status for each staff
-                (1 or 0 respectively)*/
-            },
-
             update(emp, mod) {
-                //the current form data will be the emp -> employee data
                 this.form = emp;
-                //toggle the mod modal
                 $(`#${mod}`).modal('toggle');
             },
 

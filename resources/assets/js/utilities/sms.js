@@ -5,8 +5,10 @@ export class Message {
         this.user_id = userId;
         this.message = message;
         this.logToDB = logToDB;
-        this.contacts = contacts.split(",").filter(e => /\S/.test(e))
-            .map(contact => '234' + contact.trim().substr(1)).join(',');
+        this.contacts = contacts
+            .split(",").filter(e => /\S/.test(e))
+            .map(contact => '234' + contact.trim().substr(1))
+            .join(',');
         this.setPages();
         this.setContactCount();
     }
@@ -26,8 +28,6 @@ export class Message {
                 post('/api/message', this)
             }
             return !!callback && callback(res);
-        }).catch(err => {
-            return !!callback && callback(err);
-        });
+        }).catch(err => !!callback && callback(err));
     }
 }

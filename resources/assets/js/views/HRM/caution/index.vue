@@ -6,17 +6,17 @@
                     <div class="col-12 title-con">
                         <span class="title">Caution Register</span>
                         <div class="row justify-content-end">
-                            <router-link class="text-link mt-3" to="caution/create">click here to send caution a
-                                staff!
+                            <router-link class="text-link mt-3" to="caution/create">
+                                click here to send caution a staff!
                             </router-link>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="mt-5 row attendance-head mb-4" v-if="show">
-                <div :class="`col-${capt.col}`" v-for="capt in columns">
+                <div :class="`col-${col}`" v-for="{name,col} in columns">
                     <div class="row">
-                        <div class="light-heading"><span class="d-none d-sm-inline"></span> {{capt.name}}</div>
+                        <div class="light-heading"><span class="d-none d-sm-inline"></span> {{name}}</div>
                     </div>
                 </div>
             </div>
@@ -105,8 +105,9 @@
                         <div class="modal-header py-2">
                             <h6 class="modal-title py-1">Caution</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                                <span aria-hidden="true" class="modal-close text-danger"><i
-                                        class="fas fa-times"></i></span>
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="fas fa-times"></i>
+                                </span>
                             </a>
                         </div>
 

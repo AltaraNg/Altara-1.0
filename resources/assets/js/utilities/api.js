@@ -20,7 +20,7 @@ export const postD = (url, data) => axios({
     method: 'POST',
     responseType: 'blob',
     headers: {'Authorization': `Bearer ${Auth.state.api_token}`}
-})
+});
 export const del = url => axios({url, method: 'DELETE', headers: {'Authorization': `Bearer ${Auth.state.api_token}`}});
 
 export const interceptors = cb => axios.interceptors.response.use(res => res, err => {

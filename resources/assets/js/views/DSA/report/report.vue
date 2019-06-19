@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
+        <div class="pt-md-3 pt-2 attendance-view" id="index">
             <div class="mt-5 attendance-head">
                 <div class="mb-5 row align-items-center">
                     <div class="col-12 title-con">
@@ -10,14 +10,14 @@
             </div>
             <div class="attendance-body">
                 <form :data-vv-scope="'f1'" @submit.prevent="generateReport">
-                    <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
 
                         <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                             <label>Type</label>
                             <select class="custom-select w-100" data-vv-as="report type"
                                     data-vv-validate-on="blur" name="report_type" v-model="report.type" v-validate="'required'">
                                 <option value="">select type</option>
-                                <option :value="type.slug" v-for="type in types">{{type.name | capitalize}}</option>
+                                <option :value="slug" v-for="{slug,name} in types">{{name | capitalize}}</option>
                             </select>
                             <small v-if="errors.first('f1.report_type')">{{errors.first('f1.report_type')}}</small>
                         </div>
@@ -71,7 +71,7 @@
             </div>
             <div class="attendance-body">
                 <form :data-vv-scope="'f2'" @submit.prevent="submitReport" id="dsaDailyReportForm">
-                    <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
 
                         <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                             <label>DSA (Name-ID)</label>
@@ -179,7 +179,7 @@
                 this.$validator.validateAll('f1').then(result => {
                     if (result) {
                         if (this.$network()) {
-                            let branch = this.$store.state.branches.find(obj => obj.id === this.report.branch.id);
+                            let branch = this.$store.state.branches.find(({id}) => id === this.report.branch.id);
                             this.report.branch = branch;
                             postD('/api/report', this.report).then(({data}) => {
                                 const url = window.URL.createObjectURL(new Blob([data]));

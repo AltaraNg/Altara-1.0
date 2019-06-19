@@ -5,8 +5,8 @@ import {get} from './api'
 
 
 /**custom made vue filters
-the argument s is the string u want to capitalize
-e i a -> element, index, array**/
+ the argument s is the string u want to capitalize
+ e i a -> element, index, array**/
 Vue.filter('capitalize', s => {
     if (s) {
         s = (s.replace(/_/g, ' ').split(" "));
@@ -31,7 +31,6 @@ Vue.prototype.$getCustomerAddress = c =>
 Vue.prototype.$getCustomerApprovalStatus = v =>
     !!v ? (v.address && v.id_card && v.passport && v.processing_fee && v.work_guarantor && v.personal_guarantor)
         : false;
-
 
 
 /**used in any form to avoid submitting forms more than
@@ -65,7 +64,6 @@ Vue.prototype.$getDate = () => {
  network not NB: this doesn't work with internet access. it only
  detects the system is connected to a network**/
 Vue.prototype.$network = () => window.navigator.onLine;
-//Vue.prototype.$network = () => true;
 
 
 /**currency formatter**/
@@ -144,7 +142,7 @@ Vue.prototype.$editAccess = function (user = '', customer = '') {
         * any customer irrespective of the
         * branch he is registered*/
 
-        if (store.getters.verifyDSAAccess) {
+        if (store.getters.auth('DSAAccess')) {
             /**ref 0: if user is a DSA*/
             if (store.state.DSALead.includes(user.role_id)) {
                 /**if it user a lead: grant permission*/
@@ -165,7 +163,7 @@ Vue.prototype.$editAccess = function (user = '', customer = '') {
                     }
                 } else /***if not same branch deny access*/ return false;
             }
-        } else if (store.getters.verifyDVAAccess) {
+        } else if (store.getters.auth('DVAAccess')) {
             /**ref 0: if user is DVA*/
             if (store.state.DVALead.includes(user.role_id)) {
                 /**if the user is a lead grant access*/

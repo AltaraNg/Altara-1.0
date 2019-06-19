@@ -21,8 +21,8 @@
                                 <select class="custom-select w-100" data-vv-validate-on="blur" name="state"
                                         v-model="form.state_id" v-validate="'required'">
                                     <option selected value="">select state</option>
-                                    <option :value="state.id" v-for="state in $store.getters.getStates">{{state.name |
-                                        capitalize}}
+                                    <option :value="id" v-for="{id,name} in $store.getters.getStates">
+                                        {{name | capitalize}}
                                     </option>
                                 </select>
                                 <small v-if="errors.first('state')">{{errors.first('state') }}</small>
@@ -98,7 +98,7 @@
                                 <select class="custom-select w-100" data-vv-validate-on="blur" name="bank"
                                         v-model="form.bank" v-validate="'required'">
                                     <option selected value="">select bank</option>
-                                    <option :value="bank.id" v-for="bank in banks">{{bank.name | capitalize}}</option>
+                                    <option :value="id" v-for="{id,name} in banks">{{name | capitalize}}</option>
                                 </select>
                                 <small v-if="errors.first('bank')">{{errors.first('bank') }}</small>
                             </div>
@@ -158,20 +158,12 @@
                 error: {},
                 mode: null,
                 show: false,
-                resource: '/branch',
                 store: '/api/branch',
                 method: 'POST',
             }
         },
         beforeRouteEnter(to, from, next) {
             get(initialize(to)).then(({data}) => next(vm => vm.prepareForm(data)));
-        },
-        beforeRouteUpdate(to, from, next) {
-            this.show = false;
-            get(initialize(to)).then(({data}) => {
-                this.prepareForm(data);
-                next();
-            });
         },
         methods: {
             async prepareForm(data) {
@@ -197,8 +189,8 @@
                             this.$LIPS(true);
                             this.error = {};
                             byMethod(this.method, this.store, this.form)
-                                .then(res => {
-                                    if (res.data.saved || res.data.updated) {
+                                .then(({data}) => {
+                                    if (data.saved || data.updated) {
                                         log(`Branch ${this.mode}d`, `${this.form.employee_id}`);
                                         Flash.setSuccess(`Branch ${this.mode}d successfully!`, 20000);
                                     }

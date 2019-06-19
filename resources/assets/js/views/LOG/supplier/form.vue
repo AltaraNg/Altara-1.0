@@ -13,7 +13,7 @@
             </div>
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
-                    <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>SKU</label>
                             <input class="form-control" disabled name="sku" placeholder="supplier sku" type="text" v-model="form.sku">

@@ -20,7 +20,7 @@
             </div>
 
             <div class="attendance-body" id="table-guide">
-                <div class="pt-5 row bg-white shadow-sm" style="border-radius: .5rem">
+                <div class="pt-5 row bg-white shadow-sm card-radius">
                     <div>
                         <td class="arrEarly leftLate"><span>A</span></td>
                         <span>In before/at 9:00am <br> Out after/at 6:00pm</span>

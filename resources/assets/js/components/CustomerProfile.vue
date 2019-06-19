@@ -1,11 +1,11 @@
 <template>
     <transition name="fade">
-        <div :class="$route.meta.mode === 'full' && 'px-md-4 px-2'">
+        <div :class="full && 'px-md-4 px-2'">
             <app-navigation :forward="{ path: $routerHistory.next().path }"
                             :previous="{ path: $routerHistory.previous().path }"
                             :pageTitle="'Customer Profile'"
                             :pageTitleSmall="'Customer Profile'"
-                            v-if="$route.meta.mode === 'full'"/>
+                            v-if="full"/>
             <div class="pt-md-3 pt-2 verification" id="employeeRegister" v-if="show">
                 <div class="customer-profile card position-relative">
                     <div class="design"></div>
@@ -86,96 +86,49 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="$route.meta.mode === 'full'">Full profile goes here</div>
+                <div v-if="full">Full profile goes here</div>
             </div>
         </div>
     </transition>
 </template>
 <script>
     import Vue from 'vue';
-    //import {get} from '../utilities/api';
     import {store} from '../store/store';
     import {EventBus} from "../utilities/event-bus";
-    //import CustomerProfile from './CustomerProfile';
     import AppNavigation from '../components/AppNavigation';
-    /*import {
-        getCustomerAddress as address,
-        getCustomerApprovalStatus as status,
-        getCustomerFullName as name
-    } from '../utilities/helpers';*/
 
-    //check if the current user is a dva
     const DVA = () => store.getters.auth('DVAAccess');
 
     export default {
         props: ['viewCustomer'],
-        //components: {CustomerProfile, AppNavigation},
         components: {AppNavigation},
         data() {
             return {
                 customer: '',
-                show: false,
+                show: false
             }
         },
         computed: {
+            full(){
+                return this.$route.meta.mode === 'full';
+            },
             passport() {
-                //construct the url for the passport and return it
                 return `https://s3.eu-west-2.amazonaws.com/altara-one/${this.customer.document.passport_url}`;
             },
-            /*name() {
-                //use a helper method to construct the customer name and return it
-                return name(this.customer);
-            },*/
             branch() {
-                //construct the branch address and return it
                 return `${this.customer.branch.description} ${this.customer.branch.name}`;
             },
-            /*address() {
-                //use a helper method to construct the customer address and return it
-                return address(this.customer);
-            },*/
-            /*approved() {
-                //use a helper method to check the customer approval status and return it
-                return status(this.customer.verification);
-            }*/
             approved(){
                 return this.$getCustomerApprovalStatus(this.customer.verification);
             }
         },
         created() {
             $('.tooltip').remove();
-            //if a customer is passed in as a prop pass it to the method that sets the customer.
             if (this.viewCustomer) this.setCustomer(this.viewCustomer);
-            //when a customer event is emitted via event bus
-            //this is used when a update is done on the current customer and
-            // this component need to keep track of the changes
-            EventBus.$on('customer', customer => {
-                //call the setCustomer method to handle setting the new customer
-                // with the customer variable gotten from the emitted event
-                this.setCustomer(customer);
-            });
+            EventBus.$on('customer', customer => this.setCustomer(customer));
         },
-        /*beforeRouteEnter({params}, from, next) {
-
-            console.log(DVA(), 1);
-            DVA() ?
-                get(`/api/customer/${params.id}`).then(({data}) => {
-                    next(vm => vm.setCustomer(data.customer));
-                })
-                : next('/');
-        },
-        beforeRouteUpdate({params}, from, next) {
-            console.log(DVA(), 2);
-            DVA() ?
-                get(`/api/customer/${params.id}`).then(({data}) => {
-                    this.setCustomer(data.customer);
-                    next();
-                })
-                : next('/');
-        },*/
         methods: {
             setCustomer(customer) {
-                //set the customer variable to the customer passed
                 Vue.set(this.$data, 'customer', customer);
                 this.show = true;
             }

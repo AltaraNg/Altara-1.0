@@ -7,9 +7,7 @@ export const store = new Vuex.Store({
     state: {
         years: () => {
             let years = [], startYear = new Date().getFullYear();
-            for (let i = 0; i < 6; i++) {
-                years.push(startYear--);
-            }
+            for (let i = 0; i < 6; i++) years.push(startYear--);
             return years;
         },
         states: null,
@@ -22,8 +20,8 @@ export const store = new Vuex.Store({
         ProfileAccess: [],
         ProfileEditAccess: [],
         DSALead: [1, 2, 8, 9, 15],
-        DSACaptain: [1, 2, 8, 9, 15, 17,29],
-        DSAAccess: [1, 2, 8, 9, 15, 17, 18,29],
+        DSACaptain: [1, 2, 8, 9, 15, 17, 29],
+        DSAAccess: [1, 2, 8, 9, 15, 17, 18, 29],
         DVALead: [1, 2, 8, 9, 13, 16],
         DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
         HRMAccess: [1, 2, 6, 7, 8, 9],
@@ -56,22 +54,7 @@ export const store = new Vuex.Store({
         getStates: state => state.states,
         getMonths: state => state.months,
         getBranches: state => state.branches,
-        getProfileAccess: state => state.ProfileAccess,
-        getProfileEditAccess: state => state.ProfileEditAccess,
-
-        //verifyFSLLead: state => state.FSLLead.includes(state.authRole),
-
-        //verifyLOGLead: state => state.LOGLead.includes(state.authRole),
-
         auth: state => role => state[role].includes(state.authRole),
-
-        /*verifyDSALead: state => state.DSALead.includes(state.authRole),
-        verifyDSACaptain: state => state.DSACaptain.includes(state.authRole),
-        verifyDSAAccess: state => state.DSAAccess.includes(state.authRole) && state.api_token,
-        verifyDVAAccess: state => state.DVAAccess.includes(state.authRole) && state.api_token,
-        verifyHRMAccess: state => state.HRMAccess.includes(state.authRole) && state.api_token,
-        verifyFSLAccess: state => state.FSLAccess.includes(state.authRole) && state.api_token,
-        verifyLOGAccess: state => state.LOGAccess.includes(state.authRole) && state.api_token,*/
     },
     mutations: {
         mutateAuth: state => {

@@ -16,7 +16,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/branches', 'BranchController@allBranches');
     Route::post('/customer/{customer}', 'CustomerController@update');
     Route::get('/user/getBranchUsers', 'UserController@getBranchUsers');
-    Route::post('/user/{user}', 'UserController@update');
     Route::Resources([
         'log' => 'LogController',
         'user' => 'UserController',
@@ -52,5 +51,3 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
 });
-//Route::get('/runQuery','CustomerController@runQuery');
-//Route::get('/runQuery','AuthController@runQuery');

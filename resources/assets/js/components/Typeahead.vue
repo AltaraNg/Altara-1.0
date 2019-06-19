@@ -1,5 +1,6 @@
 <template>
-    <div :class="typeaheadState" class="position-relative">
+    <div :class="open ? 'typeahead typeahead__open' : 'typeahead'"
+         class="position-relative">
         <div @mousedown.prevent="toggle" class="typeahead__toggle" ref="toggle">
             <input @blur="onBlur"
                    @focus="onFocus"
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+    import {EventBus} from "../utilities/event-bus";
     export default {
         props: {
             options: {
@@ -54,9 +56,6 @@
             }
         },
         computed: {
-            typeaheadState() {
-                return this.open ? 'typeahead typeahead__open' : 'typeahead';
-            },
             filteredOptions() {
                 const exp = new RegExp(this.search, 'i');
                 return this.options.filter(option => (exp.test(option.id) || exp.test(option[this.caption])));
@@ -100,6 +99,9 @@
             onEscape() {
                 this.$refs.search.blur();
             }
+        },
+        created(){
+            EventBus.$on('clearTypeAhead', () => this.displayText = null);
         }
     }
 </script>

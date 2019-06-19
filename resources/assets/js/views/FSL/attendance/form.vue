@@ -166,14 +166,12 @@
     import Vue from 'vue';
     import {log} from '../../../utilities/log';
     import Flash from '../../../utilities/flash.js';
-    import {byMethod, get} from '../../../utilities/api';
+    import {get, post} from '../../../utilities/api';
 
-    function initialize(to) {
-        let urls = {create: `/api/attendance/create${to.query.branch ? '?branch=' + to.query.branch : ''}`};
-        return urls[to.meta.mode];
-    }
+    const init = ({branch: b}) => `/api/attendance/create${b ? '?branch=' + b : ''}`;
 
     export default {
+
         data() {
             return {
                 form: {},
@@ -182,43 +180,35 @@
                 today: '',
                 newDate: '',
                 submittedToday: '',
-                resource: '/attendance',
-                store: '/api/attendance',
-                method: 'POST',
                 columns: ['Employee', 'ID', 'Date', 'Arr. Time', 'Dep. Time', 'Present?', 'Remark'],
                 branch: '',
             }
         },
-        beforeRouteEnter(to, from, next) {
-            //1. make request to back-end
-            get(initialize(to)).then(res => {
-                //2 send to the method to prepare form
-                next(vm => vm.prepareForm(res.data));
-            });
+
+        beforeRouteEnter({query: q}, from, next) {
+            get(init(q)).then(({data}) => next(vm => vm.prepareForm(data)));
         },
-        beforeRouteUpdate(to, from, next) {
+
+        beforeRouteUpdate({query: q}, from, next) {
             this.show = false;
-            //1. make request to back-end
-            get(initialize(to)).then(res => {
-                //2 send to the method to prepare form
-                this.prepareForm(res.data);
+            get(init(q)).then(({data}) => {
+                this.prepareForm(data);
                 next();
             });
         },
+
         created() {
             this.$prepareBranches();
         },
+
         methods: {
-            async prepareForm(data) {
+            prepareForm(data) {
                 if (this.$store.getters.auth('peoplesOps') || !this.$route.query['branch']) {
                     this.mode = this.$route.meta.mode;
-                    //this function is used when a data is sent to this component
-                    //or this component makes a request to backend the
-                    //data received is used to prepare the form
                     if (data.form.length) data.form.forEach(obj => obj['no_signout'] = false);
-                    await Vue.set(this.$data, 'form', data.form);
-                    await Vue.set(this.$data, 'today', data.today);
-                    await Vue.set(this.$data, 'submittedToday', data.submittedToday);
+                    Vue.set(this.$data, 'form', data.form);
+                    Vue.set(this.$data, 'today', data.today);
+                    Vue.set(this.$data, 'submittedToday', data.submittedToday);
                     this.show = !this.submittedToday;
                 } else {
                     Flash.setError('You cannot create attendance for a branch other than yours', 5000);
@@ -226,17 +216,16 @@
                 }
             },
 
-
-            async onSave() {
+            onSave() {
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
                             this.form.forEach(obj => delete obj.no_signout);
-                            byMethod(this.method, this.store, {form: this.form})
-                                .then(res => {
-                                    if (res.data.saved || res.data.updated) {
-                                        log(`Attendance ${this.mode}d`, `${res.employee_id}`);
+                            post('/api/attendance', {form: this.form})
+                                .then(({data, employee_id: id}) => {
+                                    if (data.saved || data.updated) {
+                                        log(`Attendance ${this.mode}d`, `${id}`);
                                         Flash.setSuccess(`Attendance Submitted successfully!`, 3000);
                                         this.$router.push('/');
                                     }
@@ -253,10 +242,11 @@
                     } else this.$networkErr('form');
                 });
             },
+
             clearTime(index) {
-                this.form[index].arrival_time = '';
-                this.form[index].departure_time = '';
+                [this.form[index].arrival_time, this.form[index].departure_time] = ['', ''];
             },
+
             no_signout(index, e) {
                 Vue.set(this.$data.form[index], 'departure_time', '');
                 Vue.set(this.$data.form[index], 'remark', e ? '' : 'Did not sign out.');

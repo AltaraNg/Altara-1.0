@@ -14,7 +14,6 @@ const DSA = () => import( '../views/DSA/index.vue');
 const DSAHome = () => import( '../views/DSA/HomePage.vue');
 const DSAReport = () => import( '../views/DSA/report/report.vue');
 const CustomerForm = () => import( '../views/shared/customerForm.vue');
-//const CustomerProfile = () => import( '../components/CustomerProfile.vue');
 
 const DVA = () => import( '../views/DVA/index.vue');
 const DVAHome = () => import( '../views/DVA/HomePage.vue');
@@ -176,7 +175,6 @@ const router = new VueRouter({
             component: DataViewer,
             meta: {appModel: 'customer', source: '/api/customer', new: '/dsa/customer'}
         },
-        //{path: '/customer/:id', component: CustomerProfile, meta: {mode: 'full'}},
         {path: '/not-found', component: NotFound},
         {path: '*', component: NotFound},
     ]
@@ -192,13 +190,7 @@ router.beforeEach((to, from, next) => {
     * :route : '/dsa/customer/register'
     * : home will return 'DSA*/
     if (to.matched.some(m => m.meta[home])) {
-        /*if home ('DSA in this case is matched')*/
-
-        //if (store.getters['verify' + home + 'Access']) return next();
-
         if (store.getters.auth(home + 'Access')) return next();
-
-        /*for home = 'DSA' the store.getters.verifyDSAAccess will be called
         /*for home = 'DSA' the store.getters.auth('DSAAccess') will be called
         * the method in store will return true if a user has access to the portal hence next();
         * and false is a user don't have access hence error message and redirect to home*/

@@ -13,16 +13,14 @@
             </div>
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
-                    <div class="p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+                    <div class="p-5 row bg-white shadow-sm card-radius">
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Employee Name</label>
-                            <typeahead :options="users" caption="full_name" v-model="form.user_id"/>
+                            <typeahead :options="users" :value="value" caption="full_name" v-model="form.user_id"/>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Issued by</label>
-                            <select class="custom-select w-100" data-vv-validate-on="blur"
-                                    disabled
-                                    name="issued_by"
+                            <select class="custom-select w-100" data-vv-validate-on="blur" disabled name="issued_by"
                                     v-model="form.issuer_id" v-validate="'required'">
                                 <option :value="issuer.id">{{issuer.full_name}}</option>
                             </select>
@@ -42,14 +40,13 @@
                                     :disabled="!autoReason"
                                     v-validate="'required'">
                                 <option disabled selected value="">&#45;&#45; select reason &#45;&#45;</option>
-                                <option :value="caution.reason" v-for="caution in cautions">{{caution.reason |
-                                    capitalize}}
+                                <option :value="reason" v-for="{reason} in cautions">
+                                    {{reason | capitalize}}
                                 </option>
                             </select>
 
                             <textarea :disabled="autoReason" v-else class="form-control"
-                                      name="reason"
-                                      rows="2"
+                                      name="reason" rows="2"
                                       v-model="form.reason"
                                       v-validate="'required'"></textarea>
                             <small v-if="errors.first('reason')">{{errors.first('reason')}}</small>
@@ -91,7 +88,7 @@
                         <div class="w-100 mb-4 mt-5 mx-0 hr"></div>
                         <div class="clearfix d-flex justify-content-end w-100">
                             <button :disabled="$isProcessing" class="btn bg-default" type="submit">
-                                create Attendance <i class="far fa-paper-plane ml-1"></i>
+                                Submit Caution <i class="far fa-paper-plane ml-1"></i>
                             </button>
                         </div>
                     </div>
@@ -103,13 +100,12 @@
 
 <script>
     import Vue from 'vue';
-    import {get, post} from "../../../utilities/api";
     import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
-
+    import {get, post} from "../../../utilities/api";
+    import {EventBus} from "../../../utilities/event-bus";
     import Typeahead from '../../../components/Typeahead';
 
-    const apiLink = `/caution/create`;
     export default {
         components: {Typeahead},
         data() {
@@ -122,24 +118,14 @@
                 issuer: {},
                 autoPenalty: true,
                 autoReason: true,
-                cautions: null
+                cautions: null,
+                value: null
             }
         },
         beforeRouteEnter(to, from, next) {
-            get(`/api${apiLink}`)
+            get(`/api/caution/create`)
                 .then(({data}) => next(vm => vm.prepareForm(data)))
-                .catch(err => next(vm => vm.handleErr(err)));
-        },
-        beforeRouteUpdate(to, from, next) {
-            this.show = false;
-            this.$LIPS(true);
-            get(`/api${apiLink}`).then(({data}) => {
-                this.prepareForm(data);
-                next();
-            }).catch(err => {
-                this.handleErr(err);
-                next();
-            });
+                .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
         methods: {
             onSave() {
@@ -170,17 +156,16 @@
                     } else this.$networkErr('form');
                 })
             },
-            prepareForm({form,users,cautionsList:cautions}) {
+            prepareForm({form, users, cautionsList: cautions}) {
                 Vue.set(this.$data, 'form', form);
                 Vue.set(this.$data, 'users', users);
                 Vue.set(this.$data, 'cautions', cautions);
                 this.issuer = users.find(({id}) => id === form.issuer_id);
                 this.show = true;
                 this.$LIPS(false);
-            },
-            handleErr(e) {
-                Flash.setError('Error Preparing form');
-            },
+                this.value = null;
+                EventBus.$emit('clearTypeAhead');
+            }
         },
         watch: {
             form: {
