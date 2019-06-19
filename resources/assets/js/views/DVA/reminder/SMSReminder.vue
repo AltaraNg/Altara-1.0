@@ -378,29 +378,29 @@
     import Vue from 'vue';
     import Flash from "../../../utilities/flash";
     import {get, post} from "../../../utilities/api";
-    import SMS, {Message} from "../../../utilities/sms";
+    import {Message} from "../../../utilities/sms";
 
     let url = to => `/api/reminder/create?list=${to.query.list}`;
 
     export default {
-        beforeRouteEnter(to, from, next) {
+        /*beforeRouteEnter(to, from, next) {
             get(url({query: {list: 1}})).then(({data}) => {
                 next(vm => vm.prepareForm(data));
             });
-        },
-        beforeRouteUpdate(to, from, next) {
+        },*/
+        /*beforeRouteUpdate(to, from, next) {
+
             this.show = false;
             this.showModalContent = false;
             get(url({query: {list: 1}})).then(({data}) => {
                 this.prepareForm(data);
                 next();
             });
-        },
+        },*/
 
         data() {
             return {
                 list: 1,
-                //form: {},
                 orders: {},
                 show: false,
                 banks: null,
@@ -418,13 +418,11 @@
                 this.show = false;
                 this.showModalContent = false;
                 [this.orders, this.payment_methods, this.banks, this.dva_id] = [
-                    // res.orders.filter(order => order.customer.branch.id === res.branch),
                     res.orders.filter(order => {
                         let {count, repaymentData} = this.getCountAndRepaymentData(order);
                         let hasMissedPayment = () => {
                             if (this.list === 1) return true;
                             let payDay,
-                                // today = new Date('2019-05-13'),
                                 today = new Date(),
                                 isMonday = today.getDay() === 1/*remember to change this to 1*/,
                                 accumulatedDays = isMonday ? 3 : 1, dayInterval, datePool = [];
@@ -462,12 +460,10 @@
                     this.reminder.push({
                         'selected': false,
                         'customer_id': order.customer.id,
-                        //'phone': order.customer.telephone,
                         'contacts': order.customer.telephone,
                         'order_id': order.id,
                         'sms_id': null,
                         'repayment_level': this.getRepaymentLevel(order),
-                        'feedback': null,//this may be unnecessary
                         'dva_id': this.dva_id,
                         'type': 'sms',
                         'date': this.getDateString(),//double check this it might be unnecessary
@@ -504,9 +500,7 @@
                 }
             },
 
-            isOrderFormal({repayment_informal}) {
-                return repayment_informal === null;
-            },
+            isOrderFormal : ({repayment_informal}) => repayment_informal === null,
 
             generateDates({startDate, interval, count}) {
                 let dates = [];
@@ -523,12 +517,9 @@
             },
 
             isReminderSent(order) {
-
                 let today = new Date(), isMonday = today.getDay() === 1,
                     accumulatedDays = isMonday ? 3 : 1, datePool = [];
-
                 for (let p = 0; p < accumulatedDays; p++) datePool.push(this.getDateString(today.addDays(-p)));
-
                 var value = true, date;
                 if (!!order) {
                     if (order.reminders.length > 0) {
@@ -542,9 +533,7 @@
                                 .map(item => parseInt(item, 10)); //[2019,3,24,2,0,0]
                             date = this.getDateString(new Date(Date.UTC(...arr)), false);
                             //date === today && (value = false);
-
                             datePool.includes(date) && (value = false);
-
                         });
                     }
                 }
@@ -588,12 +577,8 @@
                     .filter(obj => !!obj.selected)
                     .map(obj => {
                         let newObject = JSON.parse(JSON.stringify(obj));
-                        //newObject.phone = '234' + obj.phone.trim().substr(1);
-                        //newObject.contacts = '234' + obj.phone.trim().substr(1);
-                        newObject.contacts = '234' + obj.contacts.trim().substr(1);
-                        newObject.order = this.orders.find(order => order.id === obj.order_id);
+                        newObject.order = this.orders.find(({id}) => id === obj.order_id);
                         newObject.message = this.generateCustomMessage(newObject.order);
-                        newObject.isSent = false;
                         return newObject;
                     });
                 if (!!smsContactList.length) this.sendSMSReminders(smsContactList);
@@ -601,32 +586,27 @@
             },
 
             sendSMSReminders(smsContactList) {
+                let messages = [];
                 smsContactList.forEach((value, index) => {
-                    // SMS.sendFirstReminder(value, res => {
-                    SMS.sendMessage(value, res => {
-                        value.isSent = res.status === 200;
-                        if ((index + 1) === smsContactList.length) {
-                            this.logSentMessages(smsContactList);
+                    let sms = new Message(value.message, value.contacts, false, value.dva_id);
+                    sms.send(r => {
+                        if(r.status === 200) {
+                            delete sms.logToDB;
+                            messages.push(sms);
                         }
+                        if ((index + 1) === smsContactList.length) this.logSentMessages(messages, smsContactList);
                     });
                 });
             },
 
-            logSentMessages(smsContactList) {
-                let messages = [];
-                smsContactList.forEach((obj, index) => {
-                    //obj.isSent && messages.push(new Message(obj.dva_id, obj.message, obj.phone));
-                    obj.isSent && messages.push(new Message(obj.dva_id, obj.message, obj.contacts));
-                    if ((index + 1) === smsContactList.length) {
-                        if (messages.length > 0) {
-                            post('/api/message', {messages, bulk: true}).then(({data}) => {
-                                let {sentAndLogged, ids} = data;
-                                if (sentAndLogged) this.logSentReminders(smsContactList, ids);
-                                else this.displayErrorMessage('Error Logging sent sms details!');
-                            });
-                        } else this.displayErrorMessage('Error sending messages!');
-                    }
-                });
+            logSentMessages(messages, smsContactList) {
+                if(!!messages){
+                    post('/api/message', {messages, bulk: true}).then(({data}) => {
+                        let {sentAndLogged, ids} = data;
+                        if (sentAndLogged) this.logSentReminders(smsContactList, ids);
+                        else this.displayErrorMessage('Error Logging sent sms details!');
+                    });
+                } else this.displayErrorMessage('Error sending messages!');
             },
 
             logSentReminders(selectedList, ids) {
@@ -637,7 +617,6 @@
                     delete value.isSent;
                     delete value.message;
                     delete value.order;
-                    //delete value.phone;
                     delete value.contacts;
                     delete value.selected;
                     delete value.canBeSelected;
@@ -787,11 +766,11 @@
             },
         },
         mounted() {
+            this.fetchList(1);
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.currentOrder = null;
                 this.showModalContent = false;
             });
-
             //this is linked to the function that generates dates
             Date.prototype.addDays = function (days) {
                 var date = new Date(this.valueOf());

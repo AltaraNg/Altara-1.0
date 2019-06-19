@@ -21,8 +21,6 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    private $currentCustomer = '';
-
     public function index()
     {
         /** gets list of customers(paginated), searchPaginateAndOrder is a custom

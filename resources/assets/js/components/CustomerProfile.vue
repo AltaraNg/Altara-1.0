@@ -41,7 +41,6 @@
                             <div class="float-left p-0 m-0 col-md-4 col-sm-6 small-center">
                                 <h4 class="mt-0 pt-md-5 pt-sm-4 pt-0 mb-md-5 mb-sm-4 mb-3">
                                     <i class="mr-3 far fa-user-circle"></i>
-<!--                                    <strong>{{name | capitalize}}</strong>-->
                                     <strong>{{$getCustomerFullName(customer) | capitalize}}</strong>
                                 </h4>
                             </div>
@@ -66,7 +65,6 @@
                                 </tr>
                                 <tr v-if="$store.getters.auth('DVAAccess')">
                                     <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Address</th>
-<!--                                    <td>{{// address | capitalize }}-->
                                     <td>{{$getCustomerAddress(customer) | capitalize }}
                                     </td>
                                 </tr>
@@ -88,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="$route.meta.mode === 'full'">Full Profile</div>
+                <div v-if="$route.meta.mode === 'full'">Full profile goes here</div>
             </div>
         </div>
     </transition>
@@ -98,7 +96,7 @@
     //import {get} from '../utilities/api';
     import {store} from '../store/store';
     import {EventBus} from "../utilities/event-bus";
-    import CustomerProfile from './CustomerProfile';
+    //import CustomerProfile from './CustomerProfile';
     import AppNavigation from '../components/AppNavigation';
     /*import {
         getCustomerAddress as address,
@@ -111,7 +109,8 @@
 
     export default {
         props: ['viewCustomer'],
-        components: {CustomerProfile, AppNavigation},
+        //components: {CustomerProfile, AppNavigation},
+        components: {AppNavigation},
         data() {
             return {
                 customer: '',
@@ -183,88 +182,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-    @import "../../sass/app/variables";
-
-    .customer-profile {
-        position: relative;
-
-        th {
-            width: auto;
-            font-weight: normal;
-        }
-
-        td, .data {
-            font-size: $default-font-size;
-            font-weight: 500;
-        }
-
-        .design {
-            position: absolute;
-            top: 13rem;
-            bottom: 0;
-            left: 0;
-            width: 101%;
-            height: calc(100% - 8.1rem);
-            z-index: 0;
-            background: linear-gradient(45deg, #dedede 0%, #ffffff 100%);
-        }
-
-        .profile-picture, .no-image {
-            height: 16rem;
-            width: 16rem;
-            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .no-image {
-            background-color: #e3e3e3;
-            border-radius: 50%;
-            line-height: 16rem;
-            text-align: center;
-            font-size: 8rem;
-            color: rgba(0, 0, 0, 0.15);
-        }
-
-        .img-border {
-            padding: 1.1rem;
-            background-color: white;
-            border-radius: 50%;
-        }
-
-        .separator {
-            position: absolute;
-            left: 50%;
-            height: 70%;
-            width: 1px;
-            background-color: rgba(0, 0, 0, 0.1);
-            top: 3%;
-        }
-
-    }
-
-    @media (max-width: 600px) {
-        .customer-profile {
-            .design {
-                background: linear-gradient(180deg, #dedede 0%, #ffffff 100%);
-            }
-
-            .separator {
-                top: -11%;
-            }
-
-            .small-center {
-                text-align: center;
-            }
-
-            th {
-                width: 35%;
-            }
-
-            tbody {
-                padding: 1rem 1rem 0;
-                float: left;
-            }
-        }
-    }
-</style>

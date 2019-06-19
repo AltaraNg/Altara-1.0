@@ -7,7 +7,8 @@
                     <div class="col-12 title-con">
                         <span class="title">{{`attendance for ${today}` | capitalize}}</span>
 
-                        <div class="row justify-content-end align-items-center" v-if="$store.getters.auth('peoplesOps')">
+                        <div class="row justify-content-end align-items-center"
+                             v-if="$store.getters.auth('peoplesOps')">
                             <a @click="$router.push(`${branch ? '?branch=' + branch : ''}`)"
                                class="text-link pr-4 text-capitalize" href="javascript:">
                                 get attendance list for :
@@ -73,7 +74,8 @@
                         <div class="col-12 col-xs-3 col-md-3 col-lg-3">
                             <div class="row">
                                 <div class="col pr-3 pr-sm-1 pr-lg-4">
-                                    <input :disabled="form[index].is_present === '0'" :name="`arrival_time_${index}`" class="form-control"
+                                    <input :disabled="form[index].is_present === '0'" :name="`arrival_time_${index}`"
+                                           class="form-control"
                                            type="time" v-model="form[index].arrival_time" v-validate="'required'">
                                 </div>
                                 <div class="col pl-3 pl-sm-1 pl-lg-4">
@@ -84,7 +86,8 @@
                                 </div>
                                 <div class="mr-5">
                                     <div class="form-check">
-                                        <input :disabled="form[index].is_present === '0'" @click="no_signout(index, form[index].no_signout)"
+                                        <input :disabled="form[index].is_present === '0'"
+                                               @click="no_signout(index, form[index].no_signout)"
                                                class="form-check-input mt-3 ml-2"
                                                id="exampleCheck1"
                                                type="checkbox" v-model="form[index].no_signout" value="true">
@@ -146,7 +149,8 @@
                             </span>
                         </div>
                         <div @click="fetchAttendanceByDate()" class="float-left align-self-center">
-                            <a class="text-link text-capitalize" href="javascript:">get attendance list for <strong>Date</strong> : </a>
+                            <a class="text-link text-capitalize" href="javascript:">get attendance list for
+                                <strong>Date</strong> : </a>
                         </div>
                         <div class="float-left align-self-center ml-3">
                             <input class="form-control float-left" type="date" v-model="newDate">
@@ -275,30 +279,3 @@
         }
     }
 </script>
-
-<style scoped type="scss">
-    input {
-        background-color: white;
-    }
-
-    .checkbox, .radio {
-        margin-bottom: 0;
-    }
-
-    @media (max-width: 990px) {
-        .user {
-            display: none;
-        }
-        [type="radio"] + label {
-            font-size: 1.2rem;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .staff_id-sm {
-            color: #b6a5ab;
-            font-size: 1.4rem;
-            float: right;
-        }
-    }
-</style>

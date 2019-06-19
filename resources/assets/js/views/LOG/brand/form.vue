@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
+        <div class="pt-md-3 pt-2 attendance-view" id="index">
             <div class="mt-5 attendance-head">
                 <div class="mb-5 row align-items-center">
                     <div class="col-12 title-con">
@@ -13,7 +13,7 @@
             </div>
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
-                    <div class="my-4 clearfix p-5 row bg-white shadow-sm" style="border-radius: .4rem">
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
                         <div class="form-group col-12 float-left px-0 px-md-3">
                             <label>Brand name</label>
                             <input class="form-control mb-2" placeholder="brand name" name="brand name" type="text" v-model="form.name"
@@ -60,23 +60,12 @@
         beforeRouteEnter(to, from, next) {
             get(initialize(to))
                 .then(({data}) => next(vm => vm.prepareForm(data)))
-                .catch(({response}) => next(vm => vm.handleErr(response)));
-        },
-        beforeRouteUpdate(to, from, next) {
-            this.show = false;
-            get(initialize(to))
-                .then(({data}) => this.prepareForm(data))
-                .catch(({response}) => vm.handleErr(response));
+                .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
         methods: {
-            handleErr(e) {
-                Flash.setError('Error Preparing form');
-            },
-            prepareForm(data) {
-                this.show = false;
-                this.error = {};
+            prepareForm({form}) {
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                Vue.set(this.$data, 'form', data.form);
+                Vue.set(this.$data, 'form', form);
                 if (this.mode === 'edit') {
                     this.store = `/api/brand/${this.$route.params.id}`;
                     this.method = 'PUT';
@@ -98,9 +87,10 @@
                                     }
                                     this.error= {};
                                 })
-                                .catch(({response}) => {
-                                    if (response.status === 422) {
-                                        this.error = response.data.errors ? response.data.errors : response.data;
+                                .catch(({response:r}) => {
+                                    let {data, status} = r;
+                                    if (status === 422) {
+                                        this.error = data.errors ? data.errors : data;
                                         this.$networkErr('unique');
                                     }
                                 }).finally(() => {

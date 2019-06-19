@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
+        <div class="pt-md-3 pt-2 attendance-view" id="index">
             <div class="mt-5 attendance-head">
                 <div class="mb-5 row align-items-center">
                     <div class="col-12 title-con">
@@ -55,10 +55,10 @@
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="w-100 float-left">Status</label>
-                            <div class="radio p-0 col-md-6 col-6 float-left" v-for="status in statuses">
-                                <input :id="status.name" :value="status.value" name="status" type="radio" v-model="form.status"
+                            <div class="radio p-0 col-md-6 col-6 float-left" v-for="{name,value} in statuses">
+                                <input :id="name" :value="value" name="status" type="radio" v-model="form.status"
                                        v-validate="'required'">
-                                <label :for="status.name">{{status.name}}</label>
+                                <label :for="name">{{name}}</label>
                             </div>
                             <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
                         </div>
@@ -76,7 +76,7 @@
                             <select class="custom-select w-100" data-vv-as="bank name"
                                     data-vv-validate-on="blur" name="bank_name" v-model="form.bank_name" v-validate="'required'">
                                 <option disabled value="">-- select duration --</option>
-                                <option :value="bank.name" v-for="bank in banks">{{bank.name}}</option>
+                                <option :value="name" v-for="{name} in banks">{{name}}</option>
                             </select>
                             <small v-if="errors.first('bank_name')">{{ errors.first('bank_name') }}</small>
                         </div>
@@ -120,7 +120,6 @@
     }
 
     export default {
-        props: {},
         data() {
             return {
                 form: {},
@@ -136,24 +135,13 @@
         beforeRouteEnter(to, from, next) {
             get(initialize(to))
                 .then(({data}) => next(vm => vm.prepareForm(data)))
-                .catch(({response}) => next(vm => vm.handleErr(response)));
-        },
-        beforeRouteUpdate(to, from, next) {
-            this.show = false;c
-            get(initialize(to))
-                .then(({data}) => this.prepareForm(data))
-                .catch(({response}) => vm.handleErr(response)).finally(() => next());
+                .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
         methods: {
-            handleErr(e) {
-                Flash.setError('Error Preparing form');
-            },
-            prepareForm(data) {
-                this.show = false;
-                this.error = {};
+            prepareForm({form,banks}) {
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                Vue.set(this.$data, 'form', data.form);
-                Vue.set(this.$data, 'banks', data.banks);
+                Vue.set(this.$data, 'form', form);
+                Vue.set(this.$data, 'banks', banks);
                 if (this.mode === 'edit') {
                     this.store = `/api/supplier/${this.$route.params.id}`;
                     this.method = 'PUT';
@@ -174,9 +162,10 @@
                                         if (data['updated']) this.$router.push('/log/suppliers');
                                     }
                                 })
-                                .catch(({response}) => {
-                                    if (response.status === 422) {
-                                        this.error = response.data.errors ? response.data.errors : response.data;
+                                .catch(({response:r}) => {
+                                    let {data, status} = r;
+                                    if (status === 422) {
+                                        this.error = data.errors ? data.errors : data;
                                         this.$networkErr('unique');
                                     }
                                 }).finally(() => {

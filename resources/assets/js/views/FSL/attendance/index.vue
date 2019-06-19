@@ -126,7 +126,6 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="userAtt in attendances">
-                                    <!--<td :class="checkClass(userAtt, day)" :title="getTitle(userAtt, day)" data-toggle="tooltip"-->
                                     <td :class="checkClass(userAtt, day)"
                                         @click="displayInfo(userAtt, day)"
                                         v-for="day in columns">
@@ -150,7 +149,9 @@
                         <div class="modal-header py-2">
                             <h6 class="modal-title py-1">Attendance</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                                <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="fas fa-times"></i>
+                                </span>
                             </a>
                         </div>
 
@@ -223,25 +224,25 @@
                 attendances: {},
             }
         },
-        beforeRouteEnter(to, from, next) {
-            //1. make request to back-end
-            if (to.query.branch) {
-                get(`/api${apiLink(to.query)}`).then(res => {
-                    //2 send to the method to prepare form
-                    next(vm => vm.prepareForm(res.data));
-                }).catch(err => {
-                    next(vm => vm.handleErr(err));
-                });
-            } else next();
+        beforeRouteEnter({query: q}, from, next) {
+            //the first param received is "to" which contains to:{query:{branch:'branchNameOrID'}}
+            //i deconstructed and got just the query as r:{branch:'branchNameOrID'}
+            // which i used inside this method
+            if (q.branch)
+                get(`/api${apiLink(q)}`)
+                    .then(({data}) => next(vm => vm.prepareForm(data)))
+                    .catch(err => next(vm => vm.handleErr(err)));
+            else next();
         },
-        beforeRouteUpdate(to, from, next) {
+        beforeRouteUpdate({query: q}, from, next) {
+            //the first param received is "to" which contains to:{query:{branch:'branchNameOrID'}}
+            //i deconstructed and got just the query as r:{branch:'branchNameOrID'}
+            // which i used inside this method
             this.show = false;
-            //1. make request to back-end
-            if (to.query.branch) {
+            if (q.branch) {
                 this.$LIPS(true);
-                get(`/api${apiLink(to.query)}`).then(res => {
-                    //2 send to the method to prepare form
-                    this.prepareForm(res.data);
+                get(`/api${apiLink(q)}`).then(({data}) => {
+                    this.prepareForm(data);
                     next();
                 }).catch(err => {
                     this.handleErr(err);
@@ -259,17 +260,13 @@
             Vue.set(this.$data.query, 'month', (month >= 10 || month.length === 2) ? month : '0' + month);
             if (this.completeQry) Vue.set(this.$data.query, 'branch', q.branch);
         },
-        /*updated() {
-            $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
-        },*/
         methods: {
 
             fetch() {
                 this.$validator.validateAll().then(result => {
                     if (result) {
-                        if (this.$network()) {
-                            this.$router.push(`/hrm${apiLink(this.query)}`);
-                        } else this.$networkErr();
+                        if (this.$network()) this.$router.push(`/hrm${apiLink(this.query)}`);
+                        else this.$networkErr();
                     } else this.$networkErr('form');
                 });
             },
@@ -289,7 +286,8 @@
             },
 
             isPresent(userAtt, day, bool = false) {
-                let date = day ? day.fullDate : null, data = null;
+                let date = day ? day.fullDate : null,
+                    data = null;
                 let c = userAtt.attendances.filter(att => att.date === date);
                 if (c.length > 0) data = bool ? c[0][bool] : c[0].is_present ? 'P' : 'A';
                 return data
@@ -299,25 +297,10 @@
                 let data = [];
                 let attendance = userAtt.attendances.filter(att => att.date === day.fullDate);
                 if (attendance.length) {
-                    /*if (attendance[0].arrival_time > '09:00') {
-                        data[0] = 'arrLate';
-                    } else {
-                        data[0] = 'arrEarly';
-                    }*/
-
                     data[0] = attendance[0].arrival_time > '09:00' ? 'arrLate' : 'arrEarly';
-
-                    if(attendance[0].departure_time){
-                        /*if (attendance[0].departure_time < '18:00') {
-                            data[1] = 'leftEarly'
-                        } else {
-                            data[1] = 'leftLate'
-                        }*/
-
+                    if (attendance[0].departure_time) {
                         data[1] = attendance[0].departure_time < '18:00' ? 'leftEarly' : 'leftLate';
-
-                    }else data[1] = 'didNotSignOut'
-
+                    } else data[1] = 'didNotSignOut'
                 }
                 return data;
             },
@@ -328,42 +311,15 @@
                 if (['Sun', 'Sat'].includes(day.dayString)) {
                     theClass = 'weekend';
                 } else {
-                    //arrEarly arrLate leftEarly leftLate
                     if (isPresent === 'P') {
-                        //theClass = 'present';
-                        if (erl.length) {
-                            theClass = erl.join(' ');
-                        }
-
+                        if (erl.length) theClass = erl.join(' ');
                     } else {
-                        if (isPresent === 'A') {
-                            theClass = 'absent';
-                        } else {
-                            theClass = '';
-                        }
+                        if (isPresent === 'A') theClass = 'absent';
+                        else theClass = '';
                     }
                 }
                 return theClass;
             },
-
-            /*getRemark(userAtt, day) {
-                let att = userAtt.attendances.find(obj => obj.date === day.fullDate);
-                return att ? `${att.remark ? 'Remark: <b class="text_align-left">' + att.remark + '</b><br>' : ''}` : ``;
-            },*/
-
-            /*getTitle(userAtt, day) {
-                let arrival, departure, aTime, aTimeCon, dTime, dTimeCon, status, isPresent, remark;
-                aTime = this.isPresent(userAtt, day, 'arrival_time');
-                dTime = this.isPresent(userAtt, day, 'departure_time');
-                isPresent = this.isPresent(userAtt, day, 'is_present');
-                remark = this.getRemark(userAtt, day);
-                aTimeCon = this.$timeConvert(aTime);
-                dTimeCon = this.$timeConvert(dTime);
-                status = isPresent ? `Present<br>` : ``;
-                arrival = aTime ? `Arrival Time : ${aTimeCon}<br>` : ``;
-                departure = dTime ? `Departure Time: ${dTimeCon}<br>` : ``;
-                return arrival || remark ? `${arrival} ${departure} ${status} ${remark}` : null;
-            },*/
 
             toggleGuide() {
                 $('#table-guide').slideToggle();
@@ -396,24 +352,3 @@
         },
     }
 </script>
-
-<style>
-    #table-guide td {
-        width        : 6rem;
-        text-align   : center;
-        height       : unset;
-        float        : left;
-        margin-right : 1rem;
-    }
-
-    #table-guide td span {
-        margin-bottom : 1rem;
-        line-height   : 2;
-        float         : left;
-        width         : 100%;
-    }
-
-    #table-guide > div > div {
-        padding : 0 4rem 3rem;
-    }
-</style>

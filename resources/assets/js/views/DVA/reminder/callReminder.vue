@@ -391,7 +391,7 @@
     let url = to => `/api/reminder/create?list=${to.query.list}`;
 
     export default {
-        beforeRouteEnter(to, from, next) {
+        /*beforeRouteEnter(to, from, next) {
             get(url({query: {list: 4}})).then(({data}) => {
                 next(vm => vm.prepareForm(data));
             });
@@ -404,7 +404,7 @@
                 this.prepareForm(data);
                 next();
             });
-        },
+        },*/
 
         data() {
             return {
@@ -742,6 +742,7 @@
         },
 
         mounted() {
+            this.fetchList(4);
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.currentOrder = null;
                 this.showModalContent = false;

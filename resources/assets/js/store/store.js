@@ -14,7 +14,10 @@ export const store = new Vuex.Store({
         },
         states: null,
         branches: null,
-        lifestyleBranches: [8]/*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/,
+        lifestyleBranches: [8]
+        /*note this is different from other number used in the array
+        below, this one is the id of the lifestyle branches
+        the others below are role id for users*/,
         loader: true,
         ProfileAccess: [],
         ProfileEditAccess: [],
@@ -55,18 +58,20 @@ export const store = new Vuex.Store({
         getBranches: state => state.branches,
         getProfileAccess: state => state.ProfileAccess,
         getProfileEditAccess: state => state.ProfileEditAccess,
-        verifyFSLLead: state => state.FSLLead.includes(state.authRole),
-        verifyLOGLead: state => state.LOGLead.includes(state.authRole),
+
+        //verifyFSLLead: state => state.FSLLead.includes(state.authRole),
+
+        //verifyLOGLead: state => state.LOGLead.includes(state.authRole),
 
         auth: state => role => state[role].includes(state.authRole),
 
-        verifyDSALead: state => state.DSALead.includes(state.authRole),
+        /*verifyDSALead: state => state.DSALead.includes(state.authRole),
         verifyDSACaptain: state => state.DSACaptain.includes(state.authRole),
         verifyDSAAccess: state => state.DSAAccess.includes(state.authRole) && state.api_token,
         verifyDVAAccess: state => state.DVAAccess.includes(state.authRole) && state.api_token,
         verifyHRMAccess: state => state.HRMAccess.includes(state.authRole) && state.api_token,
         verifyFSLAccess: state => state.FSLAccess.includes(state.authRole) && state.api_token,
-        verifyLOGAccess: state => state.LOGAccess.includes(state.authRole) && state.api_token,
+        verifyLOGAccess: state => state.LOGAccess.includes(state.authRole) && state.api_token,*/
     },
     mutations: {
         mutateAuth: state => {

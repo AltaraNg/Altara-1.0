@@ -33,8 +33,7 @@
     </transition>
 </template>
 <script>
-    import SMS,{Message} from '../../../utilities/sms';
-    import {post} from '../../../utilities/api';
+    import {Message} from '../../../utilities/sms';
     import Flash from '../../../utilities/flash';
 
     export default {
@@ -51,38 +50,20 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            /*let phone = this.contacts
-                                .split(",").filter(e => /\S/.test(e))
-                                .map(contact => '234' + contact.trim().substr(1))
-                                .join(',');*/
-                            //SMS.dvaMessage({message: this.message, phone}, r => r.status === 200 && this.done(phone));
-                            let message = new Message(null, this.message, this.contacts);
-                            SMS.sendMessage(message, r => r.status === 200 && this.done(message));
+                            (new Message(this.message, this.contacts)).send(r => r.status === 200 && this.done());
                         } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
             },
-            done(message) {
+            done() {
                 this.$scrollToTop();
                 this.$LIPS(false);
                 Flash.setSuccess('Messages sent!');
-                post('/api/message', message).then(() => this.resetData());
+                this.resetData();
             },
-            /*done(contacts) {
-                this.$scrollToTop();
-                this.$LIPS(false);
-                Flash.setSuccess('Messages sent!');
-                this.form = {
-                    contacts,
-                    contact_count: contacts.split(",").length,
-                    message: this.message,
-                    pages: Math.ceil(this.message.length / 160),
-                };
-                post('/api/message', this.form).then(() => this.resetData());
-            },*/
             resetData() {
-                this.contacts = null;
-                this.message = null;
+                this.contacts = '';
+                this.message = '';
                 for (let key in this.form) this.form[key] = null;
             },
         },
@@ -91,13 +72,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-    @import "../../../../sass/app/variables";
-
-    #messaging {
-        textarea {
-            font: 500 1.5rem $default-font !important;
-        }
-    }
-</style>

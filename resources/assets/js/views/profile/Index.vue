@@ -6,14 +6,9 @@
 <script>
     import {mapActions} from 'vuex';
     import {mapGetters} from 'vuex';
-    import Auth from '../../utilities/auth';
     import Flash from '../../utilities/flash';
     export default{
-        data(){
-            return {
-                Auth: Auth.state,
-            }
-        },
+
         computed: {
             ...mapGetters([
                 'getProfileAccess'

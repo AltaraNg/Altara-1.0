@@ -11,7 +11,8 @@
                     <div class="px-5 py-4">
                         <div class="px-3 clearfix">
                             <h5 class="h5-custom float-left m-0">{{$route.meta.appModel | capitalize}} Management</h5>
-                            <router-link :to="`${$route.meta.new}/create`" class="float-right btn btn-primary bg-default m-0">
+                            <router-link :to="`${$route.meta.new}/create`"
+                                         class="float-right btn btn-primary bg-default m-0">
                                 Add {{$route.meta.appModel}}!
                             </router-link>
                         </div>
@@ -24,7 +25,8 @@
                                 <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
                                     <label>Search Column</label>
                                     <select class="custom-select w-100" v-model="query.search_column">
-                                        <option :value="column" v-for="column in columns">{{column | capitalize}}</option>
+                                        <option :value="column" v-for="column in columns">{{column | capitalize}}
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
@@ -35,11 +37,14 @@
                                 </div>
                                 <div class="form-group col-md-6 col-sm-6 px-md-3 px-1 float-left">
                                     <label>Search Input</label>
-                                    <input @keyup.enter="fetchIndexData()" class="form-control" placeholder="search..." type="text"
+                                    <input @keyup.enter="fetchIndexData()" class="form-control" placeholder="search..."
+                                           type="text"
                                            v-model="query.search_input">
                                 </div>
                                 <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 pt-md-2 pt-0 float-left">
-                                    <button @click="fetchIndexData()" class="btn btn-block bg-default mb-0 mt-3 mt-md-4">Filter</button>
+                                    <button @click="fetchIndexData()"
+                                            class="btn btn-block bg-default mb-0 mt-3 mt-md-4">Filter
+                                    </button>
                                 </div>
                             </div>
                             <div class="px-0 px-md-3 mt-3 table-responsive">
@@ -61,9 +66,9 @@
                                         <td v-for="(value,key) in model">
                                             <span v-if="key !== 'verification'">{{value}}</span>
                                             <router-link
-                                                :class="`status mx-auto status-sm shadow-sm ${value ? 'approved' : 'not-approved'}`"
-                                                :to="$store.getters.auth('DVAAccess') ? `dva/verification?id=${model.id}` : ''"
-                                                v-else>
+                                                    :class="`status mx-auto status-sm shadow-sm ${value ? 'approved' : 'not-approved'}`"
+                                                    :to="$store.getters.auth('DVAAccess') ? `dva/verification?id=${model.id}` : ''"
+                                                    v-else>
                                                 {{value ? 'APPROVED' : 'NOT APPROVED'}}
                                                 <i :class="`ml-3 fas fa-${value ? 'check' : 'times'}`"></i>
                                             </router-link>
@@ -80,10 +85,12 @@
                                             <button :class="{ 'btn-success' : accessStatus(model.portal_access),
                                             'btn-danger' :  !accessStatus(model.portal_access)}"
                                                     @click="update(model,'editPortalAccess')"
-                                                    class="text-center mr-2 btn btn-icon btn-sm float-left btn-round" data-placement="top"
+                                                    class="text-center mr-2 btn btn-icon btn-sm float-left btn-round"
+                                                    data-placement="top"
                                                     data-toggle="tooltip"
                                                     title="Edit Employee Portal Access">
-                                                <i class="fas fa-lock-open" v-if="accessStatus(model.portal_access)"></i>
+                                                <i class="fas fa-lock-open"
+                                                   v-if="accessStatus(model.portal_access)"></i>
                                                 <i class="fas fa-lock" v-else></i>
                                             </button>
                                             <button @click="update(model,'editPassword')"
@@ -117,16 +124,19 @@
                                 <span class="justify-content-end float-right col-md-6 col-12 px-0 mb-5 mb-md-0">
                                     <ul class="pagination m-0 float-right">
                                         <li class="page-item">
-                                            <a @click="prev()" class="page-link"><i class="fas fa-arrow-circle-left"></i></a>
+                                            <a @click="prev()" class="page-link"><i
+                                                    class="fas fa-arrow-circle-left"></i></a>
                                         </li>
                                         <li class="page-item"><span class="page-link">Current Page: {{model.current_page}}</span></li>
                                         <li class="page-item">
-                                            <a @click="next()" class="page-link"><i class="fas fa-arrow-circle-right"></i></a>
+                                            <a @click="next()" class="page-link"><i
+                                                    class="fas fa-arrow-circle-right"></i></a>
                                         </li>
                                     </ul>
                                     <span class="float-left">
                                         <span class="py-2 pr-3 float-left">Rows Per Page </span>
-                                        <input @keyup.enter="fetchIndexData()" class="form-control w-25" placeholder="search..."
+                                        <input @keyup.enter="fetchIndexData()" class="form-control w-25"
+                                               placeholder="search..."
                                                type="text" v-model="query.per_page">
                                     </span>
                                 </span>
@@ -141,7 +151,8 @@
                                     <div class="modal-header py-2">
                                         <h6 class="modal-title py-1">Edit Employee Portal Access</h6>
                                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                                            <span aria-hidden="true" class="modal-close text-danger"><i
+                                                    class="fas fa-times"></i></span>
                                         </a>
                                     </div>
                                     <form>
@@ -151,16 +162,22 @@
                                                    Please Verify you selected the right access before clicking <br>
                                                    <strong>Save Changes </strong>!
                                                 </span>
-                                                <div class="radio p-0 col-6 float-left text-center" v-for="access in portal_access">
-                                                    <input :id="access.name" :value="access.value" name="access" type="radio"
+                                                <div class="radio p-0 col-6 float-left text-center"
+                                                     v-for="access in portal_access">
+                                                    <input :id="access.name" :value="access.value" name="access"
+                                                           type="radio"
                                                            v-model="form.portal_access">
-                                                    <label :for="access.name">{{access.name | capitalize}} Access</label>
+                                                    <label :for="access.name">{{access.name | capitalize}}
+                                                        Access</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">cancel</button>
-                                            <button :disabled="$isProcessing" @click="myLog(form.id)" class="m-2 btn bg-default"
+                                            <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">
+                                                cancel
+                                            </button>
+                                            <button :disabled="$isProcessing" @click="myLog(form.id)"
+                                                    class="m-2 btn bg-default"
                                                     type="button"> Save changes <i class="far fa-paper-plane ml-1"></i>
                                             </button>
                                         </div>
@@ -177,7 +194,8 @@
                                     <div class="modal-header py-2">
                                         <h6 class="modal-title py-1">Reset Employee Password</h6>
                                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                                            <span aria-hidden="true" class="modal-close text-danger"><i
+                                                    class="fas fa-times"></i></span>
                                         </a>
                                     </div>
                                     <form>
@@ -188,12 +206,16 @@
                                                     <br><br>Please Kindly verify that the phone to receive the new password is on and active!
                                                 </span>
                                                 <br><br>
-                                                <u><em>click the continue and reset password to finish this task!</em></u>
+                                                <u><em>click the continue and reset password to finish this
+                                                    task!</em></u>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">cancel</button>
-                                            <button :disabled="$isProcessing" @click="resetPassword" class="m-2 btn bg-default"
+                                            <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">
+                                                cancel
+                                            </button>
+                                            <button :disabled="$isProcessing" @click="resetPassword"
+                                                    class="m-2 btn bg-default"
                                                     type="button">
                                                 continue and reset password <i class="far fa-paper-plane ml-1"></i>
                                             </button>
@@ -211,9 +233,9 @@
 </template>
 <script>
     import Vue from 'vue';
-    import SMS from '../utilities/sms';
+    import {Message} from '../utilities/sms';
     import {log} from "../utilities/log";
-    import {byMethod, get} from '../utilities/api';
+    import {byMethod, get/*, post*/} from '../utilities/api';
     //import {getCustomerApprovalStatus as status} from '../utilities/helpers';
     //import {getCustomerApprovalStatus as status} from '../utilities/helpers';
     import Flash from '../utilities/flash';
@@ -326,7 +348,7 @@
                                     this.$store.getters.getStates.find(obj => obj.id === curr.state_id).name;
                                 if (data[0].branch_id) curr.branch_id =
                                     this.$store.getters.getBranches.find(obj => obj.id === curr.branch_id).name;
-                                if (this.isModel('customer')) curr.verification = status(curr.verification);
+                                if (this.isModel('customer')) curr.verification = this.$getCustomerApprovalStatus(curr.verification);
                             });
                         }
                         Vue.set(this.$data, 'model', res.data.model);
@@ -355,15 +377,15 @@
             resetPassword() {
                 if (this.$network()) {
                     this.$LIPS(true);
-                    get(`/api/reset-password/${this.form.id}`).then(res => {
-                        log('resetUserPassword', this.form.staff_id);
-                        Flash.setSuccess('Employee password reset successful!');
-                        let details = {
-                            phone: String(parseInt(this.form.phone_number)), password: res.data.password,
-                            staff_id: this.form.staff_id
-                        };
-                        SMS.passwordReset(details);
-                    }).finally(() => this.done());
+                    get(`/api/reset-password/${this.form.id}`).then(({data}) => {
+                        let {psw} = data,//extract password from the data received
+                            {staff_id: id, phone_number: tel} = this.form,
+                            body = `Password reset successful! if your did not request for a new password kindly`
+                                + ` report back immediately, your staff ID is ${id}, new password: ${psw}`;
+                        log('resetUserPassword', id);
+                        (new Message(body, tel, false)).send(r => r.status === 200 && this.done());
+                        Flash.setSuccess('Password reset successful!');
+                    });
                 } else this.$networkErr();
             },
 
@@ -371,13 +393,13 @@
                 if (this.$network()) {
                     this.$LIPS(true);
                     byMethod('PUT', `/api/user/${id}`, this.form)
-                        .then(res => {
-                            log(`PortalAccessUpdated`, String(res.data.staff_id));
+                        .then(({data}) => {
+                            log(`PortalAccessUpdated`, String(data.staff_id));
                             Flash.setSuccess('Portal access updated', 20000);
                         })
-                        .catch(({response:r}) => {
+                        .catch(({response: r}) => {
                             let {message} = r.data;
-                            Flash.setError(message ? message :'Error updating status. Try again later!', 10000)
+                            Flash.setError(message ? message : 'Error updating status. Try again later!', 10000)
                         })
                         .finally(() => this.done());
                 } else this.$networkErr();

@@ -16,8 +16,7 @@
          </span>
         </div>
         <ul class="typeahead__list" v-if="open">
-            <li :key="index" class="typeahead__item"
-                v-for="(option, index) in filteredOptions">
+            <li :key="index" class="typeahead__item" v-for="(option, index) in filteredOptions">
                 <a :class="[selectIndex === index ? 'typeahead__active' : '']"
                    @mousedown.prevent="select(option)"
                    class="typeahead__link">
@@ -60,32 +59,24 @@
             },
             filteredOptions() {
                 const exp = new RegExp(this.search, 'i');
-                return this.options.filter(option => {
-                    return (exp.test(option.id) || exp.test(option[this.caption]));
-                });
+                return this.options.filter(option => (exp.test(option.id) || exp.test(option[this.caption])));
             }
         },
         watch: {
-            value: function (newVal, oldVal) {
+            value: function (newVal) {
                 if (newVal) this.select((this.options.find(option => option.id === newVal)))
             }
         },
         methods: {
             onDownKey() {
-                if (this.filteredOptions.length - 1 > this.selectIndex) {
-                    this.selectIndex++;
-                }
+                (this.filteredOptions.length - 1 > this.selectIndex) && this.selectIndex++;
             },
             onUpKey() {
-                if (this.selectIndex > 0) {
-                    this.selectIndex--;
-                }
+                (this.selectIndex > 0) && this.selectIndex--;
             },
             onEnterKey() {
                 const option = this.filteredOptions[this.selectIndex];
-                if (option) {
-                    this.select(option);
-                }
+                if (option) this.select(option);
             },
             select(option) {
                 this.displayText = option[this.caption];
@@ -93,17 +84,10 @@
                 this.$refs.search.blur();
             },
             toggle(e) {
-                if (e.target === this.$refs.toggle ||
-                    e.target === this.$refs.search ||
-                    e.target === this.$refs[this.caption]) {
+                if (e.target === this.$refs.toggle || e.target === this.$refs.search || e.target === this.$refs[this.caption]) {
                     if (this.open) {
-                        if (e.target !== this.$refs.search &&
-                            e.target !== this.$refs[this.caption]) {
-                            this.$refs.search.blur()
-                        }
-                    } else {
-                        this.$refs.search.focus();
-                    }
+                        if (e.target !== this.$refs.search && e.target !== this.$refs[this.caption]) this.$refs.search.blur();
+                    } else this.$refs.search.focus();
                 }
             },
             onFocus() {
@@ -119,86 +103,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-    @import "../../sass/app/variables";
-
-    .typeahead {
-        border-radius: 3px;
-        border: 1px solid #E3E3E3;
-        position: relative;
-        z-index: 1;
-    }
-
-    .typeahead__open {
-        border: 1px solid lighten($default-color, 15%);
-    }
-
-    .typeahead__open .typeahead__text {
-        opacity: 0.4;
-    }
-
-    .typeahead__toggle {
-        position: relative;
-        z-index: 1;
-        line-height: 1rem;
-    }
-
-    .typeahead__search {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 10px;
-        width: 100%;
-        display: block;
-        cursor: text;
-        background: transparent;
-        border: none;
-        outline: none;
-        z-index: 4;
-    }
-
-    .typeahead__text {
-        min-height: 30px;
-        line-height: 1em;
-        padding: 10px;
-        display: inline-block;
-        position: relative;
-        z-index: 3;
-    }
-
-    .typeahead__list {
-        margin: 0;
-        padding: 0;
-        max-height: 240px;
-        overflow-y: scroll;
-        position: absolute;
-        background-color: white;
-        width: calc(100% + 2px);
-        border: 1px solid lighten($default-color, 15%);
-        border-top: 0;
-        left: -1px;
-        right: 0;
-        border-radius: 0 0 4px 4px;
-    }
-
-    .typeahead__item {
-        display: block;
-        border-top: 1px solid #f4f4f4;
-        &:hover{
-            background: lighten($default-color, 70%);
-        }
-    }
-
-    .typeahead__link {
-        display: block;
-        padding: 10px;
-        line-height: 1em;
-        cursor: pointer;
-    }
-
-    .typeahead__active {
-        background: lighten($default-color, 15%);
-        color: #fff !important;
-    }
-</style>

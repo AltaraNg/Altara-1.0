@@ -1,10 +1,10 @@
 <template>
-    <h4 class="mx-md-3 mx-0 py-0 my-0 text-center clearfix" id="index">
+    <h4 class="mx-md-3 mx-0 py-0 my-0 text-center clearfix" id="app-navigation">
         <router-link v-if="$routerHistory.hasPrevious()" :to="previous"
                      class="text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3" id="back">
             <span class="mr-5 float-left">
                 <i class="far fa-arrow-alt-circle-left float-left"></i>
-                <small class="back float-left ml-2 d-none d-sm-block">Back</small>
+                <small class="float-left ml-2 d-none d-sm-block">Back</small>
             </span>
         </router-link>
         <strong class="mx-auto w-100 float-left" data-title="title">
@@ -15,7 +15,7 @@
                      class="text-secondary float-right mr-1 pr-2 mr-sm-4 pr-sm-3" id="forward">
             <span class="ml-5 float-right">
                 <i class="far fa-arrow-alt-circle-right float-right"></i>
-                <small class="forward float-right mr-2 d-none d-sm-block">Forward</small>
+                <small class="float-right mr-2 d-none d-sm-block">Forward</small>
             </span>
         </router-link>
     </h4>
@@ -30,54 +30,3 @@
         props: ['pageTitle', 'pageTitleSmall', 'previous', 'forward']
     }
 </script>
-
-<style lang="scss">
-    /*Not the css is included in this component to reduce
-    * the size of the main css file because
-    * the components are lazy loaded*/
-    @import "../../sass/app/variables";
-
-    #index {
-        a#back {
-            left: 0;
-        }
-
-        a#forward {
-            right: 0;
-        }
-
-        a#back, a#forward {
-            margin-top: .8rem;
-            position: absolute;
-
-            i {
-                font-size: 1.1*$default-font-size-icon
-            }
-        }
-
-        .forward, .back {
-            line-height: 2.4rem;
-            margin-top: -.2rem;
-            font-weight: bold;
-        }
-    }
-
-    @media (max-width: 990px) {
-        #index {
-            a#back, a#forward {
-                i {
-                    font-size: 1.2* $default-font-size-icon
-                }
-            }
-        }
-    }
-
-    @media (max-width: 600px) {
-        #index {
-            a#back, a#forward, [data-title="title"] {
-                margin-top: -.3rem;
-                margin-bottom: .3rem;
-            }
-        }
-    }
-</style>

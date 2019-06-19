@@ -9,7 +9,8 @@
                             <h5>
                                 Employee Personal Details
                                 <span class="float-right" v-if="mode === 'edit'">
-                                    <a href="javascript:" class="text-link mr-5 float-left" @click="transfer = !transfer">
+                                    <a href="javascript:" class="text-link mr-5 float-left"
+                                       @click="transfer = !transfer">
                                         click here to activate/deactivate transfer!
                                     </a>
                                     {{`Transfer ${transfer ? 'ON' : 'OFF'}`}}
@@ -41,7 +42,7 @@
                                     {{errors.first('phone_number') }}
                                 </small>
                                 <small
-                                    v-if="error.phone_number">
+                                        v-if="error.phone_number">
                                     {{error.phone_number[0]}}
                                 </small>
                             </div>
@@ -104,11 +105,11 @@
                                        v-model="form.email"
                                        v-validate="'required|email|min:1'">
                                 <small
-                                    v-if="errors.first('email')">
+                                        v-if="errors.first('email')">
                                     {{errors.first('email')}}
                                 </small>
                                 <small
-                                    v-if="error.email">
+                                        v-if="error.email">
                                     {{error.email[0]}}
                                 </small>
                             </div>
@@ -123,12 +124,12 @@
                                         name="role" v-model="form.role_id"
                                         v-validate="'required'" :disabled="mode === 'edit' ? !transfer : false">
                                     <option selected value="">select role</option>
-                                    <option :value="role.id" v-for="role in roles">
-                                        {{role.name | capitalize}}
+                                    <option :value="id" v-for="{name, id} in roles">
+                                        {{name | capitalize}}
                                     </option>
                                 </select>
                                 <small
-                                    v-if="errors.first('role')">
+                                        v-if="errors.first('role')">
                                     {{errors.first('role') }}
                                 </small>
                             </div>
@@ -141,12 +142,12 @@
                                         name="qualification" v-model="form.category"
                                         v-validate="'required'" :disabled="mode === 'edit' ? !transfer : false">
                                     <option selected value="">select category</option>
-                                    <option :value="category.name" v-for="category in categories">
-                                        {{category.name | capitalize}}
+                                    <option :value="name" v-for="{name} in categories">
+                                        {{name | capitalize}}
                                     </option>
                                 </select>
                                 <small
-                                    v-if="errors.has('category')">
+                                        v-if="errors.has('category')">
                                     {{errors.first('category') }}
                                 </small>
                             </div>
@@ -161,12 +162,12 @@
                                         name="branch" v-model="form.branch_id"
                                         v-validate="'required'">
                                     <option selected value="">select branch</option>
-                                    <option :value="branch.id" v-for="branch in branches">
-                                        {{branch.name | capitalize}}
+                                    <option :value="id" v-for="{name, id} in branches">
+                                        {{name | capitalize}}
                                     </option>
                                 </select>
                                 <small
-                                    v-if="errors.has('branch')">
+                                        v-if="errors.has('branch')">
                                     {{errors.first('branch') }}
                                 </small>
                             </div>
@@ -179,7 +180,7 @@
                                        v-model="form.date_of_appointment"
                                        v-validate="'required'">
                                 <small
-                                    v-if="errors.first('date_of_appointment')">
+                                        v-if="errors.first('date_of_appointment')">
                                     {{errors.first('date_of_appointment')}}
                                 </small>
                             </div>
@@ -204,7 +205,7 @@
                                     </option>
                                 </select>
                                 <small
-                                    v-if="errors.has('qualification')">
+                                        v-if="errors.has('qualification')">
                                     {{errors.first('qualification') }}
                                 </small>
                             </div>
@@ -225,7 +226,7 @@
                                     </label>
                                 </div>
                                 <small
-                                    v-if="errors.first('gender')">
+                                        v-if="errors.first('gender')">
                                     {{errors.first('gender')}}
                                 </small>
                             </div>
@@ -241,7 +242,7 @@
                                           v-model="form.address"
                                           v-validate="'required|max:255'"></textarea>
                                 <small
-                                    v-if="errors.first('address')">
+                                        v-if="errors.first('address')">
                                     {{errors.first('address')}}
                                 </small>
                             </div>
@@ -259,7 +260,7 @@
                                        v-model="form.referee_1"
                                        v-validate="'required|max:50'">
                                 <small
-                                    v-if="errors.first('referee_1')">
+                                        v-if="errors.first('referee_1')">
                                     {{errors.first('referee_1') }}
                                 </small>
                             </div>
@@ -274,7 +275,7 @@
                                        v-model="form.referee_1_phone_no"
                                        v-validate="'required|numeric|max:11|min:11'">
                                 <small
-                                    v-if="errors.first('referee_1_phone_no')">
+                                        v-if="errors.first('referee_1_phone_no')">
                                     {{errors.first('referee_1_phone_no')}}
                                 </small>
                             </div>
@@ -291,7 +292,7 @@
                                        v-model="form.referee_2"
                                        v-validate="'required|max:50'">
                                 <small
-                                    v-if="errors.first('referee_2')">
+                                        v-if="errors.first('referee_2')">
                                     {{errors.first('referee_2') }}
                                 </small>
                             </div>
@@ -306,7 +307,7 @@
                                        v-model="form.referee_2_phone_no"
                                        v-validate="'required|numeric|max:11|min:11'">
                                 <small
-                                    v-if="errors.first('referee_2_phone_no')">
+                                        v-if="errors.first('referee_2_phone_no')">
                                     {{errors.first('referee_2_phone_no') }}
                                 </small>
                             </div>
@@ -325,7 +326,7 @@
                                        v-model="form.next_of_kin_name"
                                        v-validate="'required|max:50'">
                                 <small
-                                    v-if="errors.first('next_of_kin_name')">
+                                        v-if="errors.first('next_of_kin_name')">
                                     {{errors.first('next_of_kin_name') }}
                                 </small>
                             </div>
@@ -340,7 +341,7 @@
                                        v-model="form.next_of_kin_phone_no"
                                        v-validate="'required|numeric|max:11|min:11'">
                                 <small
-                                    v-if="errors.first('next_of_kin_phone_no')">
+                                        v-if="errors.first('next_of_kin_phone_no')">
                                     {{errors.first('next_of_kin_phone_no')}}
                                 </small>
                             </div>
@@ -361,7 +362,7 @@
                                        v-model="form.guarantor_name"
                                        v-validate="'required|max:50'">
                                 <small
-                                    v-if="errors.first('guarantor_name')">
+                                        v-if="errors.first('guarantor_name')">
                                     {{errors.first('guarantor_name') }}
                                 </small>
                             </div>
@@ -396,7 +397,7 @@
                                        v-model="form.guarantor_relationship"
                                        v-validate="'required|max:50'">
                                 <small
-                                    v-if="errors.first('guarantor_relationship')">
+                                        v-if="errors.first('guarantor_relationship')">
                                     {{errors.first('guarantor_relationship') }}
                                 </small>
                             </div>
@@ -411,7 +412,7 @@
                                           v-model="form.guarantor_address"
                                           v-validate="'required|max:255'"></textarea>
                                 <small
-                                    v-if="errors.first('guarantor_address')">
+                                        v-if="errors.first('guarantor_address')">
                                     {{errors.first('guarantor_address')}}
                                 </small>
                             </div>
@@ -430,7 +431,7 @@
                                        v-model="form.guarantor_name_2"
                                        v-validate="'required|max:50'">
                                 <small
-                                    v-if="errors.first('guarantor_name_2')">
+                                        v-if="errors.first('guarantor_name_2')">
                                     {{errors.first('guarantor_name_2') }}
                                 </small>
                             </div>
@@ -465,7 +466,7 @@
                                        v-model="form.guarantor_relationship_2"
                                        v-validate="'required|max:50'">
                                 <small
-                                    v-if="errors.first('guarantor_relationship_2')">
+                                        v-if="errors.first('guarantor_relationship_2')">
                                     {{errors.first('guarantor_relationship_2') }}
                                 </small>
                             </div>
@@ -480,7 +481,7 @@
                                           v-model="form.guarantor_address_2"
                                           v-validate="'required|max:255'"></textarea>
                                 <small
-                                    v-if="errors.first('guarantor_address_2')">
+                                        v-if="errors.first('guarantor_address_2')">
                                     {{errors.first('guarantor_address_2')}}
                                 </small>
                             </div>
@@ -494,7 +495,7 @@
                                     <div v-if="mode === 'edit' && $data.form['cv_url']">
                                         <a @click="viewCV(form.cv_url)" class="view_cv mr-4">{{form.cv_url.substring(3)}}</a>
                                         ||
-                                        <a @click="editCV" class="view_cv ml-4">Edit CV</a>
+                                        <a @click="form.cv_url = ''" class="view_cv ml-4">Edit CV</a>
                                     </div>
                                     <div v-else>
                                         <label class="cv_label mr-4">CV</label>
@@ -508,7 +509,9 @@
 
                         <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3">
                             <div class="clearfix d-flex justify-content-end">
-                                <button @click="done" class="mx-3 btn btn-secondary" type="button" v-if="mode ==='edit'">Cancel</button>
+                                <button @click="done" class="mx-3 btn btn-secondary" type="button"
+                                        v-if="mode ==='edit'">Cancel
+                                </button>
                                 <button :disabled="$isProcessing" class="mx-3 btn bg-default" type="submit">
                                     {{mode | capitalize}} Employee <i class="far fa-paper-plane ml-1"></i>
                                 </button>
@@ -522,10 +525,10 @@
 
 </template>
 <script>
-    import SMS from '../../../utilities/sms';
+    import SMS, {Message} from '../../../utilities/sms';
     import {log} from '../../../utilities/log';
     import Flash from '../../../utilities/flash';
-    import {byMethod, get} from '../../../utilities/api';
+    import {byMethod, get, post} from '../../../utilities/api';
     import {toMulipartedForm} from '../../../utilities/form';
     import ImageUpload from '../../../components/ImageUpload';
 
@@ -549,11 +552,9 @@
                 error: {},
                 roles: {},
                 branches: {},
-                password: '',
                 countries: ['nigeria'],
                 gender: ['male', 'female'],
                 categories: {},
-                textDetails: {phone: '', loginPassword: '', loginID: '',},
                 statuses: ['married', 'single', 'divorced', 'complicated'],
                 qualifications: ['NCE', 'HND', 'OND', 'bachelors', 'masters', 'doctorate'],
                 transfer: false,
@@ -561,19 +562,13 @@
         },
 
         beforeRouteEnter(to, from, next) {
-            //1. make request to back-end
-            get(`/api/${initialize(to)}`).then(res => {
-                //2 send to the method to prepare form
-                next(vm => vm.prepareForm(res.data));
-            });
+            get(`/api/${initialize(to)}`).then(({data}) => next(vm => vm.prepareForm(data)));
         },
 
         beforeRouteUpdate(to, from, next) {
             this.show = false;
-            //1. make request to back-end
-            get(initialize(to)).then(res => {
-                //2 send to the method to prepare form
-                this.prepareForm(res.data);
+            get(initialize(to)).then(({data}) => {
+                this.prepareForm(data);
                 next();
             });
         },
@@ -585,9 +580,6 @@
             },
 
             async prepareForm(data) {
-                //this function is used when a data is sent to this component
-                //or this component makes a request to backend the
-                //data received is used to prepare the form
                 await this.$prepareStates();
                 this.mode = this.$route.meta.mode;
                 this.error = {};
@@ -598,7 +590,6 @@
                 this.categories = data.categories;
                 if (this.$route.meta.mode === 'edit') {
                     this.store = `/api/user/${this.$route.params.id}`;
-                    // this.method = 'PUT';
                     this.method = 'POST';
                 }
                 this.show = true;
@@ -613,16 +604,17 @@
                             this.form.transfer = this.transfer;
                             const form = toMulipartedForm(this.form, 'edit');
                             byMethod(this.method, this.store, form)
-                                .then(res => {
-                                    if (res.data['success'] || res.data['transfer']) {
-                                        this.textDetails.loginID = String(res.data.staff_id);
-                                        this.textDetails.phone = String(parseInt(this.form.phone_number));
-                                        this.textDetails.loginPassword = this.password = res.data.password;
-                                        res.data['success'] ? SMS.welcome(this.textDetails) :  SMS.transfer(this.textDetails);
+                                .then(({data}) => {
+                                    let {staff_id, password, message, success, transfer} = data, mode = this.mode;
+                                    if (success || transfer) {
+                                        let text = success ? `Welcome to Altara credit. Please secure your login
+                                        details. Staff ID: ${staff_id}, password: ${password}`
+                                            : `Transfer Successful, your new staff ID is ${staff_id} `;
+                                        (new Message(text, this.form.phone_number)).send();
                                     }
-                                    log(`Staff ${this.mode}`, String(res.data.staff_id));
-                                    Flash.setSuccess(this.mode === 'edit' ? `${res.data.message}` :
-                                        `Staff ${this.mode}d with ID ${res.data.staff_id}. Login details has been sent via SMS to the employee!`, 20000);
+                                    log(`Staff ${mode}`, String(staff_id));
+                                    Flash.setSuccess(mode === 'edit' ? message : `Staff ${mode}d with ID ${staff_id}.
+                                        Login details has been sent via SMS to the employee!`, 20000);
                                     this.done();
                                 })
                                 .catch(e => {
@@ -642,41 +634,7 @@
 
             viewCV(path) {
                 window.open(`https://s3.eu-west-2.amazonaws.com/altara-one/${path}`, '_blank')
-            },
-
-            editCV() {
-                this.form.cv_url = '';
-            },
-        }
-    }
-</script>
-<style scoped lang="scss">
-
-    .view_ {
-        &cv {
-            text-decoration: underline;
-            font-size: 13px;
-            font-weight: 700;
-
-            &:hover {
-                text-decoration: underline !important;
             }
         }
     }
-
-    .cv_ {
-        &label {
-            font-size: 1.6rem;
-            line-height: 36px;
-            float: left;
-        }
-
-        &upload {
-            background-color: rgba(0, 0, 0, 0.05);
-            border: 1px dotted rgba(0, 0, 0, 0.15);
-            border-radius: 5px;
-            padding: 0.8rem .8rem;
-            float: left;
-        }
-    }
-</style>
+</script>
