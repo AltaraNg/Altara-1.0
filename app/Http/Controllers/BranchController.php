@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Bank;
 use App\Branch;
-use App\State;
 use Illuminate\Http\Request;
 
 class BranchController extends Controller

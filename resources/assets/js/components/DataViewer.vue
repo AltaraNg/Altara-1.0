@@ -368,7 +368,7 @@
                 if (this.$network()) {
                     this.$LIPS(true);
                     get(`/api/reset-password/${this.form.id}`).then(({data}) => {
-                        let {psw} = data,//extract password from the data received
+                        let {password:psw} = data,//extract password from the data received
                             {staff_id: id, phone_number: tel} = this.form,
                             body = `Password reset successful! if your did not request for a new password kindly`
                                 + ` report back immediately, your staff ID is ${id}, new password: ${psw}`;

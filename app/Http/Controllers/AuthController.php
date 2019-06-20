@@ -86,12 +86,4 @@ class AuthController extends Controller
          'password' => $gen_password
       ]);
    }
-
-   /*public function runQuery()
-   {
-      $user = User::where('staff_id', 'AC/C/040/19')->first();
-      $user->password = bcrypt('password');
-      $user->save();
-      return response()->json(['changed' => true]);
-   }*/
 }
