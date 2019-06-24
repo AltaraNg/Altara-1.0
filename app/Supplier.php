@@ -26,7 +26,7 @@ class Supplier extends Model
         'bank_name',
     ];
 
-    public static function form()
+    public static function form() : iterable
     {
         return [
             'sku' => "ALTS/001/POL/18",

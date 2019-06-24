@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Address;
-use App\Verification;
+/*use App\Address;
+use App\Verification;*/
+use App\{Address,Verification};
 use Illuminate\Http\Request;
 
 class AddressController extends Controller
@@ -54,7 +55,8 @@ class AddressController extends Controller
         Verification::where('customer_id', '=', $request->customer_id)->update(['address' => $request->approval_status]);
         /** return the customer with all his/her details*/
         return response()->json([
-            'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
+            //'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
+            'response' => (new CustomerController)->show($request->customer_id)->original
         ]);
     }
 

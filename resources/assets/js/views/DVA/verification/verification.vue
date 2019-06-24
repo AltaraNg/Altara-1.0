@@ -604,6 +604,7 @@
                 * is used as the customer update form for both dsa and dva portal.*/
                 this.user = data.hasOwnProperty('user') ? data.user : null;
                 Vue.set(this.$data, 'customer', data.customer);
+                this.$emit('update', data.customer);
                 EventBus.$emit('customer', data.customer);
                 if (data.customer) {
                     this.verification = JSON.parse(JSON.stringify(data.customer.verification));

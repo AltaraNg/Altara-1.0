@@ -15,7 +15,7 @@ class Brand extends Model
 
     public static $columns = ['id', 'name'];
 
-    public static function form()
+    public static function form() : iterable
     {
         return [
             'name' => ''

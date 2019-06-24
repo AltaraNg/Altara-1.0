@@ -24,7 +24,7 @@ class Customer extends Model
     /** this is the user object form, it is sent to the js
      * view when the customer creation
      * form is required */
-    public static function form()
+    public static function form() : iterable
     {
         $user = auth('api')->user();
         return [

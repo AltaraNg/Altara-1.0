@@ -13,7 +13,8 @@ class Product extends Model
 
     public static $columns = ['id', 'name', 'retail_price in Naira'];
 
-    public static function form(){
+    public static function form(): iterable
+    {
         return [
             'name' => 'PID-0001',
             'brand_id' => '',

@@ -12,6 +12,6 @@ class Repayment extends Model
 
     public function order()
     {
-        return $this->hasOne(Order::class,'repayment_id','id');
+        return $this->hasOne(Order::class, 'repayment_id', 'id');
     }
 }

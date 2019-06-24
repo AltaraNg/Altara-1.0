@@ -28,7 +28,7 @@ class User extends Authenticatable
      * view when the user creation
      * form is required */
 
-    public static function Form()
+    public static function Form() : iterable
     {
         return [
             'role_id' => '',

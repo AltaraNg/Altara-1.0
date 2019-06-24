@@ -8,5 +8,5 @@ class SalesType extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['name','percentage_discount'];
+    protected $fillable = ['name', 'percentage_discount'];
 }

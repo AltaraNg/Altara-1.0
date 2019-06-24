@@ -14,6 +14,6 @@ class Purchase extends Model
 
     public function oldRepayment()
     {
-        return $this->hasOne(Repayment::class,'repayment_id','order_id');
+        return $this->hasOne(Repayment::class, 'repayment_id', 'order_id');
     }
 }

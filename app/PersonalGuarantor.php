@@ -20,7 +20,7 @@ class PersonalGuarantor extends Model
       return $this->belongsTo(User::class);
    }
 
-   public static function form()
+   public static function form() : iterable
    {
       return [
          'user_id' => '',
