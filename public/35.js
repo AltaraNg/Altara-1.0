@@ -1,4 +1,4 @@
-webpackJsonp([35,36,38],{
+webpackJsonp([35,36],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue":
 /***/ (function(module, exports, __webpack_require__) {
@@ -57,121 +57,117 @@ var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
-
 var _store = __webpack_require__("./resources/assets/js/store/store.js");
 
 var _eventBus = __webpack_require__("./resources/assets/js/utilities/event-bus.js");
-
-var _CustomerProfile = __webpack_require__("./resources/assets/js/components/CustomerProfile.vue");
-
-var _CustomerProfile2 = _interopRequireDefault(_CustomerProfile);
 
 var _AppNavigation = __webpack_require__("./resources/assets/js/components/AppNavigation.vue");
 
 var _AppNavigation2 = _interopRequireDefault(_AppNavigation);
 
-var _helpers = __webpack_require__("./resources/assets/js/utilities/utilities.js");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var DVA = function DVA() {
     return _store.store.getters.auth('DVAAccess');
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+};
 
 exports.default = {
     props: ['viewCustomer'],
-    components: { CustomerProfile: _CustomerProfile2.default, AppNavigation: _AppNavigation2.default },
+    components: { AppNavigation: _AppNavigation2.default },
     data: function data() {
         return {
             customer: '',
@@ -180,20 +176,17 @@ exports.default = {
     },
 
     computed: {
+        full: function full() {
+            return this.$route.meta.mode === 'full';
+        },
         passport: function passport() {
             return 'https://s3.eu-west-2.amazonaws.com/altara-one/' + this.customer.document.passport_url;
-        },
-        name: function name() {
-            return (0, _helpers.getCustomerFullName)(this.customer);
         },
         branch: function branch() {
             return this.customer.branch.description + ' ' + this.customer.branch.name;
         },
-        address: function address() {
-            return (0, _helpers.getCustomerAddress)(this.customer);
-        },
         approved: function approved() {
-            return (0, _helpers.getCustomerApprovalStatus)(this.customer.verification);
+            return this.$getCustomerApprovalStatus(this.customer.verification);
         }
     },
     created: function created() {
@@ -202,27 +195,8 @@ exports.default = {
         $('.tooltip').remove();
         if (this.viewCustomer) this.setCustomer(this.viewCustomer);
         _eventBus.EventBus.$on('customer', function (customer) {
-            _this.setCustomer(customer);
+            return _this.setCustomer(customer);
         });
-    },
-    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        if (DVA()) {
-            (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
-                next(function (vm) {
-                    return vm.setCustomer(res.data.customer);
-                });
-            });
-        } else next('/');
-    },
-    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-        var _this2 = this;
-
-        if (DVA()) {
-            (0, _api.get)('/api/customer/' + to.params.id).then(function (res) {
-                _this2.setCustomer(res.data.customer);
-                next();
-            });
-        } else next('/');
     },
 
     methods: {
@@ -862,9 +836,27 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-var init = function init(to) {
-    return '/api/customer/' + to.query.id;
+var init = function init(_ref) {
+    var id = _ref.id;
+    return '/api/customer/' + id;
 };
 
 exports.default = {
@@ -903,13 +895,14 @@ exports.default = {
             error: {},
             storeURL: '',
             user: {},
-            customerAddress: '',
             work_guarantor_address: '',
             personal_guarantor_address: ''
         };
     },
-    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        if (to.query.id) (0, _api.get)(init(to)).then(function (res) {
+    beforeRouteEnter: function beforeRouteEnter(_ref2, from, next) {
+        var query = _ref2.query;
+
+        if (query.id) (0, _api.get)(init(query)).then(function (res) {
             return next(function (vm) {
                 return vm.updateView(res.data);
             });
@@ -919,10 +912,12 @@ exports.default = {
             });
         });else next();
     },
-    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    beforeRouteUpdate: function beforeRouteUpdate(_ref3, from, next) {
+        var query = _ref3.query;
+
         var _this = this;
 
-        if (to.query.id) (0, _api.get)(init(to)).then(function (res) {
+        if (query.id) (0, _api.get)(init(query)).then(function (res) {
             return _this.updateView(res.data);
         }).catch(function (e) {
             return _this.updateView(e.response.data);
@@ -964,18 +959,17 @@ exports.default = {
         updateView: function updateView(data) {
             var _this2 = this;
 
-            this.$emit('update', data.customer);
             /*$emit update event is used to send data to the parent component where this serves as a child
             * component. eg. dsa utility form. NB: The customer registration component(form)
             * is used as the customer update form for both dsa and dva portal.*/
             this.user = data.hasOwnProperty('user') ? data.user : null;
             _vue2.default.set(this.$data, 'customer', data.customer);
+            this.$emit('update', data.customer);
             _eventBus.EventBus.$emit('customer', data.customer);
             if (data.customer) {
                 this.verification = JSON.parse(JSON.stringify(data.customer.verification));
                 this.form.id_card = data.customer.document.id_card_url;
                 this.form.passport = data.customer.document.passport_url;
-                this.customerAddress = this.customer.add_houseno + '\n                    ' + this.customer.add_street + '\n                    ' + this.customer.area_address + '\n                    ' + this.customer.city + '\n                    ' + this.customer.state;
                 this.work_guarantor_address = this.customer.guaadd_houseno + ',\n                    ' + this.customer.guaadd_street + ',\n                    ' + this.customer.gua_area + ',\n                    ' + this.customer.work_guarantor_city + ',\n                    ' + this.customer.work_guarantor_state;
                 this.personal_guarantor_address = this.customer.pguaadd_houseno + ',\n                    ' + this.customer.pguaadd_street + ',\n                    ' + this.customer.pgua_area + ',\n                    ' + this.customer.personal_guarantor_city + ',\n                    ' + this.customer.personal_guarantor_state;
                 this.veriData.forEach(function (e) {
@@ -996,7 +990,7 @@ exports.default = {
             if (this.$route.name === 'verification') this.$router.push('verification?id=' + this.customer_id);
             if (this.$route.name === 'customerUpdate') {
                 this.$router.push('update?id=' + this.customer_id);
-                (0, _api.get)(init(this.$route)).then(function (res) {
+                (0, _api.get)(init(this.$route.query)).then(function (res) {
                     return _this3.updateView(res.data);
                 }).catch(function (e) {
                     return _this3.updateView(e.response.data);
@@ -1006,94 +1000,81 @@ exports.default = {
         validate: function validate(type) {
             var _this4 = this;
 
-            var acc = this.$editAccess(this.user, this.customer);
-            if (acc) {
-                if (this.$network()) {
-                    this.$LIPS(true);
-                    if (this.veriView.includes(type) && !this.customer.work_guarantor_first_name) {
-                        this.modal(type + '_modal');
-                        this.$LIPS(false);
-                        this.$scrollToTop();
-                        _flash2.default.setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
-                        return;
-                    }
-                    this.info_from_neighbors === 'no' ? this.address.info_from_neighbors_desc = '' : '';
-                    this[type].customer_id = this.customer.id;
-                    this[type].user_id = this.user.id;
-                    this[type].staff_name = this.user.full_name;
-                    this.$validator.validateAll(type).then(function () {
-                        var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
-                            return _regenerator2.default.wrap(function _callee$(_context) {
-                                while (1) {
-                                    switch (_context.prev = _context.next) {
-                                        case 0:
-                                            if (!result) {
-                                                _context.next = 7;
-                                                break;
-                                            }
-
-                                            _context.next = 3;
-                                            return (0, _api.post)('/api/' + type, _this4[type]).then(function (res) {
-                                                _this4.updateView(res.data.response);
-                                                var id = 'Customer ID : ' + _this4.customer.id,
-                                                    typeCaps = _this4.$options.filters.capitalize(type),
-                                                    action = 'Customer' + typeCaps + 'Verification';
-                                                if (type === 'address') action += _this4.address.approval_status ? 'Passed' : 'NotPassed';
-                                                (0, _log.log)(action, id);
-                                                _flash2.default.setSuccess(typeCaps + ' status updated!');
-                                                _this4.modal(type + '_modal');
-                                            }).catch(function (e) {
-                                                return _flash2.default.setError(e.response.data.message);
-                                            });
-
-                                        case 3:
-                                            _this4.$LIPS(false);
-                                            _this4.$scrollToTop();
-                                            _context.next = 8;
+            if (this.$network()) {
+                this.$LIPS(true);
+                if (this.veriView.includes(type) && !this.customer.work_guarantor_first_name) {
+                    this.modal(type + '_modal');
+                    this.$LIPS(false);
+                    this.$scrollToTop();
+                    _flash2.default.setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
+                    return;
+                }
+                this.info_from_neighbors === 'no' ? this.address.info_from_neighbors_desc = '' : '';
+                this[type].customer_id = this.customer.id;
+                this[type].user_id = this.user.id;
+                this[type].staff_name = this.user.full_name;
+                this.$validator.validateAll(type).then(function () {
+                    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
+                        return _regenerator2.default.wrap(function _callee$(_context) {
+                            while (1) {
+                                switch (_context.prev = _context.next) {
+                                    case 0:
+                                        if (!result) {
+                                            _context.next = 7;
                                             break;
+                                        }
 
-                                        case 7:
-                                            _this4.$networkErr('form');
+                                        _context.next = 3;
+                                        return (0, _api.post)('/api/' + type, _this4[type]).then(function (res) {
+                                            _this4.updateView(res.data.response);
+                                            var id = 'Customer ID : ' + _this4.customer.id,
+                                                typeCaps = _this4.$options.filters.capitalize(type),
+                                                action = 'Customer' + typeCaps + 'Verification';
+                                            if (type === 'address') action += _this4.address.approval_status ? 'Passed' : 'NotPassed';
+                                            (0, _log.log)(action, id);
+                                            _flash2.default.setSuccess(typeCaps + ' status updated!');
+                                            _this4.modal(type + '_modal');
+                                        }).catch(function (e) {
+                                            return _flash2.default.setError(e.response.data.message);
+                                        });
 
-                                        case 8:
-                                        case 'end':
-                                            return _context.stop();
-                                    }
+                                    case 3:
+                                        _this4.$LIPS(false);
+                                        _this4.$scrollToTop();
+                                        _context.next = 8;
+                                        break;
+
+                                    case 7:
+                                        _this4.$networkErr('form');
+
+                                    case 8:
+                                    case 'end':
+                                        return _context.stop();
                                 }
-                            }, _callee, _this4);
-                        }));
+                            }
+                        }, _callee, _this4);
+                    }));
 
-                        return function (_x) {
-                            return _ref.apply(this, arguments);
-                        };
-                    }());
-                } else this.$networkErr();
-            } else {
-                this.$networkErr('edit');
-                $('.modal').modal('hide');
-            }
+                    return function (_x) {
+                        return _ref4.apply(this, arguments);
+                    };
+                }());
+            } else this.$networkErr();
         },
         save: function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(document, modal) {
+            var _ref5 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(document, modal) {
                 var _this5 = this;
 
-                var acc, form;
+                var form;
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
-                                acc = this.$editAccess(this.user, this.customer);
-
-                                if (!acc) {
-                                    _context2.next = 12;
-                                    break;
-                                }
-
                                 this.storeURL = '/api/document/' + this.customer.document.id + '?_method=PUT&document=' + document;
                                 this.$LIPS(true);
                                 this.form.document = document;
                                 form = (0, _form.toMulipartedForm)(this.form, 'edit');
-                                _context2.next = 8;
+                                _context2.next = 6;
                                 return (0, _api.post)(this.storeURL, form).then(function (res) {
                                     _this5.updateView(res.data.response);
                                     (0, _log.log)('Customer' + _this5.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + _this5.customer.id);
@@ -1103,17 +1084,11 @@ exports.default = {
                                     return _this5.error = e.response.data.errors;
                                 });
 
-                            case 8:
+                            case 6:
                                 this.$LIPS(false);
                                 this.$scrollToTop();
-                                _context2.next = 14;
-                                break;
 
-                            case 12:
-                                this.$networkErr('edit');
-                                $('.modal').modal('hide');
-
-                            case 14:
+                            case 8:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -1122,7 +1097,7 @@ exports.default = {
             }));
 
             function save(_x2, _x3) {
-                return _ref2.apply(this, arguments);
+                return _ref5.apply(this, arguments);
             }
 
             return save;
@@ -1186,6 +1161,39 @@ var _verification2 = _interopRequireDefault(_verification);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2590,11 +2598,23 @@ exports.default = {
 
                                 case 11:
                                     _context.next = 13;
-                                    return (0, _api.post)('/api/customer' + (_this.mode === 'update' ? '/' + _this.newCustomer.id : ''), _this.newCustomer).then(function (res) {
-                                        _flash2.default.setSuccess('Customer ' + _this.mode + 'd successful! Customer ID is: ' + res.data.customer.id, 30000);
-                                        (0, _log.log)(_this.mode + 'dCustomer', 'Customer ID :' + res.data.customer.id);
-                                        if (_this.mode === 'register') _sms2.default.customerReg(res.data.customer);
-                                        _this.prepareForm(res.data.prepareForm);
+                                    return (0, _api.post)('/api/customer' + (_this.mode === 'update' ? '/' + _this.newCustomer.id : ''), _this.newCustomer).then(function (_ref2) {
+                                        var data = _ref2.data;
+                                        var _data$customer = data.customer,
+                                            FN = _data$customer.first_name,
+                                            LN = _data$customer.last_name,
+                                            id = _data$customer.id,
+                                            branch = _data$customer.branch,
+                                            tel = _data$customer.telephone;
+
+                                        _flash2.default.setSuccess('Customer ' + _this.mode + 'd successful! Customer ID is: ' + id, 30000);
+                                        (0, _log.log)(_this.mode + 'dCustomer', 'Customer ID :' + id);
+                                        if (_this.mode === 'register') {
+                                            var body = 'Dear ' + FN + ' ' + LN + ', Welcome to Altara Credit Limited,' + (' You are hereby invited to our showroom at ' + branch.description + ' to') + ' learn more about our offerings. Pick up products now and pay later.' + ' We look forward to seeing you. For more info contact:' + (branch.phone_yoruba + '. Your customer id is: ' + id);
+                                            new _sms.Message(body, tel).send(function (r) {
+                                                return r.status === 200 && _this.prepareForm(data.prepareForm);
+                                            });
+                                        }
                                     }).catch(function (e) {
                                         e = e.response;
                                         if (e.status === 422) _this.error = e.data.errors ? e.data.errors : e.data;
@@ -2639,27 +2659,21 @@ exports.default = {
         updateCustomer: function updateCustomer(customer) {
             if (this.mode === 'update') {
                 ;
-                var _ref2 = [true, true];
-                this.fillWorkGuarantor = _ref2[0];
-                this.fillPersonalGuarantor = _ref2[1];
+                var _ref3 = [true, true];
+                this.fillWorkGuarantor = _ref3[0];
+                this.fillPersonalGuarantor = _ref3[1];
             }this.newCustomer = customer;
         }
     },
     created: function created() {
         var _this2 = this;
 
-        (0, _api.get)('/api/customer/create').then(function (res) {
-            return _this2.prepareForm(res.data);
+        (0, _api.get)('/api/customer/create').then(function (_ref4) {
+            var data = _ref4.data;
+            return _this2.prepareForm(data);
         });
         /*on create of the component fetch the data required to prepare the form
         * states, branches and the currently logged in dsa details*/
-    },
-
-    watch: {
-        // isLifestyle(value) {
-        //     console.log(value)
-        //     this.newCustomer.branch_id = value ? 8 : this.user.branch_id;
-        // }
     }
 };
 
@@ -2669,51 +2683,6 @@ exports.default = {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime-module.js");
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-07317a72\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/verification/verification.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.verification .card-stats .icon[data-v-07317a72] {\n  margin: 0 1.5rem;\n}\n.verification .info .icon.icon-circle[data-v-07317a72] {\n  width: 8rem;\n  height: 8rem;\n  border-radius: 50%;\n}\n.verification .info-horizontal .icon.icon-circle i[data-v-07317a72] {\n  display: table;\n  margin: 0 auto;\n  line-height: 8rem;\n  font-size: 2.4rem;\n}\n.verification .stats-title[data-v-07317a72] {\n  font-weight: 300;\n  font-size: 1.2rem;\n}\n.verification .card-footer[data-v-07317a72]:hover {\n  background-image: -webkit-gradient(linear, left top, left bottom, from(white), to(#eeeeee));\n  background-image: linear-gradient(to bottom, white, #eeeeee);\n}\n.verification h4.info-title[data-v-07317a72] {\n  margin: 0;\n  font-size: 2rem;\n}\n.verification .no-success .icon.icon-warning.icon-circle[data-v-07317a72] {\n  border: 1px solid #b30000;\n  -webkit-box-shadow: 0 0.9rem 1.5rem -0.6rem rgba(179, 0, 0, 0.5) !important;\n          box-shadow: 0 0.9rem 1.5rem -0.6rem rgba(179, 0, 0, 0.5) !important;\n}\n.verification .success .icon.icon-warning.icon-circle[data-v-07317a72] {\n  border: 1px solid #488413;\n  -webkit-box-shadow: 0 0.9rem 1.5rem -0.6rem rgba(72, 132, 19, 0.5) !important;\n          box-shadow: 0 0.9rem 1.5rem -0.6rem rgba(72, 132, 19, 0.5) !important;\n}\n.verification .card.card-stats[data-v-07317a72]::before {\n  content: '';\n  width: 3px;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.verification .success[data-v-07317a72]::before {\n  background: linear-gradient(45deg, #8ef985 0%, #01af13 100%);\n}\n.verification .no-success[data-v-07317a72]::before {\n  background: linear-gradient(45deg, #ff9b83 0%, #a40000 100%);\n}\n.verification .success i[data-v-07317a72] {\n  color: #63b61a;\n}\n.verification .no-success i[data-v-07317a72] {\n  color: #c70000;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2f542aae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppNavigation.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "/*Not the css is included in this component to reduce\n* the size of the main css file because\n* the components are lazy loaded*/\n#index a#back {\n  left: 0;\n}\n#index a#forward {\n  right: 0;\n}\n#index a#back, #index a#forward {\n  margin-top: .8rem;\n  position: absolute;\n}\n#index a#back i, #index a#forward i {\n    font-size: 1.76rem;\n}\n#index .forward, #index .back {\n  line-height: 2.4rem;\n  margin-top: -.2rem;\n  font-weight: bold;\n}\n@media (max-width: 990px) {\n#index a#back i, #index a#forward i {\n    font-size: 1.92rem;\n}\n}\n@media (max-width: 600px) {\n#index a#back, #index a#forward, #index [data-title=\"title\"] {\n    margin-top: -.3rem;\n    margin-bottom: .3rem;\n}\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f4889778\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/CustomerProfile.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.customer-profile {\n  position: relative;\n}\n.customer-profile th {\n    width: auto;\n    font-weight: normal;\n}\n.customer-profile td, .customer-profile .data {\n    font-size: 1.2rem;\n    font-weight: 500;\n}\n.customer-profile .design {\n    position: absolute;\n    top: 13rem;\n    bottom: 0;\n    left: 0;\n    width: 101%;\n    height: calc(100% - 8.1rem);\n    z-index: 0;\n    background: linear-gradient(45deg, #dedede 0%, #ffffff 100%);\n}\n.customer-profile .profile-picture, .customer-profile .no-image {\n    height: 16rem;\n    width: 16rem;\n    -webkit-box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);\n            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);\n}\n.customer-profile .no-image {\n    background-color: #e3e3e3;\n    border-radius: 50%;\n    line-height: 16rem;\n    text-align: center;\n    font-size: 8rem;\n    color: rgba(0, 0, 0, 0.15);\n}\n.customer-profile .img-border {\n    padding: 1.1rem;\n    background-color: white;\n    border-radius: 50%;\n}\n.customer-profile .separator {\n    position: absolute;\n    left: 50%;\n    height: 70%;\n    width: 1px;\n    background-color: rgba(0, 0, 0, 0.1);\n    top: 3%;\n}\n@media (max-width: 600px) {\n.customer-profile .design {\n    background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#ffffff));\n    background: linear-gradient(180deg, #dedede 0%, #ffffff 100%);\n}\n.customer-profile .separator {\n    top: -11%;\n}\n.customer-profile .small-center {\n    text-align: center;\n}\n.customer-profile th {\n    width: 35%;\n}\n.customer-profile tbody {\n    padding: 1rem 1rem 0;\n    float: left;\n}\n}\n", ""]);
-
-// exports
 
 
 /***/ }),
@@ -3494,7 +3463,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-07317a72\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-07317a72\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -4010,7 +3979,13 @@ var render = function() {
                                       ]),
                                       _vm._v(" "),
                                       _c("td", [
-                                        _vm._v(_vm._s(_vm.customerAddress))
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.$getCustomerAddress(
+                                              _vm.customer
+                                            )
+                                          )
+                                        )
                                       ])
                                     ])
                                   ])
@@ -4263,7 +4238,7 @@ var render = function() {
                                   [
                                     _c("label", [
                                       _vm._v(
-                                        "\n                                            2. Is the address/location same with what you have in the application form?\n                                        "
+                                        "\n                                            2. Is the address/location same with what you have in the application\n                                            form?\n                                        "
                                       )
                                     ]),
                                     _vm._v(" "),
@@ -4441,7 +4416,7 @@ var render = function() {
                                   [
                                     _c("label", [
                                       _vm._v(
-                                        "4. Look around the shop and check the nature and condition of the\n                                               business. Write down what you see in terms of address, stock value, premise, type of shop or business, sales etc."
+                                        "4. Look around the shop and check the nature and condition of the\n                                            business. Write down what you see in terms of address, stock value,\n                                            premise, type of shop or business, sales etc."
                                       )
                                     ]),
                                     _vm._v(" "),
@@ -4506,7 +4481,7 @@ var render = function() {
                                   [
                                     _c("label", [
                                       _vm._v(
-                                        "5. Get exact information of choice of product and specification by asking for\n                                               Example; what exact phone do you want? Let him/her specify e.g. INFINIX\n                                               SMART or HOT 4 IPHONE\n                                        "
+                                        "5. Get exact information of choice of product and specification by\n                                            asking for\n                                            Example; what exact phone do you want? Let him/her specify e.g. INFINIX\n                                            SMART or HOT 4 IPHONE\n                                        "
                                       )
                                     ]),
                                     _vm._v(" "),
@@ -4856,7 +4831,7 @@ var render = function() {
                                   [
                                     _c("label", [
                                       _vm._v(
-                                        "8. And how long has he/she been working/trading in that particular place?\n                                        "
+                                        "8. And how long has he/she been working/trading in that particular\n                                            place?\n                                        "
                                       )
                                     ]),
                                     _vm._v(" "),
@@ -5209,7 +5184,8 @@ var render = function() {
                                                                 "_relationship"
                                                             ]
                                                           )
-                                                        )
+                                                        ) +
+                                                          "\n                                        "
                                                       )
                                                     ])
                                                   : _c("td", [
@@ -13777,7 +13753,7 @@ var render = function() {
     "h4",
     {
       staticClass: "mx-md-3 mx-0 py-0 my-0 text-center clearfix",
-      attrs: { id: "index" }
+      attrs: { id: "app-navigation" }
     },
     [
       _vm.$routerHistory.hasPrevious()
@@ -13796,7 +13772,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "small",
-                  { staticClass: "back float-left ml-2 d-none d-sm-block" },
+                  { staticClass: "float-left ml-2 d-none d-sm-block" },
                   [_vm._v("Back")]
                 )
               ])
@@ -13837,7 +13813,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "small",
-                  { staticClass: "forward float-right mr-2 d-none d-sm-block" },
+                  { staticClass: "float-right mr-2 d-none d-sm-block" },
                   [_vm._v("Forward")]
                 )
               ])
@@ -13951,15 +13927,15 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
-      { class: _vm.$route.meta.mode === "full" ? "px-md-4 px-2" : "" },
+      { class: _vm.full && "px-md-4 px-2" },
       [
-        _vm.$route.meta.mode === "full"
+        _vm.full
           ? _c("app-navigation", {
               attrs: {
                 forward: { path: _vm.$routerHistory.next().path },
+                previous: { path: _vm.$routerHistory.previous().path },
                 pageTitle: "Customer Profile",
-                pageTitleSmall: "Customer Profile",
-                previous: { path: _vm.$routerHistory.previous().path }
+                pageTitleSmall: "Customer Profile"
               }
             })
           : _vm._e(),
@@ -14118,7 +14094,11 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("strong", [
                                     _vm._v(
-                                      _vm._s(_vm._f("capitalize")(_vm.name))
+                                      _vm._s(
+                                        _vm._f("capitalize")(
+                                          _vm.$getCustomerFullName(_vm.customer)
+                                        )
+                                      )
                                     )
                                   ])
                                 ]
@@ -14214,7 +14194,11 @@ var render = function() {
                                     _c("td", [
                                       _vm._v(
                                         _vm._s(
-                                          _vm._f("capitalize")(_vm.address)
+                                          _vm._f("capitalize")(
+                                            _vm.$getCustomerAddress(
+                                              _vm.customer
+                                            )
+                                          )
                                         ) + "\n                                "
                                       )
                                     ])
@@ -14250,7 +14234,7 @@ var render = function() {
                                           ? _vm.customer.user.full_name
                                           : "user not in record"
                                       )
-                                    )
+                                    ) + "\n                                "
                                   )
                                 ])
                               ]),
@@ -14277,10 +14261,8 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _vm.$route.meta.mode === "full"
-                  ? _c("div", { staticClass: "clearfix" }, [
-                      _c("div", [_vm._v("This is full profile!")])
-                    ])
+                _vm.full
+                  ? _c("div", [_vm._v("Full profile goes here")])
                   : _vm._e()
               ]
             )
@@ -14302,104 +14284,19 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-07317a72\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/verification/verification.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-07317a72\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/verification/verification.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("a7d0a87e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-07317a72\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./verification.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-07317a72\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./verification.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2f542aae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppNavigation.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2f542aae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppNavigation.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("25e038e4", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2f542aae\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppNavigation.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2f542aae\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppNavigation.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f4889778\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/CustomerProfile.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f4889778\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/CustomerProfile.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("5217bc1d", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f4889778\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CustomerProfile.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f4889778\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CustomerProfile.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
 /***/ "./resources/assets/js/components/AppNavigation.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2f542aae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppNavigation.vue")
-}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"utilities\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2f542aae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -14439,19 +14336,15 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f4889778\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/CustomerProfile.vue")
-}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"utilities\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/CustomerProfile.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/CustomerProfile.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-f4889778\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/CustomerProfile.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -14493,7 +14386,7 @@ module.exports = Component.exports
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"utilities\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImagePreview.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImagePreview.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue")
 /* template functional */
@@ -14541,7 +14434,7 @@ module.exports = Component.exports
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"utilities\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue")
 /* template functional */
@@ -14583,7 +14476,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/event-bus.js":
+/***/ "./resources/assets/js/utilities/event-bus.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14604,7 +14497,7 @@ var EventBus = exports.EventBus = new _vue2.default();
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/form.js":
+/***/ "./resources/assets/js/utilities/form.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14655,30 +14548,7 @@ function objectToFormData(obj, form, namespace) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/helpers.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-//cus stands for customer
-//ver stands for verification
-var getCustomerApprovalStatus = exports.getCustomerApprovalStatus = function getCustomerApprovalStatus(ver) {
-    return !!ver ? ver.address && ver.id_card && ver.passport && ver.processing_fee && ver.work_guarantor && ver.personal_guarantor : false;
-};
-var getCustomerFullName = exports.getCustomerFullName = function getCustomerFullName(cus) {
-    return cus.first_name + " " + cus.last_name;
-};
-var getCustomerAddress = exports.getCustomerAddress = function getCustomerAddress(cus) {
-    return cus.add_houseno + " " + cus.add_street + " " + cus.area_address + ", " + cus.city + ", " + cus.state + ".";
-};
-
-/***/ }),
-
-/***/ "./resources/assets/js/helpers/log.js":
+/***/ "./resources/assets/js/utilities/log.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14704,47 +14574,72 @@ function log(action, description) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/helpers/sms.js":
+/***/ "./resources/assets/js/utilities/sms.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-   value: true
+    value: true
 });
+exports.Message = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 
-exports.default = {
-   message: "",
-   welcome: function welcome(details) {
-      this.message = "Welcome to Altara credit. Please secure your login details. Staff ID: " + details.loginID + ", password: " + details.loginPassword;
-      this.send(details);
-   },
-   customerReg: function customerReg(details) {
-      this.message = "Dear " + details.first_name + " " + details.last_name + ", Welcome to Altara Credit Limited, You are hereby invited to our showroom at " + details.branch.description + " to learn more about our offerings. Pick up products now and pay later. We look forward to seeing you. For more info contact: " + details.branch.phone_yoruba + ". Your customer id is: " + details.id;
-      this.send({ phone: details.telephone.substr(1) });
-   },
-   passwordReset: function passwordReset(details) {
-      this.message = "Password reset successful! if your did not request for a new password kindly report back immediately, your staff ID is " + details.staff_id + ", new password: " + details.password;
-      this.send(details);
-   },
-   transfer: function transfer(details) {
-      this.message = "Transfer Successful, your new staff ID is " + details.loginID + " ";
-      this.send(details);
-   },
-   dvaMessage: function dvaMessage(details) {
-      this.message = details.message;
-      this.send(details);
-   },
-   send: function send(details) {
-      (0, _api.get)("/api/message/create?to=234" + details.phone + "&message=" + this.message).then(function (res) {
-         var data = JSON.parse(res.data);
-         if (data.messages[0].status.groupId === 1) console.log("sms sent successfully");
-      });
-   }
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Message = exports.Message = function () {
+    function Message(message, contacts) {
+        var logToDB = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        var userId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+        _classCallCheck(this, Message);
+
+        this.user_id = userId;
+        this.message = message;
+        this.logToDB = logToDB;
+        this.contacts = contacts.split(",").filter(function (e) {
+            return (/\S/.test(e)
+            );
+        }).map(function (contact) {
+            return '234' + contact.trim().substr(1);
+        }).join(',');
+        this.setPages();
+        this.setContactCount();
+    }
+
+    _createClass(Message, [{
+        key: "setContactCount",
+        value: function setContactCount() {
+            this.contact_count = this.contacts.split(',').length;
+        }
+    }, {
+        key: "setPages",
+        value: function setPages() {
+            this.pages = Math.ceil(this.message.length / 160);
+        }
+    }, {
+        key: "send",
+        value: function send(callback) {
+            var _this = this;
+
+            (0, _api.get)("/api/message/create?to=" + this.contacts + "&message=" + this.message).then(function (res) {
+                if (res.status === 200 && _this.logToDB) {
+                    delete _this.logToDB;
+                    (0, _api.post)('/api/message', _this);
+                }
+                return !!callback && callback(res);
+            }).catch(function (err) {
+                return !!callback && callback(err);
+            });
+        }
+    }]);
+
+    return Message;
+}();
 
 /***/ }),
 
@@ -14752,21 +14647,17 @@ exports.default = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-07317a72\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
-}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"utilities\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-07317a72\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-07317a72\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-07317a72"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -14806,7 +14697,7 @@ module.exports = Component.exports
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"utilities\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/shared/customerForm.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/shared/customerForm.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0ba4287c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/shared/customerForm.vue")
 /* template functional */

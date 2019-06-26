@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reminder extends Model
 {
-    protected $fillable = ["customer_id", "order_id", "sms_id", "repayment_level", "feedback", "dva_id", "type"];
+    protected $fillable = ["customer_id", "order_id", "sms_id", "repayment_level", "feedback", "dva_id", "type", "date"];
 
     public $timestamps = false;
 

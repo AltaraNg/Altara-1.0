@@ -1,73 +1,24 @@
 <template>
-    <div id="reminder">
-        <div class="mt-5 mb-3 attendance-head">
-            <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
-                <li class="col p-0 nav-item mb-0" v-for="(tab,index) in tabs">
-                    <a aria-selected="true" class="nav-link" :class="index === 0 && 'active'"
-                       data-toggle="tab" href="#reminder-panel" @click="fetchList(index+4)"
-                       role="tab" v-html="tab + ' Call'"></a>
-                </li>
-                <!--NB: the @click="fetchList(index+4) translates to
-                fetchList(4) fetchList(5) fetchList(6) fetchList(7) fetchList(8)
-                for the number of the elements in the tabs array ie. 6
-                this matches the list as a number that is sent to the backend to be
-                used to process the dates for a particular list "-->
-            </ul>
-        </div>
-
-        <div class="mt-5 mb-3 attendance-head">
-            <div class="row px-4 pt-3 pb-4 text-center">
-                <div class="col light-heading" v-for="header in headings">{{header}}</div>
-            </div>
-        </div>
-
-        <div class="tab-content mt-1 attendance-body" v-if="show && !!orders.length">
+    <div>
+        <div class="tab-content mt-1 attendance-body" v-if="show">
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
-                <div class="mb-3 row attendance-item" v-if="!!orders.length" v-for="(order, index) in orders">
-                    <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
-                        <span v-if="checkIfAlreadySentReminder(index)"
-                              @click="logReminder(index)"
-                              class="user mx-auto waiting-reminder">
-                            <i class="fas fa-hourglass-start"></i>
-                        </span>
-                        <span class="user mx-auto sent-reminder" v-else><i class="fas fa-check"></i></span>
-                        <span class="user mx-auto">{{index+1}}</span>
-                    </div>
-                    <div class="col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center"
-                         data-reminder-1="1">{{order.id}}
-                    </div>
-                    <div @click="displayDetails(order, 'purchase_order')"
-                         class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
-                         data-hoverable="true">
-                        {{order.order_date}}
-                    </div>
-                    <div @click="displayDetails(order,'customer_info')"
-                         class="col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center"
-                         data-hoverable="true">
-                        ID: {{order.customer.id}} - {{order.customer.employment_status | capitalize}}
-                    </div>
-                    <div @click="displayDetails(order, 'repayment')"
-                         class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
-                         data-hoverable="true">
-                        {{getFinancialStatus(order)}}
-                    </div>
-                    <div @click="displayDetails(order,'reminder_history')"
-                         class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
-                         data-hoverable="true">
-                        {{order.reminders.length}} reminder(s) sent
-                    </div>
-                    <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center">
-                        <textarea class="form-control" rows="1" v-model="reminder[index].feedback"
-                                  :disabled="!reminder[index].canBeSelected"></textarea>
-                    </div>
-                    <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center">
-                        <input class="form-control" type="date" v-model="promiseCalls[index].date"
-                               :disabled="!reminder[index].canBeSelected">
-                    </div>
-                </div>
+                <order-item
+                        v-for="(order,index) in orders"
+                        :key="order.id"
+                        :index="index"
+                        :order="order"
+                        :dva_id="dva_id"
+                        :is-repayment-valid="isRepaymentValid(order)"
+                        :get-count-and-repayment-data="getCountAndRepaymentData(order)"
+                        :pay-summary="calcPaymentSummary(order)"
+                        :repayment-level="getRepaymentLevel(order)"
+                        :mode="mode"
+                        @done="fetchList(list)"
+                        @updateReminderList="updateReminder"
+                        @display="displayDetails"/>
             </div>
+            <div class="w-100 my-5 mx-0 hr"></div>
         </div>
-
         <div class="tab-content mt-1 attendance-body" v-else>
             <div class="tab-pane active text-center">
                 <div class="mb-3 row attendance-item">
@@ -78,7 +29,15 @@
             </div>
         </div>
 
-        <div class="w-100 my-5 mx-0 hr"></div>
+        <div class="mt-1 attendance-body" v-if="show && mode === 'sms'">
+            <div class="mb-5 px-0 row align-items-center">
+                <div class="clearfix d-flex justify-content-end w-100">
+                    <button :disabled="$isProcessing" class="btn bg-default" @click="processSelected">
+                        Send Reminder(s) <i class="far fa-paper-plane ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <div class="modal fade" id="purchase_order">
             <div class="modal-dialog" role="document">
@@ -196,18 +155,14 @@
                                         (currentOrder.customer.personal_guarantor_relationship)}}
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <th>Personal guarantor phone</th>
                                     <td>{{currentOrder.customer.personal_guarantor_telno}}</td>
                                 </tr>
-
-
                                 <tr>
                                     <th>Verified by</th>
                                     <td>
-                                        <router-link class="text-link"
-                                                     target="_blank"
+                                        <router-link class="text-link" target="_blank"
                                                      :to="`/dva/verification?id=${currentOrder.customer.id}`">
                                             click here to see verifications status
                                         </router-link>
@@ -218,8 +173,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
-                           style="text-align: right">close dialogue</a>
+                        <a class="text-link mt-3 w-100 text-right" data-dismiss="modal" href="#">
+                            close dialogue
+                        </a>
                     </div>
                 </div>
             </div>
@@ -229,8 +185,9 @@
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content" v-if="showModalContent">
                     <div class="modal-header py-2">
-                        <h6 class="modal-title py-1">Repayment Plan/Summary - {{currentOrder.customer.employment_status
-                            | capitalize}}</h6>
+                        <h6 class="modal-title py-1">
+                            Repayment Plan/Summary - {{currentOrder.customer.employment_status | capitalize}}
+                        </h6>
                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
                             <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
                         </a>
@@ -277,24 +234,24 @@
                                 </tr>
                                 <tr>
                                     <th>Actual Amount Paid</th>
-                                    <td v-for="payment in getRepayment(currentOrder,'_pay')">{{$formatCurrency(payment)}}</td>
+                                    <td v-for="payment in getRepayment(currentOrder,'_pay')">
+                                        {{$formatCurrency(payment)}}
+                                    </td>
                                 </tr>
                                 <tr class="table-separator">
                                     <th>Payment Method</th>
                                     <td class="text-capitalize"
                                         v-for="repaymentMethod in getRepayment(currentOrder,'_payment_method')">
-                                        {{convertPaymentMethodOrBankToName(repaymentMethod, 'payment')}}
+                                        {{convertPaymentMethodOrBankToName(repaymentMethod, 'payment_methods')}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Bank</th>
                                     <td class="text-capitalize"
                                         v-for="repaymentBank in getRepayment(currentOrder,'_payment_bank')">
-                                        {{convertPaymentMethodOrBankToName(repaymentBank, 'bank')}}
+                                        {{convertPaymentMethodOrBankToName(repaymentBank, 'banks')}}
                                     </td>
                                 </tr>
-
-
                                 </tbody>
                             </table>
                             <h5 class="mt-5 mb-0">Payment Summary</h5>
@@ -311,15 +268,15 @@
                                     <td>Total Before Discount</td>
                                     <th>{{$formatCurrency(currentOrder["product_price"])}}</th>
                                     <td>Total Paid</td>
-                                    <th>{{$formatCurrency(getPaymentSummary(currentOrder).amountPaid)}}</th>
+                                    <th>{{paymentSummary.amountPaid}}</th>
                                 </tr>
                                 <tr>
                                     <td class="text-left">Discount Amount</td>
-                                    <th>{{$formatCurrency(getPaymentSummary(currentOrder).discountAmount)}}</th>
+                                    <th>{{paymentSummary.discountAmount}}</th>
                                     <td>Total After Discount</td>
-                                    <th>{{$formatCurrency(getPaymentSummary(currentOrder).discountedTotal)}}</th>
+                                    <th>{{paymentSummary.discountedTotal}}</th>
                                     <td>Total Debt</td>
-                                    <th>{{$formatCurrency(getPaymentSummary(currentOrder).outstandingDebt)}}</th>
+                                    <th>{{paymentSummary.outstandingDebt}}</th>
                                 </tr>
                                 <tr>
                                     <td class="text-left">Down Payment</td>
@@ -361,7 +318,7 @@
                                 <tbody>
                                 <tr v-for="(reminder, index) in currentOrder.reminders">
                                     <th>{{index+1}}</th>
-                                    <td>{{reminder.date}}</td>
+                                    <td>{{$dateTimeConvert(reminder.date)}}</td>
                                     <td>{{reminder.type}}</td>
                                     <td v-html="renderMessage(reminder)"></td>
                                     <td>{{reminder.user.full_name}}</td>
@@ -385,43 +342,35 @@
 
 <script>
     import Vue from 'vue';
-    import Flash from "../../../utilities/flash";
-    import {get, post} from "../../../utilities/api";
+    import Flash from "../utilities/flash";
+    import {Message} from "../utilities/sms";
+    import {get, post} from "../utilities/api";
+    import OrderItem from '../components/OrderItem';
 
     let url = to => `/api/reminder/create?list=${to.query.list}`;
 
     export default {
-        /*beforeRouteEnter(to, from, next) {
-            get(url({query: {list: 4}})).then(({data}) => {
-                next(vm => vm.prepareForm(data));
-            });
-        },
+        components: {OrderItem},
 
-        beforeRouteUpdate(to, from, next) {
-            this.show = false;
-            this.showModalContent = false;
-            get(url({query: {list: 4}})).then(({data}) => {
-                this.prepareForm(data);
-                next();
-            });
-        },*/
+        props: {list: '', mode: null},
+
+        watch: {
+            list: function (list) {
+                this.fetchList(list);
+            }
+        },
 
         data() {
             return {
-                list: 4,
                 orders: {},
                 show: false,
                 banks: null,
-                reminder: null,
+                reminder: [],
                 currentOrder: {},
-                promiseCalls: null,
+                paymentSummary: null,
                 payment_methods: null,
                 showModalContent: false,
-                isCurrentOrderInformal: null,
-                currentOrderRepaymentDates: null,
-                tabs: ["1<sup>st</sup>", "2<sup>nd</sup>", "3<sup>rd</sup>", "Guarantor's", "Promise"],
-                headings: ['Action', 'Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary',
-                    'Reminder History', 'Feedback', 'Promise Date']
+                isCurrentOrderInformal: null
             }
         },
 
@@ -429,182 +378,140 @@
             prepareForm(res) {
                 this.show = false;
                 this.showModalContent = false;
-                [this.orders, this.payment_methods, this.banks, this.dva_id] = [
-                    res.orders.filter(order => {
-                        let {count, repaymentData} = this.getCountAndRepaymentData(order);
-                        let hasMissedPayment = () => {
-                            if (this.list === 8) return true;
-                            let payDay,
-                                today = new Date(),
-                                isMonday = today.getDay() === 1, /*1 mean mondays*/
-                                accumulatedDays = isMonday ? 3 : 1,
-                                dayInterval,
-                                datePool = [];
+                this.banks = res.banks;
+                this.dva_id = res.dva_id;
+                this.payment_methods = res.payment_methods;
 
-                            //step 1.
-                            for (let i = 1; i < count; i++) {
-                                let column = this.getColumn(i);
-                                //step 2. get the first occurrence of a vacant pay
-                                if (!(!!repaymentData[column + "_pay"])) {
-                                    //step 3. find the corresponding due date for the vacant pay
-                                    payDay = this.generateDates({
-                                        startDate: order.order_date,
-                                        interval: count === 7 ? 28 : 14,
-                                        count: count - 1
-                                    })[i - 1];
-                                    break;
-                                }
+                this.orders = res.orders.filter(order => {
+
+                    let {count, repaymentData} = this.getCountAndRepaymentData(order);
+
+                    let hasMissedPayment = () => {
+                        /*for the list 1 and 8 return true i.e no need for has
+                        missed payment since it's obvious we are dealing with just one date
+                        * 1st list is for all the customers that picked today
+                        * 8th list is for all the promise calls all the promise call must be shown to */
+                        if ([8, 1].includes(this.list)) return true;
+
+                        let payDay,
+                            /*payDay holds the date
+                            of the first vacant repayment*/
+
+                            dayInterval,
+                            /*dayInterval the number of days before or after a certain
+                            repayment date. this varies according to collections app brief*/
+
+                            datePool = [],
+                            /*datePool hold an array of dates of length ranging from 1 to 3 in length
+                            * is the current date is monday the date-pool will include dates for
+                            * monday, sunday and saturday else it just hold the current date*/
+
+                            today = new Date(),
+
+                            isMonday = today.getDay() === 1,
+                            /*isMonday how a boolean value of whether
+                            the current date is monday or not*/
+
+                            accumulatedDays = isMonday ? 3 : 1;
+                        /*accumulatedDays hold 1 or 3,
+                        1 if the current date is not on a monday and
+                        3 if the current date is on a monday*/
+
+
+                        /*step 1::
+                        * the count is either 7 or 13,
+                        * the loop runs for 6 or 12 times*/
+                        for (let i = 1; i < count; i++) {
+
+                            /*get the resultant column 1st, 2nd, 3rd etc*/
+                            let column = this.$getColumn(i);
+
+                            /*step 2. get the first occurrence of a vacant pay eg. 5th_pay*/
+                            if (!repaymentData[column + "_pay"]) {
+
+                                /*step 3. find the corresponding due date for the vacant pay
+                                * The generateDates returns an array of the due
+                                dates for the order under consideration*/
+                                payDay = this.generateDates({
+                                    interval: count === 7 ? 28 : 14,
+                                    startDate: order.order_date,
+                                    count: count - 1
+                                })[i - 1];
+                                /*[i - 1] explained.
+                                * eg if the i = 5,
+                                * column = 5th_pay,
+                                * then the 4th ( [5-1] - this is the 5th element or 4th index, array is 0 indexed)
+                                * index of the resultant array is the pay day we are interested in*/
+                                break;
                             }
+                        }
 
-                            //step 4. check if the date is
-                            switch (this.list) {
-                                case 4:
-                                    //4a: same as today (for first call reminder due date = current date)
-                                    //return (this.getDateString(today) === payDay);
-                                    dayInterval = 0;
-                                    break;
-                                case 5:
-                                    //4a: same as today (for first call reminder due date = current date + 1 day)
-                                    //return (this.getDateString(today.addDays(-1)) === payDay);
-                                    dayInterval = 1;
-                                    break;
-                                case 6:
-                                    //4a: same as today (for first call reminder due date = current date + 7 days)
-                                    //return (this.getDateString(today.addDays(-7)) === payDay);
-                                    dayInterval = 5;//7;
-                                    break;
-                                case 7:
-                                    //4a: same as today (for first call reminder due date = current date + 28 days)
-                                    //return (this.getDateString(today.addDays(-28)) === payDay);
-                                    dayInterval = 31; //28;
-                                    break;
-                            }
+                        /*step 4. assign the appropriate intervals
+                        * NB:: This intervals where generated from the days
+                        * stipulated on the collections app brief note that the case
+                        * corresponds to the steps also indicated in the collections app brief*/
+                        switch (this.list) {
+                            case 2:
+                                dayInterval = 7;
+                                break;
+                            case 3:
+                                dayInterval = 3;
+                                break;
+                            case 4:
+                                dayInterval = 0;
+                                break;
+                            case 5:
+                                dayInterval = 1;
+                                break;
+                            case 6:
+                                dayInterval = 5;
+                                break;
+                            case 7:
+                                dayInterval = 31;
+                                break;
+                        }
 
-                            for (let p = 0; p < accumulatedDays; p++) {
-                                datePool.push(this.getDateString(today.addDays(-(p + dayInterval))))
-                            }
+                        if (this.mode === "call")
+                            for (let p = 0; p < accumulatedDays; p++)
+                                datePool.push(this.$getDate(today.addDays(-(p + dayInterval))));
 
-                            return datePool.includes(payDay);
-                        };
+                        if (this.mode === 'sms')
+                            for (let p = 0; p < accumulatedDays; p++)
+                                datePool.push(this.$getDate(today.addDays(p + dayInterval)));
 
-                        let isMyBranch = () => {
-                            if (this.$store.getters.auth('DVALead')) return true;
-                            return order.customer.branch.id === res.branch;
-                        };
+                        return datePool.includes(payDay);
+                    };
 
-                        return isMyBranch() && hasMissedPayment();
-                    }), res.payment_methods, res.banks, res.dva_id];
-                this.initializeReminders() && (this.show = true);
-            },
+                    let isMyBranch = () => {
+                        if (this.$store.getters.auth('DVALead')) return true;
+                        return order.customer.branch.id === res.branch;
+                    };
 
-            initializeReminders() {
-                this.reminder = [];
-                this.promiseCalls = [];
-                this.orders.forEach(order => {
-                    this.reminder.push({
-                        'customer_id': order.customer.id,
-                        'order_id': order.id,
-                        'repayment_level': this.getRepaymentLevel(order),
-                        'dva_id': this.dva_id,
-                        'type': 'call',
-                        'date': this.getDateString(),//double check this it might be unnecessary
-                        'canBeSelected': this.isReminderSent(order),
-                    });
-                    this.promiseCalls.push({
-                        order_id: order.id,
-                        user_id: this.dva_id,
-                        customer_id: order.customer.id,
-                        date: null,
-                    });
+                    return isMyBranch() && hasMissedPayment();
+
                 });
-                this.$LIPS(false);
-                return true;
-            },
 
-            displayErrorMessage(error) {
-                this.$scrollToTop();
-                Flash.setError(error, 50000);
+                !!this.orders.length && (this.show = true);
                 this.$LIPS(false);
             },
 
-            checkIfAlreadySentReminder(index) {
-                if (this.reminder.length > 0) {
-                    return this.reminder[index].canBeSelected;
-                }
-            },
-
-            isOrderFormal({repayment_informal}) {
-                return repayment_informal === null;
-            },
+            isOrderFormal: ({repayment_informal}) => repayment_informal === null,
 
             generateDates({startDate, interval, count}) {
                 let dates = [];
                 for (let i = 0; i < count; i++) {
                     let orderDate = (new Date(startDate)).addDays((i + 1) * interval);
-                    let dateString = this.getDateString(orderDate);
+                    let dateString = this.$getDate(orderDate);
                     dates.push(dateString);
                 }
                 return dates;
             },
 
-            getDateString(date = new Date(), monthStartsFromZero = true) {
-                return date.getFullYear() + '-' + (date.getMonth() + (monthStartsFromZero && 1)) + '-' + date.getDate();
-            },
-
-            isReminderSent(order) {
-                var value = true, date;
-                if (!!order) {
-                    if (order.reminders.length > 0) {
-                        let today = this.getDateString();
-                        order.reminders.forEach(reminder => {
-                            //refactor below by using regx characters to split
-                            let reminderDateTimeArr = reminder.date.split(' ');//(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
-                            let dateArr = reminderDateTimeArr[0].split('-');//'2019-03-24' -> ['2019','03','24']
-                            let timeArr = reminderDateTimeArr[1].split(':');//'02:00:00' -> ['02','00','00']
-                            let arr = [...dateArr, ...timeArr] // ['2019','03','24','02','00','00']
-                                .map(item => parseInt(item, 10)); //[2019,3,24,2,0,0]
-                            date = this.getDateString(new Date(Date.UTC(...arr)), false);
-                            date === today && (value = false);
-                        });
-                    }
-                }
-                return value;
-            },
-
-            renderMessage(reminder) {
-                return !!reminder['sms'] ?
-                    reminder.sms.message.replace(/%0a/g, '</br>')
-                    : 'call feedback: ' + reminder.feedback;
-            },
-
-            logReminder(index) {
-                let reminder = this.reminder[index];
-                delete reminder.order;
-                delete reminder.canBeSelected;
-                post('/api/reminder', {reminders: [reminder]}).then(({data}) =>
-                    data.saved ? this.logPromiseCall(this.promiseCalls[index])
-                        : this.displayErrorMessage('Error Logging reminders!')
-                );
-            },
-
-            logPromiseCall(promiseCall) {
-                if (!!promiseCall.date) {
-                    post('/api/promise_call', promiseCall).then(({data}) =>
-                        data.saved ? this.done("Reminder Logged!, Promise call added!")
-                            : this.displayErrorMessage('Error Logging promise call!')
-                    );
-                } else this.done("Reminder Logged!");
-            },
-
-            done(message) {
-                this.initializeReminders() && this.$scrollToTop();
-                Flash.setSuccess(message, 5000);
-                this.fetchList(this.list);
-            },
+            renderMessage: reminder =>
+                !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback,
 
             fetchList(list) {
                 this.$LIPS(true);
-                this.list = list;
                 get(url({query: {list}})).then(({data}) => {
                     if (list === 8) {
                         let orders = [];
@@ -615,38 +522,15 @@
                 });
             },
 
-            isPaymentDue(dueDate) {
-                return new Date() > new Date(dueDate);
-            },
+            isPaymentDue: dueDate => new Date() > new Date(dueDate),
 
-            getDiscount({discount}) {
-                return `${discount.name} (${discount.percentage_discount})`;
-            },
+            getDiscount: ({discount}) => `${discount.name} (${discount.percentage_discount})`,
 
-            isOrderRepaymentValid(order) {
-                return !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']);
-            },
-
-            getColumn(i) {
-                let column = null;
-                switch (i) {
-                    case 1:
-                        column = i + 'st';
-                        break;
-                    case 2:
-                        column = i + 'nd';
-                        break;
-                    case 3:
-                        column = i + 'rd';
-                        break;
-                    default:
-                        column = i + 'th';
-                        break;
-                }
-                return column;
-            },
+            isRepaymentValid: order =>
+                !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']),
 
             displayDetails(order, modal) {
+                this.paymentSummary = this.calcPaymentSummary(order);
                 Vue.set(this.$data, 'currentOrder', order);
                 this.isCurrentOrderInformal = !(['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()));
                 this.showModalContent = true;
@@ -654,46 +538,35 @@
             },
 
             getCountAndRepaymentData(order) {
-                let count = 0, repaymentData = null, {repayment_formal, repayment_informal} = order;
-                if (order['repayment_formal'] != null) {
-                    count = 7;
-                    repaymentData = repayment_formal;
-                }
-                if (order['repayment_informal'] != null) {
-                    count = 13;
-                    repaymentData = repayment_informal;
-                }
-                return {count, repaymentData};
+                let data = {};
+                if (order['repayment_formal'] != null) data = {count: 7, repaymentData: order.repayment_formal};
+                if (order['repayment_informal'] != null) data = {count: 13, repaymentData: order.repayment_informal};
+                return data;
             },
 
-            getPaymentSummary(order) {
-                let amountPaid = parseInt(order.down_payment),
-                    outstandingDebt = 0,
-                    {count, repaymentData} = this.getCountAndRepaymentData(order);
-                for (let i = 1; i < count; i++) amountPaid += repaymentData[this.getColumn(i) + '_pay'];
-                outstandingDebt = parseInt(order["product_price"]) - amountPaid;
-                var discountAmount = (order['discount']['percentage_discount'] / 100) * order["product_price"];
-                var discountedTotal = order["product_price"] - discountAmount;
-                return {amountPaid, outstandingDebt, discountAmount, discountedTotal};
-            },
-
-            getFinancialStatus(order) {
-                if (!this.isOrderRepaymentValid(order)) return 'no repayment detail';
-                let values = this.getPaymentSummary(order);
-                return 'Paid: ' + this.$formatCurrency(values.amountPaid) + ' | Debt: ' + this.$formatCurrency(values.outstandingDebt);
+            calcPaymentSummary(order) {
+                let fmt = cur => this.$formatCurrency(cur);
+                let amountPaid = parseInt(order.down_payment);
+                let {count, repaymentData} = this.getCountAndRepaymentData(order);
+                for (let i = 1; i < count; i++) amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
+                let discountAmount = (order['discount']['percentage_discount'] / 100) * order["product_price"];
+                return {
+                    amountPaid: fmt(amountPaid),
+                    discountAmount: fmt(discountAmount),
+                    outstandingDebt: fmt(parseInt(order["product_price"]) - amountPaid),
+                    discountedTotal: fmt(order["product_price"] - discountAmount)
+                };
             },
 
             getRepayment(order, clause = null) {
-                if (!this.isOrderRepaymentValid(order)) return null;
+                if (!this.isRepaymentValid(order)) return null;
                 let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order);
                 if (clause === null) {
-                    data = this.generateDates({
+                    return this.generateDates({
                         startDate: order.order_date,
                         interval: count === 7 ? 28 : 14,
                         count: count - 1
                     });
-                    this.currentOrderRepaymentDates = data;
-                    return data;
                 }
                 if (clause === 'repayments') {
                     let {repayment_amount} = order;
@@ -701,17 +574,17 @@
                         data.push(this.isCurrentOrderInformal ? repayment_amount : (repayment_amount * 2));
                     return data;
                 }
-                for (let i = 1; i < count; i++) data.push(repaymentData[this.getColumn(i) + clause]);
+                for (let i = 1; i < count; i++) data.push(repaymentData[this.$getColumn(i) + clause]);
                 return data;
             },
 
             getPaymentStatusClasses(order) {
-                if (!this.isOrderRepaymentValid(order)) return null;
+                if (!this.isRepaymentValid(order)) return null;
                 let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order),
                     dueDates = this.getRepayment(order);
                 for (let i = 1; i < count; i++) {
                     let status = {class: null, icon: null};
-                    let position = this.getColumn(i);
+                    let position = this.$getColumn(i);
                     let isDue = this.isPaymentDue(dueDates[i - 1]);
                     let amountPaid = parseInt(repaymentData[position + '_pay']);
                     if (amountPaid) {
@@ -730,48 +603,124 @@
             },
 
             getRepaymentLevel(order) {
-                if (!this.isOrderRepaymentValid(order)) return 0;
+                if (!this.isRepaymentValid(order)) return 0;
                 let level = 0, {count, repaymentData} = this.getCountAndRepaymentData(order);
-                for (let i = 1; i < count; i++) if (repaymentData[this.getColumn(i) + '_pay'] > 0) level++;
+                for (let i = 1; i < count; i++) if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
                 return level + "/" + (count - 1);
             },
 
             convertPaymentMethodOrBankToName(id, type) {
-                return (!id) ? null : this.$data[type === 'bank' ? 'banks' : 'payment_methods'].find(obj => obj.id === id).name;
+                return !id ? null : this.$data[type].find(obj => obj.id === id).name;
+            },
+
+            updateReminder(reminder, selected) {
+                if (!selected) {
+                    let index;
+                    this.reminder.forEach((obj, i) => obj.order_id === reminder.order_id && (index = i));
+                    this.reminder.splice(index, 1);
+                } else this.reminder.push(reminder);
+            },
+
+            processSelected() {
+                if (!this.reminder.length) {
+                    this.$displayErrorMessage('please select at least one!');
+                    return;
+                }
+                this.$LIPS(true);
+                let smsContactList = this.reminder
+                    .map(obj => {
+                        let newObject = JSON.parse(JSON.stringify(obj));
+                        newObject.order = this.orders.find(({id}) => id === obj.order_id);
+                        newObject.message = this.generateCustomMessage(newObject.order);
+                        return newObject;
+                    });
+                this.sendSMSReminders(smsContactList);
+            },
+
+            sendSMSReminders(smsContactList) {
+                let messages = [];
+                smsContactList.forEach((value, index) => {
+                    let sms = new Message(value.message, value.contacts, false, value.dva_id);
+                    sms.send(r => {
+                        if (r.status === 200) {
+                            delete sms.logToDB;
+                            messages.push(sms);
+                        }
+                        if ((index + 1) === smsContactList.length) this.logSentMessages(messages, smsContactList);
+                    });
+                });
+            },
+
+            logSentMessages(messages, smsContactList) {
+                if (!!messages) {
+                    post('/api/message', {messages, bulk: true}).then(({data}) => {
+                        let {sentAndLogged, ids} = data;
+                        if (sentAndLogged) this.logSentReminders(smsContactList, ids);
+                        else this.$displayErrorMessage('Error Logging sent sms details!');
+                    });
+                } else this.$displayErrorMessage('Error sending messages!');
+            },
+
+            logSentReminders(selectedList, ids) {
+                ids.reverse();
+                let newList = JSON.parse(JSON.stringify(selectedList));
+                newList.forEach((value, index) => {
+                    value.sms_id = ids[index];
+                    delete value.message;
+                    delete value.order;
+                    delete value.contacts;
+                    delete value.canBeSelected;
+                });
+                if (ids.length > 0) {
+                    post('/api/reminder', {reminders: newList}).then(({data}) => {
+                        if (data.saved) {
+                            Flash.setSuccess('Reminders have been sent successfully!', 50000);
+                            this.fetchList(this.list);
+                        } else this.$displayErrorMessage('Error sending reminders!');
+                        this.$scrollToTop();
+                    });
+                } else this.$displayErrorMessage('Error logging sent messages!');
+            },
+
+            generateCustomMessage(order) {
+                const {customer, store_product, order_date, product_price, repayment_amount} = order;
+                const {product_name} = store_product, {first_name, last_name} = customer;
+                let message;
+                let isFormal = this.isOrderFormal(order);
+                let genDateArgs = {};
+                if (isFormal) genDateArgs = {startDate: order_date, interval: 28, count: 6};
+                if (!isFormal) genDateArgs = {startDate: order_date, interval: 14, count: 12};
+                let dates = this.generateDates(genDateArgs);
+
+                let repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
+                if (this.list === 1) {
+                    message = `Hello ${first_name} ${last_name}, thanks for patronizing us.`
+                        + ` The following is the breakdown of the repayment plan for`
+                        + ` the purchase of ${product_name}:%0a`;
+                    if (dates.length > 0)
+                        dates.forEach((date, index) =>
+                            message += this.getColumn(index + 1) + ": " + date + " => " + this.$formatCurrency(repayment_amount) + "%0a");
+                } else {
+                    message = `Hello ${first_name} ${last_name}, This is to remind you that your`
+                        + ` ${this.$getColumn(parseInt(repaymentLevel) + 1)} repayment of ${this.$formatCurrency(product_price)} for ${product_name}`
+                        + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
+                }
+                return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
             },
         },
 
         mounted() {
-            this.fetchList(4);
+            this.fetchList(this.list);
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.currentOrder = null;
                 this.showModalContent = false;
             });
-
-            //this is linked to the function that generates dates
-            Date.prototype.addDays = function (days) {
-                var date = new Date(this.valueOf());
-                date.setDate(date.getDate() + days);
-                return date;
-            };
         },
     }
 </script>
 
 <style scoped type="scss">
-    .check-box-overlay {
-        height: 100%;
-        width: 100%;
-        float: left;
-        position: absolute;
-        z-index: 1;
-    }
-
     .table-separator {
         border-top: 2px solid #dee1e4;
-    }
-
-    .attendance-head .light-heading:nth-child(1) {
-        max-width: 120px;
     }
 </style>

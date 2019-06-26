@@ -21,6 +21,14 @@ Vue.filter('capitalize', s => {
 Vue.filter('slug', s => !s ? '' : s.replace(/ /g, '_').toLowerCase());
 
 
+/**custom add Date prototype**/
+Date.prototype.addDays = function (days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+};
+
+
 /**NB functions her can be accessed anywhere on the project(vue components)
  * by using this.$functionName the argument c stands for customer
  * i used c just to reduce file size**/
@@ -49,14 +57,12 @@ Vue.prototype.$scrollToTop = () => $("html, body").animate({scrollTop: 0}, 500);
 
 
 /**return the today's date - yyyy-mm-dd;**/
-Vue.prototype.$getDate = () => {
+Vue.prototype.$getDate = (date = new Date(), monthStartsFromZero = true) => {
     /**changes 2 to 02, 10 to 10**/
     const toTwoDigits = num => num < 10 ? '0' + num : num;
-    let today = new Date(),
-        year = today.getFullYear(),
-        month = toTwoDigits(today.getMonth() + 1),
-        day = toTwoDigits(today.getDate());
-    return `${year}-${month}-${day}`;
+    return `${date.getFullYear()}-`
+        + `${toTwoDigits((date.getMonth() + (monthStartsFromZero && 1)))}-`
+        + `${toTwoDigits(date.getDate())}`;
 };
 
 
@@ -73,10 +79,10 @@ Vue.prototype.$formatCurrency = price => !!price ? formatter.format(price) : pri
 
 
 /**throws custom error messages**/
-Vue.prototype.$networkErr = function (err = '') {
+Vue.prototype.$networkErr = function (err = '', duration = 30000, msg = null) {
     this.$scrollToTop();
     this.$LIPS(false);
-    let msg = 'No network access, try again later!';
+    if(!msg) msg = 'No network access, try again later!';
     if (err === 'form') msg = 'Please ensure all the fields are filled correctly!';
     if (err === 'page') {
         msg = 'You do not have access to that page!';
@@ -84,9 +90,12 @@ Vue.prototype.$networkErr = function (err = '') {
     }
     if (err === 'edit') msg = 'You do not have access to edit details because it is out of your jurisdiction!';
     if (err === 'unique') msg = 'Your details contains a unique field that already exists in our record change it and try again!';
-    Flash.setError(msg, 10000);
+    Flash.setError(msg, duration);
 };
 
+Vue.prototype.$displayErrorMessage = function (error) {
+    this.$networkErr(null, 50000, error)
+};
 
 /*** this function checks for app level branch Hence the call for list of branches is done
  * Once throughout the application lifecycle this is for memory optimization
@@ -122,6 +131,31 @@ Vue.prototype.$timeConvert = time => {
         return time.join(''); // return adjusted time or original string
     }
     return time;
+};
+
+Vue.prototype.$dateTimeConvert = function (dateTime) {
+    let [date, time] = dateTime.split(" ");
+    return date + "  " + this.$timeConvert(time);
+};
+
+
+Vue.prototype.$getColumn = (i) => {
+    let column = null;
+    switch (i) {
+        case 1:
+            column = i + 'st';
+            break;
+        case 2:
+            column = i + 'nd';
+            break;
+        case 3:
+            column = i + 'rd';
+            break;
+        default:
+            column = i + 'th';
+            break;
+    }
+    return column;
 };
 
 

@@ -1,6 +1,6 @@
 webpackJsonp([58],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14,17 +14,17 @@ var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+var _log = __webpack_require__("./resources/assets/js/utilities/log.js");
 
 var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
 
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var apiLink = function apiLink(query) {
-    return "/attendance?branch=" + query.branch + "&month=" + query.month + "&year=" + query.year;
-}; //
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
 //
 //
 //
@@ -188,269 +188,133 @@ var apiLink = function apiLink(query) {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+var init = function init(_ref) {
+    var b = _ref.branch;
+    return '/api/attendance/create' + (b ? '?branch=' + b : '');
+};
 
 exports.default = {
     data: function data() {
         return {
-            columns: {},
+            form: {},
+            mode: null,
             show: false,
-            currAttendance: {},
-            query: {
-                month: '',
-                branch: '',
-                year: ''
-            },
-            attendances: {}
+            today: '',
+            newDate: '',
+            submittedToday: '',
+            columns: ['Employee', 'ID', 'Date', 'Arr. Time', 'Dep. Time', 'Present?', 'Remark'],
+            branch: ''
         };
     },
-    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        //1. make request to back-end
-        if (to.query.branch) {
-            (0, _api.get)("/api" + apiLink(to.query)).then(function (res) {
-                //2 send to the method to prepare form
-                next(function (vm) {
-                    return vm.prepareForm(res.data);
-                });
-            }).catch(function (err) {
-                next(function (vm) {
-                    return vm.handleErr(err);
-                });
+    beforeRouteEnter: function beforeRouteEnter(_ref2, from, next) {
+        var q = _ref2.query;
+
+        (0, _api.get)(init(q)).then(function (_ref3) {
+            var data = _ref3.data;
+            return next(function (vm) {
+                return vm.prepareForm(data);
             });
-        } else next();
+        });
     },
-    beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    beforeRouteUpdate: function beforeRouteUpdate(_ref4, from, next) {
+        var q = _ref4.query;
+
         var _this = this;
 
         this.show = false;
-        //1. make request to back-end
-        if (to.query.branch) {
-            this.$LIPS(true);
-            (0, _api.get)("/api" + apiLink(to.query)).then(function (res) {
-                //2 send to the method to prepare form
-                _this.prepareForm(res.data);
-                next();
-            }).catch(function (err) {
-                _this.handleErr(err);
-                next();
-            });
-        } else next();
+        (0, _api.get)(init(q)).then(function (_ref5) {
+            var data = _ref5.data;
+
+            _this.prepareForm(data);
+            next();
+        });
     },
     created: function created() {
         this.$prepareBranches();
-        var q = this.$route.query,
-            dt = new Date(),
-            year = q.year ? q.year : dt.getFullYear(),
-            month = q.month ? q.month : dt.getMonth() + 1;
-        _vue2.default.set(this.$data.query, 'year', year);
-        _vue2.default.set(this.$data.query, 'month', month >= 10 || month.length === 2 ? month : '0' + month);
-        if (this.completeQry) _vue2.default.set(this.$data.query, 'branch', q.branch);
     },
 
-    /*updated() {
-        $('[data-toggle="tooltip"]').tooltip({boundary: 'window', html: true});
-    },*/
+
     methods: {
-        fetch: function fetch() {
+        prepareForm: function prepareForm(data) {
+            if (this.$store.getters.auth('peoplesOps') || !this.$route.query['branch']) {
+                this.mode = this.$route.meta.mode;
+                if (data.form.length) data.form.forEach(function (obj) {
+                    return obj['no_signout'] = false;
+                });
+                _vue2.default.set(this.$data, 'form', data.form);
+                _vue2.default.set(this.$data, 'today', data.today);
+                _vue2.default.set(this.$data, 'submittedToday', data.submittedToday);
+                this.show = !this.submittedToday;
+            } else {
+                _flash2.default.setError('You cannot create attendance for a branch other than yours', 5000);
+                this.$router.push({ path: '../home' });
+            }
+        },
+        onSave: function onSave() {
             var _this2 = this;
 
             this.$validator.validateAll().then(function (result) {
                 if (result) {
                     if (_this2.$network()) {
-                        _this2.$router.push("/hrm" + apiLink(_this2.query));
+                        _this2.$LIPS(true);
+                        _this2.form.forEach(function (obj) {
+                            return delete obj.no_signout;
+                        });
+                        (0, _api.post)('/api/attendance', { form: _this2.form }).then(function (_ref6) {
+                            var data = _ref6.data,
+                                id = _ref6.employee_id;
+
+                            if (data.saved || data.updated) {
+                                (0, _log.log)('Attendance ' + _this2.mode + 'd', '' + id);
+                                _flash2.default.setSuccess('Attendance Submitted successfully!', 3000);
+                                _this2.$router.push('/');
+                            }
+                        }).catch(function (e) {
+                            e = e.response;
+                            if (e.status === 422) _flash2.default.setError(e.data.message ? e.data.message : e.data);
+                        }).finally(function () {
+                            _this2.$LIPS(false);
+                            _this2.$scrollToTop();
+                        });
                     } else _this2.$networkErr();
                 } else _this2.$networkErr('form');
             });
         },
-        prepareForm: function prepareForm(data) {
-            if (data) {
-                _vue2.default.set(this.$data, 'columns', data.columns);
-                _vue2.default.set(this.$data, 'attendances', data.attendances);
-                _vue2.default.set(this.$data.query, 'branch', data.branch[0].id);
-                this.show = true;
-            }
-            this.$LIPS(false);
+        clearTime: function clearTime(index) {
+            var _ref7 = ['', ''];
+            this.form[index].arrival_time = _ref7[0];
+            this.form[index].departure_time = _ref7[1];
         },
-        handleErr: function handleErr(e) {
-            _flash2.default.setError('Error Fetching Attendance');
+        no_signout: function no_signout(index, e) {
+            _vue2.default.set(this.$data.form[index], 'departure_time', '');
+            _vue2.default.set(this.$data.form[index], 'remark', e ? '' : 'Did not sign out.');
         },
-        isPresent: function isPresent(userAtt, day) {
-            var bool = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+        fetchAttendanceByDate: function fetchAttendanceByDate() {
+            var _this3 = this;
 
-            var date = day ? day.fullDate : null,
-                data = null;
-            var c = userAtt.attendances.filter(function (att) {
-                return att.date === date;
-            });
-            if (c.length > 0) data = bool ? c[0][bool] : c[0].is_present ? 'P' : 'A';
-            return data;
-        },
-        earlyOrLate: function earlyOrLate(userAtt, day) {
-            var data = [];
-            var attendance = userAtt.attendances.filter(function (att) {
-                return att.date === day.fullDate;
-            });
-            if (attendance.length) {
-                /*if (attendance[0].arrival_time > '09:00') {
-                    data[0] = 'arrLate';
-                } else {
-                    data[0] = 'arrEarly';
-                }*/
-
-                data[0] = attendance[0].arrival_time > '09:00' ? 'arrLate' : 'arrEarly';
-
-                if (attendance[0].departure_time) {
-                    /*if (attendance[0].departure_time < '18:00') {
-                        data[1] = 'leftEarly'
-                    } else {
-                        data[1] = 'leftLate'
-                    }*/
-
-                    data[1] = attendance[0].departure_time < '18:00' ? 'leftEarly' : 'leftLate';
-                } else data[1] = 'didNotSignOut';
-            }
-            return data;
-        },
-        checkClass: function checkClass(userAtt, day) {
-            var theClass = void 0,
-                isPresent = this.isPresent(userAtt, day);
-            var erl = this.earlyOrLate(userAtt, day);
-            if (['Sun', 'Sat'].includes(day.dayString)) {
-                theClass = 'weekend';
-            } else {
-                //arrEarly arrLate leftEarly leftLate
-                if (isPresent === 'P') {
-                    //theClass = 'present';
-                    if (erl.length) {
-                        theClass = erl.join(' ');
-                    }
-                } else {
-                    if (isPresent === 'A') {
-                        theClass = 'absent';
-                    } else {
-                        theClass = '';
-                    }
-                }
-            }
-            return theClass;
-        },
-
-
-        /*getRemark(userAtt, day) {
-            let att = userAtt.attendances.find(obj => obj.date === day.fullDate);
-            return att ? `${att.remark ? 'Remark: <b class="text_align-left">' + att.remark + '</b><br>' : ''}` : ``;
-        },*/
-
-        /*getTitle(userAtt, day) {
-            let arrival, departure, aTime, aTimeCon, dTime, dTimeCon, status, isPresent, remark;
-            aTime = this.isPresent(userAtt, day, 'arrival_time');
-            dTime = this.isPresent(userAtt, day, 'departure_time');
-            isPresent = this.isPresent(userAtt, day, 'is_present');
-            remark = this.getRemark(userAtt, day);
-            aTimeCon = this.$timeConvert(aTime);
-            dTimeCon = this.$timeConvert(dTime);
-            status = isPresent ? `Present<br>` : ``;
-            arrival = aTime ? `Arrival Time : ${aTimeCon}<br>` : ``;
-            departure = dTime ? `Departure Time: ${dTimeCon}<br>` : ``;
-            return arrival || remark ? `${arrival} ${departure} ${status} ${remark}` : null;
-        },*/
-
-        toggleGuide: function toggleGuide() {
-            $('#table-guide').slideToggle();
-        },
-        displayInfo: function displayInfo(userAtt, day) {
-            var date = day ? day.fullDate : null,
-                c = void 0;
-            c = userAtt.attendances.filter(function (att) {
-                return att.date === date;
-            });
-            _vue2.default.set(this.$data, 'currAttendance', c[0] ? c[0] : null);
-            return $("#viewAttendance").modal('toggle');
+            if (this.newDate) {
+                var newDate = new Date(this.newDate);
+                var today = new Date();
+                if (newDate < today) {
+                    newDate = newDate.toDateString().split(' ');
+                    newDate.shift();
+                    this.form.forEach(function (obj) {
+                        return obj.date = _this3.newDate;
+                    });
+                    this.submittedToday = false;
+                    this.show = true;
+                    this.today = [].concat(_toConsumableArray(newDate)).join(' ');
+                } else _flash2.default.setError('Sorry you cannot create attendance for a feature date!', 2000);
+            } else _flash2.default.setError('Select date to continue!', 2000);
+            this.$scrollToTop();
         }
-    },
-    computed: {
-        completeQry: function completeQry() {
-            return this.$route.query.year && this.$route.query.month && this.$route.query.branch;
-        },
-        title: function title() {
-            var att = 'Attendance';
-            if (this.completeQry) {
-                var qryMonth = this.$route.query.month,
-                    qryYear = this.$route.query.year;
-                var month = qryMonth ? ' - ' + this.$store.getters.getMonths[parseInt(qryMonth) - 1].name : '';
-                att += " " + month + " " + (qryYear ? qryYear : '');
-            }
-            return att;
-        }
-    },
-    mounted: function mounted() {
-        var _this3 = this;
-
-        $(document).on("hidden.bs.modal", '.modal', function () {
-            return _this3.currAttendance = {};
-        });
-        this.toggleGuide();
     }
 };
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#table-guide td {\n    width        : 6rem;\n    text-align   : center;\n    height       : unset;\n    float        : left;\n    margin-right : 1rem;\n}\n#table-guide td span {\n    margin-bottom : 1rem;\n    line-height   : 2;\n    float         : left;\n    width         : 100%;\n}\n#table-guide > div > div {\n    padding : 0 4rem 3rem;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-92afc2ae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6defbd3d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -461,514 +325,710 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "pt-md-3 pt-2 attendance attendance-view",
+        staticClass: "pt-md-3 pt-2 attendance attendance-create",
         attrs: { id: "index" }
       },
       [
         _c("div", { staticClass: "mt-5 attendance-head" }, [
-          _c("div", { staticClass: "mb-5 row align-items-center" }, [
+          _c("div", { staticClass: "mb-5 row" }, [
             _c("div", { staticClass: "col-12 title-con" }, [
-              _c("span", { staticClass: "title" }, [_vm._v(_vm._s(_vm.title))]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-end" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-link mt-3",
-                    attrs: { href: "javascript:" },
-                    on: {
-                      click: function($event) {
-                        _vm.$router.push("attendance/create")
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                            click here to create attendance!"
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("span", { staticClass: "mx-4 mt-3" }, [_vm._v("||")]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "text-link mt-3",
-                    attrs: { href: "javascript:" },
-                    on: { click: _vm.toggleGuide }
-                  },
-                  [_vm._v("\n                            view table guide!")]
+              _c("span", { staticClass: "title" }, [
+                _vm._v(
+                  _vm._s(_vm._f("capitalize")("attendance for " + _vm.today))
                 )
-              ])
+              ]),
+              _vm._v(" "),
+              _vm.$store.getters.auth("peoplesOps")
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "row justify-content-end align-items-center"
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "text-link pr-4 text-capitalize",
+                          attrs: { href: "javascript:" },
+                          on: {
+                            click: function($event) {
+                              _vm.$router.push(
+                                "" + (_vm.branch ? "?branch=" + _vm.branch : "")
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            get attendance list for :\n                        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.branch,
+                              expression: "branch"
+                            }
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.branch = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            {
+                              attrs: { disabled: "", selected: "", value: "" }
+                            },
+                            [_vm._v("branch")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.$store.getters.getBranches, function(
+                            branch
+                          ) {
+                            return _c(
+                              "option",
+                              { domProps: { value: branch.id } },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(_vm._f("capitalize")(branch.name)) +
+                                    "\n                            "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  )
+                : _vm._e()
             ])
           ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "attendance-body", attrs: { id: "table-guide" } },
-          [
+        _c("div", { staticClass: "mt-5 attendance-head" }, [
+          _c("div", { staticClass: "row px-5 pt-3 pb-4" }, [
+            _c("div", { staticClass: "col-10 col-xs-3 col-md-3 col-lg-3" }, [
+              _c("div", { staticClass: "row align-items-center" }, [
+                _c("div", { staticClass: "mx-5 col-1 p-0 sm-hide" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col pl-4 ml-1 ml-xs-0 pl-xs-3" }, [
+                  _c("span", { staticClass: "user-name light-heading" }, [
+                    _vm._v(_vm._s(_vm.columns[0]))
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-2 light-heading" }, [
+              _vm._v(_vm._s(_vm.columns[1]))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-12 col-xs-3 col-md-3 col-lg-3" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col light-heading pr-1 pr-lg-4" }, [
+                  _vm._v(_vm._s(_vm.columns[3]))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col light-heading pl-1 pl-lg-4" }, [
+                  _vm._v(_vm._s(_vm.columns[4]))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
             _c(
               "div",
               {
-                staticClass: "pt-5 row bg-white shadow-sm",
-                staticStyle: { "border-radius": ".5rem" }
+                staticClass:
+                  "col-6 col-xs-2 col-md-2 col-lg-2 px-0 px-lg-4 light-heading"
               },
-              [
-                _c("div", [
-                  _c("td", { staticClass: "arrEarly leftLate" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [
-                    _vm._v("In before/at 9:00am "),
-                    _c("br"),
-                    _vm._v(" Out after/at 6:00pm")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("td", { staticClass: "arrEarly leftEarly" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [
-                    _vm._v("In before/at 9:00am  "),
-                    _c("br"),
-                    _vm._v(" Out Before 6:00pm")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("td", { staticClass: "arrLate leftLate" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "d-inline-block" }, [
-                    _vm._v("In after 9:00am  "),
-                    _c("br"),
-                    _vm._v(" Out after/at 6:00pm")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("td", { staticClass: "arrLate leftEarly" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "d-inline-block" }, [
-                    _vm._v("In after 9:00am  "),
-                    _c("br"),
-                    _vm._v(" Out before 6:00pm")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("td", { staticClass: "absent" }, [
-                    _c("span", [_vm._v("A")])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("Absent")])
-                ])
-              ]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "mt-5 row attendance-head" },
-          _vm._l(["Branch", "Month", "Year"], function(capt) {
-            return _c("div", { staticClass: "col-4 col-sm-3" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "light-heading" }, [
-                  _c("span", { staticClass: "d-none d-sm-inline" }, [
-                    _vm._v("Select")
-                  ]),
-                  _vm._v(" " + _vm._s(capt))
-                ])
-              ])
-            ])
-          })
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "mt-2 mt-lg-3 row attendance-head" },
-          [
-            _vm._l(["branch", "month", "year"], function(caption) {
-              return _c("div", { staticClass: "col-4 col-sm-3" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.query[caption],
-                          expression: "query[caption]"
-                        },
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      staticClass: "custom-select",
-                      attrs: { name: caption, "data-vv-validate-on": "blur" },
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.query,
-                            caption,
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        }
-                      }
-                    },
-                    [
-                      _c(
-                        "option",
-                        { attrs: { disabled: "", selected: "", value: "" } },
-                        [_vm._v(_vm._s(caption))]
-                      ),
-                      _vm._v(" "),
-                      _vm._l(_vm.$store.getters.getBranches, function(branch) {
-                        return caption === "branch"
-                          ? _c("option", { domProps: { value: branch.id } }, [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(_vm._f("capitalize")(branch.name)) +
-                                  "\n                        "
-                              )
-                            ])
-                          : _vm._e()
-                      }),
-                      _vm._v(" "),
-                      _vm._l(_vm.$store.getters.getMonths, function(month) {
-                        return caption === "month"
-                          ? _c("option", { domProps: { value: month.id } }, [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(month.name) +
-                                  "\n                        "
-                              )
-                            ])
-                          : _vm._e()
-                      }),
-                      _vm._v(" "),
-                      _vm._l(_vm.$store.getters.getYears, function(year) {
-                        return caption === "year"
-                          ? _c("option", { domProps: { value: year } }, [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(year) +
-                                  "\n                        "
-                              )
-                            ])
-                          : _vm._e()
-                      })
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _vm.errors.first(caption)
-                    ? _c("small", { staticClass: "text-muted" }, [
-                        _vm._v(_vm._s(_vm.errors.first(caption)))
-                      ])
-                    : _vm._e()
-                ])
-              ])
-            }),
+              [_vm._v(_vm._s(_vm.columns[5]))]
+            ),
             _vm._v(" "),
-            _c("div", { staticClass: "col-12 col-sm-3" }, [
-              _c("div", { staticClass: "row d-flex justify-content-end" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary bg-default mt-0 myBtn",
-                    on: {
-                      click: function($event) {
-                        _vm.fetch()
-                      }
-                    }
-                  },
-                  [_vm._v("View Attendance")]
-                )
-              ])
-            ])
-          ],
-          2
-        ),
+            _c(
+              "div",
+              { staticClass: "col-6 col-xs-2 col-md-2 col-lg-2 light-heading" },
+              [_vm._v(_vm._s(_vm.columns[6]))]
+            )
+          ])
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "attendance-body" }, [
+        _c("div", { staticClass: "mt-1 attendance-body" }, [
           _vm.show
-            ? _c("div", { staticClass: "mt-5 row" }, [
-                _c("div", { staticClass: "card" }, [
-                  _c("div", { staticClass: "image-and-names float-left" }, [
-                    _c("table", { staticClass: "table table-names" }, [
-                      _c("thead", [
-                        _c("tr", [
-                          _c("th", { staticClass: "ml-5" }, [
-                            _vm._v("Employee Name")
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(_vm.attendances, function(user) {
-                          return _c("tr", [
-                            _c("td", [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "row align-items-center m-0 user-details"
-                                },
-                                [
-                                  _c("span", { staticClass: "user mx-auto" }, [
-                                    _c("i", {
-                                      staticClass: "user-icon fas fa-user-alt"
-                                    })
+            ? _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.onSave($event)
+                    }
+                  }
+                },
+                [
+                  _vm._l(_vm.form, function(user, index) {
+                    return _c(
+                      "div",
+                      {
+                        staticClass:
+                          "mb-3 px-4 row align-items-center attendance-item"
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-12 col-xs-3 col-md-3 col-lg-3 pt-2 pb-3 p-xs-0"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "row align-items-center" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "ml-5 mr-3 sm-hide" },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "user mx-auto" },
+                                      [
+                                        _c("i", {
+                                          staticClass:
+                                            "user-icon fas fa-user-alt"
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _c("span", { staticClass: "user-name" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm._f("capitalize")(
+                                          user.user.full_name
+                                        )
+                                      )
+                                    )
                                   ]),
                                   _vm._v(" "),
-                                  _c("div", { staticClass: " col user-name" }, [
-                                    _vm._v(_vm._s("" + user.full_name))
-                                  ])
-                                ]
-                              )
-                            ])
-                          ])
-                        })
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "float-left daily-attendance" }, [
-                    _c(
-                      "table",
-                      { staticClass: "table table-details table-bordered" },
-                      [
-                        _c("thead", [
-                          _c(
-                            "tr",
-                            _vm._l(_vm.columns, function(col) {
-                              return _c("th", { staticClass: "text-center" }, [
-                                _c("span", [
-                                  _vm._v(_vm._s(col.month + " " + col.date))
-                                ]),
-                                _c("br"),
-                                _c(
-                                  "span",
-                                  { staticClass: "light-heading day" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s("" + col.dayString) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              ])
-                            })
-                          )
-                        ]),
+                                  _c(
+                                    "span",
+                                    { staticClass: "sm-show staff_id-sm" },
+                                    [
+                                      _vm._v(
+                                        "\n                                    - " +
+                                          _vm._s(user.user.staff_id) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
-                          "tbody",
-                          _vm._l(_vm.attendances, function(userAtt) {
-                            return _c(
-                              "tr",
-                              _vm._l(_vm.columns, function(day) {
-                                return _c(
-                                  "td",
-                                  {
-                                    class: _vm.checkClass(userAtt, day),
+                          "div",
+                          {
+                            staticClass:
+                              "col-12 col-xs-2 col-md-2 col-lg-2 sm-hide"
+                          },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(user.user.staff_id) +
+                                "\n                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-12 col-xs-3 col-md-3 col-lg-3" },
+                          [
+                            _c("div", { staticClass: "row" }, [
+                              _c(
+                                "div",
+                                { staticClass: "col pr-3 pr-sm-1 pr-lg-4" },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.form[index].arrival_time,
+                                        expression: "form[index].arrival_time"
+                                      },
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      disabled:
+                                        _vm.form[index].is_present === "0",
+                                      name: "arrival_time_" + index,
+                                      type: "time"
+                                    },
+                                    domProps: {
+                                      value: _vm.form[index].arrival_time
+                                    },
                                     on: {
-                                      click: function($event) {
-                                        _vm.displayInfo(userAtt, day)
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.form[index],
+                                          "arrival_time",
+                                          $event.target.value
+                                        )
                                       }
                                     }
-                                  },
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "col pl-3 pl-sm-1 pl-lg-4" },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.form[index].departure_time,
+                                        expression: "form[index].departure_time"
+                                      },
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      disabled:
+                                        _vm.form[index].is_present === "0" ||
+                                        _vm.form[index].no_signout,
+                                      name: "departure_time_" + index,
+                                      type: "time"
+                                    },
+                                    domProps: {
+                                      value: _vm.form[index].departure_time
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.form[index],
+                                          "departure_time",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "mr-5" }, [
+                                _c("div", { staticClass: "form-check" }, [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.form[index].no_signout,
+                                        expression: "form[index].no_signout"
+                                      }
+                                    ],
+                                    staticClass: "form-check-input mt-3 ml-2",
+                                    attrs: {
+                                      disabled:
+                                        _vm.form[index].is_present === "0",
+                                      id: "exampleCheck1",
+                                      type: "checkbox",
+                                      value: "true"
+                                    },
+                                    domProps: {
+                                      checked: Array.isArray(
+                                        _vm.form[index].no_signout
+                                      )
+                                        ? _vm._i(
+                                            _vm.form[index].no_signout,
+                                            "true"
+                                          ) > -1
+                                        : _vm.form[index].no_signout
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.no_signout(
+                                          index,
+                                          _vm.form[index].no_signout
+                                        )
+                                      },
+                                      change: function($event) {
+                                        var $$a = _vm.form[index].no_signout,
+                                          $$el = $event.target,
+                                          $$c = $$el.checked ? true : false
+                                        if (Array.isArray($$a)) {
+                                          var $$v = "true",
+                                            $$i = _vm._i($$a, $$v)
+                                          if ($$el.checked) {
+                                            $$i < 0 &&
+                                              _vm.$set(
+                                                _vm.form[index],
+                                                "no_signout",
+                                                $$a.concat([$$v])
+                                              )
+                                          } else {
+                                            $$i > -1 &&
+                                              _vm.$set(
+                                                _vm.form[index],
+                                                "no_signout",
+                                                $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1))
+                                              )
+                                          }
+                                        } else {
+                                          _vm.$set(
+                                            _vm.form[index],
+                                            "no_signout",
+                                            $$c
+                                          )
+                                        }
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", {
+                                    staticClass: "form-check-label",
+                                    attrs: { for: "exampleCheck1" }
+                                  })
+                                ])
+                              ])
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-6 col-xs-2 col-md-2 col-lg-2 pr-3 py-4 py-sm-0 px-sm-0 px-lg-4"
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "clearfix",
+                                class:
+                                  _vm.form[index].is_present === "0"
+                                    ? "absent"
+                                    : "present"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "radio w-50 pr-3 float-left" },
                                   [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(_vm.isPresent(userAtt, day)) +
-                                        "\n                                "
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.form[index].is_present,
+                                          expression: "form[index].is_present"
+                                        },
+                                        {
+                                          name: "validate",
+                                          rawName: "v-validate",
+                                          value: "required",
+                                          expression: "'required'"
+                                        }
+                                      ],
+                                      attrs: {
+                                        id: "yes_" + index,
+                                        name: "status_" + index,
+                                        type: "radio",
+                                        value: "1"
+                                      },
+                                      domProps: {
+                                        checked: _vm._q(
+                                          _vm.form[index].is_present,
+                                          "1"
+                                        )
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          _vm.$set(
+                                            _vm.form[index],
+                                            "is_present",
+                                            "1"
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "yes_" + index } },
+                                      [_vm._v("yes")]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "radio w-50 pl-3 float-left" },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.form[index].is_present,
+                                          expression: "form[index].is_present"
+                                        }
+                                      ],
+                                      attrs: {
+                                        id: "no_" + index,
+                                        name: "status_" + index,
+                                        type: "radio",
+                                        value: "0"
+                                      },
+                                      domProps: {
+                                        checked: _vm._q(
+                                          _vm.form[index].is_present,
+                                          "0"
+                                        )
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.clearTime(index)
+                                        },
+                                        change: function($event) {
+                                          _vm.$set(
+                                            _vm.form[index],
+                                            "is_present",
+                                            "0"
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "no_" + index } },
+                                      [_vm._v("no")]
                                     )
                                   ]
                                 )
-                              })
+                              ]
                             )
-                          })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-6 col-xs-2 col-md-2 col-lg-2 pl-3 py-4 py-sm-0"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form[index].remark,
+                                  expression: "form[index].remark"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: {
+                                    required: _vm.form[index].is_present == 0
+                                  },
+                                  expression:
+                                    "{ required: form[index].is_present == 0 }"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                disabled: _vm.form[index].no_signout,
+                                name: "remark_" + index,
+                                type: "text"
+                              },
+                              domProps: { value: _vm.form[index].remark },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form[index],
+                                    "remark",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]
                         )
                       ]
                     )
-                  ])
-                ])
-              ])
-            : _c("div", { staticClass: "row attendance-item p-5 my-5" }, [
-                _c("span", { staticClass: "no-attendance" }, [
-                  _vm._v(
-                    "Kindly Select Branch, Month and, Year to get started!"
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "mb-5 px-0 row align-items-center" },
+                    [
+                      _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "clearfix d-flex justify-content-end w-100"
+                        },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn bg-default",
+                              attrs: {
+                                disabled: _vm.$isProcessing,
+                                type: "submit"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm._f("capitalize")(_vm.mode)) +
+                                  " Attendance "
+                              ),
+                              _c("i", {
+                                staticClass: "far fa-paper-plane ml-1"
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]
                   )
+                ],
+                2
+              )
+            : _c("div", { staticClass: "row attendance-item p-5 mb-5" }, [
+                _c("span", { staticClass: "no-attendance" }, [
+                  _vm._v("You have already submitted attendance for today!")
                 ])
               ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "modal fade", attrs: { id: "viewAttendance" } },
-          [
-            _c(
-              "div",
-              { staticClass: "modal-dialog", attrs: { role: "document" } },
-              [
-                _c("div", { staticClass: "modal-content" }, [
-                  _c("div", { staticClass: "modal-header py-2" }, [
-                    _c("h6", { staticClass: "modal-title py-1" }, [
-                      _vm._v("Attendance")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "close py-1",
-                        attrs: {
-                          "aria-label": "Close",
-                          "data-dismiss": "modal"
-                        }
-                      },
-                      [
-                        _c(
-                          "span",
-                          {
-                            staticClass: "modal-close text-danger",
-                            attrs: { "aria-hidden": "true" }
-                          },
-                          [_c("i", { staticClass: "fas fa-times" })]
-                        )
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("form", [
-                    _c("div", { staticClass: "modal-body" }, [
-                      _vm.currAttendance
-                        ? _c("div", { staticClass: "px-2" }, [
-                            _c("div", { staticClass: "px-4" }, [
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [
-                                  _c("strong", [_vm._v("Status : ")])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.currAttendance.is_present
-                                        ? "Present"
-                                        : "Absent"
-                                    )
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [
-                                  _c("strong", [_vm._v("Arrival Time : ")])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.$timeConvert(
-                                        _vm.currAttendance.arrival_time
-                                      )
-                                    )
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [
-                                  _c("strong", [_vm._v("Departure time : ")])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.$timeConvert(
-                                        _vm.currAttendance.departure_time
-                                      )
-                                    )
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [_c("strong", [_vm._v("Date : ")])]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(_vm._s(_vm.currAttendance.date))
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("span", [
-                                  _c("strong", [_vm._v("Remark : ")])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col" }, [
-                                  _vm._v(_vm._s(_vm.currAttendance.remark))
-                                ])
-                              ])
-                            ])
-                          ])
-                        : _c("div", { staticClass: "px-2" }, [
-                            _c("div", { staticClass: "px-4 row" }, [
-                              _c("span", [_c("strong", [_vm._v("Status : ")])]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "col" }, [
-                                _vm._v("No Attendance")
-                              ])
-                            ])
-                          ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "modal-footer" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "text-link mt-3 w-100",
-                          staticStyle: { "text-align": "right" },
-                          attrs: {
-                            "data-dismiss": "modal",
-                            href: "javascript:"
-                          }
-                        },
-                        [_vm._v("close dialogue")]
-                      )
-                    ])
-                  ])
+        _c("div", { staticClass: "mt-5 attendance-head" }, [
+          _c("div", { staticClass: "w-100 my-5 mx-0 hr" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "pt-3 pb-4 align-items-center" }, [
+            _c("div", { staticClass: "light-heading d-flex" }, [
+              _c("div", { staticClass: "float-left align-self-center" }, [
+                _vm._v(
+                  "\n                        To fill attendance for a past date kindly select the date and click get attendance list.\n                        "
+                ),
+                _c("span", { staticClass: "mx-5" }, [
+                  _vm._v(
+                    "\n                            ||\n                        "
+                  )
                 ])
-              ]
-            )
-          ]
-        )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "float-left align-self-center",
+                  on: {
+                    click: function($event) {
+                      _vm.fetchAttendanceByDate()
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "text-link text-capitalize",
+                      attrs: { href: "javascript:" }
+                    },
+                    [
+                      _vm._v(
+                        "get attendance list for\n                            "
+                      ),
+                      _c("strong", [_vm._v("Date")]),
+                      _vm._v(" : ")
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "float-left align-self-center ml-3" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newDate,
+                      expression: "newDate"
+                    }
+                  ],
+                  staticClass: "form-control float-left",
+                  attrs: { type: "date" },
+                  domProps: { value: _vm.newDate },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newDate = $event.target.value
+                    }
+                  }
+                })
+              ])
+            ])
+          ])
+        ])
       ]
     )
   ])
@@ -979,56 +1039,51 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-92afc2ae", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6defbd3d", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ "./resources/assets/js/utilities/log.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
+"use strict";
 
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3dab5bf4", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.log = log;
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+function log(action, description) {
+    /*actions is the action performed
+    * description is reference of the data the action was taken on*/
+    action = action.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
+        return str.toUpperCase();
+    });
+    //formats and capitalize the action performed
+    (0, _api.post)('/api/log', { action: action, description: description });
+    //and logs then on the log table;
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ "./resources/assets/js/views/FSL/attendance/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-92afc2ae\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
-}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/form.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-92afc2ae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6defbd3d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/form.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -1041,7 +1096,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\attendance\\index.vue"
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\attendance\\form.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1050,9 +1105,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-92afc2ae", Component.options)
+    hotAPI.createRecord("data-v-6defbd3d", Component.options)
   } else {
-    hotAPI.reload("data-v-92afc2ae", Component.options)
+    hotAPI.reload("data-v-6defbd3d", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
