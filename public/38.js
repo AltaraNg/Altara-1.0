@@ -557,6 +557,13 @@ var url = function url(to) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     components: { OrderItem: _OrderItem2.default },
@@ -778,6 +785,8 @@ exports.default = {
         calcPaymentSummary: function calcPaymentSummary(order) {
             var _this3 = this;
 
+            var datesDefaulted = [];
+            var amountPerDefault = 500;
             var fmt = function fmt(cur) {
                 return _this3.$formatCurrency(cur);
             };
@@ -787,14 +796,28 @@ exports.default = {
                 count = _getCountAndRepayment2.count,
                 repaymentData = _getCountAndRepayment2.repaymentData;
 
+            var dueDates = this.generateDates({
+                startDate: order.order_date,
+                interval: count === 7 ? 28 : 14,
+                count: count - 1
+            });
+
+            dueDates.forEach(function (dueDate, index) {
+                return _this3.isPaymentDue(_this3.$getDate(new Date(dueDate).addDays(5))) && datesDefaulted.push({ dueDate: dueDate, actualPayDate: repaymentData[_this3.$getColumn(index) + "_date"] });
+            });
+
             for (var i = 1; i < count; i++) {
                 amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
             }var discountAmount = order['discount']['percentage_discount'] / 100 * order["product_price"];
+            var defaultFee = datesDefaulted.length * amountPerDefault;
+            var discountedTotal = order["product_price"] - discountAmount;
             return {
                 amountPaid: fmt(amountPaid),
                 discountAmount: fmt(discountAmount),
                 outstandingDebt: fmt(parseInt(order["product_price"]) - amountPaid),
-                discountedTotal: fmt(order["product_price"] - discountAmount)
+                discountedTotal: fmt(discountedTotal),
+                defaultFee: fmt(defaultFee),
+                totalPlusDefault: fmt(discountedTotal + defaultFee)
             };
         },
         getRepayment: function getRepayment(order) {
@@ -2263,6 +2286,20 @@ var render = function() {
                                   )
                                 )
                               )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Plus Default Fee")]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(
+                                _vm._s(_vm.paymentSummary.totalPlusDefault)
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Default Fee")]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(_vm.paymentSummary.defaultFee))
                             ])
                           ])
                         ])
