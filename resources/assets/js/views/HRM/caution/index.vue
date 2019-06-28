@@ -1,18 +1,12 @@
 <template>
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
-            <div class="mt-5 attendance-head">
-                <div class="mb-5 row align-items-center">
-                    <div class="col-12 title-con">
-                        <span class="title">Caution Register</span>
-                        <div class="row justify-content-end">
-                            <router-link class="text-link mt-3" to="caution/create">
-                                click here to send caution a staff!
-                            </router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <custom-header
+                    :to="'caution/create'"
+                    :title="'Caution(s) register'"
+                    :button-title="'click here to send caution a staff!'"/>
+
             <div class="mt-5 row attendance-head mb-4" v-if="show">
                 <div :class="`col-${col}`" v-for="{name,col} in columns">
                     <div class="row">
@@ -20,6 +14,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="mt-1 attendance-body">
                 <div v-if="show">
                     <div class="mb-3 px-0 row align-items-center attendance-item"
@@ -154,9 +149,13 @@
     import Vue from 'vue';
     import {get} from "../../../utilities/api";
     import Flash from "../../../utilities/flash";
+    import CustomHeader from '../../../components/customHeader';
 
     const apiLink = ({page}) => `/caution${page ? '?page=' + page : ''}`;
     export default {
+
+        components: {CustomHeader},
+
         data() {
             return {
                 show: false,

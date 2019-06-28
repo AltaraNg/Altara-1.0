@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-/*use App\Attendance;
-use App\Branch;
-use App\User;*/
 use App\{Attendance,Branch,User};
 use Carbon\Carbon;
 use Illuminate\Http\Request;

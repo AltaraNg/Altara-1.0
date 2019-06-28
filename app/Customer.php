@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Helper\DataViewer;
+use App\Helper\Scopes;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
@@ -10,7 +11,7 @@ class Customer extends Model
     /** this is a generic trait created to serve as a generic
      * scope for fetching and paginating the
      * model where it is called */
-    use DataViewer;
+    use DataViewer, Scopes;
 
     protected $guarded = [];
 

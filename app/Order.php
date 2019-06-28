@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Helper\Scopes;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use Scopes;
+
     //protected $table = "purchase";
     protected $table = "orders";
 

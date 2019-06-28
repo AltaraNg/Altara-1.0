@@ -1,16 +1,9 @@
 <template>
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
-            <div class="mt-5 attendance-head">
-                <div class="mb-5 row align-items-center">
-                    <div class="col-12 title-con">
-                        <span class="title">{{mode | capitalize}} Category</span>
-                        <div class="row justify-content-end">
-                            <router-link class="text-link mt-3" to="/log/categories">view all categories!</router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <custom-header :to="'/log/categories'" :title="mode + ' Category'" :button-title="'view categories!'"/>
+
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
@@ -40,9 +33,10 @@
 </template>
 <script>
     import Vue from 'vue';
+    import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
     import {byMethod, get} from '../../../utilities/api';
-    import {log} from "../../../utilities/log";
+    import CustomHeader from '../../../components/customHeader';
 
     function initialize(to) {
         let urls = {create: `/api/category/create`, edit: `/api/category/${to.params.id}/edit`};
@@ -50,6 +44,9 @@
     }
 
     export default {
+
+        components: {CustomHeader},
+
         data() {
             return {
                 form: {},

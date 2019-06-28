@@ -35,10 +35,10 @@ Date.prototype.addDays = function (days) {
 Vue.prototype.$getCustomerFullName = c => c ? `${c.first_name} ${c.last_name}` : null;
 Vue.prototype.$getCustomerAddress = c =>
     c ? `${c.add_houseno} ${c.add_street} ${c.area_address}, ${c.city}, ${c.state}.` : null;
+
 /**the customer.verification is what is passed as v**/
 Vue.prototype.$getCustomerApprovalStatus = v =>
-    !!v ? (v.address && v.id_card && v.passport && v.processing_fee && v.work_guarantor && v.personal_guarantor)
-        : false;
+    !!v ? (v.address && v.id_card && v.passport && v.processing_fee && v.work_guarantor && v.personal_guarantor) : false;
 
 
 /**used in any form to avoid submitting forms more than
@@ -82,7 +82,7 @@ Vue.prototype.$formatCurrency = price => !!price ? formatter.format(price) : pri
 Vue.prototype.$networkErr = function (err = '', duration = 30000, msg = null) {
     this.$scrollToTop();
     this.$LIPS(false);
-    if(!msg) msg = 'No network access, try again later!';
+    if (!msg) msg = 'No network access, try again later!';
     if (err === 'form') msg = 'Please ensure all the fields are filled correctly!';
     if (err === 'page') {
         msg = 'You do not have access to that page!';

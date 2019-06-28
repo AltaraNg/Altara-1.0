@@ -33,6 +33,9 @@
                     }, {
                         url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
+                    }, {
+                        url: 'sales', title: 'Sales List', url_c: 'View Sales List',
+                        desc: 'View all Sales!',
                     }
                 ]
             }

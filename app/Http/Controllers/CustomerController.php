@@ -70,16 +70,22 @@ class CustomerController extends Controller
     {
         /** 1. validate the customer's phone number */
         $this->validate($request, ['telephone' => 'unique:customers']);
+
         /** 2. Create a new customer instance */
         $customer = new Customer($request->all());
+
         /** 3. Add other key value pairs */
         $customer->days_of_work = implode(' ', $request['days_of_work']);
+
         /** 4. save the customer to db */
         $customer->save();
+
         /** 5. create a record for the new customer in the documents table */
         $this->createCustomerDocument($customer->id);
+
         /** 6. create a record for the customer in the verifications table */
         $this->createCustomerVerification($customer->id);
+
         /** 7. return the registered flag, a new customer object form and the just created customer*/
         return response()->json([
             'registered' => true,

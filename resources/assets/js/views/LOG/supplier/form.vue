@@ -1,16 +1,9 @@
 <template>
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
-            <div class="mt-5 attendance-head">
-                <div class="mb-5 row align-items-center">
-                    <div class="col-12 title-con">
-                        <span class="title">{{mode | capitalize}} Supplier</span>
-                        <div class="row justify-content-end">
-                            <router-link class="text-link mt-3" to="/log/suppliers">view all Suppliers!</router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <custom-header :to="'/log/suppliers'" :title="mode + ' Supplier'" :button-title="'view suppliers!'"/>
+
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
@@ -105,14 +98,16 @@
                     </div>
                 </form>
             </div>
+
         </div>
     </transition>
 </template>
 <script>
     import Vue from 'vue';
+    import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
     import {byMethod, get} from '../../../utilities/api';
-    import {log} from "../../../utilities/log";
+    import CustomHeader from '../../../components/customHeader';
 
     function initialize(to) {
         let urls = {create: `/api/supplier/create`, edit: `/api/supplier/${to.params.id}/edit`};
@@ -120,6 +115,9 @@
     }
 
     export default {
+
+        components: {CustomHeader},
+
         data() {
             return {
                 form: {},

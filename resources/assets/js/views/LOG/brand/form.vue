@@ -1,22 +1,16 @@
 <template>
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
-            <div class="mt-5 attendance-head">
-                <div class="mb-5 row align-items-center">
-                    <div class="col-12 title-con">
-                        <span class="title">{{mode | capitalize}} Brand</span>
-                        <div class="row justify-content-end">
-                            <router-link class="text-link mt-3" to="/log/brands">view all brands!</router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <custom-header :to="'/log/brands'" :title="mode + ' brand'" :button-title="'view brands!'"/>
+
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
                         <div class="form-group col-12 float-left px-0 px-md-3">
                             <label>Brand name</label>
-                            <input class="form-control mb-2" placeholder="brand name" name="brand name" type="text" v-model="form.name"
+                            <input class="form-control mb-2" placeholder="brand name" name="brand name" type="text"
+                                   v-model="form.name"
                                    v-validate="'required|max:50'">
                             <small v-if="errors.first('brand name')">{{ errors.first('brand name') }}</small>
                             <small v-if="error.name">{{error.name[0]}}</small>
@@ -24,7 +18,9 @@
                     </div>
                     <div class="mb-5 px-0 row align-items-center">
                         <div class="clearfix d-flex justify-content-end w-100">
-                            <router-link to="/log/brands" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">Cancel</router-link>
+                            <router-link to="/log/brands" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">
+                                Cancel
+                            </router-link>
                             <button :disabled="$isProcessing" class="btn bg-default" type="submit">
                                 {{mode | capitalize}} Brand <i class="far fa-paper-plane ml-1"></i>
                             </button>
@@ -32,14 +28,16 @@
                     </div>
                 </form>
             </div>
+
         </div>
     </transition>
 </template>
 <script>
     import Vue from 'vue';
+    import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
     import {byMethod, get} from '../../../utilities/api';
-    import {log} from "../../../utilities/log";
+    import CustomHeader from '../../../components/customHeader';
 
     function initialize(to) {
         let urls = {create: `/api/brand/create`, edit: `/api/brand/${to.params.id}/edit`};
@@ -47,6 +45,9 @@
     }
 
     export default {
+
+        components: {CustomHeader},
+
         data() {
             return {
                 form: {},
@@ -85,9 +86,9 @@
                                         Flash.setSuccess(data.message, 5000);
                                         if (data['updated']) this.$router.push('/log/brands');
                                     }
-                                    this.error= {};
+                                    this.error = {};
                                 })
-                                .catch(({response:r}) => {
+                                .catch(({response: r}) => {
                                     let {data, status} = r;
                                     if (status === 422) {
                                         this.error = data.errors ? data.errors : data;

@@ -553,7 +553,7 @@ table a i {
             width: 25%;
         }
 
-        .custom-select, .myBtn, .daily-attendance {
+        .custom-select, .myBtn, .daily-attendance, input {
             width: 75%;
         }
 
@@ -1390,7 +1390,7 @@ tr.current {
 
     .attendance {
 
-        .custom-select {
+        .custom-select, input {
             width: 90%;
         }
 

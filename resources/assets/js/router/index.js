@@ -19,6 +19,8 @@ const DVA = () => import( '../views/DVA/index.vue');
 const DVAHome = () => import( '../views/DVA/HomePage.vue');
 const DVAMessage = () => import( '../views/DVA/messaging/message.vue');
 const DVAVerification = () => import( '../views/DVA/verification/verification.vue');
+
+const OrderList = () => import( '../views/DVA/order/orderList.vue');
 /*const DVASMSReminder = () => import( '../views/DVA/reminder/SMSReminder.vue');
 const DVACallReminder = () => import( '../views/DVA/reminder/callReminder.vue');*/
 
@@ -89,8 +91,7 @@ const router = new VueRouter({
                     name: 'customerUpdate'
                 },
                 {path: 'verification', component: DVAVerification, name: 'verification'},
-                /*{path: 'reminder/sms', component: DVASMSReminder, name: 'sms-reminder'},
-                {path: 'reminder/call', component: DVACallReminder, name: 'call-reminder'},*/
+                {path: 'sales', component: OrderList, name: 'sales'},
 
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},

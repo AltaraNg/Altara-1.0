@@ -7,7 +7,7 @@ use App\Order;
 use App\PaymentMethod;
 use App\PromiseCall;
 use App\Reminder;
-use GuzzleHttp\Promise\Promise;
+use App\User;
 use Illuminate\Http\Request;
 
 class ReminderController extends Controller
@@ -45,7 +45,6 @@ class ReminderController extends Controller
                 $days = 19;//21;
                 break;
             case 7://call reminder: 4
-                //$days = 28;
                 $days = 31;
                 break;
             default://sms reminder: 1 and  promise call
@@ -66,6 +65,7 @@ class ReminderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
 
@@ -73,55 +73,26 @@ class ReminderController extends Controller
     {
         $user = auth('api')->user();
 
-        if (request('list') == '8') {
-            $result = PromiseCall::whereIn('date', $this->getDateForReminder(request('list')))->with(['order' => function ($query) {
-                return $query->with(['repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType',
-                    'reminders' => function ($q1) {
-                        return $q1->with([
-                            'user' => function ($q2) {
-                                return $q2->select('id', 'full_name');
-                            }, 'sms' => function ($q2) {
-                                return $q2->select('id', 'message');
-                            }
-                        ]);
-                    }, 'floorAgent' => function ($q) {
-                        return $q->select('id', 'staff_id', 'full_name');
-                    }, 'customer' => function ($customerQ) {
-                        return $customerQ
-                            ->select('id', 'branch_id', 'first_name', 'last_name', 'add_nbstop', 'add_street', 'add_houseno',
-                                'add_addinfo_description', 'city', 'state', 'telephone', 'civil_status', 'employment_status')
-                            ->with(['branch' => function ($q) {
-                                return $q->select('name', 'id');
-                            }]);
-                    }])->select('id', 'order_date', 'sales_category_id', 'customer_id', 'product_sku', 'product_price',
-                    'down_payment', 'sales_agent_id', 'sales_type_id', 'discount_id', 'repayment_amount');
-            }])->get();
+        $list = request('list');
+        $request = [
+            'list' => $list,
+            'page' => request('page'),
+            'page_size' => request('page_size'),
+            'branch_id' => request('branch_id'),
+            'date_from' => request('date_from'),
+            'date_to' => request('date_to'),
+        ];
+
+        if ($list == '8') {
+            $result = PromiseCall::dateFilter('date', $list, $this)
+                ->with(['order' => function ($query) {
+                    return $query->orderWithOtherTables();
+                }])
+                ->getOrPaginate($request);
         } else {
-            $result = Order::whereIn('order_date', $this->getDateForReminder(request('list')))->with([
-                'repayment', 'repaymentFormal', 'repaymentInformal', 'storeProduct', 'discount', 'salesCategory', 'salesType',
-                'reminders' => function ($q1) {
-                    return $q1->with([
-                        'user' => function ($q2) {
-                            return $q2->select('id', 'full_name');
-                        }, 'sms' => function ($q2) {
-                            return $q2->select('id', 'message');
-                        }
-                    ]);
-                }, 'floorAgent' => function ($q) {
-                    return $q->select('id', 'staff_id', 'full_name');
-                }, 'customer' => function ($customerQ) {
-                    return $customerQ->select(
-                        'id', 'branch_id', 'first_name', 'last_name', 'add_nbstop', 'add_street', 'add_houseno',
-                        'add_addinfo_description', 'city', 'state', 'telephone', 'civil_status', 'employment_status',
-                        'work_guarantor_first_name', 'work_guarantor_last_name',
-                        'work_guarantor_relationship', 'work_guarantor_telno',
-                        'personal_guarantor_first_name', 'personal_guarantor_last_name',
-                        'personal_guarantor_relationship', 'personal_guarantor_telno')
-                        ->with(['branch' => function ($q) {
-                            return $q->select('name', 'id');
-                        }]);
-                }])->select('id', 'order_date', 'sales_category_id', 'customer_id', 'product_sku', 'product_price', 'down_payment',
-                'sales_agent_id', 'sales_type_id', 'discount_id', 'repayment_amount')->get();
+            $result = Order::dateFilter('order_date', $list, $this)
+                ->orderWithOtherTables($request)
+                ->getOrPaginate($request);
         }
 
         return response()->json([

@@ -1,6 +1,7 @@
 <template>
     <transition name="fade">
         <div class="pt-md-3 pt-2 verification" id="employeeRegister">
+
             <div class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center">
                     <h6>{{action | capitalize}} Customer</h6>
@@ -27,6 +28,7 @@
                     </form>
                 </div>
             </div>
+
             <transition name="fade">
                 <div v-if="customer">
                     <customer-profile :view-customer="customer"/>
@@ -68,7 +70,9 @@
                     </div>
                 </div>
             </transition>
+
             <div v-if="action !== 'update'">
+
                 <div :id="type+'_modal'" class="modal fade" v-for="type in picsView">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -101,6 +105,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="modal fade" id="address_modal">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -350,6 +355,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div :id="type+'_modal'" class="modal fade" v-for="type in veriView">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -497,6 +503,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </transition>
@@ -505,6 +512,7 @@
     import Vue from 'vue';
     import {log} from '../../../utilities/log';
     import Flash from '../../../utilities/flash';
+    import {Message} from '../../../utilities/sms';
     import {get, post} from '../../../utilities/api';
     import {EventBus} from '../../../utilities/event-bus';
     import {toMulipartedForm} from '../../../utilities/form';
@@ -520,6 +528,7 @@
             * customer profile display feature is borrowed by other component to avoid duplication of
             * features hence the props: action is 'verify by default.'*/
         },
+
         components: {
             ImageUpload,
             /*the image upload is used for the customer id and passport upload.
@@ -527,6 +536,7 @@
             * anywhere on the application*/
             CustomerProfile
         },
+
         data() {
             return {
                 customer: null,
@@ -553,6 +563,7 @@
                 personal_guarantor_address: ''
             }
         },
+
         beforeRouteEnter({query}, from, next) {
             if (query.id)
                 get(init(query))
@@ -560,6 +571,7 @@
                     .catch(e => next(vm => vm.updateView(e.response.data)));
             else next();
         },
+
         beforeRouteUpdate({query}, from, next) {
             if (query.id)
                 get(init(query))
@@ -568,6 +580,7 @@
                     .finally(() => next());
             else next();
         },
+
         methods: {
             modal(name) {
                 $(`#${name}`).modal('toggle');
@@ -576,12 +589,14 @@
                 * "name passed to it"*/
                 this.errors.clear(name);
             },
+
             key(key) {
                 return ((this.customer.verification[key]));
                 /*the 'key' is a value that exists in the cardView array. anytime its called it checks the the customer
                 * to know the status of that particular parameter eg. is the passport have not been uploaded
                 * it will be 0 else 1 if uploaded with will return true */
             },
+
             IconClass(key) {
                 return {
                     'fa-check': this.key(key), 'fa-times': !this.key(key)
@@ -590,6 +605,7 @@
                 * card param is set to 1 else the 'fa-times'
                 * css class ie false */
             },
+
             DivClass(key) {
                 return {
                     'success': this.key(key), 'no-success': !this.key(key)
@@ -598,6 +614,7 @@
                 * that it return a different class
                 * success and no-success*/
             },
+
             updateView(data) {
                 /*$emit update event is used to send data to the parent component where this serves as a child
                 * component. eg. dsa utility form. NB: The customer registration component(form)
@@ -634,6 +651,15 @@
                     })
                 } else Flash.setError(data.message, 5000);
             },
+
+            done(){
+                if (this.$getCustomerApprovalStatus(this.verification)){
+                    let body =
+                        "Dear " + this.$getCustomerFullName(this.customer) + ", Congratulations, You have been approved. Come to the store to make a purchase. Altara Credit Limited.";
+                    (new Message(body, this.customer.telephone, true, this.user.id)).send();
+                }
+            },
+
             processForm() {
                 if (this.$route.name === 'verification') this.$router.push(`verification?id=${this.customer_id}`);
                 if (this.$route.name === 'customerUpdate') {
@@ -643,6 +669,7 @@
                         .catch(e => this.updateView(e.response.data))
                 }
             },
+
             validate(type) {
                 if (this.$network()) {
                     this.$LIPS(true);
@@ -660,8 +687,8 @@
                     this.$validator.validateAll(type).then(async result => {
                         if (result) {
                             await post(`/api/${type}`, this[type])
-                                .then(res => {
-                                    this.updateView(res.data.response);
+                                .then(({data}) => {
+                                    this.updateView(data.response);
                                     let id = `Customer ID : ${this.customer.id}`,
                                         typeCaps = this.$options.filters.capitalize(type),
                                         action = `Customer${typeCaps}Verification`;
@@ -670,6 +697,7 @@
                                     log(action, id);
                                     Flash.setSuccess(`${typeCaps} status updated!`);
                                     this.modal(`${type}_modal`);
+                                    this.done();
                                 })
                                 .catch(e => Flash.setError(e.response.data.message));
                             this.$LIPS(false);
@@ -678,26 +706,30 @@
                     });
                 } else this.$networkErr();
             },
+
             async save(document, modal) {
                 this.storeURL = `/api/document/${this.customer.document.id}?_method=PUT&document=${document}`;
                 this.$LIPS(true);
                 this.form.document = document;
                 const form = toMulipartedForm(this.form, 'edit');
-                await post(this.storeURL, form).then(res => {
-                    this.updateView(res.data.response);
+                await post(this.storeURL, form).then(({data}) => {
+                    this.updateView(data.response);
                     log(`Customer${this.$options.filters.capitalize(document)}Upload`, `Customer ID : ${this.customer.id}`);
                     this.modal(modal);
                     Flash.setSuccess('Document Updated Successfully!');
+                    this.done();
                 }).catch(e => this.error = e.response.data.errors);
                 this.$LIPS(false);
                 this.$scrollToTop();
-            },
+            }
         },
+
         computed: {
             check() {
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
             },
         },
+
         mounted() {
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.verification = JSON.parse(JSON.stringify(this.customer.verification));

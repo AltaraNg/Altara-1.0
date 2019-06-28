@@ -7,6 +7,7 @@
                         v-for="(order,index) in orders"
                         :key="order.id"
                         :index="index"
+                        :start-index="startIndex"
                         :order="order"
                         :dva_id="dva_id"
                         :is-repayment-valid="isRepaymentValid(order)"
@@ -18,7 +19,7 @@
                         @updateReminderList="updateReminder"
                         @display="displayDetails"/>
             </div>
-            <div class="w-100 my-5 mx-0 hr"></div>
+            <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
         </div>
 
         <div class="tab-content mt-1 attendance-body" v-else>
@@ -359,11 +360,14 @@
     export default {
         components: {OrderItem},
 
-        props: {list: '', mode: null},
+        props: {list: {default: null}, mode: null, preLoadedOrder: null, startIndex:null},
 
         watch: {
             list: function (list) {
                 this.fetchList(list);
+            },
+            preLoadedOrder: function (data) {
+                this.prepareForm(data);
             }
         },
 
@@ -398,7 +402,7 @@
                         missed payment since it's obvious we are dealing with just one date
                         * 1st list is for all the customers that picked today
                         * 8th list is for all the promise calls all the promise call must be shown to */
-                        if ([8, 1].includes(this.list)) return true;
+                        if ([8, 1].includes(this.list) || this.mode === "normal-list") return true;
 
                         let payDay,
                             /*payDay holds the date
@@ -733,7 +737,7 @@
         },
 
         mounted() {
-            this.fetchList(this.list);
+            this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.currentOrder = null;
                 this.showModalContent = false;

@@ -1,13 +1,9 @@
 <template>
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
-            <div class="mt-5 attendance-head">
-                <div class="mb-5 row align-items-center">
-                    <div class="col-12 title-con">
-                        <span class="title">Generate Report</span>
-                    </div>
-                </div>
-            </div>
+
+            <custom-header :title="'Generate Report'"/>
+
             <div class="attendance-body">
                 <form :data-vv-scope="'f1'" @submit.prevent="generateReport">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
@@ -62,13 +58,8 @@
                 </form>
             </div>
 
-            <div class="mt-5 attendance-head">
-                <div class="mb-5 row align-items-center">
-                    <div class="col-12 title-con">
-                        <span class="title">Send Daily Report</span>
-                    </div>
-                </div>
-            </div>
+            <custom-header :title="'Send Daily Report'"/>
+
             <div class="attendance-body">
                 <form :data-vv-scope="'f2'" @submit.prevent="submitReport" id="dsaDailyReportForm">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
@@ -130,8 +121,12 @@
 <script>
     import Flash from '../../../utilities/flash';
     import {get, post, postD} from '../../../utilities/api';
+    import CustomHeader from '../../../components/customHeader';
 
     export default {
+
+        components: {CustomHeader},
+
         beforeCreate() {
             !this.$store.getters.auth('DSACaptain') && this.$networkErr('page');
             get(`/api/user/${this.$store.state.user_id}`).then(({data}) => {

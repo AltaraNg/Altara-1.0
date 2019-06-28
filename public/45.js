@@ -1,6 +1,1031 @@
 webpackJsonp([45],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/OrderItem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
+
+var _flash2 = _interopRequireDefault(_flash);
+
+var _eventBus = __webpack_require__("./resources/assets/js/utilities/event-bus.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    props: {
+        mode: null,
+        index: null,
+        dva_id: null,
+        paySummary: null,
+        repaymentLevel: null,
+        order: { default: {} },
+        isRepaymentValid: null,
+        getCountAndRepaymentData: null
+    },
+
+    data: function data() {
+        return {
+            selected: false
+        };
+    },
+    created: function created() {
+        _eventBus.EventBus.$on('selectOrderItem', this.toggleSelect);
+    },
+
+
+    methods: {
+        logReminder: function logReminder() {
+            var _this = this;
+
+            this.$LIPS(true);
+            delete this.reminder.order;
+            delete this.reminder.canBeSelected;
+            (0, _api.post)('/api/reminder', { reminders: [this.reminder] }).then(function (_ref) {
+                var data = _ref.data;
+                return data.saved ? _this.logPromiseCall() : _this.$displayErrorMessage('Error Logging reminders!');
+            });
+        },
+        logPromiseCall: function logPromiseCall() {
+            var _this2 = this;
+
+            var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Reminder Logged!";
+
+            if (this.promiseCall.date) {
+                (0, _api.post)('/api/promise_call', this.promiseCall).then(function (_ref2) {
+                    var data = _ref2.data;
+                    return data.saved ? _this2.done(message + " Promise call added!") : _this2.$displayErrorMessage('Error Logging promise call!');
+                });
+            } else this.done(message);
+        },
+        done: function done(message) {
+            this.$scrollToTop();
+            _flash2.default.setSuccess(message, 5000);
+            this.$emit('done');
+        },
+        isReminderSent: function isReminderSent() {
+            var _this3 = this;
+
+            var value = true,
+                date;
+            if (this.order.reminders.length > 0) {
+                var today = this.$getDate();
+                this.order.reminders.forEach(function (reminder) {
+                    //refactor below by using regx characters to split
+                    var reminderDateTimeArr = reminder.date.split(' '); //(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
+                    var dateArr = reminderDateTimeArr[0].split('-'); //'2019-03-24' -> ['2019','03','24']
+                    var timeArr = reminderDateTimeArr[1].split(':'); //'02:00:00' -> ['02','00','00']
+                    var arr = [].concat(_toConsumableArray(dateArr), _toConsumableArray(timeArr)) // ['2019','03','24','02','00','00']
+                    .map(function (item) {
+                        return parseInt(item, 10);
+                    }); //[2019,3,24,2,0,0]
+                    date = _this3.$getDate(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
+                    date === today && (value = false);
+                });
+            }
+            return value;
+        },
+        toggleSelect: function toggleSelect(value) {
+            if (this.reminder.canBeSelected) {
+                this.selected = value;
+                this.$emit('updateReminderList', this.reminder, value);
+            }
+        }
+    },
+    computed: {
+        reminder: function reminder() {
+            var reminder = {
+                'customer_id': this.order.customer.id,
+                'order_id': this.order.id,
+                'repayment_level': this.repaymentLevel,
+                'dva_id': this.dva_id,
+                'type': this.mode === 'call' ? 'call' : 'sms',
+                'canBeSelected': this.isReminderSent()
+            };
+            if (this.mode === 'sms') {
+                reminder.contacts = this.order.customer.telephone;
+                reminder.sms_id = null;
+            }
+            return reminder;
+        },
+        promiseCall: function promiseCall() {
+            return {
+                order_id: this.order.id,
+                user_id: this.dva_id,
+                customer_id: this.order.customer.id,
+                date: null
+            };
+        },
+        getFinancialStatus: function getFinancialStatus() {
+            return !this.isRepaymentValid ? 'no detail!' : "Paid: " + this.paySummary.amountPaid + " | Debt: " + this.paySummary.outstandingDebt;
+        }
+    }
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Orders.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
+
+var _flash2 = _interopRequireDefault(_flash);
+
+var _sms = __webpack_require__("./resources/assets/js/utilities/sms.js");
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+var _OrderItem = __webpack_require__("./resources/assets/js/components/OrderItem.vue");
+
+var _OrderItem2 = _interopRequireDefault(_OrderItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var url = function url(to) {
+    return "/api/reminder/create?list=" + to.query.list;
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    components: { OrderItem: _OrderItem2.default },
+
+    props: { list: { default: null }, mode: null, preLoadedOrder: null },
+
+    watch: {
+        list: function list(_list) {
+            this.fetchList(_list);
+        },
+        preLoadedOrder: function preLoadedOrder(data) {
+            console.log(data);
+            //this.$LIPS(true);
+            this.prepareForm(data);
+        }
+    },
+
+    data: function data() {
+        return {
+            orders: {},
+            show: false,
+            banks: null,
+            reminder: [],
+            currentOrder: {},
+            paymentSummary: null,
+            payment_methods: null,
+            showModalContent: false,
+            isCurrentOrderInformal: null
+        };
+    },
+
+
+    methods: {
+        prepareForm: function prepareForm(res) {
+            var _this = this;
+
+            console.log(res);
+
+            //if(!res.length) return;
+
+            this.show = false;
+            this.showModalContent = false;
+            this.banks = res.banks;
+            this.dva_id = res.dva_id;
+            this.payment_methods = res.payment_methods;
+
+            console.log(2);
+
+            this.orders = res.orders.filter(function (order) {
+                var _getCountAndRepayment = _this.getCountAndRepaymentData(order),
+                    count = _getCountAndRepayment.count,
+                    repaymentData = _getCountAndRepayment.repaymentData;
+
+                var hasMissedPayment = function hasMissedPayment() {
+                    /*for the list 1 and 8 return true i.e no need for has
+                    missed payment since it's obvious we are dealing with just one date
+                    * 1st list is for all the customers that picked today
+                    * 8th list is for all the promise calls all the promise call must be shown to */
+                    if ([8, 1].includes(_this.list)) return true;
+
+                    var payDay = void 0,
+
+                    /*payDay holds the date
+                    of the first vacant repayment*/
+
+                    dayInterval = void 0,
+
+                    /*dayInterval the number of days before or after a certain
+                    repayment date. this varies according to collections app brief*/
+
+                    datePool = [],
+
+                    /*datePool hold an array of dates of length ranging from 1 to 3 in length
+                    * is the current date is monday the date-pool will include dates for
+                    * monday, sunday and saturday else it just hold the current date*/
+
+                    today = new Date(),
+                        isMonday = today.getDay() === 1,
+
+                    /*isMonday how a boolean value of whether
+                    the current date is monday or not*/
+
+                    accumulatedDays = isMonday ? 3 : 1;
+                    /*accumulatedDays hold 1 or 3,
+                    1 if the current date is not on a monday and
+                    3 if the current date is on a monday*/
+
+                    /*step 1::
+                    * the count is either 7 or 13,
+                    * the loop runs for 6 or 12 times*/
+                    for (var i = 1; i < count; i++) {
+
+                        /*get the resultant column 1st, 2nd, 3rd etc*/
+                        var column = _this.$getColumn(i);
+
+                        /*step 2. get the first occurrence of a vacant pay eg. 5th_pay*/
+                        if (!repaymentData[column + "_pay"]) {
+
+                            /*step 3. find the corresponding due date for the vacant pay
+                            * The generateDates returns an array of the due
+                            dates for the order under consideration*/
+                            payDay = _this.generateDates({
+                                interval: count === 7 ? 28 : 14,
+                                startDate: order.order_date,
+                                count: count - 1
+                            })[i - 1];
+                            /*[i - 1] explained.
+                            * eg if the i = 5,
+                            * column = 5th_pay,
+                            * then the 4th ( [5-1] - this is the 5th element or 4th index, array is 0 indexed)
+                            * index of the resultant array is the pay day we are interested in*/
+                            break;
+                        }
+                    }
+
+                    /*step 4. assign the appropriate intervals
+                    * NB:: This intervals where generated from the days
+                    * stipulated on the collections app brief note that the case
+                    * corresponds to the steps also indicated in the collections app brief*/
+                    switch (_this.list) {
+                        case 2:
+                            dayInterval = 7;
+                            break;
+                        case 3:
+                            dayInterval = 3;
+                            break;
+                        case 4:
+                            dayInterval = 0;
+                            break;
+                        case 5:
+                            dayInterval = 1;
+                            break;
+                        case 6:
+                            dayInterval = 5;
+                            break;
+                        case 7:
+                            dayInterval = 31;
+                            break;
+                    }
+
+                    if (_this.mode === "call") for (var p = 0; p < accumulatedDays; p++) {
+                        datePool.push(_this.$getDate(today.addDays(-(p + dayInterval))));
+                    }if (_this.mode === 'sms') for (var _p = 0; _p < accumulatedDays; _p++) {
+                        datePool.push(_this.$getDate(today.addDays(_p + dayInterval)));
+                    }return datePool.includes(payDay);
+                };
+
+                var isMyBranch = function isMyBranch() {
+                    if (_this.$store.getters.auth('DVALead')) return true;
+                    return order.customer.branch.id === res.branch;
+                };
+
+                return isMyBranch() && hasMissedPayment();
+            });
+
+            !!this.orders.length && (this.show = true);
+            this.$LIPS(false);
+        },
+
+
+        isOrderFormal: function isOrderFormal(_ref) {
+            var repayment_informal = _ref.repayment_informal;
+            return repayment_informal === null;
+        },
+
+        generateDates: function generateDates(_ref2) {
+            var startDate = _ref2.startDate,
+                interval = _ref2.interval,
+                count = _ref2.count;
+
+            var dates = [];
+            for (var i = 0; i < count; i++) {
+                var orderDate = new Date(startDate).addDays((i + 1) * interval);
+                var dateString = this.$getDate(orderDate);
+                dates.push(dateString);
+            }
+            return dates;
+        },
+
+
+        renderMessage: function renderMessage(reminder) {
+            return !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback;
+        },
+
+        fetchList: function fetchList(list) {
+            var _this2 = this;
+
+            this.$LIPS(true);
+            (0, _api.get)(url({ query: { list: list } })).then(function (_ref3) {
+                var data = _ref3.data;
+
+                if (list === 8) {
+                    var orders = [];
+                    data.orders.forEach(function (promiseCall) {
+                        return orders.push(promiseCall.order);
+                    });
+                    data.orders = orders;
+                }
+                _this2.prepareForm(data);
+            });
+        },
+
+
+        isPaymentDue: function isPaymentDue(dueDate) {
+            return new Date() > new Date(dueDate);
+        },
+
+        getDiscount: function getDiscount(_ref4) {
+            var discount = _ref4.discount;
+            return discount.name + " (" + discount.percentage_discount + ")";
+        },
+
+        isRepaymentValid: function isRepaymentValid(order) {
+            return !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']);
+        },
+
+        displayDetails: function displayDetails(order, modal) {
+            this.paymentSummary = this.calcPaymentSummary(order);
+            _vue2.default.set(this.$data, 'currentOrder', order);
+            this.isCurrentOrderInformal = !['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase());
+            this.showModalContent = true;
+            return $("#" + modal).modal('toggle');
+        },
+        getCountAndRepaymentData: function getCountAndRepaymentData(order) {
+            var data = {};
+            if (order['repayment_formal'] != null) data = { count: 7, repaymentData: order.repayment_formal };
+            if (order['repayment_informal'] != null) data = { count: 13, repaymentData: order.repayment_informal };
+            return data;
+        },
+        calcPaymentSummary: function calcPaymentSummary(order) {
+            var _this3 = this;
+
+            var datesDefaulted = [];
+            var amountPerDefault = 500;
+            var fmt = function fmt(cur) {
+                return _this3.$formatCurrency(cur);
+            };
+            var amountPaid = parseInt(order.down_payment);
+
+            var _getCountAndRepayment2 = this.getCountAndRepaymentData(order),
+                count = _getCountAndRepayment2.count,
+                repaymentData = _getCountAndRepayment2.repaymentData;
+
+            var dueDates = this.generateDates({
+                startDate: order.order_date,
+                interval: count === 7 ? 28 : 14,
+                count: count - 1
+            });
+
+            dueDates.forEach(function (dueDate, index) {
+                return _this3.isPaymentDue(_this3.$getDate(new Date(dueDate).addDays(5))) && datesDefaulted.push({ dueDate: dueDate, actualPayDate: repaymentData[_this3.$getColumn(index) + "_date"] });
+            });
+
+            for (var i = 1; i < count; i++) {
+                amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
+            }var discountAmount = order['discount']['percentage_discount'] / 100 * order["product_price"];
+            var defaultFee = datesDefaulted.length * amountPerDefault;
+            var discountedTotal = order["product_price"] - discountAmount;
+            return {
+                amountPaid: fmt(amountPaid),
+                discountAmount: fmt(discountAmount),
+                outstandingDebt: fmt(parseInt(order["product_price"]) - amountPaid),
+                discountedTotal: fmt(discountedTotal),
+                defaultFee: fmt(defaultFee),
+                totalPlusDefault: fmt(discountedTotal + defaultFee)
+            };
+        },
+        getRepayment: function getRepayment(order) {
+            var clause = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            if (!this.isRepaymentValid(order)) return null;
+            var data = [],
+                _getCountAndRepayment3 = this.getCountAndRepaymentData(order),
+                count = _getCountAndRepayment3.count,
+                repaymentData = _getCountAndRepayment3.repaymentData;
+            if (clause === null) {
+                return this.generateDates({
+                    startDate: order.order_date,
+                    interval: count === 7 ? 28 : 14,
+                    count: count - 1
+                });
+            }
+            if (clause === 'repayments') {
+                var repayment_amount = order.repayment_amount;
+
+                for (var i = 1; i < count; i++) {
+                    data.push(this.isCurrentOrderInformal ? repayment_amount : repayment_amount * 2);
+                }return data;
+            }
+            for (var _i = 1; _i < count; _i++) {
+                data.push(repaymentData[this.$getColumn(_i) + clause]);
+            }return data;
+        },
+        getPaymentStatusClasses: function getPaymentStatusClasses(order) {
+            if (!this.isRepaymentValid(order)) return null;
+            var data = [],
+                _getCountAndRepayment4 = this.getCountAndRepaymentData(order),
+                count = _getCountAndRepayment4.count,
+                repaymentData = _getCountAndRepayment4.repaymentData,
+                dueDates = this.getRepayment(order);
+            for (var i = 1; i < count; i++) {
+                var status = { class: null, icon: null };
+                var position = this.$getColumn(i);
+                var isDue = this.isPaymentDue(dueDates[i - 1]);
+                var amountPaid = parseInt(repaymentData[position + '_pay']);
+                if (amountPaid) {
+                    status.class = 'paid';
+                    status.icon = 'fa-check';
+                } else if (isDue && !amountPaid) {
+                    status.class = 'missed';
+                    status.icon = 'fa-times';
+                } else if (!isDue) {
+                    status.class = 'pending';
+                    status.icon = 'fa-hourglass-start';
+                }
+                data.push(status);
+            }
+            return data;
+        },
+        getRepaymentLevel: function getRepaymentLevel(order) {
+            if (!this.isRepaymentValid(order)) return 0;
+            var level = 0,
+                _getCountAndRepayment5 = this.getCountAndRepaymentData(order),
+                count = _getCountAndRepayment5.count,
+                repaymentData = _getCountAndRepayment5.repaymentData;
+            for (var i = 1; i < count; i++) {
+                if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
+            }return level + "/" + (count - 1);
+        },
+        convertPaymentMethodOrBankToName: function convertPaymentMethodOrBankToName(id, type) {
+            return !id ? null : this.$data[type].find(function (obj) {
+                return obj.id === id;
+            }).name;
+        },
+        updateReminder: function updateReminder(reminder, selected) {
+            if (!selected) {
+                var index = void 0;
+                this.reminder.forEach(function (obj, i) {
+                    return obj.order_id === reminder.order_id && (index = i);
+                });
+                this.reminder.splice(index, 1);
+            } else this.reminder.push(reminder);
+        },
+        processSelected: function processSelected() {
+            var _this4 = this;
+
+            if (!this.reminder.length) {
+                this.$displayErrorMessage('please select at least one!');
+                return;
+            }
+            this.$LIPS(true);
+            var smsContactList = this.reminder.map(function (obj) {
+                var newObject = JSON.parse(JSON.stringify(obj));
+                newObject.order = _this4.orders.find(function (_ref5) {
+                    var id = _ref5.id;
+                    return id === obj.order_id;
+                });
+                newObject.message = _this4.generateCustomMessage(newObject.order);
+                return newObject;
+            });
+            this.sendSMSReminders(smsContactList);
+        },
+        sendSMSReminders: function sendSMSReminders(smsContactList) {
+            var _this5 = this;
+
+            var messages = [];
+            smsContactList.forEach(function (value, index) {
+                var sms = new _sms.Message(value.message, value.contacts, false, value.dva_id);
+                sms.send(function (r) {
+                    if (r.status === 200) {
+                        delete sms.logToDB;
+                        messages.push(sms);
+                    }
+                    if (index + 1 === smsContactList.length) _this5.logSentMessages(messages, smsContactList);
+                });
+            });
+        },
+        logSentMessages: function logSentMessages(messages, smsContactList) {
+            var _this6 = this;
+
+            if (!!messages) {
+                (0, _api.post)('/api/message', { messages: messages, bulk: true }).then(function (_ref6) {
+                    var data = _ref6.data;
+                    var sentAndLogged = data.sentAndLogged,
+                        ids = data.ids;
+
+                    if (sentAndLogged) _this6.logSentReminders(smsContactList, ids);else _this6.$displayErrorMessage('Error Logging sent sms details!');
+                });
+            } else this.$displayErrorMessage('Error sending messages!');
+        },
+        logSentReminders: function logSentReminders(selectedList, ids) {
+            var _this7 = this;
+
+            ids.reverse();
+            var newList = JSON.parse(JSON.stringify(selectedList));
+            newList.forEach(function (value, index) {
+                value.sms_id = ids[index];
+                delete value.message;
+                delete value.order;
+                delete value.contacts;
+                delete value.canBeSelected;
+            });
+            if (ids.length > 0) {
+                (0, _api.post)('/api/reminder', { reminders: newList }).then(function (_ref7) {
+                    var data = _ref7.data;
+
+                    if (data.saved) {
+                        _flash2.default.setSuccess('Reminders have been sent successfully!', 50000);
+                        _this7.fetchList(_this7.list);
+                    } else _this7.$displayErrorMessage('Error sending reminders!');
+                    _this7.$scrollToTop();
+                });
+            } else this.$displayErrorMessage('Error logging sent messages!');
+        },
+        generateCustomMessage: function generateCustomMessage(order) {
+            var _this8 = this;
+
+            var customer = order.customer,
+                store_product = order.store_product,
+                order_date = order.order_date,
+                product_price = order.product_price,
+                repayment_amount = order.repayment_amount;
+            var product_name = store_product.product_name,
+                first_name = customer.first_name,
+                last_name = customer.last_name;
+            var message = void 0;
+            var isFormal = this.isOrderFormal(order);
+            var genDateArgs = {};
+            if (isFormal) genDateArgs = { startDate: order_date, interval: 28, count: 6 };
+            if (!isFormal) genDateArgs = { startDate: order_date, interval: 14, count: 12 };
+            var dates = this.generateDates(genDateArgs);
+
+            var repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
+            if (this.list === 1) {
+                message = "Hello " + first_name + " " + last_name + ", thanks for patronizing us." + " The following is the breakdown of the repayment plan for" + (" the purchase of " + product_name + ":%0a");
+                if (dates.length > 0) dates.forEach(function (date, index) {
+                    return message += _this8.getColumn(index + 1) + ": " + date + " => " + _this8.$formatCurrency(repayment_amount) + "%0a";
+                });
+            } else {
+                message = "Hello " + first_name + " " + last_name + ", This is to remind you that your" + (" " + this.$getColumn(parseInt(repaymentLevel) + 1) + " repayment of " + this.$formatCurrency(product_price) + " for " + product_name) + (" will be due on " + dates[repaymentLevel] + ". we will be expecting you.");
+            }
+            return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
+        }
+    },
+
+    mounted: function mounted() {
+        var _this9 = this;
+
+        console.log(this.preLoadedOrder);
+
+        this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
+
+        $(document).on("hidden.bs.modal", '.modal', function () {
+            _this9.currentOrder = null;
+            _this9.showModalContent = false;
+        });
+    }
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21,124 +1046,321 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
-    props: { title: '', desc: '', url: '', url_c: '', aces: { default: true } }
-    /*title is the card title also mean the portal title.
-    * desc is a few word description of the portal
-    * url is the link to the portal
-    * url_c is the caption for the link
-    * aces is used in situations when a particular portal is accessible to only few person in a
-    * department hence from the parent component the aces will be set to false is want
-    * only few people to access it. true means everyone in that dept can access it.*/
+    props: {
+        title: '',
+        buttonTitle: null,
+        to: null
+    }
 };
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/order/orderList.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-   value: true
+    value: true
 });
 
-var _portalCard = __webpack_require__("./resources/assets/js/components/portalCard.vue");
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
-var _portalCard2 = _interopRequireDefault(_portalCard);
+var _vue2 = _interopRequireDefault(_vue);
+
+var _log = __webpack_require__("./resources/assets/js/utilities/log.js");
+
+var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
+
+var _flash2 = _interopRequireDefault(_flash);
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+var _customHeader = __webpack_require__("./resources/assets/js/components/customHeader.vue");
+
+var _customHeader2 = _interopRequireDefault(_customHeader);
+
+var _Orders = __webpack_require__("./resources/assets/js/components/Orders.vue");
+
+var _Orders2 = _interopRequireDefault(_Orders);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var init = function init(to) {
+    return '/api/reminder/create';
+};
+
 exports.default = {
-   components: { PortalCard: _portalCard2.default },
-   data: function data() {
-      return {
-         portals: [{
-            url: 'employee', title: 'Staff Management', url_c: 'Manage staff Details!',
-            desc: 'For Registering new staff'
-         }, {
-            url: 'attendance', title: 'Manage Attendance', url_c: 'Manage Attendance!',
-            desc: 'Managing staff attendance'
-         }, {
-            url: 'caution', title: 'Manage Caution', url_c: 'Manage Caution!',
-            desc: 'Managing staff caution'
-         }]
-      };
-   }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
+
+    components: { CustomHeader: _customHeader2.default, Order: _Orders2.default },
+
+    data: function data() {
+        return {
+            response: {},
+            show: false
+        };
+    },
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        (0, _api.get)(init(to)).then(function (_ref) {
+            var data = _ref.data;
+            return next(function (vm) {
+                return vm.prepareForm(data);
+            });
+        }).catch(function () {
+            return next(function () {
+                return _flash2.default.setError('Error Preparing form');
+            });
+        });
+    },
+
+    methods: {
+        prepareForm: function prepareForm(data) {
+            //console.log(data);
+            var orders = data.orders.data,
+                payment_methods = data.payment_methods,
+                banks = data.banks,
+                dva_id = data.dva_id,
+                branch = data.branch;
+
+            this.response = { payment_methods: payment_methods, banks: banks, dva_id: dva_id, branch: branch, orders: orders };
+
+            //console.log(this.response);
+
+            this.show = true;
+        }
+    }
+};
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57fa0ac8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Orders.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.table-separator[data-v-57fa0ac8] {\n    border-top: 2px solid #dee1e4;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.aces
-    ? _c("div", { staticClass: "col-md-4 col-sm-6 float-left product p-4" }, [
-        _c("div", { staticClass: "portal-card clearfix" }, [
-          _c("div", { staticClass: "first portion clearfix" }, [
-            _c("span", { staticClass: "deco" }),
-            _c("span", { staticClass: "deco second" }),
-            _vm._v(" "),
-            _c("span", { staticClass: "portal-title" }, [
-              _vm._v(_vm._s(_vm._f("capitalize")(_vm.title)))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "portion clearfix" }, [
-            _c("p", [_vm._v(_vm._s(_vm._f("capitalize")(_vm.desc)))]),
-            _vm._v(" "),
-            _c("h6", { staticStyle: { "margin-top": "2rem" } }, [
-              _vm._v(_vm._s(_vm._f("capitalize")(_vm.url_c)))
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "deco-down first" }),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "deco-down second" },
+  return _c("div", { staticClass: "mt-5 attendance-head" }, [
+    _c("div", { staticClass: "mb-5 row align-items-center" }, [
+      _c("div", { staticClass: "col-12 title-con" }, [
+        _c("span", { staticClass: "title" }, [
+          _vm._v(_vm._s(_vm._f("capitalize")(_vm.title)))
+        ]),
+        _vm._v(" "),
+        _vm.to
+          ? _c(
+              "div",
+              { staticClass: "row justify-content-end" },
               [
                 _c(
                   "router-link",
-                  {
-                    staticClass: "btn bg-default btn-round m-0",
-                    attrs: { to: _vm.url }
-                  },
-                  [
-                    _vm._v("\n                   continue "),
-                    _c("span", { staticClass: "custom-icon ml-2" }, [
-                      _c("i", { staticClass: "now-ui-icons ui-1_send" })
-                    ])
-                  ]
+                  { staticClass: "text-link mt-3", attrs: { to: _vm.to } },
+                  [_vm._v(_vm._s(_vm.buttonTitle))]
                 )
               ],
               1
             )
-          ])
-        ])
+          : _vm._e()
       ])
-    : _vm._e()
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -146,13 +1368,1348 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-28781233", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-02013d35", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b67afb58\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/HomePage.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5522319a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/OrderItem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "mb-3 row attendance-item" }, [
+    _c(
+      "div",
+      {
+        staticClass: "col-12 col-xs-2 col-md col-lg d-flex align-items-center",
+        staticStyle: { "max-width": "120px" }
+      },
+      [
+        _vm.reminder.canBeSelected && _vm.mode === "call"
+          ? _c(
+              "span",
+              {
+                staticClass: "user mx-auto waiting-reminder",
+                on: { click: _vm.logReminder }
+              },
+              [_c("i", { staticClass: "fas fa-hourglass-start" })]
+            )
+          : _vm.reminder.canBeSelected && _vm.mode === "sms"
+            ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.selected,
+                      expression: "selected"
+                    }
+                  ],
+                  staticClass:
+                    "form-check-input my-0 mx-4 float-left position-relative ",
+                  attrs: { type: "checkbox" },
+                  domProps: {
+                    checked: Array.isArray(_vm.selected)
+                      ? _vm._i(_vm.selected, null) > -1
+                      : _vm.selected
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.toggleSelect(!_vm.selected)
+                    },
+                    change: function($event) {
+                      var $$a = _vm.selected,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.selected = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.selected = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.selected = $$c
+                      }
+                    }
+                  }
+                })
+              ])
+            : _c("span", { staticClass: "user mx-auto sent-reminder" }, [
+                _c("i", { staticClass: "fas fa-check" })
+              ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "user mx-auto" }, [
+          _vm._v(_vm._s(_vm.index + 1))
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center"
+      },
+      [_vm._v("\n        " + _vm._s(_vm.$vnode.key) + "\n    ")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+        attrs: { "data-hoverable": "true" },
+        on: {
+          click: function($event) {
+            _vm.$emit("display", _vm.order, "purchase_order")
+          }
+        }
+      },
+      [_vm._v("\n        " + _vm._s(_vm.order.order_date) + "\n    ")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center",
+        attrs: { "data-hoverable": "true" },
+        on: {
+          click: function($event) {
+            _vm.$emit("display", _vm.order, "customer_info")
+          }
+        }
+      },
+      [
+        _vm._v(
+          "\n        ID: " +
+            _vm._s(_vm.order.customer.id) +
+            " - " +
+            _vm._s(_vm._f("capitalize")(_vm.order.customer.employment_status)) +
+            "\n    "
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+        attrs: { "data-hoverable": "true" },
+        on: {
+          click: function($event) {
+            _vm.$emit("display", _vm.order, "repayment")
+          }
+        }
+      },
+      [_vm._v("\n        " + _vm._s(_vm.getFinancialStatus) + "\n    ")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center",
+        attrs: { "data-hoverable": "true" },
+        on: {
+          click: function($event) {
+            _vm.$emit("display", _vm.order, "reminder_history")
+          }
+        }
+      },
+      [
+        _vm._v(
+          "\n        " +
+            _vm._s(_vm.order.reminders.length) +
+            " reminder(s) sent\n    "
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm.mode === "call"
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
+          },
+          [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.reminder.feedback,
+                  expression: "reminder.feedback"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { rows: "1", disabled: !_vm.reminder.canBeSelected },
+              domProps: { value: _vm.reminder.feedback },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.reminder, "feedback", $event.target.value)
+                }
+              }
+            })
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.mode === "call"
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "col-12 col-xs-2 col-md col-lg d-flex align-items-center"
+          },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.promiseCall.date,
+                  expression: "promiseCall.date"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "date", disabled: !_vm.reminder.canBeSelected },
+              domProps: { value: _vm.promiseCall.date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.promiseCall, "date", $event.target.value)
+                }
+              }
+            })
+          ]
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5522319a", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-57fa0ac8\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Orders.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.show
+      ? _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane active text-center",
+              attrs: { id: "reminder-panel", role: "tabpanel" }
+            },
+            _vm._l(_vm.orders, function(order, index) {
+              return _c("order-item", {
+                key: order.id,
+                attrs: {
+                  index: index,
+                  order: order,
+                  dva_id: _vm.dva_id,
+                  "is-repayment-valid": _vm.isRepaymentValid(order),
+                  "get-count-and-repayment-data": _vm.getCountAndRepaymentData(
+                    order
+                  ),
+                  "pay-summary": _vm.calcPaymentSummary(order),
+                  "repayment-level": _vm.getRepaymentLevel(order),
+                  mode: _vm.mode
+                },
+                on: {
+                  done: function($event) {
+                    _vm.fetchList(_vm.list)
+                  },
+                  updateReminderList: _vm.updateReminder,
+                  display: _vm.displayDetails
+                }
+              })
+            })
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-100 my-5 mx-0 hr" })
+        ])
+      : _c("div", { staticClass: "tab-content mt-1 attendance-body" }, [
+          _vm._m(0)
+        ]),
+    _vm._v(" "),
+    _vm.show && _vm.mode === "sms"
+      ? _c("div", { staticClass: "mt-1 attendance-body" }, [
+          _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
+            _c(
+              "div",
+              { staticClass: "clearfix d-flex justify-content-end w-100" },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn bg-default",
+                    attrs: { disabled: _vm.$isProcessing },
+                    on: { click: _vm.processSelected }
+                  },
+                  [
+                    _vm._v("\n                    Send Reminder(s) "),
+                    _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                  ]
+                )
+              ]
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal fade", attrs: { id: "purchase_order" } }, [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _vm.showModalContent
+            ? _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    { staticClass: "table table-bordered table-striped" },
+                    [
+                      _c("tbody", [
+                        _c("tr", [
+                          _c("th", [_vm._v("Order ID")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(_vm.currentOrder.id))])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Order date")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.order_date))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Product")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.store_product.product_name
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Repayment")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$formatCurrency(
+                                  _vm.currentOrder.repayment_amount
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Down Payment")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$formatCurrency(
+                                  _vm.currentOrder.down_payment
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Discount (%)")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("capitalize")(
+                                  _vm.getDiscount(_vm.currentOrder)
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Sale Type")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("capitalize")(
+                                  _vm.currentOrder.sales_type.name
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Total amount to Pay")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$formatCurrency(
+                                  _vm.currentOrder.product_price
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Processed by")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder["floor_agent"]
+                                  ? _vm.currentOrder.floor_agent.full_name
+                                  : null
+                              )
+                            )
+                          ])
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(2)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal fade", attrs: { id: "customer_info" } }, [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(3),
+          _vm._v(" "),
+          _vm.showModalContent
+            ? _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    { staticClass: "table table-bordered table-striped" },
+                    [
+                      _c("tbody", [
+                        _c("tr", [
+                          _c("th", [_vm._v("Customer ID")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.customer.id))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Full Name")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$getCustomerFullName(
+                                  _vm.currentOrder.customer
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Address")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.$getCustomerAddress(
+                                  _vm.currentOrder.customer
+                                )
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Phone")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.currentOrder.customer.telephone))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Branch")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(_vm.currentOrder.customer.branch.name)
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Category")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer.employment_status
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Work guarantor name")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer
+                                  .work_guarantor_first_name +
+                                  " " +
+                                  _vm.currentOrder.customer
+                                    .work_guarantor_last_name +
+                                  " - " +
+                                  _vm.currentOrder.customer
+                                    .work_guarantor_relationship
+                              ) + "\n                                "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Work guarantor phone")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer.work_guarantor_telno
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Personal guarantor name")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer
+                                  .personal_guarantor_first_name +
+                                  " " +
+                                  _vm.currentOrder.customer
+                                    .personal_guarantor_last_name +
+                                  " - " +
+                                  _vm.currentOrder.customer
+                                    .personal_guarantor_relationship
+                              ) + "\n                                "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Personal guarantor phone")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.currentOrder.customer
+                                  .personal_guarantor_telno
+                              )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("Verified by")]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-link",
+                                  attrs: {
+                                    target: "_blank",
+                                    to:
+                                      "/dva/verification?id=" +
+                                      _vm.currentOrder.customer.id
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                        click here to see verifications status\n                                    "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(4)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "modal fade repayment", attrs: { id: "repayment" } },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
+          [
+            _vm.showModalContent
+              ? _c("div", { staticClass: "modal-content" }, [
+                  _c("div", { staticClass: "modal-header py-2" }, [
+                    _c("h6", { staticClass: "modal-title py-1" }, [
+                      _vm._v(
+                        "\n                        Repayment Plan/Summary - " +
+                          _vm._s(
+                            _vm._f("capitalize")(
+                              _vm.currentOrder.customer.employment_status
+                            )
+                          ) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(5)
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "table-responsive" }, [
+                      _c("h5", { staticClass: "mt-3 mb-0" }, [
+                        _vm._v("Amortization Schedule")
+                      ]),
+                      _vm._v(" "),
+                      _c("table", { staticClass: "table table-bordered" }, [
+                        _c("tbody", { staticClass: "text-center" }, [
+                          _c("tr", [
+                            _c("th", [_vm._v("Repayment")]),
+                            _vm._v(" "),
+                            _vm._m(6),
+                            _vm._v(" "),
+                            _vm._m(7),
+                            _vm._v(" "),
+                            _vm._m(8),
+                            _vm._v(" "),
+                            _vm._m(9),
+                            _vm._v(" "),
+                            _vm._m(10),
+                            _vm._v(" "),
+                            _vm._m(11),
+                            _vm._v(" "),
+                            _vm.isCurrentOrderInformal
+                              ? _c("td", [
+                                  _vm._v("7"),
+                                  _c("sup", [_vm._v("th")])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.isCurrentOrderInformal
+                              ? _c("td", [
+                                  _vm._v("8"),
+                                  _c("sup", [_vm._v("th")])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.isCurrentOrderInformal
+                              ? _c("td", [
+                                  _vm._v("9"),
+                                  _c("sup", [_vm._v("th")])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.isCurrentOrderInformal
+                              ? _c("td", [
+                                  _vm._v("10"),
+                                  _c("sup", [_vm._v("th")])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.isCurrentOrderInformal
+                              ? _c("td", [
+                                  _vm._v("11"),
+                                  _c("sup", [_vm._v("th")])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.isCurrentOrderInformal
+                              ? _c("td", [
+                                  _vm._v("12"),
+                                  _c("sup", [_vm._v("th")])
+                                ])
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            { staticClass: "table-separator" },
+                            [
+                              _c("th", [_vm._v("Due Date")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getRepayment(_vm.currentOrder),
+                                function(date) {
+                                  return _c("td", [_vm._v(_vm._s(date))])
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            [
+                              _c("th", [_vm._v("Actual Pay Day")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getRepayment(_vm.currentOrder, "_date"),
+                                function(date) {
+                                  return _c("td", [_vm._v(_vm._s(date))])
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            { staticClass: "table-separator" },
+                            [
+                              _c("th", [_vm._v("Status")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getPaymentStatusClasses(_vm.currentOrder),
+                                function(status) {
+                                  return _c("td", { class: status.class }, [
+                                    _c("i", {
+                                      staticClass: "fas",
+                                      class: status.icon
+                                    })
+                                  ])
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            { staticClass: "table-separator" },
+                            [
+                              _c("th", [_vm._v("Repayment Amount")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getRepayment(
+                                  _vm.currentOrder,
+                                  "repayments"
+                                ),
+                                function(payment) {
+                                  return _c("td", [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.$formatCurrency(payment)) +
+                                        "\n                                "
+                                    )
+                                  ])
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            [
+                              _c("th", [_vm._v("Actual Amount Paid")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getRepayment(_vm.currentOrder, "_pay"),
+                                function(payment) {
+                                  return _c("td", [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.$formatCurrency(payment)) +
+                                        "\n                                "
+                                    )
+                                  ])
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            { staticClass: "table-separator" },
+                            [
+                              _c("th", [_vm._v("Payment Method")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getRepayment(
+                                  _vm.currentOrder,
+                                  "_payment_method"
+                                ),
+                                function(repaymentMethod) {
+                                  return _c(
+                                    "td",
+                                    { staticClass: "text-capitalize" },
+                                    [
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(
+                                            _vm.convertPaymentMethodOrBankToName(
+                                              repaymentMethod,
+                                              "payment_methods"
+                                            )
+                                          ) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                }
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "tr",
+                            [
+                              _c("th", [_vm._v("Bank")]),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.getRepayment(
+                                  _vm.currentOrder,
+                                  "_payment_bank"
+                                ),
+                                function(repaymentBank) {
+                                  return _c(
+                                    "td",
+                                    { staticClass: "text-capitalize" },
+                                    [
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(
+                                            _vm.convertPaymentMethodOrBankToName(
+                                              repaymentBank,
+                                              "banks"
+                                            )
+                                          ) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                }
+                              )
+                            ],
+                            2
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("h5", { staticClass: "mt-5 mb-0" }, [
+                        _vm._v("Payment Summary")
+                      ]),
+                      _vm._v(" "),
+                      _c("table", { staticClass: "table table-bordered" }, [
+                        _c("tbody", { staticClass: "text-center" }, [
+                          _c("tr", { staticClass: "table-separator" }, [
+                            _c("td", { staticClass: "text-left" }, [
+                              _vm._v("Discount Detail (%)")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(
+                                    _vm._f("capitalize")(
+                                      _vm.currentOrder["discount"]["name"]
+                                    )
+                                  ) +
+                                  "\n                                    -\n                                    (" +
+                                  _vm._s(
+                                    _vm.currentOrder["discount"][
+                                      "percentage_discount"
+                                    ]
+                                  ) +
+                                  ")\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Before Discount")]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$formatCurrency(
+                                    _vm.currentOrder["product_price"]
+                                  )
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Paid")]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(_vm.paymentSummary.amountPaid))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", { staticClass: "text-left" }, [
+                              _vm._v("Discount Amount")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(_vm.paymentSummary.discountAmount))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total After Discount")]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(_vm.paymentSummary.discountedTotal))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Debt")]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(_vm.paymentSummary.outstandingDebt))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", { staticClass: "text-left" }, [
+                              _vm._v("Down Payment")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$formatCurrency(
+                                    _vm.currentOrder.down_payment
+                                  )
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Total Plus Default Fee")]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(
+                                _vm._s(_vm.paymentSummary.totalPlusDefault)
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Default Fee")]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(_vm.paymentSummary.defaultFee))
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(12)
+                ])
+              : _vm._e()
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade repayment",
+        attrs: { id: "reminder_history" }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(13),
+              _vm._v(" "),
+              _vm.showModalContent
+                ? _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "table-responsive" }, [
+                      _vm.currentOrder.reminders.length
+                        ? _c(
+                            "table",
+                            {
+                              staticClass: "table table-bordered table-striped"
+                            },
+                            [
+                              _vm._m(14),
+                              _vm._v(" "),
+                              _c(
+                                "tbody",
+                                _vm._l(_vm.currentOrder.reminders, function(
+                                  reminder,
+                                  index
+                                ) {
+                                  return _c("tr", [
+                                    _c("th", [_vm._v(_vm._s(index + 1))]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$dateTimeConvert(reminder.date)
+                                        )
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [_vm._v(_vm._s(reminder.type))]),
+                                    _vm._v(" "),
+                                    _c("td", {
+                                      domProps: {
+                                        innerHTML: _vm._s(
+                                          _vm.renderMessage(reminder)
+                                        )
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm._v(_vm._s(reminder.user.full_name))
+                                    ])
+                                  ])
+                                })
+                              )
+                            ]
+                          )
+                        : _c("div", { staticClass: "my-4 text-center" }, [
+                            _vm._v(
+                              "\n                            no reminders have been sent yet!\n                        "
+                            )
+                          ])
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(15)
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "tab-pane active text-center" }, [
+      _c("div", { staticClass: "mb-3 row attendance-item" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "col d-flex light-heading align-items-center justify-content-center"
+          },
+          [_vm._v("\n                    No records found!\n                ")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Purchase Order Summary")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100",
+          staticStyle: { "text-align": "right" },
+          attrs: { "data-dismiss": "modal", href: "javascript:" }
+        },
+        [_vm._v("close dialogue")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Customer Info. Summary")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100 text-right",
+          attrs: { "data-dismiss": "modal", href: "#" }
+        },
+        [
+          _vm._v(
+            "\n                        close dialogue\n                    "
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "close py-1",
+        attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+      },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "modal-close text-danger",
+            attrs: { "aria-hidden": "true" }
+          },
+          [_c("i", { staticClass: "fas fa-times" })]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_vm._v("1"), _c("sup", [_vm._v("st")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_vm._v("2"), _c("sup", [_vm._v("nd")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_vm._v("3"), _c("sup", [_vm._v("rd")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_vm._v("4"), _c("sup", [_vm._v("th")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_vm._v("5"), _c("sup", [_vm._v("th")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_vm._v("6"), _c("sup", [_vm._v("th")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100",
+          staticStyle: { "text-align": "right" },
+          attrs: { "data-dismiss": "modal", href: "javascript:" }
+        },
+        [_vm._v("close dialogue")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header py-2" }, [
+      _c("h6", { staticClass: "modal-title py-1" }, [
+        _vm._v("Reminder History")
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "close py-1",
+          attrs: { "aria-label": "Close", "data-dismiss": "modal" }
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "modal-close text-danger",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("S/N")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("SMS/Feedback")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("sender")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-link mt-3 w-100",
+          staticStyle: { "text-align": "right" },
+          attrs: { "data-dismiss": "modal", href: "javascript:" }
+        },
+        [_vm._v("close dialogue")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-57fa0ac8", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-c9b61298\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/order/orderList.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -162,22 +2719,26 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
-      _vm._l(_vm.portals, function(portal) {
-        return _c(
-          "div",
-          [
-            _c("portal-card", {
-              attrs: {
-                desc: portal.desc,
-                title: portal.title,
-                url: portal.url,
-                url_c: portal.url_c
-              }
-            })
-          ],
-          1
-        )
-      })
+      { staticClass: "pt-md-3 pt-2 attendance-view", attrs: { id: "index" } },
+      [
+        _c("custom-header", { attrs: { title: "Order Lists" } }),
+        _vm._v(" "),
+        _vm.show
+          ? _c(
+              "div",
+              [
+                _c("order", {
+                  attrs: {
+                    "pre-loaded-order": _vm.response,
+                    mode: "normal-list"
+                  }
+                })
+              ],
+              1
+            )
+          : _vm._e()
+      ],
+      1
     )
   ])
 }
@@ -187,21 +2748,311 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b67afb58", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-c9b61298", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/portalCard.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57fa0ac8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Orders.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57fa0ac8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Orders.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("182478d3", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57fa0ac8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Orders.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57fa0ac8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Orders.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/lib/addStylesClient.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__("./node_modules/vue-style-loader/lib/listToStyles.js")
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/lib/listToStyles.js":
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/OrderItem.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/OrderItem.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5522319a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/OrderItem.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -218,7 +3069,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\portalCard.vue"
+Component.options.__file = "resources\\assets\\js\\components\\OrderItem.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -227,9 +3078,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-28781233", Component.options)
+    hotAPI.createRecord("data-v-5522319a", Component.options)
   } else {
-    hotAPI.reload("data-v-28781233", Component.options)
+    hotAPI.reload("data-v-5522319a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -241,15 +3092,67 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/HRM/HomePage.vue":
+/***/ "./resources/assets/js/components/Orders.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57fa0ac8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Orders.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Orders.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-57fa0ac8\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Orders.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-57fa0ac8"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Orders.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-57fa0ac8", Component.options)
+  } else {
+    hotAPI.reload("data-v-57fa0ac8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/customHeader.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b67afb58\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -266,7 +3169,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\HRM\\HomePage.vue"
+Component.options.__file = "resources\\assets\\js\\components\\customHeader.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -275,9 +3178,173 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b67afb58", Component.options)
+    hotAPI.createRecord("data-v-02013d35", Component.options)
   } else {
-    hotAPI.reload("data-v-b67afb58", Component.options)
+    hotAPI.reload("data-v-02013d35", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/utilities/event-bus.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EventBus = undefined;
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EventBus = exports.EventBus = new _vue2.default();
+
+/***/ }),
+
+/***/ "./resources/assets/js/utilities/log.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.log = log;
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+function log(action, description) {
+    /*actions is the action performed
+    * description is reference of the data the action was taken on*/
+    action = action.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
+        return str.toUpperCase();
+    });
+    //formats and capitalize the action performed
+    (0, _api.post)('/api/log', { action: action, description: description });
+    //and logs then on the log table;
+}
+
+/***/ }),
+
+/***/ "./resources/assets/js/utilities/sms.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Message = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Message = exports.Message = function () {
+    function Message(message, contacts) {
+        var logToDB = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        var userId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+        _classCallCheck(this, Message);
+
+        this.user_id = userId;
+        this.message = message;
+        this.logToDB = logToDB;
+        this.contacts = contacts.split(",").filter(function (e) {
+            return (/\S/.test(e)
+            );
+        }).map(function (contact) {
+            return '234' + contact.trim().substr(1);
+        }).join(',');
+        this.setPages();
+        this.setContactCount();
+    }
+
+    _createClass(Message, [{
+        key: "setContactCount",
+        value: function setContactCount() {
+            this.contact_count = this.contacts.split(',').length;
+        }
+    }, {
+        key: "setPages",
+        value: function setPages() {
+            this.pages = Math.ceil(this.message.length / 160);
+        }
+    }, {
+        key: "send",
+        value: function send(callback) {
+            var _this = this;
+
+            (0, _api.get)("/api/message/create?to=" + this.contacts + "&message=" + this.message).then(function (res) {
+                if (res.status === 200 && _this.logToDB) {
+                    delete _this.logToDB;
+                    (0, _api.post)('/api/message', _this);
+                }
+                return !!callback && callback(res);
+            }).catch(function (err) {
+                return !!callback && callback(err);
+            });
+        }
+    }]);
+
+    return Message;
+}();
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/DVA/order/orderList.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/order/orderList.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-c9b61298\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/order/orderList.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\DVA\\order\\orderList.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c9b61298", Component.options)
+  } else {
+    hotAPI.reload("data-v-c9b61298", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

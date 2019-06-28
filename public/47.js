@@ -43,7 +43,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64,23 +64,20 @@ exports.default = {
     data: function data() {
         return {
             portals: [{
-                url: 'verification', title: 'Document Verification', url_c: 'Verify Registered Customer!',
-                desc: 'For Verification of registered customers'
+                url: 'inventory', title: 'Inventory', url_c: 'View Inventory!',
+                desc: 'For inventory and management'
             }, {
-                url: 'customer/update', title: 'Customer Update', url_c: 'Update customers details!',
-                desc: 'For Updating existing customers details'
+                url: 'suppliers', title: 'Manage Suppliers', url_c: 'Create/Update Supplier',
+                desc: 'Manage all the suppliers details!'
             }, {
-                url: 'message', title: 'Messaging', url_c: 'Send messages!',
-                desc: 'For sending messages to customers'
+                url: 'brands', title: 'Manage Brands', url_c: 'Create/Update Brands',
+                desc: 'Manage all the brands details!'
             }, {
-                url: 'reminder/sms', title: 'Customer SMS Reminder', url_c: 'View SMS reminders',
-                desc: 'View all due/sent SMS reminders!'
+                url: 'categories', title: 'Manage Categories', url_c: 'Create/Update Categories',
+                desc: 'Manage all the category details!'
             }, {
-                url: 'reminder/call', title: 'Customer Call Reminder', url_c: 'View Call reminders',
-                desc: 'View all due Call reminders!'
-            }, {
-                url: '/customer', title: 'Customer List', url_c: 'View Customer List',
-                desc: 'View all registered customers!'
+                url: 'products', title: 'Manage Products', url_c: 'Create/Update Products',
+                desc: 'Manage all the product details!'
             }]
         };
     }
@@ -93,47 +90,6 @@ exports.default = {
 //
 //
 //
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20f97f30\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/HomePage.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "fade" } }, [
-    _c(
-      "div",
-      _vm._l(_vm.portals, function(portal) {
-        return _c(
-          "div",
-          [
-            _c("portal-card", {
-              attrs: {
-                url: portal.url,
-                title: portal.title,
-                url_c: portal.url_c,
-                desc: portal.desc
-              }
-            })
-          ],
-          1
-        )
-      })
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-20f97f30", module.exports)
-  }
-}
 
 /***/ }),
 
@@ -202,6 +158,48 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b75fd5a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/HomePage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      _vm._l(_vm.portals, function(portal) {
+        return _c(
+          "div",
+          [
+            _c("portal-card", {
+              attrs: {
+                url: portal.url,
+                title: portal.title,
+                url_c: portal.url_c,
+                desc: portal.desc,
+                aces: portal.aces
+              }
+            })
+          ],
+          1
+        )
+      })
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5b75fd5a", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/portalCard.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -250,15 +248,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/DVA/HomePage.vue":
+/***/ "./resources/assets/js/views/LOG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/HomePage.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20f97f30\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b75fd5a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/HomePage.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -275,7 +273,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\HomePage.vue"
+Component.options.__file = "resources\\assets\\js\\views\\LOG\\HomePage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -284,9 +282,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-20f97f30", Component.options)
+    hotAPI.createRecord("data-v-5b75fd5a", Component.options)
   } else {
-    hotAPI.reload("data-v-20f97f30", Component.options)
+    hotAPI.reload("data-v-5b75fd5a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

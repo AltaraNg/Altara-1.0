@@ -1,16 +1,9 @@
 <template>
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
-            <div class="mt-5 attendance-head">
-                <div class="mb-5 row align-items-center">
-                    <div class="col-12 title-con">
-                        <span class="title">Send Caution</span>
-                        <div class="row justify-content-end">
-                            <router-link class="text-link mt-3" to=".">view all cautions!</router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <custom-header :to="'.'" :title="'Send Caution'" :button-title="'view cautions!'"/>
+
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
                     <div class="p-5 row bg-white shadow-sm card-radius">
@@ -94,6 +87,7 @@
                     </div>
                 </form>
             </div>
+
         </div>
     </transition>
 </template>
@@ -103,11 +97,12 @@
     import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
     import {get, post} from "../../../utilities/api";
-    import {EventBus} from "../../../utilities/event-bus";
     import Typeahead from '../../../components/Typeahead';
+    import {EventBus} from "../../../utilities/event-bus";
+    import CustomHeader from '../../../components/customHeader';
 
     export default {
-        components: {Typeahead},
+        components: {Typeahead,CustomHeader},
         data() {
             return {
                 users: null,

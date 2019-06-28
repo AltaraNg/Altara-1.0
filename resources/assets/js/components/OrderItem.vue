@@ -2,7 +2,8 @@
     <div class="mb-3 row attendance-item">
 
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
-            <span v-if="reminder.canBeSelected && mode === 'call'" class="user mx-auto waiting-reminder"
+            <span v-if="mode === 'normal-list'"></span>
+            <span v-else-if="reminder.canBeSelected && mode === 'call'" class="user mx-auto waiting-reminder"
                   @click="logReminder">
                 <i class="fas fa-hourglass-start"></i>
             </span>
@@ -11,7 +12,7 @@
                        v-model="selected" @click="toggleSelect(!selected)">
             </div>
             <span class="user mx-auto sent-reminder" v-else><i class="fas fa-check"></i></span>
-            <span class="user mx-auto">{{index+1}}</span>
+            <span class="user mx-auto">{{startIndex + index}}</span>
         </div>
 
         <div class="col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center">
@@ -59,9 +60,10 @@
         props: {
             mode: null,
             index: null,
+            startIndex:{default:1},
             dva_id: null,
             paySummary: null,
-            repaymentLevel:null,
+            repaymentLevel: null,
             order: {default: {}},
             isRepaymentValid: null,
             getCountAndRepaymentData: null
