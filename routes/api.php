@@ -41,6 +41,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         'dsa_daily_registration' => 'DsaDailyRegistrationController'
     ]);
     /*------*/
+    Route::post('/user/{id}/cv', 'UserController@uploadCV');
+
     Route::post('/logout', 'AuthController@logout');
     Route::get('/create', 'AuthController@create');
     Route::post('/register', 'AuthController@register');

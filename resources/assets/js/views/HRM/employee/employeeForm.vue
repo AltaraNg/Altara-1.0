@@ -499,7 +499,7 @@
                                     </div>
                                     <div v-else>
                                         <label class="cv_label mr-4">CV</label>
-                                        <image-upload :usage="`cv`" class="cv_upload" v-model="form.cv"/>
+                                        <image-upload :usage="`cv`" class="cv_upload" v-model="imgForm.cv"/>
                                     </div>
                                 </div>
                             </div>
@@ -528,7 +528,7 @@
     import {Message} from '../../../utilities/sms';
     import {log} from '../../../utilities/log';
     import Flash from '../../../utilities/flash';
-    import {byMethod, get} from '../../../utilities/api';
+    import {byMethod, get, post} from '../../../utilities/api';
     import {toMulipartedForm} from '../../../utilities/form';
     import ImageUpload from '../../../components/ImageUpload';
 
@@ -544,6 +544,9 @@
         data() {
 
             return {
+                imgForm: {
+                    cv: null
+                },
                 mode: null,
                 show: false,
                 store: '/api/user',
@@ -602,9 +605,9 @@
                             this.$LIPS(true);
                             this.error = {};
                             this.form.transfer = this.transfer;
-                            const form = toMulipartedForm(this.form, 'edit');
-                            byMethod(this.method, this.store, form)
+                            byMethod(this.method, this.store, this.form)
                                 .then(({data}) => {
+                                    if (!!this.imgForm.cv) this.onSaveCV();
                                     let {staff_id, password, message, success, transfer} = data, mode = this.mode;
                                     if (success || transfer) {
                                         let text = success ? `Welcome to Altara credit. Please secure your login
@@ -630,6 +633,15 @@
                         } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
+            },
+
+
+            onSaveCV() {
+                const cv = toMulipartedForm(this.imgForm, 'edit');
+                post(`/api/user/${this.$route.params.id}/cv`, cv)
+                    .then(({data}) => {
+                        if (data.cv_saved) Flash.setSuccess('CV Successfully updated!');
+                    })
             },
 
             viewCV(path) {
