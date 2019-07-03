@@ -726,7 +726,7 @@
                         + ` the purchase of ${product_name}:%0a`;
                     if (dates.length > 0)
                         dates.forEach((date, index) =>
-                            message += this.getColumn(index + 1) + ": " + date + " => " + this.$formatCurrency(repayment_amount) + "%0a");
+                            message += this.$getColumn(index + 1) + ": " + date + " => " + this.$formatCurrency(repayment_amount) + "%0a");
                 } else {
                     message = `Hello ${first_name} ${last_name}, This is to remind you that your`
                         + ` ${this.$getColumn(parseInt(repaymentLevel) + 1)} repayment of ${this.$formatCurrency(product_price)} for ${product_name}`
