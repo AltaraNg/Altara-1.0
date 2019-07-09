@@ -729,7 +729,7 @@
                             message += this.$getColumn(index + 1) + ": " + date + " => " + this.$formatCurrency(repayment_amount) + "%0a");
                 } else {
                     message = `Hello ${first_name} ${last_name}, This is to remind you that your`
-                        + ` ${this.$getColumn(parseInt(repaymentLevel) + 1)} repayment of ${this.$formatCurrency(product_price)} for ${product_name}`
+                        + ` ${this.$getColumn(parseInt(repaymentLevel) + 1)} repayment of ${this.$formatCurrency(repayment_amount)} for ${product_name}`
                         + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
                 }
                 return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
