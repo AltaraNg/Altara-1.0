@@ -11,13 +11,14 @@
                         :order="order"
                         :dva_id="dva_id"
                         :is-repayment-valid="isRepaymentValid(order)"
-                        :get-count-and-repayment-data="getCountAndRepaymentData(order)"
+
                         :pay-summary="calcPaymentSummary(order)"
                         :repayment-level="getRepaymentLevel(order)"
                         :mode="mode"
                         @done="fetchList(list)"
                         @updateReminderList="updateReminder"
                         @display="displayDetails"/>
+<!--                :get-count-and-repayment-data="getCountAndRepaymentData(order)"-->
             </div>
             <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
         </div>
@@ -202,6 +203,8 @@
                                 <tbody class="text-center">
                                 <tr>
                                     <th>Repayment</th>
+
+
                                     <td>1<sup>st</sup></td>
                                     <td>2<sup>nd</sup></td>
                                     <td>3<sup>rd</sup></td>
@@ -360,7 +363,7 @@
     export default {
         components: {OrderItem},
 
-        props: {list: {default: null}, mode: null, preLoadedOrder: null, startIndex:null},
+        props: {list: {default: null}, mode: null, preLoadedOrder: null, startIndex: null},
 
         watch: {
             list: function (list) {
@@ -395,7 +398,8 @@
 
                 this.orders = res.orders.filter(order => {
 
-                    let {count, repaymentData} = this.getCountAndRepaymentData(order);
+                    //let {count, repaymentData} = this.getCountAndRepaymentData(order);
+                    let {/*count,*/ repaymentData} = this.getCountAndRepaymentData(order), {count, interval} = this.amortizationPlan(order);
 
                     let hasMissedPayment = () => {
                         /*for the list 1 and 8 return true i.e no need for has
@@ -432,7 +436,7 @@
                         /*step 1::
                         * the count is either 7 or 13,
                         * the loop runs for 6 or 12 times*/
-                        for (let i = 1; i < count; i++) {
+                        for (let i = 1; i < count + 1; i++) {
 
                             /*get the resultant column 1st, 2nd, 3rd etc*/
                             let column = this.$getColumn(i);
@@ -444,9 +448,11 @@
                                 * The generateDates returns an array of the due
                                 dates for the order under consideration*/
                                 payDay = this.generateDates({
-                                    interval: count === 7 ? 28 : 14,
+                                    //interval: count === 7 ? 28 : 14,
+                                    interval/*: count === 7 ? 28 : 14*/,
                                     startDate: order.order_date,
-                                    count: count - 1
+                                    //count: count - 1
+                                    count/*: count - 1*/
                                 })[i - 1];
                                 /*[i - 1] explained.
                                 * eg if the i = 5,
@@ -549,9 +555,9 @@
             },
 
             getCountAndRepaymentData(order) {
-                let data = {};
-                if (order['repayment_formal'] != null) data = {count: 7, repaymentData: order.repayment_formal};
-                if (order['repayment_informal'] != null) data = {count: 13, repaymentData: order.repayment_informal};
+                let data = {count: this.amortizationPlan(order).count};
+                if (order['repayment_formal'] != null) data.repaymentData = order.repayment_formal;
+                if (order['repayment_informal'] != null) data.repaymentData = order.repayment_informal;
                 return data;
             },
 
@@ -560,18 +566,27 @@
                 let amountPerDefault = 500;
                 let fmt = cur => this.$formatCurrency(cur);
                 let amountPaid = parseInt(order.down_payment);
-                let {count, repaymentData} = this.getCountAndRepaymentData(order);
+                let {count, interval} = this.amortizationPlan(order);
+                //let {count, repaymentData} = this.getCountAndRepaymentData(order);
+                let {/*count,*/ repaymentData} = this.getCountAndRepaymentData(order);
+
 
                 let dueDates = this.generateDates({
                     startDate: order.order_date,
-                    interval: count === 7 ? 28 : 14,
-                    count: count - 1
+                    //interval: count === 7 ? 28 : 14,
+                    interval/*: count === 7 ? 28 : 14*/,
+                    //count: count - 1
+                    count/*: count - 1*/
                 });
 
                 dueDates.forEach((dueDate, index) => this.isPaymentDue(this.$getDate(new Date(dueDate).addDays(5))) &&
                     datesDefaulted.push({dueDate, actualPayDate: repaymentData[this.$getColumn(index) + "_date"]}));
 
-                for (let i = 1; i < count; i++) amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
+                for (let i = 1; i < count+1; i++) amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
+
+
+                //console.log(amountPaid, repaymentData, count, order.order_date <= '2019-07-07', order.order_date);
+
                 let discountAmount = (order['discount']['percentage_discount'] / 100) * order["product_price"];
                 let defaultFee = datesDefaulted.length * amountPerDefault;
                 let discountedTotal = order["product_price"] - discountAmount;
@@ -587,29 +602,22 @@
 
             getRepayment(order, clause = null) {
                 if (!this.isRepaymentValid(order)) return null;
-                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order);
-                if (clause === null) {
-                    return this.generateDates({
-                        startDate: order.order_date,
-                        interval: count === 7 ? 28 : 14,
-                        count: count - 1
-                    });
-                }
-                if (clause === 'repayments') {
-                    let {repayment_amount} = order;
-                    for (let i = 1; i < count; i++)
-                        data.push(this.isCurrentOrderInformal ? repayment_amount : (repayment_amount * 2));
-                    return data;
-                }
-                for (let i = 1; i < count; i++) data.push(repaymentData[this.$getColumn(i) + clause]);
+                let data = [], {repaymentData} = this.getCountAndRepaymentData(order);
+                let {interval, count} = this.amortizationPlan(order);
+                if (clause === null) return this.generateDates({startDate: order.order_date, interval, count});
+                if (clause === 'repayments')
+                    return (new Array(count)).fill(this.$roundDownAmt(order.repayment_amount), 0, count);
+                for (let i = 1; i < count + 1; i++) data.push(repaymentData[this.$getColumn(i) + clause]);
                 return data;
             },
 
             getPaymentStatusClasses(order) {
                 if (!this.isRepaymentValid(order)) return null;
-                let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order),
+                //let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order),
+                let data = [], {/*count,*/ repaymentData} = this.getCountAndRepaymentData(order),
+                    {count/*, interval*/} =this.amortizationPlan(order),
                     dueDates = this.getRepayment(order);
-                for (let i = 1; i < count; i++) {
+                for (let i = 1; i < count+1; i++) {
                     let status = {class: null, icon: null};
                     let position = this.$getColumn(i);
                     let isDue = this.isPaymentDue(dueDates[i - 1]);
@@ -631,9 +639,12 @@
 
             getRepaymentLevel(order) {
                 if (!this.isRepaymentValid(order)) return 0;
-                let level = 0, {count, repaymentData} = this.getCountAndRepaymentData(order);
-                for (let i = 1; i < count; i++) if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
-                return level + "/" + (count - 1);
+                //let level = 0, {count, repaymentData} = this.getCountAndRepaymentData(order);
+                let level = 0, {count} = this.amortizationPlan(order), {/*count,*/ repaymentData} = this.getCountAndRepaymentData(order);
+                //for (let i = 1; i < count; i++) if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
+                for (let i = 1; i < count + 1; i++) if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
+               // return level + "/" + (count - 1);
+                return level + "/" + (count);
             },
 
             convertPaymentMethodOrBankToName(id, type) {
@@ -710,7 +721,7 @@
             },
 
             generateCustomMessage(order) {
-                const {customer, store_product, order_date, product_price, repayment_amount} = order;
+                const {customer, store_product, order_date, repayment_amount} = order;
                 const {product_name} = store_product, {first_name, last_name} = customer;
                 let message;
                 let isFormal = this.isOrderFormal(order);
@@ -726,14 +737,47 @@
                         + ` the purchase of ${product_name}:%0a`;
                     if (dates.length > 0)
                         dates.forEach((date, index) =>
-                            message += this.$getColumn(index + 1) + ": " + date + " => " + this.$formatCurrency(repayment_amount) + "%0a");
+                            message += this.$getColumn(index + 1) + ": " + date + " => " + this.$formatCurrency(this.$roundDownAmt(repayment_amount)) + "%0a");
                 } else {
                     message = `Hello ${first_name} ${last_name}, This is to remind you that your`
-                        + ` ${this.$getColumn(parseInt(repaymentLevel) + 1)} repayment of ${this.$formatCurrency(repayment_amount)} for ${product_name}`
+                        + ` ${this.$getColumn(parseInt(repaymentLevel) + 1)} repayment of ${this.$formatCurrency(this.$roundDownAmt(repayment_amount))} for ${product_name}`
                         + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
                 }
                 return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
             },
+
+            amortizationPlan(order) {
+                //'2019-07-07' this is the date the bank draft was implemented
+                // and hence used as a factor to check for
+                // if amortization should be 12 or 6
+                let interval, count;
+
+                if (order.order_date <= '2019-07-07') {
+                    if (order['repayment_formal'] != null) {
+                        interval = 28;
+                        count = 6;
+                    }
+                    if (order['repayment_informal'] != null) {
+                        interval = 14;
+                        count = 12;
+                    }
+                    return {interval, count};
+                }
+
+                if (order.order_date > '2019-07-07' && this.isBankDraftAvailable(order) && this.isOrderFormal) {
+                    interval = 28;
+                    count = 6;
+                } else {
+                    interval = 14;
+                    count = 12;
+                }
+                return {interval, count};
+            },
+
+            isBankDraftAvailable(){
+                //this is where the code for checking for bank draft will go
+                return false;
+            }
         },
 
         mounted() {

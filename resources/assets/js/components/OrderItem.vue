@@ -66,7 +66,7 @@
             repaymentLevel: null,
             order: {default: {}},
             isRepaymentValid: null,
-            getCountAndRepaymentData: null
+            //getCountAndRepaymentData: null
         },
 
         data() {

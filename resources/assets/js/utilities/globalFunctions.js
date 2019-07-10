@@ -65,6 +65,8 @@ Vue.prototype.$getDate = (date = new Date(), monthStartsFromZero = true) => {
         + `${toTwoDigits(date.getDate())}`;
 };
 
+//this is used to round down an amount to the nearest hundred
+Vue.prototype.$roundDownAmt = amount => (Math.floor(amount / 100) * 100);
 
 /**return the network status(true | false) of the system if connected to a
  network not NB: this doesn't work with internet access. it only
