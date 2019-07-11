@@ -11,14 +11,12 @@
                         :order="order"
                         :dva_id="dva_id"
                         :is-repayment-valid="isRepaymentValid(order)"
-
                         :pay-summary="calcPaymentSummary(order)"
                         :repayment-level="getRepaymentLevel(order)"
                         :mode="mode"
                         @done="fetchList(list)"
                         @updateReminderList="updateReminder"
                         @display="displayDetails"/>
-<!--                :get-count-and-repayment-data="getCountAndRepaymentData(order)"-->
             </div>
             <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
         </div>
@@ -203,20 +201,7 @@
                                 <tbody class="text-center">
                                 <tr>
                                     <th>Repayment</th>
-
-
-                                    <td>1<sup>st</sup></td>
-                                    <td>2<sup>nd</sup></td>
-                                    <td>3<sup>rd</sup></td>
-                                    <td>4<sup>th</sup></td>
-                                    <td>5<sup>th</sup></td>
-                                    <td>6<sup>th</sup></td>
-                                    <td v-if="isCurrentOrderInformal">7<sup>th</sup></td>
-                                    <td v-if="isCurrentOrderInformal">8<sup>th</sup></td>
-                                    <td v-if="isCurrentOrderInformal">9<sup>th</sup></td>
-                                    <td v-if="isCurrentOrderInformal">10<sup>th</sup></td>
-                                    <td v-if="isCurrentOrderInformal">11<sup>th</sup></td>
-                                    <td v-if="isCurrentOrderInformal">12<sup>th</sup></td>
+                                    <td v-for="caption in repaymentCaption(currentOrder)" v-html="caption"></td>
                                 </tr>
                                 <tr class="table-separator">
                                     <th>Due Date</th>
@@ -384,7 +369,6 @@
                 paymentSummary: null,
                 payment_methods: null,
                 showModalContent: false,
-                isCurrentOrderInformal: null
             }
         },
 
@@ -398,8 +382,7 @@
 
                 this.orders = res.orders.filter(order => {
 
-                    //let {count, repaymentData} = this.getCountAndRepaymentData(order);
-                    let {/*count,*/ repaymentData} = this.getCountAndRepaymentData(order), {count, interval} = this.amortizationPlan(order);
+                    let {repaymentData} = this.getCountAndRepaymentData(order), {count, interval} = this.amortizationPlan(order);
 
                     let hasMissedPayment = () => {
                         /*for the list 1 and 8 return true i.e no need for has
@@ -447,13 +430,7 @@
                                 /*step 3. find the corresponding due date for the vacant pay
                                 * The generateDates returns an array of the due
                                 dates for the order under consideration*/
-                                payDay = this.generateDates({
-                                    //interval: count === 7 ? 28 : 14,
-                                    interval/*: count === 7 ? 28 : 14*/,
-                                    startDate: order.order_date,
-                                    //count: count - 1
-                                    count/*: count - 1*/
-                                })[i - 1];
+                                payDay = this.generateDates({startDate: order.order_date, interval, count})[i - 1];
                                 /*[i - 1] explained.
                                 * eg if the i = 5,
                                 * column = 5th_pay,
@@ -512,7 +489,7 @@
                 this.$LIPS(false);
             },
 
-            isOrderFormal: ({repayment_informal}) => repayment_informal === null,
+            isOrderFormal: order => ['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()),
 
             generateDates({startDate, interval, count}) {
                 let dates = [];
@@ -524,8 +501,7 @@
                 return dates;
             },
 
-            renderMessage: reminder =>
-                !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback,
+            renderMessage: reminder => !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback,
 
             fetchList(list) {
                 this.$LIPS(true);
@@ -543,13 +519,11 @@
 
             getDiscount: ({discount}) => `${discount.name} (${discount.percentage_discount})`,
 
-            isRepaymentValid: order =>
-                !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']),
+            isRepaymentValid: order => !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']),
 
             displayDetails(order, modal) {
                 this.paymentSummary = this.calcPaymentSummary(order);
                 Vue.set(this.$data, 'currentOrder', order);
-                this.isCurrentOrderInformal = !(['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()));
                 this.showModalContent = true;
                 return $(`#${modal}`).modal('toggle');
             },
@@ -567,29 +541,22 @@
                 let fmt = cur => this.$formatCurrency(cur);
                 let amountPaid = parseInt(order.down_payment);
                 let {count, interval} = this.amortizationPlan(order);
-                //let {count, repaymentData} = this.getCountAndRepaymentData(order);
-                let {/*count,*/ repaymentData} = this.getCountAndRepaymentData(order);
+                let {repaymentData} = this.getCountAndRepaymentData(order);
 
-
-                let dueDates = this.generateDates({
-                    startDate: order.order_date,
-                    //interval: count === 7 ? 28 : 14,
-                    interval/*: count === 7 ? 28 : 14*/,
-                    //count: count - 1
-                    count/*: count - 1*/
-                });
-
+                let dueDates = this.generateDates({startDate: order.order_date, interval, count});
                 dueDates.forEach((dueDate, index) => this.isPaymentDue(this.$getDate(new Date(dueDate).addDays(5))) &&
                     datesDefaulted.push({dueDate, actualPayDate: repaymentData[this.$getColumn(index) + "_date"]}));
+                for (let i = 1; i < count + 1; i++) amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
 
-                for (let i = 1; i < count+1; i++) amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
 
+                let {percentage_discount: discount} = order.discount;
+                let multiplicationFactor = count === 6 ? 0.5 : 1;
+                let repaymentCoveredAsDiscount = () => discount > 0 ? (discount === 5 ? 1 :2) : 0;
+                let discountAmount = order.repayment_amount * multiplicationFactor * repaymentCoveredAsDiscount() ;
 
-                //console.log(amountPaid, repaymentData, count, order.order_date <= '2019-07-07', order.order_date);
-
-                let discountAmount = (order['discount']['percentage_discount'] / 100) * order["product_price"];
                 let defaultFee = datesDefaulted.length * amountPerDefault;
                 let discountedTotal = order["product_price"] - discountAmount;
+
                 return {
                     amountPaid: fmt(amountPaid),
                     discountAmount: fmt(discountAmount),
@@ -613,11 +580,11 @@
 
             getPaymentStatusClasses(order) {
                 if (!this.isRepaymentValid(order)) return null;
-                //let data = [], {count, repaymentData} = this.getCountAndRepaymentData(order),
-                let data = [], {/*count,*/ repaymentData} = this.getCountAndRepaymentData(order),
-                    {count/*, interval*/} =this.amortizationPlan(order),
+                let data = [],
+                    {repaymentData} = this.getCountAndRepaymentData(order),
+                    {count} = this.amortizationPlan(order),
                     dueDates = this.getRepayment(order);
-                for (let i = 1; i < count+1; i++) {
+                for (let i = 1; i < count + 1; i++) {
                     let status = {class: null, icon: null};
                     let position = this.$getColumn(i);
                     let isDue = this.isPaymentDue(dueDates[i - 1]);
@@ -639,11 +606,10 @@
 
             getRepaymentLevel(order) {
                 if (!this.isRepaymentValid(order)) return 0;
-                //let level = 0, {count, repaymentData} = this.getCountAndRepaymentData(order);
-                let level = 0, {count} = this.amortizationPlan(order), {/*count,*/ repaymentData} = this.getCountAndRepaymentData(order);
-                //for (let i = 1; i < count; i++) if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
+                let level = 0,
+                    {count} = this.amortizationPlan(order),
+                    {repaymentData} = this.getCountAndRepaymentData(order);
                 for (let i = 1; i < count + 1; i++) if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
-               // return level + "/" + (count - 1);
                 return level + "/" + (count);
             },
 
@@ -723,13 +689,9 @@
             generateCustomMessage(order) {
                 const {customer, store_product, order_date, repayment_amount} = order;
                 const {product_name} = store_product, {first_name, last_name} = customer;
-                let message;
-                let isFormal = this.isOrderFormal(order);
-                let genDateArgs = {};
-                if (isFormal) genDateArgs = {startDate: order_date, interval: 28, count: 6};
-                if (!isFormal) genDateArgs = {startDate: order_date, interval: 14, count: 12};
+                let message,
+                    genDateArgs = {startDate: order_date, ...this.amortizationPlan(order)};
                 let dates = this.generateDates(genDateArgs);
-
                 let repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
                 if (this.list === 1) {
                     message = `Hello ${first_name} ${last_name}, thanks for patronizing us.`
@@ -746,13 +708,12 @@
                 return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
             },
 
-            amortizationPlan(order) {
+            amortizationPlan(order = this.currentOrder) {
                 //'2019-07-07' this is the date the bank draft was implemented
                 // and hence used as a factor to check for
                 // if amortization should be 12 or 6
                 let interval, count;
-
-                if (order.order_date <= '2019-07-07') {
+                if (new Date(order.order_date) <= new Date('2019-07-07')) {
                     if (order['repayment_formal'] != null) {
                         interval = 28;
                         count = 6;
@@ -761,22 +722,32 @@
                         interval = 14;
                         count = 12;
                     }
-                    return {interval, count};
-                }
-
-                if (order.order_date > '2019-07-07' && this.isBankDraftAvailable(order) && this.isOrderFormal) {
-                    interval = 28;
-                    count = 6;
                 } else {
-                    interval = 14;
-                    count = 12;
+                    if (this.isBankDraftAvailable(order) && this.isOrderFormal(order)) {
+                        interval = 28;
+                        count = 6;
+                    } else {
+                        interval = 14;
+                        count = 12;
+                    }
                 }
                 return {interval, count};
             },
 
-            isBankDraftAvailable(){
+            isBankDraftAvailable() {
                 //this is where the code for checking for bank draft will go
                 return false;
+            },
+
+            repaymentCaption(order) {
+                let {count} = this.amortizationPlan(order), data = [];
+                for (let i = 1; i <= count; i++) {
+                    let prefix = (this.$getColumn(i)).split('');
+                    let appendix = [];
+                    for (let j = 1; j <= 2; j++) appendix.unshift(prefix.pop());
+                    data.push(`<td>${prefix.join('')}<sup>${appendix.join('')}</sup></td>`);
+                }
+                return data
             }
         },
 

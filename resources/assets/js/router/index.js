@@ -134,7 +134,8 @@ const router = new VueRouter({
                     component: AttendanceForm,
                     name: 'attendanceCreateFsl',
                     meta: {mode: 'create'}
-                }
+                },
+                {path: 'sales', component: OrderList, name: 'sales'},
             ]
         },
         {
