@@ -91,7 +91,7 @@ const router = new VueRouter({
                     name: 'customerUpdate'
                 },
                 {path: 'verification', component: DVAVerification, name: 'verification'},
-                {path: 'sales', component: OrderList, name: 'sales'},
+                {path: 'sales', component: OrderList, name: 'sales-dva'},
 
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
@@ -135,7 +135,7 @@ const router = new VueRouter({
                     name: 'attendanceCreateFsl',
                     meta: {mode: 'create'}
                 },
-                {path: 'sales', component: OrderList, name: 'sales'},
+                {path: 'sales', component: OrderList, name: 'sales-fsl'},
             ]
         },
         {

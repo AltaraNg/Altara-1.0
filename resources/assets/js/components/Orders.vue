@@ -257,7 +257,7 @@
                                         ({{currentOrder["discount"]["percentage_discount"]}})
                                     </th>
                                     <td>Total Before Discount</td>
-                                    <th>{{$formatCurrency(currentOrder["product_price"])}}</th>
+                                    <th>{{$formatCurrency($roundDownAmt(currentOrder["product_price"]))}}</th>
                                     <td>Total Paid</td>
                                     <th>{{paymentSummary.amountPaid}}</th>
                                 </tr>
@@ -271,7 +271,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-left">Down Payment</td>
-                                    <th>{{$formatCurrency(currentOrder.down_payment)}}</th>
+                                    <th>{{$formatCurrency($roundDownAmt(currentOrder.down_payment))}}</th>
                                     <td>Total Plus Default Fee</td>
                                     <th>{{paymentSummary.totalPlusDefault}}</th>
                                     <td>Default Fee</td>
@@ -539,28 +539,28 @@
                 let datesDefaulted = [];
                 let amountPerDefault = 500;
                 let fmt = cur => this.$formatCurrency(cur);
-                let amountPaid = parseInt(order.down_payment);
+                let amountPaid = this.$roundDownAmt(parseInt(order.down_payment));
                 let {count, interval} = this.amortizationPlan(order);
                 let {repaymentData} = this.getCountAndRepaymentData(order);
 
                 let dueDates = this.generateDates({startDate: order.order_date, interval, count});
                 dueDates.forEach((dueDate, index) => this.isPaymentDue(this.$getDate(new Date(dueDate).addDays(5))) &&
                     datesDefaulted.push({dueDate, actualPayDate: repaymentData[this.$getColumn(index) + "_date"]}));
-                for (let i = 1; i < count + 1; i++) amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
-
-
+                for (let i = 1; i < count + 1; i++)
+                    amountPaid += this.$roundDownAmt(repaymentData[this.$getColumn(i) + '_pay']);
                 let {percentage_discount: discount} = order.discount;
                 let multiplicationFactor = count === 6 ? 0.5 : 1;
-                let repaymentCoveredAsDiscount = () => discount > 0 ? (discount === 5 ? 1 :2) : 0;
-                let discountAmount = order.repayment_amount * multiplicationFactor * repaymentCoveredAsDiscount() ;
+                let repaymentCoveredAsDiscount = () => discount > 0 ? (discount === 5 ? 1 : 2) : 0;
+                let discountAmount = order.repayment_amount * multiplicationFactor * repaymentCoveredAsDiscount();
+                discountAmount = this.$roundDownAmt(discountAmount);
 
                 let defaultFee = datesDefaulted.length * amountPerDefault;
-                let discountedTotal = order["product_price"] - discountAmount;
+                let discountedTotal = this.$roundDownAmt(order["product_price"] - discountAmount);
 
                 return {
                     amountPaid: fmt(amountPaid),
-                    discountAmount: fmt(discountAmount),
-                    outstandingDebt: fmt(parseInt(order["product_price"]) - amountPaid),
+                    discountAmount: fmt(this.$roundDownAmt(discountAmount)),
+                    outstandingDebt: fmt(this.$roundDownAmt(parseInt(order["product_price"]) - amountPaid)),
                     discountedTotal: fmt(discountedTotal),
                     defaultFee: fmt(defaultFee),
                     totalPlusDefault: fmt(discountedTotal + defaultFee)
