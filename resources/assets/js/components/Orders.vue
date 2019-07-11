@@ -11,14 +11,12 @@
                         :order="order"
                         :dva_id="dva_id"
                         :is-repayment-valid="isRepaymentValid(order)"
-
                         :pay-summary="calcPaymentSummary(order)"
                         :repayment-level="getRepaymentLevel(order)"
                         :mode="mode"
                         @done="fetchList(list)"
                         @updateReminderList="updateReminder"
                         @display="displayDetails"/>
-                <!--                :get-count-and-repayment-data="getCountAndRepaymentData(order)"-->
             </div>
             <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
         </div>
@@ -549,7 +547,13 @@
                 dueDates.forEach((dueDate, index) => this.isPaymentDue(this.$getDate(new Date(dueDate).addDays(5))) &&
                     datesDefaulted.push({dueDate, actualPayDate: repaymentData[this.$getColumn(index) + "_date"]}));
                 for (let i = 1; i < count + 1; i++) amountPaid += repaymentData[this.$getColumn(i) + '_pay'];
-                let discountAmount = (order['discount']['percentage_discount'] / 100) * order["product_price"];
+
+
+                let {percentage_discount: discount} = order.discount;
+                let multiplicationFactor = count === 6 ? 0.5 : 1;
+                let repaymentCoveredAsDiscount = () => discount > 0 ? (discount === 5 ? 1 :2) : 0;
+                let discountAmount = order.repayment_amount * multiplicationFactor * repaymentCoveredAsDiscount() ;
+
                 let defaultFee = datesDefaulted.length * amountPerDefault;
                 let discountedTotal = order["product_price"] - discountAmount;
 
