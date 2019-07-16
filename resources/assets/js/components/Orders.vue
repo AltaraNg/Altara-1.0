@@ -382,7 +382,8 @@
 
                 this.orders = res.orders.filter(order => {
 
-                    let {repaymentData} = this.getCountAndRepaymentData(order), {count, interval} = this.amortizationPlan(order);
+                    let {repaymentData} = this.getCountAndRepaymentData(order),
+                        {count, interval} = this.amortizationPlan(order);
 
                     let hasMissedPayment = () => {
                         /*for the list 1 and 8 return true i.e no need for has
@@ -410,7 +411,9 @@
                             /*isMonday how a boolean value of whether
                             the current date is monday or not*/
 
-                            accumulatedDays = isMonday ? 3 : 1;
+                            collectionsList = [9, 10, 11, 12, 13],
+
+                            accumulatedDays = (isMonday || collectionsList.includes(this.list)) ? 3 : 1;
                         /*accumulatedDays hold 1 or 3,
                         1 if the current date is not on a monday and
                         3 if the current date is on a monday*/
@@ -463,22 +466,49 @@
                             case 7:
                                 dayInterval = 31;
                                 break;
+
+                            case 9://collections visit: 1
+                                dayInterval = 38;
+                                break;
+                            case 10://collections visit: 2
+                                dayInterval = 45;
+                                break;
+
+                            case 11://recovery visit: 1
+                                dayInterval = 61;
+                                break;
+                            case 12://recovery visit: 2
+                                dayInterval = 75;
+                                break;
+                            case 13://recovery visit: 2
+                                dayInterval = 90;
+                                break;
+
+                            case 14://external recovery - lawyer visit: 2
+                                dayInterval = 121;
+                                break;
                         }
 
-                        if (this.mode === "call")
+                        //if (this.mode === "collection" || this.mode === "recovery" || this.mode === "call"){
+                        if (["collection", "recovery", "call"].includes(this.mode)) {
                             for (let p = 0; p < accumulatedDays; p++)
                                 datePool.push(this.$getDate(today.addDays(-(p + dayInterval))));
+                        }
 
-                        if (this.mode === 'sms')
+                        if (this.mode === 'sms') {
                             for (let p = 0; p < accumulatedDays; p++)
                                 datePool.push(this.$getDate(today.addDays(p + dayInterval)));
+                        }
 
                         return datePool.includes(payDay);
                     };
 
                     let isMyBranch = () => {
-                        if (this.$store.getters.auth('DVALead')) return true;
-                        return order.customer.branch.id === res.branch;
+                        if (this.$store.getters.auth('DVALead') || this.$store.getters.auth('FSLLead')) return true;
+                        //the branch to be used for this filter should be the branch of the
+                        // product being bought not the branch of the customer
+                        return order.store_product.store_name === res.branch;
+                        //return order.customer.branch.id === res.branch;
                     };
 
                     return isMyBranch() && hasMissedPayment();
@@ -752,7 +782,7 @@
         },
 
         mounted() {
-            this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
+            this.mode != 'normal-list' ? /*this.fetchList(this.list)*/ '' : this.prepareForm(this.preLoadedOrder);
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.currentOrder = null;
                 this.showModalContent = false;

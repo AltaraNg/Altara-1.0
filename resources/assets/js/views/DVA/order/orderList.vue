@@ -34,7 +34,6 @@
                 </div>
             </div>
 
-
             <div class="mt-5 mb-3 attendance-head">
                 <div class="w-100 my-5 mx-0 hr"></div>
                 <div class="row px-4 pt-3 pb-4 text-center">

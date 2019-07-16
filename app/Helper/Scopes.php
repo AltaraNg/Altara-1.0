@@ -6,9 +6,14 @@ namespace App\Helper;
 trait Scopes
 {
 
-    public function scopeDateFilter($query, $column, $list, $model)
+    //this method checks if the $request['list'] is set and if it is set, it will append a query as written below
+    //(the method is in the $reminderController). the return value of the getDateForReminder method
+    //is a date array which the whereIn query will feed on. $column is either DATE for list
+    //generated from the promise_call table or ORDER_DATE
+    // for list generated from the order table
+    public function scopeDateFilter($query, $column, $list, $reminderController)
     {
-        return isset($list) ? $query->whereIn($column, $model->getDateForReminder($list)) : $query;
+        return isset($list) ? $query->whereIn($column, $reminderController->getDateForReminder($list)) : $query;
     }
 
     public function scopeGetOrPaginate($query, $request)
@@ -51,8 +56,8 @@ trait Scopes
 
         return $query
             ->when(isset($branch_id), function ($query2) use ($branch_id) {
-                return $query2->whereHas("customer", function ($query3) use ($branch_id) {
-                    $query3->where("branch_id", "=", $branch_id);
+                return $query2->whereHas("storeProduct", function ($query3) use ($branch_id) {
+                    $query3->where("store_name", "=", $branch_id);
                 });
             })
             ->when(isset($date_from), function ($query2) use ($date_from, $date_to) {

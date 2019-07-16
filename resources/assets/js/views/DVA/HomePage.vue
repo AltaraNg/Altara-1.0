@@ -26,10 +26,16 @@
                         desc: 'For sending messages to customers'
                     }, {
                         url: 'reminder/sms', title: 'Customer SMS Reminder', url_c: 'View SMS reminders',
-                        desc: 'View all due/sent SMS reminders!',
+                        desc: 'View all due SMS reminders!',
                     }, {
                         url: 'reminder/call', title: 'Customer Call Reminder', url_c: 'View Call reminders',
                         desc: 'View all due Call reminders!',
+                    }, {
+                        url: 'reminder/collection', title: 'Collection list', url_c: 'View collections',
+                        desc: 'View all due collection!',
+                    }, {
+                        url: 'reminder/recovery', title: 'Recovery list', url_c: 'View Recoveries',
+                        desc: 'View all due recovery!',
                     }, {
                         url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
