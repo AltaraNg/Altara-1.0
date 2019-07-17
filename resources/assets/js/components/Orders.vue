@@ -782,7 +782,7 @@
         },
 
         mounted() {
-            this.mode != 'normal-list' ? /*this.fetchList(this.list)*/ '' : this.prepareForm(this.preLoadedOrder);
+            this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.currentOrder = null;
                 this.showModalContent = false;
