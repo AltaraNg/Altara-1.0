@@ -3,11 +3,13 @@
 
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
             <span v-if="mode === 'normal-list'"></span>
-            <span v-else-if="reminder.canBeSelected && mode === 'call'" class="user mx-auto waiting-reminder"
+            <span v-else-if="reminder.canBeSelected && ['collection','recovery','call'].includes(mode)"
+                  class="user mx-auto waiting-reminder"
                   @click="logReminder">
                 <i class="fas fa-hourglass-start"></i>
             </span>
-            <div v-else-if="reminder.canBeSelected && mode === 'sms'" class="d-flex align-items-center">
+            <div v-else-if="reminder.canBeSelected && mode === 'sms'"
+                 class="d-flex align-items-center">
                 <input class="form-check-input my-0 mx-4 float-left position-relative " type="checkbox"
                        v-model="selected" @click="toggleSelect(!selected)">
             </div>
@@ -39,7 +41,22 @@
             {{order.reminders.length}} reminder(s) sent
         </div>
 
-        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'call'">
+        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center attendance-create"
+             v-if="['collection','recovery'].includes(mode)">
+            <span class="present">
+                <span class="radio w-50 pr-3 mb-0 float-left">
+                    <input type="radio" value="yes" :id="`present${index}`" :name="`isPresent${index}`">
+                    <label :for="`present${index}`">yes</label>
+                </span>
+                <span class="radio w-50 pl-3 mb-0 float-left">
+                    <input type="radio" value="no" :id="`absent${index}`" :name="`isPresent${index}`">
+                    <label :for="`absent${index}`">no</label>
+                </span>
+            </span>
+        </div>
+
+        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center"
+             v-if="['collection','recovery','call'].includes(mode)">
             <textarea class="form-control" rows="1" v-model="reminder.feedback" :disabled="!reminder.canBeSelected">
             </textarea>
         </div>
@@ -60,13 +77,12 @@
         props: {
             mode: null,
             index: null,
-            startIndex:{default:1},
+            startIndex: {default: 1},
             dva_id: null,
             paySummary: null,
             repaymentLevel: null,
             order: {default: {}},
             isRepaymentValid: null,
-            //getCountAndRepaymentData: null
         },
 
         data() {
@@ -136,7 +152,7 @@
                     'order_id': this.order.id,
                     'repayment_level': this.repaymentLevel,
                     'dva_id': this.dva_id,
-                    'type': this.mode === 'call' ? 'call' : 'sms',
+                    'type': this.mode,
                     'canBeSelected': this.isReminderSent(),
                 };
                 if (this.mode === 'sms') {

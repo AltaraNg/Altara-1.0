@@ -95,6 +95,8 @@ const router = new VueRouter({
 
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
+                {path: 'reminder/recovery', component: Reminder, name: 'recovery', meta: {mode: 'recovery'}},
+                {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},
             ]
         },
         {

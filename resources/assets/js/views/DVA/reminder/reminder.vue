@@ -4,9 +4,9 @@
 
             <div class="mt-5 mb-3 attendance-head">
                 <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
-                    <li class="col p-0 nav-item mb-0" v-for="(tab,index) in tabs">
+                    <li class="col p-0 nav-item mb-0" v-for="(tab,index) in details.tabs">
                         <a aria-selected="true" class="nav-link" :class="index === 0 && 'active'"
-                           data-toggle="tab" href="#reminder-panel" @click="setList(index)"
+                           data-toggle="tab" href="#reminder-panel" @click="listToOrder = details.list + index"
                            role="tab" v-html="tab + ' ' + mode()"></a>
                         <!--1. the @click is to set this.list to 1,2,3,4,5,6,7,8
                         as the case may be, this is used at the backend
@@ -26,11 +26,11 @@
                         Click to {{doSelectAll ? 'De-select' : 'Select'}} all
                     </div>
                     <div class="col light-heading" v-else>Action</div>
-                    <div class="col light-heading" v-for="header in headings">{{header}}</div>
+                    <div class="col light-heading" v-for="header in details.headings">{{header}}</div>
                 </div>
             </div>
 
-            <order :list="list" :mode="mode()"/>
+            <order :list="listToOrder" :mode="mode()"/>
 
         </div>
     </transition>
@@ -45,7 +45,7 @@
 
         data() {
             return {
-                list: this.mode('sms') ? 1 : 4,
+                listToOrder: null,
                 doSelectAll: false,
             }
         },
@@ -55,27 +55,34 @@
                 this.doSelectAll = !this.doSelectAll;
                 EventBus.$emit('selectOrderItem', this.doSelectAll);
             },
-
-            setList(index) {
-                this.list = (index + 1) + (this.mode('call') && 3);
-            },
-
-            mode(query = null, mode = this.$route.meta.mode) {
+            mode(query = null, mode = this.$route.meta.mode.toLowerCase()) {
                 return query ? mode === query : mode
             }
         },
 
         computed: {
-            tabs() {
-                let tabs = ["1<sup>st</sup>", "2<sup>nd</sup>", "3<sup>rd</sup>"];
-                this.mode('call') && (tabs = [...tabs, "Guarantor's", "Promise"]);
-                return tabs
-            },
-
-            headings() {
-                let headings = ['Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary', 'Reminder History'];
-                this.mode('call') && (headings = [...headings, 'Feedback', 'Promise Date']);
-                return headings;
+            details() {
+                let list = 1,
+                    tabs = ["1<sup>st</sup>", "2<sup>nd</sup>", "3<sup>rd</sup>"],
+                    headings = ['Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary', 'Reminder History'];
+                switch (this.mode()) {
+                    case 'call':
+                        list = 4;
+                        tabs = [...tabs, "Guarantor's", "Promise"];
+                        headings = [...headings, 'Feedback', 'Promise Date'];
+                        break;
+                    case 'collection':
+                        list = 9;
+                        tabs.splice(2, 1);
+                        headings = [...headings, 'Visited?', 'Feedback'];
+                        break;
+                    case 'recovery':
+                        list = 11;
+                        headings = [...headings, 'Visited?', 'Feedback'];
+                        break;
+                }
+                if (!this.listToOrder) this.listToOrder = list;
+                return {tabs, headings, list};
             },
         }
     }
