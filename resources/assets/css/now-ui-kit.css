@@ -2955,11 +2955,21 @@ textarea.form-control:active {
 .badge-default {
     border-color: #888;
     color: #888;
+
+      /*   -------------------*/ 
+      margin-left: 20px;
+      font-style: normal;
 }
 
+.active{
+    background-color: #000;
+}
 .badge-primary {
-    border-color: #f96332;
-    color: #f96332;
+    border-color: #084a73;
+    color: #084a73;
+    /*   -------------------*/ 
+    margin-left: 20px;
+    font-style: normal;
 }
 
 .badge-info {

@@ -10,6 +10,18 @@
                     <!--form section for register starts here-->
                     <div v-if="mode === 'register'">
 
+                        <h5>Occupation</h5>
+
+                        <div class="form-group col-md-12 px-md-12 px-1">
+                            <label>Select Occupation</label> <br>
+                            <span   v-for="occupation in occupations" v-bind:class="{ active: isActive }"  class="badge badge-primary"  @click="check(occupation.id)">{{occupation.jobType}}</span> &nbsp;
+                         <hr>
+                          <span v-if="isClick" v-for=" name in occName" class="badge badge-default">{{name}}</span> &nbsp;
+<!--                            
+                            <small v-if="errors.first('emp_name')">
+                                {{errors.first('emp_name')}}
+                            </small> -->
+                        </div>
                         <h5>Employee Details</h5>
 
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
@@ -1367,6 +1379,147 @@
         components: {Verification},
         data() {
             return {
+                occupations: [
+  {
+    id: 1,
+    jobType: "Trader",
+    category: "formal",
+    names: [
+      "Food",
+      "Drinks",
+      "Homeware",
+      "Clothing",
+      "Miscellaneous"
+    ]
+  },
+  {
+    id: 2,
+    jobType: "Driver",
+    category: "formal",
+    names: [
+      "Keke Napep",
+      "Taxi",
+      "Motorbike",
+      "Bus driver",
+      "Private"
+    ]
+  },
+  {
+    id: 3,
+    jobType: "Banker",
+    category: "formal",
+    names: [
+      "Teller",
+      "Financial Analyst",
+      "Loan Officer",
+      "Operation",
+      "Risk Specialist",
+      "Security & Fraud Specialist"
+    ]
+  },
+  {
+    id: 4,
+    jobType: "Elementary workers",
+    category: "formal",
+    names: [
+      "Mining worker",
+      "Construction worker",
+      "Manufacturing laborer"
+    ]
+  },
+  {
+    id: 5,
+    jobType: "Maintenance Worker",
+    category: "formal",
+    names: [
+      "Cleaner",
+      "Electrician",
+      "Plumber",
+      "Carpenter",
+      "Welder",
+      "Painter",
+      "Vulcanizer",
+      "Security Guard"
+    ]
+  },
+  {
+    id: 6,
+    jobType: "Farming",
+    category: "formal",
+    names: [
+      "Livestock farmer",
+      "Crop farmer"
+    ]
+  },
+  {
+    id: 7,
+    jobType: "Civil Servant",
+    category: "formal",
+    names: [
+    ]
+  },
+  {
+    id: 8,
+    jobType: "Sales & Services",
+    category: "formal",
+    names: [
+      "Car-wash",
+      "Laundry",
+      "Sales Assistant",
+      "Cook",
+      "Hairdresser/Barber",
+      "Cashier",
+      "Waiter",
+      "Hotel Assistant",
+      "Receptionist"
+    ]
+  },
+  {
+    id: 9,
+    jobType: "Technical Professionals",
+    category: "formal",
+    names: [
+      "Teacher",
+      "Doctor",
+      "Lawyer",
+      "Nurse",
+      "Pharmacist",
+      "Journalist",
+      "Engineer",
+      "Civic",
+      "Electrical",
+      "Chemical",
+      "Mechanical",
+      "I.T.",
+    ]
+  },
+  {
+    id: 10,
+    jobType: "Pastor",
+    category: "formal",
+    names: [
+    ]
+  },
+  {
+    id: 11,
+    jobType: "Entertainment",
+    category: "formal",
+    names: ["Actor/Actress",
+      "Event Planner",
+      "Musician",
+      "Producer",
+      "Tailor/Fashion Designer",
+    ]
+  },
+  {
+    id: 12,
+    jobType: "Other",
+    category: "",
+    names: [
+    ]
+  },
+]
+,
                 mode: this.$route.meta.mode,
                 user: {},
                 error: {},
@@ -1393,6 +1546,9 @@
                     'father', 'grandparent', 'cousin', 'caretaker', 'grandchild'],
 
                 isLifestyle: false,
+                isClick:false,
+                occName:[],
+                isActive:false
             }
         },
         methods: {
@@ -1434,6 +1590,16 @@
                         } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
+            },
+            check(id){
+                console.log(id);
+                    this.occupations.forEach(element => {
+                        if (element.id === id){
+                            this.occName = element.names;
+                            this.isClick = true
+                            
+                        }
+                    });
             },
             prepareForm(data) {
                 this.states = data.states;
