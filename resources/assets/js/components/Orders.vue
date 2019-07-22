@@ -507,7 +507,7 @@
                         if (this.$store.getters.auth('DVALead') || this.$store.getters.auth('FSLLead')) return true;
                         //the branch to be used for this filter should be the branch of the
                         // product being bought not the branch of the customer
-                        return order.store_product.store_name === res.branch;
+                        return parseInt(order.store_product.store_name) === res.branch;
                         //return order.customer.branch.id === res.branch;
                     };
 

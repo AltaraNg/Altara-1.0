@@ -68,9 +68,9 @@ export const store = new Vuex.Store({
 
     },
     actions: {
-        mutateAuth: context => context.commit('mutateAuth'),
-        mutateStates: (context, states) => context.commit('mutateStates', states),
-        mutateBranches: (context, branches) => context.commit('mutateBranches', branches),
-        mutateProfileAccess: (context, payload) => context.commit('mutateProfileAccess', payload),
+        mutateAuth: ({commit}) => commit('mutateAuth'),
+        mutateStates: ({commit}, states) => commit('mutateStates', states),
+        mutateBranches: ({commit}, branches) => commit('mutateBranches', branches),
+        mutateProfileAccess: ({commit}, payload) => commit('mutateProfileAccess', payload),
     }
 });
