@@ -507,9 +507,15 @@
                         if (this.$store.getters.auth('DVALead') || this.$store.getters.auth('FSLLead')) return true;
                         //the branch to be used for this filter should be the branch of the
                         // product being bought not the branch of the customer
-                        return order.store_product.store_name === res.branch;
+                        return parseInt(order.store_product.store_name) === res.branch;
                         //return order.customer.branch.id === res.branch;
                     };
+
+                    /*console.log('store name: ' + parseInt(order.store_product.store_name) + ' | ' + order.store_product.store_name,
+                        '--------- res branch: ' + res.branch,
+                        '--------- isMyBranch: ' + isMyBranch(),
+                        '--------- hasMissedPayment: ' + hasMissedPayment(),
+                        '--------- final: ' + (isMyBranch() && hasMissedPayment()));*/
 
                     return isMyBranch() && hasMissedPayment();
 
@@ -549,7 +555,7 @@
 
             getDiscount: ({discount}) => `${discount.name} (${discount.percentage_discount})`,
 
-            isRepaymentValid: order => !(!order['repayment'] && !order['repayment_formal'] && !order['repayment_informal']),
+            isRepaymentValid: order => !(/*!order['repayment'] && */!order['repayment_formal'] && !order['repayment_informal']),
 
             displayDetails(order, modal) {
                 this.paymentSummary = this.calcPaymentSummary(order);
@@ -576,8 +582,10 @@
                 let dueDates = this.generateDates({startDate: order.order_date, interval, count});
                 dueDates.forEach((dueDate, index) => this.isPaymentDue(this.$getDate(new Date(dueDate).addDays(5))) &&
                     datesDefaulted.push({dueDate, actualPayDate: repaymentData[this.$getColumn(index) + "_date"]}));
-                for (let i = 1; i < count + 1; i++)
-                    amountPaid += this.$roundDownAmt(repaymentData[this.$getColumn(i) + '_pay']);
+                if (!!repaymentData) {
+                    for (let i = 1; i < count + 1; i++)
+                        amountPaid += this.$roundDownAmt(repaymentData[this.$getColumn(i) + '_pay']);
+                } else amountPaid = 0;
                 let {percentage_discount: discount} = order.discount;
                 let multiplicationFactor = count === 6 ? 0.5 : 1;
                 let repaymentCoveredAsDiscount = () => discount > 0 ? (discount === 5 ? 1 : 2) : 0;
@@ -782,7 +790,7 @@
         },
 
         mounted() {
-            this.mode != 'normal-list' ? /*this.fetchList(this.list)*/ '' : this.prepareForm(this.preLoadedOrder);
+            this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.currentOrder = null;
                 this.showModalContent = false;
