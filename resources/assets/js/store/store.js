@@ -31,6 +31,7 @@ export const store = new Vuex.Store({
         FSLAccess: [1, 2, 8, 9, 11, 14, 19],
         LOGLead: [1, 2, 8, 9, 11, 14, 19],
         LOGAccess: [1, 2, 8, 9, 11, 14, 19],
+        CAGAccess: [1, 2, 8, 9, 30],
         authRole: parseInt(localStorage.getItem('role')),
         api_token: localStorage.getItem('api_token'),
         user_id: localStorage.getItem('user_id'),

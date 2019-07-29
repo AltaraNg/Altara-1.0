@@ -20,6 +20,9 @@ const DVAHome = () => import( '../views/DVA/HomePage.vue');
 const DVAMessage = () => import( '../views/DVA/messaging/message.vue');
 const DVAVerification = () => import( '../views/DVA/verification/verification.vue');
 
+const CAG = () => import( '../views/CAG/index.vue');
+const CAGHome = () => import( '../views/CAG/HomePage.vue');
+
 const OrderList = () => import( '../views/DVA/order/orderList.vue');
 /*const DVASMSReminder = () => import( '../views/DVA/reminder/SMSReminder.vue');
 const DVACallReminder = () => import( '../views/DVA/reminder/callReminder.vue');*/
@@ -97,6 +100,13 @@ const router = new VueRouter({
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
                 {path: 'reminder/recovery', component: Reminder, name: 'recovery', meta: {mode: 'recovery'}},
                 {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},
+            ]
+        },
+        {
+            path: '/cag', component: CAG, meta: {CAG: true}, children: [
+                {path: '/', redirect: {name: 'CAGHome'}},
+                {path: 'home', component: CAGHome, name: 'CAGHome'},
+                {path: 'sales', component: OrderList, name: 'sales-cag'},
             ]
         },
         {
