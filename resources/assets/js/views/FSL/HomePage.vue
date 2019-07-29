@@ -28,7 +28,16 @@
                     }, {
                         url: 'sales', title: 'Sales List', url_c: 'View Sales List',
                         desc: 'View all Sales!', aces: this.$store.getters.auth('FSLLead')
+                    },
+                    {
+                        url: 'sales/create', title: 'Temp POS', url_c: 'Post Daily Sales',
+                        desc: 'Temp POS!', aces: this.$store.getters.auth('supervisor')
+                    },
+                     {
+                        url: 'payment', title: 'Online Payment', url_c: 'Make Online Payment for Formal Sector',
+                        desc: 'Online Payment', aces: this.$store.getters.auth('supervisor')
                     }
+                    
                 ]
             }
         }

@@ -1,6 +1,6 @@
 webpackJsonp([13],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21,29 +21,18 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
-    props: { title: '', desc: '', url: '', url_c: '', aces: { default: true } }
-    /*title is the card title also mean the portal title.
-    * desc is a few word description of the portal
-    * url is the link to the portal
-    * url_c is the caption for the link
-    * aces is used in situations when a particular portal is accessible to only few person in a
-    * department hence from the parent component the aces will be set to false is want
-    * only few people to access it. true means everyone in that dept can access it.*/
+    props: {
+        title: '',
+        buttonTitle: null,
+        to: null
+    }
 };
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/brand/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53,98 +42,171 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _portalCard = __webpack_require__("./resources/assets/js/components/portalCard.vue");
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
-var _portalCard2 = _interopRequireDefault(_portalCard);
+var _vue2 = _interopRequireDefault(_vue);
+
+var _log = __webpack_require__("./resources/assets/js/utilities/log.js");
+
+var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
+
+var _flash2 = _interopRequireDefault(_flash);
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+var _customHeader = __webpack_require__("./resources/assets/js/components/customHeader.vue");
+
+var _customHeader2 = _interopRequireDefault(_customHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function initialize(to) {
+    var urls = { create: "/api/brand/create", edit: "/api/brand/" + to.params.id + "/edit" };
+    return urls[to.meta.mode];
+} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 exports.default = {
-    components: { PortalCard: _portalCard2.default },
+
+    components: { CustomHeader: _customHeader2.default },
+
     data: function data() {
         return {
-            portals: [{
-                url: 'inventory', title: 'Inventory', url_c: 'View Inventory!',
-                desc: 'For inventory and management'
-            }, {
-                url: 'suppliers', title: 'Manage Suppliers', url_c: 'Create/Update Supplier',
-                desc: 'Manage all the suppliers details!'
-            }, {
-                url: 'brands', title: 'Manage Brands', url_c: 'Create/Update Brands',
-                desc: 'Manage all the brands details!'
-            }, {
-                url: 'categories', title: 'Manage Categories', url_c: 'Create/Update Categories',
-                desc: 'Manage all the category details!'
-            }, {
-                url: 'products', title: 'Manage Products', url_c: 'Create/Update Products',
-                desc: 'Manage all the product details!'
-            }]
+            form: {},
+            mode: null,
+            error: {},
+            show: false,
+            store: '/api/brand',
+            method: 'POST'
         };
+    },
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        (0, _api.get)(initialize(to)).then(function (_ref) {
+            var data = _ref.data;
+            return next(function (vm) {
+                return vm.prepareForm(data);
+            });
+        }).catch(function () {
+            return next(function () {
+                return _flash2.default.setError('Error Preparing form');
+            });
+        });
+    },
+
+    methods: {
+        prepareForm: function prepareForm(_ref2) {
+            var form = _ref2.form;
+
+            _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
+            _vue2.default.set(this.$data, 'form', form);
+            if (this.mode === 'edit') {
+                this.store = "/api/brand/" + this.$route.params.id;
+                this.method = 'PUT';
+            }
+            this.show = true;
+        },
+        onSave: function onSave() {
+            var _this = this;
+
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this.$network()) {
+                        _this.$LIPS(true);
+                        (0, _api.byMethod)(_this.method, _this.store, _this.form).then(function (_ref3) {
+                            var data = _ref3.data;
+
+                            if (data.saved || data.updated) {
+                                (0, _log.log)(data.log, data.staff_id);
+                                _vue2.default.set(_this.$data, 'form', data.form);
+                                _flash2.default.setSuccess(data.message, 5000);
+                                if (data['updated']) _this.$router.push('/log/brands');
+                            }
+                            _this.error = {};
+                        }).catch(function (_ref4) {
+                            var r = _ref4.response;
+                            var data = r.data,
+                                status = r.status;
+
+                            if (status === 422) {
+                                _this.error = data.errors ? data.errors : data;
+                                _this.$networkErr('unique');
+                            }
+                        }).finally(function () {
+                            _this.$scrollToTop();
+                            _this.$LIPS(false);
+                        });
+                    } else _this.$networkErr();
+                } else _this.$networkErr('form');
+            });
+        }
     }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
+};
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.aces
-    ? _c("div", { staticClass: "col-md-4 col-sm-6 float-left product p-4" }, [
-        _c("div", { staticClass: "portal-card clearfix" }, [
-          _c("div", { staticClass: "first portion clearfix" }, [
-            _c("span", { staticClass: "deco" }),
-            _c("span", { staticClass: "deco second" }),
-            _vm._v(" "),
-            _c("span", { staticClass: "portal-title" }, [
-              _vm._v(_vm._s(_vm._f("capitalize")(_vm.title)))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "portion clearfix" }, [
-            _c("p", [_vm._v(_vm._s(_vm._f("capitalize")(_vm.desc)))]),
-            _vm._v(" "),
-            _c("h6", { staticStyle: { "margin-top": "2rem" } }, [
-              _vm._v(_vm._s(_vm._f("capitalize")(_vm.url_c)))
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "deco-down first" }),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "deco-down second" },
+  return _c("div", { staticClass: "mt-5 attendance-head" }, [
+    _c("div", { staticClass: "mb-5 row align-items-center" }, [
+      _c("div", { staticClass: "col-12 title-con" }, [
+        _c("span", { staticClass: "title" }, [
+          _vm._v(_vm._s(_vm._f("capitalize")(_vm.title)))
+        ]),
+        _vm._v(" "),
+        _vm.to
+          ? _c(
+              "div",
+              { staticClass: "row justify-content-end" },
               [
                 _c(
                   "router-link",
-                  {
-                    staticClass: "btn bg-default btn-round m-0",
-                    attrs: { to: _vm.url }
-                  },
-                  [
-                    _vm._v("\n                   continue "),
-                    _c("span", { staticClass: "custom-icon ml-2" }, [
-                      _c("i", { staticClass: "now-ui-icons ui-1_send" })
-                    ])
-                  ]
+                  { staticClass: "text-link mt-3", attrs: { to: _vm.to } },
+                  [_vm._v(_vm._s(_vm.buttonTitle))]
                 )
               ],
               1
             )
-          ])
-        ])
+          : _vm._e()
       ])
-    : _vm._e()
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -152,13 +214,13 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-28781233", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-02013d35", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b75fd5a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/HomePage.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3dbe9c5e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/brand/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -168,23 +230,133 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
-      _vm._l(_vm.portals, function(portal) {
-        return _c(
-          "div",
-          [
-            _c("portal-card", {
-              attrs: {
-                url: portal.url,
-                title: portal.title,
-                url_c: portal.url_c,
-                desc: portal.desc,
-                aces: portal.aces
+      { staticClass: "pt-md-3 pt-2 attendance-view", attrs: { id: "index" } },
+      [
+        _c("custom-header", {
+          attrs: {
+            to: "/log/brands",
+            title: _vm.mode + " brand",
+            "button-title": "view brands!"
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "attendance-body" }, [
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.onSave($event)
+                }
               }
-            })
-          ],
-          1
-        )
-      })
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "my-4 clearfix p-5 row bg-white shadow-sm card-radius"
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group col-12 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", [_vm._v("Brand name")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.name,
+                            expression: "form.name"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required|max:50",
+                            expression: "'required|max:50'"
+                          }
+                        ],
+                        staticClass: "form-control mb-2",
+                        attrs: {
+                          placeholder: "brand name",
+                          name: "brand name",
+                          type: "text"
+                        },
+                        domProps: { value: _vm.form.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "name", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.first("brand name")
+                        ? _c("small", [
+                            _vm._v(_vm._s(_vm.errors.first("brand name")))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.error.name
+                        ? _c("small", [_vm._v(_vm._s(_vm.error.name[0]))])
+                        : _vm._e()
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
+                _c(
+                  "div",
+                  { staticClass: "clearfix d-flex justify-content-end w-100" },
+                  [
+                    _vm.mode === "edit"
+                      ? _c(
+                          "router-link",
+                          {
+                            staticClass: "mx-5 text-link mt-4 pt-2",
+                            attrs: { to: "/log/brands" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            Cancel\n                        "
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn bg-default",
+                        attrs: { disabled: _vm.$isProcessing, type: "submit" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm._f("capitalize")(_vm.mode)) +
+                            " Brand "
+                        ),
+                        _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]
+          )
+        ])
+      ],
+      1
     )
   ])
 }
@@ -194,21 +366,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-5b75fd5a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-3dbe9c5e", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/portalCard.vue":
+/***/ "./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/customHeader.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -225,7 +397,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\portalCard.vue"
+Component.options.__file = "resources\\assets\\js\\components\\customHeader.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -234,9 +406,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-28781233", Component.options)
+    hotAPI.createRecord("data-v-02013d35", Component.options)
   } else {
-    hotAPI.reload("data-v-28781233", Component.options)
+    hotAPI.reload("data-v-02013d35", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -248,15 +420,41 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/LOG/HomePage.vue":
+/***/ "./resources/assets/js/utilities/log.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.log = log;
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+function log(action, description) {
+    /*actions is the action performed
+    * description is reference of the data the action was taken on*/
+    action = action.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
+        return str.toUpperCase();
+    });
+    //formats and capitalize the action performed
+    (0, _api.post)('/api/log', { action: action, description: description });
+    //and logs then on the log table;
+}
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/LOG/brand/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/brand/form.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b75fd5a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3dbe9c5e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/brand/form.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -273,7 +471,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\LOG\\HomePage.vue"
+Component.options.__file = "resources\\assets\\js\\views\\LOG\\brand\\form.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -282,9 +480,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5b75fd5a", Component.options)
+    hotAPI.createRecord("data-v-3dbe9c5e", Component.options)
   } else {
-    hotAPI.reload("data-v-5b75fd5a", Component.options)
+    hotAPI.reload("data-v-3dbe9c5e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

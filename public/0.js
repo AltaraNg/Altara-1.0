@@ -1161,7 +1161,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
@@ -2555,240 +2555,703 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
-    components: { Verification: _verification2.default },
-    data: function data() {
-        return {
-            occupations: [{
-                id: 1,
-                jobType: "Trader",
-                category: "formal",
-                names: ["Food", "Drinks", "Homeware", "Clothing", "Miscellaneous"]
-            }, {
-                id: 2,
-                jobType: "Driver",
-                category: "formal",
-                names: ["Keke Napep", "Taxi", "Motorbike", "Bus driver", "Private"]
-            }, {
-                id: 3,
-                jobType: "Banker",
-                category: "formal",
-                names: ["Teller", "Financial Analyst", "Loan Officer", "Operation", "Risk Specialist", "Security & Fraud Specialist"]
-            }, {
-                id: 4,
-                jobType: "Elementary workers",
-                category: "formal",
-                names: ["Mining worker", "Construction worker", "Manufacturing laborer"]
-            }, {
-                id: 5,
-                jobType: "Maintenance Worker",
-                category: "formal",
-                names: ["Cleaner", "Electrician", "Plumber", "Carpenter", "Welder", "Painter", "Vulcanizer", "Security Guard"]
-            }, {
-                id: 6,
-                jobType: "Farming",
-                category: "formal",
-                names: ["Livestock farmer", "Crop farmer"]
-            }, {
-                id: 7,
-                jobType: "Civil Servant",
-                category: "formal",
-                names: []
-            }, {
-                id: 8,
-                jobType: "Sales & Services",
-                category: "formal",
-                names: ["Car-wash", "Laundry", "Sales Assistant", "Cook", "Hairdresser/Barber", "Cashier", "Waiter", "Hotel Assistant", "Receptionist"]
-            }, {
-                id: 9,
-                jobType: "Technical Professionals",
-                category: "formal",
-                names: ["Teacher", "Doctor", "Lawyer", "Nurse", "Pharmacist", "Journalist", "Engineer", "Civic", "Electrical", "Chemical", "Mechanical", "I.T."]
-            }, {
-                id: 10,
-                jobType: "Pastor",
-                category: "formal",
-                names: []
-            }, {
-                id: 11,
-                jobType: "Entertainment",
-                category: "formal",
-                names: ["Actor/Actress", "Event Planner", "Musician", "Producer", "Tailor/Fashion Designer"]
-            }, {
-                id: 12,
-                jobType: "Other",
-                category: "",
-                names: []
-            }],
+  components: { Verification: _verification2.default },
+  data: function data() {
+    return {
+      occupations: [{
+        id: 1,
+        jobType: "Trader",
+        category: "informal(business)",
+        names: ["Food", "Drinks", "Homeware", "Clothing", "Miscellaneous"]
+      }, {
+        id: 2,
+        jobType: "Driver",
+        category: "informal(business)",
+        names: ["Keke Napep", "Taxi", "Motorbike", "Bus driver", "Private"]
+      }, {
+        id: 3,
+        jobType: "Banker",
+        category: "formal",
+        names: ["Teller", "Financial Analyst", "Loan Officer", "Operation", "Risk Specialist", "Security & Fraud Specialist"]
+      }, {
+        id: 4,
+        jobType: "Elementary workers",
+        category: "informal(business)",
+        names: ["Mining worker", "Construction worker", "Manufacturing laborer"]
+      }, {
+        id: 5,
+        jobType: "Maintenance Worker",
+        category: "informal(business)",
+        names: ["Cleaner", "Electrician", "Plumber", "Carpenter", "Welder", "Painter", "Vulcanizer", "Security Guard"]
+      }, {
+        id: 6,
+        jobType: "Farming",
+        category: "informal(business)",
+        names: ["Livestock farmer", "Crop farmer"]
+      }, {
+        id: 7,
+        jobType: "Civil Servant",
+        category: "formal",
+        names: []
+      }, {
+        id: 8,
+        jobType: "Sales & Services",
+        category: "informal(business)",
+        names: ["Car-wash", "Laundry", "Sales Assistant", "Cook", "Hairdresser/Barber", "Cashier", "Waiter", "Hotel Assistant", "Receptionist"]
+      }, {
+        id: 9,
+        jobType: "Technical Professionals",
+        category: "formal",
+        names: ["Teacher", "Doctor", "Lawyer", "Nurse", "Pharmacist", "Journalist", "Engineer", "Civic", "Electrical", "Chemical", "Mechanical", "I.T."]
+      }, {
+        id: 10,
+        jobType: "Pastor",
+        category: "informal(business)",
+        names: []
+      }, {
+        id: 11,
+        jobType: "Entertainment",
+        category: "informal(business)",
+        names: ["Actor/Actress", "Event Planner", "Musician", "Producer", "Tailor/Fashion Designer"]
+      }, {
+        id: 12,
+        jobType: "Other",
+        category: "informal(business)",
+        names: []
+      }],
+      mode: this.$route.meta.mode,
+      user: {},
+      error: {},
+      states: {},
+      branches: {},
+      newCustomer: {},
+      fillWorkGuarantor: false,
+      gender: ["male", "female"],
+      fillPersonalGuarantor: false,
+      typesOfHome: ["family", "owned", "rented"],
+      paymentPeriod: ["daily", "weekly", "monthly"],
+      receiveIncomeMeans: ["bank deposit", "cheque", "cash"],
+      noOfRooms: ["one room", "two room", "more than Two room"],
+      employmentStatus: ["formal", "informal(business)", "unemployed"],
+      relationshipPG: ["friend", "family", "co-worker", "employee", "other"],
+      civilStatus: ["single", "married", "divorced", "widow", "live together"],
+      relationshipWG: ["supervisor", "neighbouring worker", "co-worker", "employee"],
+      weekdays: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
+      highestLevelOfEdu: ["no studies", "secondary", "polytechnic", "primary", "university", "masters"],
+      durations: ["less than 1 year", "1 year", "2 years", "3 years", "between 4 - 9 years", "more than 10 years", "more than 20 years"],
+      relationships: ["spouse", "mother", "sibling", "uncle", "nephew", "in-law", "friend", "child", "father", "grandparent", "cousin", "caretaker", "grandchild"],
 
-            mode: this.$route.meta.mode,
-            user: {},
-            error: {},
-            states: {},
-            branches: {},
-            newCustomer: {},
-            fillWorkGuarantor: false,
-            gender: ['male', 'female'],
-            fillPersonalGuarantor: false,
-            typesOfHome: ['family', 'owned', 'rented'],
-            paymentPeriod: ['daily', 'weekly', 'monthly'],
-            receiveIncomeMeans: ['bank deposit', 'cheque', 'cash'],
-            noOfRooms: ['one room', 'two room', 'more than Two room'],
-            employmentStatus: ['formal', 'informal(business)', 'unemployed'],
-            relationshipPG: ['friend', 'family', 'co-worker', 'employee', 'other'],
-            civilStatus: ['single', 'married', 'divorced', 'widow', 'live together'],
-            relationshipWG: ['supervisor', 'neighbouring worker', 'co-worker', 'employee'],
-            weekdays: ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
-            highestLevelOfEdu: ['no studies', 'secondary', 'polytechnic', 'primary', 'university', 'masters'],
-            durations: ['less than 1 year', '1 year', '2 years', '3 years', 'between 4 - 9 years', 'more than 10 years', 'more than 20 years'],
-            relationships: ['spouse', 'mother', 'sibling', 'uncle', 'nephew', 'in-law', 'friend', 'child', 'father', 'grandparent', 'cousin', 'caretaker', 'grandchild'],
+      isLifestyle: false,
+      isClick: false,
+      occName: [],
+      isActive: false,
+      isOther: false
+    };
+  },
 
-            isLifestyle: false,
-            isClick: false,
-            occName: [],
-            isActive: false
+  methods: {
+    register: function register() {
+      var _this = this;
+
+      console.log(this.newCustomer);
+      this.$validator.validateAll().then(function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
+          var acc;
+          return _regenerator2.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  if (!result) {
+                    _context.next = 20;
+                    break;
+                  }
+
+                  if (!(_this.newCustomer.employment_status === "unemployed")) {
+                    _context.next = 4;
+                    break;
+                  }
+
+                  _flash2.default.setError("you can only register customer from formal and informal sectors at the moment!");
+                  return _context.abrupt("return", _this.$scrollToTop());
+
+                case 4:
+                  if (!_this.$network()) {
+                    _context.next = 17;
+                    break;
+                  }
+
+                  _this.$LIPS(true);
+                  _this.error = {};
+
+                  if (!(_this.mode === "update")) {
+                    _context.next = 11;
+                    break;
+                  }
+
+                  acc = _this.$editAccess(_this.user, _this.newCustomer);
+
+                  if (acc) {
+                    _context.next = 11;
+                    break;
+                  }
+
+                  return _context.abrupt("return", _this.$networkErr("edit"));
+
+                case 11:
+                  _context.next = 13;
+                  return (0, _api.post)("/api/customer" + (_this.mode === "update" ? "/" + _this.newCustomer.id : ""), _this.newCustomer).then(function (_ref2) {
+                    var data = _ref2.data;
+                    var _data$customer = data.customer,
+                        FN = _data$customer.first_name,
+                        LN = _data$customer.last_name,
+                        id = _data$customer.id,
+                        branch = _data$customer.branch,
+                        tel = _data$customer.telephone;
+
+                    _flash2.default.setSuccess("Customer " + _this.mode + "d successful! Customer ID is: " + id, 30000);
+                    (0, _log.log)(_this.mode + "dCustomer", "Customer ID :" + id);
+                    if (_this.mode === "register") {
+                      var body = "Dear " + FN + " " + LN + ", Welcome to Altara Credit Limited," + (" You are hereby invited to our showroom at " + branch.description + " to") + " learn more about our offerings. Pick up products now and pay later." + " We look forward to seeing you. For more info contact:" + (branch.phone_yoruba + ". Your customer id is: " + id);
+                      new _sms.Message(body, tel).send(function (r) {
+                        return r.status === 200 && _this.prepareForm(data.prepareForm);
+                      });
+                    }
+                  }).catch(function (e) {
+                    e = e.response;
+                    if (e.status === 422) _this.error = e.data.errors ? e.data.errors : e.data;
+                    _flash2.default.setError(e.status === 422 ? "unique field" : e.message, 10000);
+                  });
+
+                case 13:
+                  _this.$scrollToTop();
+                  _this.$LIPS(false);
+                  _context.next = 18;
+                  break;
+
+                case 17:
+                  _this.$networkErr();
+
+                case 18:
+                  _context.next = 21;
+                  break;
+
+                case 20:
+                  _this.$networkErr("form");
+
+                case 21:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, _this);
+        }));
+
+        return function (_x) {
+          return _ref.apply(this, arguments);
         };
+      }());
     },
+    checkOccupation: function checkOccupation(id) {
+      var _this2 = this;
 
-    methods: {
-        register: function register() {
-            var _this = this;
-
-            this.$validator.validateAll().then(function () {
-                var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
-                    var acc;
-                    return _regenerator2.default.wrap(function _callee$(_context) {
-                        while (1) {
-                            switch (_context.prev = _context.next) {
-                                case 0:
-                                    if (!result) {
-                                        _context.next = 20;
-                                        break;
-                                    }
-
-                                    if (!(_this.newCustomer.employment_status === 'unemployed')) {
-                                        _context.next = 4;
-                                        break;
-                                    }
-
-                                    _flash2.default.setError('you can only register customer from formal and informal sectors at the moment!');
-                                    return _context.abrupt('return', _this.$scrollToTop());
-
-                                case 4:
-                                    if (!_this.$network()) {
-                                        _context.next = 17;
-                                        break;
-                                    }
-
-                                    _this.$LIPS(true);
-                                    _this.error = {};
-
-                                    if (!(_this.mode === 'update')) {
-                                        _context.next = 11;
-                                        break;
-                                    }
-
-                                    acc = _this.$editAccess(_this.user, _this.newCustomer);
-
-                                    if (acc) {
-                                        _context.next = 11;
-                                        break;
-                                    }
-
-                                    return _context.abrupt('return', _this.$networkErr('edit'));
-
-                                case 11:
-                                    _context.next = 13;
-                                    return (0, _api.post)('/api/customer' + (_this.mode === 'update' ? '/' + _this.newCustomer.id : ''), _this.newCustomer).then(function (_ref2) {
-                                        var data = _ref2.data;
-                                        var _data$customer = data.customer,
-                                            FN = _data$customer.first_name,
-                                            LN = _data$customer.last_name,
-                                            id = _data$customer.id,
-                                            branch = _data$customer.branch,
-                                            tel = _data$customer.telephone;
-
-                                        _flash2.default.setSuccess('Customer ' + _this.mode + 'd successful! Customer ID is: ' + id, 30000);
-                                        (0, _log.log)(_this.mode + 'dCustomer', 'Customer ID :' + id);
-                                        if (_this.mode === 'register') {
-                                            var body = 'Dear ' + FN + ' ' + LN + ', Welcome to Altara Credit Limited,' + (' You are hereby invited to our showroom at ' + branch.description + ' to') + ' learn more about our offerings. Pick up products now and pay later.' + ' We look forward to seeing you. For more info contact:' + (branch.phone_yoruba + '. Your customer id is: ' + id);
-                                            new _sms.Message(body, tel).send(function (r) {
-                                                return r.status === 200 && _this.prepareForm(data.prepareForm);
-                                            });
-                                        }
-                                    }).catch(function (e) {
-                                        e = e.response;
-                                        if (e.status === 422) _this.error = e.data.errors ? e.data.errors : e.data;
-                                        _flash2.default.setError(e.status === 422 ? 'unique field' : e.message, 10000);
-                                    });
-
-                                case 13:
-                                    _this.$scrollToTop();
-                                    _this.$LIPS(false);
-                                    _context.next = 18;
-                                    break;
-
-                                case 17:
-                                    _this.$networkErr();
-
-                                case 18:
-                                    _context.next = 21;
-                                    break;
-
-                                case 20:
-                                    _this.$networkErr('form');
-
-                                case 21:
-                                case 'end':
-                                    return _context.stop();
-                            }
-                        }
-                    }, _callee, _this);
-                }));
-
-                return function (_x) {
-                    return _ref.apply(this, arguments);
-                };
-            }());
-        },
-        check: function check(id) {
-            var _this2 = this;
-
-            console.log(id);
-            this.occupations.forEach(function (element) {
-                if (element.id === id) {
-                    _this2.occName = element.names;
-                    _this2.isClick = true;
-                }
-            });
-        },
-        prepareForm: function prepareForm(data) {
-            this.states = data.states;
-            this.branches = data.branches;
-            this.newCustomer = data.form;
-            this.user = data.user;
-        },
-        updateCustomer: function updateCustomer(customer) {
-            if (this.mode === 'update') {
-                ;
-                var _ref3 = [true, true];
-                this.fillWorkGuarantor = _ref3[0];
-                this.fillPersonalGuarantor = _ref3[1];
-            }this.newCustomer = customer;
+      this.occupations.forEach(function (element) {
+        if (element.id === id) {
+          _this2.occName = element.names;
+          _this2.newCustomer.employment_status = element.category;
+          _this2.isClick = true;
+          _this2.isOther = element.id === 12 ? true : false;
+          if (element.id === 12) {
+            _this2.isOther = true;
+          } else {
+            _this2.isOther = false;
+          }
         }
+      });
     },
-    created: function created() {
-        var _this3 = this;
+    setOccupation: function setOccupation(name) {
+      var _this3 = this;
 
-        (0, _api.get)('/api/customer/create').then(function (_ref4) {
-            var data = _ref4.data;
-            return _this3.prepareForm(data);
-        });
-        /*on create of the component fetch the data required to prepare the form
-        * states, branches and the currently logged in dsa details*/
+      this.occName.forEach(function (element) {
+        if (element == name) {
+          _this3.newCustomer.occupation = element;
+        }
+      });
+    },
+    prepareForm: function prepareForm(data) {
+      this.states = data.states;
+      this.branches = data.branches;
+      this.newCustomer = data.form;
+      this.user = data.user;
+    },
+    updateCustomer: function updateCustomer(customer) {
+      if (this.mode === "update") {
+        ;
+        var _ref3 = [true, true];
+        this.fillWorkGuarantor = _ref3[0];
+        this.fillPersonalGuarantor = _ref3[1];
+      }this.newCustomer = customer;
     }
+  },
+  created: function created() {
+    var _this4 = this;
+
+    (0, _api.get)("/api/customer/create").then(function (_ref4) {
+      var data = _ref4.data;
+      return _this4.prepareForm(data);
+    });
+    /*on create of the component fetch the data required to prepare the form
+     * states, branches and the currently logged in dsa details*/
+  }
 };
 
 /***/ }),
@@ -6039,48 +6502,6 @@ var render = function() {
                 [
                   _vm.mode === "register"
                     ? _c("div", [
-                        _c("h5", [_vm._v("Occupation")]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "form-group col-md-12 px-md-12 px-1" },
-                          [
-                            _c("label", [_vm._v("Select Occupation")]),
-                            _vm._v(" "),
-                            _c("br"),
-                            _vm._v(" "),
-                            _vm._l(_vm.occupations, function(occupation) {
-                              return _c(
-                                "span",
-                                {
-                                  staticClass: "badge badge-primary",
-                                  class: { active: _vm.isActive },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.check(occupation.id)
-                                    }
-                                  }
-                                },
-                                [_vm._v(_vm._s(occupation.jobType))]
-                              )
-                            }),
-                            _vm._v("  \n                         "),
-                            _c("hr"),
-                            _vm._v(" "),
-                            _vm._l(_vm.occName, function(name) {
-                              return _vm.isClick
-                                ? _c(
-                                    "span",
-                                    { staticClass: "badge badge-default" },
-                                    [_vm._v(_vm._s(name))]
-                                  )
-                                : _vm._e()
-                            }),
-                            _vm._v("  \n")
-                          ],
-                          2
-                        ),
-                        _vm._v(" "),
                         _c("h5", [_vm._v("Employee Details")]),
                         _vm._v(" "),
                         _c(
@@ -6134,11 +6555,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("emp_name")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("emp_name")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("emp_name")))
                                 ])
                               : _vm._e()
                           ]
@@ -6194,9 +6611,7 @@ var render = function() {
                             _vm.errors.first("employee_id")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("employee_id")) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("employee_id"))
                                   )
                                 ])
                               : _vm._e()
@@ -6254,11 +6669,9 @@ var render = function() {
                             _vm.errors.first("date_of_registration")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("date_of_registration")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first("date_of_registration")
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -6317,11 +6730,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("first_name")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("first_name")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("first_name")))
                                 ])
                               : _vm._e()
                           ]
@@ -6415,11 +6824,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("last_name")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("last_name")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("last_name")))
                                 ])
                               : _vm._e()
                           ]
@@ -6489,11 +6894,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("gender")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("gender")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("gender")))
                                 ])
                               : _vm._e()
                           ],
@@ -6617,9 +7018,7 @@ var render = function() {
                             _vm.errors.first("street_name")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("street_name")) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("street_name"))
                                   )
                                 ])
                               : _vm._e()
@@ -6675,9 +7074,7 @@ var render = function() {
                             _vm.errors.first("house_number")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("house_number")) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("house_number"))
                                   )
                                 ])
                               : _vm._e()
@@ -6733,11 +7130,7 @@ var render = function() {
                             _vm.errors.first("nearest_bus_stop")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("nearest_bus_stop")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("nearest_bus_stop"))
                                   )
                                 ])
                               : _vm._e()
@@ -6793,11 +7186,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("area")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("area")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("area")))
                                 ])
                               : _vm._e()
                           ]
@@ -6850,11 +7239,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("city")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("city")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("city")))
                                 ])
                               : _vm._e()
                           ]
@@ -7042,11 +7427,7 @@ var render = function() {
                               _vm.errors.first("date_of_birth")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("date_of_birth")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("date_of_birth"))
                                     )
                                   ])
                                 : _vm._e()
@@ -7120,11 +7501,7 @@ var render = function() {
                               _vm.errors.first("civil_status")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("civil_status")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("civil_status"))
                                     )
                                   ])
                                 : _vm._e()
@@ -7184,11 +7561,9 @@ var render = function() {
                                   _vm.errors.first("years_together")
                                     ? _c("small", [
                                         _vm._v(
-                                          "\n                                " +
-                                            _vm._s(
-                                              _vm.errors.first("years_together")
-                                            ) +
-                                            "\n                            "
+                                          _vm._s(
+                                            _vm.errors.first("years_together")
+                                          )
                                         )
                                       ])
                                     : _vm._e()
@@ -7269,9 +7644,7 @@ var render = function() {
                               _vm.errors.first("typeOfHome")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.errors.first("typeOfHome")) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("typeOfHome"))
                                     )
                                   ])
                                 : _vm._e()
@@ -7345,11 +7718,7 @@ var render = function() {
                               _vm._v(" "),
                               _vm.errors.first("noOfRoom")
                                 ? _c("small", [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.errors.first("noOfRoom")) +
-                                        "\n                            "
-                                    )
+                                    _vm._v(_vm._s(_vm.errors.first("noOfRoom")))
                                   ])
                                 : _vm._e()
                             ],
@@ -7409,13 +7778,11 @@ var render = function() {
                               _vm.errors.first("duration_of_residence")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first(
-                                            "duration_of_residence"
-                                          )
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(
+                                        _vm.errors.first(
+                                          "duration_of_residence"
+                                        )
+                                      )
                                     )
                                   ])
                                 : _vm._e()
@@ -7480,13 +7847,9 @@ var render = function() {
                               _vm.errors.first("number_in_household")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first(
-                                            "number_in_household"
-                                          )
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(
+                                        _vm.errors.first("number_in_household")
+                                      )
                                     )
                                   ])
                                 : _vm._e()
@@ -7544,11 +7907,7 @@ var render = function() {
                               _vm.errors.first("how_many_work")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("how_many_work")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("how_many_work"))
                                     )
                                   ])
                                 : _vm._e()
@@ -7610,11 +7969,9 @@ var render = function() {
                               _vm.errors.first("no_depend_on_you")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("no_depend_on_you")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(
+                                        _vm.errors.first("no_depend_on_you")
+                                      )
                                     )
                                   ])
                                 : _vm._e()
@@ -7672,11 +8029,9 @@ var render = function() {
                               _vm.errors.first("number_of_children")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("number_of_children")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(
+                                        _vm.errors.first("number_of_children")
+                                      )
                                     )
                                   ])
                                 : _vm._e()
@@ -7761,11 +8116,7 @@ var render = function() {
                               _vm.errors.first("highestLevel")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("highestLevel")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("highestLevel"))
                                     )
                                   ])
                                 : _vm._e()
@@ -7824,9 +8175,7 @@ var render = function() {
                               _vm.errors.first("time_from")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.errors.first("time_from")) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("time_from"))
                                     )
                                   ])
                                 : _vm._e()
@@ -7879,11 +8228,7 @@ var render = function() {
                               _vm._v(" "),
                               _vm.errors.first("time_to")
                                 ? _c("small", [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.errors.first("time_to")) +
-                                        "\n                            "
-                                    )
+                                    _vm._v(_vm._s(_vm.errors.first("time_to")))
                                   ])
                                 : _vm._e()
                             ]
@@ -8004,9 +8349,7 @@ var render = function() {
                               _vm.errors.first("otherLoan")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.errors.first("otherLoan")) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("otherLoan"))
                                     )
                                   ])
                                 : _vm._e()
@@ -8143,11 +8486,9 @@ var render = function() {
                                       _vm.errors.first("payBack")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                    " +
-                                                _vm._s(
-                                                  _vm.errors.first("payBack")
-                                                ) +
-                                                "\n                                "
+                                              _vm._s(
+                                                _vm.errors.first("payBack")
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -8242,7 +8583,9 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "spaceAfter" }),
                           _vm._v(" "),
-                          _c("h5", [_vm._v("Work Details")]),
+                          _c("h5", [
+                            _vm._v("Work Details - Select Occupation")
+                          ]),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -8251,71 +8594,92 @@ var render = function() {
                                 "form-group col-md-12 px-md-3 px-1 float-left"
                             },
                             [
-                              _c(
-                                "label",
-                                { staticClass: "w-100 float-left pl-1" },
-                                [_vm._v("Employment Status")]
-                              ),
+                              _c("br"),
                               _vm._v(" "),
-                              _vm._l(_vm.employmentStatus, function(status) {
+                              _vm._l(_vm.occupations, function(occupation) {
                                 return _c(
-                                  "div",
-                                  { staticClass: "radio pl-1 pr-3 float-left" },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value:
-                                            _vm.newCustomer.employment_status,
-                                          expression:
-                                            "newCustomer.employment_status"
-                                        },
-                                        {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        }
-                                      ],
-                                      attrs: {
-                                        id: status,
-                                        "data-vv-as": "employment status",
-                                        name: "status",
-                                        type: "radio"
-                                      },
-                                      domProps: {
-                                        value: status,
-                                        checked: _vm._q(
-                                          _vm.newCustomer.employment_status,
-                                          status
-                                        )
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          _vm.$set(
-                                            _vm.newCustomer,
-                                            "employment_status",
-                                            status
-                                          )
-                                        }
+                                  "span",
+                                  {
+                                    staticClass: "badge badge-primary",
+                                    class: { active: _vm.isActive },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.checkOccupation(occupation.id)
                                       }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("label", { attrs: { for: status } }, [
-                                      _vm._v(_vm._s(status))
-                                    ])
-                                  ]
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(occupation.jobType))]
                                 )
                               }),
+                              _vm._v("  \n\n            "),
+                              _c("hr"),
                               _vm._v(" "),
-                              _vm.errors.first("status")
+                              _vm._l(_vm.occName, function(name) {
+                                return _vm.isClick
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "badge badge-default",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.setOccupation(name)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(name))]
+                                    )
+                                  : _vm._e()
+                              }),
+                              _vm._v("\n             \n            "),
+                              _vm.isOther && _vm.isClick
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "form-control col-md-3 col-12 px-md-3 px-1 float-left"
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.newCustomer.occupation,
+                                            expression: "newCustomer.occupation"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: {
+                                          name: "occ",
+                                          placeholder: "Enter occupation here",
+                                          type: "text"
+                                        },
+                                        domProps: {
+                                          value: _vm.newCustomer.occupation
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              _vm.newCustomer,
+                                              "occupation",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.errors.first("occ")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.errors.first("status")) +
-                                        "\n                            "
+                                      "\n                              " +
+                                        _vm._s(_vm.errors.first("occ")) +
+                                        "\n            "
                                     )
                                   ])
                                 : _vm._e()
@@ -8389,13 +8753,9 @@ var render = function() {
                                       _vm.errors.first("office_phone")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "office_phone"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first("office_phone")
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -8461,13 +8821,9 @@ var render = function() {
                                       _vm.errors.first("name_of_firm")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "name_of_firm"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first("name_of_firm")
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -8533,13 +8889,11 @@ var render = function() {
                                       _vm.errors.first("current_salary")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "current_salary"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "current_salary"
+                                                )
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -8675,11 +9029,7 @@ var render = function() {
                                       _vm.errors.first("means")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first("means")
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(_vm.errors.first("means"))
                                             )
                                           ])
                                         : _vm._e()
@@ -8767,11 +9117,7 @@ var render = function() {
                                       _vm.errors.first("period")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first("period")
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(_vm.errors.first("period"))
                                             )
                                           ])
                                         : _vm._e()
@@ -8867,13 +9213,11 @@ var render = function() {
                                       _vm.errors.first("work_duration")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "work_duration"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "work_duration"
+                                                )
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -8991,13 +9335,9 @@ var render = function() {
                                       _vm.errors.first("days_of_work")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "days_of_work"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first("days_of_work")
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9063,13 +9403,11 @@ var render = function() {
                                       _vm.errors.first("office_street_name")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "office_street_name"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "office_street_name"
+                                                )
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9132,13 +9470,11 @@ var render = function() {
                                       _vm.errors.first("office_building_number")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "office_building_number"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "office_building_number"
+                                                )
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9200,13 +9536,11 @@ var render = function() {
                                       )
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "office_nearest_bus_stop"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "office_nearest_bus_stop"
+                                                )
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9266,13 +9600,9 @@ var render = function() {
                                       _vm.errors.first("company_area")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "company_area"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first("company_area")
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9331,13 +9661,9 @@ var render = function() {
                                       _vm.errors.first("company_city")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "company_city"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first("company_city")
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9427,13 +9753,11 @@ var render = function() {
                                       _vm.errors.first("company_state")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "company_state"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "company_state"
+                                                )
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9497,13 +9821,11 @@ var render = function() {
                                       _vm.errors.first("company_phone_number")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "company_phone_number"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "company_phone_number"
+                                                )
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9565,13 +9887,11 @@ var render = function() {
                                       _vm.errors.first("available_from")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "available_from"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first(
+                                                  "available_from"
+                                                )
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9630,13 +9950,9 @@ var render = function() {
                                       _vm.errors.first("available_to")
                                         ? _c("small", [
                                             _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "available_to"
-                                                  )
-                                                ) +
-                                                "\n                                    "
+                                              _vm._s(
+                                                _vm.errors.first("available_to")
+                                              )
                                             )
                                           ])
                                         : _vm._e()
@@ -9756,13 +10072,11 @@ var render = function() {
                                         _vm.errors.first("office_phone")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "office_phone"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "office_phone"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -9828,13 +10142,11 @@ var render = function() {
                                         _vm.errors.first("name_of_firm")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "name_of_firm"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "name_of_firm"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -9896,13 +10208,11 @@ var render = function() {
                                         _vm.errors.first("market_name")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "market_name"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "market_name"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -9968,13 +10278,11 @@ var render = function() {
                                         _vm.errors.first("current_salary")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "current_salary"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "current_salary"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10036,13 +10344,11 @@ var render = function() {
                                         _vm.errors.first("monthly_gains")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "monthly_gains"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "monthly_gains"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10138,13 +10444,11 @@ var render = function() {
                                         _vm.errors.first("work_duration")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "work_duration"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "work_duration"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10290,13 +10594,11 @@ var render = function() {
                                         _vm.errors.first("bank_account")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "bank_account"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "bank_account"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10417,13 +10719,11 @@ var render = function() {
                                         _vm.errors.first("days_of_work")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "days_of_work"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "days_of_work"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10491,13 +10791,11 @@ var render = function() {
                                         _vm.errors.first("office_street_name")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "office_street_name"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "office_street_name"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10561,13 +10859,11 @@ var render = function() {
                                         )
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "office_building_number"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "office_building_number"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10633,13 +10929,11 @@ var render = function() {
                                         )
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "office_nearest_bus_stop"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "office_nearest_bus_stop"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10700,13 +10994,11 @@ var render = function() {
                                         _vm.errors.first("company_area")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "company_area"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "company_area"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10766,13 +11058,11 @@ var render = function() {
                                         _vm.errors.first("company_city")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "company_city"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "company_city"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10864,13 +11154,11 @@ var render = function() {
                                         _vm.errors.first("company_state")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "company_state"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "company_state"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -10935,13 +11223,11 @@ var render = function() {
                                         _vm.errors.first("company_phone_number")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "company_phone_number"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "company_phone_number"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -11006,13 +11292,11 @@ var render = function() {
                                         _vm.errors.first("available_from")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "available_from"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "available_from"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -11072,13 +11356,11 @@ var render = function() {
                                         _vm.errors.first("available_to")
                                           ? _c("small", [
                                               _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(
-                                                    _vm.errors.first(
-                                                      "available_to"
-                                                    )
-                                                  ) +
-                                                  "\n                                    "
+                                                _vm._s(
+                                                  _vm.errors.first(
+                                                    "available_to"
+                                                  )
+                                                )
                                               )
                                             ])
                                           : _vm._e()
@@ -11193,11 +11475,7 @@ var render = function() {
                               _vm.errors.first("NOK_first_name")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("NOK_first_name")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("NOK_first_name"))
                                     )
                                   ])
                                 : _vm._e()
@@ -11300,11 +11578,7 @@ var render = function() {
                               _vm.errors.first("NOK_last_name")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("NOK_last_name")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("NOK_last_name"))
                                     )
                                   ])
                                 : _vm._e()
@@ -11387,9 +11661,7 @@ var render = function() {
                               _vm.errors.first("nokgender")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.errors.first("nokgender")) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("nokgender"))
                                     )
                                   ])
                                 : _vm._e()
@@ -11449,11 +11721,9 @@ var render = function() {
                               _vm.errors.first("NOK_phone_number")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("NOK_phone_number")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(
+                                        _vm.errors.first("NOK_phone_number")
+                                      )
                                     )
                                   ])
                                 : _vm._e()
@@ -11537,11 +11807,9 @@ var render = function() {
                               _vm.errors.first("NOK_work_duration")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("NOK_work_duration")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(
+                                        _vm.errors.first("NOK_work_duration")
+                                      )
                                     )
                                   ])
                                 : _vm._e()
@@ -11625,11 +11893,7 @@ var render = function() {
                               _vm.errors.first("relationship")
                                 ? _c("small", [
                                     _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.errors.first("relationship")
-                                        ) +
-                                        "\n                            "
+                                      _vm._s(_vm.errors.first("relationship"))
                                     )
                                   ])
                                 : _vm._e()
@@ -11683,7 +11947,7 @@ var render = function() {
                         }
                       }
                     }),
-                    _vm._v("Work Guarantor Personal Info\n                    ")
+                    _vm._v("Work Guarantor Personal Info\n        ")
                   ]),
                   _vm._v(" "),
                   _vm.fillWorkGuarantor
@@ -11741,11 +12005,7 @@ var render = function() {
                             _vm.errors.first("WG_first_name")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("WG_first_name")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("WG_first_name"))
                                   )
                                 ])
                               : _vm._e()
@@ -11850,9 +12110,7 @@ var render = function() {
                             _vm.errors.first("WG_last_name")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("WG_last_name")) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("WG_last_name"))
                                   )
                                 ])
                               : _vm._e()
@@ -11936,11 +12194,7 @@ var render = function() {
                             _vm.errors.first("relationshipwg")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("relationshipwg")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("relationshipwg"))
                                   )
                                 ])
                               : _vm._e()
@@ -12016,11 +12270,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("wggender")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("wggender")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("wggender")))
                                 ])
                               : _vm._e()
                           ],
@@ -12082,13 +12332,11 @@ var render = function() {
                             _vm.errors.first("work_guarantor_street_name")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "work_guarantor_street_name"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "work_guarantor_street_name"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -12146,13 +12394,11 @@ var render = function() {
                             _vm.errors.first("work_guarantor_office_building")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "work_guarantor_office_building"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "work_guarantor_office_building"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -12210,13 +12456,11 @@ var render = function() {
                             _vm.errors.first("work_guarantor_bus_stop")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "work_guarantor_bus_stop"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "work_guarantor_bus_stop"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -12274,11 +12518,9 @@ var render = function() {
                             _vm.errors.first("work_guarantor_area")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("work_guarantor_area")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first("work_guarantor_area")
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -12336,11 +12578,9 @@ var render = function() {
                             _vm.errors.first("work_guarantor_city")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("work_guarantor_city")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first("work_guarantor_city")
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -12420,11 +12660,9 @@ var render = function() {
                             _vm.errors.first("work_guarantor_state")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("work_guarantor_state")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first("work_guarantor_state")
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -12484,11 +12722,9 @@ var render = function() {
                             _vm.errors.first("work_guarantor_phone")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("work_guarantor_phone")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first("work_guarantor_phone")
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -12570,13 +12806,11 @@ var render = function() {
                             _vm.errors.first("work_guarantor_work_duration")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "work_guarantor_work_duration"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "work_guarantor_work_duration"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -12670,7 +12904,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(
-                      "\n                        Personal Guarantor Personal Info\n                    "
+                      "\n          Personal Guarantor Personal Info\n        "
                     )
                   ]),
                   _vm._v(" "),
@@ -12731,11 +12965,7 @@ var render = function() {
                             _vm.errors.first("PG_first_name")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("PG_first_name")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("PG_first_name"))
                                   )
                                 ])
                               : _vm._e()
@@ -12843,9 +13073,7 @@ var render = function() {
                             _vm.errors.first("PG_last_name")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("PG_last_name")) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("PG_last_name"))
                                   )
                                 ])
                               : _vm._e()
@@ -12929,11 +13157,7 @@ var render = function() {
                             _vm.errors.first("relationshippg")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("relationshippg")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("relationshippg"))
                                   )
                                 ])
                               : _vm._e()
@@ -13014,11 +13238,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("pggender")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("pggender")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("pggender")))
                                 ])
                               : _vm._e()
                           ],
@@ -13080,11 +13300,7 @@ var render = function() {
                             _vm.errors.first("pguaadd_street")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("pguaadd_street")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("pguaadd_street"))
                                   )
                                 ])
                               : _vm._e()
@@ -13142,11 +13358,7 @@ var render = function() {
                             _vm.errors.first("pguaadd_houseno")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("pguaadd_houseno")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("pguaadd_houseno"))
                                   )
                                 ])
                               : _vm._e()
@@ -13204,11 +13416,7 @@ var render = function() {
                             _vm.errors.first("pguaadd_nbstop")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first("pguaadd_nbstop")
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(_vm.errors.first("pguaadd_nbstop"))
                                   )
                                 ])
                               : _vm._e()
@@ -13265,11 +13473,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("pgua_area")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("pgua_area")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("pgua_area")))
                                 ])
                               : _vm._e()
                           ]
@@ -13328,13 +13532,11 @@ var render = function() {
                             _vm.errors.first("personal_guarantor_city")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "personal_guarantor_city"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "personal_guarantor_city"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -13415,13 +13617,11 @@ var render = function() {
                             _vm.errors.first("personal_guarantor_state")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "personal_guarantor_state"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "personal_guarantor_state"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -13483,13 +13683,11 @@ var render = function() {
                             _vm.errors.first("personal_guarantor_telno")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "personal_guarantor_telno"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "personal_guarantor_telno"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -13572,13 +13770,11 @@ var render = function() {
                             _vm.errors.first("personal_guarantor_work_duration")
                               ? _c("small", { staticClass: "text-muted" }, [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "personal_guarantor_work_duration"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "personal_guarantor_work_duration"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -13688,13 +13884,11 @@ var render = function() {
                             _vm.errors.first("what_product_do_you_need")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "what_product_do_you_need"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "what_product_do_you_need"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -13754,13 +13948,11 @@ var render = function() {
                             _vm.errors.first("what_do_you_need_it_for")
                               ? _c("small", [
                                   _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.errors.first(
-                                          "what_do_you_need_it_for"
-                                        )
-                                      ) +
-                                      "\n                            "
+                                    _vm._s(
+                                      _vm.errors.first(
+                                        "what_do_you_need_it_for"
+                                      )
+                                    )
                                   )
                                 ])
                               : _vm._e()
@@ -13839,11 +14031,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.errors.first("branch_id")
                               ? _c("small", [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.errors.first("branch_id")) +
-                                      "\n                            "
-                                  )
+                                  _vm._v(_vm._s(_vm.errors.first("branch_id")))
                                 ])
                               : _vm._e()
                           ]
@@ -13868,9 +14056,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                            " +
+                            "\n            " +
                               _vm._s(_vm._f("capitalize")(_vm.mode)) +
-                              " Customer "
+                              " Customer\n            "
                           ),
                           _c("i", { staticClass: "far fa-paper-plane ml-1" })
                         ]

@@ -64,6 +64,7 @@ class Customer extends Model
             'loan_amount' => '',
             'did_you_pay_back' => '',
             'employment_status' => '',
+            'occupation' => '',
             'working_individual_Phone_number' => '',
             'name_of_company_or_business' => '',
             'cadd_nbstop' => '',
