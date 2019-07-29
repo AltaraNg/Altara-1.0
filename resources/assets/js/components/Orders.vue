@@ -418,6 +418,7 @@
                         1 if the current date is not on a monday and
                         3 if the current date is on a monday*/
 
+                        if (!(!!repaymentData)) return false;
 
                         /*step 1::
                         * the count is either 7 or 13,

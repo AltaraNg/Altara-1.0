@@ -159,13 +159,23 @@ exports.default = {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./node_modules/babel-runtime/regenerator/index.js":
+=======
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/HomePage.vue":
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime-module.js");
 
 
+<<<<<<< HEAD
 /***/ }),
+=======
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 
 /***/ "./node_modules/regenerator-runtime/runtime-module.js":
 /***/ (function(module, exports, __webpack_require__) {
@@ -181,10 +191,44 @@ module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime
 // kept identical to the way it is obtained in runtime.js
 var g = (function() { return this })() || Function("return this")();
 
+<<<<<<< HEAD
 // Use `getOwnPropertyNames` because not all browsers support calling
 // `hasOwnProperty` on the global `self` object in a worker. See #183.
 var hadRuntime = g.regeneratorRuntime &&
   Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
+=======
+exports.default = {
+    components: { PortalCard: _portalCard2.default },
+    data: function data() {
+        return {
+            portals: [{
+                url: 'inventory', title: 'Inventory', url_c: 'View Inventory!',
+                desc: 'For inventory and management'
+            }, {
+                url: 'suppliers', title: 'Manage Suppliers', url_c: 'Create/Update Supplier',
+                desc: 'Manage all the suppliers details!'
+            }, {
+                url: 'brands', title: 'Manage Brands', url_c: 'Create/Update Brands',
+                desc: 'Manage all the brands details!'
+            }, {
+                url: 'categories', title: 'Manage Categories', url_c: 'Create/Update Categories',
+                desc: 'Manage all the category details!'
+            }, {
+                url: 'products', title: 'Manage Products', url_c: 'Create/Update Products',
+                desc: 'Manage all the product details!'
+            }]
+        };
+    }
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 
 // Save the old regeneratorRuntime in case it needs to be restored later.
 var oldRuntime = hadRuntime && g.regeneratorRuntime;
@@ -943,7 +987,11 @@ if (hadRuntime) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3e26ed42\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/auth/Login.vue":
+=======
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b75fd5a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/HomePage.vue":
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -951,6 +999,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
+<<<<<<< HEAD
     _c("div", { attrs: { id: "login" } }, [
       _c(
         "div",
@@ -1130,6 +1179,28 @@ var render = function() {
         ]
       )
     ])
+=======
+    _c(
+      "div",
+      _vm._l(_vm.portals, function(portal) {
+        return _c(
+          "div",
+          [
+            _c("portal-card", {
+              attrs: {
+                url: portal.url,
+                title: portal.title,
+                url_c: portal.url_c,
+                desc: portal.desc,
+                aces: portal.aces
+              }
+            })
+          ],
+          1
+        )
+      })
+    )
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
   ])
 }
 var staticRenderFns = []
@@ -1138,21 +1209,28 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
+<<<<<<< HEAD
     require("vue-hot-reload-api")      .rerender("data-v-3e26ed42", module.exports)
+=======
+    require("vue-hot-reload-api")      .rerender("data-v-5b75fd5a", module.exports)
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
   }
 }
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./resources/assets/js/views/auth/Login.vue":
+=======
+/***/ "./resources/assets/js/components/portalCard.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/auth/Login.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3e26ed42\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/auth/Login.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1169,7 +1247,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\auth\\Login.vue"
+Component.options.__file = "resources\\assets\\js\\components\\portalCard.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1178,9 +1256,74 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
+    hotAPI.createRecord("data-v-28781233", Component.options)
+  } else {
+    hotAPI.reload("data-v-28781233", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/LOG/HomePage.vue":
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+<<<<<<< HEAD
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/auth/Login.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3e26ed42\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/auth/Login.vue")
+=======
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/HomePage.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b75fd5a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/HomePage.vue")
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+<<<<<<< HEAD
+Component.options.__file = "resources\\assets\\js\\views\\auth\\Login.vue"
+=======
+Component.options.__file = "resources\\assets\\js\\views\\LOG\\HomePage.vue"
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+<<<<<<< HEAD
     hotAPI.createRecord("data-v-3e26ed42", Component.options)
   } else {
     hotAPI.reload("data-v-3e26ed42", Component.options)
+=======
+    hotAPI.createRecord("data-v-5b75fd5a", Component.options)
+  } else {
+    hotAPI.reload("data-v-5b75fd5a", Component.options)
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
   }
   module.hot.dispose(function (data) {
     disposed = true

@@ -43,7 +43,11 @@ exports.default = {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/HomePage.vue":
+=======
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/HomePage.vue":
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64,16 +68,41 @@ exports.default = {
     data: function data() {
         return {
             portals: [{
+<<<<<<< HEAD
                 url: 'attendance/create', title: 'Log Daily Attendance', url_c: 'Log Attendance!',
                 desc: 'For Logging staff attendances!', aces: this.$store.getters.auth('supervisor')
             }, {
                 url: 'branch', title: 'Manage Branches', url_c: 'Manage Branches now!',
                 desc: 'Manage all the branch details', aces: this.$store.getters.auth('FSLLead')
             }, {
+=======
+                url: 'verification', title: 'Document Verification', url_c: 'Verify Registered Customer!',
+                desc: 'For Verification of registered customers'
+            }, {
+                url: 'customer/update', title: 'Customer Update', url_c: 'Update customers details!',
+                desc: 'For Updating existing customers details'
+            }, {
+                url: 'message', title: 'Messaging', url_c: 'Send messages!',
+                desc: 'For sending messages to customers'
+            }, {
+                url: 'reminder/sms', title: 'Customer SMS Reminder', url_c: 'View SMS reminders',
+                desc: 'View all due SMS reminders!'
+            }, {
+                url: 'reminder/call', title: 'Customer Call Reminder', url_c: 'View Call reminders',
+                desc: 'View all due Call reminders!'
+            }, {
+                url: 'reminder/collection', title: 'Collection list', url_c: 'View collections',
+                desc: 'View all due collection!'
+            }, {
+                url: 'reminder/recovery', title: 'Recovery list', url_c: 'View Recoveries',
+                desc: 'View all due recovery!'
+            }, {
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
                 url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                 desc: 'View all registered customers!'
             }, {
                 url: 'sales', title: 'Sales List', url_c: 'View Sales List',
+<<<<<<< HEAD
                 desc: 'View all Sales!', aces: this.$store.getters.auth('FSLLead')
             }, {
                 url: 'sales/create', title: 'Temp POS', url_c: 'Post Daily Sales',
@@ -81,6 +110,9 @@ exports.default = {
             }, {
                 url: 'payment', title: 'Online Payment', url_c: 'Make Online Payment for Formal Sector',
                 desc: 'Online Payment', aces: this.$store.getters.auth('supervisor')
+=======
+                desc: 'View all Sales!'
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
             }]
         };
     }
@@ -93,7 +125,47 @@ exports.default = {
 //
 //
 //
-//
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20f97f30\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/HomePage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      _vm._l(_vm.portals, function(portal) {
+        return _c(
+          "div",
+          [
+            _c("portal-card", {
+              attrs: {
+                url: portal.url,
+                title: portal.title,
+                url_c: portal.url_c,
+                desc: portal.desc
+              }
+            })
+          ],
+          1
+        )
+      })
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-20f97f30", module.exports)
+  }
+}
 
 /***/ }),
 
@@ -162,6 +234,7 @@ if (false) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-599c6738\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -204,6 +277,8 @@ if (false) {
 
 /***/ }),
 
+=======
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 /***/ "./resources/assets/js/components/portalCard.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -252,15 +327,25 @@ module.exports = Component.exports
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./resources/assets/js/views/FSL/HomePage.vue":
+=======
+/***/ "./resources/assets/js/views/DVA/HomePage.vue":
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/HomePage.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-599c6738\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/HomePage.vue")
+=======
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/HomePage.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20f97f30\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/HomePage.vue")
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -277,7 +362,11 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+<<<<<<< HEAD
 Component.options.__file = "resources\\assets\\js\\views\\FSL\\HomePage.vue"
+=======
+Component.options.__file = "resources\\assets\\js\\views\\DVA\\HomePage.vue"
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
 
 /* hot reload */
 if (false) {(function () {
@@ -286,9 +375,15 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
+<<<<<<< HEAD
     hotAPI.createRecord("data-v-599c6738", Component.options)
   } else {
     hotAPI.reload("data-v-599c6738", Component.options)
+=======
+    hotAPI.createRecord("data-v-20f97f30", Component.options)
+  } else {
+    hotAPI.reload("data-v-20f97f30", Component.options)
+>>>>>>> 717b73666b06ef9a4098637f6e3966e98184a99e
   }
   module.hot.dispose(function (data) {
     disposed = true
