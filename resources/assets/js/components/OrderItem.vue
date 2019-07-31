@@ -3,7 +3,7 @@
 
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
             <span v-if="mode === 'normal-list'"></span>
-            <span v-else-if="reminder.canBeSelected && ['collection','recovery','call'].includes(mode)"
+            <span v-else-if="reminder.canBeSelected && ['collection','recovery','call','external-recovery'].includes(mode)"
                   class="user mx-auto waiting-reminder"
                   @click="logReminder">
                 <i class="fas fa-hourglass-start"></i>
@@ -42,7 +42,7 @@
         </div>
 
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center attendance-create"
-             v-if="['collection','recovery'].includes(mode)">
+             v-if="['collection','recovery','external-recovery'].includes(mode)">
             <span class="present">
                 <span class="radio w-50 pr-3 mb-0 float-left">
                     <input type="radio" value="yes" :id="`present${index}`" :name="`isPresent${index}`">
@@ -56,7 +56,7 @@
         </div>
 
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center"
-             v-if="['collection','recovery','call'].includes(mode)">
+             v-if="['collection','recovery','call','external-recovery'].includes(mode)">
             <textarea class="form-control" rows="1" v-model="reminder.feedback" :disabled="!reminder.canBeSelected">
             </textarea>
         </div>

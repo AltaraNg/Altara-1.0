@@ -24,6 +24,7 @@ const CAG = () => import( '../views/CAG/index.vue');
 const CAGHome = () => import( '../views/CAG/HomePage.vue');
 
 const OrderList = () => import( '../views/DVA/order/orderList.vue');
+const AllOverdue = () => import( '../views/DVA/allOverdue');
 /*const DVASMSReminder = () => import( '../views/DVA/reminder/SMSReminder.vue');
 const DVACallReminder = () => import( '../views/DVA/reminder/callReminder.vue');*/
 
@@ -101,7 +102,9 @@ const router = new VueRouter({
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
                 {path: 'reminder/recovery', component: Reminder, name: 'recovery', meta: {mode: 'recovery'}},
-                {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},
+                {path: 'reminder/external-recovery', component: Reminder, name: 'external-recovery', meta: {mode: 'external-recovery'}},
+                {path: 'reminder/collection', component: AllOverdue, name: 'collection', meta: {mode: 'collection'}},
+                {path: 'all-overdue', component: Reminder, name: 'all-overdue-dva', meta: {mode: 'all-overdue'}},
             ]
         },
         {
