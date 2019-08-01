@@ -1,100 +1,218 @@
 <template>
     <transition name="fade">
-        <div id="reminder">
+        <div id="reminder" class="attendance">
 
-            <div class="mt-5 mb-3 attendance-head">
-                <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
-                    <li class="col p-0 nav-item mb-0" v-for="(tab,index) in details.tabs">
-                        <a aria-selected="true" class="nav-link" :class="index === 0 && 'active'"
-                           data-toggle="tab" href="#reminder-panel" @click="listToOrder = details.list + index"
-                           role="tab" v-html="tab + ' ' + mode()"></a>
-                        <!--1. the @click is to set this.list to 1,2,3,4,5,6,7,8
-                        as the case may be, this is used at the backend
-                        to know which list is to be fetched
-                        2. the v-htm will resolve to eg 1st call or 1st sms
-                        (mode is either sms or call as the case may be)
-                        3. the :class="index === 0 && "active" will
-                        make the first tab to be the
-                        active tab on-load-->
-                    </li>
-                </ul>
+            <custom-header :title="'All overdue(s) payments'"/>
+
+            <div class="mt-5 row attendance-head">
+                <div class="col-3 col-sm" v-for="{name} in filters">
+                    <div class="row">
+                        <div class="light-heading"><span class="d-none d-sm-inline">Select</span> {{name | capitalize}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 col-sm-2"></div>
             </div>
 
-            <div class="mt-5 mb-3 attendance-head">
-                <div class="row px-4 pt-3 pb-4 text-center">
-                    <div class="col p-0 text-link" @click="selectAll" style="max-width: 120px" v-if="mode('sms')">
-                        Click to {{doSelectAll ? 'De-select' : 'Select'}} all
+            <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
+                <div class="col-4 col-sm" v-for="{name:filter,model} in filters">
+                    <div class="row">
+                        <select class="custom-select" v-model="$data[model]" v-if="filter === 'branch'"
+                                @keyup.enter="fetchData()">
+                            <option disabled selected value="">{{filter | capitalize}}</option>
+                            <option :value="id" v-for="{name,id} in $store.getters.getBranches">
+                                {{name | capitalize}}
+                            </option>
+                        </select>
+                        <div class="form-group w-100" v-else-if="filter === 'overdue days'">
+                            <input type="number" class="form-control" v-model="$data[model]" @keyup.enter="fetchData()">
+                        </div>
+                        <div class="form-group w-100" v-else>
+                            <input class="form-control" type="date" v-model="$data[model]" @keyup.enter="fetchData()">
+                        </div>
                     </div>
-                    <div class="col light-heading" v-else>Action</div>
-                    <div class="col light-heading" v-for="header in details.headings">{{header}}</div>
+                </div>
+                <div class="col-12 col-sm-2">
+                    <div class="row d-flex justify-content-end">
+                        <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
+                    </div>
                 </div>
             </div>
 
-            <order :list="listToOrder" :mode="mode()"/>
+            <div class="mt-5 mb-3 attendance-head">
+                <div class="w-100 my-5 mx-0 hr"></div>
+                <div class="row px-4 pt-3 pb-4 text-center">
+                    <div class="col light-heading" style="max-width: 120px">S/N</div>
+                    <div class="col light-heading" v-for="header in headings">{{header}}</div>
+                </div>
+            </div>
+
+            <order v-if="show" :start-index="orders.from" :pre-loaded-order="response" :mode="'normal-list'"/>
+
+            <div class="mt-5 mb-3 attendance-head">
+                <div class="w-100 my-5 mx-0 hr"></div>
+            </div>
 
         </div>
     </transition>
 </template>
-
 <script>
+    import {get} from '../../utilities/api';
+    import Flash from "../../utilities/flash";
     import Order from "../../components/Orders";
-    import {EventBus} from "../../utilities/event-bus";
+    import CustomHeader from '../../components/customHeader';
 
     export default {
-        components: {Order},
+
+        components: {CustomHeader, Order},
 
         data() {
             return {
-                listToOrder: null,
-                doSelectAll: false,
+                branch_id: '',
+                date_from: null,
+                date_to: null,
+                overdue_days: 1,
+                page: 1,
+                filters: [
+                    {name: 'branch', model: 'branch_id'},
+                    {name: 'date from', model: 'date_from'},
+                    {name: 'date to', model: 'date_to'},
+                    {name: 'overdue days', model: 'overdue_days'}
+                ],
+                orders: null,
+                response: {},
+                show: false,
+                headings:
+                    ['Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary', 'Reminder History']
             }
         },
 
         methods: {
-            selectAll() {
-                this.doSelectAll = !this.doSelectAll;
-                EventBus.$emit('selectOrderItem', this.doSelectAll);
-            },
-            mode(query = null, mode = this.$route.meta.mode.toLowerCase()) {
-                return query ? mode === query : mode
-            }
-        },
 
-        computed: {
-            details() {
-                let list = 1,
-                    tabs = ["1<sup>st</sup>", "2<sup>nd</sup>", "3<sup>rd</sup>"],
-                    headings = ['Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary', 'Reminder History'];
-                switch (this.mode()) {
-                    case 'call':
-                        list = 4;
-                        tabs = [...tabs, "Guarantor's", "Promise"];
-                        headings = [...headings, 'Feedback', 'Promise Date'];
-                        break;
-                    case 'collection':
-                        list = 9;
-                        tabs.splice(2, 1);
-                        headings = [...headings, 'Visited?', 'Feedback'];
-                        break;
-                    case 'recovery':
-                        list = 11;
-                        headings = [...headings, 'Visited?', 'Feedback'];
-                        break;
-                    case 'external-recovery':
-                        list = 14;
-                        tabs.splice(1, 2);
-                        headings = [...headings, 'Delivered Letter?', 'Feedback'];
-                        break;
-                }
-                if (!this.listToOrder) this.listToOrder = list;
-                return {tabs, headings, list};
+            fetchData() {
+                this.$scrollToTop();
+                this.$LIPS(true);
+                let {page, date_from, date_to, branch_id, overdue_days} = this.$data;
+                get(`/api/reminder/create` +
+                    `${!!page ? `?page=${page}` : ''}` +
+                    `${!!date_to ? `&date_to=${date_to}` : ''}` +
+                    `${!!branch_id ? `&branch_id=${branch_id}` : ''}` +
+                    `${!!overdue_days ? `&overdue_days=${overdue_days}` : ''}` +
+                    `${!!date_from ? `&date_from=${date_from}` : ''}`)
+                    .then(({data}) => this.prepareForm(data))
+                    .catch(() => Flash.setError('Error Preparing form'));
             },
+
+            next(firstPage = null) {
+                if (this.orders.next_page_url) {
+                    this.page = firstPage ? firstPage : this.page + 1;
+                    this.fetchData();
+                }
+            },
+
+            prev(lastPage = null) {
+                if (this.orders.prev_page_url) {
+                    this.page = lastPage ? lastPage : this.page + 1;
+                    this.fetchData();
+                }
+            },
+
+            prepareForm(data) {
+                this.show = false;
+                this.orders = null;
+                this.response = {};
+
+                this.orders = data.orders.filter(order => {
+                    let {repaymentData} = this.getCountAndRepaymentData(order),
+                        {count, interval} = this.amortizationPlan(order),
+                        payDay, today = new Date();
+                    if (!(!!repaymentData)) return false;
+                    for (let i = 1; i < count + 1; i++) {
+                        let column = this.$getColumn(i);
+                        if (!repaymentData[column + "_pay"]) {
+                            payDay = this.generateDates({startDate: order.order_date, interval, count})[i - 1];
+                            break;
+                        }
+                    }
+                    let datePool = this.$getDate(today.addDays(-this.overdue_days));
+                    return datePool === payDay;
+                });
+
+                let {payment_methods, banks, dva_id, branch} = data;
+
+                this.response = {payment_methods, banks, dva_id, branch, orders: this.orders};
+                this.$scrollToTop();
+                this.$LIPS(false);
+                this.show = true;
+            },
+
+
+            /**/
+            getCountAndRepaymentData(order) {
+                let data = {count: this.amortizationPlan(order).count};
+                if (order['repayment_formal'] != null) data.repaymentData = order.repayment_formal;
+                if (order['repayment_informal'] != null) data.repaymentData = order.repayment_informal;
+                return data;
+            },
+
+            amortizationPlan(order = this.currentOrder) {
+                //'2019-07-07' this is the date the bank draft was implemented
+                // and hence used as a factor to check for
+                // if amortization should be 12 or 6
+                let interval, count;
+                if (new Date(order.order_date) <= new Date('2019-07-07')) {
+                    if (order['repayment_formal'] != null) {
+                        interval = 28;
+                        count = 6;
+                    }
+                    if (order['repayment_informal'] != null) {
+                        interval = 14;
+                        count = 12;
+                    }
+                } else {
+                    if (this.isBankDraftAvailable(order) && this.isOrderFormal(order)) {
+                        interval = 28;
+                        count = 6;
+                    } else {
+                        interval = 14;
+                        count = 12;
+                    }
+                }
+                return {interval, count};
+            },
+
+            isBankDraftAvailable() {
+                //this is where the code for checking for bank draft will go
+                return false;
+            },
+
+            isOrderFormal: order => ['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()),
+
+            generateDates({startDate, interval, count}) {
+                let dates = [];
+                for (let i = 0; i < count; i++) {
+                    let orderDate = (new Date(startDate)).addDays((i + 1) * interval);
+                    let dateString = this.$getDate(orderDate);
+                    dates.push(dateString);
+                }
+                return dates;
+            },
+        },
+        created() {
+            this.$prepareBranches();
+            this.fetchData();
         }
     }
 </script>
 
-<style scoped type="scss">
-    .attendance-head .light-heading:nth-child(1) {
-        max-width: 120px;
+<style lang="scss" scoped>
+    .attendance-view {
+        .custom-select, input {
+            width: 85%;
+        }
+
+        .myBtn {
+            width: 95%;
+        }
     }
 </style>

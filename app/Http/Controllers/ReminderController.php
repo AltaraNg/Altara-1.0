@@ -21,7 +21,7 @@ class ReminderController extends Controller
 
     }
 
-    public function getDateForReminder($list)
+    public function getDateForReminder($list, $request)
     {
         //1. get the current date
         $today = date('Y-m-d');
@@ -51,12 +51,18 @@ class ReminderController extends Controller
         //(we use 28 days as 1 month)(i.e 1 repayment per month) for 6 months(1/month * 6 = 6)
         $days = 0;
 
+        //if(isset($request['overdue_days']) && $list == null) $list = 'overdue';
+
         //5. check the list being requested for by the user. and assign
         //the correct values to the $day variable.
         //for a reference of how the number came about ask for the collection app brief.
         //it contains a comprehensive list of all the reminders and
         //the date difference for each of them
         switch ($list) {
+            case 'overdue':
+                $days = $request['overdue_days'];
+                $count = 1;
+                break;
             case 2://sms reminder: 2
                 $days = 7;
                 break;
@@ -153,10 +159,12 @@ class ReminderController extends Controller
 
         //2. Extract the list number sent from the user
         $list = request('list');
+        if (request('overdue_days')) $list = 'overdue';
 
         //3. Prepare a request object that can be access
         //from all level of the method
         $request = [
+            'overdue_days' => request('overdue_days'),
             'list' => $list,
             'page' => request('page'),
             'page_size' => request('page_size'),
@@ -170,7 +178,7 @@ class ReminderController extends Controller
 
             //4a. if the customer requested for the list of promise call
             //fetch the list from the promise call table
-            $result = PromiseCall::dateFilter('date', $list, $this)
+            $result = PromiseCall::dateFilter('date', $list, $this, $request)
                 ->with(['order' => function ($query) {
                     return $query->orderWithOtherTables();
                 }])
@@ -179,7 +187,7 @@ class ReminderController extends Controller
 
             //4b. if the not promise call
             //fetch list from the orders table
-            $result = Order::dateFilter('order_date', $list, $this)
+            $result = Order::dateFilter('order_date', $list, $this, $request)
                 ->orderWithOtherTables($request)
                 ->getOrPaginate($request);
         }
