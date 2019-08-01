@@ -411,7 +411,7 @@
                             /*isMonday how a boolean value of whether
                             the current date is monday or not*/
 
-                            collectionsList = [9, 10, 11, 12, 13],
+                            collectionsList = [9, 10, 11, 12, 13, 14],
 
                             accumulatedDays = (isMonday || collectionsList.includes(this.list)) ? 3 : 1;
                         /*accumulatedDays hold 1 or 3,
@@ -491,7 +491,7 @@
                         }
 
                         //if (this.mode === "collection" || this.mode === "recovery" || this.mode === "call"){
-                        if (["collection", "recovery", "call"].includes(this.mode)) {
+                        if (["collection", "recovery", "call", "external-recovery"].includes(this.mode)) {
                             for (let p = 0; p < accumulatedDays; p++)
                                 datePool.push(this.$getDate(today.addDays(-(p + dayInterval))));
                         }

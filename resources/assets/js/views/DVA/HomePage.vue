@@ -36,6 +36,12 @@
                     }, {
                         url: 'reminder/recovery', title: 'Recovery list', url_c: 'View Recoveries',
                         desc: 'View all due recovery!',
+                    },{
+                        url: 'reminder/external-recovery', title: 'External recovery list', url_c: 'View Recoveries',
+                        desc: 'View all due recovery!',
+                    },{
+                        url: 'all-overdue', title: 'All overdue payments list', url_c: 'View All Overdue payments',
+                        desc: 'View all overdue payment!',
                     }, {
                         url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',

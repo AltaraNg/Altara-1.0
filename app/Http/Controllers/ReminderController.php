@@ -27,7 +27,7 @@ class ReminderController extends Controller
         $today = date('Y-m-d');
 
         //this array hold all the list for the recovery and collections
-        $collectionsList = [9, 10, 11, 12, 13];
+        $collectionsList = [9, 10, 11, 12, 13, 14];
 
         //2. if the day of the week is monday, set count to 3 else set it to 1
         //Count is used to run a loop. in the simplest form: The guide for the reminder feature is that once the current

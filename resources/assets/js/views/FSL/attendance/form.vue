@@ -143,14 +143,13 @@
                 <div class="pt-3 pb-4 align-items-center">
                     <div class="light-heading d-flex">
                         <div class="float-left align-self-center">
-                            To fill attendance for a past date kindly select the date and click get attendance list.
-                            <span class="mx-5">
-                                ||
-                            </span>
+                            To fill attendance for a past date kindly select the date and
                         </div>
-                        <div @click="fetchAttendanceByDate()" class="float-left align-self-center">
-                            <a class="text-link text-capitalize" href="javascript:">get attendance list for
-                                <strong>Date</strong> : </a>
+                        <button @click="fetchAttendanceByDate()" class="btn btn-secondary btn-sm mx-3" style="width: auto;">
+                            CLICK HERE
+                        </button>
+                        <div class="float-left align-self-center">
+                            to update the list with the added date!
                         </div>
                         <div class="float-left align-self-center ml-3">
                             <input class="form-control float-left" type="date" v-model="newDate">
@@ -262,6 +261,7 @@
                         this.submittedToday = false;
                         this.show = true;
                         this.today = [...newDate].join(' ');
+                        Flash.setSuccess('You can now proceed and add attendance for ' + this.today);
                     } else Flash.setError(`Sorry you cannot create attendance for a feature date!`, 2000);
                 } else Flash.setError(`Select date to continue!`, 2000);
                 this.$scrollToTop();

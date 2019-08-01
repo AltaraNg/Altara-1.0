@@ -37,8 +37,8 @@
 </template>
 
 <script>
-    import Order from "../../../components/Orders";
-    import {EventBus} from "../../../utilities/event-bus";
+    import Order from "../../components/Orders";
+    import {EventBus} from "../../utilities/event-bus";
 
     export default {
         components: {Order},
