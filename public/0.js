@@ -3003,6 +3003,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
 
 exports.default = {
   components: { Verification: _verification2.default },
@@ -8636,9 +8637,13 @@ var render = function() {
                                     "div",
                                     {
                                       staticClass:
-                                        "form-control col-md-3 col-12 px-md-3 px-1 float-left"
+                                        "col-md-3 col-12 px-1 float-left"
                                     },
                                     [
+                                      _c("label", [
+                                        _vm._v("Type in the occupation")
+                                      ]),
+                                      _vm._v(" "),
                                       _c("input", {
                                         directives: [
                                           {

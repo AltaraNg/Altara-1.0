@@ -2961,9 +2961,7 @@ textarea.form-control:active {
       font-style: normal;
 }
 
-.active{
-    background-color: #000;
-}
+
 .badge-primary {
     border-color: #084a73;
     color: #084a73;

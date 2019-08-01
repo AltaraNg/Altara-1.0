@@ -570,8 +570,9 @@
               >{{name}}</span>
               &nbsp;
               <div
-                class="form-control col-md-3 col-12 px-md-3 px-1 float-left"
+                class="col-md-3 col-12 px-1 float-left"
                 v-if="isOther && isClick">
+                <label>Type in the occupation</label>
                 <input
                   class="form-control"
                   name="occ"
