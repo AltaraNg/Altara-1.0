@@ -585,45 +585,7 @@
                                         v-validate="'required'"
                                         v-model="newCustomer.occupation"/>
                             </div>
-<<<<<<< HEAD
-                            <small v-if="errors.first('status')">
-                                {{errors.first('status')}}
-                            </small>
-            </div>-->
-
-            <div class="form-group col-md-12 px-md-3 px-1 float-left">
-              <br />
-              <span
-                v-for="occupation in occupations"
-                v-bind:class="{ active: isActive }"
-                class="badge badge-primary"
-                @click="checkOccupation(occupation.id)"
-              >{{occupation.jobType}}</span> &nbsp;
-
-              <hr>
-
-              <span
-                v-if="isClick"
-                @click="setOccupation(name)"
-                v-for="name in occName"
-                class="badge badge-default"
-              >{{name}}</span>
-              &nbsp;
-              <div
-                class="col-md-3 col-12 px-1 float-left"
-                v-if="isOther && isClick">
-                <label>Type in the occupation</label>
-                <input
-                  class="form-control"
-                  name="occ"
-                  placeholder="Enter occupation here"
-                  type="text"
-                  v-model="newCustomer.occupation"/>
-              </div>
-             <small v-if="errors.first('occ')">
-=======
                             <small v-if="errors.has('occ')">
->>>>>>> 896a1818948e76f90b06f3a42ed60dfef98fa861
                                 {{errors.first('occ')}}
                             </small>
                         </div>
