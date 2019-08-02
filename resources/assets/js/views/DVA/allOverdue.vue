@@ -5,19 +5,22 @@
             <custom-header :title="'All overdue(s) payments'"/>
 
             <div class="mt-5 row attendance-head">
-                <div class="col-3 col-sm" v-for="{name} in filters">
+                <div class="col-4 col-sm" v-for="{name} in filters">
                     <div class="row">
-                        <div class="light-heading"><span class="d-none d-sm-inline">Select</span> {{name | capitalize}}
+                        <div class="light-heading">
+                            <span class="d-none d-sm-inline">Select</span> {{name | capitalize}}
                         </div>
                     </div>
                 </div>
-                <div class="col-3 col-sm-2"></div>
+                <div class="col-3 col-sm"></div>
             </div>
 
             <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
                 <div class="col-4 col-sm" v-for="{name:filter,model} in filters">
                     <div class="row">
-                        <select class="custom-select" v-model="$data[model]" v-if="filter === 'branch'"
+                        <select class="custom-select"
+                                v-model="$data[model]"
+                                v-if="filter === 'branch'"
                                 @keyup.enter="fetchData()">
                             <option disabled selected value="">{{filter | capitalize}}</option>
                             <option :value="id" v-for="{name,id} in $store.getters.getBranches">
@@ -32,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-2">
+                <div class="col-12 col-sm">
                     <div class="row d-flex justify-content-end">
                         <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
                     </div>
@@ -69,16 +72,8 @@
         data() {
             return {
                 branch_id: '',
-                date_from: null,
-                date_to: null,
                 overdue_days: 1,
-                page: 1,
-                filters: [
-                    {name: 'branch', model: 'branch_id'},
-                    {name: 'date from', model: 'date_from'},
-                    {name: 'date to', model: 'date_to'},
-                    {name: 'overdue days', model: 'overdue_days'}
-                ],
+                filters: [{name: 'branch', model: 'branch_id'}, {name: 'overdue days', model: 'overdue_days'}],
                 orders: null,
                 response: {},
                 show: false,
@@ -92,29 +87,12 @@
             fetchData() {
                 this.$scrollToTop();
                 this.$LIPS(true);
-                let {page, date_from, date_to, branch_id, overdue_days} = this.$data;
+                let {branch_id, overdue_days} = this.$data;
                 get(`/api/reminder/create` +
-                    `${!!page ? `?page=${page}` : ''}` +
-                    `${!!date_to ? `&date_to=${date_to}` : ''}` +
-                    `${!!branch_id ? `&branch_id=${branch_id}` : ''}` +
-                    `${!!overdue_days ? `&overdue_days=${overdue_days}` : ''}` +
-                    `${!!date_from ? `&date_from=${date_from}` : ''}`)
+                    `${!!overdue_days ? `?overdue_days=${overdue_days}` : ''}` +
+                    `${!!branch_id ? `&branch_id=${branch_id}` : ''}`)
                     .then(({data}) => this.prepareForm(data))
                     .catch(() => Flash.setError('Error Preparing form'));
-            },
-
-            next(firstPage = null) {
-                if (this.orders.next_page_url) {
-                    this.page = firstPage ? firstPage : this.page + 1;
-                    this.fetchData();
-                }
-            },
-
-            prev(lastPage = null) {
-                if (this.orders.prev_page_url) {
-                    this.page = lastPage ? lastPage : this.page + 1;
-                    this.fetchData();
-                }
             },
 
             prepareForm(data) {
