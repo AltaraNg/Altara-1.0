@@ -11,9 +11,9 @@ trait Scopes
     //is a date array which the whereIn query will feed on. $column is either DATE for list
     //generated from the promise_call table or ORDER_DATE
     // for list generated from the order table
-    public function scopeDateFilter($query, $column, $list, $reminderController)
+    public function scopeDateFilter($query, $column, $list, $reminderController, $request)
     {
-        return isset($list) ? $query->whereIn($column, $reminderController->getDateForReminder($list)) : $query;
+        return isset($list) ? $query->whereIn($column, $reminderController->getDateForReminder($list, $request)) : $query;
     }
 
     public function scopeGetOrPaginate($query, $request)

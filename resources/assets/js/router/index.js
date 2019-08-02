@@ -101,10 +101,11 @@ const router = new VueRouter({
 
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
+                {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},
                 {path: 'reminder/recovery', component: Reminder, name: 'recovery', meta: {mode: 'recovery'}},
                 {path: 'reminder/external-recovery', component: Reminder, name: 'external-recovery', meta: {mode: 'external-recovery'}},
-                {path: 'reminder/collection', component: AllOverdue, name: 'collection', meta: {mode: 'collection'}},
-                {path: 'all-overdue', component: Reminder, name: 'all-overdue-dva', meta: {mode: 'all-overdue'}},
+
+                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-dva', meta: {mode: 'all-overdue'}},
             ]
         },
         {
