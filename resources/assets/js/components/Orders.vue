@@ -373,8 +373,11 @@
             }
         },
 
+        computed:{
+            ...mapGetters(['auth'])
+        },
+
         methods: {
-            ...mapGetters(['auth']),
             prepareForm(res) {
                 this.show = false;
                 this.showModalContent = false;
