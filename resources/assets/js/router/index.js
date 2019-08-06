@@ -113,6 +113,7 @@ const router = new VueRouter({
                 {path: '/', redirect: {name: 'CAGHome'}},
                 {path: 'home', component: CAGHome, name: 'CAGHome'},
                 {path: 'sales', component: OrderList, name: 'sales-cag'},
+                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-cag', meta: {mode: 'all-overdue'}},
             ]
         },
         {
