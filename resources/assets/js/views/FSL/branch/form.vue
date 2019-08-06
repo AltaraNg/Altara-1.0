@@ -142,7 +142,7 @@
 <script>
     import Vue from 'vue';
     import {log} from '../../../utilities/log';
-    import Flash from '../../../utilities/flash'
+    import Flash from '../../../utilities/flash';
     import {byMethod, get} from '../../../utilities/api';
 
     function initialize(to) {
@@ -190,10 +190,11 @@
                             this.error = {};
                             byMethod(this.method, this.store, this.form)
                                 .then(({data}) => {
-                                    if (data.saved || data.updated) {
+                                    if (data.created || data.updated) {
                                         log(`Branch ${this.mode}d`, `${this.form.employee_id}`);
                                         Flash.setSuccess(`Branch ${this.mode}d successfully!`, 20000);
                                     }
+                                    this.done();
                                 })
                                 .catch(e => {
                                     e = e.response;
@@ -201,7 +202,7 @@
                                         this.error = e.data.errors ? e.data.errors : e.data;
                                         this.$networkErr('unique');
                                     }
-                                }).finally(() => this.done());
+                                });
                         } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
