@@ -1,0 +1,471 @@
+<template>
+    <transition name="fade">
+
+        <div id="reminder">
+
+            <div class="mt-5 attendance-head">
+                <div class="card">
+                    <ul class="nav nav-tabs bg-default justify-content-center">
+                        <h6>Customer Lookup</h6>
+                    </ul>
+                    <div class="card-body p-4">
+                        <form @submit.prevent="processForm">
+                            <div class="m-0 p-0 col-12 form-group clearfix">
+                                <label class="w-100">Customer ID</label>
+                                <input @onkeyUp="check"
+                                       class="form-control col-lg-9 col-md-8 col-sm-8 col-12 float-left mt-1"
+                                       data-vv-as="customer id"
+                                       name="customer_id"
+                                       v-model="customer_id"
+                                       v-validate="'required|numeric'">
+                                <div class="col-lg-3 col-md-4 col-sm-4 col-12 float-right px-md-3 mt-md-0 px-sm-3 mt-sm-0 mt-2 px-0">
+                                    <button :disabled="check" class="btn btn-block bg-default my-1" type="submit">
+                                        Fetch customer details <i class="far fa-paper-plane ml-1"></i>
+                                    </button>
+                                </div>
+                                <small class="form-text text-muted w-100" v-if="errors.has('customer_id')">
+                                    {{errors.first('customer_id')}}
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <transition name="fade">
+                <div v-if="customer && show">
+
+                    <div class="attendance-head">
+                        <customer-profile :view-customer="customer"/>
+                    </div>
+
+                    <custom-header :title="'All order(s)'"/>
+
+                    <div class="mt-5 mb-3 attendance-head">
+                        <div class="row px-4 pt-3 pb-4 text-center">
+                            <div class="col light-heading" style="max-width: 100px">S/No.</div>
+                            <div class="col light-heading" v-for="header in headers">{{header}}</div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content mt-1 attendance-body">
+                        <div class="tab-pane active text-center" v-if="show && customer.orders.length > 0">
+                            <div class="mb-3 row attendance-item" v-for="(order, index) in customer.orders">
+
+                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center"
+                                     style="max-width: 100px">
+                                    <span class="user mx-auto">{{index+1}}</span>
+                                </div>
+
+                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                    {{order.order_date}}
+                                </div>
+
+                                <div class="col-12 col-xs-2 col-md col-lg d-flex user-name align-items-center justify-content-center">
+                                    {{order.id}}
+                                </div>
+
+                                <div class="col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center">
+                                    {{order.store_product.product_name}}
+                                </div>
+
+                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                    {{$formatCurrency(order.product_price)}}
+                                </div>
+
+                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                    {{order.sales_category.name}}<!--&percnt;-->
+                                </div>
+
+                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                    {{$formatCurrency(order.down_payment)}}
+                                </div>
+                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                    <button @click="displayAmortization(index)" class="btn status my-sm-2 approved">View
+                                        Plan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane active text-center" v-else>
+                            <div class="mb-3 row attendance-item">
+                                <div class="col d-flex light-heading align-items-center justify-content-center">
+                                    No records found!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 mb-3 attendance-head">
+                        <div class="w-100 my-5 mx-0 hr"></div>
+                    </div>
+
+                </div>
+            </transition>
+
+
+            <div class="modal fade repayment" id="amortization">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content" v-if="showModalContent">
+                        <div class="modal-header py-2">
+                            <h6 class="modal-title py-1">
+                                Repayment Plan/Summary - {{customer.employment_status | capitalize}}
+                            </h6>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+
+                                <h5 class="mt-3 mb-0">Order Information</h5>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                    <tr class="table-separator">
+                                        <td>Name</td>
+                                        <td>Order Id</td>
+                                        <td>Product</td>
+                                        <th>Branch</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">{{`${customer.first_name} ${customer.last_name}`}}</td>
+                                        <th>{{activeOrder.order.id}}</th>
+                                        <th>{{activeOrder.order.store_product.product_name}}</th>
+                                        <td class="font-weight-bold">{{activeOrder.branch.name}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <h5 class="mt-3 mb-0">Amortization Schedule</h5>
+                                <table class="table table-bordered">
+                                    <tbody class="text-center">
+                                    <tr>
+                                        <th>Repayment</th>
+                                        <td v-for="caption in activeOrder.repaymentCaptions" v-html="caption"></td>
+                                    </tr>
+                                    <tr class="table-separator">
+                                        <th>Due Date</th>
+                                        <td v-for="date in activeOrder.dueDates">{{date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Actual Pay Day</th>
+                                        <td v-for="date in activeOrder.actualPayDates">{{date}}</td>
+                                    </tr>
+                                    <tr class="table-separator">
+                                        <th>Status</th>
+                                        <td :class="status.class" v-for="status in activeOrder.paymentStatusClasses">
+                                            <i class="fas" :class="status.icon"></i>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-separator">
+                                        <th>Repayment Amount</th>
+                                        <td v-for="payment in activeOrder.amountsToBePaid">
+                                            {{$formatCurrency(payment)}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Actual Amount Paid</th>
+                                        <td v-for="payment in activeOrder.actualAmountsPaid">
+                                            {{$formatCurrency(payment)}}
+                                        </td>
+                                    </tr>
+                                    <tr class="table-separator">
+                                        <th>Payment Method</th>
+                                        <td class="text-capitalize"
+                                            v-for="repaymentMethod in activeOrder.paymentMethods">
+                                            {{convertPaymentMethodOrBankToName(repaymentMethod, 'payment_methods')}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bank</th>
+                                        <td class="text-capitalize"
+                                            v-for="repaymentBank in activeOrder.paymentBanks">
+                                            {{convertPaymentMethodOrBankToName(repaymentBank, 'banks')}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <h5 class="mt-5 mb-0">Payment Summary</h5>
+                                <table class="table table-bordered">
+                                    <tbody class="text-center">
+
+                                    <tr class="table-separator">
+                                        <td class="text-left">Discount Detail (%)</td>
+                                        <th>
+                                            {{activeOrder.order["discount"]["name"] | capitalize}}
+                                            -
+                                            ({{activeOrder.order["discount"]["percentage_discount"]}})
+                                        </th>
+                                        <td>Total Before Discount</td>
+                                        <th>{{$formatCurrency($roundDownAmt(activeOrder.order["product_price"]))}}</th>
+                                        <td>Total Paid</td>
+                                        <th>{{activeOrder.amountPaid}}</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Discount Amount</td>
+                                        <th>{{activeOrder.discountAmount}}</th>
+                                        <td>Total After Discount</td>
+                                        <th>{{activeOrder.discountedTotal}}</th>
+                                        <td>Total Debt</td>
+                                        <th>{{activeOrder.outstandingDebt}}</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Down Payment</td>
+                                        <th>{{$formatCurrency($roundDownAmt(activeOrder.order.down_payment))}}</th>
+                                        <td>Total Plus Default Fee</td>
+                                        <th>{{activeOrder.totalPlusDefault}}</th>
+                                        <td>Default Fee</td>
+                                        <th>{{activeOrder.defaultFee}}</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <h5 class="mt-5 mb-0">Add a new payment</h5>
+                                <table class="table table-bordered">
+                                    <tbody class="text-center">
+
+                                    <tr class="table-separator">
+                                        <td class="text-left">S/No.</td>
+                                        <th>Repayment</th>
+                                        <th>Amount</th>
+                                        <th>Payment Method</th>
+                                        <th>Bank</th>
+                                        <th>Date</th>
+                                        <th>Collected By</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    <tr v-for="(payment,index) in paymentForm.payments">
+                                        <th>{{index+1}}</th>
+
+                                        <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" name="date" type="text"
+                                                       v-model="paymentForm.payments[index].column" disabled>
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" name="date" type="text"
+                                                       v-model="paymentForm.payments[index]._pay">
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                            <select class="custom-select w-100"
+                                                    v-model="paymentForm.payments[index]._payment_method">
+                                                <option :value="id" v-for="{name, id} in payment_methods">
+                                                    {{name | capitalize}}
+                                                </option>
+                                            </select>
+                                        </th>
+
+                                        <th>
+                                            <select class="custom-select w-100"
+                                                    v-model="paymentForm.payments[index]._payment_bank">
+                                                <option :value="id" v-for="{name, id} in banks">{{name}}</option>
+                                            </select>
+                                        </th>
+
+                                        <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" name="date" type="date"
+                                                       v-model="paymentForm.payments[index]._date">
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" data-vv-as="date" name="date" type="text"
+                                                       :value="user.full_name" disabled>
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                            <button @click="deletePayment(index)"
+                                                    class="ml-2 btn status status-sm my-sm-2 not-approved">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </th>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button @click="addPaymentForm()" class="btn status my-sm-2">Add Payment</button>
+                            <button @click="preparePayments()" class="btn status my-sm-2 approved ml-4">Click here to
+                                Submit
+                                Payment(s)!
+                            </button>
+
+                            <a class="text-link mt-3" data-dismiss="modal" href="javascript:"
+                               style="text-align: right">close dialogue</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </transition>
+</template>
+<script>
+    import Vue from 'vue';
+    import Flash from '../../../utilities/flash';
+    import {get, post} from '../../../utilities/api';
+    import CustomHeader from '../../../components/customHeader';
+    import CustomerProfile from '../../../components/CustomerProfile';
+
+    import {Order} from '../../../utilities/Amortization';
+
+    export default {
+
+        components: {CustomHeader, CustomerProfile},
+
+        data() {
+            return {
+                customer: null,
+                customer_id: '',
+                user: null,
+                show: false,
+                showModalContent: false,
+                activeOrder: null,
+                banks: [],
+                payment_methods: [],
+                headers: ['Date', 'Order No.', 'Product Name', 'Total Product Price',
+                    'Percentage', 'Down Payment', 'Repayment Plans'],
+                paymentForm: null,
+            }
+        },
+
+        methods: {
+            updateView(data) {
+                let {customer, user, banks, payment_methods} = data;
+                this.user = data.hasOwnProperty('user') ? user : null;
+                if (!!customer.length) {
+                    customer = customer[0];
+                    if (!(!!customer.document['id'])) customer.document = {id_card_url: "", passport_url: ""};
+                    Vue.set(this.$data, 'banks', banks);
+                    Vue.set(this.$data, 'customer', customer);
+                    Vue.set(this.$data, 'payment_methods', payment_methods);
+                    this.show = true;
+                } else Flash.setError("Customer not found.", 5000);
+                this.$LIPS(false);
+            },
+
+            processForm() {
+                this.show = false;
+                this.$LIPS(true);
+                get(`/api/customer/lookup/${this.customer_id}`)
+                    .then(res => this.updateView(res.data))
+                    .catch(() => {
+                        this.$LIPS(false);
+                        Flash.setError('Error Fetching customer detail');
+                    });
+            },
+
+            async displayAmortization(index) {
+                await Vue.set(this.$data, 'activeOrder', new Order(this.customer.orders[index], this.customer));
+                this.paymentForm = {payments: []};
+                this.showModalContent = true;
+                return $(`#amortization`).modal('toggle');
+            },
+
+            convertPaymentMethodOrBankToName(id, type) {
+                return !id ? null : this.$data[type].find(obj => obj.id === id).name;
+            },
+
+            addPaymentForm() {
+                let level = this.activeOrder.repaymentLevel;
+                let nextRepayment = parseInt(level + this.paymentForm.payments.length + 1);
+
+                if (level === this.activeOrder._count) return;
+                if (nextRepayment > this.activeOrder._count) return;
+
+                this.paymentForm.payments.push(this.getFreshPayment());
+                this.reNumber();
+            },
+
+            getFreshPayment() {
+                return {
+                    _pay: this.activeOrder.amountsToBePaid[0],
+                    _date: this.$getDate(),
+                    _payment_method: '',
+                    _payment_bank: '',
+                    _col: '',
+                    column: ''
+                }
+            },
+
+            deletePayment(index) {
+                console.log('deleting...', index);
+                this.paymentForm.payments.splice(index, 1);
+                this.reNumber();
+            },
+
+            reNumber() {
+                let level = this.activeOrder.repaymentLevel;
+                this.paymentForm.payments.forEach((payment, index) => {
+                    let next = level + index + 1;
+                    this.paymentForm.payments[index]._col = next;
+                    this.paymentForm.payments[index].column = this.$getColumn(next) + " Repayment";
+                })
+            },
+
+            preparePayments() {
+                let payments = {};
+                this.paymentForm.payments.forEach(payment => {
+                    let obj = {}, col = this.$getColumn(payment._col);
+                    obj[`${col}_pay`] = payment._pay;
+                    obj[`${col}_date`] = payment._date;
+                    obj[`${col}_payment_bank`] = payment._payment_bank;
+                    obj[`${col}_payment_method`] = payment._payment_method;
+                    payments = {...payments, ...obj};
+                });
+                this.activeOrder.payments = payments;
+                !($.isEmptyObject(payments)) ? this.savePayments() : Flash.setError("You have not added any payment.");
+            },
+
+            savePayments() {
+                this.$LIPS(true);
+                let type, data, order;
+                if (this.activeOrder.count === 6) type = 'formal';
+                if (this.activeOrder.count === 12) type = 'informal';
+                data = {payments: this.activeOrder.payments, repayment_id: this.activeOrder.order.id, type};
+
+                post(`/api/repayment`, data).then(res => {
+                    if (res.data.saved) {
+                        order = this.customer.orders.find(order => order.id === data.repayment_id);
+                        order[`repayment_${type}`] = res.data.amortization;
+                        this.activeOrder = new Order(order, this.customer);
+                        this.paymentForm = {payments: []};
+                        this.$LIPS(false);
+                    }
+                }).catch(() => Flash.setError('Error adding payment! Please try again later.'));
+            }
+        },
+
+        computed: {
+            check() {
+                return (!(!(this.$isProcessing) && (!!this.customer_id)));
+            }
+        },
+
+        created() {
+            this.$prepareBranches();
+        }
+    }
+</script>
+
+<style scoped>
+    .attendance-item {
+        cursor: auto;
+    }
+</style>

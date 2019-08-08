@@ -47,6 +47,7 @@ const FSLHome = () => import('../views/FSL/HomePage.vue');
 const BranchForm = () => import('../views/FSL/branch/form.vue');
 const POSForm = () => import('../views/FSL/pos/form.vue');
 const PaymentForm = () => import('../views/FSL/payment/form.vue');
+const CustomerLookup = () => import( '../views/FSL/lookup/lookup.vue');
 
 const Attendance = () => import('../views/FSL/attendance/index.vue');
 const AttendanceForm = () => import('../views/FSL/attendance/form.vue');
@@ -157,6 +158,7 @@ const router = new VueRouter({
                 {path: 'sales', component: OrderList, name: 'sales-fsl'},
                 {path: 'sales/create', component: POSForm, name: 'post-sales'},
                 {path: 'payment', component: PaymentForm, name: 'down-payment'},
+                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva'},
             ]
         },
         {

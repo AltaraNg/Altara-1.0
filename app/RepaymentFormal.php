@@ -13,4 +13,6 @@ class RepaymentFormal extends Model
     public $incrementing = false;
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $guarded = [];
 }

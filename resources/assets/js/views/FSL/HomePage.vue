@@ -13,31 +13,36 @@
 
     export default {
         components: {PortalCard},
+        methods:{
+            auth(role){
+                return this.$store.getters.auth(role);
+            }
+        },
         data() {
             return {
                 portals: [
                     {
                         url: 'attendance/create', title: 'Log Daily Attendance', url_c: 'Log Attendance!',
-                        desc: 'For Logging staff attendances!', aces: this.$store.getters.auth('supervisor'),
+                        desc: 'For Logging staff attendances!', aces: this.auth('supervisor'),
                     }, {
                         url: 'branch', title: 'Manage Branches', url_c: 'Manage Branches now!',
-                        desc: 'Manage all the branch details', aces: this.$store.getters.auth('FSLLead'),
+                        desc: 'Manage all the branch details', aces: this.auth('FSLLead'),
                     }, {
                         url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
                     }, {
                         url: 'sales', title: 'Sales List', url_c: 'View Sales List',
-                        desc: 'View all Sales!', aces: this.$store.getters.auth('FSLLead')
-                    },
-                    {
+                        desc: 'View all Sales!', aces: this.auth('FSLLead')
+                    }, {
                         url: 'sales/create', title: 'Temp POS', url_c: 'Post Daily Sales',
-                        desc: 'Temp POS!', aces: this.$store.getters.auth('supervisor')
-                    },
-                     {
+                        desc: 'Temp POS!', aces: this.auth('supervisor')
+                    }, {
                         url: 'payment', title: 'Online Payment', url_c: 'Make Online Payment for Formal Sector',
-                        desc: 'Online Payment', aces: this.$store.getters.auth('supervisor')
+                        desc: 'Online Payment', aces: this.auth('supervisor')
+                    }, {
+                        url: 'lookup', title: 'Customer Lookup', url_c: 'Manage customer repayment details',
+                        desc: 'Customer Lookup',
                     }
-                    
                 ]
             }
         }
