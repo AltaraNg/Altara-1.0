@@ -22,6 +22,9 @@
                     {
                         url: 'sales', title: 'Sales List', url_c: 'View Sales List',
                         desc: 'View all Sales!',
+                    },{
+                        url: 'all-overdue', title: 'All overdue payments list', url_c: 'View All Overdue payments',
+                        desc: 'View all overdue payment!',
                     }
                 ]
             }

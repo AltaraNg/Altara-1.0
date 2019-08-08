@@ -338,6 +338,7 @@
 
 <script>
     import Vue from 'vue';
+    import {mapGetters} from 'vuex';
     import Flash from "../utilities/flash";
     import {Message} from "../utilities/sms";
     import {get, post} from "../utilities/api";
@@ -370,6 +371,10 @@
                 payment_methods: null,
                 showModalContent: false,
             }
+        },
+
+        computed:{
+            ...mapGetters(['auth'])
         },
 
         methods: {
@@ -505,7 +510,7 @@
                     };
 
                     let isMyBranch = () => {
-                        if (this.$store.getters.auth('DVALead') || this.$store.getters.auth('FSLLead')) return true;
+                        if (this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess')) return true;
                         //the branch to be used for this filter should be the branch of the
                         // product being bought not the branch of the customer
                         return parseInt(order.store_product.store_name) === res.branch;

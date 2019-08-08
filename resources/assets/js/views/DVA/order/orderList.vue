@@ -75,7 +75,7 @@
                                     <a href="javascript:" @click="prev(1)" class="page-link">First</a>
                                 </li>
                                 <li :class="{'disabled':!orders.prev_page_url }" class="page-item">
-                                    <a href="javascript:" @click="prev()" class="page-link">Next</a>
+                                    <a href="javascript:" @click="prev()" class="page-link">prev</a>
                                 </li>
                                 <!---->
                                 <li class="page-item">
@@ -154,7 +154,7 @@
 
             prev(lastPage = null) {
                 if (this.orders.prev_page_url) {
-                    this.page = lastPage ? lastPage : this.page + 1;
+                    this.page = lastPage ? lastPage : this.page - 1;
                     this.fetchData();
                 }
             },

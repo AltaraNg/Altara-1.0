@@ -556,6 +556,8 @@ var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
 
+var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+
 var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
@@ -571,7 +573,7 @@ var _OrderItem2 = _interopRequireDefault(_OrderItem);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var url = function url(to) {
-    return "/api/reminder/create?list=" + to.query.list;
+    return '/api/reminder/create?list=' + to.query.list;
 };
 
 exports.default = {
@@ -601,6 +603,8 @@ exports.default = {
         };
     },
 
+
+    computed: _extends({}, (0, _vuex.mapGetters)(['auth'])),
 
     methods: {
         prepareForm: function prepareForm(res) {
@@ -749,7 +753,7 @@ exports.default = {
                 };
 
                 var isMyBranch = function isMyBranch() {
-                    if (_this.$store.getters.auth('DVALead') || _this.$store.getters.auth('FSLLead')) return true;
+                    if (_this.auth('DVALead') || _this.auth('FSLLead') || _this.auth('CAGAccess')) return true;
                     //the branch to be used for this filter should be the branch of the
                     // product being bought not the branch of the customer
                     return parseInt(order.store_product.store_name) === res.branch;
@@ -818,7 +822,7 @@ exports.default = {
 
         getDiscount: function getDiscount(_ref3) {
             var discount = _ref3.discount;
-            return discount.name + " (" + discount.percentage_discount + ")";
+            return discount.name + ' (' + discount.percentage_discount + ')';
         },
 
         isRepaymentValid: function isRepaymentValid(order) {
@@ -829,7 +833,7 @@ exports.default = {
             this.paymentSummary = this.calcPaymentSummary(order);
             _vue2.default.set(this.$data, 'currentOrder', order);
             this.showModalContent = true;
-            return $("#" + modal).modal('toggle');
+            return $('#' + modal).modal('toggle');
         },
         getCountAndRepaymentData: function getCountAndRepaymentData(order) {
             var data = { count: this.amortizationPlan(order).count };
@@ -1041,12 +1045,12 @@ exports.default = {
             var dates = this.generateDates(genDateArgs);
             var repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
             if (this.list === 1) {
-                message = "Hello " + first_name + " " + last_name + ", thanks for patronizing us." + " The following is the breakdown of the repayment plan for" + (" the purchase of " + product_name + ":%0a");
+                message = 'Hello ' + first_name + ' ' + last_name + ', thanks for patronizing us.' + ' The following is the breakdown of the repayment plan for' + (' the purchase of ' + product_name + ':%0a');
                 if (dates.length > 0) dates.forEach(function (date, index) {
                     return message += _this8.$getColumn(index + 1) + ": " + date + " => " + _this8.$formatCurrency(_this8.$roundDownAmt(repayment_amount)) + "%0a";
                 });
             } else {
-                message = "Hello " + first_name + " " + last_name + ", This is to remind you that your" + (" " + this.$getColumn(parseInt(repaymentLevel) + 1) + " repayment of " + this.$formatCurrency(this.$roundDownAmt(repayment_amount)) + " for " + product_name) + (" will be due on " + dates[repaymentLevel] + ". we will be expecting you.");
+                message = 'Hello ' + first_name + ' ' + last_name + ', This is to remind you that your' + (' ' + this.$getColumn(parseInt(repaymentLevel) + 1) + ' repayment of ' + this.$formatCurrency(this.$roundDownAmt(repayment_amount)) + ' for ' + product_name) + (' will be due on ' + dates[repaymentLevel] + '. we will be expecting you.');
             }
             return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
         },
@@ -1092,7 +1096,7 @@ exports.default = {
                 var appendix = [];
                 for (var j = 1; j <= 2; j++) {
                     appendix.unshift(prefix.pop());
-                }data.push("<td>" + prefix.join('') + "<sup>" + appendix.join('') + "</sup></td>");
+                }data.push('<td>' + prefix.join('') + '<sup>' + appendix.join('') + '</sup></td>');
             }
             return data;
         }
@@ -1227,6 +1231,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
 
 exports.default = {
 
@@ -1235,11 +1242,8 @@ exports.default = {
     data: function data() {
         return {
             branch_id: '',
-            date_from: null,
-            date_to: null,
             overdue_days: 1,
-            page: 1,
-            filters: [{ name: 'branch', model: 'branch_id' }, { name: 'date from', model: 'date_from' }, { name: 'date to', model: 'date_to' }, { name: 'overdue days', model: 'overdue_days' }],
+            filters: [{ name: 'branch', model: 'branch_id' }, { name: 'overdue days', model: 'overdue_days' }],
             orders: null,
             response: {},
             show: false,
@@ -1255,34 +1259,15 @@ exports.default = {
             this.$scrollToTop();
             this.$LIPS(true);
             var _$data = this.$data,
-                page = _$data.page,
-                date_from = _$data.date_from,
-                date_to = _$data.date_to,
                 branch_id = _$data.branch_id,
                 overdue_days = _$data.overdue_days;
 
-            (0, _api.get)("/api/reminder/create" + ("" + (!!page ? "?page=" + page : '')) + ("" + (!!date_to ? "&date_to=" + date_to : '')) + ("" + (!!branch_id ? "&branch_id=" + branch_id : '')) + ("" + (!!overdue_days ? "&overdue_days=" + overdue_days : '')) + ("" + (!!date_from ? "&date_from=" + date_from : ''))).then(function (_ref) {
+            (0, _api.get)("/api/reminder/create" + ("" + (!!overdue_days ? "?overdue_days=" + overdue_days : '')) + ("" + (!!branch_id ? "&branch_id=" + branch_id : ''))).then(function (_ref) {
                 var data = _ref.data;
                 return _this.prepareForm(data);
             }).catch(function () {
                 return _flash2.default.setError('Error Preparing form');
             });
-        },
-        next: function next() {
-            var firstPage = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-            if (this.orders.next_page_url) {
-                this.page = firstPage ? firstPage : this.page + 1;
-                this.fetchData();
-            }
-        },
-        prev: function prev() {
-            var lastPage = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-            if (this.orders.prev_page_url) {
-                this.page = lastPage ? lastPage : this.page + 1;
-                this.fetchData();
-            }
         },
         prepareForm: function prepareForm(data) {
             var _this2 = this;
@@ -1569,7 +1554,7 @@ var render = function() {
           [
             _vm._l(_vm.filters, function(ref) {
               var name = ref.name
-              return _c("div", { staticClass: "col-3 col-sm" }, [
+              return _c("div", { staticClass: "col-4 col-sm" }, [
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "light-heading" }, [
                     _c("span", { staticClass: "d-none d-sm-inline" }, [
@@ -1585,7 +1570,7 @@ var render = function() {
               ])
             }),
             _vm._v(" "),
-            _c("div", { staticClass: "col-3 col-sm-2" })
+            _c("div", { staticClass: "col-3 col-sm" })
           ],
           2
         ),
@@ -1751,7 +1736,7 @@ var render = function() {
               ])
             }),
             _vm._v(" "),
-            _c("div", { staticClass: "col-12 col-sm-2" }, [
+            _c("div", { staticClass: "col-12 col-sm" }, [
               _c("div", { staticClass: "row d-flex justify-content-end" }, [
                 _c(
                   "button",

@@ -633,7 +633,7 @@
                                             v-model="newCustomer.current_sal_or_business_income"
                                             v-validate="'required'"
                                     />
-                                    <small v-if="errors.first('current_salary')">{{errors.first('current_salary')}}
+                                    <small v-if="errors.has('current_salary')">{{errors.first('current_salary')}}
                                     </small>
                                 </div>
 
@@ -915,13 +915,13 @@
                                     <input
                                             class="form-control"
                                             data-vv-as="name of market"
-                                            name="market_name"
+                                            name="market_of_name"
                                             placeholder="name of market"
                                             type="text"
                                             v-model="newCustomer.market_name"
                                             v-validate="'required'"
                                     />
-                                    <small v-if="errors.first('market_name')">{{errors.first('market_name')}}</small>
+                                    <small v-if="errors.has('market_of_name')">{{errors.first('market_of_name')}}</small>
                                 </div>
 
                                 <div class="form-group col-md-6 px-md-3 px-1 float-left">
@@ -935,7 +935,7 @@
                                             v-model="newCustomer.current_sal_or_business_income"
                                             v-validate="'required|numeric'"
                                     />
-                                    <small v-if="errors.first('current_salary')">{{errors.first('current_salary')}}
+                                    <small v-if="errors.has('current_salary')">{{errors.first('current_salary')}}
                                     </small>
                                 </div>
 

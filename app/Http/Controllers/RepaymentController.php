@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Repayment;
+use App\RepaymentFormal;
+use App\RepaymentInformal;
 use Illuminate\Http\Request;
 
 class RepaymentController extends Controller
@@ -35,7 +37,24 @@ class RepaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $amortization = null;
+
+        switch ($request->type){
+            case 'formal':
+                $amortization = RepaymentFormal::where('repayment_id', $request->repayment_id)->first();
+                break;
+
+            case 'informal':
+                $amortization = RepaymentInformal::where('repayment_id', $request->repayment_id)->first();
+                break;
+        }
+
+        $amortization->update($request->payments);
+
+        return response()->json([
+            'saved' => true,
+            'amortization' =>  $amortization->refresh()
+        ]);
     }
 
     /**

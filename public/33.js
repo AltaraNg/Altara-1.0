@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 webpackJsonp([33],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/profile/Edit.vue":
@@ -103,3 +104,6 @@ module.exports = Component.exports
 =======
 webpackJsonp([33],{"+/kq":function(e,t){e.exports={render:function(){this.$createElement;this._self._c;return this._m(0)},staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticClass:"profile-page sidebar-collapse"},[t("h1",[this._v("This is the profile page")])])}]}},W7ej:function(e,t,s){var n=s("VU/8")(s("zShF"),s("+/kq"),!1,null,null,null);e.exports=n.exports},zShF:function(e,t,s){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default={}}});
 >>>>>>> 896a1818948e76f90b06f3a42ed60dfef98fa861
+=======
+webpackJsonp([33],{"24V1":function(e,t){e.exports={render:function(){var e=this.$createElement,t=this._self._c||e;return t("div",{attrs:{id:"profile-view"}},[t("router-view")],1)},staticRenderFns:[]}},RXsi:function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var o,s=r("K23+"),a=(o=s)&&o.__esModule?o:{default:o};t.default={beforeCreate:function(){var e=parseInt(localStorage.getItem("role"));this.$store.dispatch("mutateProfileAccess",e),-1!==this.$store.state.ProfileAccess.indexOf(e)||localStorage.getItem("api_token")||(a.default.setError("You do not have access to that page!"),this.$router.push("/login"))}}},dgKe:function(e,t,r){var o=r("VU/8")(r("RXsi"),r("24V1"),!1,null,null,null);e.exports=o.exports}});
+>>>>>>> 976efb13563114c356a829a8b2f4c56625bbae52

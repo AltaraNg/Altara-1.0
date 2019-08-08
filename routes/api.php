@@ -14,6 +14,7 @@
 Route::post('/login', 'AuthController@login');
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/branches', 'BranchController@allBranches');
+    Route::get('/customer/lookup/{customer}', 'CustomerController@customerLookup');
     Route::post('/customer/{customer}', 'CustomerController@update');
     Route::get('/user/getBranchUsers', 'UserController@getBranchUsers');
     Route::Resources([
@@ -38,7 +39,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         'work_guarantor' => 'WorkGuarantorController',
         'processing_fee' => 'ProcessingFeeController',
         'personal_guarantor' => 'PersonalGuarantorController',
-        'dsa_daily_registration' => 'DsaDailyRegistrationController'
+        'dsa_daily_registration' => 'DsaDailyRegistrationController',
+        'repayment' => 'RepaymentController',
     ]);
     /*------*/
     Route::post('/user/{id}/cv', 'UserController@uploadCV');
