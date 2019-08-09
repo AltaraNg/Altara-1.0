@@ -178,7 +178,8 @@ class ReminderController extends Controller
 
             //4a. if the customer requested for the list of promise call
             //fetch the list from the promise call table
-            $result = PromiseCall::dateFilter('date', $list, $this, $request)
+            $result = PromiseCall::select('id','order_id','date')
+                ->dateFilter('date', $list, $this, $request)
                 ->with(['order' => function ($query) {
                     return $query->orderWithOtherTables();
                 }])
@@ -193,8 +194,8 @@ class ReminderController extends Controller
         }
 
         return response()->json([
-            'payment_methods' => PaymentMethod::all(),
-            'banks' => Bank::all(),
+            //'payment_methods' => PaymentMethod::all(),
+            //'banks' => Bank::all(),
             'dva_id' => $user->id,
             'branch' => $user->branch_id,
             'orders' => $result
@@ -209,8 +210,7 @@ class ReminderController extends Controller
      */
     public function store(Request $request)
     {
-        $reminders = request('reminders');
-        Reminder::insert($reminders);
+        Reminder::insert($request->reminders);
         return response()->json(['saved' => true]);
     }
 

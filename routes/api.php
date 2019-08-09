@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'personal_guarantor' => 'PersonalGuarantorController',
         'dsa_daily_registration' => 'DsaDailyRegistrationController',
         'repayment' => 'RepaymentController',
+        'payment_method' => 'PaymentMethodController',
     ]);
     /*------*/
     Route::post('/user/{id}/cv', 'UserController@uploadCV');

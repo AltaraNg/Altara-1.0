@@ -25,7 +25,7 @@ class MessageController extends Controller
      */
     public function create()
     {
-        //return response()->json(request('message'), 200);
+        return response()->json(request('message'), 200);
         $ch = curl_init();
         $receiver = urlencode(request('to'));
         $message = urlencode(request('message'));

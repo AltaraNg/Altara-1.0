@@ -119,6 +119,16 @@ Vue.prototype.$prepareStates = () => {
         .then(r => store.dispatch('mutateStates', r.data.states));
 };
 
+Vue.prototype.$preparePaymentMethods = () => {
+    !store.getters.getPaymentMethods && get('/api/payment_method')
+        .then(r => store.dispatch('mutatePaymentMethods', r.data.paymentMethods));
+};
+
+Vue.prototype.$prepareBanks = () => {
+    !store.getters.getBanks && get('/api/bank')
+        .then(r => store.dispatch('mutateBanks', r.data.banks));
+};
+
 
 /**convert a time in 24 hours format to 12 hours format**/
 Vue.prototype.$timeConvert = time => {

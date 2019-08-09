@@ -14,7 +14,9 @@ class PaymentMethodController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+           'paymentMethods' => PaymentMethod::all()
+        ]);
     }
 
     /**
