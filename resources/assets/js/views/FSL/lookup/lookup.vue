@@ -74,15 +74,15 @@
                                 </div>
 
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                                    {{order.sales_category.name}}<!--&percnt;-->
+                                    {{order.sales_category.name}}
                                 </div>
 
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{$formatCurrency(order.down_payment)}}
                                 </div>
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                                    <button @click="displayAmortization(index)" class="btn status my-sm-2 approved">View
-                                        Plan
+                                    <button @click="displayAmortization(index)" class="btn status my-sm-2 approved">
+                                        View Plan
                                     </button>
                                 </div>
                             </div>
@@ -131,7 +131,8 @@
                                         <th>Branch</th>
                                     </tr>
                                     <tr>
-                                        <td class="font-weight-bold">{{`${customer.first_name} ${customer.last_name}`}}</td>
+                                        <td class="font-weight-bold">{{activeOrder.customerName}}
+                                        </td>
                                         <th>{{activeOrder.order.id}}</th>
                                         <th>{{activeOrder.order.store_product.product_name}}</th>
                                         <td class="font-weight-bold">{{activeOrder.branch.name}}</td>
@@ -176,14 +177,14 @@
                                         <th>Payment Method</th>
                                         <td class="text-capitalize"
                                             v-for="repaymentMethod in activeOrder.paymentMethods">
-                                            {{convertPaymentMethodOrBankToName(repaymentMethod, 'payment_methods')}}
+                                            {{Order.convertToName(repaymentMethod, 'paymentMethods')}}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Bank</th>
                                         <td class="text-capitalize"
                                             v-for="repaymentBank in activeOrder.paymentBanks">
-                                            {{convertPaymentMethodOrBankToName(repaymentBank, 'banks')}}
+                                            {{Order.convertToName(repaymentBank, 'banks')}}
                                         </td>
                                     </tr>
                                     </tbody>
@@ -195,11 +196,7 @@
 
                                     <tr class="table-separator">
                                         <td class="text-left">Discount Detail (%)</td>
-                                        <th>
-                                            {{activeOrder.order["discount"]["name"] | capitalize}}
-                                            -
-                                            ({{activeOrder.order["discount"]["percentage_discount"]}})
-                                        </th>
+                                        <th>{{activeOrder.discount | capitalize}}</th>
                                         <td>Total Before Discount</td>
                                         <th>{{$formatCurrency($roundDownAmt(activeOrder.order["product_price"]))}}</th>
                                         <td>Total Paid</td>
@@ -215,7 +212,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-left">Down Payment</td>
-                                        <th>{{$formatCurrency($roundDownAmt(activeOrder.order.down_payment))}}</th>
+                                        <th>{{$formatCurrency($roundDownAmt(activeOrder.order['down_payment']))}}</th>
                                         <td>Total Plus Default Fee</td>
                                         <th>{{activeOrder.totalPlusDefault}}</th>
                                         <td>Default Fee</td>
@@ -258,7 +255,7 @@
                                         <th>
                                             <select class="custom-select w-100"
                                                     v-model="paymentForm.payments[index]._payment_method">
-                                                <option :value="id" v-for="{name, id} in payment_methods">
+                                                <option :value="id" v-for="{name, id} in getPaymentMethods">
                                                     {{name | capitalize}}
                                                 </option>
                                             </select>
@@ -267,7 +264,7 @@
                                         <th>
                                             <select class="custom-select w-100"
                                                     v-model="paymentForm.payments[index]._payment_bank">
-                                                <option :value="id" v-for="{name, id} in banks">{{name}}</option>
+                                                <option :value="id" v-for="{name, id} in getBanks">{{name}}</option>
                                             </select>
                                         </th>
 
@@ -281,7 +278,7 @@
                                         <th>
                                             <div class="form-group mb-0">
                                                 <input class="form-control" data-vv-as="date" name="date" type="text"
-                                                       :value="user.full_name" disabled>
+                                                       :value="user.name" disabled>
                                             </div>
                                         </th>
 
@@ -318,12 +315,13 @@
 </template>
 <script>
     import Vue from 'vue';
+    import {mapGetters} from 'vuex';
+    import Auth from '../../../utilities/auth';
     import Flash from '../../../utilities/flash';
     import {get, post} from '../../../utilities/api';
+    import {Order} from '../../../utilities/Amortization';
     import CustomHeader from '../../../components/customHeader';
     import CustomerProfile from '../../../components/CustomerProfile';
-
-    import {Order} from '../../../utilities/Amortization';
 
     export default {
 
@@ -331,14 +329,16 @@
 
         data() {
             return {
+                Order: Order,
                 customer: null,
                 customer_id: '',
-                user: null,
+                user: {
+                    name: Auth.state.user_name,
+                    id: Auth.state.user_id
+                },
                 show: false,
                 showModalContent: false,
                 activeOrder: null,
-                banks: [],
-                payment_methods: [],
                 headers: ['Date', 'Order No.', 'Product Name', 'Total Product Price',
                     'Percentage', 'Down Payment', 'Repayment Plans'],
                 paymentForm: null,
@@ -347,14 +347,11 @@
 
         methods: {
             updateView(data) {
-                let {customer, user, banks, payment_methods} = data;
-                this.user = data.hasOwnProperty('user') ? user : null;
+                let {customer} = data;
                 if (!!customer.length) {
                     customer = customer[0];
                     if (!(!!customer.document['id'])) customer.document = {id_card_url: "", passport_url: ""};
-                    Vue.set(this.$data, 'banks', banks);
                     Vue.set(this.$data, 'customer', customer);
-                    Vue.set(this.$data, 'payment_methods', payment_methods);
                     this.show = true;
                 } else Flash.setError("Customer not found.", 5000);
                 this.$LIPS(false);
@@ -378,10 +375,6 @@
                 return $(`#amortization`).modal('toggle');
             },
 
-            convertPaymentMethodOrBankToName(id, type) {
-                return !id ? null : this.$data[type].find(obj => obj.id === id).name;
-            },
-
             addPaymentForm() {
                 let level = this.activeOrder.repaymentLevel;
                 let nextRepayment = parseInt(level + this.paymentForm.payments.length + 1);
@@ -389,31 +382,29 @@
                 if (level === this.activeOrder._count) return;
                 if (nextRepayment > this.activeOrder._count) return;
 
-                this.paymentForm.payments.push(this.getFreshPayment());
-                this.reNumber();
-            },
-
-            getFreshPayment() {
-                return {
+                this.paymentForm.payments.push({
                     _pay: this.activeOrder.amountsToBePaid[0],
                     _date: this.$getDate(),
                     _payment_method: '',
                     _payment_bank: '',
                     _col: '',
                     column: ''
-                }
+                });
+
+                this.reNumber();
             },
 
             deletePayment(index) {
-                console.log('deleting...', index);
                 this.paymentForm.payments.splice(index, 1);
                 this.reNumber();
             },
 
             reNumber() {
-                let level = this.activeOrder.repaymentLevel;
                 this.paymentForm.payments.forEach((payment, index) => {
-                    let next = level + index + 1;
+                    /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
+                    * u want to display on the ui "4th repayment"
+                    * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
+                    let next = this.activeOrder.repaymentLevel + index + 1;
                     this.paymentForm.payments[index]._col = next;
                     this.paymentForm.payments[index].column = this.$getColumn(next) + " Repayment";
                 })
@@ -453,13 +444,16 @@
         },
 
         computed: {
+            ...mapGetters(['getBanks', 'getPaymentMethods']),
             check() {
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
             }
         },
 
         created() {
+            this.$prepareBanks();
             this.$prepareBranches();
+            this.$preparePaymentMethods();
         }
     }
 </script>

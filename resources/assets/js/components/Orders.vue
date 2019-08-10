@@ -5,17 +5,12 @@
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <order-item
                         v-for="(order,index) in orders"
-                        :key="order.id"
+                        :key="order.order.id"
                         :index="index"
                         :start-index="startIndex"
                         :order="order"
-                        :dva_id="dva_id"
-                        :is-repayment-valid="isRepaymentValid(order)"
-                        :pay-summary="calcPaymentSummary(order)"
-                        :repayment-level="getRepaymentLevel(order)"
                         :mode="mode"
                         @done="fetchList(list)"
-                        @updateReminderList="updateReminder"
                         @display="displayDetails"/>
             </div>
             <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
@@ -56,39 +51,41 @@
                                 <tbody>
                                 <tr>
                                     <th>Order ID</th>
-                                    <td>{{currentOrder.id}}</td>
+                                    <td>{{activeOrder.order.id}}</td>
                                 </tr>
                                 <tr>
                                     <th>Order date</th>
-                                    <td>{{currentOrder.order_date}}</td>
+                                    <td>{{activeOrder.order.order_date}}</td>
                                 </tr>
                                 <tr>
                                     <th>Product</th>
-                                    <td>{{currentOrder.store_product.product_name}}</td>
+                                    <td>{{activeOrder.order.store_product.product_name}}</td>
                                 </tr>
                                 <tr>
                                     <th>Repayment</th>
-                                    <td>{{$formatCurrency(currentOrder.repayment_amount)}}</td>
+                                    <td>{{$formatCurrency(activeOrder.amountsToBePaid[0])}}</td>
                                 </tr>
                                 <tr>
                                     <th>Down Payment</th>
-                                    <td>{{$formatCurrency(currentOrder.down_payment)}}</td>
+                                    <td>{{$formatCurrency(activeOrder.order.down_payment)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Discount (%)</th>
-                                    <td>{{getDiscount(currentOrder) | capitalize}}</td>
+                                    <td>{{activeOrder.discount | capitalize}}</td>
                                 </tr>
                                 <tr>
                                     <th>Sale Type</th>
-                                    <td>{{currentOrder.sales_type.name | capitalize}}</td>
+                                    <td>{{activeOrder.order.sales_type.name | capitalize}}</td>
                                 </tr>
                                 <tr>
                                     <th>Total amount to Pay</th>
-                                    <td>{{$formatCurrency(currentOrder.product_price)}}</td>
+                                    <td>{{$formatCurrency(activeOrder.order.product_price)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Processed by</th>
-                                    <td>{{currentOrder['floor_agent'] ? currentOrder.floor_agent.full_name : null}}</td>
+                                    <td>{{activeOrder.order['floor_agent'] ? activeOrder.order.floor_agent.full_name :
+                                        null}}
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -117,55 +114,51 @@
                                 <tbody>
                                 <tr>
                                     <th>Customer ID</th>
-                                    <td>{{currentOrder.customer.id}}</td>
+                                    <td>{{activeOrder.customer.id}}</td>
                                 </tr>
                                 <tr>
                                     <th>Full Name</th>
-                                    <td>{{$getCustomerFullName(currentOrder.customer)}}</td>
+                                    <td>{{$getCustomerFullName(activeOrder.customer)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Address</th>
-                                    <td>{{$getCustomerAddress(currentOrder.customer)}}</td>
+                                    <td>{{$getCustomerAddress(activeOrder.customer)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Phone</th>
-                                    <td>{{currentOrder.customer.telephone}}</td>
+                                    <td>{{activeOrder.customer.telephone}}</td>
                                 </tr>
                                 <tr>
                                     <th>Branch</th>
-                                    <td>{{currentOrder.customer.branch.name}}</td>
+                                    <td>{{activeOrder.customer.branch.name}}</td>
                                 </tr>
                                 <tr>
                                     <th>Category</th>
-                                    <td>{{currentOrder.customer.employment_status}}</td>
+                                    <td>{{activeOrder.customer.employment_status}}</td>
                                 </tr>
                                 <tr>
                                     <th>Work guarantor name</th>
-                                    <td>{{currentOrder.customer.work_guarantor_first_name + " " +
-                                        currentOrder.customer.work_guarantor_last_name + " - " +
-                                        (currentOrder.customer.work_guarantor_relationship)}}
+                                    <td>{{activeOrder.customerWGName}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Work guarantor phone</th>
-                                    <td>{{currentOrder.customer.work_guarantor_telno}}</td>
+                                    <td>{{activeOrder.customer.work_guarantor_telno}}</td>
                                 </tr>
                                 <tr>
                                     <th>Personal guarantor name</th>
-                                    <td>{{currentOrder.customer.personal_guarantor_first_name + " " +
-                                        currentOrder.customer.personal_guarantor_last_name + " - " +
-                                        (currentOrder.customer.personal_guarantor_relationship)}}
+                                    <td>{{activeOrder.customerPGName}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Personal guarantor phone</th>
-                                    <td>{{currentOrder.customer.personal_guarantor_telno}}</td>
+                                    <td>{{activeOrder.customer.personal_guarantor_telno}}</td>
                                 </tr>
                                 <tr>
                                     <th>Verified by</th>
                                     <td>
                                         <router-link class="text-link" target="_blank"
-                                                     :to="`/dva/verification?id=${currentOrder.customer.id}`">
+                                                     :to="`/dva/verification?id=${activeOrder.customer.id}`">
                                             click here to see verifications status
                                         </router-link>
                                     </td>
@@ -188,101 +181,114 @@
                 <div class="modal-content" v-if="showModalContent">
                     <div class="modal-header py-2">
                         <h6 class="modal-title py-1">
-                            Repayment Plan/Summary - {{currentOrder.customer.employment_status | capitalize}}
+                            Repayment Plan/Summary - {{activeOrder.customer.employment_status | capitalize}}
                         </h6>
                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                <span aria-hidden="true" class="modal-close text-danger">
+                    <i class="fas fa-times"></i>
+                </span>
                         </a>
                     </div>
                     <div class="modal-body">
                         <div class="table-responsive">
+
+                            <h5 class="mt-3 mb-0">Order Information</h5>
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr class="table-separator">
+                                    <td>Name</td>
+                                    <td>Order Id</td>
+                                    <td>Product</td>
+                                    <th>Branch</th>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">{{activeOrder.customerName}}
+                                    </td>
+                                    <th>{{activeOrder.order.id}}</th>
+                                    <th>{{activeOrder.order.store_product.product_name}}</th>
+                                    <td class="font-weight-bold">{{activeOrder.branch.name}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
                             <h5 class="mt-3 mb-0">Amortization Schedule</h5>
                             <table class="table table-bordered">
                                 <tbody class="text-center">
                                 <tr>
                                     <th>Repayment</th>
-                                    <td v-for="caption in repaymentCaption(currentOrder)" v-html="caption"></td>
+                                    <td v-for="caption in activeOrder.repaymentCaptions" v-html="caption"></td>
                                 </tr>
                                 <tr class="table-separator">
                                     <th>Due Date</th>
-                                    <td v-for="date in getRepayment(currentOrder)">{{date}}</td>
+                                    <td v-for="date in activeOrder.dueDates">{{date}}</td>
                                 </tr>
                                 <tr>
                                     <th>Actual Pay Day</th>
-                                    <td v-for="date in getRepayment(currentOrder, '_date')">{{date}}</td>
+                                    <td v-for="date in activeOrder.actualPayDates">{{date}}</td>
                                 </tr>
                                 <tr class="table-separator">
                                     <th>Status</th>
-                                    <td :class="status.class" v-for="status in getPaymentStatusClasses(currentOrder)">
+                                    <td :class="status.class" v-for="status in activeOrder.paymentStatusClasses">
                                         <i class="fas" :class="status.icon"></i>
                                     </td>
                                 </tr>
                                 <tr class="table-separator">
                                     <th>Repayment Amount</th>
-                                    <td v-for="payment in getRepayment(currentOrder,'repayments')">
-                                        {{$formatCurrency(payment)}}
-                                    </td>
+                                    <td v-for="payment in activeOrder.amountsToBePaid">{{$formatCurrency(payment)}}</td>
                                 </tr>
                                 <tr>
                                     <th>Actual Amount Paid</th>
-                                    <td v-for="payment in getRepayment(currentOrder,'_pay')">
-                                        {{$formatCurrency(payment)}}
+                                    <td v-for="payment in activeOrder.actualAmountsPaid">{{$formatCurrency(payment)}}
                                     </td>
                                 </tr>
                                 <tr class="table-separator">
                                     <th>Payment Method</th>
-                                    <td class="text-capitalize"
-                                        v-for="repaymentMethod in getRepayment(currentOrder,'_payment_method')">
-                                        {{convertPaymentMethodOrBankToName(repaymentMethod, 'payment_methods')}}
+                                    <td class="text-capitalize" v-for="repaymentMethod in activeOrder.paymentMethods">
+                                        {{Order.convertToName(repaymentMethod, 'paymentMethods')}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Bank</th>
-                                    <td class="text-capitalize"
-                                        v-for="repaymentBank in getRepayment(currentOrder,'_payment_bank')">
-                                        {{convertPaymentMethodOrBankToName(repaymentBank, 'banks')}}
+                                    <td class="text-capitalize" v-for="repaymentBank in activeOrder.paymentBanks">
+                                        {{Order.convertToName(repaymentBank, 'banks')}}
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
+
                             <h5 class="mt-5 mb-0">Payment Summary</h5>
                             <table class="table table-bordered">
                                 <tbody class="text-center">
-
                                 <tr class="table-separator">
                                     <td class="text-left">Discount Detail (%)</td>
-                                    <th>
-                                        {{currentOrder["discount"]["name"] | capitalize}}
-                                        -
-                                        ({{currentOrder["discount"]["percentage_discount"]}})
-                                    </th>
+                                    <th>{{activeOrder.discount | capitalize}}</th>
                                     <td>Total Before Discount</td>
-                                    <th>{{$formatCurrency($roundDownAmt(currentOrder["product_price"]))}}</th>
+                                    <th>{{$formatCurrency($roundDownAmt(activeOrder.order["product_price"]))}}</th>
                                     <td>Total Paid</td>
-                                    <th>{{paymentSummary.amountPaid}}</th>
+                                    <th>{{activeOrder.amountPaid}}</th>
                                 </tr>
                                 <tr>
                                     <td class="text-left">Discount Amount</td>
-                                    <th>{{paymentSummary.discountAmount}}</th>
+                                    <th>{{activeOrder.discountAmount}}</th>
                                     <td>Total After Discount</td>
-                                    <th>{{paymentSummary.discountedTotal}}</th>
+                                    <th>{{activeOrder.discountedTotal}}</th>
                                     <td>Total Debt</td>
-                                    <th>{{paymentSummary.outstandingDebt}}</th>
+                                    <th>{{activeOrder.outstandingDebt}}</th>
                                 </tr>
                                 <tr>
                                     <td class="text-left">Down Payment</td>
-                                    <th>{{$formatCurrency($roundDownAmt(currentOrder.down_payment))}}</th>
+                                    <th>{{$formatCurrency($roundDownAmt(activeOrder.order['down_payment']))}}</th>
                                     <td>Total Plus Default Fee</td>
-                                    <th>{{paymentSummary.totalPlusDefault}}</th>
+                                    <th>{{activeOrder.totalPlusDefault}}</th>
                                     <td>Default Fee</td>
-                                    <th>{{paymentSummary.defaultFee}}</th>
+                                    <th>{{activeOrder.defaultFee}}</th>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                        <a class="text-link mt-3" data-dismiss="modal" href="javascript:"
                            style="text-align: right">close dialogue</a>
                     </div>
                 </div>
@@ -300,7 +306,7 @@
                     </div>
                     <div class="modal-body" v-if="showModalContent">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped" v-if="currentOrder.reminders.length">
+                            <table class="table table-bordered table-striped" v-if="activeOrder.order.reminders.length">
                                 <thead>
                                 <tr>
                                     <th>S/N</th>
@@ -311,11 +317,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(reminder, index) in currentOrder.reminders">
+                                <tr v-for="(reminder, index) in activeOrder.order.reminders">
                                     <th>{{index+1}}</th>
                                     <td>{{$dateTimeConvert(reminder.date)}}</td>
                                     <td>{{reminder.type}}</td>
-                                    <td v-html="renderMessage(reminder)"></td>
+                                    <td v-html="Order.renderMessage(reminder)"></td>
                                     <td>{{reminder.user.full_name}}</td>
                                 </tr>
                                 </tbody>
@@ -343,6 +349,7 @@
     import {Message} from "../utilities/sms";
     import {get, post} from "../utilities/api";
     import OrderItem from '../components/OrderItem';
+    import {Order, OrderWithPromiseCall} from "../utilities/Amortization";
 
     let url = to => `/api/reminder/create?list=${to.query.list}`;
 
@@ -362,33 +369,27 @@
 
         data() {
             return {
-                orders: {},
+                orders: [],
                 show: false,
-                banks: null,
-                reminder: [],
-                currentOrder: {},
-                paymentSummary: null,
-                payment_methods: null,
                 showModalContent: false,
+                Order: Order,
+                activeOrder: null,
             }
         },
 
-        computed:{
+        computed: {
             ...mapGetters(['auth'])
         },
 
         methods: {
-            prepareForm(res) {
+
+            async prepareForm(res) {
                 this.show = false;
                 this.showModalContent = false;
-                this.banks = res.banks;
-                this.dva_id = res.dva_id;
-                this.payment_methods = res.payment_methods;
+                this.orders = [];
+                await res.orders.forEach(order => {
 
-                this.orders = res.orders.filter(order => {
-
-                    let {repaymentData} = this.getCountAndRepaymentData(order),
-                        {count, interval} = this.amortizationPlan(order);
+                    let newOrder = new OrderWithPromiseCall(order, res.dva_id);
 
                     let hasMissedPayment = () => {
                         /*for the list 1 and 8 return true i.e no need for has
@@ -423,23 +424,27 @@
                         1 if the current date is not on a monday and
                         3 if the current date is on a monday*/
 
-                        if (!(!!repaymentData)) return false;
+                        if (!(!!newOrder.repaymentData)) return false;
 
                         /*step 1::
                         * the count is either 7 or 13,
                         * the loop runs for 6 or 12 times*/
-                        for (let i = 1; i < count + 1; i++) {
+                        for (let i = 1; i < newOrder.count + 1; i++) {
 
                             /*get the resultant column 1st, 2nd, 3rd etc*/
                             let column = this.$getColumn(i);
 
                             /*step 2. get the first occurrence of a vacant pay eg. 5th_pay*/
-                            if (!repaymentData[column + "_pay"]) {
+                            if (!newOrder.repaymentData[column + "_pay"]) {
 
                                 /*step 3. find the corresponding due date for the vacant pay
                                 * The generateDates returns an array of the due
                                 dates for the order under consideration*/
-                                payDay = this.generateDates({startDate: order.order_date, interval, count})[i - 1];
+                                payDay = (OrderWithPromiseCall
+                                    .generateDueDates(newOrder.order.order_date, newOrder.interval, newOrder.count))
+                                    [i - 1];
+
+
                                 /*[i - 1] explained.
                                 * eg if the i = 5,
                                 * column = 5th_pay,
@@ -495,7 +500,6 @@
                                 break;
                         }
 
-                        //if (this.mode === "collection" || this.mode === "recovery" || this.mode === "call"){
                         if (["collection", "recovery", "call", "external-recovery"].includes(this.mode)) {
                             for (let p = 0; p < accumulatedDays; p++)
                                 datePool.push(this.$getDate(today.addDays(-(p + dayInterval))));
@@ -513,213 +517,73 @@
                         if (this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess')) return true;
                         //the branch to be used for this filter should be the branch of the
                         // product being bought not the branch of the customer
-                        return parseInt(order.store_product.store_name) === res.branch;
-                        //return order.customer.branch.id === res.branch;
+                        return parseInt(newOrder.order.store_product.store_name) === res.branch;
                     };
 
-                    /*console.log('store name: ' + parseInt(order.store_product.store_name) + ' | ' + order.store_product.store_name,
-                        '--------- res branch: ' + res.branch,
-                        '--------- isMyBranch: ' + isMyBranch(),
-                        '--------- hasMissedPayment: ' + hasMissedPayment(),
-                        '--------- final: ' + (isMyBranch() && hasMissedPayment()));*/
-
-                    return isMyBranch() && hasMissedPayment();
-
+                    if (isMyBranch() && hasMissedPayment()) this.orders.push(newOrder)
                 });
 
                 !!this.orders.length && (this.show = true);
                 this.$LIPS(false);
             },
 
-            isOrderFormal: order => ['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()),
-
-            generateDates({startDate, interval, count}) {
-                let dates = [];
-                for (let i = 0; i < count; i++) {
-                    let orderDate = (new Date(startDate)).addDays((i + 1) * interval);
-                    let dateString = this.$getDate(orderDate);
-                    dates.push(dateString);
-                }
-                return dates;
-            },
-
-            renderMessage: reminder => !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback,
-
             fetchList(list) {
                 this.$LIPS(true);
                 get(url({query: {list}})).then(({data}) => {
-                    if (list === 8) {
-                        let orders = [];
-                        data.orders.forEach(promiseCall => orders.push(promiseCall.order));
-                        data.orders = orders;
-                    }
+                    if (list === 8) data.orders = data.orders.map(promiseCall => promiseCall.order);
                     this.prepareForm(data);
                 });
             },
 
-            isPaymentDue: dueDate => new Date() > new Date(dueDate),
-
-            getDiscount: ({discount}) => `${discount.name} (${discount.percentage_discount})`,
-
-            isRepaymentValid: order => !(/*!order['repayment'] && */!order['repayment_formal'] && !order['repayment_informal']),
-
-            displayDetails(order, modal) {
-                this.paymentSummary = this.calcPaymentSummary(order);
-                Vue.set(this.$data, 'currentOrder', order);
+            async displayDetails(order, modal) {
+                await Vue.set(this.$data, 'activeOrder', order);
                 this.showModalContent = true;
                 return $(`#${modal}`).modal('toggle');
             },
 
-            getCountAndRepaymentData(order) {
-                let data = {count: this.amortizationPlan(order).count};
-                if (order['repayment_formal'] != null) data.repaymentData = order.repayment_formal;
-                if (order['repayment_informal'] != null) data.repaymentData = order.repayment_informal;
-                return data;
-            },
-
-            calcPaymentSummary(order) {
-                let datesDefaulted = [];
-                let amountPerDefault = 500;
-                let fmt = cur => this.$formatCurrency(cur);
-                let amountPaid = this.$roundDownAmt(parseInt(order.down_payment));
-                let {count, interval} = this.amortizationPlan(order);
-                let {repaymentData} = this.getCountAndRepaymentData(order);
-
-                let dueDates = this.generateDates({startDate: order.order_date, interval, count});
-                dueDates.forEach((dueDate, index) => this.isPaymentDue(this.$getDate(new Date(dueDate).addDays(5))) &&
-                    datesDefaulted.push({dueDate, actualPayDate: repaymentData[this.$getColumn(index) + "_date"]}));
-                if (!!repaymentData) {
-                    for (let i = 1; i < count + 1; i++)
-                        amountPaid += this.$roundDownAmt(repaymentData[this.$getColumn(i) + '_pay']);
-                } else amountPaid = 0;
-                let {percentage_discount: discount} = order.discount;
-                let multiplicationFactor = count === 6 ? 0.5 : 1;
-                let repaymentCoveredAsDiscount = () => discount > 0 ? (discount === 5 ? 1 : 2) : 0;
-                let discountAmount = order.repayment_amount * multiplicationFactor * repaymentCoveredAsDiscount();
-                discountAmount = this.$roundDownAmt(discountAmount);
-
-                let defaultFee = datesDefaulted.length * amountPerDefault;
-                let discountedTotal = this.$roundDownAmt(order["product_price"] - discountAmount);
-
-                return {
-                    amountPaid: fmt(amountPaid),
-                    discountAmount: fmt(this.$roundDownAmt(discountAmount)),
-                    outstandingDebt: fmt(this.$roundDownAmt(parseInt(order["product_price"]) - amountPaid)),
-                    discountedTotal: fmt(discountedTotal),
-                    defaultFee: fmt(defaultFee),
-                    totalPlusDefault: fmt(discountedTotal + defaultFee)
-                };
-            },
-
-            getRepayment(order, clause = null) {
-                if (!this.isRepaymentValid(order)) return null;
-                let data = [], {repaymentData} = this.getCountAndRepaymentData(order);
-                let {interval, count} = this.amortizationPlan(order);
-                if (clause === null) return this.generateDates({startDate: order.order_date, interval, count});
-                if (clause === 'repayments')
-                    return (new Array(count)).fill(this.$roundDownAmt(order.repayment_amount), 0, count);
-                for (let i = 1; i < count + 1; i++) data.push(repaymentData[this.$getColumn(i) + clause]);
-                return data;
-            },
-
-            getPaymentStatusClasses(order) {
-                if (!this.isRepaymentValid(order)) return null;
-                let data = [],
-                    {repaymentData} = this.getCountAndRepaymentData(order),
-                    {count} = this.amortizationPlan(order),
-                    dueDates = this.getRepayment(order);
-                for (let i = 1; i < count + 1; i++) {
-                    let status = {class: null, icon: null};
-                    let position = this.$getColumn(i);
-                    let isDue = this.isPaymentDue(dueDates[i - 1]);
-                    let amountPaid = parseInt(repaymentData[position + '_pay']);
-                    if (amountPaid) {
-                        status.class = 'paid';
-                        status.icon = 'fa-check';
-                    } else if (isDue && !amountPaid) {
-                        status.class = 'missed';
-                        status.icon = 'fa-times';
-                    } else if (!isDue) {
-                        status.class = 'pending';
-                        status.icon = 'fa-hourglass-start';
-                    }
-                    data.push(status);
-                }
-                return data;
-            },
-
-            getRepaymentLevel(order) {
-                if (!this.isRepaymentValid(order)) return 0;
-                let level = 0,
-                    {count} = this.amortizationPlan(order),
-                    {repaymentData} = this.getCountAndRepaymentData(order);
-                for (let i = 1; i < count + 1; i++) if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
-                return level + "/" + (count);
-            },
-
-            convertPaymentMethodOrBankToName(id, type) {
-                return !id ? null : this.$data[type].find(obj => obj.id === id).name;
-            },
-
-            updateReminder(reminder, selected) {
-                if (!selected) {
-                    let index;
-                    this.reminder.forEach((obj, i) => obj.order_id === reminder.order_id && (index = i));
-                    this.reminder.splice(index, 1);
-                } else this.reminder.push(reminder);
-            },
-
             processSelected() {
-                if (!this.reminder.length) {
-                    this.$displayErrorMessage('please select at least one!');
-                    return;
-                }
                 this.$LIPS(true);
-                let smsContactList = this.reminder
-                    .map(obj => {
-                        let newObject = JSON.parse(JSON.stringify(obj));
-                        newObject.order = this.orders.find(({id}) => id === obj.order_id);
-                        newObject.message = this.generateCustomMessage(newObject.order);
-                        return newObject;
-                    });
-                this.sendSMSReminders(smsContactList);
+                let selectedOrders = this.orders.filter(order => order.isSelected);
+                if (!selectedOrders.length) {
+                    this.$displayErrorMessage('please select at least one!');
+                    return this.$LIPS(false);
+                }
+                this.sendSMSReminders(selectedOrders);
             },
 
-            sendSMSReminders(smsContactList) {
+            sendSMSReminders(selectedOrders) {
                 let messages = [];
-                smsContactList.forEach((value, index) => {
-                    let sms = new Message(value.message, value.contacts, false, value.dva_id);
+                selectedOrders.forEach((order, index) => {
+                    let sms = new Message(order.nextSMSReminder, order.reminder.contacts, false, order.dvaId);
                     sms.send(r => {
                         if (r.status === 200) {
                             delete sms.logToDB;
                             messages.push(sms);
                         }
-                        if ((index + 1) === smsContactList.length) this.logSentMessages(messages, smsContactList);
+                        if ((index + 1) === selectedOrders.length) this.logSentMessages(selectedOrders, messages);
                     });
                 });
             },
 
-            logSentMessages(messages, smsContactList) {
-                if (!!messages) {
+            logSentMessages(selectedOrders, messages) {
+                if (messages.length > 0) {
                     post('/api/message', {messages, bulk: true}).then(({data}) => {
                         let {sentAndLogged, ids} = data;
-                        if (sentAndLogged) this.logSentReminders(smsContactList, ids);
+                        if (sentAndLogged) this.logSentReminders(selectedOrders, ids);
                         else this.$displayErrorMessage('Error Logging sent sms details!');
                     });
                 } else this.$displayErrorMessage('Error sending messages!');
             },
 
-            logSentReminders(selectedList, ids) {
+            logSentReminders(selectedOrders, ids) {
                 ids.reverse();
-                let newList = JSON.parse(JSON.stringify(selectedList));
-                newList.forEach((value, index) => {
-                    value.sms_id = ids[index];
-                    delete value.message;
-                    delete value.order;
-                    delete value.contacts;
-                    delete value.canBeSelected;
-                });
                 if (ids.length > 0) {
+                    let newList = selectedOrders.map((order, index) => {
+                        order.reminder.sms_id = ids[index];
+                        delete order.reminder.contacts;
+                        delete order.reminder.canBeSelected;
+                        return order.reminder;
+                    });
                     post('/api/reminder', {reminders: newList}).then(({data}) => {
                         if (data.saved) {
                             Flash.setSuccess('Reminders have been sent successfully!', 50000);
@@ -728,80 +592,22 @@
                         this.$scrollToTop();
                     });
                 } else this.$displayErrorMessage('Error logging sent messages!');
-            },
-
-            generateCustomMessage(order) {
-                const {customer, store_product, order_date, repayment_amount} = order;
-                const {product_name} = store_product, {first_name, last_name} = customer;
-                let message,
-                    genDateArgs = {startDate: order_date, ...this.amortizationPlan(order)};
-                let dates = this.generateDates(genDateArgs);
-                let repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
-                if (this.list === 1) {
-                    message = `Hello ${first_name} ${last_name}, thanks for patronizing us.`
-                        + ` The following is the breakdown of the repayment plan for`
-                        + ` the purchase of ${product_name}:%0a`;
-                    if (dates.length > 0)
-                        dates.forEach((date, index) =>
-                            message += this.$getColumn(index + 1) + ": " + date + " => " + this.$formatCurrency(this.$roundDownAmt(repayment_amount)) + "%0a");
-                } else {
-                    message = `Hello ${first_name} ${last_name}, This is to remind you that your`
-                        + ` ${this.$getColumn(parseInt(repaymentLevel) + 1)} repayment of ${this.$formatCurrency(this.$roundDownAmt(repayment_amount))} for ${product_name}`
-                        + ` will be due on ${dates[repaymentLevel]}. we will be expecting you.`;
-                }
-                return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
-            },
-
-            amortizationPlan(order = this.currentOrder) {
-                //'2019-07-07' this is the date the bank draft was implemented
-                // and hence used as a factor to check for
-                // if amortization should be 12 or 6
-                let interval, count;
-                if (new Date(order.order_date) <= new Date('2019-07-07')) {
-                    if (order['repayment_formal'] != null) {
-                        interval = 28;
-                        count = 6;
-                    }
-                    if (order['repayment_informal'] != null) {
-                        interval = 14;
-                        count = 12;
-                    }
-                } else {
-                    if (this.isBankDraftAvailable(order) && this.isOrderFormal(order)) {
-                        interval = 28;
-                        count = 6;
-                    } else {
-                        interval = 14;
-                        count = 12;
-                    }
-                }
-                return {interval, count};
-            },
-
-            isBankDraftAvailable() {
-                //this is where the code for checking for bank draft will go
-                return false;
-            },
-
-            repaymentCaption(order) {
-                let {count} = this.amortizationPlan(order), data = [];
-                for (let i = 1; i <= count; i++) {
-                    let prefix = (this.$getColumn(i)).split('');
-                    let appendix = [];
-                    for (let j = 1; j <= 2; j++) appendix.unshift(prefix.pop());
-                    data.push(`<td>${prefix.join('')}<sup>${appendix.join('')}</sup></td>`);
-                }
-                return data
             }
         },
 
         mounted() {
             this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
             $(document).on("hidden.bs.modal", '.modal', () => {
-                this.currentOrder = null;
+                this.activeOrder = null;
                 this.showModalContent = false;
             });
         },
+
+        created() {
+            this.$prepareBanks();
+            this.$prepareBranches();
+            this.$preparePaymentMethods();
+        }
     }
 </script>
 

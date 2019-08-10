@@ -38,8 +38,10 @@ class Order {
         this.setPaymentStatusClasses();
         this.calcAndSetPaymentSummary();
         this.setBranch();
+        this.setDiscount();
     }
 
+    /*custom setters*/
     setIsRepaymentValid() {
         this._isRepaymentValid = !(!this.order['repayment_formal'] && !this.order['repayment_informal']);
     }
@@ -85,8 +87,7 @@ class Order {
     }
 
     setCommonDetails() {
-        //if (!this.isRepaymentValid) this._repayment = null; //also set other to 0 when this is true
-
+        if (!this.isRepaymentValid) return;
         for (let i = 1; i < this.count + 1; i++) {
             /*for repayment captions*/
             let prefix = (vue.$getColumn(i)).split('');
@@ -104,13 +105,13 @@ class Order {
         }
     }
 
-    setBranch(){
+    setBranch() {
         this._branch = store.state.branches
             .find(branch => parseInt(branch.id) === parseInt(this.order.store_product.store_name));
     }
 
     setPaymentStatusClasses() {
-        if (!this.isRepaymentValid) this._paymentStatusClasses = null;
+        if (!this.isRepaymentValid) /*this._repayment = null;*/ return;
         for (let i = 1; i < this.count + 1; i++) {
             let status = {class: null, icon: null};
             let position = vue.$getColumn(i);
@@ -141,7 +142,7 @@ class Order {
             datesDefaulted.push({dueDate, actualPayDate: this.actualPayDates[index]}));
 
         if (!!this.repaymentData) {
-            for (let i = 1; i < this.count + 1; i++) {
+            for (let i = 0; i < this.count + 1; i++) {
                 let amtPaid = parseInt(this.actualAmountsPaid[i]);
                 amountPaid += !!amtPaid ? vue.$roundDownAmt(amtPaid) : 0
             }
@@ -165,7 +166,12 @@ class Order {
         this._totalPlusDefault = fmt(discountedTotal + defaultFee);
     }
 
-    set payments(payments){
+    setDiscount() {
+        this._discount = this.order.discount.name + " " + this.order.discount.percentage_discount;
+    }
+
+    /*getters*/
+    set payments(payments) {
         this._payments = payments;
     }
 
@@ -173,12 +179,16 @@ class Order {
         return this._payments;
     }
 
-    get repaymentLevel(){
+    get repaymentLevel() {
         return this._repaymentLevel;
     }
 
     get order() {
         return this._order;
+    }
+
+    get customer() {
+        return this._customer;
     }
 
     get isRepaymentValid() {
@@ -257,8 +267,26 @@ class Order {
         return this._totalPlusDefault;
     }
 
-    get branch(){
+    get branch() {
         return this._branch;
+    }
+
+    get discount() {
+        return this._discount;
+    }
+
+    get customerName() {
+        return this.customer.first_name + " " + this.customer.last_name;
+    }
+
+    get customerWGName() {
+        let {work_guarantor_first_name: a, work_guarantor_last_name: b, work_guarantor_relationship: c} = this.customer;
+        return `${a} ${b} - ${c}`;
+    }
+
+    get customerPGName() {
+        let {personal_guarantor_first_name: a, personal_guarantor_last_name: b, personal_guarantor_relationship: c} = this.customer;
+        return `${a} ${b} - ${c}`;
     }
 
     /*static methods*/
@@ -280,6 +308,133 @@ class Order {
         return false;
     }
 
+    static renderMessage(reminder) {
+        return !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback;
+    }
+
+    static convertToName(id, type) {
+        return !id ? null : store.state[type].find(obj => obj.id === id).name;
+    }
 }
 
-module.exports = {Order};
+
+class OrderWithPromiseCall extends Order {
+    constructor(order, dvaId) {
+        super(order, order.customer);
+        this._isReminderSent = false;
+        this._dvaId = dvaId;
+        this._isSelected = false;
+        this.setReminder(null);
+        this.setIsReminderSent();
+        this.setFinancialStatus();
+        this.setPromiseCall();
+        this.generateAndSetNextSMSReminder();
+    }
+
+    /*custom setters*/
+    setIsReminderSent() {
+        let date;
+        let today = vue.$getDate();
+        this.order.reminders.forEach(reminder => {
+            //refactor below by using regx characters to split
+            let reminderDateTimeArr = reminder.date.split(' ');//(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
+            let dateArr = reminderDateTimeArr[0].split('-');//'2019-03-24' -> ['2019','03','24']
+            let timeArr = reminderDateTimeArr[1].split(':');//'02:00:00' -> ['02','00','00']
+            let arr = [...dateArr, ...timeArr] // ['2019','03','24','02','00','00']
+                .map(item => parseInt(item, 10)); //[2019,3,24,2,0,0]
+            date = vue.$getDate(new Date(Date.UTC(...arr)), false);
+            date === today && (this._isReminderSent = true);
+        });
+    }
+
+    setFinancialStatus() {
+        this._financialStatus =
+            !this.isRepaymentValid ? 'no detail!' : `Paid: ${this.amountPaid} | Debt: ${this.outstandingDebt}`;
+    }
+
+    generateAndSetNextSMSReminder() {
+        const {store_product, repayment_amount, customer, order_date} = this.order,
+            {first_name, last_name} = customer, name = first_name + " " + last_name,
+            {product_name} = store_product;
+
+        let message;
+        if (order_date === vue.$getDate()) {
+            message = `Hello ${name}, thanks for patronizing us.`
+                + ` The following is the breakdown of the repayment plan for`
+                + ` the purchase of ${product_name}:%0a`;
+            this.dueDates.forEach((date, index) =>
+                message += vue.$getColumn(index + 1) + ": " + date + " => " +
+                    vue.$formatCurrency(vue.$roundDownAmt(repayment_amount)) + "%0a");
+        } else {
+            message = `Hello ${name}, This is to remind you that your`
+                + ` ${vue.$getColumn(parseInt(this.repaymentLevel) + 1)} repayment of`
+                + ` ${vue.$formatCurrency(vue.$roundDownAmt(repayment_amount))} for ${product_name}`
+                + ` will be due on ${this.dueDates[this.repaymentLevel]}. we will be expecting you.`;
+        }
+        this._nextSMSReminder = message + "Please remember to pay on time to avoid" +
+            " late fees and other penalties.%0aThank you.";
+    }
+
+    //NB:: this method is called from outside of this class.
+    //to use always call this method after instantiating the class.
+    setReminder(type) {
+        this._reminder = {
+            type,
+            'dva_id': this.dvaId,
+            'order_id': this.order.id,
+            'feedback': null,
+            'customer_id': this.customer.id,
+            'canBeSelected': !this.isReminderSent,
+            'repayment_level': this.repaymentLevel
+        };
+        if (type === 'sms') {
+            this._reminder.sms_id = null;
+            this._reminder.contacts = this.customer.telephone;
+        }
+    }
+
+    setPromiseCall() {
+        this._promiseCall = {
+            order_id: this.order.id,
+            user_id: this.dvaId,
+            customer_id: this.customer.id,
+            date: null
+        }
+    }
+
+    /*setters*/
+    set isSelected(value) {
+        this._isSelected = value;
+    }
+
+    /*getters*/
+    get isReminderSent() {
+        return this._isReminderSent;
+    }
+
+    get dvaId() {
+        return this._dvaId;
+    }
+
+    get financialStatus() {
+        return this._financialStatus;
+    }
+
+    get nextSMSReminder() {
+        return this._nextSMSReminder;
+    }
+
+    get reminder() {
+        return this._reminder;
+    }
+
+    get isSelected() {
+        return this._isSelected;
+    }
+
+    get promiseCall() {
+        return this._promiseCall;
+    }
+}
+
+module.exports = {Order, OrderWithPromiseCall};

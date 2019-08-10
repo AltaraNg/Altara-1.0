@@ -11,6 +11,7 @@ use App\PaymentMethod;
 use App\PersonalGuarantor;
 use App\ProcessingFee;
 use App\State;
+use App\User;
 use App\Verification;
 use App\WorkGuarantor;
 use function foo\func;
@@ -254,10 +255,7 @@ class CustomerController extends Controller
         }])->get();
 
         return response()->json([
-            'payment_methods' => PaymentMethod::all(),
-            'banks' => Bank::all(),
-            'customer' => $customer,
-            'user' => auth('api')->user(),
+            'customer' => $customer
         ]);
     }
 

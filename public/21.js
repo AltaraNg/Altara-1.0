@@ -1,8 +1,14 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 webpackJsonp([21],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/customHeader.vue":
+=======
+webpackJsonp([21],{
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue":
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15,6 +21,23 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+<<<<<<< HEAD
+
+exports.default = {
+    props: {
+        title: '',
+        buttonTitle: null,
+        to: null
+    }
+=======
 //
 //
 //
@@ -25,16 +48,24 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-    props: {
-        title: '',
-        buttonTitle: null,
-        to: null
-    }
+    props: { title: '', desc: '', url: '', url_c: '', aces: { default: true } }
+    /*title is the card title also mean the portal title.
+    * desc is a few word description of the portal
+    * url is the link to the portal
+    * url_c is the caption for the link
+    * aces is used in situations when a particular portal is accessible to only few person in a
+    * department hence from the parent component the aces will be set to false is want
+    * only few people to access it. true means everyone in that dept can access it.*/
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 };
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/caution/index.vue":
+=======
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/HomePage.vue":
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44,6 +75,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+<<<<<<< HEAD
 var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
@@ -60,6 +92,43 @@ var _customHeader2 = _interopRequireDefault(_customHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+=======
+var _portalCard = __webpack_require__("./resources/assets/js/components/portalCard.vue");
+
+var _portalCard2 = _interopRequireDefault(_portalCard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    components: { PortalCard: _portalCard2.default },
+    data: function data() {
+        return {
+            portals: [{
+                url: 'customer/create',
+                title: 'Customer Registration',
+                url_c: 'Register new customer now!',
+                desc: 'Registering new customers'
+            }, {
+                url: 'customer/update',
+                title: 'Customer Update',
+                url_c: 'Update customers details!',
+                desc: 'Updating customers details'
+            }, {
+                url: 'report',
+                title: 'Sales Reporting',
+                url_c: 'Get Reports',
+                desc: 'Real time DSA reports!',
+                aces: this.$store.getters.auth('DSACaptain')
+            }, {
+                url: '/customer',
+                title: 'Customer List',
+                url_c: 'View Customer List',
+                desc: 'View all registered customers!'
+            }]
+        };
+    }
+}; //
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 //
 //
 //
@@ -69,6 +138,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -288,12 +358,19 @@ exports.default = {
 /***/ }),
 
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue":
+=======
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue":
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+<<<<<<< HEAD
   return _c("div", { staticClass: "mt-5 attendance-head" }, [
     _c("div", { staticClass: "mb-5 row align-items-center" }, [
       _c("div", { staticClass: "col-12 title-con" }, [
@@ -310,14 +387,60 @@ var render = function() {
                   "router-link",
                   { staticClass: "text-link mt-3", attrs: { to: _vm.to } },
                   [_vm._v(_vm._s(_vm.buttonTitle))]
+=======
+  return _vm.aces
+    ? _c("div", { staticClass: "col-md-4 col-sm-6 float-left product p-4" }, [
+        _c("div", { staticClass: "portal-card clearfix" }, [
+          _c("div", { staticClass: "first portion clearfix" }, [
+            _c("span", { staticClass: "deco" }),
+            _c("span", { staticClass: "deco second" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "portal-title" }, [
+              _vm._v(_vm._s(_vm._f("capitalize")(_vm.title)))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "portion clearfix" }, [
+            _c("p", [_vm._v(_vm._s(_vm._f("capitalize")(_vm.desc)))]),
+            _vm._v(" "),
+            _c("h6", { staticStyle: { "margin-top": "2rem" } }, [
+              _vm._v(_vm._s(_vm._f("capitalize")(_vm.url_c)))
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "deco-down first" }),
+            _vm._v(" "),
+            _c(
+              "span",
+              { staticClass: "deco-down second" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn bg-default btn-round m-0",
+                    attrs: { to: _vm.url }
+                  },
+                  [
+                    _vm._v("\n                   continue "),
+                    _c("span", { staticClass: "custom-icon ml-2" }, [
+                      _c("i", { staticClass: "now-ui-icons ui-1_send" })
+                    ])
+                  ]
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
                 )
               ],
               1
             )
+<<<<<<< HEAD
           : _vm._e()
       ])
     ])
   ])
+=======
+          ])
+        ])
+      ])
+    : _vm._e()
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -325,13 +448,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
+<<<<<<< HEAD
     require("vue-hot-reload-api")      .rerender("data-v-02013d35", module.exports)
+=======
+    require("vue-hot-reload-api")      .rerender("data-v-28781233", module.exports)
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
   }
 }
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-42f2c96b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/caution/index.vue":
+=======
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3c1dfcb6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/HomePage.vue":
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -341,6 +472,7 @@ var render = function() {
   return _c("transition", { attrs: { name: "fade" } }, [
     _c(
       "div",
+<<<<<<< HEAD
       { staticClass: "pt-md-3 pt-2 attendance-view", attrs: { id: "index" } },
       [
         _c("custom-header", {
@@ -787,6 +919,25 @@ var render = function() {
         )
       ],
       1
+=======
+      _vm._l(_vm.portals, function(portal) {
+        return _c(
+          "div",
+          [
+            _c("portal-card", {
+              attrs: {
+                url: portal.url,
+                title: portal.title,
+                url_c: portal.url_c,
+                desc: portal.desc,
+                aces: portal.aces
+              }
+            })
+          ],
+          1
+        )
+      })
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
     )
   ])
 }
@@ -796,21 +947,35 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
+<<<<<<< HEAD
     require("vue-hot-reload-api")      .rerender("data-v-42f2c96b", module.exports)
+=======
+    require("vue-hot-reload-api")      .rerender("data-v-3c1dfcb6", module.exports)
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
   }
 }
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./resources/assets/js/components/customHeader.vue":
+=======
+/***/ "./resources/assets/js/components/portalCard.vue":
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/customHeader.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue")
+=======
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue")
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -827,7 +992,11 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+<<<<<<< HEAD
 Component.options.__file = "resources\\assets\\js\\components\\customHeader.vue"
+=======
+Component.options.__file = "resources\\assets\\js\\components\\portalCard.vue"
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 
 /* hot reload */
 if (false) {(function () {
@@ -836,9 +1005,15 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
+<<<<<<< HEAD
     hotAPI.createRecord("data-v-02013d35", Component.options)
   } else {
     hotAPI.reload("data-v-02013d35", Component.options)
+=======
+    hotAPI.createRecord("data-v-28781233", Component.options)
+  } else {
+    hotAPI.reload("data-v-28781233", Component.options)
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -850,15 +1025,25 @@ module.exports = Component.exports
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./resources/assets/js/views/HRM/caution/index.vue":
+=======
+/***/ "./resources/assets/js/views/DSA/HomePage.vue":
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/caution/index.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-42f2c96b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/caution/index.vue")
+=======
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/HomePage.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3c1dfcb6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/HomePage.vue")
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -875,7 +1060,11 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+<<<<<<< HEAD
 Component.options.__file = "resources\\assets\\js\\views\\HRM\\caution\\index.vue"
+=======
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\HomePage.vue"
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
 
 /* hot reload */
 if (false) {(function () {
@@ -884,9 +1073,15 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
+<<<<<<< HEAD
     hotAPI.createRecord("data-v-42f2c96b", Component.options)
   } else {
     hotAPI.reload("data-v-42f2c96b", Component.options)
+=======
+    hotAPI.createRecord("data-v-3c1dfcb6", Component.options)
+  } else {
+    hotAPI.reload("data-v-3c1dfcb6", Component.options)
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -898,6 +1093,7 @@ module.exports = Component.exports
 
 /***/ })
 
+<<<<<<< HEAD
 });
 =======
 webpackJsonp([21],{"3Zx2":function(t,s){t.exports={render:function(){var t=this.$createElement,s=this._self._c||t;return s("transition",{attrs:{name:"fade"}},[s("div",this._l(this.portals,function(t){return s("div",[s("portal-card",{attrs:{url:t.url,title:t.title,url_c:t.url_c,desc:t.desc,aces:t.aces}})],1)}))])},staticRenderFns:[]}},"5GeB":function(t,s,e){var a=e("VU/8")(e("Mx+4"),e("3Zx2"),!1,null,null,null);t.exports=a.exports},"K5f/":function(t,s,e){"use strict";Object.defineProperty(s,"__esModule",{value:!0}),s.default={props:{title:"",desc:"",url:"",url_c:"",aces:{default:!0}}}},"Mx+4":function(t,s,e){"use strict";Object.defineProperty(s,"__esModule",{value:!0});var a,l=e("mdxA"),i=(a=l)&&a.__esModule?a:{default:a};s.default={components:{PortalCard:i.default},data:function(){return{portals:[{url:"/customer",title:"Customer List",url_c:"View Customer List",desc:"View all registered customers!"},{url:"sales",title:"Sales List",url_c:"View Sales List",desc:"View all Sales!"}]}}}},mdxA:function(t,s,e){var a=e("VU/8")(e("K5f/"),e("zs6E"),!1,null,null,null);t.exports=a.exports},zs6E:function(t,s){t.exports={render:function(){var t=this,s=t.$createElement,e=t._self._c||s;return t.aces?e("div",{staticClass:"col-md-4 col-sm-6 float-left product p-4"},[e("div",{staticClass:"portal-card clearfix"},[e("div",{staticClass:"first portion clearfix"},[e("span",{staticClass:"deco"}),e("span",{staticClass:"deco second"}),t._v(" "),e("span",{staticClass:"portal-title"},[t._v(t._s(t._f("capitalize")(t.title)))])]),t._v(" "),e("div",{staticClass:"portion clearfix"},[e("p",[t._v(t._s(t._f("capitalize")(t.desc)))]),t._v(" "),e("h6",{staticStyle:{"margin-top":"2rem"}},[t._v(t._s(t._f("capitalize")(t.url_c)))]),t._v(" "),e("span",{staticClass:"deco-down first"}),t._v(" "),e("span",{staticClass:"deco-down second"},[e("router-link",{staticClass:"btn bg-default btn-round m-0",attrs:{to:t.url}},[t._v("\n                   continue "),e("span",{staticClass:"custom-icon ml-2"},[e("i",{staticClass:"now-ui-icons ui-1_send"})])])],1)])])]):t._e()},staticRenderFns:[]}}});
@@ -905,3 +1101,6 @@ webpackJsonp([21],{"3Zx2":function(t,s){t.exports={render:function(){var t=this.
 =======
 webpackJsonp([21],{"70mC":function(t,e,s){var r=s("VU/8")(s("Z++X"),s("jcvO"),!1,null,null,null);t.exports=r.exports},"K5f/":function(t,e,s){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default={props:{title:"",desc:"",url:"",url_c:"",aces:{default:!0}}}},"Z++X":function(t,e,s){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r,a=s("mdxA"),l=(r=a)&&r.__esModule?r:{default:r};e.default={components:{PortalCard:l.default},data:function(){return{portals:[{url:"customer/create",title:"Customer Registration",url_c:"Register new customer now!",desc:"Registering new customers"},{url:"customer/update",title:"Customer Update",url_c:"Update customers details!",desc:"Updating customers details"},{url:"report",title:"Sales Reporting",url_c:"Get Reports",desc:"Real time DSA reports!",aces:this.$store.getters.auth("DSACaptain")},{url:"/customer",title:"Customer List",url_c:"View Customer List",desc:"View all registered customers!"}]}}}},jcvO:function(t,e){t.exports={render:function(){var t=this.$createElement,e=this._self._c||t;return e("transition",{attrs:{name:"fade"}},[e("div",this._l(this.portals,function(t){return e("div",[e("portal-card",{attrs:{url:t.url,title:t.title,url_c:t.url_c,desc:t.desc,aces:t.aces}})],1)}))])},staticRenderFns:[]}},mdxA:function(t,e,s){var r=s("VU/8")(s("K5f/"),s("zs6E"),!1,null,null,null);t.exports=r.exports},zs6E:function(t,e){t.exports={render:function(){var t=this,e=t.$createElement,s=t._self._c||e;return t.aces?s("div",{staticClass:"col-md-4 col-sm-6 float-left product p-4"},[s("div",{staticClass:"portal-card clearfix"},[s("div",{staticClass:"first portion clearfix"},[s("span",{staticClass:"deco"}),s("span",{staticClass:"deco second"}),t._v(" "),s("span",{staticClass:"portal-title"},[t._v(t._s(t._f("capitalize")(t.title)))])]),t._v(" "),s("div",{staticClass:"portion clearfix"},[s("p",[t._v(t._s(t._f("capitalize")(t.desc)))]),t._v(" "),s("h6",{staticStyle:{"margin-top":"2rem"}},[t._v(t._s(t._f("capitalize")(t.url_c)))]),t._v(" "),s("span",{staticClass:"deco-down first"}),t._v(" "),s("span",{staticClass:"deco-down second"},[s("router-link",{staticClass:"btn bg-default btn-round m-0",attrs:{to:t.url}},[t._v("\n                   continue "),s("span",{staticClass:"custom-icon ml-2"},[s("i",{staticClass:"now-ui-icons ui-1_send"})])])],1)])])]):t._e()},staticRenderFns:[]}}});
 >>>>>>> 976efb13563114c356a829a8b2f4c56625bbae52
+=======
+});
+>>>>>>> ed6e59048439b31995f360ff7e04db059d027dbb
