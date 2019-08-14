@@ -621,7 +621,7 @@ table a i {
         }
 
         td.arrLate::before, td.leftEarly::after {
-            background-color: #f7b900;
+            background-color: $waiting-color;
         }
 
         td.didNotSignOut::after {
@@ -730,11 +730,10 @@ table a i {
         background-color: $color-green;
         color: white;
     }
+}
 
-    &.waiting-reminder {
-        background-color: #FFBF00;
-        color: white;
-    }
+.bg-waiting-color {
+    background-color: $waiting-color;
 }
 
 .text-link {
@@ -875,6 +874,14 @@ tr.current {
     &.not-approved {
         background-color: $color-red;
     }
+
+    &.pending {
+        background-color: $waiting-color;
+    }
+}
+
+.bg-pending {
+    background-color: $waiting-color;
 }
 
 

@@ -255,7 +255,8 @@ class CustomerController extends Controller
         }])->get();
 
         return response()->json([
-            'customer' => $customer
+            'customer' => $customer,
+            'user' => auth('api')->user()->only(['branch_id'])
         ]);
     }
 

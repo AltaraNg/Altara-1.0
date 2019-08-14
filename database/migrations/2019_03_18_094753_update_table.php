@@ -48,8 +48,13 @@ class UpdateTable extends Migration
             $table->string('category')->after('status');
         });*/
 
-        Schema::table('customers', function ($table) {
+        /*Schema::table('customers', function ($table) {
             $table->string('occupation')->nullable()->after('civil_status');
+        });*/
+
+
+        Schema::table('reminders', function ($table) {
+            $table->boolean('is_visited')->nullable()->after('feedback');
         });
 
     }

@@ -4,7 +4,7 @@
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
             <span v-if="mode === 'normal-list'"></span>
             <span v-else-if="order.reminder.canBeSelected && ['collection','recovery','call','external-recovery'].includes(mode)"
-                  class="user mx-auto waiting-reminder" @click="logReminder">
+                  class="user mx-auto bg-pending text-white" @click="logReminder">
                 <i class="fas fa-hourglass-start"></i>
             </span>
             <div v-else-if="order.reminder.canBeSelected && mode === 'sms'" class="d-flex align-items-center">
@@ -43,11 +43,11 @@
              v-if="['collection','recovery','external-recovery'].includes(mode)">
             <span class="present">
                 <span class="radio w-50 pr-3 mb-0 float-left">
-                    <input type="radio" value="yes" :id="`present${index}`" :name="`isPresent${index}`">
+                    <input type="radio" :value="true" :id="`present${index}`" :name="`isPresent${index}`"  v-model="order.reminder.is_visited">
                     <label :for="`present${index}`">yes</label>
                 </span>
                 <span class="radio w-50 pl-3 mb-0 float-left">
-                    <input type="radio" value="no" :id="`absent${index}`" :name="`isPresent${index}`">
+                    <input type="radio" :value="false" :id="`absent${index}`" :name="`isPresent${index}`"  v-model="order.reminder.is_visited">
                     <label :for="`absent${index}`">no</label>
                 </span>
             </span>

@@ -132,38 +132,51 @@ class Order {
     }
 
     calcAndSetPaymentSummary() {
-        let datesDefaulted = [];
-        let amountPerDefault = 500;
-        let fmt = cur => vue.$formatCurrency(cur);
-        let amountPaid = vue.$roundDownAmt(parseInt(this.order.down_payment));
+        /*helper function*/
+        let fmt = cur => vue.$formatCurrency(cur), {repayment_amount, down_payment, product_price} = this.order;
 
-        this.dueDates.forEach((dueDate, index) =>
-            Order.isPaymentDue(vue.$getDate(new Date(dueDate).addDays(5))) &&
-            datesDefaulted.push({dueDate, actualPayDate: this.actualPayDates[index]}));
+        /*discount amount*/
+        let mFactor = this.count === 6 ? 0.5 : 1,
+            {percentage_discount: discount} = this.order.discount,
+            repaymentAsDiscount = discount > 0 ? (discount === 5 ? 1 : 2) : 0,
+            discountAmount = vue.$roundDownAmt(repayment_amount * mFactor * repaymentAsDiscount);
+        this._discountAmount = fmt(discountAmount);
 
+        /*(total)amount paid = down payment + total repayments  + discount(if any)*/
+        let amountPaid = 0, totalRepayments = 0;
         if (!!this.repaymentData) {
             for (let i = 0; i < this.count + 1; i++) {
-                let amtPaid = parseInt(this.actualAmountsPaid[i]);
-                amountPaid += !!amtPaid ? vue.$roundDownAmt(amtPaid) : 0
+                let repayment = parseInt(this.actualAmountsPaid[i]);
+                totalRepayments += !!repayment ? vue.$roundDownAmt(repayment) : 0
             }
-        } else amountPaid = 0;
-
-        let {percentage_discount: discount} = this.order.discount;
-        let multiplicationFactor = this.count === 6 ? 0.5 : 1;
-        let repaymentCoveredAsDiscount = () => discount > 0 ? (discount === 5 ? 1 : 2) : 0;
-
-        let discountAmount = this.order.repayment_amount * multiplicationFactor * repaymentCoveredAsDiscount();
-        discountAmount = vue.$roundDownAmt(discountAmount);
-
-        let defaultFee = datesDefaulted.length * amountPerDefault;
-        let discountedTotal = vue.$roundDownAmt(this.order["product_price"] - discountAmount);
-
+            amountPaid = vue.$roundDownAmt(parseInt(down_payment)) + totalRepayments + discountAmount;
+        }
         this._amountPaid = fmt(amountPaid);
-        this._discountAmount = fmt(vue.$roundDownAmt(discountAmount));
-        this._outstandingDebt = fmt(vue.$roundDownAmt(parseInt(this.order["product_price"]) - amountPaid));
+
+        /*discounted total :: total amount to be paid - discount*/
+        let discountedTotal = vue.$roundDownAmt(product_price - discountAmount);
         this._discountedTotal = fmt(discountedTotal);
+
+        /*total default fee*/
+        let amountPerDefault = 500;
+        let datesDefaulted = [];
+        let defaultFee = 0;
+        if (new Date(this.order.order_date) > new Date('2019-07-07')) {
+            //the order is a new record then use the default fee
+            /**this is where the calculation for the default fee goes into*/
+            /*this.dueDates.forEach((dueDate, index) =>
+            Order.isPaymentDue(vue.$getDate(new Date(dueDate).addDays(5))) &&
+            datesDefaulted.push({dueDate, actualPayDate: this.actualPayDates[index]}));*/
+            defaultFee = datesDefaulted.length * amountPerDefault;
+        }
         this._defaultFee = fmt(defaultFee);
+
+
+        /*total plus default*/
         this._totalPlusDefault = fmt(discountedTotal + defaultFee);
+
+        /*outstanding debt*/
+        this._outstandingDebt = fmt(vue.$roundDownAmt(parseInt(product_price) - amountPaid));
     }
 
     setDiscount() {
@@ -380,12 +393,13 @@ class OrderWithPromiseCall extends Order {
     setReminder(type) {
         this._reminder = {
             type,
+            'feedback': null,
+            'is_visited': null,
             'dva_id': this.dvaId,
             'order_id': this.order.id,
-            'feedback': null,
             'customer_id': this.customer.id,
             'canBeSelected': !this.isReminderSent,
-            'repayment_level': this.repaymentLevel
+            'repayment_level': this.repaymentLevel + "/" + this.count
         };
         if (type === 'sms') {
             this._reminder.sms_id = null;

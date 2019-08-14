@@ -64,7 +64,7 @@
             details() {
                 let list = 1,
                     tabs = ["1<sup>st</sup>", "2<sup>nd</sup>", "3<sup>rd</sup>"],
-                    headings = ['Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary', 'Reminder History'];
+                    headings = ['Order Number', 'Order Summary', 'Customer Info Summary', 'Repayment Summary', 'History'];
                 switch (this.mode()) {
                     case 'call':
                         list = 4;
