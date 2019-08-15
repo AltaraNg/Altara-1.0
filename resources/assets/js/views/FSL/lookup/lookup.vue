@@ -58,31 +58,34 @@
                                 </div>
 
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                                    {{order.order_date}}
+                                    {{order.order.order_date}}
                                 </div>
 
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex user-name align-items-center justify-content-center">
-                                    {{order.id}}
+                                    {{order.order.id}}
                                 </div>
 
                                 <div class="col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center">
-                                    {{order.store_product.product_name}}
+                                    {{order.order.store_product.product_name}}
                                 </div>
 
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                                    {{$formatCurrency(order.product_price)}}
+                                    {{$formatCurrency(order.order.product_price)}}
                                 </div>
 
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                                    {{order.sales_category.name}}
+                                    {{order.order.sales_category.name}}
                                 </div>
 
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                                    {{$formatCurrency(order.down_payment)}}
+                                    {{$formatCurrency(order.order.down_payment)}}
                                 </div>
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                                    <button @click="displayAmortization(index)" class="btn status my-sm-2 approved">
+                                    <button @click="displayAmortization(index)" class="btn status my-sm-2"
+                                            :class="order.count === order.repaymentLevel ? 'approved' : 'pending'">
                                         View Plan
+                                        <i class="fas ml-3" style="font-size: 1.4rem"
+                                           :class="order.count === order.repaymentLevel ? 'fa-check-circle' : 'fa-hourglass-half'"></i>
                                     </button>
                                 </div>
                             </div>
@@ -140,7 +143,7 @@
                                     </tbody>
                                 </table>
 
-                                <h5 class="mt-3 mb-0">Amortization Schedule</h5>
+                                <h5 class="mt-5 mb-0">Amortization Schedule</h5>
                                 <table class="table table-bordered">
                                     <tbody class="text-center">
                                     <tr>
@@ -199,7 +202,7 @@
                                         <th>{{activeOrder.discount | capitalize}}</th>
                                         <td>Total Before Discount</td>
                                         <th>{{$formatCurrency($roundDownAmt(activeOrder.order["product_price"]))}}</th>
-                                        <td>Total Paid</td>
+                                        <td>Total Paid (+discount)</td>
                                         <th>{{activeOrder.amountPaid}}</th>
                                     </tr>
                                     <tr>
@@ -221,8 +224,8 @@
                                     </tbody>
                                 </table>
 
-                                <h5 class="mt-5 mb-0">Add a new payment</h5>
-                                <table class="table table-bordered">
+                                <h5 class="mt-5 mb-0" v-if="canAddPayment">Add a new payment</h5>
+                                <table class="table table-bordered" v-if="canAddPayment">
                                     <tbody class="text-center">
 
                                     <tr class="table-separator">
@@ -294,12 +297,18 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" :class="{'d-flex justify-content-end' : !canAddPayment}">
 
-                            <button @click="addPaymentForm()" class="btn status my-sm-2">Add Payment</button>
-                            <button @click="preparePayments()" class="btn status my-sm-2 approved ml-4">Click here to
-                                Submit
-                                Payment(s)!
+                            <button @click="addPaymentForm()"
+                                    v-if="canAddPayment"
+                                    class="btn status my-sm-2">
+                                Add Payment
+                            </button>
+
+                            <button @click="preparePayments()"
+                                    v-if="canAddPayment"
+                                    class="btn status my-sm-2 approved ml-4">
+                                Click here to Submit Payment(s)!
                             </button>
 
                             <a class="text-link mt-3" data-dismiss="modal" href="javascript:"
@@ -316,6 +325,7 @@
 <script>
     import Vue from 'vue';
     import {mapGetters} from 'vuex';
+    import {log} from '../../../utilities/log';
     import Auth from '../../../utilities/auth';
     import Flash from '../../../utilities/flash';
     import {get, post} from '../../../utilities/api';
@@ -342,16 +352,19 @@
                 headers: ['Date', 'Order No.', 'Product Name', 'Total Product Price',
                     'Percentage', 'Down Payment', 'Repayment Plans'],
                 paymentForm: null,
+                canAddPayment: null
             }
         },
 
         methods: {
-            updateView(data) {
-                let {customer} = data;
+            async updateView(data) {
+                let {customer, user} = data;
                 if (!!customer.length) {
                     customer = customer[0];
                     if (!(!!customer.document['id'])) customer.document = {id_card_url: "", passport_url: ""};
-                    Vue.set(this.$data, 'customer', customer);
+                    this.user.branch = user.branch_id;
+                    this.customer = customer;
+                    this.customer.orders = customer.orders.map(order => new Order(order, customer));
                     this.show = true;
                 } else Flash.setError("Customer not found.", 5000);
                 this.$LIPS(false);
@@ -368,8 +381,9 @@
                     });
             },
 
-            async displayAmortization(index) {
-                await Vue.set(this.$data, 'activeOrder', new Order(this.customer.orders[index], this.customer));
+            displayAmortization(index) {
+                this.activeOrder = this.customer.orders[index];
+                this.canAddPayment = this.canUserAddPayment;
                 this.paymentForm = {payments: []};
                 this.showModalContent = true;
                 return $(`#amortization`).modal('toggle');
@@ -411,6 +425,7 @@
             },
 
             preparePayments() {
+                if (!this.canAddPayment) return;
                 let payments = {};
                 this.paymentForm.payments.forEach(payment => {
                     let obj = {}, col = this.$getColumn(payment._col);
@@ -425,17 +440,32 @@
             },
 
             savePayments() {
+                if (!this.canAddPayment) return;
                 this.$LIPS(true);
-                let type, data, order;
+                let type, data, order, orderIndex;
                 if (this.activeOrder.count === 6) type = 'formal';
                 if (this.activeOrder.count === 12) type = 'informal';
                 data = {payments: this.activeOrder.payments, repayment_id: this.activeOrder.order.id, type};
 
                 post(`/api/repayment`, data).then(res => {
                     if (res.data.saved) {
-                        order = this.customer.orders.find(order => order.id === data.repayment_id);
+                        order = (this.customer.orders.find((order, index) => {
+                            if (order.order.id === data.repayment_id) {
+                                orderIndex = index;
+                                return true
+                            }
+                            return false;
+                        })).order;
+
                         order[`repayment_${type}`] = res.data.amortization;
                         this.activeOrder = new Order(order, this.customer);
+                        this.customer.orders[orderIndex] = this.activeOrder;
+
+                        let paymentsMade = this.paymentForm.payments.map(pmt => pmt.column.replace(/ /g, '_'))
+                                .join(' '),
+                            desc = `${paymentsMade}. Order: ID: ${data.repayment_id}. Customer ID: ${this.customer_id}`;
+                        log(`Payment(s) added`, desc);
+
                         this.paymentForm = {payments: []};
                         this.$LIPS(false);
                     }
@@ -444,9 +474,13 @@
         },
 
         computed: {
-            ...mapGetters(['getBanks', 'getPaymentMethods']),
+            ...mapGetters(['getBanks', 'getPaymentMethods', 'auth']),
             check() {
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
+            },
+            canUserAddPayment() {
+                return true;
+                return this.auth('supervisor') && (this.user.branch === this.activeOrder.branch.id);
             }
         },
 

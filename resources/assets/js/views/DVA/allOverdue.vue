@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <order v-if="show" :start-index="orders.from" :pre-loaded-order="response" :mode="'normal-list'"/>
+            <order v-if="show" :pre-loaded-order="response" :mode="'normal-list'"/>
 
             <div class="mt-5 mb-3 attendance-head">
                 <div class="w-100 my-5 mx-0 hr"></div>
@@ -64,6 +64,7 @@
     import Flash from "../../utilities/flash";
     import Order from "../../components/Orders";
     import CustomHeader from '../../components/customHeader';
+    import {OrderWithPromiseCall} from "../../utilities/Amortization";
 
     export default {
 
@@ -99,82 +100,34 @@
                 this.show = false;
                 this.orders = null;
                 this.response = {};
+                let filteredOrders = [];
 
-                this.orders = data.orders.filter(order => {
-                    let {repaymentData} = this.getCountAndRepaymentData(order),
-                        {count, interval} = this.amortizationPlan(order),
-                        payDay, today = new Date();
-                    if (!(!!repaymentData)) return false;
-                    for (let i = 1; i < count + 1; i++) {
+                data.orders.forEach(order => {
+                    let payDay,
+                        today = new Date(),
+                        newOrder = new OrderWithPromiseCall(order, data.dva_id);
+
+                    if (!(!!newOrder.repaymentData)) return false;
+
+                    for (let i = 1; i < newOrder.count + 1; i++) {
                         let column = this.$getColumn(i);
-                        if (!repaymentData[column + "_pay"]) {
-                            payDay = this.generateDates({startDate: order.order_date, interval, count})[i - 1];
+                        if (!newOrder.repaymentData[column + "_pay"]) {
+                            payDay = newOrder.dueDates[i - 1];
                             break;
                         }
                     }
+
                     let datePool = this.$getDate(today.addDays(-this.overdue_days));
-                    return datePool === payDay;
+                    if (datePool === payDay) filteredOrders.push(newOrder);
                 });
 
+                this.orders = filteredOrders;
                 let {payment_methods, banks, dva_id, branch} = data;
-
                 this.response = {payment_methods, banks, dva_id, branch, orders: this.orders};
                 this.$scrollToTop();
                 this.$LIPS(false);
                 this.show = true;
-            },
-
-
-            /**/
-            getCountAndRepaymentData(order) {
-                let data = {count: this.amortizationPlan(order).count};
-                if (order['repayment_formal'] != null) data.repaymentData = order.repayment_formal;
-                if (order['repayment_informal'] != null) data.repaymentData = order.repayment_informal;
-                return data;
-            },
-
-            amortizationPlan(order = this.currentOrder) {
-                //'2019-07-07' this is the date the bank draft was implemented
-                // and hence used as a factor to check for
-                // if amortization should be 12 or 6
-                let interval, count;
-                if (new Date(order.order_date) <= new Date('2019-07-07')) {
-                    if (order['repayment_formal'] != null) {
-                        interval = 28;
-                        count = 6;
-                    }
-                    if (order['repayment_informal'] != null) {
-                        interval = 14;
-                        count = 12;
-                    }
-                } else {
-                    if (this.isBankDraftAvailable(order) && this.isOrderFormal(order)) {
-                        interval = 28;
-                        count = 6;
-                    } else {
-                        interval = 14;
-                        count = 12;
-                    }
-                }
-                return {interval, count};
-            },
-
-            isBankDraftAvailable() {
-                //this is where the code for checking for bank draft will go
-                return false;
-            },
-
-            isOrderFormal: order => ['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase()),
-
-            generateDates({startDate, interval, count}) {
-                let dates = [];
-                for (let i = 0; i < count; i++) {
-                    let orderDate = (new Date(startDate)).addDays((i + 1) * interval);
-                    let dateString = this.$getDate(orderDate);
-                    dates.push(dateString);
-                }
-                return dates;
-            },
+            }
         },
         created() {
             this.$prepareBranches();

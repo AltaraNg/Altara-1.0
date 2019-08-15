@@ -509,7 +509,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
 
 var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
@@ -581,7 +580,9 @@ exports.default = {
                                 _context.next = 5;
                                 return res.orders.forEach(function (order) {
 
-                                    var newOrder = new _Amortization.OrderWithPromiseCall(order, res.dva_id);
+                                    console.log(order instanceof _Amortization.Order);
+
+                                    var newOrder = order instanceof _Amortization.Order ? order : new _Amortization.OrderWithPromiseCall(order, res.dva_id);
 
                                     var hasMissedPayment = function hasMissedPayment() {
                                         /*for the list 1 and 8 return true i.e no need for has
@@ -918,69 +919,9 @@ var _customHeader = __webpack_require__("./resources/assets/js/components/custom
 
 var _customHeader2 = _interopRequireDefault(_customHeader);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Amortization = __webpack_require__("./resources/assets/js/utilities/Amortization.js");
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
 
@@ -1022,105 +963,104 @@ exports.default = {
             this.show = false;
             this.orders = null;
             this.response = {};
+            var filteredOrders = [];
 
-            this.orders = data.orders.filter(function (order) {
-                var _getCountAndRepayment = _this2.getCountAndRepaymentData(order),
-                    repaymentData = _getCountAndRepayment.repaymentData,
-                    _amortizationPlan = _this2.amortizationPlan(order),
-                    count = _amortizationPlan.count,
-                    interval = _amortizationPlan.interval,
-                    payDay = void 0,
-                    today = new Date();
+            data.orders.forEach(function (order) {
+                var payDay = void 0,
+                    today = new Date(),
+                    newOrder = new _Amortization.OrderWithPromiseCall(order, data.dva_id);
 
-                if (!!!repaymentData) return false;
-                for (var i = 1; i < count + 1; i++) {
+                if (!!!newOrder.repaymentData) return false;
+
+                for (var i = 1; i < newOrder.count + 1; i++) {
                     var column = _this2.$getColumn(i);
-                    if (!repaymentData[column + "_pay"]) {
-                        payDay = _this2.generateDates({ startDate: order.order_date, interval: interval, count: count })[i - 1];
+                    if (!newOrder.repaymentData[column + "_pay"]) {
+                        payDay = newOrder.dueDates[i - 1];
                         break;
                     }
                 }
+
                 var datePool = _this2.$getDate(today.addDays(-_this2.overdue_days));
-                return datePool === payDay;
+                if (datePool === payDay) filteredOrders.push(newOrder);
             });
 
+            this.orders = filteredOrders;
             var payment_methods = data.payment_methods,
                 banks = data.banks,
                 dva_id = data.dva_id,
                 branch = data.branch;
 
-
             this.response = { payment_methods: payment_methods, banks: banks, dva_id: dva_id, branch: branch, orders: this.orders };
             this.$scrollToTop();
             this.$LIPS(false);
             this.show = true;
-        },
-
-
-        /**/
-        getCountAndRepaymentData: function getCountAndRepaymentData(order) {
-            var data = { count: this.amortizationPlan(order).count };
-            if (order['repayment_formal'] != null) data.repaymentData = order.repayment_formal;
-            if (order['repayment_informal'] != null) data.repaymentData = order.repayment_informal;
-            return data;
-        },
-        amortizationPlan: function amortizationPlan() {
-            var order = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.currentOrder;
-
-            //'2019-07-07' this is the date the bank draft was implemented
-            // and hence used as a factor to check for
-            // if amortization should be 12 or 6
-            var interval = void 0,
-                count = void 0;
-            if (new Date(order.order_date) <= new Date('2019-07-07')) {
-                if (order['repayment_formal'] != null) {
-                    interval = 28;
-                    count = 6;
-                }
-                if (order['repayment_informal'] != null) {
-                    interval = 14;
-                    count = 12;
-                }
-            } else {
-                if (this.isBankDraftAvailable(order) && this.isOrderFormal(order)) {
-                    interval = 28;
-                    count = 6;
-                } else {
-                    interval = 14;
-                    count = 12;
-                }
-            }
-            return { interval: interval, count: count };
-        },
-        isBankDraftAvailable: function isBankDraftAvailable() {
-            //this is where the code for checking for bank draft will go
-            return false;
-        },
-
-
-        isOrderFormal: function isOrderFormal(order) {
-            return ['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase());
-        },
-
-        generateDates: function generateDates(_ref2) {
-            var startDate = _ref2.startDate,
-                interval = _ref2.interval,
-                count = _ref2.count;
-
-            var dates = [];
-            for (var i = 0; i < count; i++) {
-                var orderDate = new Date(startDate).addDays((i + 1) * interval);
-                var dateString = this.$getDate(orderDate);
-                dates.push(dateString);
-            }
-            return dates;
         }
     },
     created: function created() {
         this.$prepareBranches();
         this.fetchData();
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
@@ -1158,6 +1098,89 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 exports.push([module.i, "\n.table-separator[data-v-57fa0ac8] {\n    border-top: 2px solid #dee1e4;\n}\n", ""]);
 
 // exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
 
 
 /***/ }),
@@ -2232,11 +2255,7 @@ var render = function() {
         _vm._v(" "),
         _vm.show
           ? _c("order", {
-              attrs: {
-                "start-index": _vm.orders.from,
-                "pre-loaded-order": _vm.response,
-                mode: "normal-list"
-              }
+              attrs: { "pre-loaded-order": _vm.response, mode: "normal-list" }
             })
           : _vm._e(),
         _vm._v(" "),
@@ -2284,7 +2303,7 @@ var render = function() {
             ? _c(
                 "span",
                 {
-                  staticClass: "user mx-auto waiting-reminder",
+                  staticClass: "user mx-auto bg-pending text-white",
                   on: { click: _vm.logReminder }
                 },
                 [_c("i", { staticClass: "fas fa-hourglass-start" })]
@@ -2443,11 +2462,27 @@ var render = function() {
             _c("span", { staticClass: "present" }, [
               _c("span", { staticClass: "radio w-50 pr-3 mb-0 float-left" }, [
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.order.reminder.is_visited,
+                      expression: "order.reminder.is_visited"
+                    }
+                  ],
                   attrs: {
                     type: "radio",
-                    value: "yes",
                     id: "present" + _vm.index,
                     name: "isPresent" + _vm.index
+                  },
+                  domProps: {
+                    value: true,
+                    checked: _vm._q(_vm.order.reminder.is_visited, true)
+                  },
+                  on: {
+                    change: function($event) {
+                      _vm.$set(_vm.order.reminder, "is_visited", true)
+                    }
                   }
                 }),
                 _vm._v(" "),
@@ -2458,11 +2493,27 @@ var render = function() {
               _vm._v(" "),
               _c("span", { staticClass: "radio w-50 pl-3 mb-0 float-left" }, [
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.order.reminder.is_visited,
+                      expression: "order.reminder.is_visited"
+                    }
+                  ],
                   attrs: {
                     type: "radio",
-                    value: "no",
                     id: "absent" + _vm.index,
                     name: "isPresent" + _vm.index
+                  },
+                  domProps: {
+                    value: false,
+                    checked: _vm._q(_vm.order.reminder.is_visited, false)
+                  },
+                  on: {
+                    change: function($event) {
+                      _vm.$set(_vm.order.reminder, "is_visited", false)
+                    }
                   }
                 }),
                 _vm._v(" "),
@@ -2982,7 +3033,7 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("h5", { staticClass: "mt-3 mb-0" }, [
+                      _c("h5", { staticClass: "mt-5 mb-0" }, [
                         _vm._v("Amortization Schedule")
                       ]),
                       _vm._v(" "),
@@ -3482,26 +3533,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "a",
-        {
-          staticClass: "text-link mt-3",
-          staticStyle: { "text-align": "right" },
-          attrs: { "data-dismiss": "modal", href: "javascript:" }
-        },
-        [_vm._v("close dialogue")]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "modal-footer d-flex justify-content-end" },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "text-link mt-3",
+            attrs: { "data-dismiss": "modal", href: "javascript:" }
+          },
+          [_vm._v("close dialogue")]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header py-2" }, [
-      _c("h6", { staticClass: "modal-title py-1" }, [
-        _vm._v("Reminder History")
-      ]),
+      _c("h6", { staticClass: "modal-title py-1" }, [_vm._v("History")]),
       _vm._v(" "),
       _c(
         "a",
@@ -4206,45 +4258,58 @@ var Order = function () {
     }, {
         key: 'calcAndSetPaymentSummary',
         value: function calcAndSetPaymentSummary() {
-            var _this2 = this;
-
-            var datesDefaulted = [];
-            var amountPerDefault = 500;
+            /*helper function*/
             var fmt = function fmt(cur) {
                 return vue.$formatCurrency(cur);
-            };
-            var amountPaid = vue.$roundDownAmt(parseInt(this.order.down_payment));
+            },
+                _order = this.order,
+                repayment_amount = _order.repayment_amount,
+                down_payment = _order.down_payment,
+                product_price = _order.product_price;
 
-            this.dueDates.forEach(function (dueDate, index) {
-                return Order.isPaymentDue(vue.$getDate(new Date(dueDate).addDays(5))) && datesDefaulted.push({ dueDate: dueDate, actualPayDate: _this2.actualPayDates[index] });
-            });
+            /*discount amount*/
+            var mFactor = this.count === 6 ? 0.5 : 1,
+                discount = this.order.discount.percentage_discount,
+                repaymentAsDiscount = discount > 0 ? discount === 5 ? 1 : 2 : 0,
+                discountAmount = vue.$roundDownAmt(repayment_amount * mFactor * repaymentAsDiscount);
 
+            this._discountAmount = fmt(discountAmount);
+
+            /*(total)amount paid = down payment + total repayments  + discount(if any)*/
+            var amountPaid = 0,
+                totalRepayments = 0;
             if (!!this.repaymentData) {
                 for (var i = 0; i < this.count + 1; i++) {
-                    var amtPaid = parseInt(this.actualAmountsPaid[i]);
-                    amountPaid += !!amtPaid ? vue.$roundDownAmt(amtPaid) : 0;
+                    var repayment = parseInt(this.actualAmountsPaid[i]);
+                    totalRepayments += !!repayment ? vue.$roundDownAmt(repayment) : 0;
                 }
-            } else amountPaid = 0;
-
-            var discount = this.order.discount.percentage_discount;
-
-            var multiplicationFactor = this.count === 6 ? 0.5 : 1;
-            var repaymentCoveredAsDiscount = function repaymentCoveredAsDiscount() {
-                return discount > 0 ? discount === 5 ? 1 : 2 : 0;
-            };
-
-            var discountAmount = this.order.repayment_amount * multiplicationFactor * repaymentCoveredAsDiscount();
-            discountAmount = vue.$roundDownAmt(discountAmount);
-
-            var defaultFee = datesDefaulted.length * amountPerDefault;
-            var discountedTotal = vue.$roundDownAmt(this.order["product_price"] - discountAmount);
-
+                amountPaid = vue.$roundDownAmt(parseInt(down_payment)) + totalRepayments + discountAmount;
+            }
             this._amountPaid = fmt(amountPaid);
-            this._discountAmount = fmt(vue.$roundDownAmt(discountAmount));
-            this._outstandingDebt = fmt(vue.$roundDownAmt(parseInt(this.order["product_price"]) - amountPaid));
+
+            /*discounted total :: total amount to be paid - discount*/
+            var discountedTotal = vue.$roundDownAmt(product_price - discountAmount);
             this._discountedTotal = fmt(discountedTotal);
+
+            /*total default fee*/
+            var amountPerDefault = 500;
+            var datesDefaulted = [];
+            var defaultFee = 0;
+            if (new Date(this.order.order_date) > new Date('2019-07-07')) {
+                //the order is a new record then use the default fee
+                /**this is where the calculation for the default fee goes into*/
+                /*this.dueDates.forEach((dueDate, index) =>
+                Order.isPaymentDue(vue.$getDate(new Date(dueDate).addDays(5))) &&
+                datesDefaulted.push({dueDate, actualPayDate: this.actualPayDates[index]}));*/
+                defaultFee = datesDefaulted.length * amountPerDefault;
+            }
             this._defaultFee = fmt(defaultFee);
+
+            /*total plus default*/
             this._totalPlusDefault = fmt(discountedTotal + defaultFee);
+
+            /*outstanding debt*/
+            this._outstandingDebt = fmt(vue.$roundDownAmt(parseInt(product_price) - amountPaid));
         }
     }, {
         key: 'setDiscount',
@@ -4454,17 +4519,17 @@ var OrderWithPromiseCall = function (_Order) {
     function OrderWithPromiseCall(order, dvaId) {
         _classCallCheck(this, OrderWithPromiseCall);
 
-        var _this3 = _possibleConstructorReturn(this, (OrderWithPromiseCall.__proto__ || Object.getPrototypeOf(OrderWithPromiseCall)).call(this, order, order.customer));
+        var _this2 = _possibleConstructorReturn(this, (OrderWithPromiseCall.__proto__ || Object.getPrototypeOf(OrderWithPromiseCall)).call(this, order, order.customer));
 
-        _this3._isReminderSent = false;
-        _this3._dvaId = dvaId;
-        _this3._isSelected = false;
-        _this3.setReminder(null);
-        _this3.setIsReminderSent();
-        _this3.setFinancialStatus();
-        _this3.setPromiseCall();
-        _this3.generateAndSetNextSMSReminder();
-        return _this3;
+        _this2._isReminderSent = false;
+        _this2._dvaId = dvaId;
+        _this2._isSelected = false;
+        _this2.setReminder(null);
+        _this2.setIsReminderSent();
+        _this2.setFinancialStatus();
+        _this2.setPromiseCall();
+        _this2.generateAndSetNextSMSReminder();
+        return _this2;
     }
 
     /*custom setters*/
@@ -4473,7 +4538,7 @@ var OrderWithPromiseCall = function (_Order) {
     _createClass(OrderWithPromiseCall, [{
         key: 'setIsReminderSent',
         value: function setIsReminderSent() {
-            var _this4 = this;
+            var _this3 = this;
 
             var date = void 0;
             var today = vue.$getDate();
@@ -4487,7 +4552,7 @@ var OrderWithPromiseCall = function (_Order) {
                     return parseInt(item, 10);
                 }); //[2019,3,24,2,0,0]
                 date = vue.$getDate(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
-                date === today && (_this4._isReminderSent = true);
+                date === today && (_this3._isReminderSent = true);
             });
         }
     }, {
@@ -4498,11 +4563,11 @@ var OrderWithPromiseCall = function (_Order) {
     }, {
         key: 'generateAndSetNextSMSReminder',
         value: function generateAndSetNextSMSReminder() {
-            var _order = this.order,
-                store_product = _order.store_product,
-                repayment_amount = _order.repayment_amount,
-                customer = _order.customer,
-                order_date = _order.order_date,
+            var _order2 = this.order,
+                store_product = _order2.store_product,
+                repayment_amount = _order2.repayment_amount,
+                customer = _order2.customer,
+                order_date = _order2.order_date,
                 first_name = customer.first_name,
                 last_name = customer.last_name,
                 name = first_name + " " + last_name,
@@ -4529,12 +4594,13 @@ var OrderWithPromiseCall = function (_Order) {
         value: function setReminder(type) {
             this._reminder = {
                 type: type,
+                'feedback': null,
+                'is_visited': null,
                 'dva_id': this.dvaId,
                 'order_id': this.order.id,
-                'feedback': null,
                 'customer_id': this.customer.id,
                 'canBeSelected': !this.isReminderSent,
-                'repayment_level': this.repaymentLevel
+                'repayment_level': this.repaymentLevel + "/" + this.count
             };
             if (type === 'sms') {
                 this._reminder.sms_id = null;

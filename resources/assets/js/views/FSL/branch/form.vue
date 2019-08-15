@@ -89,18 +89,17 @@
                                 <label>Email</label>
                                 <input :class="{'is-invalid': error.email}" class="form-control" name="email"
                                        placeholder="name@example.com"
-                                       type="email" v-model="form.email" v-validate="'required|email'">
+                                       type="email" v-model="form.email" v-validate="'email'">
                                 <small v-if="errors.first('email')">{{errors.first('email')}}</small>
                                 <small v-if="error.email">{{error.email[0]}}</small>
                             </div>
                             <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                                 <label>Bank</label>
                                 <select class="custom-select w-100" data-vv-validate-on="blur" name="bank"
-                                        v-model="form.bank" v-validate="'required'">
+                                        v-model="form.bank">
                                     <option selected value="">select bank</option>
                                     <option :value="id" v-for="{id,name} in banks">{{name | capitalize}}</option>
                                 </select>
-                                <small v-if="errors.first('bank')">{{errors.first('bank') }}</small>
                             </div>
                             <div class="spaceBetween  mb-md-2 mb-0"></div>
 
@@ -108,15 +107,14 @@
                                 <label>Account Name</label>
                                 <input class="form-control" data-vv-as="account name" name="account_name"
                                        placeholder="branch name"
-                                       type="text" v-model="form.account_name" v-validate="'required'">
-                                <small v-if="errors.first('account_name')">{{errors.first('account_name')}}</small>
+                                       type="text" v-model="form.account_name">
                             </div>
                             <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                                 <label>Account Number</label>
                                 <input :class="{'is-invalid': error.account_number}" class="form-control"
                                        data-vv-as="account number"
                                        name="account_number" placeholder="01xxxxxxxx" type="tel"
-                                       v-model="form.account_number" v-validate="'required|numeric|max:10|min:10'">
+                                       v-model="form.account_number" v-validate="'numeric|max:10|min:10'">
                                 <small v-if="errors.first('account_number')">{{errors.first('account_number')}}</small>
                                 <small v-if="error.account_number">{{error.account_number[0]}}</small>
                             </div>

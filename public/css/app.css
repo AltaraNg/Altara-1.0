@@ -16732,7 +16732,7 @@ table a i {
 }
 
 .attendance-view td.arrLate::before, .attendance-view td.leftEarly::after {
-  background-color: #f7b900;
+  background-color: #eeb200;
 }
 
 .attendance-view td.didNotSignOut::after {
@@ -16841,9 +16841,8 @@ table a i {
   color: white;
 }
 
-.user.waiting-reminder {
-  background-color: #FFBF00;
-  color: white;
+.bg-waiting-color {
+  background-color: #eeb200;
 }
 
 .text-link {
@@ -16979,6 +16978,14 @@ tr.current {
 
 .status.not-approved {
   background-color: #c81618;
+}
+
+.status.pending {
+  background-color: #eeb200;
+}
+
+.bg-pending {
+  background-color: #eeb200;
 }
 
 .customer-profile {

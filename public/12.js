@@ -167,8 +167,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
 
 function initialize(to) {
     var urls = { create: '/api/branch/create', edit: '/api/branch/' + to.params.id + '/edit' };
@@ -1617,8 +1615,8 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
-                              value: "required|email",
-                              expression: "'required|email'"
+                              value: "email",
+                              expression: "'email'"
                             }
                           ],
                           staticClass: "form-control",
@@ -1669,12 +1667,6 @@ var render = function() {
                                 rawName: "v-model",
                                 value: _vm.form.bank,
                                 expression: "form.bank"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required",
-                                expression: "'required'"
                               }
                             ],
                             staticClass: "custom-select w-100",
@@ -1718,13 +1710,7 @@ var render = function() {
                             })
                           ],
                           2
-                        ),
-                        _vm._v(" "),
-                        _vm.errors.first("bank")
-                          ? _c("small", [
-                              _vm._v(_vm._s(_vm.errors.first("bank")))
-                            ])
-                          : _vm._e()
+                        )
                       ]
                     ),
                     _vm._v(" "),
@@ -1746,12 +1732,6 @@ var render = function() {
                               rawName: "v-model",
                               value: _vm.form.account_name,
                               expression: "form.account_name"
-                            },
-                            {
-                              name: "validate",
-                              rawName: "v-validate",
-                              value: "required",
-                              expression: "'required'"
                             }
                           ],
                           staticClass: "form-control",
@@ -1774,13 +1754,7 @@ var render = function() {
                               )
                             }
                           }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.first("account_name")
-                          ? _c("small", [
-                              _vm._v(_vm._s(_vm.errors.first("account_name")))
-                            ])
-                          : _vm._e()
+                        })
                       ]
                     ),
                     _vm._v(" "),
@@ -1804,8 +1778,8 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
-                              value: "required|numeric|max:10|min:10",
-                              expression: "'required|numeric|max:10|min:10'"
+                              value: "numeric|max:10|min:10",
+                              expression: "'numeric|max:10|min:10'"
                             }
                           ],
                           staticClass: "form-control",

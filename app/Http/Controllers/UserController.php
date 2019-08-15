@@ -187,8 +187,13 @@ class UserController extends Controller
 
     public function getBranchUsers()
     {
+        $ITDeptAndDSALead = [1, 2, 8, 9, 15];
+        //this number come from the corresponding roles that we want to grant access to ALl dsa list.
+        $loggedInUserRole = auth('api')->user()->role_id;
         $DSAs = User::whereIn('role_id', [17, 18])
-            ->where('branch_id', auth('api')->user()->branch_id)
+            ->when(!in_array($loggedInUserRole, $ITDeptAndDSALead), function ($query) {
+                return $query->where('branch_id', auth('api')->user()->branch_id);
+            })
             ->select('id', 'staff_id', 'full_name', 'branch_id')
             ->get();
         return response()->json([

@@ -211,7 +211,7 @@
                                 </tbody>
                             </table>
 
-                            <h5 class="mt-3 mb-0">Amortization Schedule</h5>
+                            <h5 class="mt-5 mb-0">Amortization Schedule</h5>
                             <table class="table table-bordered">
                                 <tbody class="text-center">
                                 <tr>
@@ -287,9 +287,8 @@
                             </table>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <a class="text-link mt-3" data-dismiss="modal" href="javascript:"
-                           style="text-align: right">close dialogue</a>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <a class="text-link mt-3" data-dismiss="modal" href="javascript:">close dialogue</a>
                     </div>
                 </div>
             </div>
@@ -299,7 +298,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header py-2">
-                        <h6 class="modal-title py-1">Reminder History</h6>
+                        <h6 class="modal-title py-1">History</h6>
                         <a aria-label="Close" class="close py-1" data-dismiss="modal">
                             <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
                         </a>
@@ -389,7 +388,9 @@
                 this.orders = [];
                 await res.orders.forEach(order => {
 
-                    let newOrder = new OrderWithPromiseCall(order, res.dva_id);
+                    console.log(order instanceof Order);
+
+                    let newOrder = order instanceof Order ? order : new OrderWithPromiseCall(order, res.dva_id);
 
                     let hasMissedPayment = () => {
                         /*for the list 1 and 8 return true i.e no need for has
