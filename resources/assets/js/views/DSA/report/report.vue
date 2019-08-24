@@ -11,7 +11,8 @@
                         <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                             <label>Type</label>
                             <select class="custom-select w-100" data-vv-as="report type"
-                                    data-vv-validate-on="blur" name="report_type" v-model="report.type" v-validate="'required'">
+                                    data-vv-validate-on="blur" name="report_type" v-model="report.type"
+                                    v-validate="'required'">
                                 <option value="">select type</option>
                                 <option :value="slug" v-for="{slug,name} in types">{{name | capitalize}}</option>
                             </select>
@@ -66,10 +67,13 @@
 
                         <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                             <label>DSA (Name-ID)</label>
-                            <select class="custom-select w-100" data-vv-validate-on="blur" name="dsa" v-model="dailyReport.user_id"
+                            <select class="custom-select w-100" data-vv-validate-on="blur" name="dsa"
+                                    v-model="dailyReport.user_id"
                                     v-validate="'required'">
                                 <option value="">select DSA</option>
-                                <option :value="user.id" v-for="user in users">{{`${user.full_name} - (${user.staff_id})`}}</option>
+                                <option :value="user.id" v-for="user in users">{{`${user.full_name} -
+                                    (${user.staff_id})`}}
+                                </option>
                             </select>
                             <small v-if="errors.first('f2.dsa')">{{errors.first('f2.dsa')}}</small>
                         </div>
@@ -83,16 +87,21 @@
 
                         <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
                             <label>Forms registered on portal</label>
-                            <input class="form-control" data-vv-as="number on portal" name="number_on_portal" type="number"
+                            <input class="form-control" data-vv-as="number on portal" name="number_on_portal"
+                                   type="number"
                                    v-model="dailyReport.number_on_portal" v-validate="'required|integer|min:0'">
-                            <small v-if="errors.first('f2.number_on_portal')">{{errors.first('f2.number_on_portal')}}</small>
+                            <small v-if="errors.first('f2.number_on_portal')">{{errors.first('f2.number_on_portal')}}
+                            </small>
                         </div>
 
                         <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
                             <label>Forms submitted to captain</label>
-                            <input class="form-control" data-vv-as="number to captain" name="number_to_captain" type="number"
+                            <input class="form-control" data-vv-as="number to captain" name="number_to_captain"
+                                   type="number"
                                    v-model="dailyReport.number_to_captain" v-validate="'required|integer|min:0'">
-                            <small v-if="errors.first('f2.number_to_captain')">{{errors.first('f2.number_to_captain')}}</small>
+                            <small v-if="errors.first('f2.number_to_captain')">
+                                {{errors.first('f2.number_to_captain')}}
+                            </small>
                         </div>
 
                         <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
@@ -139,13 +148,14 @@
         created() {
             this.setDates();
             this.initForm();
+            console.log(this.$getDate());
         },
         data() {
             return {
                 types: [
                     {name: "sales report", slug: "sales_report"},
-                    {name: "score card", slug: "score_card"},
-                    {name: "weekly operations", slug: "weekly_operations"}
+                    /*{name: "score card", slug: "score_card"},
+                    {name: "weekly operations", slug: "weekly_operations"}*/
                 ],
                 report: {
                     to: '',
@@ -173,18 +183,23 @@
             generateReport() {
                 this.$validator.validateAll('f1').then(result => {
                     if (result) {
-                        if (this.$network()) {
-                            let branch = this.$store.state.branches.find(({id}) => id === this.report.branch.id);
-                            this.report.branch = branch;
-                            postD('/api/report', this.report).then(({data}) => {
-                                const url = window.URL.createObjectURL(new Blob([data]));
-                                const link = document.createElement('a');
-                                link.href = url;
-                                link.setAttribute('download', `${this.report.type}_for_${branch.name}.xlsx`);
-                                document.body.appendChild(link);
-                                link.click();
-                            });
-                        } else this.$networkErr();
+                        //if (this.$network()) {
+                        let {id, name} = this.$store.state.branches.find(({id}) => id === this.report.branch.id);
+                        this.report.branch = {id, name};
+                        postD('/api/report', this.report).then(({data}) => {
+                        // post('/api/report', this.report).then(({data}) => {
+
+                            //console.log(data);
+
+
+                            const url = window.URL.createObjectURL(new Blob([data]));
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', `${this.report.type}_for_${name}.xlsx`);
+                            document.body.appendChild(link);
+                            link.click();
+                        });
+                        //} else this.$networkErr();
                     } else this.$networkErr('form');
                 });
             },
@@ -192,16 +207,15 @@
                 /** this function computes and set the FROM and TO date to the
                  * Monday and Friday of the current Week
                  * PURPOSE: For better UX */
-                const toTwoDigs = num => num < 10 ? '0' + num : num;
-                let reformatDate = d => `${d.getFullYear()}-${toTwoDigs(d.getMonth() + 1)}-${toTwoDigs(d.getDate())}`,
-                    d = new Date(),
-                    day = d.getDay(),
-                    diff = d.getDate() - day + (day === 0 ? -6 : 1),
-                    m = new Date(d.setDate(diff)),
-                    f = new Date();
-                f.setDate(m.getDate() + 5);
-                this.report.from = m = reformatDate(m);
-                this.report.to = f = reformatDate(f);
+                let today = new Date(),
+                    day = today.getDay(),
+                    diff = today.getDate() - day + (day === 0 ? -6 : 1),
+                    monday = new Date(today.setDate(diff)),
+                    friday = new Date();
+
+                friday.setDate(monday.getDate() + 4);
+                this.report.from = monday = this.$getDate(monday);
+                this.report.to = friday = this.$getDate(friday);
                 /** this function returns the monday ie this.report.from
                  * and the saturday of the : this.report.to of the
                  * current week*/

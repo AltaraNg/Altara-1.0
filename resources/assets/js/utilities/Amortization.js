@@ -366,20 +366,18 @@ class OrderWithPromiseCall extends Order {
     }
 
     generateAndSetNextSMSReminder() {
-        const {store_product, repayment_amount, customer, order_date} = this.order,
-            {first_name, last_name} = customer, name = first_name + " " + last_name,
-            {product_name} = store_product;
+        const {repayment_amount, order_date} = this.order, {product_name} = this.order.store_product;
 
         let message;
         if (order_date === vue.$getDate()) {
-            message = `Hello ${name}, thanks for patronizing us.`
+            message = `Hello ${this.customerName}, thanks for patronizing us.`
                 + ` The following is the breakdown of the repayment plan for`
                 + ` the purchase of ${product_name}:%0a`;
             this.dueDates.forEach((date, index) =>
                 message += vue.$getColumn(index + 1) + ": " + date + " => " +
                     vue.$formatCurrency(vue.$roundDownAmt(repayment_amount)) + "%0a");
         } else {
-            message = `Hello ${name}, This is to remind you that your`
+            message = `Hello ${this.customerName}, This is to remind you that your`
                 + ` ${vue.$getColumn(parseInt(this.repaymentLevel) + 1)} repayment of`
                 + ` ${vue.$formatCurrency(vue.$roundDownAmt(repayment_amount))} for ${product_name}`
                 + ` will be due on ${this.dueDates[this.repaymentLevel]}. we will be expecting you.`;
