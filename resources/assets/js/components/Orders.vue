@@ -387,9 +387,6 @@
                 this.showModalContent = false;
                 this.orders = [];
                 await res.orders.forEach(order => {
-
-                    console.log(order instanceof Order);
-
                     let newOrder = order instanceof Order ? order : new OrderWithPromiseCall(order, res.dva_id);
 
                     let hasMissedPayment = () => {
