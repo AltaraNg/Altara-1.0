@@ -83,7 +83,7 @@
         },
 
         created() {
-            EventBus.$on('selectOrderItem', this.toggleSelect);
+            //EventBus.$on('selectOrderItem', this.toggleSelect);
             this.order.setReminder(this.mode);
         },
 

@@ -328,6 +328,7 @@
     import {log} from '../../../utilities/log';
     import Auth from '../../../utilities/auth';
     import Flash from '../../../utilities/flash';
+    import {Message} from '../../../utilities/sms';
     import {get, post} from '../../../utilities/api';
     import {Order} from '../../../utilities/Amortization';
     import CustomHeader from '../../../components/customHeader';
@@ -447,29 +448,41 @@
                 if (this.activeOrder.count === 12) type = 'informal';
                 data = {payments: this.activeOrder.payments, repayment_id: this.activeOrder.order.id, type};
 
-                post(`/api/repayment`, data).then(res => {
+                post(`/api/repayment`, data).then(async res => {
                     if (res.data.saved) {
                         order = (this.customer.orders.find((order, index) => {
-                            if (order.order.id === data.repayment_id) {
-                                orderIndex = index;
-                                return true
-                            }
-                            return false;
+                            let found = order.order.id === data.repayment_id;
+                            if (found) orderIndex = index;
+                            return found;
                         })).order;
 
                         order[`repayment_${type}`] = res.data.amortization;
-                        this.activeOrder = new Order(order, this.customer);
+                        this.activeOrder = await new Order(order, this.customer);
                         this.customer.orders[orderIndex] = this.activeOrder;
-
-                        let paymentsMade = this.paymentForm.payments.map(pmt => pmt.column.replace(/ /g, '_'))
-                                .join(' '),
-                            desc = `${paymentsMade}. Order: ID: ${data.repayment_id}. Customer ID: ${this.customer_id}`;
-                        log(`Payment(s) added`, desc);
-
+                        await this.logAddedPayment(data);
+                        if (this.activeOrder.repaymentLevel === this.activeOrder.count)
+                            this.sendPaymentCompleteSMS();
                         this.paymentForm = {payments: []};
+                        this.$scrollToTop();
                         this.$LIPS(false);
                     }
                 }).catch(() => Flash.setError('Error adding payment! Please try again later.'));
+            },
+
+            sendPaymentCompleteSMS() {
+                let messageBody = `Dear ${this.activeOrder.customerName}, you have successfully completed ` +
+                    `your payment for ${this.activeOrder.order.store_product.product_name}. ` +
+                    `Thanks for patronizing us.`,
+                    message = new Message(messageBody, this.activeOrder.customer.telephone);
+                message.send(r => r.status === 200 && Flash.setSuccess('Repayments Completed. SMS sent.'));
+            },
+
+            logAddedPayment(data) {
+                let paymentsMade = this.paymentForm.payments
+                        .map(pmt => pmt.column.replace(/ /g, '_'))
+                        .join(' '),
+                    desc = `${paymentsMade}. Order: ID: ${data.repayment_id}. Customer ID: ${this.customer_id}`;
+                return log(`Payment(s) added`, desc);
             }
         },
 
@@ -479,7 +492,6 @@
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
             },
             canUserAddPayment() {
-                return true;
                 return this.auth('supervisor') && (this.user.branch === this.activeOrder.branch.id);
             }
         },
