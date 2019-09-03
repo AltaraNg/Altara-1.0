@@ -16,7 +16,7 @@ class CreateSuppliersTable extends Migration
         Schema::create('suppliers', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');//PK
-            $table->unsignedInteger('user_id')->index()->nullable();//FK
+            $table->integer('user_id')->unsigned();//FK
             $table->string('sku');
             $table->string('name');
             $table->text('address');

@@ -36,7 +36,7 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Phone</label>
                             <input class="form-control" name="phone" placeholder="phone"
-                                   type="text" v-model="form.phone_number" v-validate="'required|max:20'">
+                                   type="phone" v-model="form.phone_number" v-validate="'required|max:20'">
                             <small v-if="errors.first('phone')">{{ errors.first('phone') }}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -68,7 +68,7 @@
                             <label>Bank Name</label>
                             <select class="custom-select w-100" data-vv-as="bank name"
                                     data-vv-validate-on="blur" name="bank_name" v-model="form.bank_name" v-validate="'required'">
-                                <option disabled value="">-- select duration --</option>
+                                <option disabled value="">-- select bank --</option>
                                 <option :value="name" v-for="{name} in banks">{{name}}</option>
                             </select>
                             <small v-if="errors.first('bank_name')">{{ errors.first('bank_name') }}</small>
@@ -76,14 +76,14 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Bank account name</label>
                             <input class="form-control" data-vv-as="account name" name="account_name" placeholder="account name"
-                                   type="number" v-model="form.bank_account_name" v-validate="'required|max:50'">
+                                   type="text" v-model="form.bank_account_name" v-validate="'required|max:50'">
                             <small v-if="errors.first('account_name')">{{ errors.first('account_name') }}</small>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Bank account number</label>
                             <input class="form-control" data-vv-as="account number" name="account_number" placeholder="account number"
-                                   type="number" v-model="form.bank_account_no" v-validate="'required|max:50'">
+                                   type="text" v-model="form.bank_account_no" v-validate="'required|max:50'">
                             <small v-if="errors.first('account_number')">{{ errors.first('account_number') }}</small>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
@@ -92,7 +92,7 @@
                         <div class="clearfix d-flex justify-content-end w-100">
                             <router-link class="mx-5 text-link mt-4 pt-2" to="/log/suppliers" v-if="mode ==='edit'">Cancel</router-link>
                             <button :disabled="$isProcessing" class="btn bg-default" type="submit">
-                                {{mode | capitalize}} Supplier <i class="far fa-paper-plane ml-1"></i>
+                                {{mode | capitalize}}  <i class="far fa-paper-plane ml-1"></i>
                             </button>
                         </div>
                     </div>

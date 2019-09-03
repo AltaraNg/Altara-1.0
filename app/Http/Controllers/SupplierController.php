@@ -55,15 +55,17 @@ class SupplierController extends Controller
         ]);
         $user = auth('api')->user();
         $request->user_id = $user->id;
-        $branch = new Supplier($request->all());
-        $branch->save();
-        return response()->json([
-            'saved' => true,
-            'message' => 'Supplier Created!',
-            'form' => Supplier::form(),
-            'staff_id' => $user->staff_id,
-            'log' => 'SupplierCreated'
-        ]);
+        $supplier = new Supplier($request->all());
+
+        $supplier->save();
+
+        // return response()->json([
+        //     'saved' => true,
+        //     // 'message' => 'Supplier Created!',
+        //     // 'form' => Supplier::form(),
+        //     // 'staff_id' => $user->staff_id,
+        //     // 'log' => 'SupplierCreated'
+        // ]);
     }
 
     /**
