@@ -1,5 +1,106 @@
 webpackJsonp([7],{
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImagePreview.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    props: {
+        preview: {
+            type: [String, File],
+            default: null
+        }
+    },
+    data: function data() {
+        return {
+            image: null
+        };
+    },
+    created: function created() {
+        this.setPreview();
+    },
+
+    watch: {
+        'preview': 'setPreview'
+    },
+    methods: {
+        setPreview: function setPreview() {
+            var _this = this;
+
+            if (this.preview instanceof File) {
+                var fileReader = new FileReader();
+                fileReader.onload = function (event) {
+                    _this.image = event.target.result;
+                };
+                fileReader.readAsDataURL(this.preview);
+            } else if (typeof this.preview === 'string') {
+                this.image = 'https://s3.eu-west-2.amazonaws.com/altara-one/' + this.preview;
+            } else this.image = null;
+        }
+    }
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _ImagePreview = __webpack_require__("./resources/assets/js/components/ImagePreview.vue");
+
+var _ImagePreview2 = _interopRequireDefault(_ImagePreview);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    components: {
+        ImagePreview: _ImagePreview2.default
+    },
+    props: {
+        value: {
+            type: [String, File],
+            default: null
+        },
+        usage: {
+            type: [String],
+            default: 'verification'
+        }
+    },
+    methods: {
+        upload: function upload(e) {
+            var files = e.target.files;
+            if (files && files.length > 0) this.$emit('input', files[0]);
+        }
+    }
+}; //
+//
+//
+//
+//
+//
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Typeahead.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -191,69 +292,120 @@ var _customHeader = __webpack_require__("./resources/assets/js/components/custom
 
 var _customHeader2 = _interopRequireDefault(_customHeader);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _ImageUpload = __webpack_require__("./resources/assets/js/components/ImageUpload.vue");
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+var _ImageUpload2 = _interopRequireDefault(_ImageUpload);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function initialize(to) {
     var urls = { create: "/api/product/create", edit: "/api/product/" + to.params.id + "/edit" };
     return urls[to.meta.mode];
-}
+} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
-    components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
+    components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default, ImageUpload: _ImageUpload2.default },
     props: {},
     data: function data() {
         return {
@@ -264,7 +416,8 @@ exports.default = {
             error: {},
             show: false,
             store: '/api/product',
-            method: 'POST'
+            method: 'POST',
+            statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }]
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -414,6 +567,7 @@ var render = function() {
           _c(
             "form",
             {
+              attrs: { enctype: "multipart/form-data" },
               on: {
                 submit: function($event) {
                   $event.preventDefault()
@@ -528,7 +682,7 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Brand ID")]),
+                      _c("label", [_vm._v("Brand")]),
                       _vm._v(" "),
                       _c("typeahead", {
                         attrs: { options: _vm.brands, caption: "name" },
@@ -551,7 +705,7 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Category ID")]),
+                      _c("label", [_vm._v("Category")]),
                       _vm._v(" "),
                       _c("typeahead", {
                         attrs: { options: _vm.categories, caption: "name" },
@@ -618,6 +772,109 @@ var render = function() {
                         ? _c("small", [
                             _vm._v(_vm._s(_vm.errors.first("price")))
                           ])
+                        : _vm._e()
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", { staticClass: "w-100 float-left" }, [
+                        _vm._v("Availability Status")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.statuses, function(ref) {
+                        var name = ref.name
+                        var value = ref.value
+                        return _c(
+                          "div",
+                          {
+                            staticClass: "radio p-0 col-md-6 col-6 float-left"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.is_active,
+                                  expression: "form.is_active"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              attrs: {
+                                id: name,
+                                name: "status",
+                                type: "radio"
+                              },
+                              domProps: {
+                                value: value,
+                                checked: _vm._q(_vm.form.is_active, value)
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.$set(_vm.form, "is_active", value)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", { attrs: { for: name } }, [
+                              _vm._v(_vm._s(name))
+                            ])
+                          ]
+                        )
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.first("status")
+                        ? _c("small", [
+                            _vm._v(_vm._s(_vm.errors.first("status")))
+                          ])
+                        : _vm._e()
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", { staticClass: "w-100 float-left" }, [
+                        _vm._v("Upload Image")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "upload-image p-2" }, [
+                        _c(
+                          "div",
+                          { staticClass: "upload-box" },
+                          [
+                            _c("image-upload", {
+                              model: {
+                                value: _vm.$data["form"][_vm.type],
+                                callback: function($$v) {
+                                  _vm.$set(_vm.$data["form"], _vm.type, $$v)
+                                },
+                                expression: "$data['form'][type]"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm.error[_vm.type]
+                        ? _c("small", [_vm._v(_vm._s(_vm.error[_vm.type][0]))])
                         : _vm._e()
                     ]
                   )
@@ -829,6 +1086,183 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-6da2cc40", module.exports)
   }
 }
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.image
+    ? _c("div", { staticClass: "position-relative" }, [
+        _c("img", { attrs: { src: _vm.image } }),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-danger upload-close m-0 px-3 py-2",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.$emit("close")
+              }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-times text-white" })]
+        )
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-78eff338", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "image" },
+    [
+      _vm.value && _vm.usage === "verification"
+        ? _c("image-preview", {
+            attrs: { preview: _vm.value },
+            on: {
+              close: function($event) {
+                _vm.$emit("input", null)
+              }
+            }
+          })
+        : _c("div", [
+            _c("input", {
+              attrs: { type: "file", accept: "images/*" },
+              on: { change: _vm.upload }
+            })
+          ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7e5db395", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/ImagePreview.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImagePreview.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ImagePreview.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-78eff338", Component.options)
+  } else {
+    hotAPI.reload("data-v-78eff338", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/ImageUpload.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ImageUpload.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7e5db395", Component.options)
+  } else {
+    hotAPI.reload("data-v-7e5db395", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 

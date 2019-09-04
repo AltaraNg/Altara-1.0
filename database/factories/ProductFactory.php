@@ -11,5 +11,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'brand_id' => rand(1, 11),
         'category_id' => rand(1, 12),
         'retail_price' => rand(1, 20) * 1000,
+        'is_active' => rand(0, 1),
+        'img_url' => $faker->paragraph(1),
     ];
 });

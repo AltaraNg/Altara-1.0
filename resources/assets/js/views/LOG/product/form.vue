@@ -5,7 +5,7 @@
             <custom-header :to="'/log/products'" :title="mode + ' product'" :button-title="'view Products!'"/>
 
             <div class="attendance-body">
-                <form @submit.prevent="onSave">
+                <form @submit.prevent="onSave" enctype="multipart/form-data">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Product name</label>
@@ -21,11 +21,11 @@
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Brand ID</label>
+                            <label>Brand</label>
                             <typeahead :options="brands" caption="name" v-model="form.brand_id"/>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Category ID</label>
+                            <label>Category</label>
                             <typeahead :options="categories" caption="name" v-model="form.category_id"/>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
@@ -35,6 +35,55 @@
                                    type="number" v-model="form.retail_price" v-validate="'required|max:50'">
                             <small v-if="errors.first('price')">{{ errors.first('price') }}</small>
                         </div>
+
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label class="w-100 float-left">Availability Status</label>
+                            <div class="radio p-0 col-md-6 col-6 float-left" v-for="{name,value} in statuses">
+                                <input :id="name" :value="value" name="status" type="radio" v-model="form.is_active"
+                                       v-validate="'required'">
+                                <label :for="name">{{name}}</label>
+                            </div>
+                            <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
+                        </div>
+
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label class="w-100 float-left">Upload Image</label>
+                            <div class="upload-image p-2">
+                                        <div class="upload-box">
+                                            <image-upload v-model="$data['form'][type]"/>
+                                        </div>
+                                    </div>
+                                    <small v-if="error[type]">{{error[type][0]}}</small>
+                                </div>
+                                <!-- <div class="modal-footer">
+                                    <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">
+                                        cancel
+                                    </button>
+                                    <button :disabled="$isProcessing" class="m-2 btn bg-default" type="submit">
+                                        Save changes <i class="far fa-paper-plane ml-1"></i>
+                                    </button>
+
+
+
+                        </div> -->
+
+
+                                    <!-- <div class="upload-image p-2">
+                                        <div class="upload-box">
+                                            <image-upload v-model="$data['form'][type]"/>
+                                        </div>
+                                    </div>
+                                    <small v-if="error[type]">{{error[type][0]}}</small>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">
+                                        cancel
+                                    </button>
+                                    <button :disabled="$isProcessing" class="m-2 btn bg-default" type="submit">
+                                        Save changes <i class="far fa-paper-plane ml-1"></i>
+                                    </button> -->
+
+
                     </div>
                     <div class="mb-5 px-0 row align-items-center">
                         <div class="clearfix d-flex justify-content-end w-100">
@@ -58,6 +107,7 @@
     import {byMethod, get} from '../../../utilities/api';
     import Typeahead from '../../../components/Typeahead';
     import CustomHeader from '../../../components/customHeader';
+    import ImageUpload from '../../../components/ImageUpload';
 
     function initialize(to) {
         let urls = {create: `/api/product/create`, edit: `/api/product/${to.params.id}/edit`};
@@ -65,7 +115,7 @@
     }
 
     export default {
-        components: {Typeahead, CustomHeader},
+        components: {Typeahead, CustomHeader, ImageUpload},
         props: {},
         data() {
             return {
@@ -77,6 +127,7 @@
                 show: false,
                 store: '/api/product',
                 method: 'POST',
+                statuses: [{name: 'available', value: 1}, {name: 'unavailable', value: 0}]
             }
         },
         beforeRouteEnter(to, from, next) {
