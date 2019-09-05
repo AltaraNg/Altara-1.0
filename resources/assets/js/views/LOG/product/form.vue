@@ -127,7 +127,8 @@
                 show: false,
                 store: '/api/product',
                 method: 'POST',
-                statuses: [{name: 'available', value: 1}, {name: 'unavailable', value: 0}]
+                statuses: [{name: 'available', value: 1}, {name: 'unavailable', value: 0}],
+                image_url: ''
             }
         },
         beforeRouteEnter(to, from, next) {

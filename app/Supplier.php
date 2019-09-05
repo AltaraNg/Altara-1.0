@@ -28,9 +28,11 @@ class Supplier extends Model
 
     public static function form() : iterable
     {
+        $user = auth('api')->user();
         return [
             'sku' => "ALTS/001/POL/18",
             'name' => '',
+            'user_id' => $user->id,
             'date_of_reg' => date('Y-m-d'),
             'status' => 1,
             'address' => '',
