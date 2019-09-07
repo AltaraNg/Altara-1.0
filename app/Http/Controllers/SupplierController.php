@@ -59,13 +59,13 @@ class SupplierController extends Controller
 
         $supplier->save();
 
-        // return response()->json([
-        //     'saved' => true,
-        //     // 'message' => 'Supplier Created!',
-        //     // 'form' => Supplier::form(),
-        //     // 'staff_id' => $user->staff_id,
-        //     // 'log' => 'SupplierCreated'
-        // ]);
+        return response()->json([
+            'saved' => true,
+            'message' => 'Supplier Created!',
+            'form' => Supplier::form(),
+            'staff_id' => $user->staff_id,
+            'log' => 'SupplierCreated'
+        ]);
     }
 
     /**
