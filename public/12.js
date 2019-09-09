@@ -1,6 +1,10 @@
 webpackJsonp([12],{
 
+<<<<<<< HEAD
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/branch/form.vue":
+=======
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/payment/form.vue":
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -167,6 +171,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+//
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
 
 function initialize(to) {
     var urls = { create: '/api/branch/create', edit: '/api/branch/' + to.params.id + '/edit' };
@@ -249,17 +258,29 @@ exports.default = {
                                             (0, _api.byMethod)(_this.method, _this.store, _this.form).then(function (_ref4) {
                                                 var data = _ref4.data;
 
+<<<<<<< HEAD
                                                 if (data.created || data.updated) {
                                                     (0, _log.log)('Branch ' + _this.mode + 'd', '' + _this.form.employee_id);
                                                     _flash2.default.setSuccess('Branch ' + _this.mode + 'd successfully!', 20000);
                                                 }
                                                 _this.done();
+=======
+                                                if (data.saved || data.updated) {
+                                                    (0, _log.log)('Branch ' + _this.mode + 'd', '' + _this.form.employee_id);
+                                                    _flash2.default.setSuccess('Branch ' + _this.mode + 'd successfully!', 20000);
+                                                }
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
                                             }).catch(function (e) {
                                                 e = e.response;
                                                 if (e.status === 422) {
                                                     _this.error = e.data.errors ? e.data.errors : e.data;
                                                     _this.$networkErr('unique');
                                                 }
+<<<<<<< HEAD
+=======
+                                            }).finally(function () {
+                                                return _this.done();
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
                                             });
                                         } else _this.$networkErr();
                                     } else _this.$networkErr('form');
@@ -1071,7 +1092,11 @@ if (hadRuntime) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-27d1d1a4\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/branch/form.vue":
+=======
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-435fbe38\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/payment/form.vue":
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1615,8 +1640,13 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
+<<<<<<< HEAD
                               value: "email",
                               expression: "'email'"
+=======
+                              value: "required|email",
+                              expression: "'required|email'"
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
                             }
                           ],
                           staticClass: "form-control",
@@ -1667,6 +1697,15 @@ var render = function() {
                                 rawName: "v-model",
                                 value: _vm.form.bank,
                                 expression: "form.bank"
+<<<<<<< HEAD
+=======
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required",
+                                expression: "'required'"
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
                               }
                             ],
                             staticClass: "custom-select w-100",
@@ -1710,7 +1749,17 @@ var render = function() {
                             })
                           ],
                           2
+<<<<<<< HEAD
                         )
+=======
+                        ),
+                        _vm._v(" "),
+                        _vm.errors.first("bank")
+                          ? _c("small", [
+                              _vm._v(_vm._s(_vm.errors.first("bank")))
+                            ])
+                          : _vm._e()
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
                       ]
                     ),
                     _vm._v(" "),
@@ -1732,6 +1781,15 @@ var render = function() {
                               rawName: "v-model",
                               value: _vm.form.account_name,
                               expression: "form.account_name"
+<<<<<<< HEAD
+=======
+                            },
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required",
+                              expression: "'required'"
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
                             }
                           ],
                           staticClass: "form-control",
@@ -1754,7 +1812,17 @@ var render = function() {
                               )
                             }
                           }
+<<<<<<< HEAD
                         })
+=======
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.first("account_name")
+                          ? _c("small", [
+                              _vm._v(_vm._s(_vm.errors.first("account_name")))
+                            ])
+                          : _vm._e()
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
                       ]
                     ),
                     _vm._v(" "),
@@ -1778,8 +1846,13 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
+<<<<<<< HEAD
                               value: "numeric|max:10|min:10",
                               expression: "'numeric|max:10|min:10'"
+=======
+                              value: "required|numeric|max:10|min:10",
+                              expression: "'required|numeric|max:10|min:10'"
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
                             }
                           ],
                           staticClass: "form-control",
@@ -1885,7 +1958,11 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
+<<<<<<< HEAD
     require("vue-hot-reload-api")      .rerender("data-v-27d1d1a4", module.exports)
+=======
+    require("vue-hot-reload-api")      .rerender("data-v-435fbe38", module.exports)
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
   }
 }
 
@@ -1917,15 +1994,25 @@ function log(action, description) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./resources/assets/js/views/FSL/branch/form.vue":
+=======
+/***/ "./resources/assets/js/views/FSL/payment/form.vue":
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/branch/form.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-27d1d1a4\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/branch/form.vue")
+=======
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/payment/form.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-435fbe38\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/payment/form.vue")
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1942,7 +2029,11 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+<<<<<<< HEAD
 Component.options.__file = "resources\\assets\\js\\views\\FSL\\branch\\form.vue"
+=======
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\payment\\form.vue"
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
 
 /* hot reload */
 if (false) {(function () {
@@ -1951,9 +2042,15 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
+<<<<<<< HEAD
     hotAPI.createRecord("data-v-27d1d1a4", Component.options)
   } else {
     hotAPI.reload("data-v-27d1d1a4", Component.options)
+=======
+    hotAPI.createRecord("data-v-435fbe38", Component.options)
+  } else {
+    hotAPI.reload("data-v-435fbe38", Component.options)
+>>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
   }
   module.hot.dispose(function (data) {
     disposed = true

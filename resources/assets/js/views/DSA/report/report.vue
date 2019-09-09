@@ -67,15 +67,18 @@
 
                         <div class="form-group col-md-3 col-sm-6 px-md-3 px-1 float-left">
                             <label>DSA (Name-ID)</label>
-                            <select class="custom-select w-100" data-vv-validate-on="blur" name="dsa"
+                            <!--<select class="custom-select w-100" data-vv-validate-on="blur" name="dsa"
                                     v-model="dailyReport.user_id"
                                     v-validate="'required'">
                                 <option value="">select DSA</option>
                                 <option :value="user.id" v-for="user in users">{{`${user.full_name} -
                                     (${user.staff_id})`}}
                                 </option>
-                            </select>
-                            <small v-if="errors.first('f2.dsa')">{{errors.first('f2.dsa')}}</small>
+                            </select>-->
+
+                            <typeahead :options="users" caption="full_name" v-model="dailyReport.user_id"/>
+
+                            <!--<small v-if="errors.first('f2.dsa')">{{errors.first('f2.dsa')}}</small>-->
                         </div>
 
                         <div class="form-group col-md-2 col-sm-6 px-md-3 px-1 float-left">
@@ -129,12 +132,13 @@
 </template>
 <script>
     import Flash from '../../../utilities/flash';
+    import Typeahead from '../../../components/Typeahead';
     import {get, post, postD} from '../../../utilities/api';
     import CustomHeader from '../../../components/customHeader';
 
     export default {
 
-        components: {CustomHeader},
+        components: {Typeahead, CustomHeader},
 
         beforeCreate() {
             !this.$store.getters.auth('DSACaptain') && this.$networkErr('page');
@@ -148,7 +152,6 @@
         created() {
             this.setDates();
             this.initForm();
-            console.log(this.$getDate());
         },
         data() {
             return {
@@ -183,23 +186,18 @@
             generateReport() {
                 this.$validator.validateAll('f1').then(result => {
                     if (result) {
-                        //if (this.$network()) {
-                        let {id, name} = this.$store.state.branches.find(({id}) => id === this.report.branch.id);
-                        this.report.branch = {id, name};
-                        postD('/api/report', this.report).then(({data}) => {
-                        // post('/api/report', this.report).then(({data}) => {
-
-                            //console.log(data);
-
-
-                            const url = window.URL.createObjectURL(new Blob([data]));
-                            const link = document.createElement('a');
-                            link.href = url;
-                            link.setAttribute('download', `${this.report.type}_for_${name}.xlsx`);
-                            document.body.appendChild(link);
-                            link.click();
-                        });
-                        //} else this.$networkErr();
+                        if (this.$network()) {
+                            let {id, name} = this.$store.state.branches.find(({id}) => id === this.report.branch.id);
+                            this.report.branch = {id, name};
+                            postD('/api/report', this.report).then(({data}) => {
+                                const url = window.URL.createObjectURL(new Blob([data]));
+                                const link = document.createElement('a');
+                                link.href = url;
+                                link.setAttribute('download', `${this.report.type}_for_${name}.xlsx`);
+                                document.body.appendChild(link);
+                                link.click();
+                            });
+                        } else this.$networkErr();
                     } else this.$networkErr('form');
                 });
             },
@@ -223,6 +221,10 @@
             submitReport() {
                 this.$validator.validateAll('f2').then(result => {
                     if (result) {
+                        if (!this.dailyReport.user_id) {
+                            this.$scrollToTop();
+                            return Flash.setError('Please select a DSA.')
+                        }
                         if (this.$network()) {
                             this.$LIPS(true);
                             post(`/api/dsa_daily_registration`, this.dailyReport)

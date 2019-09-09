@@ -1,1 +1,979 @@
-webpackJsonp([39],{"7Roy":function(t,a,e){var s=e("VU/8")(e("oGME"),e("JNkd"),!1,null,null,null);t.exports=s.exports},JNkd:function(t,a){t.exports={render:function(){var t=this,a=t.$createElement,e=t._self._c||a;return e("transition",{attrs:{name:"fade"}},[e("div",{staticClass:"pt-md-3 pt-2 attendance attendance-view",attrs:{id:"index"}},[e("div",{staticClass:"mt-5 attendance-head"},[e("div",{staticClass:"mb-5 row align-items-center"},[e("div",{staticClass:"col-12 title-con"},[e("span",{staticClass:"title"},[t._v(t._s(t.title))]),t._v(" "),e("div",{staticClass:"row justify-content-end"},[e("a",{staticClass:"text-link mt-3",attrs:{href:"javascript:"},on:{click:function(a){t.$router.push("attendance/create")}}},[t._v("\n                            click here to create attendance!")]),t._v(" "),e("span",{staticClass:"mx-4 mt-3"},[t._v("||")]),t._v(" "),e("a",{staticClass:"text-link mt-3",attrs:{href:"javascript:"},on:{click:t.toggleGuide}},[t._v("\n                            view table guide!")])])])])]),t._v(" "),e("div",{staticClass:"attendance-body",attrs:{id:"table-guide"}},[e("div",{staticClass:"pt-5 row bg-white shadow-sm card-radius"},[e("div",[e("td",{staticClass:"arrEarly leftLate"},[e("span",[t._v("A")])]),t._v(" "),e("span",[t._v("In before/at 9:00am "),e("br"),t._v(" Out after/at 6:00pm")])]),t._v(" "),e("div",[e("td",{staticClass:"arrEarly leftEarly"},[e("span",[t._v("A")])]),t._v(" "),e("span",[t._v("In before/at 9:00am  "),e("br"),t._v(" Out Before 6:00pm")])]),t._v(" "),e("div",[e("td",{staticClass:"arrLate leftLate"},[e("span",[t._v("A")])]),t._v(" "),e("span",{staticClass:"d-inline-block"},[t._v("In after 9:00am  "),e("br"),t._v(" Out after/at 6:00pm")])]),t._v(" "),e("div",[e("td",{staticClass:"arrLate leftEarly"},[e("span",[t._v("A")])]),t._v(" "),e("span",{staticClass:"d-inline-block"},[t._v("In after 9:00am  "),e("br"),t._v(" Out before 6:00pm")])]),t._v(" "),e("div",[e("td",{staticClass:"absent"},[e("span",[t._v("A")])]),t._v(" "),e("span",[t._v("Absent")])])])]),t._v(" "),e("div",{staticClass:"mt-5 row attendance-head"},t._l(["Branch","Month","Year"],function(a){return e("div",{staticClass:"col-4 col-sm-3"},[e("div",{staticClass:"row"},[e("div",{staticClass:"light-heading"},[e("span",{staticClass:"d-none d-sm-inline"},[t._v("Select")]),t._v(" "+t._s(a))])])])})),t._v(" "),e("div",{staticClass:"mt-2 mt-lg-3 row attendance-head"},[t._l(["branch","month","year"],function(a){return e("div",{staticClass:"col-4 col-sm-3"},[e("div",{staticClass:"row"},[e("select",{directives:[{name:"model",rawName:"v-model",value:t.query[a],expression:"query[caption]"},{name:"validate",rawName:"v-validate",value:"required",expression:"'required'"}],staticClass:"custom-select",attrs:{name:a,"data-vv-validate-on":"blur"},on:{change:function(e){var s=Array.prototype.filter.call(e.target.options,function(t){return t.selected}).map(function(t){return"_value"in t?t._value:t.value});t.$set(t.query,a,e.target.multiple?s:s[0])}}},[e("option",{attrs:{disabled:"",selected:"",value:""}},[t._v(t._s(a))]),t._v(" "),t._l(t.$store.getters.getBranches,function(s){return"branch"===a?e("option",{domProps:{value:s.id}},[t._v("\n                            "+t._s(t._f("capitalize")(s.name))+"\n                        ")]):t._e()}),t._v(" "),t._l(t.$store.getters.getMonths,function(s){return"month"===a?e("option",{domProps:{value:s.id}},[t._v("\n                            "+t._s(s.name)+"\n                        ")]):t._e()}),t._v(" "),t._l(t.$store.getters.getYears,function(s){return"year"===a?e("option",{domProps:{value:s}},[t._v("\n                            "+t._s(s)+"\n                        ")]):t._e()})],2),t._v(" "),t.errors.first(a)?e("small",{staticClass:"text-muted"},[t._v(t._s(t.errors.first(a)))]):t._e()])])}),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"row d-flex justify-content-end"},[e("button",{staticClass:"btn btn-primary bg-default mt-0 myBtn",on:{click:function(a){t.fetch()}}},[t._v("View Attendance")])])])],2),t._v(" "),e("div",{staticClass:"attendance-body"},[t.show?e("div",{staticClass:"mt-5 row"},[e("div",{staticClass:"card"},[e("div",{staticClass:"image-and-names float-left"},[e("table",{staticClass:"table table-names"},[e("thead",[e("tr",[e("th",{staticClass:"ml-5"},[t._v("Employee Name")])])]),t._v(" "),e("tbody",t._l(t.attendances,function(a){return e("tr",[e("td",[e("div",{staticClass:"row align-items-center m-0 user-details"},[e("span",{staticClass:"user mx-auto"},[e("i",{staticClass:"user-icon fas fa-user-alt"})]),t._v(" "),e("div",{staticClass:" col user-name"},[t._v(t._s(""+a.full_name))])])])])}))])]),t._v(" "),e("div",{staticClass:"float-left daily-attendance"},[e("table",{staticClass:"table table-details table-bordered"},[e("thead",[e("tr",t._l(t.columns,function(a){return e("th",{staticClass:"text-center"},[e("span",[t._v(t._s(a.month+" "+a.date))]),e("br"),e("span",{staticClass:"light-heading day"},[t._v("\n                                    "+t._s(""+a.dayString)+"\n                                ")])])}))]),t._v(" "),e("tbody",t._l(t.attendances,function(a){return e("tr",t._l(t.columns,function(s){return e("td",{class:t.checkClass(a,s),on:{click:function(e){t.displayInfo(a,s)}}},[t._v("\n                                    "+t._s(t.isPresent(a,s))+"\n                                ")])}))}))])])])]):e("div",{staticClass:"row attendance-item p-5 my-5"},[e("span",{staticClass:"no-attendance"},[t._v("Kindly Select Branch, Month and, Year to get started!")])])]),t._v(" "),e("div",{staticClass:"modal fade",attrs:{id:"viewAttendance"}},[e("div",{staticClass:"modal-dialog",attrs:{role:"document"}},[e("div",{staticClass:"modal-content"},[e("div",{staticClass:"modal-header py-2"},[e("h6",{staticClass:"modal-title py-1"},[t._v("Attendance")]),t._v(" "),e("a",{staticClass:"close py-1",attrs:{"aria-label":"Close","data-dismiss":"modal"}},[e("span",{staticClass:"modal-close text-danger",attrs:{"aria-hidden":"true"}},[e("i",{staticClass:"fas fa-times"})])])]),t._v(" "),e("form",[e("div",{staticClass:"modal-body"},[t.currAttendance?e("div",{staticClass:"px-2"},[e("div",{staticClass:"px-4"},[e("div",{staticClass:"row"},[e("span",[e("strong",[t._v("Status : ")])]),t._v(" "),e("div",{staticClass:"col"},[t._v(t._s(t.currAttendance.is_present?"Present":"Absent"))])]),t._v(" "),e("div",{staticClass:"row"},[e("span",[e("strong",[t._v("Arrival Time : ")])]),t._v(" "),e("div",{staticClass:"col"},[t._v(t._s(t.$timeConvert(t.currAttendance.arrival_time)))])]),t._v(" "),e("div",{staticClass:"row"},[e("span",[e("strong",[t._v("Departure time : ")])]),t._v(" "),e("div",{staticClass:"col"},[t._v(t._s(t.$timeConvert(t.currAttendance.departure_time)))])]),t._v(" "),e("div",{staticClass:"row"},[e("span",[e("strong",[t._v("Date : ")])]),t._v(" "),e("div",{staticClass:"col"},[t._v(t._s(t.currAttendance.date))])]),t._v(" "),e("div",{staticClass:"row"},[e("span",[e("strong",[t._v("Remark : ")])]),t._v(" "),e("div",{staticClass:"col"},[t._v(t._s(t.currAttendance.remark))])])])]):e("div",{staticClass:"px-2"},[e("div",{staticClass:"px-4 row"},[e("span",[e("strong",[t._v("Status : ")])]),t._v(" "),e("div",{staticClass:"col"},[t._v("No Attendance")])])])]),t._v(" "),e("div",{staticClass:"modal-footer"},[e("a",{staticClass:"text-link mt-3 w-100",staticStyle:{"text-align":"right"},attrs:{"data-dismiss":"modal",href:"javascript:"}},[t._v("close dialogue")])])])])])])])])},staticRenderFns:[]}},oGME:function(t,a,e){"use strict";Object.defineProperty(a,"__esModule",{value:!0});var s=i(e("I3G/")),n=e("p/p5"),r=i(e("K23+"));function i(t){return t&&t.__esModule?t:{default:t}}var l=function(t){return"/attendance?branch="+t.branch+"&month="+t.month+"&year="+t.year};a.default={data:function(){return{columns:{},show:!1,currAttendance:{},query:{month:"",branch:"",year:""},attendances:{}}},beforeRouteEnter:function(t,a,e){var s=t.query;s.branch?(0,n.get)("/api"+l(s)).then(function(t){var a=t.data;return e(function(t){return t.prepareForm(a)})}).catch(function(t){return e(function(a){return a.handleErr(t)})}):e()},beforeRouteUpdate:function(t,a,e){var s=t.query,r=this;this.show=!1,s.branch?(this.$LIPS(!0),(0,n.get)("/api"+l(s)).then(function(t){var a=t.data;r.prepareForm(a),e()}).catch(function(t){r.handleErr(t),e()})):e()},created:function(){this.$prepareBranches();var t=this.$route.query,a=new Date,e=t.year?t.year:a.getFullYear(),n=t.month?t.month:a.getMonth()+1;s.default.set(this.$data.query,"year",e),s.default.set(this.$data.query,"month",n>=10||2===n.length?n:"0"+n),this.completeQry&&s.default.set(this.$data.query,"branch",t.branch)},methods:{fetch:function(){var t=this;this.$validator.validateAll().then(function(a){a?t.$network()?t.$router.push("/hrm"+l(t.query)):t.$networkErr():t.$networkErr("form")})},prepareForm:function(t){t&&(s.default.set(this.$data,"columns",t.columns),s.default.set(this.$data,"attendances",t.attendances),s.default.set(this.$data.query,"branch",t.branch[0].id),this.show=!0),this.$LIPS(!1)},handleErr:function(t){r.default.setError("Error Fetching Attendance")},isPresent:function(t,a){var e=arguments.length>2&&void 0!==arguments[2]&&arguments[2],s=a?a.fullDate:null,n=null,r=t.attendances.filter(function(t){return t.date===s});return r.length>0&&(n=e?r[0][e]:r[0].is_present?"P":"A"),n},earlyOrLate:function(t,a){var e=[],s=t.attendances.filter(function(t){return t.date===a.fullDate});return s.length&&(e[0]=s[0].arrival_time>"09:00"?"arrLate":"arrEarly",s[0].departure_time?e[1]=s[0].departure_time<"18:00"?"leftEarly":"leftLate":e[1]="didNotSignOut"),e},checkClass:function(t,a){var e=void 0,s=this.isPresent(t,a),n=this.earlyOrLate(t,a);return["Sun","Sat"].includes(a.dayString)?e="weekend":"P"===s?n.length&&(e=n.join(" ")):e="A"===s?"absent":"",e},toggleGuide:function(){$("#table-guide").slideToggle()},displayInfo:function(t,a){var e,n=a?a.fullDate:null;return e=t.attendances.filter(function(t){return t.date===n}),s.default.set(this.$data,"currAttendance",e[0]?e[0]:null),$("#viewAttendance").modal("toggle")}},computed:{completeQry:function(){return this.$route.query.year&&this.$route.query.month&&this.$route.query.branch},title:function(){var t="Attendance";if(this.completeQry){var a=this.$route.query.month,e=this.$route.query.year;t+=" "+(a?" - "+this.$store.getters.getMonths[parseInt(a)-1].name:"")+" "+(e||"")}return t}},mounted:function(){var t=this;$(document).on("hidden.bs.modal",".modal",function(){return t.currAttendance={}}),this.toggleGuide()}}}});
+webpackJsonp([39],{
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
+
+var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
+
+var _flash2 = _interopRequireDefault(_flash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var apiLink = function apiLink(query) {
+    return "/attendance?branch=" + query.branch + "&month=" + query.month + "&year=" + query.year;
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    data: function data() {
+        return {
+            columns: {},
+            show: false,
+            currAttendance: {},
+            query: {
+                month: '',
+                branch: '',
+                year: ''
+            },
+            attendances: {}
+        };
+    },
+    beforeRouteEnter: function beforeRouteEnter(_ref, from, next) {
+        var q = _ref.query;
+
+        //the first param received is "to" which contains to:{query:{branch:'branchNameOrID'}}
+        //i deconstructed and got just the query as r:{branch:'branchNameOrID'}
+        // which i used inside this method
+        if (q.branch) (0, _api.get)("/api" + apiLink(q)).then(function (_ref2) {
+            var data = _ref2.data;
+            return next(function (vm) {
+                return vm.prepareForm(data);
+            });
+        }).catch(function (err) {
+            return next(function (vm) {
+                return vm.handleErr(err);
+            });
+        });else next();
+    },
+    beforeRouteUpdate: function beforeRouteUpdate(_ref3, from, next) {
+        var q = _ref3.query;
+
+        var _this = this;
+
+        //the first param received is "to" which contains to:{query:{branch:'branchNameOrID'}}
+        //i deconstructed and got just the query as r:{branch:'branchNameOrID'}
+        // which i used inside this method
+        this.show = false;
+        if (q.branch) {
+            this.$LIPS(true);
+            (0, _api.get)("/api" + apiLink(q)).then(function (_ref4) {
+                var data = _ref4.data;
+
+                _this.prepareForm(data);
+                next();
+            }).catch(function (err) {
+                _this.handleErr(err);
+                next();
+            });
+        } else next();
+    },
+    created: function created() {
+        this.$prepareBranches();
+        var q = this.$route.query,
+            dt = new Date(),
+            year = q.year ? q.year : dt.getFullYear(),
+            month = q.month ? q.month : dt.getMonth() + 1;
+        _vue2.default.set(this.$data.query, 'year', year);
+        _vue2.default.set(this.$data.query, 'month', month >= 10 || month.length === 2 ? month : '0' + month);
+        if (this.completeQry) _vue2.default.set(this.$data.query, 'branch', q.branch);
+    },
+
+    methods: {
+        fetch: function fetch() {
+            var _this2 = this;
+
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this2.$network()) _this2.$router.push("/hrm" + apiLink(_this2.query));else _this2.$networkErr();
+                } else _this2.$networkErr('form');
+            });
+        },
+        prepareForm: function prepareForm(data) {
+            if (data) {
+                _vue2.default.set(this.$data, 'columns', data.columns);
+                _vue2.default.set(this.$data, 'attendances', data.attendances);
+                _vue2.default.set(this.$data.query, 'branch', data.branch[0].id);
+                this.show = true;
+            }
+            this.$LIPS(false);
+        },
+        handleErr: function handleErr(e) {
+            _flash2.default.setError('Error Fetching Attendance');
+        },
+        isPresent: function isPresent(userAtt, day) {
+            var bool = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+            var date = day ? day.fullDate : null,
+                data = null;
+            var c = userAtt.attendances.filter(function (att) {
+                return att.date === date;
+            });
+            if (c.length > 0) data = bool ? c[0][bool] : c[0].is_present ? 'P' : 'A';
+            return data;
+        },
+        earlyOrLate: function earlyOrLate(userAtt, day) {
+            var data = [];
+            var attendance = userAtt.attendances.filter(function (att) {
+                return att.date === day.fullDate;
+            });
+            if (attendance.length) {
+                data[0] = attendance[0].arrival_time > '09:00' ? 'arrLate' : 'arrEarly';
+                if (attendance[0].departure_time) {
+                    data[1] = attendance[0].departure_time < '18:00' ? 'leftEarly' : 'leftLate';
+                } else data[1] = 'didNotSignOut';
+            }
+            return data;
+        },
+        checkClass: function checkClass(userAtt, day) {
+            var theClass = void 0,
+                isPresent = this.isPresent(userAtt, day);
+            var erl = this.earlyOrLate(userAtt, day);
+            if (['Sun', 'Sat'].includes(day.dayString)) {
+                theClass = 'weekend';
+            } else {
+                if (isPresent === 'P') {
+                    if (erl.length) theClass = erl.join(' ');
+                } else {
+                    if (isPresent === 'A') theClass = 'absent';else theClass = '';
+                }
+            }
+            return theClass;
+        },
+        toggleGuide: function toggleGuide() {
+            $('#table-guide').slideToggle();
+        },
+        displayInfo: function displayInfo(userAtt, day) {
+            var date = day ? day.fullDate : null,
+                c = void 0;
+            c = userAtt.attendances.filter(function (att) {
+                return att.date === date;
+            });
+            _vue2.default.set(this.$data, 'currAttendance', c[0] ? c[0] : null);
+            return $("#viewAttendance").modal('toggle');
+        }
+    },
+    computed: {
+        completeQry: function completeQry() {
+            return this.$route.query.year && this.$route.query.month && this.$route.query.branch;
+        },
+        title: function title() {
+            var att = 'Attendance';
+            if (this.completeQry) {
+                var qryMonth = this.$route.query.month,
+                    qryYear = this.$route.query.year;
+                var month = qryMonth ? ' - ' + this.$store.getters.getMonths[parseInt(qryMonth) - 1].name : '';
+                att += " " + month + " " + (qryYear ? qryYear : '');
+            }
+            return att;
+        }
+    },
+    mounted: function mounted() {
+        var _this3 = this;
+
+        $(document).on("hidden.bs.modal", '.modal', function () {
+            return _this3.currAttendance = {};
+        });
+        this.toggleGuide();
+    }
+};
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-92afc2ae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "pt-md-3 pt-2 attendance attendance-view",
+        attrs: { id: "index" }
+      },
+      [
+        _c("div", { staticClass: "mt-5 attendance-head" }, [
+          _c("div", { staticClass: "mb-5 row align-items-center" }, [
+            _c("div", { staticClass: "col-12 title-con" }, [
+              _c("span", { staticClass: "title" }, [_vm._v(_vm._s(_vm.title))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row justify-content-end" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "text-link mt-3",
+                    attrs: { href: "javascript:" },
+                    on: {
+                      click: function($event) {
+                        _vm.$router.push("attendance/create")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                            click here to create attendance!"
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "mx-4 mt-3" }, [_vm._v("||")]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "text-link mt-3",
+                    attrs: { href: "javascript:" },
+                    on: { click: _vm.toggleGuide }
+                  },
+                  [_vm._v("\n                            view table guide!")]
+                )
+              ])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "attendance-body", attrs: { id: "table-guide" } },
+          [
+            _c(
+              "div",
+              { staticClass: "pt-5 row bg-white shadow-sm card-radius" },
+              [
+                _c("div", [
+                  _c("td", { staticClass: "arrEarly leftLate" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v("In before/at 9:00am "),
+                    _c("br"),
+                    _vm._v(" Out after/at 6:00pm")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("td", { staticClass: "arrEarly leftEarly" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v("In before/at 9:00am  "),
+                    _c("br"),
+                    _vm._v(" Out Before 6:00pm")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("td", { staticClass: "arrLate leftLate" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "d-inline-block" }, [
+                    _vm._v("In after 9:00am  "),
+                    _c("br"),
+                    _vm._v(" Out after/at 6:00pm")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("td", { staticClass: "arrLate leftEarly" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "d-inline-block" }, [
+                    _vm._v("In after 9:00am  "),
+                    _c("br"),
+                    _vm._v(" Out before 6:00pm")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("td", { staticClass: "absent" }, [
+                    _c("span", [_vm._v("A")])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [_vm._v("Absent")])
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "mt-5 row attendance-head" },
+          _vm._l(["Branch", "Month", "Year"], function(capt) {
+            return _c("div", { staticClass: "col-4 col-sm-3" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "light-heading" }, [
+                  _c("span", { staticClass: "d-none d-sm-inline" }, [
+                    _vm._v("Select")
+                  ]),
+                  _vm._v(" " + _vm._s(capt))
+                ])
+              ])
+            ])
+          })
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "mt-2 mt-lg-3 row attendance-head" },
+          [
+            _vm._l(["branch", "month", "year"], function(caption) {
+              return _c("div", { staticClass: "col-4 col-sm-3" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.query[caption],
+                          expression: "query[caption]"
+                        },
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
+                        }
+                      ],
+                      staticClass: "custom-select",
+                      attrs: { name: caption, "data-vv-validate-on": "blur" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.query,
+                            caption,
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "option",
+                        { attrs: { disabled: "", selected: "", value: "" } },
+                        [_vm._v(_vm._s(caption))]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.$store.getters.getBranches, function(branch) {
+                        return caption === "branch"
+                          ? _c("option", { domProps: { value: branch.id } }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm._f("capitalize")(branch.name)) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      }),
+                      _vm._v(" "),
+                      _vm._l(_vm.$store.getters.getMonths, function(month) {
+                        return caption === "month"
+                          ? _c("option", { domProps: { value: month.id } }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(month.name) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      }),
+                      _vm._v(" "),
+                      _vm._l(_vm.$store.getters.getYears, function(year) {
+                        return caption === "year"
+                          ? _c("option", { domProps: { value: year } }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(year) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _vm.errors.first(caption)
+                    ? _c("small", { staticClass: "text-muted" }, [
+                        _vm._v(_vm._s(_vm.errors.first(caption)))
+                      ])
+                    : _vm._e()
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-12 col-sm-3" }, [
+              _c("div", { staticClass: "row d-flex justify-content-end" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary bg-default mt-0 myBtn",
+                    on: {
+                      click: function($event) {
+                        _vm.fetch()
+                      }
+                    }
+                  },
+                  [_vm._v("View Attendance")]
+                )
+              ])
+            ])
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "attendance-body" }, [
+          _vm.show
+            ? _c("div", { staticClass: "mt-5 row" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "image-and-names float-left" }, [
+                    _c("table", { staticClass: "table table-names" }, [
+                      _c("thead", [
+                        _c("tr", [
+                          _c("th", { staticClass: "ml-5" }, [
+                            _vm._v("Employee Name")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.attendances, function(user) {
+                          return _c("tr", [
+                            _c("td", [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "row align-items-center m-0 user-details"
+                                },
+                                [
+                                  _c("span", { staticClass: "user mx-auto" }, [
+                                    _c("i", {
+                                      staticClass: "user-icon fas fa-user-alt"
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: " col user-name" }, [
+                                    _vm._v(_vm._s("" + user.full_name))
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        })
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "float-left daily-attendance" }, [
+                    _c(
+                      "table",
+                      { staticClass: "table table-details table-bordered" },
+                      [
+                        _c("thead", [
+                          _c(
+                            "tr",
+                            _vm._l(_vm.columns, function(col) {
+                              return _c("th", { staticClass: "text-center" }, [
+                                _c("span", [
+                                  _vm._v(_vm._s(col.month + " " + col.date))
+                                ]),
+                                _c("br"),
+                                _c(
+                                  "span",
+                                  { staticClass: "light-heading day" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s("" + col.dayString) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              ])
+                            })
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.attendances, function(userAtt) {
+                            return _c(
+                              "tr",
+                              _vm._l(_vm.columns, function(day) {
+                                return _c(
+                                  "td",
+                                  {
+                                    class: _vm.checkClass(userAtt, day),
+                                    on: {
+                                      click: function($event) {
+                                        _vm.displayInfo(userAtt, day)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.isPresent(userAtt, day)) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              })
+                            )
+                          })
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ])
+            : _c("div", { staticClass: "row attendance-item p-5 my-5" }, [
+                _c("span", { staticClass: "no-attendance" }, [
+                  _vm._v(
+                    "Kindly Select Branch, Month and, Year to get started!"
+                  )
+                ])
+              ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "modal fade", attrs: { id: "viewAttendance" } },
+          [
+            _c(
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _c("div", { staticClass: "modal-header py-2" }, [
+                    _c("h6", { staticClass: "modal-title py-1" }, [
+                      _vm._v("Attendance")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "close py-1",
+                        attrs: {
+                          "aria-label": "Close",
+                          "data-dismiss": "modal"
+                        }
+                      },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "modal-close text-danger",
+                            attrs: { "aria-hidden": "true" }
+                          },
+                          [_c("i", { staticClass: "fas fa-times" })]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("form", [
+                    _c("div", { staticClass: "modal-body" }, [
+                      _vm.currAttendance
+                        ? _c("div", { staticClass: "px-2" }, [
+                            _c("div", { staticClass: "px-4" }, [
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Status : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.currAttendance.is_present
+                                        ? "Present"
+                                        : "Absent"
+                                    )
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Arrival Time : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$timeConvert(
+                                        _vm.currAttendance.arrival_time
+                                      )
+                                    )
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Departure time : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$timeConvert(
+                                        _vm.currAttendance.departure_time
+                                      )
+                                    )
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [_c("strong", [_vm._v("Date : ")])]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.currAttendance.date))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("span", [
+                                  _c("strong", [_vm._v("Remark : ")])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col" }, [
+                                  _vm._v(_vm._s(_vm.currAttendance.remark))
+                                ])
+                              ])
+                            ])
+                          ])
+                        : _c("div", { staticClass: "px-2" }, [
+                            _c("div", { staticClass: "px-4 row" }, [
+                              _c("span", [_c("strong", [_vm._v("Status : ")])]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col" }, [
+                                _vm._v("No Attendance")
+                              ])
+                            ])
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "text-link mt-3 w-100",
+                          staticStyle: { "text-align": "right" },
+                          attrs: {
+                            "data-dismiss": "modal",
+                            href: "javascript:"
+                          }
+                        },
+                        [_vm._v("close dialogue")]
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-92afc2ae", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/FSL/attendance/index.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-92afc2ae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/attendance/index.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\attendance\\index.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-92afc2ae", Component.options)
+  } else {
+    hotAPI.reload("data-v-92afc2ae", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ })
+
+});

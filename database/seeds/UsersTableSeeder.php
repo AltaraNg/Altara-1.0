@@ -70,7 +70,7 @@ class UsersTableSeeder extends Seeder
         $user = new User();
         $user->role_id = 7;
         $user->staff_id = 'AC/IT/2018/0003';
-        $user->full_name = 'Taiwo Aneniyi';
+        $user->full_name = 'Taiwo Adeniyi';
         $user->date_of_appointment = '2016-02-02';
         $user->status = 'married';
         $user->category = 'permanent';

@@ -21,6 +21,8 @@ class CreateProductsTable extends Migration
           $table->unsignedInteger('category_id')->index()->nullable();//FK
           $table->string('retail_price');
           $table->string('feature');
+          $table->string('img_url');
+          $table->boolean('is_active');
           $table->unsignedInteger('user_id')->index()->nullable();//FK
           $table->timestamps();
       });
