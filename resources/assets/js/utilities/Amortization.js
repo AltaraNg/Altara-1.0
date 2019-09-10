@@ -106,8 +106,10 @@ class Order {
     }
 
     setBranch() {
-        this._branch = store.state.branches
-            .find(branch => parseInt(branch.id) === parseInt(this.order.store_product.store_name));
+        if(this.order['store_product']){
+            this._branch = store.state.branches
+                .find(branch => parseInt(branch.id) === parseInt(this.order.store_product['store_name']));
+        }else this._branch = null;
     }
 
     setPaymentStatusClasses() {
@@ -366,7 +368,9 @@ class OrderWithPromiseCall extends Order {
     }
 
     generateAndSetNextSMSReminder() {
-        const {repayment_amount, order_date} = this.order, {product_name} = this.order.store_product;
+        let product_name = null;
+        if(this.order['store_product']) product_name = this.order.store_product.product_name;
+        const {repayment_amount, order_date} = this.order;
 
         let message;
         if (order_date === vue.$getDate()) {
