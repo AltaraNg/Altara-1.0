@@ -52,6 +52,10 @@ var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
 
+var _skuGenerator = __webpack_require__("./resources/assets/js/utilities/sku-generator.js");
+
+var _skuGenerator2 = _interopRequireDefault(_skuGenerator);
+
 var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 
 var _customHeader = __webpack_require__("./resources/assets/js/components/customHeader.vue");
@@ -60,113 +64,115 @@ var _customHeader2 = _interopRequireDefault(_customHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 function initialize(to) {
     var urls = { create: "/api/supplier/create", edit: "/api/supplier/" + to.params.id + "/edit" };
     return urls[to.meta.mode];
-} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+}
 
 exports.default = {
 
@@ -243,6 +249,19 @@ exports.default = {
                     } else _this.$networkErr();
                 } else _this.$networkErr('form');
             });
+        }
+    },
+    watch: {
+        form: {
+            handler: function handler(val) {
+                var date = new Date().getFullYear();
+                date = date.toString().slice(2, 4);
+                var name = val.name.slice(0, 3);
+                var id = val.last_id[0].id;
+
+                _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (id + 1) + "/" + date);
+            },
+            deep: true
         }
     }
 };
@@ -385,7 +404,7 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Full Name")]),
+                      _c("label", [_vm._v("Business Name")]),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
@@ -1079,6 +1098,25 @@ function log(action, description) {
     (0, _api.post)('/api/log', { action: action, description: description });
     //and logs then on the log table;
 }
+
+/***/ }),
+
+/***/ "./resources/assets/js/utilities/sku-generator.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+   value: true
+});
+var sku_generator = exports.sku_generator = function sku_generator(supplier, id) {
+   date = new Date().getFullYear();
+   date = date.toString().slice(2, 4);
+
+   supplier = supplier.slice(0, 3);
+   return "ALTS/" + supplier + "/" + id + "/" + date;
+};
 
 /***/ }),
 

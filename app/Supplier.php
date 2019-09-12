@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use Illuminate\Support\Facades\DB;
 
 use App\Helper\DataViewer;
 use Illuminate\Database\Eloquent\Model;
@@ -29,8 +30,15 @@ class Supplier extends Model
     public static function form() : iterable
     {
         $user = auth('api')->user();
+        $last_id = DB::table('suppliers')
+        ->select('id')
+        ->orderBy('id', 'desc')
+        ->limit(1)
+        ->get();
+        $myArray = json_decode(json_encode($last_id), true);
+
         return [
-            'sku' => "ALTS/001/POL/18",
+            'sku' => "",
             'name' => '',
             'user_id' => $user->id,
             'date_of_reg' => date('Y-m-d'),
@@ -42,6 +50,7 @@ class Supplier extends Model
             'bank_account_no' => '',
             'bank_account_name' => '',
             'email' => '',
+            'last_id' => $myArray
         ];
     }
 

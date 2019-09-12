@@ -381,28 +381,6 @@ function initialize(to) {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default, ImageUpload: _ImageUpload2.default },
@@ -418,7 +396,7 @@ exports.default = {
             store: '/api/product',
             method: 'POST',
             statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }],
-            image_url: ''
+            img_url: ''
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -862,11 +840,11 @@ var render = function() {
                           [
                             _c("image-upload", {
                               model: {
-                                value: _vm.$data["form"][_vm.type],
+                                value: _vm.form.img_url,
                                 callback: function($$v) {
-                                  _vm.$set(_vm.$data["form"], _vm.type, $$v)
+                                  _vm.$set(_vm.form, "img_url", $$v)
                                 },
-                                expression: "$data['form'][type]"
+                                expression: "form.img_url"
                               }
                             })
                           ],
@@ -874,8 +852,10 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _vm.error[_vm.type]
-                        ? _c("small", [_vm._v(_vm._s(_vm.error[_vm.type][0]))])
+                      _vm.error[_vm.img_url]
+                        ? _c("small", [
+                            _vm._v(_vm._s(_vm.error[_vm.img_url][0]))
+                          ])
                         : _vm._e()
                     ]
                   )

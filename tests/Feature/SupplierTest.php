@@ -16,12 +16,15 @@ class SupplierTest extends TestCase
      * @return void
 
      */
-    public $token = 'SEOU2OlJEbGcMl7mTESM1sl79zI0S3mhLT29wiFacjptMzbPFr8Yt0btoftW';
+
 
     // its paginated so makes testing difficult
 
     // public function testGetAllSuppliers()
     // {
+    //     $model = Supplier::select('id', 'sku', 'name', 'phone_number', 'email', 'contact_person_name', 'status', 'date_of_reg')
+    //         ->searchPaginateAndOrder();
+    //     $columns = Supplier::$columns;
 
     //     $user = factory(User::class)->make();
     //     $user->api_token = str_random(60);
@@ -29,13 +32,13 @@ class SupplierTest extends TestCase
     //     $response->assertSuccessful();
     // }
 
-    // public function testGetOneSupplier()
-    // {
-    //     $user = factory(User::class)->make();
-    //     $user->api_token = str_random(60);
-    //     $response = $this->actingAs($user, 'api')->get('/api/supplier/1');
-    //     $response->assertSuccessful();
-    // }
+    public function testGetOneSupplier()
+    {
+        $user = factory(User::class)->make();
+        $user->api_token = str_random(60);
+        $response = $this->actingAs($user, 'api')->get('/api/supplier/1');
+        $response->assertSuccessful();
+    }
 
     public function testCreateSupplier()
     {
@@ -45,7 +48,7 @@ class SupplierTest extends TestCase
         $supplier_data = [
 
             'user_id' => $user->user_id,
-            'sku' => 'ALTS/001/POL/18',
+
             'name' =>'Thomas Noma',
             'email' => 'gadm@lambo.com',
             'bank_account_no'=>'45333252',
@@ -58,7 +61,7 @@ class SupplierTest extends TestCase
         ];
 
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/supplier', $supplier_data);
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/suppliers', $supplier_data);
         $response->assertSuccessful();
     }
 

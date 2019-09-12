@@ -14,7 +14,7 @@
                             <small v-if="error.sku">{{error.sku[0]}}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Full Name</label>
+                            <label>Business Name</label>
                             <input class="form-control" name="name" placeholder="supplier name"
                                    type="text" v-model="form.name" v-validate="'required|max:50'">
                             <small v-if="errors.first('name')">{{ errors.first('name') }}</small>
@@ -106,6 +106,7 @@
     import Vue from 'vue';
     import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
+    import sku_generator from "../../../utilities/sku-generator"
     import {byMethod, get} from '../../../utilities/api';
     import CustomHeader from '../../../components/customHeader';
 
@@ -174,6 +175,18 @@
                     } else this.$networkErr('form');
                 })
             }
+        },
+        watch:{
+            form:{
+             handler: function (val) {
+                    let date = new Date().getFullYear();
+                    date = date.toString().slice(2,4);
+                    let name = val.name.slice(0, 3);
+                    let {id} = val.last_id[0];
+                    Vue.set(this.$data.form, 'sku', `ALTS/${name}/${id + 1}/${date}`);
+                },
+                deep: true
+        }
         }
     }
 </script>
