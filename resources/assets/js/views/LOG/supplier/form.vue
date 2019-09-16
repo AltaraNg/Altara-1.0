@@ -16,7 +16,7 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Business Name</label>
                             <input class="form-control" name="name" placeholder="supplier name"
-                                   type="text" v-model="form.name" v-validate="'required|max:50'">
+                                   type="text" v-model="form.name" v-validate="'required|max:50|alpha_spaces'">
                             <small v-if="errors.first('name')">{{ errors.first('name') }}</small>
                             <small v-if="error.sku">{{error.name[0]}}</small>
                         </div>
@@ -36,13 +36,13 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Phone</label>
                             <input class="form-control" name="phone" placeholder="phone"
-                                   type="phone" v-model="form.phone_number" v-validate="'required|max:20'">
+                                   type="phone" v-model="form.phone_number" v-validate="'required|length:11|numeric'">
                             <small v-if="errors.first('phone')">{{ errors.first('phone') }}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Contact person phone</label>
                             <input class="form-control" data-vv-as="contact person phone" name="contact_phone" placeholder="phone"
-                                   type="text" v-model="form.contact_person_name" v-validate="'required|max:20'">
+                                   type="text" v-model="form.contact_person_name" v-validate="'required|length:11|numeric'">
                             <small v-if="errors.first('contact_phone')">{{ errors.first('contact_phone') }}</small>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
@@ -76,14 +76,14 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Bank account name</label>
                             <input class="form-control" data-vv-as="account name" name="account_name" placeholder="account name"
-                                   type="text" v-model="form.bank_account_name" v-validate="'required|max:50'">
+                                   type="text" v-model="form.bank_account_name" v-validate="'required|max:50|alpha'">
                             <small v-if="errors.first('account_name')">{{ errors.first('account_name') }}</small>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Bank account number</label>
                             <input class="form-control" data-vv-as="account number" name="account_number" placeholder="account number"
-                                   type="text" v-model="form.bank_account_no" v-validate="'required|max:50'">
+                                   type="text" v-model="form.bank_account_no" v-validate="'required|length:10|numeric'">
                             <small v-if="errors.first('account_number')">{{ errors.first('account_number') }}</small>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
@@ -106,9 +106,9 @@
     import Vue from 'vue';
     import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
-    import sku_generator from "../../../utilities/sku-generator"
     import {byMethod, get} from '../../../utilities/api';
     import CustomHeader from '../../../components/customHeader';
+
 
     function initialize(to) {
         let urls = {create: `/api/supplier/create`, edit: `/api/supplier/${to.params.id}/edit`};
@@ -179,11 +179,23 @@
         watch:{
             form:{
              handler: function (val) {
-                    let date = new Date().getFullYear();
+                 //sku enerator functionif
+                 if (this.$data.mode === 'create'){
+                     let date = new Date().getFullYear();
                     date = date.toString().slice(2,4);
-                    let name = val.name.slice(0, 3);
+                    let name = val.name.slice(0, 3).toUpperCase();
                     let {id} = val.last_id[0];
                     Vue.set(this.$data.form, 'sku', `ALTS/${name}/${id + 1}/${date}`);
+                 }
+                 else if (this.$data.mode === 'edit'){
+                      let date = new Date().getFullYear(); //needs to be optimized to return original year
+                    date = date.toString().slice(2,4);
+                    let name = val.name.slice(0, 3).toUpperCase();
+                    let id = val.id;
+                    Vue.set(this.$data.form, 'sku', `ALTS/${name}/${id}/${date}`);
+                 }
+
+
                 },
                 deep: true
         }

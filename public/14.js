@@ -52,10 +52,6 @@ var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
 
 var _flash2 = _interopRequireDefault(_flash);
 
-var _skuGenerator = __webpack_require__("./resources/assets/js/utilities/sku-generator.js");
-
-var _skuGenerator2 = _interopRequireDefault(_skuGenerator);
-
 var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 
 var _customHeader = __webpack_require__("./resources/assets/js/components/customHeader.vue");
@@ -64,115 +60,113 @@ var _customHeader2 = _interopRequireDefault(_customHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 function initialize(to) {
     var urls = { create: "/api/supplier/create", edit: "/api/supplier/" + to.params.id + "/edit" };
     return urls[to.meta.mode];
-}
+} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
 
@@ -254,12 +248,21 @@ exports.default = {
     watch: {
         form: {
             handler: function handler(val) {
-                var date = new Date().getFullYear();
-                date = date.toString().slice(2, 4);
-                var name = val.name.slice(0, 3);
-                var id = val.last_id[0].id;
+                //sku enerator functionif
+                if (this.$data.mode === 'create') {
+                    var date = new Date().getFullYear();
+                    date = date.toString().slice(2, 4);
+                    var name = val.name.slice(0, 3).toUpperCase();
+                    var id = val.last_id[0].id;
 
-                _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (id + 1) + "/" + date);
+                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (id + 1) + "/" + date);
+                } else if (this.$data.mode === 'edit') {
+                    var _date = new Date().getFullYear(); //needs to be optimized to return original year
+                    _date = _date.toString().slice(2, 4);
+                    var _name = val.name.slice(0, 3).toUpperCase();
+                    var _id = val.id;
+                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + _name + "/" + _id + "/" + _date);
+                }
             },
             deep: true
         }
@@ -417,8 +420,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:50",
-                            expression: "'required|max:50'"
+                            value: "required|max:50|alpha_spaces",
+                            expression: "'required|max:50|alpha_spaces'"
                           }
                         ],
                         staticClass: "form-control",
@@ -572,8 +575,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:20",
-                            expression: "'required|max:20'"
+                            value: "required|length:11|numeric",
+                            expression: "'required|length:11|numeric'"
                           }
                         ],
                         staticClass: "form-control",
@@ -625,8 +628,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:20",
-                            expression: "'required|max:20'"
+                            value: "required|length:11|numeric",
+                            expression: "'required|length:11|numeric'"
                           }
                         ],
                         staticClass: "form-control",
@@ -878,8 +881,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:50",
-                            expression: "'required|max:50'"
+                            value: "required|max:50|alpha",
+                            expression: "'required|max:50|alpha'"
                           }
                         ],
                         staticClass: "form-control",
@@ -934,8 +937,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:50",
-                            expression: "'required|max:50'"
+                            value: "required|length:10|numeric",
+                            expression: "'required|length:10|numeric'"
                           }
                         ],
                         staticClass: "form-control",
@@ -1098,25 +1101,6 @@ function log(action, description) {
     (0, _api.post)('/api/log', { action: action, description: description });
     //and logs then on the log table;
 }
-
-/***/ }),
-
-/***/ "./resources/assets/js/utilities/sku-generator.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-   value: true
-});
-var sku_generator = exports.sku_generator = function sku_generator(supplier, id) {
-   date = new Date().getFullYear();
-   date = date.toString().slice(2, 4);
-
-   supplier = supplier.slice(0, 3);
-   return "ALTS/" + supplier + "/" + id + "/" + date;
-};
 
 /***/ }),
 

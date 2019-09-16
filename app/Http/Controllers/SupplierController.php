@@ -55,7 +55,17 @@ class SupplierController extends Controller
         ]);
         $user = auth('api')->user();
         $request->user_id = $user->id;
+
+
+
         $supplier = new Supplier($request->all());
+
+        $supplier->name = ucwords($request->name);
+        $supplier->bank_account_name = ucwords($request->bank_account_name);
+        $supplier->address = ucfirst($request->address);
+
+
+
 
         $supplier->save();
 
@@ -110,7 +120,28 @@ class SupplierController extends Controller
             'bank_account_no' => 'required|unique:suppliers,name,' . $id,
             'phone_number' => 'required|unique:suppliers,name,' . $id,
         ]);
-        Supplier::whereId($id)->update($request->all());
+
+
+
+        $supplier = Supplier::find($id);
+        $supplier->name = ucwords($request->name);
+        $supplier->bank_account_name = ucwords($request->bank_account_name);
+        $supplier->address = ucfirst($request->address);
+        $supplier->email = $request->email;
+        $supplier->sku = $request->sku;
+        $supplier->date_of_reg = $request->date_of_reg;
+        $supplier->status = $request->status;
+        $supplier->contact_person_name = $request->contact_person_name;
+        $supplier->bank_name = $request->bank_name;
+        $supplier->bank_account_no = $request->bank_account_no;
+        $supplier->phone_number = $request->phone_number;
+        $supplier->user_id = $request->user_id;
+
+        $supplier->save();
+
+
+
+
         return response()->json([
             'updated' => true,
             'message' => 'Supplier Updated!',
