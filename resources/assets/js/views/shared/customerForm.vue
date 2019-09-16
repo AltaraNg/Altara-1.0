@@ -600,6 +600,7 @@
                                             name="office_phone"
                                             placeholder="Enter Phone Number here"
                                             type="tel"
+                                            key="office_phone_formal"
                                             v-model="newCustomer.working_individual_Phone_number"
                                             v-validate="'required|numeric|max:11|min:11'"
                                     />
@@ -614,6 +615,7 @@
                                             name="name_of_firm"
                                             placeholder="Enter name of company here"
                                             type="text"
+                                            key="name_of_form_formal"
                                             v-model="newCustomer.name_of_company_or_business"
                                             v-validate="'required|max:100'"
                                     />
@@ -630,6 +632,7 @@
                                             name="current_salary"
                                             placeholder="Current Salary or Monthly income"
                                             type="number"
+                                            key="current_salary_formal"
                                             v-model="newCustomer.current_sal_or_business_income"
                                             v-validate="'required'"
                                     />
@@ -888,6 +891,7 @@
                                             name="office_phone"
                                             placeholder="Enter Phone Number here"
                                             type="tel"
+                                            key="office_phone_informal"
                                             v-model="newCustomer.working_individual_Phone_number"
                                             v-validate="'required|numeric|max:11|min:11'"
                                     />
@@ -902,6 +906,7 @@
                                             name="name_of_firm"
                                             placeholder="Enter name of company here"
                                             type="text"
+                                            key="name_of_form_informal"
                                             v-model="newCustomer.name_of_company_or_business"
                                             v-validate="'required|max:100'"
                                     />
@@ -932,6 +937,7 @@
                                             name="current_salary"
                                             placeholder="Current Salary or Monthly income"
                                             type="number"
+                                            key="current_salary_informal"
                                             v-model="newCustomer.current_sal_or_business_income"
                                             v-validate="'required|numeric'"
                                     />

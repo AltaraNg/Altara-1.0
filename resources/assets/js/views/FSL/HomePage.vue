@@ -32,7 +32,7 @@
                         desc: 'View all registered customers!',
                     }, {
                         url: 'sales', title: 'Sales List', url_c: 'View Sales List',
-                        desc: 'View all Sales!', aces: this.auth('FSLLead')
+                        desc: 'View all Sales!'/*, aces: this.auth('FSLLead')*/
                     }, {
                         url: 'sales/create', title: 'Temp POS', url_c: 'Post Daily Sales',
                         desc: 'Temp POS!', aces: this.auth('supervisor')

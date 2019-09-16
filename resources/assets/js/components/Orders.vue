@@ -386,11 +386,13 @@
                 this.show = false;
                 this.showModalContent = false;
                 this.orders = [];
-                await res.orders.forEach(order => {
+                await res.orders.forEach((order,index) => {
 
-                    console.log(order instanceof Order);
+                    //console.log(index, order);
 
                     let newOrder = order instanceof Order ? order : new OrderWithPromiseCall(order, res.dva_id);
+
+                    //console.log(newOrder.order.id, newOrder.order.store_product);
 
                     let hasMissedPayment = () => {
                         /*for the list 1 and 8 return true i.e no need for has
