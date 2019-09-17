@@ -244,6 +244,28 @@ exports.default = {
                 } else _this.$networkErr('form');
             });
         }
+    },
+    watch: {
+        form: {
+            handler: function handler(val) {
+                //sku enerator functionif
+                if (this.$data.mode === 'create') {
+                    var date = new Date().getFullYear();
+                    date = date.toString().slice(2, 4);
+                    var name = val.name.slice(0, 3).toUpperCase();
+                    var id = val.last_id[0].id;
+
+                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (id + 1) + "/" + date);
+                } else if (this.$data.mode === 'edit') {
+                    var _date = new Date().getFullYear(); //needs to be optimized to return original year
+                    _date = _date.toString().slice(2, 4);
+                    var _name = val.name.slice(0, 3).toUpperCase();
+                    var _id = val.id;
+                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + _name + "/" + _id + "/" + _date);
+                }
+            },
+            deep: true
+        }
     }
 };
 
@@ -385,7 +407,7 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Full Name")]),
+                      _c("label", [_vm._v("Business Name")]),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
@@ -398,8 +420,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:50",
-                            expression: "'required|max:50'"
+                            value: "required|max:50|alpha_spaces",
+                            expression: "'required|max:50|alpha_spaces'"
                           }
                         ],
                         staticClass: "form-control",
@@ -553,8 +575,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:20",
-                            expression: "'required|max:20'"
+                            value: "required|length:11|numeric",
+                            expression: "'required|length:11|numeric'"
                           }
                         ],
                         staticClass: "form-control",
@@ -606,8 +628,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:20",
-                            expression: "'required|max:20'"
+                            value: "required|length:11|numeric",
+                            expression: "'required|length:11|numeric'"
                           }
                         ],
                         staticClass: "form-control",
@@ -859,8 +881,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:50",
-                            expression: "'required|max:50'"
+                            value: "required|max:50|alpha",
+                            expression: "'required|max:50|alpha'"
                           }
                         ],
                         staticClass: "form-control",
@@ -915,8 +937,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:50",
-                            expression: "'required|max:50'"
+                            value: "required|length:10|numeric",
+                            expression: "'required|length:10|numeric'"
                           }
                         ],
                         staticClass: "form-control",

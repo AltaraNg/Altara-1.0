@@ -5889,6 +5889,7 @@ exports.default = {
 /***/ }),
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 /***/ "./node_modules/css-loader/lib/css-base.js":
 /***/ (function(module, exports) {
@@ -5974,6 +5975,8 @@ function toComment(sourceMap) {
 /***/ }),
 
 >>>>>>> ec800e13753f7e0aae1b22406abf6ac5fe8c5a33
+=======
+>>>>>>> a1f3d646eb5afafbefc0287cb05573b7df9b7a9e
 /***/ "./node_modules/es6-promise/auto.js":
 /***/ (function(module, exports, __webpack_require__) {
 

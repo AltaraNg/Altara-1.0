@@ -43,8 +43,9 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate(['name' => 'required|unique:categories']);
-        $branch = new Category($request->all());
-        $branch->save();
+        $category = new Category($request->all());
+        $category->name = ucwords(strtolower($request->name));
+        $category->save();
         return response()->json([
             'saved' => true,
             'message' => 'Category Created!',

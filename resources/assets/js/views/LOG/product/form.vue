@@ -48,40 +48,18 @@
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="w-100 float-left">Upload Image</label>
+
                             <div class="upload-image p-2">
+
                                         <div class="upload-box">
-                                            <image-upload v-model="$data['form'][type]"/>
+                                            <image-upload v-model="form.img_url"/>
                                         </div>
                                     </div>
-                                    <small v-if="error[type]">{{error[type][0]}}</small>
+                                    <small v-if="error[img_url]">{{error[img_url][0]}}</small>
+
                                 </div>
-                                <!-- <div class="modal-footer">
-                                    <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">
-                                        cancel
-                                    </button>
-                                    <button :disabled="$isProcessing" class="m-2 btn bg-default" type="submit">
-                                        Save changes <i class="far fa-paper-plane ml-1"></i>
-                                    </button>
 
 
-
-                        </div> -->
-
-
-                                    <!-- <div class="upload-image p-2">
-                                        <div class="upload-box">
-                                            <image-upload v-model="$data['form'][type]"/>
-                                        </div>
-                                    </div>
-                                    <small v-if="error[type]">{{error[type][0]}}</small>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">
-                                        cancel
-                                    </button>
-                                    <button :disabled="$isProcessing" class="m-2 btn bg-default" type="submit">
-                                        Save changes <i class="far fa-paper-plane ml-1"></i>
-                                    </button> -->
 
 
                     </div>
@@ -128,7 +106,7 @@
                 store: '/api/product',
                 method: 'POST',
                 statuses: [{name: 'available', value: 1}, {name: 'unavailable', value: 0}],
-                image_url: ''
+                img_url: ''
             }
         },
         beforeRouteEnter(to, from, next) {

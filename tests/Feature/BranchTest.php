@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\User;
 
 class BranchTest extends TestCase
 {
@@ -13,8 +14,11 @@ class BranchTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testGetOneBranch()
     {
-        $this->assertTrue(true);
+        $user = factory(User::class)->make();
+        $user->api_token = str_random(60);
+        $response = $this->actingAs($user, 'api')->get('/api/branch/1');
+        $response->assertSuccessful();
     }
 }

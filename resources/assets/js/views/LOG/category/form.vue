@@ -11,7 +11,7 @@
                             <label>Category name</label>
                             <input class="form-control mb-2" placeholder="category name" name="category name"
                                    type="text" v-model="form.name"
-                                   v-validate="'required|max:50'">
+                                   v-validate="'required|max:50|alpha_spaces'">
                             <small v-if="errors.first('category name')">{{ errors.first('category name') }}</small>
                             <small v-if="error.name">{{error.name[0]}}</small>
                         </div>
