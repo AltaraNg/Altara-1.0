@@ -278,8 +278,8 @@ var render = function() {
                           {
                             name: "validate",
                             rawName: "v-validate",
-                            value: "required|max:50",
-                            expression: "'required|max:50'"
+                            value: "required|max:50|alpha_spaces",
+                            expression: "'required|max:50|alpha_spaces'"
                           }
                         ],
                         staticClass: "form-control mb-2",

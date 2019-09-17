@@ -43,8 +43,13 @@ class BrandController extends Controller
    public function store(Request $request)
    {
        $request->validate(['name' => 'required|unique:brands']);
-       $branch = new Brand($request->all());
-       $branch->save();
+       $brand = new Brand($request->all());
+
+       $brand->name = ucwords(strtolower($request->name));
+
+       $brand->save();
+
+
        return response()->json([
            'saved' => true,
            'message' => 'Brand Created!',

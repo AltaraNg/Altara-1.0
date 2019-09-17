@@ -60,9 +60,9 @@ class SupplierController extends Controller
 
         $supplier = new Supplier($request->all());
 
-        $supplier->name = ucwords($request->name);
-        $supplier->bank_account_name = ucwords($request->bank_account_name);
-        $supplier->address = ucfirst($request->address);
+        $supplier->name =  ucwords(strtolower($request->name));
+        $supplier->bank_account_name = ucwords(strtolower($request->bank_account_name));
+        $supplier->address =  ucfirst(strtolower($request->address));
 
 
 
@@ -124,9 +124,9 @@ class SupplierController extends Controller
 
 
         $supplier = Supplier::find($id);
-        $supplier->name = ucwords($request->name);
-        $supplier->bank_account_name = ucwords($request->bank_account_name);
-        $supplier->address = ucfirst($request->address);
+        $supplier->name =  ucwords(strtolower($request->name));
+        $supplier->bank_account_name = ucwords(strtolower($request->bank_account_name));
+        $supplier->address =  ucfirst(strtolower($request->address));
         $supplier->email = $request->email;
         $supplier->sku = $request->sku;
         $supplier->date_of_reg = $request->date_of_reg;
