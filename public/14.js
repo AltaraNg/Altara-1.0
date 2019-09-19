@@ -202,6 +202,8 @@ exports.default = {
             var form = _ref2.form,
                 banks = _ref2.banks;
 
+            console.log(form);
+            console.log(banks);
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
             _vue2.default.set(this.$data, 'form', form);
             _vue2.default.set(this.$data, 'banks', banks);
@@ -222,7 +224,7 @@ exports.default = {
                             var data = _ref3.data;
 
                             if (data.saved || data.updated) {
-                                (0, _log.log)(data.log, data.staff_id);
+                                (0, _log.log)(data.log, _this.form.sku);
                                 _vue2.default.set(_this.$data, 'form', data.form);
                                 _flash2.default.setSuccess(data.message, 5000);
                                 if (data['updated']) _this.$router.push('/log/suppliers');
@@ -246,6 +248,7 @@ exports.default = {
         }
     },
     watch: {
+
         form: {
             handler: function handler(val) {
                 //sku enerator functionif
@@ -253,15 +256,15 @@ exports.default = {
                     var date = new Date().getFullYear();
                     date = date.toString().slice(2, 4);
                     var name = val.name.slice(0, 3).toUpperCase();
-                    var id = val.last_id[0].id;
-
-                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (id + 1) + "/" + date);
+                    // let {id} = val.last_id[0];
+                    // Vue.set(this.$data.form, 'sku', `ALTS/${name}/${id + 1}/${date}`);
+                    val.last_id.length === 0 ? _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + 1 + "/" + date) : _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (val.last_id[0].id + 1) + "/" + date);
                 } else if (this.$data.mode === 'edit') {
                     var _date = new Date().getFullYear(); //needs to be optimized to return original year
                     _date = _date.toString().slice(2, 4);
                     var _name = val.name.slice(0, 3).toUpperCase();
-                    var _id = val.id;
-                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + _name + "/" + _id + "/" + _date);
+                    var id = val.id;
+                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + _name + "/" + id + "/" + _date);
                 }
             },
             deep: true
@@ -845,7 +848,8 @@ var render = function() {
                           _vm._v(" "),
                           _vm._l(_vm.banks, function(ref) {
                             var name = ref.name
-                            return _c("option", { domProps: { value: name } }, [
+                            var id = ref.id
+                            return _c("option", { domProps: { value: id } }, [
                               _vm._v(_vm._s(name))
                             ])
                           })
@@ -1098,6 +1102,8 @@ function log(action, description) {
         return str.toUpperCase();
     });
     //formats and capitalize the action performed
+    console.log(action);
+    console.log(description);
     (0, _api.post)('/api/log', { action: action, description: description });
     //and logs then on the log table;
 }

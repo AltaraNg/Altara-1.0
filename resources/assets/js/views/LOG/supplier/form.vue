@@ -69,7 +69,7 @@
                             <select class="custom-select w-100" data-vv-as="bank name"
                                     data-vv-validate-on="blur" name="bank_name" v-model="form.bank_name" v-validate="'required'">
                                 <option disabled value="">-- select bank --</option>
-                                <option :value="name" v-for="{name} in banks">{{name}}</option>
+                                <option :value="id" v-for="{name, id} in banks">{{name}}</option>
                             </select>
                             <small v-if="errors.first('bank_name')">{{ errors.first('bank_name') }}</small>
                         </div>
@@ -138,6 +138,8 @@
         },
         methods: {
             prepareForm({form,banks}) {
+                console.log(form)
+                console.log(banks)
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
                 Vue.set(this.$data, 'form', form);
                 Vue.set(this.$data, 'banks', banks);
@@ -155,7 +157,7 @@
                             byMethod(this.method, this.store, this.form)
                                 .then(({data}) => {
                                     if (data.saved || data.updated) {
-                                        log(data.log, data.staff_id);
+                                        log(data.log, this.form.sku);
                                         Vue.set(this.$data, 'form', data.form);
                                         Flash.setSuccess(data.message, 5000);
                                         if (data['updated']) this.$router.push('/log/suppliers');
@@ -177,6 +179,7 @@
             }
         },
         watch:{
+              
             form:{
              handler: function (val) {
                  //sku enerator functionif
@@ -184,8 +187,7 @@
                      let date = new Date().getFullYear();
                     date = date.toString().slice(2,4);
                     let name = val.name.slice(0, 3).toUpperCase();
-                    let {id} = val.last_id[0];
-                    Vue.set(this.$data.form, 'sku', `ALTS/${name}/${id + 1}/${date}`);
+                    (val.last_id.length === 0)?   Vue.set(this.$data.form, 'sku', `ALTS/${name}/${1}/${date}`):  Vue.set(this.$data.form, 'sku', `ALTS/${name}/${val.last_id[0].id +1}/${date}`);
                  }
                  else if (this.$data.mode === 'edit'){
                       let date = new Date().getFullYear(); //needs to be optimized to return original year
@@ -194,8 +196,6 @@
                     let id = val.id;
                     Vue.set(this.$data.form, 'sku', `ALTS/${name}/${id}/${date}`);
                  }
-
-
                 },
                 deep: true
         }
