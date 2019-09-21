@@ -57,6 +57,27 @@ class ProductController extends Controller
         $user = auth('api')->user();
         $request->user_id = $user->id;
         $product = new Product($request->all());
+        // if ($request->hasFile($request['img_url']) && $request->file($request['img_url'])->isValid()) {
+
+        //     /** 3.a if check 3 is passed*/
+        //     /** get the image and assign to a variable */
+        //     $image = $request->file($request['img_url']);
+
+        //     /** Generate the file name(eg for passport name will be
+        //      * passport/[randomStringGeneratedFromTheFunctionCall->getFileName]) */
+        //     $filename = $request['img_url'] . '/' . $this->getFileName($request[$request['img_url']]);
+
+        //     /** the storage link*/
+        //     $s3 = Storage::disk('s3');
+
+        //     /** store the document in s3*/
+        //     $s3->put($filename, file_get_contents($image), 'public');
+        //     $product[$request['img_url'] . '_url'] = $filename;
+
+        // }
+
+            /** update the document_url(eg passport_url, id_url) to the filename generated*/
+
         $product->save();
         return response()->json([
             'saved' => true,
@@ -65,7 +86,15 @@ class ProductController extends Controller
             'staff_id' => $user->staff_id,
             'log' => 'ProductCreated'
         ]);
+
     }
+
+    protected function getFileName($file)
+   {
+      /** generate a random string and append the file extension to the random string */
+      return str_random(32) . '.' . $file->extension();
+   }
+
 
     /**
      * Display the specified resource.

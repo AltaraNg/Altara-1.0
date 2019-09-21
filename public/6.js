@@ -48,7 +48,7 @@ exports.default = {
                 };
                 fileReader.readAsDataURL(this.preview);
             } else if (typeof this.preview === 'string') {
-                this.image = 'https://s3.eu-west-2.amazonaws.com/altara-one/' + this.preview;
+                this.image = 'https://s3.eu-west-2.amazonaws.com/altara-one/product/' + this.preview;
             } else this.image = null;
         }
     }
@@ -381,6 +381,45 @@ function initialize(to) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default, ImageUpload: _ImageUpload2.default },
@@ -423,6 +462,13 @@ exports.default = {
                 this.method = 'PUT';
             }
             this.show = true;
+        },
+        modal: function modal(name) {
+            $("#" + name).modal('toggle');
+            /*this method is used to automatically
+            * toggle the modal with the id of
+            * "name passed to it"*/
+            this.errors.clear(name);
         },
         onSave: function onSave() {
             var _this = this;
@@ -830,33 +876,177 @@ var render = function() {
                     },
                     [
                       _c("label", { staticClass: "w-100 float-left" }, [
-                        _vm._v("Upload Image")
+                        _vm._v("Product Image")
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "upload-image p-2" }, [
-                        _c(
-                          "div",
-                          { staticClass: "upload-box" },
-                          [
-                            _c("image-upload", {
-                              model: {
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-footer pointer",
+                          on: {
+                            click: function($event) {
+                              _vm.modal("modal")
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "now-ui-icons arrows-1_cloud-upload-94"
+                          }),
+                          _vm._v(" "),
+                          _c("small", [_vm._v("Upload file")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
                                 value: _vm.form.img_url,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.form, "img_url", $$v)
-                                },
                                 expression: "form.img_url"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required",
+                                expression: "'required'"
                               }
-                            })
-                          ],
-                          1
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _vm.error[_vm.img_url]
-                        ? _c("small", [
-                            _vm._v(_vm._s(_vm.error[_vm.img_url][0]))
-                          ])
-                        : _vm._e()
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "img_url",
+                              placeholder: "retail price"
+                            },
+                            domProps: { value: _vm.form.img_url },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "img_url",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "modal fade", attrs: { id: "modal" } },
+                    [
+                      _c("div", { staticClass: "modal-dialog" }, [
+                        _c("div", { staticClass: "modal-content" }, [
+                          _c("div", { staticClass: "modal-header py-2" }, [
+                            _c("h6", { staticClass: "modal-title py-1" }, [
+                              _vm._v(" Upload Picture ")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass: "close py-1",
+                                attrs: {
+                                  "aria-label": "Close",
+                                  "data-dismiss": "modal",
+                                  href: "javascript:"
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass: "modal-close text-danger",
+                                    attrs: { "aria-hidden": "true" }
+                                  },
+                                  [_c("i", { staticClass: "fas fa-times" })]
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "form",
+                            {
+                              on: {
+                                submit: function($event) {
+                                  $event.preventDefault()
+                                  _vm.save(_vm.form.img_url)
+                                }
+                              }
+                            },
+                            [
+                              _c("div", { staticClass: "modal-body" }, [
+                                _c("div", { staticClass: "upload-image p-2" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "upload-box" },
+                                    [
+                                      _c("image-upload", {
+                                        model: {
+                                          value: _vm.form.img_url,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.form, "img_url", $$v)
+                                          },
+                                          expression: "form.img_url"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _vm.error[_vm.img_url]
+                                  ? _c("small", [
+                                      _vm._v(_vm._s(_vm.error[_vm.type][0]))
+                                    ])
+                                  : _vm._e()
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "modal-footer" }, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "m-2 btn btn-secondary",
+                                    attrs: {
+                                      "data-dismiss": "modal",
+                                      type: "button"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                        cancel\n                    "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "m-2 btn bg-default",
+                                    attrs: {
+                                      disabled: _vm.$isProcessing,
+                                      type: "submit"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                        Save changes "
+                                    ),
+                                    _c("i", {
+                                      staticClass: "far fa-paper-plane ml-1"
+                                    })
+                                  ]
+                                )
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
                     ]
                   )
                 ]
@@ -876,7 +1066,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                            Cancel\n                        "
+                              "\n                                Cancel\n                            "
                             )
                           ]
                         )
@@ -890,7 +1080,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                            " +
+                          "\n                                " +
                             _vm._s(_vm._f("capitalize")(_vm.mode)) +
                             " Product "
                         ),
