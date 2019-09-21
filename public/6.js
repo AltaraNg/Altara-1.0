@@ -1384,8 +1384,6 @@ function log(action, description) {
         return str.toUpperCase();
     });
     //formats and capitalize the action performed
-    console.log(action);
-    console.log(description);
     (0, _api.post)('/api/log', { action: action, description: description });
     //and logs then on the log table;
 }

@@ -256,8 +256,6 @@ exports.default = {
                     var date = new Date().getFullYear();
                     date = date.toString().slice(2, 4);
                     var name = val.name.slice(0, 3).toUpperCase();
-                    // let {id} = val.last_id[0];
-                    // Vue.set(this.$data.form, 'sku', `ALTS/${name}/${id + 1}/${date}`);
                     val.last_id.length === 0 ? _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + 1 + "/" + date) : _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (val.last_id[0].id + 1) + "/" + date);
                 } else if (this.$data.mode === 'edit') {
                     var _date = new Date().getFullYear(); //needs to be optimized to return original year
@@ -1102,8 +1100,6 @@ function log(action, description) {
         return str.toUpperCase();
     });
     //formats and capitalize the action performed
-    console.log(action);
-    console.log(description);
     (0, _api.post)('/api/log', { action: action, description: description });
     //and logs then on the log table;
 }

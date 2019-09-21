@@ -6,6 +6,7 @@ let vue = new Vue();
 class Order {
 
     constructor(order, customer) {
+        console.log(order);
         this._order = order;
         this._customer = customer;
         this._paymentBanks = [];
