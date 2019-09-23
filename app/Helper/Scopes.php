@@ -74,6 +74,6 @@ trait Scopes
                 }
             ])
             ->select('id', 'order_date', 'sales_category_id', 'customer_id', 'product_sku', 'product_price',
-                'down_payment', 'sales_agent_id', 'sales_type_id', 'discount_id', 'repayment_amount');
+                'down_payment', 'sales_agent_id', 'sales_type_id', 'discount_id', 'repayment_amount','payment_method_id');
     }
 }

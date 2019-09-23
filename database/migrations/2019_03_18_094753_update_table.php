@@ -53,8 +53,17 @@ class UpdateTable extends Migration
         });*/
 
 
-        Schema::table('reminders', function ($table) {
+        /*Schema::table('reminders', function ($table) {
             $table->boolean('is_visited')->nullable()->after('feedback');
+        });*/
+
+
+        Schema::table('brands', function ($table) {
+            $table->timestamps();
+        });
+
+        Schema::table('categories', function ($table) {
+            $table->timestamps();
         });
 
     }
