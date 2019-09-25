@@ -1,6 +1,6 @@
 webpackJsonp([25],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29,21 +29,21 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
 
 exports.default = {
-    /*router navigation is used in the entire app for in app navigation (basically previous and next)
-    * the : pageTitle is the title of the page where this navigation component is used
-    * the : pageTitleSmall is the minimized title for the small screen view
-    * the previous is the this.$routerHistory.previous().path sent from the parent component
-    * the forward is the this.$routerHistory.next().path sent from the parent component*/
-    props: ['pageTitle', 'pageTitleSmall', 'previous', 'forward']
+    props: { title: '', desc: '', url: '', url_c: '', aces: { default: true } }
+    /*title is the card title also mean the portal title.
+    * desc is a few word description of the portal
+    * url is the link to the portal
+    * url_c is the caption for the link
+    * aces is used in situations when a particular portal is accessible to only few person in a
+    * department hence from the parent component the aces will be set to false is want
+    * only few people to access it. true means everyone in that dept can access it.*/
 };
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/index.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/CAG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53,14 +53,28 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _AppNavigation = __webpack_require__("./resources/assets/js/components/AppNavigation.vue");
+var _portalCard = __webpack_require__("./resources/assets/js/components/portalCard.vue");
 
-var _AppNavigation2 = _interopRequireDefault(_AppNavigation);
+var _portalCard2 = _interopRequireDefault(_portalCard);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: { AppNavigation: _AppNavigation2.default }
+    components: { PortalCard: _portalCard2.default },
+    data: function data() {
+        return {
+            portals: [{
+                url: '/customer', title: 'Customer List', url_c: 'View Customer List',
+                desc: 'View all registered customers!'
+            }, {
+                url: 'sales', title: 'Sales List', url_c: 'View Sales List',
+                desc: 'View all Sales!'
+            }, {
+                url: 'all-overdue', title: 'All overdue payments list', url_c: 'View All Overdue payments',
+                desc: 'View all overdue payment!'
+            }]
+        };
+    }
 }; //
 //
 //
@@ -69,90 +83,104 @@ exports.default = {
 //
 //
 //
+//
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2f542aae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0bb73624\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/CAG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "h4",
-    {
-      staticClass: "mx-md-3 mx-0 py-0 my-0 text-center clearfix",
-      attrs: { id: "app-navigation" }
-    },
-    [
-      _vm.$routerHistory.hasPrevious()
-        ? _c(
-            "router-link",
-            {
-              staticClass:
-                "text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3",
-              attrs: { to: _vm.previous, id: "back" }
-            },
-            [
-              _c("span", { staticClass: "mr-5 float-left" }, [
-                _c("i", {
-                  staticClass: "far fa-arrow-alt-circle-left float-left"
-                }),
-                _vm._v(" "),
-                _c(
-                  "small",
-                  { staticClass: "float-left ml-2 d-none d-sm-block" },
-                  [_vm._v("Back")]
-                )
-              ])
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "strong",
-        {
-          staticClass: "mx-auto w-100 float-left",
-          attrs: { "data-title": "title" }
-        },
-        [
-          _c("span", { staticClass: "d-none d-sm-block" }, [
-            _vm._v(_vm._s(_vm.pageTitle))
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      _vm._l(_vm.portals, function(portal) {
+        return _c(
+          "div",
+          [
+            _c("portal-card", {
+              attrs: {
+                url: portal.url,
+                title: portal.title,
+                url_c: portal.url_c,
+                desc: portal.desc,
+                aces: portal.aces
+              }
+            })
+          ],
+          1
+        )
+      })
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0bb73624", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.aces
+    ? _c("div", { staticClass: "col-md-4 col-sm-6 float-left product p-4" }, [
+        _c("div", { staticClass: "portal-card clearfix" }, [
+          _c("div", { staticClass: "first portion clearfix" }, [
+            _c("span", { staticClass: "deco" }),
+            _c("span", { staticClass: "deco second" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "portal-title" }, [
+              _vm._v(_vm._s(_vm._f("capitalize")(_vm.title)))
+            ])
           ]),
           _vm._v(" "),
-          _c("span", { staticClass: "d-block d-sm-none" }, [
-            _vm._v(_vm._s(_vm.pageTitleSmall))
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _vm.$routerHistory.hasForward()
-        ? _c(
-            "router-link",
-            {
-              staticClass:
-                "text-secondary float-right mr-1 pr-2 mr-sm-4 pr-sm-3",
-              attrs: { to: _vm.forward, id: "forward" }
-            },
-            [
-              _c("span", { staticClass: "ml-5 float-right" }, [
-                _c("i", {
-                  staticClass: "far fa-arrow-alt-circle-right float-right"
-                }),
-                _vm._v(" "),
+          _c("div", { staticClass: "portion clearfix" }, [
+            _c("p", [_vm._v(_vm._s(_vm._f("capitalize")(_vm.desc)))]),
+            _vm._v(" "),
+            _c("h6", { staticStyle: { "margin-top": "2rem" } }, [
+              _vm._v(_vm._s(_vm._f("capitalize")(_vm.url_c)))
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "deco-down first" }),
+            _vm._v(" "),
+            _c(
+              "span",
+              { staticClass: "deco-down second" },
+              [
                 _c(
-                  "small",
-                  { staticClass: "float-right mr-2 d-none d-sm-block" },
-                  [_vm._v("Forward")]
+                  "router-link",
+                  {
+                    staticClass: "btn bg-default btn-round m-0",
+                    attrs: { to: _vm.url }
+                  },
+                  [
+                    _vm._v("\n                   continue "),
+                    _c("span", { staticClass: "custom-icon ml-2" }, [
+                      _c("i", { staticClass: "now-ui-icons ui-1_send" })
+                    ])
+                  ]
                 )
-              ])
-            ]
-          )
-        : _vm._e()
-    ],
-    1
-  )
+              ],
+              1
+            )
+          ])
+        ])
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -160,58 +188,21 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2f542aae", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-28781233", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4ddd3006\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/index.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "px-md-4 px-2" },
-    [
-      _c("app-navigation", {
-        attrs: {
-          pageTitle: "Logistic Agents",
-          pageTitleSmall: "LOG",
-          previous: { path: _vm.$routerHistory.previous().path },
-          forward: { path: _vm.$routerHistory.next().path }
-        }
-      }),
-      _vm._v(" "),
-      _c("router-view")
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4ddd3006", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/AppNavigation.vue":
+/***/ "./resources/assets/js/components/portalCard.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/portalCard.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2f542aae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-28781233\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/portalCard.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -228,7 +219,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\AppNavigation.vue"
+Component.options.__file = "resources\\assets\\js\\components\\portalCard.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -237,9 +228,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2f542aae", Component.options)
+    hotAPI.createRecord("data-v-28781233", Component.options)
   } else {
-    hotAPI.reload("data-v-2f542aae", Component.options)
+    hotAPI.reload("data-v-28781233", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -251,15 +242,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/LOG/index.vue":
+/***/ "./resources/assets/js/views/CAG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/index.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/CAG/HomePage.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4ddd3006\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/index.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0bb73624\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/CAG/HomePage.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -276,7 +267,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\LOG\\index.vue"
+Component.options.__file = "resources\\assets\\js\\views\\CAG\\HomePage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -285,9 +276,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4ddd3006", Component.options)
+    hotAPI.createRecord("data-v-0bb73624", Component.options)
   } else {
-    hotAPI.reload("data-v-4ddd3006", Component.options)
+    hotAPI.reload("data-v-0bb73624", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
