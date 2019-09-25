@@ -10,7 +10,7 @@ class Attendance extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    public static function form($branch)
+    public static function form($branch) : iterable
     {
         $users = User::where('branch_id', $branch)
             ->select('id', 'full_name', 'staff_id', 'branch_id', 'date_of_exit')

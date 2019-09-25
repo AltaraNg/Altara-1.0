@@ -1,29 +1,31 @@
 <?php
 
 namespace App;
+
 use App\Helper\DataViewer;
+use App\Helper\Scopes;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-   /** this is a generic trait created to serve as a generic
-    * scope for fetching and paginating the
-    * model where it is called */
-    use DataViewer;
+    /** this is a generic trait created to serve as a generic
+     * scope for fetching and paginating the
+     * model where it is called */
+    use DataViewer, Scopes;
 
     protected $guarded = [];
 
     protected $hidden = [];
 
-   /** columns to be used to render the list(Data viewer) of customers in the view*/
+    /** columns to be used to render the list(Data viewer) of customers in the view*/
     public static $columns = [
-       'id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration'
+        'id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration'
     ];
 
-   /** this is the user object form, it is sent to the js
-    * view when the customer creation
-    * form is required */
-    public static function form()
+    /** this is the user object form, it is sent to the js
+     * view when the customer creation
+     * form is required */
+    public static function form() : iterable
     {
         $user = auth('api')->user();
         return [
@@ -62,6 +64,7 @@ class Customer extends Model
             'loan_amount' => '',
             'did_you_pay_back' => '',
             'employment_status' => '',
+            'occupation' => '',
             'working_individual_Phone_number' => '',
             'name_of_company_or_business' => '',
             'cadd_nbstop' => '',
@@ -164,6 +167,21 @@ class Customer extends Model
     public function processingFee()
     {
         return $this->hasOne(ProcessingFee::class);
+    }
+
+    public function Orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function repayment()
+    {
+        return $this->hasMany(Repayment::class);
+    }
+
+    public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
     }
 
 }

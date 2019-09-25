@@ -48,7 +48,7 @@ class UserController extends Controller
             'branches' => $branches,
             'categories' => $categories
         ]);
-    } 
+    }
 
     public function store(Request $request)
     {
@@ -75,7 +75,7 @@ class UserController extends Controller
         }
 
         $user = new User;
-        $user->fill($request->except(['cv','transfer']));
+        $user->fill($request->except(['cv', 'transfer']));
         $gen_password = str_random(8);
         /** encrypt the password*/
         $user->password = bcrypt($gen_password);
@@ -129,8 +129,6 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->extendValidator();
-
-        /** validate the user inputs*/
         $this->validate($request, [
             'email' => 'unique:users,email,' . $id,
             'phone_number' => 'unique:users,phone_number,' . $id,
@@ -142,28 +140,16 @@ class UserController extends Controller
         /** fetch the user*/
         $user = User::find($id);
         $newId = $user->staff_id;
-        $transfer = $request->category !== $user->category;
-        if ($transfer) {
-            $newId = $this->generateStaffID($request->category, $request->role_id);
-        }
-
-        if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
-            $request->validate([
-                'cv' => 'mimes:pdf|max:10000'
-            ]);
-            $image = $request->file('cv');
-            $filename = 'cv' . '/' . str_slug($request->full_name) . '-' . date('d-m-Y');
-            $s3 = Storage::disk('s3');
-            $s3->put($filename, file_get_contents($image), 'public');
-            $request['cv_url'] = $filename;
-        }
+        $transfer = (isset($request['category'])) ? ($request['category'] !== $user->category) : null;
+        if ($transfer) $newId = $this->generateStaffID($request->category, $request->role_id);
 
         /** check is the request tries to grant access(ie portal_access == 1) to the user,
          * if the user has already exited the firm, the
          * portal access cannot be granted */
         if ($request->portal_access == 1 && isset($user->date_of_exit)) {
-            return response()->json(['message' => 'Staff exited! Access cant be granted!'], 422);
+            return response()->json(['message' => 'Staff has already been exited and cannot be granted access!'], 422);
         }
+
         /** at this point the user must have portal access and have not exited the firm
          * if the request has date of exit set den set portal access
          * to 0 and clear his/her api_token from the db*/
@@ -177,7 +163,6 @@ class UserController extends Controller
         $user->update($request->except('cv'));
         $user->update(['staff_id' => $newId]);
 
-        /** return response */
         return response()->json([
             'updated' => true,
             'message' => $transfer ? "Employee Detail's and Transfer Successful! New ID is " . $newId : "Employee detail's updated successful!",
@@ -186,11 +171,31 @@ class UserController extends Controller
         ]);
     }
 
+    public function uploadCV(Request $request, $id)
+    {
+        $user = User::find($id);
+        $request->validate([
+            'cv' => 'mimes:pdf|max:10000'
+        ]);
+        $image = $request->file('cv');
+        $filename = 'cv' . '/' . str_slug($user->full_name) . '-' . date('d-m-Y');
+        $s3 = Storage::disk('s3');
+        $s3->put($filename, file_get_contents($image), 'public');
+        $user->update(['cv_url' => $filename]);
+        return response()->json(['cv_saved' => true]);
+    }
+
     public function getBranchUsers()
     {
+        $ITDeptAndDSALead = [1, 2, 8, 9, 15];
+        //this number come from the corresponding roles that we want to grant access to ALl dsa list.
+        $loggedInUserRole = auth('api')->user()->role_id;
         $DSAs = User::whereIn('role_id', [17, 18])
-            ->where('branch_id', auth('api')->user()->branch_id)
-            ->select('id', 'staff_id', 'full_name','branch_id')
+            ->whereNull('date_of_exit')
+            ->when(!in_array($loggedInUserRole, $ITDeptAndDSALead), function ($query) {
+                return $query->where('branch_id', auth('api')->user()->branch_id);
+            })
+            ->select('id', 'staff_id', 'full_name', 'branch_id')
             ->get();
         return response()->json([
             'DSAs' => $DSAs,

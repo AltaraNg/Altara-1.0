@@ -19,16 +19,16 @@
                         url: 'inventory', title: 'Inventory', url_c: 'View Inventory!',
                         desc: 'For inventory and management'
                     }, {
-                        url: 'suppliers/create', title: 'Manage Suppliers', url_c: 'Create/Update Supplier',
+                        url: 'suppliers', title: 'Manage Suppliers', url_c: 'Create/Update Supplier',
                         desc: 'Manage all the suppliers details!',
                     }, {
-                        url: 'brands/create', title: 'Manage Brands', url_c: 'Create/Update Brands',
+                        url: 'brands', title: 'Manage Brands', url_c: 'Create/Update Brands',
                         desc: 'Manage all the brands details!',
                     }, {
-                        url: 'categories/create', title: 'Manage Categories', url_c: 'Create/Update Categories',
+                        url: 'categories', title: 'Manage Categories', url_c: 'Create/Update Categories',
                         desc: 'Manage all the category details!',
                     }, {
-                        url: 'products/create', title: 'Manage Products', url_c: 'Create/Update Products',
+                        url: 'products', title: 'Manage Products', url_c: 'Create/Update Products',
                         desc: 'Manage all the product details!',
                     }
                 ]

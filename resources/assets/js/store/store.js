@@ -2,25 +2,30 @@ import Vue from 'vue'
 import 'es6-promise/auto'
 import Vuex from 'vuex'
 
+const getYears = () => {
+    let years = [], startYear = new Date().getFullYear();
+    for (let i = 0; i < 6; i++) years.push(startYear--);
+    return years;
+};
+
 Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
-        years: () => {
-            let years = [], startYear = new Date().getFullYear();
-            for (let i = 0; i < 6; i++) {
-                years.push(startYear--);
-            }
-            return years;
-        },
+        years: getYears(),
+        banks: null,
         states: null,
         branches: null,
-        lifestyleBranches: [8]/*note this is different from other number used in the array below, this one is the id of the lifestyle branches the others below are role id for users*/,
-        loader: false,
+        paymentMethods: null,
+        lifestyleBranches: [8]
+        /*note this is different from other number used in the array
+        below, this one is the id of the lifestyle branches
+        the others below are role id for users*/,
+        loader: true,
         ProfileAccess: [],
         ProfileEditAccess: [],
         DSALead: [1, 2, 8, 9, 15],
-        DSACaptain: [1, 2, 8, 9, 15, 17,29],
-        DSAAccess: [1, 2, 8, 9, 15, 17, 18,29],
+        DSACaptain: [1, 2, 8, 9, 15, 17, 29],
+        DSAAccess: [1, 2, 8, 9, 15, 17, 18, 29],
         DVALead: [1, 2, 8, 9, 13, 16],
         DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
         HRMAccess: [1, 2, 6, 7, 8, 9],
@@ -28,8 +33,9 @@ export const store = new Vuex.Store({
         FSLLead: [1, 2, 8, 9, 11],
         supervisor: [1, 2, 8, 9, 11, 14],
         FSLAccess: [1, 2, 8, 9, 11, 14, 19],
-        LOGLead: [1, 2, 8, 9, 11, 14, 19],
-        LOGAccess: [1, 2, 8, 9, 11, 14, 19],
+        LOGLead: [1, 2, 8, 9, 11],
+        LOGAccess: [1, 2, 8, 9, 11],
+        CAGAccess: [1, 2, 8, 9, 30],
         authRole: parseInt(localStorage.getItem('role')),
         api_token: localStorage.getItem('api_token'),
         user_id: localStorage.getItem('user_id'),
@@ -49,23 +55,13 @@ export const store = new Vuex.Store({
         ]
     },
     getters: {
-        getYears: state => state.years(),
+        getBanks: state => state.banks,
+        getYears: state => state.years,
         getStates: state => state.states,
         getMonths: state => state.months,
         getBranches: state => state.branches,
-        getProfileAccess: state => state.ProfileAccess,
-        getProfileEditAccess: state => state.ProfileEditAccess,
-        verifyFSLLead: state => state.FSLLead.includes(state.authRole),
-        verifyLOGLead: state => state.LOGLead.includes(state.authRole),
+        getPaymentMethods: state => state.paymentMethods,
         auth: state => role => state[role].includes(state.authRole),
-
-        verifyDSALead: state => state.DSALead.includes(state.authRole),
-        verifyDSACaptain: state => state.DSACaptain.includes(state.authRole),
-        verifyDSAAccess: state => state.DSAAccess.includes(state.authRole) && state.api_token,
-        verifyDVAAccess: state => state.DVAAccess.includes(state.authRole) && state.api_token,
-        verifyHRMAccess: state => state.HRMAccess.includes(state.authRole) && state.api_token,
-        verifyFSLAccess: state => state.FSLAccess.includes(state.authRole) && state.api_token,
-        verifyLOGAccess: state => state.LOGAccess.includes(state.authRole) && state.api_token,
     },
     mutations: {
         mutateAuth: state => {
@@ -73,15 +69,19 @@ export const store = new Vuex.Store({
             Vue.set(state, 'api_token', localStorage.getItem('api_token'));
             Vue.set(state, 'user_id', localStorage.getItem('user_id'));
         },
+        mutateBanks: (state, banks) => Vue.set(state, 'banks', banks),
         mutateStates: (state, states) => Vue.set(state, 'states', states),
         mutateBranches: (state, branches) => Vue.set(state, 'branches', branches),
+        mutatePaymentMethods: (state, paymentMethods) => Vue.set(state, 'paymentMethods', paymentMethods),
         mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
 
     },
     actions: {
-        mutateAuth: context => context.commit('mutateAuth'),
-        mutateStates: (context, states) => context.commit('mutateStates', states),
-        mutateBranches: (context, branches) => context.commit('mutateBranches', branches),
-        mutateProfileAccess: (context, payload) => context.commit('mutateProfileAccess', payload),
+        mutateAuth: ({commit}) => commit('mutateAuth'),
+        mutateBanks: ({commit}, banks) => commit('mutateBanks', banks),
+        mutateStates: ({commit}, states) => commit('mutateStates', states),
+        mutateBranches: ({commit}, branches) => commit('mutateBranches', branches),
+        mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
+        mutateProfileAccess: ({commit}, payload) => commit('mutateProfileAccess', payload),
     }
 });

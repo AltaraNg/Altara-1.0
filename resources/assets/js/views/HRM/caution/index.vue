@@ -1,26 +1,24 @@
 <template>
     <transition name="fade">
-        <div class="pt-md-3 pt-2 attendance attendance-view" id="index">
-            <div class="mt-5 attendance-head">
-                <div class="mb-5 row align-items-center">
-                    <div class="col-12 title-con">
-                        <span class="title">Caution Register</span>
-                        <div class="row justify-content-end">
-                            <router-link class="text-link mt-3" to="caution/create">click here to send caution a staff!</router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="pt-md-3 pt-2 attendance-view" id="index">
+
+            <custom-header
+                    :to="'caution/create'"
+                    :title="'Caution(s) register'"
+                    :button-title="'click here to send caution a staff!'"/>
+
             <div class="mt-5 row attendance-head mb-4" v-if="show">
-                <div :class="`col-${capt.col}`" v-for="capt in columns">
+                <div :class="`col-${col}`" v-for="{name,col} in columns">
                     <div class="row">
-                        <div class="light-heading"><span class="d-none d-sm-inline"></span> {{capt.name}}</div>
+                        <div class="light-heading"><span class="d-none d-sm-inline"></span> {{name}}</div>
                     </div>
                 </div>
             </div>
+
             <div class="mt-1 attendance-body">
                 <div v-if="show">
-                    <div class="mb-3 px-0 row align-items-center attendance-item" v-for="(caution,index) in cautions.data"
+                    <div class="mb-3 px-0 row align-items-center attendance-item"
+                         v-for="(caution,index) in cautions.data"
                          @click="displayInfo(caution)" data-toggle="tooltip" data-placement="top"
                          title="click on here to view full details!">
                         <div class="col-12 col-xs-4 col-md-4 col-lg-4">
@@ -49,7 +47,7 @@
                         <div class="col-6 col-xs-1 col-md-1 col-lg-1 pl-3 py-4 py-sm-0">
                             <div class="row">
                                 <span>
-                                    {{caution.date_text}}
+                                    {{caution.date}}
                                 </span>
                             </div>
                         </div>
@@ -74,7 +72,8 @@
                                             Previous
                                         </router-link>
                                     </li>
-                                    <li class="page-item"><span class="page-link">Current Page: {{cautions.current_page}}</span></li>
+                                    <li class="page-item"><span class="page-link">Current Page: {{cautions.current_page}}</span>
+                                    </li>
                                     <li :class="!cautions.next_page_url ? 'disabled' : ''" class="page-item">
                                         <router-link :to="{query:{page:cautions.current_page+1}}" class="page-link">
                                             Next
@@ -101,43 +100,43 @@
                         <div class="modal-header py-2">
                             <h6 class="modal-title py-1">Caution</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                                <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="fas fa-times"></i>
+                                </span>
                             </a>
                         </div>
 
-                        <form>
-                            <div class="modal-body">
+                        <div class="modal-body">
 
-                                <div class="px-2" v-if="caution">
-                                    <div class="px-4">
-                                        <div class="row">
-                                            <span><strong>Employee : </strong></span>
-                                            <div class="col">{{caution.user.full_name}}</div>
-                                        </div>
-                                        <div class="row">
-                                            <span><strong>Issued by : </strong></span>
-                                            <div class="col">{{caution.issuer.full_name}}</div>
-                                        </div>
-                                        <div class="row">
-                                            <span><strong>Reason : </strong></span>
-                                            <div class="col">{{caution.reason}}</div>
-                                        </div>
-                                        <div class="row">
-                                            <span><strong>Penalty : </strong></span>
-                                            <div class="col">{{caution.penalty}}</div>
-                                        </div>
-                                        <div class="row">
-                                            <span><strong>Date : </strong></span>
-                                            <div class="col">{{caution.date_text}}</div>
-                                        </div>
+                            <div class="px-2" v-if="caution">
+                                <div class="px-4">
+                                    <div class="row">
+                                        <span><strong>Employee : </strong></span>
+                                        <div class="col">{{caution.user.full_name}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Issued by : </strong></span>
+                                        <div class="col">{{caution.issuer.full_name}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Reason : </strong></span>
+                                        <div class="col">{{caution.reason}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Penalty : </strong></span>
+                                        <div class="col">{{caution.penalty}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Date : </strong></span>
+                                        <div class="col">{{caution.date}}</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
-                                   style="text-align: right">close dialogue</a>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                               style="text-align: right">close dialogue</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,15 +147,19 @@
 
 <script>
     import Vue from 'vue';
-    import {get} from "../../../helpers/api";
-    import Flash from "../../../helpers/flash";
+    import {get} from "../../../utilities/api";
+    import Flash from "../../../utilities/flash";
+    import CustomHeader from '../../../components/customHeader';
 
-    const apiLink = to => `/caution${to.query.page ? '?page=' + to.query.page : ''}`;
+    const apiLink = ({page}) => `/caution${page ? '?page=' + page : ''}`;
     export default {
+
+        components: {CustomHeader},
+
         data() {
             return {
                 show: false,
-                caution:null,
+                caution: null,
                 cautions: {},
                 columns: [
                     {name: 'Employee', col: 4},
@@ -167,19 +170,16 @@
                 ]
             }
         },
-        beforeRouteEnter(to, from, next) {
-            get(`/api${apiLink(to)}`).then(res => {
-                next(vm => vm.prepareForm(res.data));
-                console.log(res.data)
-            }).catch(err => {
-                next(vm => vm.handleErr(err));
-            });
+        beforeRouteEnter({query}, from, next) {
+            get(`/api${apiLink(query)}`)
+                .then(({data}) => next(vm => vm.prepareForm(data)))
+                .catch(err => next(vm => vm.handleErr(err)));
         },
-        beforeRouteUpdate(to, from, next) {
+        beforeRouteUpdate({query}, from, next) {
             this.show = false;
             this.$LIPS(true);
-            get(`/api${apiLink(to)}`).then(res => {
-                this.prepareForm(res.data);
+            get(`/api${apiLink(query)}`).then(({data}) => {
+                this.prepareForm(data);
                 next();
             }).catch(err => {
                 this.handleErr(err);
@@ -187,20 +187,11 @@
             });
         },
         methods: {
-            fetch() {
-                this.$validator.validateAll().then(result => {
-                    if (result) {
-                        if (this.$network()) {
-                            this.$router.push(`/hrm${apiLink(this.query)}`);
-                        } else this.$networkErr();
-                    } else this.$networkErr('form');
-                });
-            },
-            prepareForm(data) {
-                if (data.cautions.data.length < 1 && data.cautions.total !== 0)
-                    this.$router.push({query: {page: data.cautions.last_page}});
-                if (data.cautions.data.length) {
-                    Vue.set(this.$data, 'cautions', data.cautions);
+            prepareForm({cautions}) {
+                if (cautions.data.length < 1 && cautions.total !== 0)
+                    this.$router.push({query: {page: cautions.last_page}});
+                if (cautions.data.length) {
+                    Vue.set(this.$data, 'cautions', cautions);
                     this.show = true;
                 }
                 this.$LIPS(false);

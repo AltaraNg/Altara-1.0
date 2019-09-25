@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Caution;
-use App\User;
+/*use App\Caution;
+use App\User;*/
+use App\{User, Caution};
 use Illuminate\Http\Request;
 
 class CautionController extends Controller

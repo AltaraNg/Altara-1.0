@@ -52,7 +52,7 @@ class ProcessingFeeController extends Controller
       Verification::where('customer_id', '=', $request->customer_id)->update(['processing_fee' => 1]);
       /** return the customer with all his/her details*/
       return response()->json([
-         'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
+         'response' => (new CustomerController)->show($request->customer_id)->original
       ]);
    }
 

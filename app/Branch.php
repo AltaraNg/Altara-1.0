@@ -24,7 +24,7 @@ class Branch extends Model
     /** this is the branch object form, it is sent to the js
      * view when the branch creation
      * form is required */
-    public static function form()
+    public static function form() : iterable
     {
         $user = auth('api')->user();
         return [

@@ -2,14 +2,13 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Caution extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['reason_min', 'penalty_min', 'date_text'];
+    protected $appends = ['reason_min', 'penalty_min'];
 
     public function getReasonMinAttribute()
     {
@@ -19,11 +18,6 @@ class Caution extends Model
     public function getPenaltyMinAttribute()
     {
         return str_limit($this->attributes['penalty'], '20');
-    }
-
-    public function getDateTextAttribute()
-    {
-        return Carbon::now('+1')->addHour('1')->toFormattedDateString($this->attributes['date']);
     }
 
     public function user()

@@ -1,126 +1,106 @@
 <template>
-   <transition name="fade">
-      <div class="pt-md-3 pt-2" id="employeeRegister">
-         <div class="card">
-            <ul class="nav nav-tabs justify-content-center bg-default"><h6>{{mode}} Category</h6></ul>
-            <div class="card-body pl-4 pr-4">
-               <form @submit.prevent="onSave">
-                  <h5>Category Details</h5>
-                  <div class="clearfix">
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Category ID</label>
-                        <input class="form-control"
-                               data-vv-as="category id"
-                               name="category_id"
-                               placeholder="category id"
-                               type="text"
-                               disabled
-                               v-model="form.category_id" v-validate="'required|max:50'">
-                        <small v-if="errors.first('category_id')">{{ errors.first('category_id') }}</small>
-                     </div>
-                     <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                        <label>Category name</label>
-                        <input class="form-control"
-                               data-vv-as="category name"
-                               name="category_name"
-                               placeholder="category name"
-                               type="text"
-                               v-model="form.category_name" v-validate="'required|max:150'">
-                        <small v-if="errors.first('category_name')">{{ errors.first('category_name') }}</small>
-                     </div>
-                     <div class="spaceBetween mb-md-2 mb-0"></div>
-                     <hr class="style-two">
-                  </div>
-                  <div class="col-sm-12 ml-auto mr-auto mt-md-2 mt-0 px-md-3 px-1 mb-3">
-                     <div class="clearfix d-flex justify-content-end">
-                        <button @click="onCancel" class="mx-3 btn btn-secondary" type="button" v-if="mode ==='edit'">Cancel</button>
-                        <button :disabled="$isProcessing" class="mx-3 btn bg-default" type="submit">
-                           {{mode | capitalize}} Category <i class="far fa-paper-plane ml-1"></i>
-                        </button>
-                     </div>
-                  </div>
-               </form>
+    <transition name="fade">
+        <div class="pt-md-3 pt-2 attendance-view" id="index">
+
+            <custom-header :to="'/log/categories'" :title="mode + ' Category'" :button-title="'view categories!'"/>
+
+            <div class="attendance-body">
+                <form @submit.prevent="onSave">
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
+                        <div class="form-group col-12 float-left px-0 px-md-3">
+                            <label>Category name</label>
+                            <input class="form-control mb-2" placeholder="category name" name="category name"
+                                   type="text" v-model="form.name"
+                                   v-validate="'required|max:50'">
+                            <small v-if="errors.first('category name')">{{ errors.first('category name') }}</small>
+                            <small v-if="error.name">{{error.name[0]}}</small>
+                        </div>
+                    </div>
+                    <div class="mb-5 px-0 row align-items-center">
+                        <div class="clearfix d-flex justify-content-end w-100">
+                            <router-link to="/log/categories" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">
+                                Cancel
+                            </router-link>
+                            <button :disabled="$isProcessing" class="btn bg-default" type="submit">
+                                {{mode | capitalize}} Category <i class="far fa-paper-plane ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-         </div>
-      </div>
-   </transition>
+        </div>
+    </transition>
 </template>
 <script>
-   import Vue from 'vue';
+    import Vue from 'vue';
+    import {log} from "../../../utilities/log";
+    import Flash from "../../../utilities/flash";
+    import {byMethod, get} from '../../../utilities/api';
+    import CustomHeader from '../../../components/customHeader';
 
-   export default {
-      props: {},
-      data() {
-         return {
-            form: {
-               category_id: 'CT-0001',//Expected to come from a counter in the db
-               category_name: null,
+    function initialize(to) {
+        let urls = {create: `/api/category/create`, edit: `/api/category/${to.params.id}/edit`};
+        return urls[to.meta.mode];
+    }
+
+    export default {
+
+        components: {CustomHeader},
+
+        data() {
+            return {
+                form: {},
+                mode: null,
+                error: {},
+                show: false,
+                store: '/api/category',
+                method: 'POST',
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            get(initialize(to))
+                .then(({data}) => next(vm => vm.prepareForm(data)))
+                .catch(() => next(() => Flash.setError('Error Preparing form')));
+        },
+        methods: {
+            prepareForm({form}) {
+                Vue.set(this.$data, 'mode', this.$route.meta.mode);
+                Vue.set(this.$data, 'form', form);
+                if (this.mode === 'edit') {
+                    this.store = `/api/category/${this.$route.params.id}`;
+                    this.method = 'PUT';
+                }
+                this.show = true;
             },
-            mode: null,
-            error: {},
-            show: false,
-            resource: 'categories',
-            store: '/api/categories',
-            method: 'POST',
-            title: 'Create',
-         }
-      },
-      beforeRouteEnter(to, from, next) {
-         //1. make request to back end for the form to be used
-
-         //2 send to the method in this component that will handle it when component is created
-
-         //3. set the current mode of the form
-         next(vm => vm.setMode(to.meta.mode));
-      },
-      beforeRouteUpdate(to, from, next) {
-         //1. make request to back end for the form to be used
-
-         //2 send to the method in this component that will handle it when component is created
-
-         //3. Edit data that will be used for api update call
-         this.store = `/api/category/${this.$route.params.id}`;
-         this.method = 'PUT';
-
-         //3. set the current mode of the form
-         this.setMode(to.meta.mode);
-         next();
-      },
-      methods: {
-         setMode(mode) {
-            this.show = false;
-            /** set the current mode of the form*/
-            Vue.set(this.$data, 'mode', mode);
-         },
-         onCancel() {
-
-         },
-         onSave() {
-            /** 1. Validate form*/
-            this.$validator.validateAll().then(result => {
-               /** 2.if validation is successful*/
-               if (result) {
-                  /** 3. Check is there is network*/
-                  if (this.$network()) {
-                     //There is network
-                     /** 4. Show loader and set isProcessing to true*/
-                     this.$LIPS(true);
-                     /** 5. Clear errors*/
-                     this.error = {};
-                     /** 6 make request to BE*/
-                     console.log(this.form);
-
-                     this.$LIPS(false);
-
-                     /** 7. Log the process*/
-
-                     /** 8. Throw success message*/
-
-                     /** 9. Take to the page view of the current supplier created*/
-                  } else this.$networkErr()
-               } else this.$networkErr('form');
-            })
-         }
-      }
-   }
+            onSave() {
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        if (this.$network()) {
+                            this.$LIPS(true);
+                            byMethod(this.method, this.store, this.form)
+                                .then(({data}) => {
+                                    if (data.saved || data.updated) {
+                                        log(data.log, data.staff_id);
+                                        Vue.set(this.$data, 'form', data.form);
+                                        Flash.setSuccess(data.message, 5000);
+                                        if (data['updated']) this.$router.push('/log/categories');
+                                    }
+                                    this.error = {};
+                                })
+                                .catch(({response: r}) => {
+                                    let {data, status} = r;
+                                    if (status === 422) {
+                                        this.error = data.errors ? data.errors : data;
+                                        this.$networkErr('unique');
+                                    }
+                                }).finally(() => {
+                                this.$scrollToTop();
+                                this.$LIPS(false);
+                            });
+                        } else this.$networkErr()
+                    } else this.$networkErr('form');
+                })
+            }
+        }
+    }
 </script>

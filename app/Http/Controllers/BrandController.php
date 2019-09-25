@@ -14,7 +14,12 @@ class BrandController extends Controller
     */
    public function index()
    {
-     //
+       $model = Brand::select('id','name')->searchPaginateAndOrder();
+       $columns = Brand::$columns;
+       return response()->json([
+           'model' => $model,
+           'columns' => $columns
+       ]);
    }
 
    /**
@@ -24,7 +29,9 @@ class BrandController extends Controller
     */
    public function create()
    {
-      //
+       return response()->json([
+           'form' => Brand::form(),
+       ]);
    }
 
    /**
@@ -35,7 +42,16 @@ class BrandController extends Controller
     */
    public function store(Request $request)
    {
-      //
+       $request->validate(['name' => 'required|unique:brands']);
+       $branch = new Brand($request->all());
+       $branch->save();
+       return response()->json([
+           'saved' => true,
+           'message' => 'Brand Created!',
+           'form' => Brand::form(),
+           'staff_id' => auth('api')->user()->staff_id,
+           'log' => 'BrandCreated'
+       ]);
    }
 
    /**
@@ -49,27 +65,35 @@ class BrandController extends Controller
       //
    }
 
-   /**
-    * Show the form for editing the specified resource.
-    *
-    * @param  \App\Brand $brand
-    * @return \Illuminate\Http\Response
-    */
-   public function edit(Brand $brand)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Brand $id
+     * @return \Illuminate\Http\Response
+     */
+   public function edit($id)
    {
-      //
+       $form = Brand::findOrFail($id);
+       return response()->json(['form' => $form]);
    }
 
-   /**
-    * Update the specified resource in storage.
-    *
-    * @param  \Illuminate\Http\Request $request
-    * @param  \App\Brand $brand
-    * @return \Illuminate\Http\Response
-    */
-   public function update(Request $request, Brand $brand)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+   public function update(Request $request, $id)
    {
-      //
+       $request->validate(['name' => 'required|unique:brands,name,' . $id]);
+       Brand::whereId($id)->update($request->all());
+       return response()->json([
+           'updated' => true,
+           'message' => 'Brand Updated!',
+           'staff_id' => auth('api')->user()->staff_id,
+           'log' => 'BrandUpdated'
+       ]);
    }
 
    /**
