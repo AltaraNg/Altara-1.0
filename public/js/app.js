@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		40: 0
+/******/ 		0: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -5880,89 +5880,6 @@ exports.default = {
 
 })));
 //# sourceMappingURL=bootstrap.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
 
 
 /***/ }),
@@ -43881,142 +43798,146 @@ var _store = __webpack_require__("./resources/assets/js/store/store.js");
 
 var _vueRouterBackButton = __webpack_require__("./node_modules/vue-router-back-button/dist/index.js");
 
+var _inventory = __webpack_require__("./resources/assets/js/utilities/inventory.json");
+
+var _inventory2 = _interopRequireDefault(_inventory);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
-    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
+    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
 };
 
 var Login = function Login() {
-    return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
+    return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
 };
 
 var NotFound = function NotFound() {
-    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
+    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
 };
 
 var DSA = function DSA() {
-    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
+    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
 };
 var DSAHome = function DSAHome() {
-    return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
+    return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
 };
 var DSAReport = function DSAReport() {
-    return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
+    return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
 };
 var CustomerForm = function CustomerForm() {
-    return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, "./resources/assets/js/views/shared/customerForm.vue"));
+    return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, "./resources/assets/js/views/shared/customerForm.vue"));
 };
 
 var DVA = function DVA() {
-    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
+    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
 };
 var DVAHome = function DVAHome() {
-    return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
+    return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
 };
 var DVAMessage = function DVAMessage() {
-    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
+    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
 };
 var DVAVerification = function DVAVerification() {
-    return __webpack_require__.e/* import() */(3).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
+    return __webpack_require__.e/* import() */(5).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
 };
 
 var CAG = function CAG() {
-    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/index.vue"));
+    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/index.vue"));
 };
 var CAGHome = function CAGHome() {
-    return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/HomePage.vue"));
+    return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/HomePage.vue"));
 };
 
 var OrderList = function OrderList() {
     return __webpack_require__.e/* import() */(4).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/order/orderList.vue"));
 };
 var AllOverdue = function AllOverdue() {
-    return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/allOverdue.vue"));
+    return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/allOverdue.vue"));
 };
 /*const DVASMSReminder = () => import( '../views/DVA/reminder/SMSReminder.vue');
 const DVACallReminder = () => import( '../views/DVA/reminder/callReminder.vue');*/
 
 var Reminder = function Reminder() {
-    return __webpack_require__.e/* import() */(5).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/reminder.vue"));
+    return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/reminder.vue"));
 };
 
 var Profile = function Profile() {
-    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
+    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
 };
 var ProfileEdit = function ProfileEdit() {
-    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
+    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
 };
 var ProfileHome = function ProfileHome() {
-    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
+    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
 };
 
 var HRM = function HRM() {
-    return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
+    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
 };
 var HRMHome = function HRMHome() {
-    return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
+    return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
 };
 var DataViewer = function DataViewer() {
-    return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/components/DataViewer.vue"));
+    return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/components/DataViewer.vue"));
 };
 var EmployeeForm = function EmployeeForm() {
-    return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/employeeForm.vue"));
+    return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/employeeForm.vue"));
 };
 
 var Caution = function Caution() {
-    return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/index.vue"));
+    return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/index.vue"));
 };
 var CautionForm = function CautionForm() {
-    return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/form.vue"));
+    return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/form.vue"));
 };
 
 var FSL = function FSL() {
-    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
+    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
 };
 var FSLHome = function FSLHome() {
-    return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
+    return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
 };
 var BranchForm = function BranchForm() {
-    return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
+    return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
 };
 var POSForm = function POSForm() {
-    return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/pos/form.vue"));
+    return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/pos/form.vue"));
 };
 var PaymentForm = function PaymentForm() {
-    return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/payment/form.vue"));
+    return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/payment/form.vue"));
 };
 var CustomerLookup = function CustomerLookup() {
-    return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/lookup/lookup.vue"));
+    return __webpack_require__.e/* import() */(3).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/lookup/lookup.vue"));
 };
 
 var Attendance = function Attendance() {
-    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
+    return __webpack_require__.e/* import() */(40).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
 };
 var AttendanceForm = function AttendanceForm() {
-    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
+    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
 };
 
 var LOG = function LOG() {
-    return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/index.vue"));
+    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/index.vue"));
 };
 var LOGHome = function LOGHome() {
-    return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/HomePage.vue"));
+    return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/HomePage.vue"));
 };
 var Inventory = function Inventory() {
-    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
+    return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
 };
 var SuppliersForm = function SuppliersForm() {
-    return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/supplier/form.vue"));
+    return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/supplier/form.vue"));
 };
 var BrandForm = function BrandForm() {
-    return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/brand/form.vue"));
+    return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/brand/form.vue"));
 };
 var CategoryForm = function CategoryForm() {
-    return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/category/form.vue"));
+    return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/category/form.vue"));
 };
 var ProductForm = function ProductForm() {
-    return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/product/form.vue"));
+    return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/product/form.vue"));
 };
 
 _vue2.default.use(_vueRouter2.default);
@@ -44027,11 +43948,19 @@ var router = new _vueRouter2.default({
     linkActiveClass: 'active',
     mode: 'history',
     routes: [{ path: '/', redirect: { name: 'home' } }, { path: '/home', component: Home, name: 'home', meta: { role: localStorage.getItem("role_id") } }, { path: '/login', component: Login, name: 'login' }, {
-        path: '/user', component: Profile, children: [{ path: 'profile', component: ProfileHome }, { path: 'profile/edit', component: ProfileEdit }]
+        path: '/user',
+        component: Profile,
+        children: [{ path: 'profile', component: ProfileHome }, { path: 'profile/edit', component: ProfileEdit }]
     }, {
-        path: '/dsa', component: DSA, meta: { DSA: true }, children: [{ path: '/', redirect: { name: 'DSAHome' } }, { path: 'home', component: DSAHome, name: 'DSAHome' }, { path: 'report', component: DSAReport, name: 'DSAReport' }, { path: 'customer/create', component: CustomerForm, meta: { mode: 'register' } }]
+        path: '/dsa',
+        component: DSA,
+        meta: { DSA: true },
+        children: [{ path: '/', redirect: { name: 'DSAHome' } }, { path: 'home', component: DSAHome, name: 'DSAHome' }, { path: 'report', component: DSAReport, name: 'DSAReport' }, { path: 'customer/create', component: CustomerForm, meta: { mode: 'register' } }]
     }, {
-        path: '/dva', component: DVA, meta: { DVA: true }, children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: DVAHome, name: 'DVAHome' }, { path: 'message', component: DVAMessage, name: 'DVAMessage' }, {
+        path: '/dva',
+        component: DVA,
+        meta: { DVA: true },
+        children: [{ path: '/', redirect: { name: 'DVAHome' } }, { path: 'home', component: DVAHome, name: 'DVAHome' }, { path: 'message', component: DVAMessage, name: 'DVAMessage' }, {
             path: 'customer/update',
             component: CustomerForm,
             meta: { mode: 'update' },
@@ -44039,9 +43968,15 @@ var router = new _vueRouter2.default({
             name: 'customerUpdate'
         }, { path: 'verification', component: DVAVerification, name: 'verification' }, { path: 'sales', component: OrderList, name: 'sales-dva' }, { path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: { mode: 'sms' } }, { path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: { mode: 'call' } }, { path: 'reminder/collection', component: Reminder, name: 'collection', meta: { mode: 'collection' } }, { path: 'reminder/recovery', component: Reminder, name: 'recovery', meta: { mode: 'recovery' } }, { path: 'reminder/external-recovery', component: Reminder, name: 'external-recovery', meta: { mode: 'external-recovery' } }, { path: 'all-overdue', component: AllOverdue, name: 'all-overdue-dva', meta: { mode: 'all-overdue' } }]
     }, {
-        path: '/cag', component: CAG, meta: { CAG: true }, children: [{ path: '/', redirect: { name: 'CAGHome' } }, { path: 'home', component: CAGHome, name: 'CAGHome' }, { path: 'sales', component: OrderList, name: 'sales-cag' }, { path: 'all-overdue', component: AllOverdue, name: 'all-overdue-cag', meta: { mode: 'all-overdue' } }]
+        path: '/cag',
+        component: CAG,
+        meta: { CAG: true },
+        children: [{ path: '/', redirect: { name: 'CAGHome' } }, { path: 'home', component: CAGHome, name: 'CAGHome' }, { path: 'sales', component: OrderList, name: 'sales-cag' }, { path: 'all-overdue', component: AllOverdue, name: 'all-overdue-cag', meta: { mode: 'all-overdue' } }]
     }, {
-        path: '/hrm', component: HRM, meta: { HRM: true }, children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: HRMHome, name: 'HRMHome' }, {
+        path: '/hrm',
+        component: HRM,
+        meta: { HRM: true },
+        children: [{ path: '/', redirect: { name: 'HRMHome' } }, { path: 'home', component: HRMHome, name: 'HRMHome' }, {
             path: 'employee',
             component: DataViewer,
             meta: { appModel: 'user', source: '/api/user', new: '/hrm/employee' }
@@ -44052,7 +43987,10 @@ var router = new _vueRouter2.default({
             meta: { mode: 'create' }
         }, { path: 'caution', component: Caution }, { path: 'caution/create', component: CautionForm, name: 'createCaution', meta: { mode: 'create' } }]
     }, {
-        path: '/fsl', component: FSL, meta: { FSL: true }, children: [{ path: 'home', component: FSLHome, name: 'FSLHome' }, {
+        path: '/fsl',
+        component: FSL,
+        meta: { FSL: true },
+        children: [{ path: 'home', component: FSLHome, name: 'FSLHome' }, {
             path: 'branch',
             component: DataViewer,
             meta: { appModel: 'branch', source: '/api/branch', new: '/fsl/branch' }
@@ -44063,7 +44001,10 @@ var router = new _vueRouter2.default({
             meta: { mode: 'create' }
         }, { path: 'sales', component: OrderList, name: 'sales-fsl' }, { path: 'sales/create', component: POSForm, name: 'post-sales' }, { path: 'payment', component: PaymentForm, name: 'down-payment' }, { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva' }]
     }, {
-        path: '/log', component: LOG, meta: { LOG: true }, children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, {
+        path: '/log',
+        component: LOG,
+        meta: { LOG: true },
+        children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, {
             path: 'brands',
             component: DataViewer,
             meta: { appModel: 'brand', source: '/api/brand', new: '/log/brands' }
@@ -44071,6 +44012,10 @@ var router = new _vueRouter2.default({
             path: 'products',
             component: DataViewer,
             meta: { appModel: 'product', source: '/api/product', new: '/log/products' }
+        }, { path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: { mode: 'edit' } }, { path: 'products/create', component: ProductForm, name: 'productCreate', meta: { mode: 'create' } }, {
+            path: 'inventory',
+            component: DataViewer,
+            meta: { appModel: 'inventory', source: '/api/product', new: '/log/products' }
         }, { path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: { mode: 'edit' } }, { path: 'products/create', component: ProductForm, name: 'productCreate', meta: { mode: 'create' } }, {
             path: 'categories',
             component: DataViewer,
@@ -44096,20 +44041,20 @@ router.beforeEach(function (to, from, next) {
     /*route access control*/
     var home = to.path.split("/").filter(Boolean)[0].toUpperCase();
     /* get the base for every route eg.
-    * :route : '/dsa/customer/register'
-    * : home will return 'DSA*/
+     * :route : '/dsa/customer/register'
+     * : home will return 'DSA*/
     if (to.matched.some(function (m) {
         return m.meta[home];
     })) {
         if (_store.store.getters.auth(home + 'Access')) return next();
         /*for home = 'DSA' the store.getters.auth('DSAAccess') will be called
-        * the method in store will return true if a user has access to the portal hence next();
-        * and false is a user don't have access hence error message and redirect to home*/
+         * the method in store will return true if a user has access to the portal hence next();
+         * and false is a user don't have access hence error message and redirect to home*/
         _flash2.default.setError('You do not have access to that page!', 3000);
         return next({ name: 'home' });
     }
     /*else next will call the route for the all unknown path
-    * : the : 'NotFound'*/
+     * : the : 'NotFound'*/
     next();
 });
 exports.default = router;
@@ -44675,6 +44620,13 @@ _vue2.default.prototype.$editAccess = function () {
         } else /**if user is not dva or dsa: no access ie false*/return false;
     } else /**if there is no user or customer deny access*/return false;
 };
+
+/***/ }),
+
+/***/ "./resources/assets/js/utilities/inventory.json":
+/***/ (function(module, exports) {
+
+module.exports = [{"id":1,"inventory_number":"234234","sku":"ALTS/2019/34","serial_number":"123","supplied_date":"jan-2-1029","sold_date":"jan-2-1029","branch_id":null,"status":null,"teller_id":"23455","reciever_id":"23455","condition":null},{"id":2,"inventory_number":"234234","sku":"ALTS/2019/34","serial_number":"123","supplied_date":"jan-2-1029","sold_date":"jan-2-1029","branch_id":null,"status":null,"teller_id":"23455","reciever_id":"23455","condition":null},{"id":3,"inventory_number":"234234","sku":"ALTS/2019/34","serial_number":"123","supplied_date":"jan-2-1029","sold_date":"jan-2-1029","branch_id":null,"status":null,"teller_id":"23455","reciever_id":"23455","condition":null},{"id":4,"inventory_number":"234234","sku":"ALTS/2019/34","serial_number":"123","supplied_date":"jan-2-1029","sold_date":"jan-2-1029","branch_id":null,"status":null,"teller_id":"23455","reciever_id":"23455","condition":null},{"id":5,"inventory_number":"234234","sku":"ALTS/2019/34","serial_number":"123","supplied_date":"jan-2-1029","sold_date":"jan-2-1029","branch_id":null,"status":null,"teller_id":"23455","reciever_id":"23455","condition":null},{"id":6,"inventory_number":"234234","sku":"ALTS/2019/34","serial_number":"123","supplied_date":"jan-2-1029","sold_date":"jan-2-1029","branch_id":null,"status":null,"teller_id":"23455","reciever_id":"23455","condition":null},{"id":7,"inventory_number":"234234","sku":"ALTS/2019/34","serial_number":"123","supplied_date":"jan-2-1029","sold_date":"jan-2-1029","branch_id":null,"status":null,"teller_id":"23455","reciever_id":"23455","condition":null},{"id":8,"inventory_number":"234234","sku":"ALTS/2019/34","serial_number":"123","supplied_date":"jan-2-1029","sold_date":"jan-2-1029","branch_id":null,"status":null,"teller_id":"23455","reciever_id":"23455","condition":null}]
 
 /***/ }),
 

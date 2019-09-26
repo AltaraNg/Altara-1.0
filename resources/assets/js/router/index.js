@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Flash from '../utilities/flash';
 import { store } from '../store/store';
 import { routerHistory, writeHistory } from 'vue-router-back-button';
-import Inventory from '../utilities/inventory.json';
+import nventory from '../utilities/inventory.json';
 
 const Home = () =>
     import ('../views/HomePage.vue');

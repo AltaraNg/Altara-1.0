@@ -70,7 +70,7 @@
     }
 
     export default {
-        components: {Typeahead, CustomHeader, ImageUpload},
+        components: {Typeahead, CustomHeader},
         props: {},
         data() {
             return {

@@ -209,7 +209,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImagePreview.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -226,91 +226,22 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
 
 exports.default = {
     props: {
-        preview: {
-            type: [String, File],
-            default: null
-        }
-    },
-    data: function data() {
-        return {
-            image: null
-        };
-    },
-    created: function created() {
-        this.setPreview();
-    },
-
-    watch: {
-        'preview': 'setPreview'
-    },
-    methods: {
-        setPreview: function setPreview() {
-            var _this = this;
-
-            if (this.preview instanceof File) {
-                var fileReader = new FileReader();
-                fileReader.onload = function (event) {
-                    _this.image = event.target.result;
-                };
-                fileReader.readAsDataURL(this.preview);
-            } else if (typeof this.preview === 'string') {
-                this.image = 'https://s3.eu-west-2.amazonaws.com/altara-one/product/' + this.preview;
-            } else this.image = null;
-        }
+        title: '',
+        buttonTitle: null,
+        to: null
     }
 };
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _ImagePreview = __webpack_require__("./resources/assets/js/components/ImagePreview.vue");
-
-var _ImagePreview2 = _interopRequireDefault(_ImagePreview);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    components: {
-        ImagePreview: _ImagePreview2.default
-    },
-    props: {
-        value: {
-            type: [String, File],
-            default: null
-        },
-        usage: {
-            type: [String],
-            default: 'verification'
-        }
-    },
-    methods: {
-        upload: function upload(e) {
-            var files = e.target.files;
-            if (files && files.length > 0) this.$emit('input', files[0]);
-        }
-    }
-}; //
-//
-//
-//
-//
-//
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/verification/verification.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/lookup/lookup.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -324,11 +255,19 @@ var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 var _vue2 = _interopRequireDefault(_vue);
 
+var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+
 var _log = __webpack_require__("./resources/assets/js/utilities/log.js");
+
+var _auth = __webpack_require__("./resources/assets/js/utilities/auth.js");
+
+var _auth2 = _interopRequireDefault(_auth);
 
 var _flash = __webpack_require__("./resources/assets/js/utilities/flash.js");
 
@@ -338,13 +277,11 @@ var _sms = __webpack_require__("./resources/assets/js/utilities/sms.js");
 
 var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 
-var _eventBus = __webpack_require__("./resources/assets/js/utilities/event-bus.js");
+var _Amortization = __webpack_require__("./resources/assets/js/utilities/Amortization.js");
 
-var _form = __webpack_require__("./resources/assets/js/utilities/form.js");
+var _customHeader = __webpack_require__("./resources/assets/js/components/customHeader.vue");
 
-var _ImageUpload = __webpack_require__("./resources/assets/js/components/ImageUpload.vue");
-
-var _ImageUpload2 = _interopRequireDefault(_ImageUpload);
+var _customHeader2 = _interopRequireDefault(_customHeader);
 
 var _CustomerProfile = __webpack_require__("./resources/assets/js/components/CustomerProfile.vue");
 
@@ -676,479 +613,227 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var init = function init(_ref) {
-    var id = _ref.id;
-    return '/api/customer/' + id;
-};
 
 exports.default = {
-    props: {
-        action: { default: 'verify'
-            /*by default this component is used for dva verifications purposed but its customer search feature and
-            * customer profile display feature is borrowed by other component to avoid duplication of
-            * features hence the props: action is 'verify by default.'*/
-        } },
 
-    components: {
-        ImageUpload: _ImageUpload2.default,
-        /*the image upload is used for the customer id and passport upload.
-        * its a separate component on its own and can be called
-        * anywhere on the application*/
-        CustomerProfile: _CustomerProfile2.default
-    },
+    components: { CustomHeader: _customHeader2.default, CustomerProfile: _CustomerProfile2.default },
 
     data: function data() {
         return {
+            Order: _Amortization.Order,
             customer: null,
             customer_id: '',
-            addressBtns: true,
-            work_guarantorBtns: true,
-            personal_guarantorBtns: true,
-            processing_feeBtns: true,
-            info_from_neighbors: '',
-            address: {},
-            work_guarantor: {},
-            personal_guarantor: {},
-            processing_fee: {},
-            picsView: ['id_card', 'passport'],
-            veriView: ['work_guarantor', 'personal_guarantor', 'processing_fee'],
-            veriData: ['address', 'work_guarantor', 'personal_guarantor', 'processing_fee'],
-            cardView: ['passport', 'id_card', 'address', 'work_guarantor', 'personal_guarantor', 'processing_fee'],
-            verification: {},
-            form: { id_card: '', passport: '', document: '' },
-            error: {},
-            storeURL: '',
-            user: {},
-            work_guarantor_address: '',
-            personal_guarantor_address: ''
+            user: {
+                name: _auth2.default.state.user_name,
+                id: _auth2.default.state.user_id
+            },
+            show: false,
+            showModalContent: false,
+            activeOrder: null,
+            headers: ['Date', 'Order No.', 'Product Name', 'Total Product Price', 'Percentage', 'Down Payment', 'Repayment Plans'],
+            paymentForm: null,
+            canAddPayment: null
         };
-    },
-    beforeRouteEnter: function beforeRouteEnter(_ref2, from, next) {
-        var query = _ref2.query;
-
-        if (query.id) (0, _api.get)(init(query)).then(function (res) {
-            return next(function (vm) {
-                return vm.updateView(res.data);
-            });
-        }).catch(function (e) {
-            return next(function (vm) {
-                return vm.updateView(e.response.data);
-            });
-        });else next();
-    },
-    beforeRouteUpdate: function beforeRouteUpdate(_ref3, from, next) {
-        var query = _ref3.query;
-
-        var _this = this;
-
-        if (query.id) (0, _api.get)(init(query)).then(function (res) {
-            return _this.updateView(res.data);
-        }).catch(function (e) {
-            return _this.updateView(e.response.data);
-        }).finally(function () {
-            return next();
-        });else next();
     },
 
 
     methods: {
-        modal: function modal(name) {
-            $('#' + name).modal('toggle');
-            /*this method is used to automatically
-            * toggle the modal with the id of
-            * "name passed to it"*/
-            this.errors.clear(name);
-        },
-        key: function key(_key) {
-            return this.customer.verification[_key];
-            /*the 'key' is a value that exists in the cardView array. anytime its called it checks the the customer
-            * to know the status of that particular parameter eg. is the passport have not been uploaded
-            * it will be 0 else 1 if uploaded with will return true */
-        },
-        IconClass: function IconClass(key) {
-            return {
-                'fa-check': this.key(key), 'fa-times': !this.key(key)
-                /*return the 'fa-check' css class is that particular
-                * card param is set to 1 else the 'fa-times'
-                * css class ie false */
-            };
-        },
-        DivClass: function DivClass(key) {
-            return {
-                'success': this.key(key), 'no-success': !this.key(key)
-                /*this is similar to the DivClass method only
-                * that it return a different class
-                * success and no-success*/
-            };
-        },
-        updateView: function updateView(data) {
-            var _this2 = this;
-
-            /*$emit update event is used to send data to the parent component where this serves as a child
-            * component. eg. dsa utility form. NB: The customer registration component(form)
-            * is used as the customer update form for both dsa and dva portal.*/
-            this.user = data.hasOwnProperty('user') ? data.user : null;
-            _vue2.default.set(this.$data, 'customer', data.customer);
-            this.$emit('update', data.customer);
-            _eventBus.EventBus.$emit('customer', data.customer);
-            if (data.customer) {
-                this.verification = JSON.parse(JSON.stringify(data.customer.verification));
-                this.form.id_card = data.customer.document.id_card_url;
-                this.form.passport = data.customer.document.passport_url;
-                this.work_guarantor_address = this.customer.guaadd_houseno + ',\n                    ' + this.customer.guaadd_street + ',\n                    ' + this.customer.gua_area + ',\n                    ' + this.customer.work_guarantor_city + ',\n                    ' + this.customer.work_guarantor_state;
-                this.personal_guarantor_address = this.customer.pguaadd_houseno + ',\n                    ' + this.customer.pguaadd_street + ',\n                    ' + this.customer.pgua_area + ',\n                    ' + this.customer.personal_guarantor_city + ',\n                    ' + this.customer.personal_guarantor_state;
-                this.veriData.forEach(function (e) {
-                    //e is the current array element during the foreach call;
-                    _this2[e + 'Btns'] = !!!data.customer[e];
-                    //eg this.work_guarantorBtns = if (data.customer.work_guarantor) {return true} else {return false}
-                    //and anything the if return will be inverted.
-                    _this2[e] = !!data.customer[e] ? data.customer[e] : data['empty_' + e];
-                    //eg this.work_guarantor = if(data.customer.work_guarantor){ return data.customer.work_guarantor }
-                    // else {return data.empty_work_guarantor}
-                    //the empty_work_guarantor is returned from backend when no work guarantor has been added.
-                });
-            } else _flash2.default.setError(data.message, 5000);
-        },
-        done: function done() {
-            if (this.$getCustomerApprovalStatus(this.verification)) {
-                var body = "Dear " + this.$getCustomerFullName(this.customer) + ", Congratulations, You have been approved. Come to the store to make a purchase. Altara Credit Limited.";
-                new _sms.Message(body, this.customer.telephone, true, this.user.id).send();
-            }
-        },
-        processForm: function processForm() {
-            var _this3 = this;
-
-            if (this.$route.name === 'verification') this.$router.push('verification?id=' + this.customer_id);
-            if (this.$route.name === 'customerUpdate') {
-                this.$router.push('update?id=' + this.customer_id);
-                (0, _api.get)(init(this.$route.query)).then(function (res) {
-                    return _this3.updateView(res.data);
-                }).catch(function (e) {
-                    return _this3.updateView(e.response.data);
-                });
-            }
-        },
-        validate: function validate(type) {
-            var _this4 = this;
-
-            if (this.$network()) {
-                this.$LIPS(true);
-                if (this.veriView.includes(type) && !this.customer.work_guarantor_first_name) {
-                    this.modal(type + '_modal');
-                    this.$LIPS(false);
-                    this.$scrollToTop();
-                    _flash2.default.setError('Can not process verification. Update the customer guarantors details and try again!', 10000);
-                    return;
-                }
-                this.info_from_neighbors === 'no' ? this.address.info_from_neighbors_desc = '' : '';
-                this[type].customer_id = this.customer.id;
-                this[type].user_id = this.user.id;
-                this[type].staff_name = this.user.full_name;
-                this.$validator.validateAll(type).then(function () {
-                    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
-                        return _regenerator2.default.wrap(function _callee$(_context) {
-                            while (1) {
-                                switch (_context.prev = _context.next) {
-                                    case 0:
-                                        if (!result) {
-                                            _context.next = 7;
-                                            break;
-                                        }
-
-                                        _context.next = 3;
-                                        return (0, _api.post)('/api/' + type, _this4[type]).then(function (_ref5) {
-                                            var data = _ref5.data;
-
-                                            _this4.updateView(data.response);
-                                            var id = 'Customer ID : ' + _this4.customer.id,
-                                                typeCaps = _this4.$options.filters.capitalize(type),
-                                                action = 'Customer' + typeCaps + 'Verification';
-                                            if (type === 'address') action += _this4.address.approval_status ? 'Passed' : 'NotPassed';
-                                            (0, _log.log)(action, id);
-                                            _flash2.default.setSuccess(typeCaps + ' status updated!');
-                                            _this4.modal(type + '_modal');
-                                            _this4.done();
-                                        }).catch(function (e) {
-                                            return _flash2.default.setError(e.response.data.message);
-                                        });
-
-                                    case 3:
-                                        _this4.$LIPS(false);
-                                        _this4.$scrollToTop();
-                                        _context.next = 8;
-                                        break;
-
-                                    case 7:
-                                        _this4.$networkErr('form');
-
-                                    case 8:
-                                    case 'end':
-                                        return _context.stop();
-                                }
-                            }
-                        }, _callee, _this4);
-                    }));
-
-                    return function (_x) {
-                        return _ref4.apply(this, arguments);
-                    };
-                }());
-            } else this.$networkErr();
-        },
-        save: function () {
-            var _ref6 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(document, modal) {
-                var _this5 = this;
-
-                var form;
-                return _regenerator2.default.wrap(function _callee2$(_context2) {
+        updateView: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(data) {
+                var customer, user;
+                return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
-                        switch (_context2.prev = _context2.next) {
+                        switch (_context.prev = _context.next) {
                             case 0:
-                                this.storeURL = '/api/document/' + this.customer.document.id + '?_method=PUT&document=' + document;
-                                this.$LIPS(true);
-                                this.form.document = document;
-                                form = (0, _form.toMulipartedForm)(this.form, 'edit');
-                                _context2.next = 6;
-                                return (0, _api.post)(this.storeURL, form).then(function (_ref7) {
-                                    var data = _ref7.data;
+                                customer = data.customer, user = data.user;
 
-                                    _this5.updateView(data.response);
-                                    (0, _log.log)('Customer' + _this5.$options.filters.capitalize(document) + 'Upload', 'Customer ID : ' + _this5.customer.id);
-                                    _this5.modal(modal);
-                                    _flash2.default.setSuccess('Document Updated Successfully!');
-                                    _this5.done();
-                                }).catch(function (e) {
-                                    return _this5.error = e.response.data.errors;
-                                });
-
-                            case 6:
+                                if (!!customer.length) {
+                                    customer = customer[0];
+                                    if (!!!customer.document['id']) customer.document = { id_card_url: "", passport_url: "" };
+                                    this.user.branch = user.branch_id;
+                                    this.customer = customer;
+                                    this.customer.orders = customer.orders.map(function (order) {
+                                        return new _Amortization.Order(order, customer);
+                                    });
+                                    this.show = true;
+                                } else _flash2.default.setError("Customer not found.", 5000);
                                 this.$LIPS(false);
-                                this.$scrollToTop();
 
-                            case 8:
+                            case 3:
                             case 'end':
-                                return _context2.stop();
+                                return _context.stop();
                         }
                     }
-                }, _callee2, this);
+                }, _callee, this);
             }));
 
-            function save(_x2, _x3) {
-                return _ref6.apply(this, arguments);
+            function updateView(_x) {
+                return _ref.apply(this, arguments);
             }
 
-            return save;
-        }()
-    },
+            return updateView;
+        }(),
+        processForm: function processForm() {
+            var _this = this;
 
-    computed: {
-        check: function check() {
-            return !(!this.$isProcessing && !!this.customer_id);
+            this.show = false;
+            this.$LIPS(true);
+            (0, _api.get)('/api/customer/lookup/' + this.customer_id).then(function (res) {
+                return _this.updateView(res.data);
+            }).catch(function () {
+                _this.$LIPS(false);
+                _flash2.default.setError('Error Fetching customer detail');
+            });
+        },
+        displayAmortization: function displayAmortization(index) {
+            this.activeOrder = this.customer.orders[index];
+            this.canAddPayment = this.canUserAddPayment;
+            this.paymentForm = { payments: [] };
+            this.showModalContent = true;
+            return $('#amortization').modal('toggle');
+        },
+        addPaymentForm: function addPaymentForm() {
+            var level = this.activeOrder.repaymentLevel;
+            var nextRepayment = parseInt(level + this.paymentForm.payments.length + 1);
+
+            if (level === this.activeOrder._count) return;
+            if (nextRepayment > this.activeOrder._count) return;
+
+            this.paymentForm.payments.push({
+                _pay: this.activeOrder.amountsToBePaid[0],
+                _date: this.$getDate(),
+                _payment_method: '',
+                _payment_bank: '',
+                _col: '',
+                column: ''
+            });
+
+            this.reNumber();
+        },
+        deletePayment: function deletePayment(index) {
+            this.paymentForm.payments.splice(index, 1);
+            this.reNumber();
+        },
+        reNumber: function reNumber() {
+            var _this2 = this;
+
+            this.paymentForm.payments.forEach(function (payment, index) {
+                /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
+                * u want to display on the ui "4th repayment"
+                * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
+                var next = _this2.activeOrder.repaymentLevel + index + 1;
+                _this2.paymentForm.payments[index]._col = next;
+                _this2.paymentForm.payments[index].column = _this2.$getColumn(next) + " Repayment";
+            });
+        },
+        preparePayments: function preparePayments() {
+            var _this3 = this;
+
+            if (!this.canAddPayment) return;
+            var payments = {};
+            this.paymentForm.payments.forEach(function (payment) {
+                var obj = {},
+                    col = _this3.$getColumn(payment._col);
+                obj[col + '_pay'] = payment._pay;
+                obj[col + '_date'] = payment._date;
+                obj[col + '_payment_bank'] = payment._payment_bank;
+                obj[col + '_payment_method'] = payment._payment_method;
+                payments = _extends({}, payments, obj);
+            });
+            this.activeOrder.payments = payments;
+            !$.isEmptyObject(payments) ? this.savePayments() : _flash2.default.setError("You have not added any payment.");
+        },
+        savePayments: function savePayments() {
+            var _this4 = this;
+
+            if (!this.canAddPayment) return;
+            this.$LIPS(true);
+            var type = void 0,
+                data = void 0,
+                order = void 0,
+                orderIndex = void 0;
+            if (this.activeOrder.count === 6) type = 'formal';
+            if (this.activeOrder.count === 12) type = 'informal';
+            data = { payments: this.activeOrder.payments, repayment_id: this.activeOrder.order.id, type: type };
+
+            (0, _api.post)('/api/repayment', data).then(function () {
+                var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(res) {
+                    return _regenerator2.default.wrap(function _callee2$(_context2) {
+                        while (1) {
+                            switch (_context2.prev = _context2.next) {
+                                case 0:
+                                    if (!res.data.saved) {
+                                        _context2.next = 13;
+                                        break;
+                                    }
+
+                                    order = _this4.customer.orders.find(function (order, index) {
+                                        var found = order.order.id === data.repayment_id;
+                                        if (found) orderIndex = index;
+                                        return found;
+                                    }).order;
+
+                                    order['repayment_' + type] = res.data.amortization;
+                                    _context2.next = 5;
+                                    return new _Amortization.Order(order, _this4.customer);
+
+                                case 5:
+                                    _this4.activeOrder = _context2.sent;
+
+                                    _this4.customer.orders[orderIndex] = _this4.activeOrder;
+                                    _context2.next = 9;
+                                    return _this4.logAddedPayment(data);
+
+                                case 9:
+                                    if (_this4.activeOrder.repaymentLevel === _this4.activeOrder.count) _this4.sendPaymentCompleteSMS();
+                                    _this4.paymentForm = { payments: [] };
+                                    _this4.$scrollToTop();
+                                    _this4.$LIPS(false);
+
+                                case 13:
+                                case 'end':
+                                    return _context2.stop();
+                            }
+                        }
+                    }, _callee2, _this4);
+                }));
+
+                return function (_x2) {
+                    return _ref2.apply(this, arguments);
+                };
+            }()).catch(function () {
+                return _flash2.default.setError('Error adding payment! Please try again later.');
+            });
+        },
+        sendPaymentCompleteSMS: function sendPaymentCompleteSMS() {
+            var messageBody = 'Dear ' + this.activeOrder.customerName + ', you have successfully completed ' + ('your payment for ' + this.activeOrder.order.store_product.product_name + '. ') + 'Thanks for patronizing us.',
+                message = new _sms.Message(messageBody, this.activeOrder.customer.telephone);
+            message.send(function (r) {
+                return r.status === 200 && _flash2.default.setSuccess('Repayments Completed. SMS sent.');
+            });
+        },
+        logAddedPayment: function logAddedPayment(data) {
+            var paymentsMade = this.paymentForm.payments.map(function (pmt) {
+                return pmt.column.replace(/ /g, '_');
+            }).join(' '),
+                desc = paymentsMade + '. Order: ID: ' + data.repayment_id + '. Customer ID: ' + this.customer_id;
+            return (0, _log.log)('Payment(s) added', desc);
         }
     },
 
-    mounted: function mounted() {
-        var _this6 = this;
+    computed: _extends({}, (0, _vuex.mapGetters)(['getBanks', 'getPaymentMethods', 'auth']), {
+        check: function check() {
+            return !(!this.$isProcessing && !!this.customer_id);
+        },
+        canUserAddPayment: function canUserAddPayment() {
+            return this.auth('supervisor') && this.user.branch === this.activeOrder.branch.id;
+        }
+    }),
 
-        $(document).on("hidden.bs.modal", '.modal', function () {
-            _this6.verification = JSON.parse(JSON.stringify(_this6.customer.verification));
-            /*this.verification holds a copy of the this.customer.verification. this.verification is what is used to style
-            * the card. this.customer.verification on the other hand is used to calculate the approval status, when
-            * changing the status on the front end the this.verification is what is changed but when it is
-            * reflected in the backend then the changes will be reflected on this.customer.verification
-            * after going to database and returning the data again. NB: the purpose of this method
-            * is revert the values of the this.verification to this.customer.verification
-            * values, when a user selects a different option but doesn't submit
-            * it after opening and closing the modal responsible for that
-            * particular action*/
-        });
+    created: function created() {
+        this.$prepareBanks();
+        this.$prepareBranches();
+        this.$preparePaymentMethods();
     }
 };
 
@@ -1158,6 +843,104 @@ exports.default = {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime-module.js");
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-569152fc\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/lookup/lookup.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.attendance-item[data-v-569152fc] {\n    cursor: auto;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
 
 
 /***/ }),
@@ -1938,2410 +1721,36 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-07317a72\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "fade" } }, [
-    _c(
-      "div",
-      {
-        staticClass: "pt-md-3 pt-2 verification",
-        attrs: { id: "employeeRegister" }
-      },
-      [
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "ul",
-            { staticClass: "nav nav-tabs bg-default justify-content-center" },
-            [
-              _c("h6", [
-                _vm._v(_vm._s(_vm._f("capitalize")(_vm.action)) + " Customer")
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body p-4" }, [
-            _c(
-              "form",
-              {
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.processForm($event)
-                  }
-                }
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "m-0 p-0 col-12 form-group clearfix" },
-                  [
-                    _c("label", { staticClass: "w-100" }, [
-                      _vm._v("Customer ID")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.customer_id,
-                          expression: "customer_id"
-                        },
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required|numeric",
-                          expression: "'required|numeric'"
-                        }
-                      ],
-                      staticClass:
-                        "form-control col-lg-9 col-md-8 col-sm-8 col-12 float-left mt-1",
-                      attrs: {
-                        "data-vv-as": "customer id",
-                        name: "customer_id"
-                      },
-                      domProps: { value: _vm.customer_id },
-                      on: {
-                        onkeyUp: _vm.check,
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.customer_id = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "col-lg-3 col-md-4 col-sm-4 col-12 float-right px-md-3 mt-md-0 px-sm-3 mt-sm-0 mt-2 px-0"
-                      },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-block bg-default my-1",
-                            attrs: { disabled: _vm.check, type: "submit" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                Fetch customer details "
-                            ),
-                            _c("i", { staticClass: "far fa-paper-plane ml-1" })
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm.errors.first("customer_id")
-                      ? _c(
-                          "small",
-                          { staticClass: "form-text text-muted w-100" },
-                          [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.errors.first("customer_id")) +
-                                "\n                        "
-                            )
-                          ]
-                        )
-                      : _vm._e()
-                  ]
-                )
-              ]
-            )
-          ])
+  return _c("div", { staticClass: "mt-5 attendance-head" }, [
+    _c("div", { staticClass: "mb-5 row align-items-center" }, [
+      _c("div", { staticClass: "col-12 title-con" }, [
+        _c("span", { staticClass: "title" }, [
+          _vm._v(_vm._s(_vm._f("capitalize")(_vm.title)))
         ]),
         _vm._v(" "),
-        _c("transition", { attrs: { name: "fade" } }, [
-          _vm.customer
-            ? _c(
-                "div",
-                [
-                  _c("customer-profile", {
-                    attrs: { "view-customer": _vm.customer }
-                  }),
-                  _vm._v(" "),
-                  _vm.action !== "update"
-                    ? _c(
-                        "div",
-                        [
-                          _vm._l(_vm.cardView, function(type) {
-                            return _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "float-left col-lg-3 col-sm-6 px-0 px-sm-3"
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "card card-stats",
-                                    class: _vm.DivClass(type)
-                                  },
-                                  [
-                                    _c("div", { staticClass: "card-body " }, [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "statistics statistics-horizontal"
-                                        },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "info info-horizontal"
-                                            },
-                                            [
-                                              _c(
-                                                "div",
-                                                { staticClass: "row" },
-                                                [
-                                                  _c(
-                                                    "div",
-                                                    { staticClass: "col-4" },
-                                                    [
-                                                      _c(
-                                                        "div",
-                                                        {
-                                                          staticClass:
-                                                            "icon icon-warning icon-circle position-relative"
-                                                        },
-                                                        [
-                                                          _c("i", {
-                                                            staticClass: "fas",
-                                                            class: _vm.IconClass(
-                                                              type
-                                                            )
-                                                          })
-                                                        ]
-                                                      )
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass:
-                                                        "col-8 text-right"
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "h4",
-                                                        {
-                                                          staticClass:
-                                                            "info-title font-weight-bold mb-0"
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            _vm._s(
-                                                              _vm._f(
-                                                                "capitalize"
-                                                              )(type)
-                                                            )
-                                                          )
-                                                        ]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _c(
-                                                        "h6",
-                                                        {
-                                                          staticClass:
-                                                            "stats-title"
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            "\n                                                    " +
-                                                              _vm._s(
-                                                                _vm.key(type)
-                                                                  ? "Verified"
-                                                                  : "Not Verified"
-                                                              ) +
-                                                              "\n                                                "
-                                                          )
-                                                        ]
-                                                      )
-                                                    ]
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass: "card-footer pointer",
-                                        on: {
-                                          click: function($event) {
-                                            _vm.modal(type + "_modal")
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
-                                          staticClass:
-                                            "now-ui-icons ui-1_calendar-60 pr-1"
-                                        }),
-                                        _vm._v(
-                                          "\n                                " +
-                                            _vm._s(
-                                              _vm.key(type)
-                                                ? "Verified"
-                                                : "Not Verified"
-                                            ) +
-                                            "\n                                "
-                                        ),
-                                        !_vm.key(type)
-                                          ? _c("small", [
-                                              _vm._v(
-                                                "(Click here to update status!)"
-                                              )
-                                            ])
-                                          : _c(
-                                              "span",
-                                              {
-                                                staticClass: "float-right",
-                                                staticStyle: {
-                                                  "font-size": "10px"
-                                                }
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "\n                                        by - " +
-                                                    _vm._s(
-                                                      _vm._f("capitalize")(
-                                                        type == "passport" ||
-                                                        type == "id_card"
-                                                          ? _vm.customer[
-                                                              "document"
-                                                            ].staff_name
-                                                          : _vm.customer[type]
-                                                              .staff_name
-                                                      )
-                                                    ) +
-                                                    "\n                                "
-                                                )
-                                              ]
-                                            )
-                                      ]
-                                    )
-                                  ]
-                                )
-                              ]
-                            )
-                          }),
-                          _vm._v(" "),
-                          _c("hr", { staticClass: "style-two" })
-                        ],
-                        2
-                      )
-                    : _vm._e()
-                ],
-                1
-              )
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _vm.action !== "update"
+        _vm.to
           ? _c(
               "div",
+              { staticClass: "row justify-content-end" },
               [
-                _vm._l(_vm.picsView, function(type) {
-                  return _c(
-                    "div",
-                    {
-                      staticClass: "modal fade",
-                      attrs: { id: type + "_modal" }
-                    },
-                    [
-                      _c("div", { staticClass: "modal-dialog" }, [
-                        _c("div", { staticClass: "modal-content" }, [
-                          _c("div", { staticClass: "modal-header py-2" }, [
-                            _c("h6", { staticClass: "modal-title py-1" }, [
-                              _vm._v(
-                                _vm._s(_vm._f("capitalize")(type)) +
-                                  " Verification Status"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass: "close py-1",
-                                attrs: {
-                                  "aria-label": "Close",
-                                  "data-dismiss": "modal",
-                                  href: "javascript:"
-                                }
-                              },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass: "modal-close text-danger",
-                                    attrs: { "aria-hidden": "true" }
-                                  },
-                                  [_c("i", { staticClass: "fas fa-times" })]
-                                )
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _vm.customer
-                            ? _c(
-                                "form",
-                                {
-                                  on: {
-                                    submit: function($event) {
-                                      $event.preventDefault()
-                                      _vm.save(type, type + "_modal")
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("div", { staticClass: "modal-body" }, [
-                                    _c(
-                                      "div",
-                                      { staticClass: "upload-image p-2" },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "upload-box" },
-                                          [
-                                            _c("image-upload", {
-                                              model: {
-                                                value: _vm.$data["form"][type],
-                                                callback: function($$v) {
-                                                  _vm.$set(
-                                                    _vm.$data["form"],
-                                                    type,
-                                                    $$v
-                                                  )
-                                                },
-                                                expression:
-                                                  "$data['form'][type]"
-                                              }
-                                            })
-                                          ],
-                                          1
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _vm.error[type]
-                                      ? _c("small", [
-                                          _vm._v(_vm._s(_vm.error[type][0]))
-                                        ])
-                                      : _vm._e()
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "modal-footer" }, [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "m-2 btn btn-secondary",
-                                        attrs: {
-                                          "data-dismiss": "modal",
-                                          type: "button"
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                    cancel\n                                "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "m-2 btn bg-default",
-                                        attrs: {
-                                          disabled: _vm.$isProcessing,
-                                          type: "submit"
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                    Save changes "
-                                        ),
-                                        _c("i", {
-                                          staticClass: "far fa-paper-plane ml-1"
-                                        })
-                                      ]
-                                    )
-                                  ])
-                                ]
-                              )
-                            : _vm._e()
-                        ])
-                      ])
-                    ]
-                  )
-                }),
-                _vm._v(" "),
                 _c(
-                  "div",
-                  { staticClass: "modal fade", attrs: { id: "address_modal" } },
-                  [
-                    _c("div", { staticClass: "modal-dialog modal-lg" }, [
-                      _c("div", { staticClass: "modal-content" }, [
-                        _c("div", { staticClass: "modal-header py-2" }, [
-                          _c("h6", { staticClass: "modal-title py-1" }, [
-                            _vm._v("Address Verification Status")
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              staticClass: " py-1",
-                              staticStyle: {
-                                "min-height": "30px",
-                                "min-width": "30px"
-                              },
-                              on: {
-                                click: function($event) {
-                                  _vm.modal("address_modal")
-                                }
-                              }
-                            },
-                            [
-                              _c("span", { staticClass: "text-danger" }, [
-                                _c("i", { staticClass: "fas fa-times" })
-                              ])
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "form",
-                          {
-                            attrs: { "data-vv-scope": "address" },
-                            on: {
-                              submit: function($event) {
-                                $event.preventDefault()
-                                _vm.validate("address")
-                              }
-                            }
-                          },
-                          [
-                            _c("div", { staticClass: "modal-body p-5" }, [
-                              _c(
-                                "table",
-                                { staticClass: "mb-3 w-100 info-table" },
-                                [
-                                  _c("tbody", { staticClass: "px-3" }, [
-                                    _c("tr", [
-                                      _c("th", [
-                                        _c("i", {
-                                          staticClass:
-                                            "fas fa-map-marker-alt mx-4"
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.$getCustomerAddress(
-                                              _vm.customer
-                                            )
-                                          )
-                                        )
-                                      ])
-                                    ])
-                                  ])
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "w-100 p-3" }, [
-                                _c("div", { staticClass: "clearfix" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0"
-                                    },
-                                    [
-                                      _c("label", [
-                                        _vm._v("Date of Visitation")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.address.date_of_visit,
-                                            expression: "address.date_of_visit"
-                                          },
-                                          {
-                                            name: "validate",
-                                            rawName: "v-validate",
-                                            value: "required",
-                                            expression: "'required'"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: {
-                                          "data-vv-as": "date of visit",
-                                          name: "date_of_visit",
-                                          type: "date"
-                                        },
-                                        domProps: {
-                                          value: _vm.address.date_of_visit
-                                        },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              _vm.address,
-                                              "date_of_visit",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _vm.errors.first("address.date_of_visit")
-                                        ? _c("small", [
-                                            _vm._v(
-                                              "\n                                                " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "address.date_of_visit"
-                                                  )
-                                                ) +
-                                                "\n                                            "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "form-group float-left  col-md-6 col-12  pl-md-3 pl-0 pr-0"
-                                    },
-                                    [
-                                      _c("label", [_vm._v("Time of Visit")]),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.address.time_of_visit,
-                                            expression: "address.time_of_visit"
-                                          },
-                                          {
-                                            name: "validate",
-                                            rawName: "v-validate",
-                                            value: "required",
-                                            expression: "'required'"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: {
-                                          "data-vv-as": "time of visit",
-                                          name: "time_of_visit",
-                                          type: "time"
-                                        },
-                                        domProps: {
-                                          value: _vm.address.time_of_visit
-                                        },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              _vm.address,
-                                              "time_of_visit",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _vm.errors.first("address.time_of_visit")
-                                        ? _c("small", [
-                                            _vm._v(
-                                              "\n                                                " +
-                                                _vm._s(
-                                                  _vm.errors.first(
-                                                    "address.time_of_visit"
-                                                  )
-                                                ) +
-                                                "\n                                            "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "form-group clearfix" },
-                                  [
-                                    _c("label", [
-                                      _vm._v("1. Did you meet the customer?")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "radio mx-5" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.address.customer_meetup,
-                                            expression:
-                                              "address.customer_meetup"
-                                          },
-                                          {
-                                            name: "validate",
-                                            rawName: "v-validate",
-                                            value: "required",
-                                            expression: "'required'"
-                                          }
-                                        ],
-                                        attrs: {
-                                          "data-vv-as": "customer meetup",
-                                          id: "yes",
-                                          name: "customer_meetup",
-                                          type: "radio",
-                                          value: "yes"
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.address.customer_meetup,
-                                            "yes"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.$set(
-                                              _vm.address,
-                                              "customer_meetup",
-                                              "yes"
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("label", { attrs: { for: "yes" } }, [
-                                        _vm._v("Yes")
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "radio ml-5" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.address.customer_meetup,
-                                            expression:
-                                              "address.customer_meetup"
-                                          }
-                                        ],
-                                        attrs: {
-                                          id: "no",
-                                          name: "customer_meetup",
-                                          type: "radio",
-                                          value: "no"
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.address.customer_meetup,
-                                            "no"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.$set(
-                                              _vm.address,
-                                              "customer_meetup",
-                                              "no"
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("label", { attrs: { for: "no" } }, [
-                                        _vm._v("No")
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm.errors.first("address.customer_meetup")
-                                      ? _c("small", [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "address.customer_meetup"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "form-group clearfix" },
-                                  [
-                                    _c("label", [
-                                      _vm._v(
-                                        "\n                                            2. Is the address/location same with what you have in the application\n                                            form?\n                                        "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "radio mx-5" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.address.confirm_address,
-                                            expression:
-                                              "address.confirm_address"
-                                          },
-                                          {
-                                            name: "validate",
-                                            rawName: "v-validate",
-                                            value: "required",
-                                            expression: "'required'"
-                                          }
-                                        ],
-                                        attrs: {
-                                          "data-vv-as": "confirm address",
-                                          id: "add_yes",
-                                          name: "confirm_address",
-                                          type: "radio",
-                                          value: "yes"
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.address.confirm_address,
-                                            "yes"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.$set(
-                                              _vm.address,
-                                              "confirm_address",
-                                              "yes"
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "add_yes" } },
-                                        [_vm._v("Yes")]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "radio ml-5" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.address.confirm_address,
-                                            expression:
-                                              "address.confirm_address"
-                                          }
-                                        ],
-                                        attrs: {
-                                          id: "add_no",
-                                          name: "confirm_address",
-                                          type: "radio",
-                                          value: "no"
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.address.confirm_address,
-                                            "no"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.$set(
-                                              _vm.address,
-                                              "confirm_address",
-                                              "no"
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "add_no" } },
-                                        [_vm._v("No")]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm.errors.first("address.confirm_address")
-                                      ? _c("small", [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "address.confirm_address"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "form-group clearfix" },
-                                  [
-                                    _c("label", [
-                                      _vm._v("3. What does he/she do or sell?")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.address.what_he_sells,
-                                          expression: "address.what_he_sells"
-                                        },
-                                        {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: {
-                                        "data-vv-as": "what he sells",
-                                        name: "what_he_sells",
-                                        placeholder: "comment here...",
-                                        type: "text"
-                                      },
-                                      domProps: {
-                                        value: _vm.address.what_he_sells
-                                      },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            _vm.address,
-                                            "what_he_sells",
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _vm.errors.first("address.what_he_sells")
-                                      ? _c("small", [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "address.what_he_sells"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "form-group clearfix" },
-                                  [
-                                    _c("label", [
-                                      _vm._v(
-                                        "4. Look around the shop and check the nature and condition of the\n                                            business. Write down what you see in terms of address, stock value,\n                                            premise, type of shop or business, sales etc."
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("textarea", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.address.business_info,
-                                          expression: "address.business_info"
-                                        },
-                                        {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: {
-                                        "data-vv-as": "business info",
-                                        name: "business_info",
-                                        placeholder: "comment here...",
-                                        rows: "1"
-                                      },
-                                      domProps: {
-                                        value: _vm.address.business_info
-                                      },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            _vm.address,
-                                            "business_info",
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _vm.errors.first("address.business_info")
-                                      ? _c("small", [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "address.business_info"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "form-group clearfix" },
-                                  [
-                                    _c("label", [
-                                      _vm._v(
-                                        "5. Get exact information of choice of product and specification by\n                                            asking for\n                                            Example; what exact phone do you want? Let him/her specify e.g. INFINIX\n                                            SMART or HOT 4 IPHONE\n                                        "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("textarea", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.address.product_info,
-                                          expression: "address.product_info"
-                                        },
-                                        {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        }
-                                      ],
-                                      staticClass: "form-control w-100",
-                                      attrs: {
-                                        "data-vv-as": "product info",
-                                        name: "product_info",
-                                        placeholder: "comment here...",
-                                        rows: "1"
-                                      },
-                                      domProps: {
-                                        value: _vm.address.product_info
-                                      },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            _vm.address,
-                                            "product_info",
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _vm.errors.first("address.product_info")
-                                      ? _c("small", [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "address.product_info"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "form-group clearfix" },
-                                  [
-                                    _c("label", [
-                                      _vm._v(
-                                        "\n                                            6. Are you aware of the payment plan?\n                                        "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "radio mx-5" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.address.aware_of_plan,
-                                            expression: "address.aware_of_plan"
-                                          },
-                                          {
-                                            name: "validate",
-                                            rawName: "v-validate",
-                                            value: "required",
-                                            expression: "'required'"
-                                          }
-                                        ],
-                                        attrs: {
-                                          "data-vv-as": "aware of plan",
-                                          id: "pay_yes",
-                                          name: "aware_of_plan",
-                                          type: "radio",
-                                          value: "yes"
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.address.aware_of_plan,
-                                            "yes"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.$set(
-                                              _vm.address,
-                                              "aware_of_plan",
-                                              "yes"
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "pay_yes" } },
-                                        [_vm._v("yes")]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "radio ml-5" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.address.aware_of_plan,
-                                            expression: "address.aware_of_plan"
-                                          }
-                                        ],
-                                        attrs: {
-                                          id: "pay_no",
-                                          name: "aware_of_plan",
-                                          type: "radio",
-                                          value: "no"
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.address.aware_of_plan,
-                                            "no"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.$set(
-                                              _vm.address,
-                                              "aware_of_plan",
-                                              "no"
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "pay_no" } },
-                                        [_vm._v("no")]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm.errors.first("address.aware_of_plan")
-                                      ? _c("small", [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "address.aware_of_plan"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "form-group clearfix" },
-                                  [
-                                    _c("label", [
-                                      _vm._v(
-                                        "\n                                            7. Did you get information about the customer from his/her neighbours?\n                                        "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "radio mx-5" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.info_from_neighbors,
-                                            expression: "info_from_neighbors"
-                                          },
-                                          {
-                                            name: "validate",
-                                            rawName: "v-validate",
-                                            value: "required",
-                                            expression: "'required'"
-                                          }
-                                        ],
-                                        attrs: {
-                                          "data-vv-as": "info from neighbors",
-                                          id: "neigh_yes",
-                                          name: "info_from_neighbors",
-                                          type: "radio",
-                                          value: "yes"
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.info_from_neighbors,
-                                            "yes"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.info_from_neighbors = "yes"
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "neigh_yes" } },
-                                        [_vm._v("yes")]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "radio ml-5" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.info_from_neighbors,
-                                            expression: "info_from_neighbors"
-                                          }
-                                        ],
-                                        attrs: {
-                                          id: "neigh_no",
-                                          name: "info_from_neighbors",
-                                          type: "radio",
-                                          value: "no"
-                                        },
-                                        domProps: {
-                                          checked: _vm._q(
-                                            _vm.info_from_neighbors,
-                                            "no"
-                                          )
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.info_from_neighbors = "no"
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "neigh_no" } },
-                                        [_vm._v("no")]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm.errors.first(
-                                      "address.info_from_neighbors"
-                                    )
-                                      ? _c("small", [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "address.info_from_neighbors"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _vm.info_from_neighbors == "yes"
-                                      ? _c("div", [
-                                          _c("textarea", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value:
-                                                  _vm.address
-                                                    .info_from_neighbors_desc,
-                                                expression:
-                                                  "address.info_from_neighbors_desc"
-                                              },
-                                              {
-                                                name: "validate",
-                                                rawName: "v-validate",
-                                                value: "required",
-                                                expression: "'required'"
-                                              }
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: {
-                                              "data-vv-as":
-                                                "info from neighbors desc",
-                                              name: "info_from_neighbors_desc",
-                                              placeholder: "comment here...",
-                                              rows: "1"
-                                            },
-                                            domProps: {
-                                              value:
-                                                _vm.address
-                                                  .info_from_neighbors_desc
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  _vm.address,
-                                                  "info_from_neighbors_desc",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _vm.errors.first(
-                                            "address.info_from_neighbors_desc"
-                                          )
-                                            ? _c("small", [
-                                                _vm._v(
-                                                  "\n                                                " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        "address.info_from_neighbors_desc"
-                                                      )
-                                                    ) +
-                                                    "\n                                            "
-                                                )
-                                              ])
-                                            : _vm._e()
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "form-group clearfix" },
-                                  [
-                                    _c("label", [
-                                      _vm._v(
-                                        "8. And how long has he/she been working/trading in that particular\n                                            place?\n                                        "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("textarea", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value:
-                                            _vm.address
-                                              .business_or_work_duration,
-                                          expression:
-                                            "address.business_or_work_duration"
-                                        },
-                                        {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value: "required",
-                                          expression: "'required'"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: {
-                                        "data-vv-as":
-                                          "business or work duration",
-                                        name: "business_or_work_duration",
-                                        placeholder: "address",
-                                        rows: "1"
-                                      },
-                                      domProps: {
-                                        value:
-                                          _vm.address.business_or_work_duration
-                                      },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            _vm.address,
-                                            "business_or_work_duration",
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _vm.errors.first(
-                                      "address.business_or_work_duration"
-                                    )
-                                      ? _c("small", [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.errors.first(
-                                                  "address.business_or_work_duration"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _vm.addressBtns
-                                  ? _c("div", [
-                                      _c(
-                                        "div",
-                                        { staticClass: "w-100 clearfix" },
-                                        [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-success btn-lg btn-block",
-                                              attrs: {
-                                                disabled: _vm.$isProcessing,
-                                                type: "submit"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  _vm.address.approval_status = 1
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                Successful - Update Details\n                                                "
-                                              ),
-                                              _c("i", {
-                                                staticClass:
-                                                  "far fa-paper-plane ml-1"
-                                              })
-                                            ]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "pt-2 w-100 clearfix" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "pr-2 pl-md-0 pl-2 col-md-6 col-12 m-0 float-left"
-                                            },
-                                            [
-                                              _c(
-                                                "button",
-                                                {
-                                                  staticClass:
-                                                    "m-0 btn btn-lg btn-block btn-secondary",
-                                                  attrs: { type: "button" },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.modal("address_modal")
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                                                    Cancel\n                                                "
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "pl-2 pr-md-0 pr-2 col-md-6 col-12 float-left"
-                                            },
-                                            [
-                                              _c(
-                                                "button",
-                                                {
-                                                  staticClass:
-                                                    "m-0 btn btn-lg btn-block btn-primary",
-                                                  attrs: {
-                                                    disabled: _vm.$isProcessing,
-                                                    type: "submit"
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.address.approval_status = 0
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                                                    Not-Successful - Update Details\n                                                    "
-                                                  ),
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "far fa-paper-plane ml-1"
-                                                  })
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ])
-                                  : _c("h5", [
-                                      _vm._v(
-                                        "\n                                        This customers details has already been updated once and cannot be changed!\n                                    "
-                                      )
-                                    ])
-                              ])
-                            ])
-                          ]
-                        )
-                      ])
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.veriView, function(type) {
-                  return _c(
-                    "div",
-                    {
-                      staticClass: "modal fade",
-                      attrs: { id: type + "_modal" }
-                    },
-                    [
-                      _c("div", { staticClass: "modal-dialog" }, [
-                        _c("div", { staticClass: "modal-content" }, [
-                          _c("div", { staticClass: "modal-header py-2" }, [
-                            _c("h6", { staticClass: "modal-title py-1" }, [
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(_vm._f("capitalize")(type)) +
-                                  " " +
-                                  _vm._s(
-                                    type !== "processing_fee"
-                                      ? "Verification"
-                                      : ""
-                                  ) +
-                                  " Status\n                            "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass: "close py-1",
-                                attrs: {
-                                  "aria-label": "Close",
-                                  "data-dismiss": "modal",
-                                  href: "javascript:"
-                                }
-                              },
-                              [
-                                _c(
-                                  "span",
-                                  { staticClass: "modal-close text-danger" },
-                                  [_c("i", { staticClass: "fas fa-times" })]
-                                )
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _vm.customer
-                            ? _c(
-                                "form",
-                                {
-                                  attrs: { "data-vv-scope": type },
-                                  on: {
-                                    submit: function($event) {
-                                      $event.preventDefault()
-                                      _vm.validate(type)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("div", { staticClass: "modal-body" }, [
-                                    type !== "processing_fee"
-                                      ? _c(
-                                          "table",
-                                          { staticClass: "mb-3 info-table" },
-                                          [
-                                            _c("tbody", [
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "fas fa-map-marker-alt"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[type + "_state"]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.$data[
-                                                            type + "_address"
-                                                          ]
-                                                        )
-                                                      )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ]),
-                                              _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "fas fa-mobile-alt"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[type + "_telno"]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.customer[
-                                                            type + "_telno"
-                                                          ]
-                                                        )
-                                                      )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ]),
-                                              _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      " fas fa-user-circle"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[
-                                                  type + "_first_name"
-                                                ]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        "\n                                            " +
-                                                          _vm._s(
-                                                            _vm.customer[
-                                                              type +
-                                                                "_first_name"
-                                                            ] +
-                                                              " " +
-                                                              _vm.customer[
-                                                                type +
-                                                                  "_last_name"
-                                                              ]
-                                                          ) +
-                                                          "\n                                        "
-                                                      )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ]),
-                                              _vm._v(" "),
-                                              _c("tr", [
-                                                _c("th", [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "fas fa-user-circle"
-                                                  })
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm.customer[
-                                                  type + "_relationship"
-                                                ]
-                                                  ? _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm._f("capitalize")(
-                                                            _vm.customer[
-                                                              type +
-                                                                "_relationship"
-                                                            ]
-                                                          )
-                                                        ) +
-                                                          "\n                                        "
-                                                      )
-                                                    ])
-                                                  : _c("td", [
-                                                      _vm._v(
-                                                        "please update customer details!"
-                                                      )
-                                                    ])
-                                              ])
-                                            ])
-                                          ]
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "form-group col-12 px-2 clearfix my-0"
-                                      },
-                                      [
-                                        _c("div", { staticClass: "clearfix" }, [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "form-group float-left col-md-6 col-12 pr-md-3 pr-0 pl-0"
-                                            },
-                                            [
-                                              _c("label", [
-                                                _vm._v(
-                                                  "\n                                                Date " +
-                                                    _vm._s(
-                                                      type !== "processing_fee"
-                                                        ? "of Call"
-                                                        : "Collected"
-                                                    ) +
-                                                    "\n                                            "
-                                                )
-                                              ]),
-                                              _vm._v(" "),
-                                              type !== "processing_fee"
-                                                ? _c("input", {
-                                                    directives: [
-                                                      {
-                                                        name: "model",
-                                                        rawName: "v-model",
-                                                        value:
-                                                          _vm.$data[type]
-                                                            .date_of_call,
-                                                        expression:
-                                                          "$data[type].date_of_call"
-                                                      },
-                                                      {
-                                                        name: "validate",
-                                                        rawName: "v-validate",
-                                                        value: "required",
-                                                        expression: "'required'"
-                                                      }
-                                                    ],
-                                                    staticClass: "form-control",
-                                                    attrs: {
-                                                      name: "date_of_call",
-                                                      type: "date"
-                                                    },
-                                                    domProps: {
-                                                      value:
-                                                        _vm.$data[type]
-                                                          .date_of_call
-                                                    },
-                                                    on: {
-                                                      input: function($event) {
-                                                        if (
-                                                          $event.target
-                                                            .composing
-                                                        ) {
-                                                          return
-                                                        }
-                                                        _vm.$set(
-                                                          _vm.$data[type],
-                                                          "date_of_call",
-                                                          $event.target.value
-                                                        )
-                                                      }
-                                                    }
-                                                  })
-                                                : _c("input", {
-                                                    directives: [
-                                                      {
-                                                        name: "model",
-                                                        rawName: "v-model",
-                                                        value:
-                                                          _vm.$data[type]
-                                                            .date_collected,
-                                                        expression:
-                                                          "$data[type].date_collected"
-                                                      },
-                                                      {
-                                                        name: "validate",
-                                                        rawName: "v-validate",
-                                                        value: "required",
-                                                        expression: "'required'"
-                                                      }
-                                                    ],
-                                                    staticClass: "form-control",
-                                                    attrs: {
-                                                      name: "date_of_call",
-                                                      type: "date"
-                                                    },
-                                                    domProps: {
-                                                      value:
-                                                        _vm.$data[type]
-                                                          .date_collected
-                                                    },
-                                                    on: {
-                                                      input: function($event) {
-                                                        if (
-                                                          $event.target
-                                                            .composing
-                                                        ) {
-                                                          return
-                                                        }
-                                                        _vm.$set(
-                                                          _vm.$data[type],
-                                                          "date_collected",
-                                                          $event.target.value
-                                                        )
-                                                      }
-                                                    }
-                                                  }),
-                                              _vm._v(" "),
-                                              _vm.errors.first(
-                                                type + ".date_of_call"
-                                              )
-                                                ? _c("small", [
-                                                    _vm._v(
-                                                      "\n                                                " +
-                                                        _vm._s(
-                                                          _vm.errors.first(
-                                                            type +
-                                                              ".date_of_call"
-                                                          )
-                                                        ) +
-                                                        "\n                                            "
-                                                    )
-                                                  ])
-                                                : _vm._e(),
-                                              _vm._v(" "),
-                                              _vm.errors.first(
-                                                type + ".date_collected"
-                                              )
-                                                ? _c("small", [
-                                                    _vm._v(
-                                                      "\n                                                " +
-                                                        _vm._s(
-                                                          _vm.errors.first(
-                                                            type +
-                                                              ".date_collected"
-                                                          )
-                                                        ) +
-                                                        "\n                                            "
-                                                    )
-                                                  ])
-                                                : _vm._e()
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "form-group float-left col-md-6 col-12 pl-md-3 pl-0 pr-0"
-                                            },
-                                            [
-                                              _c("label", [
-                                                _vm._v(
-                                                  "\n                                                Time " +
-                                                    _vm._s(
-                                                      type !== "processing_fee"
-                                                        ? "of Call"
-                                                        : "Collected"
-                                                    ) +
-                                                    "\n                                            "
-                                                )
-                                              ]),
-                                              _vm._v(" "),
-                                              type !== "processing_fee"
-                                                ? _c("input", {
-                                                    directives: [
-                                                      {
-                                                        name: "model",
-                                                        rawName: "v-model",
-                                                        value:
-                                                          _vm.$data[type]
-                                                            .time_of_call,
-                                                        expression:
-                                                          "$data[type].time_of_call"
-                                                      },
-                                                      {
-                                                        name: "validate",
-                                                        rawName: "v-validate",
-                                                        value: "required",
-                                                        expression: "'required'"
-                                                      }
-                                                    ],
-                                                    staticClass: "form-control",
-                                                    attrs: {
-                                                      name: "time_of_call",
-                                                      type: "time"
-                                                    },
-                                                    domProps: {
-                                                      value:
-                                                        _vm.$data[type]
-                                                          .time_of_call
-                                                    },
-                                                    on: {
-                                                      input: function($event) {
-                                                        if (
-                                                          $event.target
-                                                            .composing
-                                                        ) {
-                                                          return
-                                                        }
-                                                        _vm.$set(
-                                                          _vm.$data[type],
-                                                          "time_of_call",
-                                                          $event.target.value
-                                                        )
-                                                      }
-                                                    }
-                                                  })
-                                                : _c("input", {
-                                                    directives: [
-                                                      {
-                                                        name: "model",
-                                                        rawName: "v-model",
-                                                        value:
-                                                          _vm.$data[type]
-                                                            .time_collected,
-                                                        expression:
-                                                          "$data[type].time_collected"
-                                                      },
-                                                      {
-                                                        name: "validate",
-                                                        rawName: "v-validate",
-                                                        value: "required",
-                                                        expression: "'required'"
-                                                      }
-                                                    ],
-                                                    staticClass: "form-control",
-                                                    attrs: {
-                                                      name: "time_collected",
-                                                      type: "time"
-                                                    },
-                                                    domProps: {
-                                                      value:
-                                                        _vm.$data[type]
-                                                          .time_collected
-                                                    },
-                                                    on: {
-                                                      input: function($event) {
-                                                        if (
-                                                          $event.target
-                                                            .composing
-                                                        ) {
-                                                          return
-                                                        }
-                                                        _vm.$set(
-                                                          _vm.$data[type],
-                                                          "time_collected",
-                                                          $event.target.value
-                                                        )
-                                                      }
-                                                    }
-                                                  }),
-                                              _vm._v(" "),
-                                              _vm.errors.first(
-                                                type + ".time_of_call"
-                                              )
-                                                ? _c("small", [
-                                                    _vm._v(
-                                                      "\n                                                " +
-                                                        _vm._s(
-                                                          _vm.errors.first(
-                                                            type +
-                                                              ".time_of_call"
-                                                          )
-                                                        ) +
-                                                        "\n                                            "
-                                                    )
-                                                  ])
-                                                : _vm._e(),
-                                              _vm._v(" "),
-                                              _vm.errors.first(
-                                                type + ".time_collected"
-                                              )
-                                                ? _c("small", [
-                                                    _vm._v(
-                                                      "\n                                                " +
-                                                        _vm._s(
-                                                          _vm.errors.first(
-                                                            type +
-                                                              ".time_collected"
-                                                          )
-                                                        ) +
-                                                        "\n                                            "
-                                                    )
-                                                  ])
-                                                : _vm._e()
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("div", { staticClass: "clearfix" }, [
-                                          _c(
-                                            "label",
-                                            { staticClass: "w-100" },
-                                            [
-                                              _vm._v(
-                                                "\n                                            " +
-                                                  _vm._s(
-                                                    _vm._f("capitalize")(type)
-                                                  ) +
-                                                  "\n                                            " +
-                                                  _vm._s(
-                                                    type !== "processing_fee"
-                                                      ? "Consent"
-                                                      : "Amount(Naira)"
-                                                  ) +
-                                                  "\n                                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          type !== "processing_fee"
-                                            ? _c("div", [
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass:
-                                                      "radio p-0 col-6 float-left"
-                                                  },
-                                                  [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            _vm.$data[type]
-                                                              .consent,
-                                                          expression:
-                                                            "$data[type].consent"
-                                                        },
-                                                        {
-                                                          name: "validate",
-                                                          rawName: "v-validate",
-                                                          value: "required",
-                                                          expression:
-                                                            "'required'"
-                                                        }
-                                                      ],
-                                                      attrs: {
-                                                        id: type + "_yes",
-                                                        name: "consent",
-                                                        type: "radio",
-                                                        value: "1"
-                                                      },
-                                                      domProps: {
-                                                        checked: _vm._q(
-                                                          _vm.$data[type]
-                                                            .consent,
-                                                          "1"
-                                                        )
-                                                      },
-                                                      on: {
-                                                        change: function(
-                                                          $event
-                                                        ) {
-                                                          _vm.$set(
-                                                            _vm.$data[type],
-                                                            "consent",
-                                                            "1"
-                                                          )
-                                                        }
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "label",
-                                                      {
-                                                        attrs: {
-                                                          for: type + "_yes"
-                                                        }
-                                                      },
-                                                      [_vm._v("Gave Consent")]
-                                                    )
-                                                  ]
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass:
-                                                      "radio p-0 col-6 float-left"
-                                                  },
-                                                  [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            _vm.$data[type]
-                                                              .consent,
-                                                          expression:
-                                                            "$data[type].consent"
-                                                        }
-                                                      ],
-                                                      attrs: {
-                                                        id: type + "_no",
-                                                        name: "consent",
-                                                        type: "radio",
-                                                        value: "0"
-                                                      },
-                                                      domProps: {
-                                                        checked: _vm._q(
-                                                          _vm.$data[type]
-                                                            .consent,
-                                                          "0"
-                                                        )
-                                                      },
-                                                      on: {
-                                                        change: function(
-                                                          $event
-                                                        ) {
-                                                          _vm.$set(
-                                                            _vm.$data[type],
-                                                            "consent",
-                                                            "0"
-                                                          )
-                                                        }
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "label",
-                                                      {
-                                                        attrs: {
-                                                          for: type + "_no"
-                                                        }
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "Did not Give Consent"
-                                                        )
-                                                      ]
-                                                    )
-                                                  ]
-                                                ),
-                                                _vm._v(" "),
-                                                _vm.errors.first(
-                                                  type + ".consent"
-                                                )
-                                                  ? _c("small", [
-                                                      _vm._v(
-                                                        "\n                                                " +
-                                                          _vm._s(
-                                                            _vm.errors.first(
-                                                              type + ".consent"
-                                                            )
-                                                          ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ])
-                                                  : _vm._e()
-                                              ])
-                                            : _c("div", [
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass:
-                                                      "radio p-0 col-6 float-left"
-                                                  },
-                                                  [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            _vm.$data[type]
-                                                              .amount,
-                                                          expression:
-                                                            "$data[type].amount"
-                                                        },
-                                                        {
-                                                          name: "validate",
-                                                          rawName: "v-validate",
-                                                          value: "required",
-                                                          expression:
-                                                            "'required'"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: {
-                                                        disabled: "",
-                                                        name: "amount",
-                                                        type: "number"
-                                                      },
-                                                      domProps: {
-                                                        value:
-                                                          _vm.$data[type].amount
-                                                      },
-                                                      on: {
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            _vm.$data[type],
-                                                            "amount",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    })
-                                                  ]
-                                                ),
-                                                _vm._v(" "),
-                                                _vm.errors.first(
-                                                  type + ".amount"
-                                                )
-                                                  ? _c("small", [
-                                                      _vm._v(
-                                                        "\n                                                " +
-                                                          _vm._s(
-                                                            _vm.errors.first(
-                                                              type + ".amount"
-                                                            )
-                                                          ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ])
-                                                  : _vm._e()
-                                              ])
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("div", { staticClass: "clearfix" }, [
-                                          _c("label", [_vm._v("Report")]),
-                                          _vm._v(" "),
-                                          _c("textarea", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.$data[type].report,
-                                                expression: "$data[type].report"
-                                              },
-                                              {
-                                                name: "validate",
-                                                rawName: "v-validate",
-                                                value: "required",
-                                                expression: "'required'"
-                                              }
-                                            ],
-                                            staticClass: "form-control w-100",
-                                            attrs: {
-                                              name: "report",
-                                              placeholder: "comment here...",
-                                              rows: "3"
-                                            },
-                                            domProps: {
-                                              value: _vm.$data[type].report
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  _vm.$data[type],
-                                                  "report",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _vm.errors.first(type + ".report")
-                                            ? _c("small", [
-                                                _vm._v(
-                                                  "\n                                            " +
-                                                    _vm._s(
-                                                      _vm.errors.first(
-                                                        type + ".report"
-                                                      )
-                                                    ) +
-                                                    "\n                                        "
-                                                )
-                                              ])
-                                            : _vm._e()
-                                        ])
-                                      ]
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _vm.$data[type + "Btns"]
-                                    ? _c(
-                                        "div",
-                                        { staticClass: "modal-footer" },
-                                        [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "m-2 btn btn-secondary",
-                                              attrs: {
-                                                "data-dismiss": "modal",
-                                                type: "button"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "cancel\n                                "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass: "m-2 btn bg-default",
-                                              attrs: {
-                                                disabled: _vm.$isProcessing,
-                                                type: "submit"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                    Save changes "
-                                              ),
-                                              _c("i", {
-                                                staticClass:
-                                                  "far fa-paper-plane ml-1"
-                                              })
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    : _c(
-                                        "div",
-                                        { staticClass: "modal-footer" },
-                                        [
-                                          _c("h5", [
-                                            _vm._v(
-                                              "This customers details has already been updated once and cannot be changed!"
-                                            )
-                                          ])
-                                        ]
-                                      )
-                                ]
-                              )
-                            : _vm._e()
-                        ])
-                      ])
-                    ]
-                  )
-                })
+                  "router-link",
+                  { staticClass: "text-link mt-3", attrs: { to: _vm.to } },
+                  [_vm._v(_vm._s(_vm.buttonTitle))]
+                )
               ],
-              2
+              1
             )
           : _vm._e()
-      ],
-      1
-    )
+      ])
+    ])
   ])
 }
 var staticRenderFns = []
@@ -4350,7 +1759,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-07317a72", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-02013d35", module.exports)
   }
 }
 
@@ -4450,32 +1859,1220 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-569152fc\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/lookup/lookup.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.image
-    ? _c("div", { staticClass: "position-relative" }, [
-        _c("img", { attrs: { src: _vm.image } }),
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      { attrs: { id: "reminder" } },
+      [
+        _c("div", { staticClass: "mt-5 attendance-head" }, [
+          _c("div", { staticClass: "card" }, [
+            _c(
+              "ul",
+              { staticClass: "nav nav-tabs bg-default justify-content-center" },
+              [_c("h6", [_vm._v("Customer Lookup")])]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body p-4" }, [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.processForm($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "m-0 p-0 col-12 form-group clearfix" },
+                    [
+                      _c("label", { staticClass: "w-100" }, [
+                        _vm._v("Customer ID")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.customer_id,
+                            expression: "customer_id"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required|numeric",
+                            expression: "'required|numeric'"
+                          }
+                        ],
+                        staticClass:
+                          "form-control col-lg-9 col-md-8 col-sm-8 col-12 float-left mt-1",
+                        attrs: {
+                          "data-vv-as": "customer id",
+                          name: "customer_id"
+                        },
+                        domProps: { value: _vm.customer_id },
+                        on: {
+                          onkeyUp: _vm.check,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.customer_id = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "col-lg-3 col-md-4 col-sm-4 col-12 float-right px-md-3 mt-md-0 px-sm-3 mt-sm-0 mt-2 px-0"
+                        },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-block bg-default my-1",
+                              attrs: { disabled: _vm.check, type: "submit" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                    Fetch customer details "
+                              ),
+                              _c("i", {
+                                staticClass: "far fa-paper-plane ml-1"
+                              })
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.errors.has("customer_id")
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-muted w-100" },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.errors.first("customer_id")) +
+                                  "\n                            "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ]
+                  )
+                ]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("transition", { attrs: { name: "fade" } }, [
+          _vm.customer && _vm.show
+            ? _c(
+                "div",
+                [
+                  _c(
+                    "div",
+                    { staticClass: "attendance-head" },
+                    [
+                      _c("customer-profile", {
+                        attrs: { "view-customer": _vm.customer }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("custom-header", { attrs: { title: "All order(s)" } }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
+                    _c(
+                      "div",
+                      { staticClass: "row px-4 pt-3 pb-4 text-center" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "col light-heading",
+                            staticStyle: { "max-width": "100px" }
+                          },
+                          [_vm._v("S/No.")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.headers, function(header) {
+                          return _c(
+                            "div",
+                            { staticClass: "col light-heading" },
+                            [_vm._v(_vm._s(header))]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "tab-content mt-1 attendance-body" },
+                    [
+                      _vm.show && _vm.customer.orders.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "tab-pane active text-center" },
+                            _vm._l(_vm.customer.orders, function(order, index) {
+                              return _c(
+                                "div",
+                                { staticClass: "mb-3 row attendance-item" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col-12 col-xs-2 col-md col-lg d-flex align-items-center",
+                                      staticStyle: { "max-width": "100px" }
+                                    },
+                                    [
+                                      _c(
+                                        "span",
+                                        { staticClass: "user mx-auto" },
+                                        [_vm._v(_vm._s(index + 1))]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(order.order.order_date) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col-12 col-xs-2 col-md col-lg d-flex user-name align-items-center justify-content-center"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(order.order.id) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(
+                                            order.order.store_product
+                                              .product_name
+                                          ) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(
+                                            _vm.$formatCurrency(
+                                              order.order.product_price
+                                            )
+                                          ) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(
+                                            order.order.sales_category.name
+                                          ) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(
+                                            _vm.$formatCurrency(
+                                              order.order.down_payment
+                                            )
+                                          ) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                                    },
+                                    [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "btn status my-sm-2",
+                                          class:
+                                            order.count === order.repaymentLevel
+                                              ? "approved"
+                                              : "pending",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.displayAmortization(index)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                    View Plan\n                                    "
+                                          ),
+                                          _c("i", {
+                                            staticClass: "fas ml-3",
+                                            class:
+                                              order.count ===
+                                              order.repaymentLevel
+                                                ? "fa-check-circle"
+                                                : "fa-hourglass-half",
+                                            staticStyle: {
+                                              "font-size": "1.4rem"
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            })
+                          )
+                        : _c(
+                            "div",
+                            { staticClass: "tab-pane active text-center" },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "mb-3 row attendance-item" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col d-flex light-heading align-items-center justify-content-center"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                No records found!\n                            "
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mt-5 mb-3 attendance-head" }, [
+                    _c("div", { staticClass: "w-100 my-5 mx-0 hr" })
+                  ])
+                ],
+                1
+              )
+            : _vm._e()
+        ]),
         _vm._v(" "),
         _c(
-          "button",
+          "div",
           {
-            staticClass: "btn btn-danger upload-close m-0 px-3 py-2",
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                _vm.$emit("close")
-              }
-            }
+            staticClass: "modal fade repayment",
+            attrs: { id: "amortization" }
           },
-          [_c("i", { staticClass: "fas fa-times text-white" })]
+          [
+            _c(
+              "div",
+              {
+                staticClass: "modal-dialog modal-xl",
+                attrs: { role: "document" }
+              },
+              [
+                _vm.showModalContent
+                  ? _c("div", { staticClass: "modal-content" }, [
+                      _c("div", { staticClass: "modal-header py-2" }, [
+                        _c("h6", { staticClass: "modal-title py-1" }, [
+                          _vm._v(
+                            "\n                            Repayment Plan/Summary - " +
+                              _vm._s(
+                                _vm._f("capitalize")(
+                                  _vm.customer.employment_status
+                                )
+                              ) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "close py-1",
+                            attrs: {
+                              "aria-label": "Close",
+                              "data-dismiss": "modal"
+                            }
+                          },
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass: "modal-close text-danger",
+                                attrs: { "aria-hidden": "true" }
+                              },
+                              [_c("i", { staticClass: "fas fa-times" })]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-body" }, [
+                        _c("div", { staticClass: "table-responsive" }, [
+                          _c("h5", { staticClass: "mt-3 mb-0" }, [
+                            _vm._v("Order Information")
+                          ]),
+                          _vm._v(" "),
+                          _c("table", { staticClass: "table table-bordered" }, [
+                            _c("tbody", [
+                              _c("tr", { staticClass: "table-separator" }, [
+                                _c("td", [_vm._v("Name")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Order Id")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Product")]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v("Branch")])
+                              ]),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", { staticClass: "font-weight-bold" }, [
+                                  _vm._v(
+                                    _vm._s(_vm.activeOrder.customerName) +
+                                      "\n                                    "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(_vm.activeOrder.order.id))
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.activeOrder.order.store_product
+                                        .product_name
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "font-weight-bold" }, [
+                                  _vm._v(_vm._s(_vm.activeOrder.branch.name))
+                                ])
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("h5", { staticClass: "mt-5 mb-0" }, [
+                            _vm._v("Amortization Schedule")
+                          ]),
+                          _vm._v(" "),
+                          _c("table", { staticClass: "table table-bordered" }, [
+                            _c("tbody", { staticClass: "text-center" }, [
+                              _c(
+                                "tr",
+                                [
+                                  _c("th", [_vm._v("Repayment")]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    _vm.activeOrder.repaymentCaptions,
+                                    function(caption) {
+                                      return _c("td", {
+                                        domProps: { innerHTML: _vm._s(caption) }
+                                      })
+                                    }
+                                  )
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "tr",
+                                { staticClass: "table-separator" },
+                                [
+                                  _c("th", [_vm._v("Due Date")]),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.activeOrder.dueDates, function(
+                                    date
+                                  ) {
+                                    return _c("td", [_vm._v(_vm._s(date))])
+                                  })
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "tr",
+                                [
+                                  _c("th", [_vm._v("Actual Pay Day")]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    _vm.activeOrder.actualPayDates,
+                                    function(date) {
+                                      return _c("td", [_vm._v(_vm._s(date))])
+                                    }
+                                  )
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "tr",
+                                { staticClass: "table-separator" },
+                                [
+                                  _c("th", [_vm._v("Status")]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    _vm.activeOrder.paymentStatusClasses,
+                                    function(status) {
+                                      return _c("td", { class: status.class }, [
+                                        _c("i", {
+                                          staticClass: "fas",
+                                          class: status.icon
+                                        })
+                                      ])
+                                    }
+                                  )
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "tr",
+                                { staticClass: "table-separator" },
+                                [
+                                  _c("th", [_vm._v("Repayment Amount")]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    _vm.activeOrder.amountsToBePaid,
+                                    function(payment) {
+                                      return _c("td", [
+                                        _vm._v(
+                                          "\n                                        " +
+                                            _vm._s(
+                                              _vm.$formatCurrency(payment)
+                                            ) +
+                                            "\n                                    "
+                                        )
+                                      ])
+                                    }
+                                  )
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "tr",
+                                [
+                                  _c("th", [_vm._v("Actual Amount Paid")]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    _vm.activeOrder.actualAmountsPaid,
+                                    function(payment) {
+                                      return _c("td", [
+                                        _vm._v(
+                                          "\n                                        " +
+                                            _vm._s(
+                                              _vm.$formatCurrency(payment)
+                                            ) +
+                                            "\n                                    "
+                                        )
+                                      ])
+                                    }
+                                  )
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "tr",
+                                { staticClass: "table-separator" },
+                                [
+                                  _c("th", [_vm._v("Payment Method")]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    _vm.activeOrder.paymentMethods,
+                                    function(repaymentMethod) {
+                                      return _c(
+                                        "td",
+                                        { staticClass: "text-capitalize" },
+                                        [
+                                          _vm._v(
+                                            "\n                                        " +
+                                              _vm._s(
+                                                _vm.Order.convertToName(
+                                                  repaymentMethod,
+                                                  "paymentMethods"
+                                                )
+                                              ) +
+                                              "\n                                    "
+                                          )
+                                        ]
+                                      )
+                                    }
+                                  )
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "tr",
+                                [
+                                  _c("th", [_vm._v("Bank")]),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.activeOrder.paymentBanks, function(
+                                    repaymentBank
+                                  ) {
+                                    return _c(
+                                      "td",
+                                      { staticClass: "text-capitalize" },
+                                      [
+                                        _vm._v(
+                                          "\n                                        " +
+                                            _vm._s(
+                                              _vm.Order.convertToName(
+                                                repaymentBank,
+                                                "banks"
+                                              )
+                                            ) +
+                                            "\n                                    "
+                                        )
+                                      ]
+                                    )
+                                  })
+                                ],
+                                2
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("h5", { staticClass: "mt-5 mb-0" }, [
+                            _vm._v("Payment Summary")
+                          ]),
+                          _vm._v(" "),
+                          _c("table", { staticClass: "table table-bordered" }, [
+                            _c("tbody", { staticClass: "text-center" }, [
+                              _c("tr", { staticClass: "table-separator" }, [
+                                _c("td", { staticClass: "text-left" }, [
+                                  _vm._v("Discount Detail (%)")
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("capitalize")(
+                                        _vm.activeOrder.discount
+                                      )
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Total Before Discount")]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$formatCurrency(
+                                        _vm.$roundDownAmt(
+                                          _vm.activeOrder.order["product_price"]
+                                        )
+                                      )
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Total Paid (+discount)")]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(_vm.activeOrder.amountPaid))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", { staticClass: "text-left" }, [
+                                  _vm._v("Discount Amount")
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(_vm.activeOrder.discountAmount))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Total After Discount")]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(_vm.activeOrder.discountedTotal)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Total Debt")]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(_vm.activeOrder.outstandingDebt)
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", { staticClass: "text-left" }, [
+                                  _vm._v("Down Payment")
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$formatCurrency(
+                                        _vm.$roundDownAmt(
+                                          _vm.activeOrder.order["down_payment"]
+                                        )
+                                      )
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Total Plus Default Fee")]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(_vm.activeOrder.totalPlusDefault)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Default Fee")]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(_vm.activeOrder.defaultFee))
+                                ])
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _vm.canAddPayment
+                            ? _c("h5", { staticClass: "mt-5 mb-0" }, [
+                                _vm._v("Add a new payment")
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.canAddPayment
+                            ? _c(
+                                "table",
+                                { staticClass: "table table-bordered" },
+                                [
+                                  _c(
+                                    "tbody",
+                                    { staticClass: "text-center" },
+                                    [
+                                      _c(
+                                        "tr",
+                                        { staticClass: "table-separator" },
+                                        [
+                                          _c(
+                                            "td",
+                                            { staticClass: "text-left" },
+                                            [_vm._v("S/No.")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("th", [_vm._v("Repayment")]),
+                                          _vm._v(" "),
+                                          _c("th", [_vm._v("Amount")]),
+                                          _vm._v(" "),
+                                          _c("th", [_vm._v("Payment Method")]),
+                                          _vm._v(" "),
+                                          _c("th", [_vm._v("Bank")]),
+                                          _vm._v(" "),
+                                          _c("th", [_vm._v("Date")]),
+                                          _vm._v(" "),
+                                          _c("th", [_vm._v("Collected By")]),
+                                          _vm._v(" "),
+                                          _c("th", [_vm._v("Action")])
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.paymentForm.payments, function(
+                                        payment,
+                                        index
+                                      ) {
+                                        return _c("tr", [
+                                          _c("th", [_vm._v(_vm._s(index + 1))]),
+                                          _vm._v(" "),
+                                          _c("th", [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "form-group mb-0"
+                                              },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.paymentForm
+                                                          .payments[index]
+                                                          .column,
+                                                      expression:
+                                                        "paymentForm.payments[index].column"
+                                                    }
+                                                  ],
+                                                  staticClass: "form-control",
+                                                  attrs: {
+                                                    name: "date",
+                                                    type: "text",
+                                                    disabled: ""
+                                                  },
+                                                  domProps: {
+                                                    value:
+                                                      _vm.paymentForm.payments[
+                                                        index
+                                                      ].column
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.paymentForm
+                                                          .payments[index],
+                                                        "column",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("th", [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "form-group mb-0"
+                                              },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.paymentForm
+                                                          .payments[index]._pay,
+                                                      expression:
+                                                        "paymentForm.payments[index]._pay"
+                                                    }
+                                                  ],
+                                                  staticClass: "form-control",
+                                                  attrs: {
+                                                    name: "date",
+                                                    type: "text"
+                                                  },
+                                                  domProps: {
+                                                    value:
+                                                      _vm.paymentForm.payments[
+                                                        index
+                                                      ]._pay
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.paymentForm
+                                                          .payments[index],
+                                                        "_pay",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("th", [
+                                            _c(
+                                              "select",
+                                              {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value:
+                                                      _vm.paymentForm.payments[
+                                                        index
+                                                      ]._payment_method,
+                                                    expression:
+                                                      "paymentForm.payments[index]._payment_method"
+                                                  }
+                                                ],
+                                                staticClass:
+                                                  "custom-select w-100",
+                                                on: {
+                                                  change: function($event) {
+                                                    var $$selectedVal = Array.prototype.filter
+                                                      .call(
+                                                        $event.target.options,
+                                                        function(o) {
+                                                          return o.selected
+                                                        }
+                                                      )
+                                                      .map(function(o) {
+                                                        var val =
+                                                          "_value" in o
+                                                            ? o._value
+                                                            : o.value
+                                                        return val
+                                                      })
+                                                    _vm.$set(
+                                                      _vm.paymentForm.payments[
+                                                        index
+                                                      ],
+                                                      "_payment_method",
+                                                      $event.target.multiple
+                                                        ? $$selectedVal
+                                                        : $$selectedVal[0]
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              _vm._l(
+                                                _vm.getPaymentMethods,
+                                                function(ref) {
+                                                  var name = ref.name
+                                                  var id = ref.id
+                                                  return _c(
+                                                    "option",
+                                                    { domProps: { value: id } },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            _vm._f(
+                                                              "capitalize"
+                                                            )(name)
+                                                          ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ]
+                                                  )
+                                                }
+                                              )
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("th", [
+                                            _c(
+                                              "select",
+                                              {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value:
+                                                      _vm.paymentForm.payments[
+                                                        index
+                                                      ]._payment_bank,
+                                                    expression:
+                                                      "paymentForm.payments[index]._payment_bank"
+                                                  }
+                                                ],
+                                                staticClass:
+                                                  "custom-select w-100",
+                                                on: {
+                                                  change: function($event) {
+                                                    var $$selectedVal = Array.prototype.filter
+                                                      .call(
+                                                        $event.target.options,
+                                                        function(o) {
+                                                          return o.selected
+                                                        }
+                                                      )
+                                                      .map(function(o) {
+                                                        var val =
+                                                          "_value" in o
+                                                            ? o._value
+                                                            : o.value
+                                                        return val
+                                                      })
+                                                    _vm.$set(
+                                                      _vm.paymentForm.payments[
+                                                        index
+                                                      ],
+                                                      "_payment_bank",
+                                                      $event.target.multiple
+                                                        ? $$selectedVal
+                                                        : $$selectedVal[0]
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              _vm._l(_vm.getBanks, function(
+                                                ref
+                                              ) {
+                                                var name = ref.name
+                                                var id = ref.id
+                                                return _c(
+                                                  "option",
+                                                  { domProps: { value: id } },
+                                                  [_vm._v(_vm._s(name))]
+                                                )
+                                              })
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("th", [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "form-group mb-0"
+                                              },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.paymentForm
+                                                          .payments[index]
+                                                          ._date,
+                                                      expression:
+                                                        "paymentForm.payments[index]._date"
+                                                    }
+                                                  ],
+                                                  staticClass: "form-control",
+                                                  attrs: {
+                                                    name: "date",
+                                                    type: "date"
+                                                  },
+                                                  domProps: {
+                                                    value:
+                                                      _vm.paymentForm.payments[
+                                                        index
+                                                      ]._date
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.paymentForm
+                                                          .payments[index],
+                                                        "_date",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("th", [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "form-group mb-0"
+                                              },
+                                              [
+                                                _c("input", {
+                                                  staticClass: "form-control",
+                                                  attrs: {
+                                                    "data-vv-as": "date",
+                                                    name: "date",
+                                                    type: "text",
+                                                    disabled: ""
+                                                  },
+                                                  domProps: {
+                                                    value: _vm.user.name
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("th", [
+                                            _c(
+                                              "button",
+                                              {
+                                                staticClass:
+                                                  "ml-2 btn status status-sm my-sm-2 not-approved",
+                                                on: {
+                                                  click: function($event) {
+                                                    _vm.deletePayment(index)
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("i", {
+                                                  staticClass: "fas fa-times"
+                                                })
+                                              ]
+                                            )
+                                          ])
+                                        ])
+                                      })
+                                    ],
+                                    2
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "modal-footer",
+                          class: {
+                            "d-flex justify-content-end": !_vm.canAddPayment
+                          }
+                        },
+                        [
+                          _vm.canAddPayment
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn status my-sm-2",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.addPaymentForm()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Add Payment\n                        "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.canAddPayment
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "btn status my-sm-2 approved ml-4",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.preparePayments()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Click here to Submit Payment(s)!\n                        "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "text-link mt-3",
+                              staticStyle: { "text-align": "right" },
+                              attrs: {
+                                "data-dismiss": "modal",
+                                href: "javascript:"
+                              }
+                            },
+                            [_vm._v("close dialogue")]
+                          )
+                        ]
+                      )
+                    ])
+                  : _vm._e()
+              ]
+            )
+          ]
         )
-      ])
-    : _vm._e()
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -4483,49 +3080,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-78eff338", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "image" },
-    [
-      _vm.value && _vm.usage === "verification"
-        ? _c("image-preview", {
-            attrs: { preview: _vm.value },
-            on: {
-              close: function($event) {
-                _vm.$emit("input", null)
-              }
-            }
-          })
-        : _c("div", [
-            _c("input", {
-              attrs: { type: "file", accept: "images/*" },
-              on: { change: _vm.upload }
-            })
-          ])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7e5db395", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-569152fc", module.exports)
   }
 }
 
@@ -4898,6 +3453,296 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-569152fc\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/lookup/lookup.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-569152fc\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/lookup/lookup.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("e69d9284", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-569152fc\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./lookup.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-569152fc\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./lookup.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/lib/addStylesClient.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__("./node_modules/vue-style-loader/lib/listToStyles.js")
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/lib/listToStyles.js":
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/AppNavigation.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4994,15 +3839,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/ImagePreview.vue":
+/***/ "./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImagePreview.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/customHeader.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -5019,7 +3864,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\ImagePreview.vue"
+Component.options.__file = "resources\\assets\\js\\components\\customHeader.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -5028,9 +3873,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-78eff338", Component.options)
+    hotAPI.createRecord("data-v-02013d35", Component.options)
   } else {
-    hotAPI.reload("data-v-78eff338", Component.options)
+    hotAPI.reload("data-v-02013d35", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -5042,51 +3887,584 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/ImageUpload.vue":
+/***/ "./resources/assets/js/utilities/Amortization.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
-var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
-/* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue")
-/* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue")
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\ImageUpload.vue"
+"use strict";
 
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7e5db395", Component.options)
-  } else {
-    hotAPI.reload("data-v-7e5db395", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
-module.exports = Component.exports
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _store = __webpack_require__("./resources/assets/js/store/store.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var vue = new _vue2.default();
+
+var Order = function () {
+    function Order(order, customer) {
+        _classCallCheck(this, Order);
+
+        console.log(order);
+        this._order = order;
+        this._customer = customer;
+        this._paymentBanks = [];
+        this._paymentMethods = [];
+        this._actualPayDates = [];
+        this._actualAmountsPaid = [];
+        this._amountsToBePaid = [];
+        this._repaymentCaptions = [];
+        this._paymentStatusClasses = [];
+        this._repaymentLevel = 0;
+
+        /*summary*/
+        this._amountPaid = null;
+        this._discountAmount = null;
+        this._outstandingDebt = null;
+        this._discountedTotal = null;
+        this._defaultFee = null;
+        this._totalPlusDefault = null;
+
+        /*for repayments*/
+        this._payments = {};
+
+        /*init setters*/
+        this.setIsOrderFormal();
+        this.setIsRepaymentValid();
+        this.setRepaymentData();
+        this.setCountAndInterval();
+        this.setCommonDetails();
+        this.setDueDates();
+        this.setPaymentStatusClasses();
+        this.calcAndSetPaymentSummary();
+        this.setBranch();
+        this.setDiscount();
+    }
+
+    /*custom setters*/
+
+
+    _createClass(Order, [{
+        key: 'setIsRepaymentValid',
+        value: function setIsRepaymentValid() {
+            this._isRepaymentValid = !(!this.order['repayment_formal'] && !this.order['repayment_informal']);
+        }
+    }, {
+        key: 'setIsOrderFormal',
+        value: function setIsOrderFormal() {
+            this._isOrderFormal = ['formal', 'salaried'].includes(this._customer.employment_status.toLowerCase());
+        }
+    }, {
+        key: 'setRepaymentData',
+        value: function setRepaymentData() {
+            if (this.order['repayment_formal'] != null) this._repaymentData = this.order.repayment_formal;
+            if (this.order['repayment_informal'] != null) this._repaymentData = this.order.repayment_informal;
+        }
+    }, {
+        key: 'setCountAndInterval',
+        value: function setCountAndInterval() {
+            //'2019-07-07' this is the date the bank draft was implemented
+            // and hence used as a factor to check for
+            // if amortization should be 12 or 6
+            var interval = void 0,
+                count = void 0;
+            if (new Date(this.order.order_date) <= new Date('2019-07-07')) {
+                if (this.order['repayment_formal'] != null) {
+                    interval = 28;
+                    count = 6;
+                }
+                if (this.order['repayment_informal'] != null) {
+                    interval = 14;
+                    count = 12;
+                }
+            } else {
+                if (Order.isBankDraftAvailable() && this.isOrderFormal) {
+                    interval = 28;
+                    count = 6;
+                } else {
+                    interval = 14;
+                    count = 12;
+                }
+            }
+            this._count = count;
+            this._interval = interval;
+        }
+    }, {
+        key: 'setDueDates',
+        value: function setDueDates() {
+            this._dueDates = Order.generateDueDates(this.order.order_date, this.interval, this.count);
+        }
+    }, {
+        key: 'setCommonDetails',
+        value: function setCommonDetails() {
+            if (!this.isRepaymentValid) return;
+            for (var i = 1; i < this.count + 1; i++) {
+                /*for repayment captions*/
+                var prefix = vue.$getColumn(i).split('');
+                var appendix = [];
+                for (var j = 1; j <= 2; j++) {
+                    appendix.unshift(prefix.pop());
+                }this._repaymentCaptions.push('<td>' + prefix.join('') + '<sup>' + appendix.join('') + '</sup></td>');
+
+                this._actualPayDates.push(this.repaymentData[vue.$getColumn(i) + '_date']);
+                this._actualAmountsPaid.push(this.repaymentData[vue.$getColumn(i) + '_pay']);
+                this._paymentBanks.push(this.repaymentData[vue.$getColumn(i) + '_payment_bank']);
+                this._paymentMethods.push(this.repaymentData[vue.$getColumn(i) + '_payment_method']);
+                this._amountsToBePaid.push(vue.$roundDownAmt(this.order.repayment_amount));
+
+                if (this.repaymentData[vue.$getColumn(i) + '_pay'] > 0) this._repaymentLevel++;
+            }
+        }
+    }, {
+        key: 'setBranch',
+        value: function setBranch() {
+            var _this = this;
+
+            this._branch = _store.store.state.branches.find(function (branch) {
+                return parseInt(branch.id) === parseInt(_this.order.store_product.store_name);
+            });
+        }
+    }, {
+        key: 'setPaymentStatusClasses',
+        value: function setPaymentStatusClasses() {
+            if (!this.isRepaymentValid) /*this._repayment = null;*/return;
+            for (var i = 1; i < this.count + 1; i++) {
+                var status = { class: null, icon: null };
+                var position = vue.$getColumn(i);
+                var isDue = Order.isPaymentDue(this.dueDates[i - 1]);
+                var amountPaid = parseInt(this.repaymentData[position + '_pay']);
+                if (amountPaid) {
+                    status.class = 'paid';
+                    status.icon = 'fa-check';
+                } else if (isDue && !amountPaid) {
+                    status.class = 'missed';
+                    status.icon = 'fa-times';
+                } else if (!isDue) {
+                    status.class = 'pending';
+                    status.icon = 'fa-hourglass-start';
+                }
+                this._paymentStatusClasses.push(status);
+            }
+        }
+    }, {
+        key: 'calcAndSetPaymentSummary',
+        value: function calcAndSetPaymentSummary() {
+            /*helper function*/
+            var fmt = function fmt(cur) {
+                return vue.$formatCurrency(cur);
+            },
+                _order = this.order,
+                repayment_amount = _order.repayment_amount,
+                down_payment = _order.down_payment,
+                product_price = _order.product_price;
+
+            /*discount amount*/
+            var mFactor = this.count === 6 ? 0.5 : 1,
+                discount = this.order.discount.percentage_discount,
+                repaymentAsDiscount = discount > 0 ? discount === 5 ? 1 : 2 : 0,
+                discountAmount = vue.$roundDownAmt(repayment_amount * mFactor * repaymentAsDiscount);
+
+            this._discountAmount = fmt(discountAmount);
+
+            /*(total)amount paid = down payment + total repayments  + discount(if any)*/
+            var amountPaid = 0,
+                totalRepayments = 0;
+            if (!!this.repaymentData) {
+                for (var i = 0; i < this.count + 1; i++) {
+                    var repayment = parseInt(this.actualAmountsPaid[i]);
+                    totalRepayments += !!repayment ? vue.$roundDownAmt(repayment) : 0;
+                }
+                amountPaid = vue.$roundDownAmt(parseInt(down_payment)) + totalRepayments + discountAmount;
+            }
+            this._amountPaid = fmt(amountPaid);
+
+            /*discounted total :: total amount to be paid - discount*/
+            var discountedTotal = vue.$roundDownAmt(product_price - discountAmount);
+            this._discountedTotal = fmt(discountedTotal);
+
+            /*total default fee*/
+            var amountPerDefault = 500;
+            var datesDefaulted = [];
+            var defaultFee = 0;
+            if (new Date(this.order.order_date) > new Date('2019-07-07')) {
+                //the order is a new record then use the default fee
+                /**this is where the calculation for the default fee goes into*/
+                /*this.dueDates.forEach((dueDate, index) =>
+                Order.isPaymentDue(vue.$getDate(new Date(dueDate).addDays(5))) &&
+                datesDefaulted.push({dueDate, actualPayDate: this.actualPayDates[index]}));*/
+                defaultFee = datesDefaulted.length * amountPerDefault;
+            }
+            this._defaultFee = fmt(defaultFee);
+
+            /*total plus default*/
+            this._totalPlusDefault = fmt(discountedTotal + defaultFee);
+
+            /*outstanding debt*/
+            this._outstandingDebt = fmt(vue.$roundDownAmt(parseInt(product_price) - amountPaid));
+        }
+    }, {
+        key: 'setDiscount',
+        value: function setDiscount() {
+            this._discount = this.order.discount.name + " " + this.order.discount.percentage_discount;
+        }
+
+        /*getters*/
+
+    }, {
+        key: 'payments',
+        set: function set(payments) {
+            this._payments = payments;
+        },
+        get: function get() {
+            return this._payments;
+        }
+    }, {
+        key: 'repaymentLevel',
+        get: function get() {
+            return this._repaymentLevel;
+        }
+    }, {
+        key: 'order',
+        get: function get() {
+            return this._order;
+        }
+    }, {
+        key: 'customer',
+        get: function get() {
+            return this._customer;
+        }
+    }, {
+        key: 'isRepaymentValid',
+        get: function get() {
+            return this._isRepaymentValid;
+        }
+    }, {
+        key: 'isOrderFormal',
+        get: function get() {
+            return this._isOrderFormal;
+        }
+    }, {
+        key: 'repaymentData',
+        get: function get() {
+            return this._repaymentData;
+        }
+    }, {
+        key: 'count',
+        get: function get() {
+            return this._count;
+        }
+    }, {
+        key: 'interval',
+        get: function get() {
+            return this._interval;
+        }
+    }, {
+        key: 'dueDates',
+        get: function get() {
+            return this._dueDates;
+        }
+    }, {
+        key: 'paymentStatusClasses',
+        get: function get() {
+            return this._paymentStatusClasses;
+        }
+    }, {
+        key: 'repaymentCaptions',
+        get: function get() {
+            return this._repaymentCaptions;
+        }
+    }, {
+        key: 'paymentBanks',
+        get: function get() {
+            return this._paymentBanks;
+        }
+    }, {
+        key: 'paymentMethods',
+        get: function get() {
+            return this._paymentMethods;
+        }
+    }, {
+        key: 'actualPayDates',
+        get: function get() {
+            return this._actualPayDates;
+        }
+    }, {
+        key: 'actualAmountsPaid',
+        get: function get() {
+            return this._actualAmountsPaid;
+        }
+    }, {
+        key: 'amountsToBePaid',
+        get: function get() {
+            return this._amountsToBePaid;
+        }
+    }, {
+        key: 'amountPaid',
+        get: function get() {
+            return this._amountPaid;
+        }
+    }, {
+        key: 'discountAmount',
+        get: function get() {
+            return this._discountAmount;
+        }
+    }, {
+        key: 'outstandingDebt',
+        get: function get() {
+            return this._outstandingDebt;
+        }
+    }, {
+        key: 'discountedTotal',
+        get: function get() {
+            return this._discountedTotal;
+        }
+    }, {
+        key: 'defaultFee',
+        get: function get() {
+            return this._defaultFee;
+        }
+    }, {
+        key: 'totalPlusDefault',
+        get: function get() {
+            return this._totalPlusDefault;
+        }
+    }, {
+        key: 'branch',
+        get: function get() {
+            return this._branch;
+        }
+    }, {
+        key: 'discount',
+        get: function get() {
+            return this._discount;
+        }
+    }, {
+        key: 'customerName',
+        get: function get() {
+            return this.customer.first_name + " " + this.customer.last_name;
+        }
+    }, {
+        key: 'customerWGName',
+        get: function get() {
+            var _customer = this.customer,
+                a = _customer.work_guarantor_first_name,
+                b = _customer.work_guarantor_last_name,
+                c = _customer.work_guarantor_relationship;
+
+            return a + ' ' + b + ' - ' + c;
+        }
+    }, {
+        key: 'customerPGName',
+        get: function get() {
+            var _customer2 = this.customer,
+                a = _customer2.personal_guarantor_first_name,
+                b = _customer2.personal_guarantor_last_name,
+                c = _customer2.personal_guarantor_relationship;
+
+            return a + ' ' + b + ' - ' + c;
+        }
+
+        /*static methods*/
+
+    }], [{
+        key: 'generateDueDates',
+        value: function generateDueDates(startDate, interval, count) {
+            var dates = [];
+            for (var i = 0; i < count; i++) {
+                var orderDate = new Date(startDate).addDays((i + 1) * interval);
+                var dateString = vue.$getDate(orderDate);
+                dates.push(dateString);
+            }
+            return dates;
+        }
+    }, {
+        key: 'isPaymentDue',
+        value: function isPaymentDue(dueDate) {
+            return new Date() > new Date(dueDate);
+        }
+    }, {
+        key: 'isBankDraftAvailable',
+        value: function isBankDraftAvailable() {
+            return false;
+        }
+    }, {
+        key: 'renderMessage',
+        value: function renderMessage(reminder) {
+            return !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback;
+        }
+    }, {
+        key: 'convertToName',
+        value: function convertToName(id, type) {
+            return !id ? null : _store.store.state[type].find(function (obj) {
+                return obj.id === id;
+            }).name;
+        }
+    }]);
+
+    return Order;
+}();
+
+var OrderWithPromiseCall = function (_Order) {
+    _inherits(OrderWithPromiseCall, _Order);
+
+    function OrderWithPromiseCall(order, dvaId) {
+        _classCallCheck(this, OrderWithPromiseCall);
+
+        var _this2 = _possibleConstructorReturn(this, (OrderWithPromiseCall.__proto__ || Object.getPrototypeOf(OrderWithPromiseCall)).call(this, order, order.customer));
+
+        _this2._isReminderSent = false;
+        _this2._dvaId = dvaId;
+        _this2._isSelected = false;
+        _this2.setReminder(null);
+        _this2.setIsReminderSent();
+        _this2.setFinancialStatus();
+        _this2.setPromiseCall();
+        _this2.generateAndSetNextSMSReminder();
+        return _this2;
+    }
+
+    /*custom setters*/
+
+
+    _createClass(OrderWithPromiseCall, [{
+        key: 'setIsReminderSent',
+        value: function setIsReminderSent() {
+            var _this3 = this;
+
+            var date = void 0;
+            var today = vue.$getDate();
+            this.order.reminders.forEach(function (reminder) {
+                //refactor below by using regx characters to split
+                var reminderDateTimeArr = reminder.date.split(' '); //(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
+                var dateArr = reminderDateTimeArr[0].split('-'); //'2019-03-24' -> ['2019','03','24']
+                var timeArr = reminderDateTimeArr[1].split(':'); //'02:00:00' -> ['02','00','00']
+                var arr = [].concat(_toConsumableArray(dateArr), _toConsumableArray(timeArr)) // ['2019','03','24','02','00','00']
+                .map(function (item) {
+                    return parseInt(item, 10);
+                }); //[2019,3,24,2,0,0]
+                date = vue.$getDate(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
+                date === today && (_this3._isReminderSent = true);
+            });
+        }
+    }, {
+        key: 'setFinancialStatus',
+        value: function setFinancialStatus() {
+            this._financialStatus = !this.isRepaymentValid ? 'no detail!' : 'Paid: ' + this.amountPaid + ' | Debt: ' + this.outstandingDebt;
+        }
+    }, {
+        key: 'generateAndSetNextSMSReminder',
+        value: function generateAndSetNextSMSReminder() {
+            var _order2 = this.order,
+                repayment_amount = _order2.repayment_amount,
+                order_date = _order2.order_date,
+                product_name = this.order.store_product.product_name;
+
+
+            var message = void 0;
+            if (order_date === vue.$getDate()) {
+                message = 'Hello ' + this.customerName + ', thanks for patronizing us.' + ' The following is the breakdown of the repayment plan for' + (' the purchase of ' + product_name + ':%0a');
+                this.dueDates.forEach(function (date, index) {
+                    return message += vue.$getColumn(index + 1) + ": " + date + " => " + vue.$formatCurrency(vue.$roundDownAmt(repayment_amount)) + "%0a";
+                });
+            } else {
+                message = 'Hello ' + this.customerName + ', This is to remind you that your' + (' ' + vue.$getColumn(parseInt(this.repaymentLevel) + 1) + ' repayment of') + (' ' + vue.$formatCurrency(vue.$roundDownAmt(repayment_amount)) + ' for ' + product_name) + (' will be due on ' + this.dueDates[this.repaymentLevel] + '. we will be expecting you.');
+            }
+            this._nextSMSReminder = message + "Please remember to pay on time to avoid" + " late fees and other penalties.%0aThank you.";
+        }
+
+        //NB:: this method is called from outside of this class.
+        //to use always call this method after instantiating the class.
+
+    }, {
+        key: 'setReminder',
+        value: function setReminder(type) {
+            this._reminder = {
+                type: type,
+                'feedback': null,
+                'is_visited': null,
+                'dva_id': this.dvaId,
+                'order_id': this.order.id,
+                'customer_id': this.customer.id,
+                'canBeSelected': !this.isReminderSent,
+                'repayment_level': this.repaymentLevel + "/" + this.count
+            };
+            if (type === 'sms') {
+                this._reminder.sms_id = null;
+                this._reminder.contacts = this.customer.telephone;
+            }
+        }
+    }, {
+        key: 'setPromiseCall',
+        value: function setPromiseCall() {
+            this._promiseCall = {
+                order_id: this.order.id,
+                user_id: this.dvaId,
+                customer_id: this.customer.id,
+                date: null
+            };
+        }
+
+        /*setters*/
+
+    }, {
+        key: 'isSelected',
+        set: function set(value) {
+            this._isSelected = value;
+        }
+
+        /*getters*/
+        ,
+        get: function get() {
+            return this._isSelected;
+        }
+    }, {
+        key: 'isReminderSent',
+        get: function get() {
+            return this._isReminderSent;
+        }
+    }, {
+        key: 'dvaId',
+        get: function get() {
+            return this._dvaId;
+        }
+    }, {
+        key: 'financialStatus',
+        get: function get() {
+            return this._financialStatus;
+        }
+    }, {
+        key: 'nextSMSReminder',
+        get: function get() {
+            return this._nextSMSReminder;
+        }
+    }, {
+        key: 'reminder',
+        get: function get() {
+            return this._reminder;
+        }
+    }, {
+        key: 'promiseCall',
+        get: function get() {
+            return this._promiseCall;
+        }
+    }]);
+
+    return OrderWithPromiseCall;
+}(Order);
+
+module.exports = { Order: Order, OrderWithPromiseCall: OrderWithPromiseCall };
 
 /***/ }),
 
@@ -5108,57 +4486,6 @@ var _vue2 = _interopRequireDefault(_vue);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EventBus = exports.EventBus = new _vue2.default();
-
-/***/ }),
-
-/***/ "./resources/assets/js/utilities/form.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.toMulipartedForm = toMulipartedForm;
-exports.objectToFormData = objectToFormData;
-function toMulipartedForm(form, mode) {
-    if (mode === 'edit' && typeof form.image === 'string') {
-        //remove reactivity
-        var temp = JSON.parse(JSON.stringify(form));
-        delete temp.image;
-        return temp;
-    } else {
-        return objectToFormData(form);
-    }
-}
-
-function objectToFormData(obj, form, namespace) {
-    var fd = form || new FormData();
-    var formKey = void 0;
-    for (var property in obj) {
-        if (obj.hasOwnProperty(property)) {
-            if (namespace) {
-                formKey = namespace + '[' + property + ']';
-            } else {
-                formKey = property;
-            }
-            if (obj[property] instanceof Array) {
-                for (var i = 0; i < obj[property].length; i++) {
-                    objectToFormData(obj[property][i], fd, property + '[' + i + ']');
-                }
-            } else if (_typeof(obj[property]) === 'object' && !(obj[property] instanceof File)) {
-                objectToFormData(obj[property], fd, property);
-            } else {
-                fd.append(formKey, obj[property]);
-            }
-        }
-    }
-    return fd;
-}
 
 /***/ }),
 
@@ -5257,21 +4584,25 @@ var Message = exports.Message = function () {
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/DVA/verification/verification.vue":
+/***/ "./resources/assets/js/views/FSL/lookup/lookup.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-569152fc\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/FSL/lookup/lookup.vue")
+}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/lookup/lookup.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-07317a72\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-569152fc\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/lookup/lookup.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-569152fc"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -5282,7 +4613,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\verification\\verification.vue"
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\lookup\\lookup.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -5291,9 +4622,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-07317a72", Component.options)
+    hotAPI.createRecord("data-v-569152fc", Component.options)
   } else {
-    hotAPI.reload("data-v-07317a72", Component.options)
+    hotAPI.reload("data-v-569152fc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
