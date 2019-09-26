@@ -248,7 +248,10 @@ exports.default = {
         }
     },
     watch: {
+<<<<<<< HEAD
 
+=======
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
         form: {
             handler: function handler(val) {
                 //sku enerator functionif
@@ -256,13 +259,24 @@ exports.default = {
                     var date = new Date().getFullYear();
                     date = date.toString().slice(2, 4);
                     var name = val.name.slice(0, 3).toUpperCase();
+<<<<<<< HEAD
                     val.last_id.length === 0 ? _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + 1 + "/" + date) : _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (val.last_id[0].id + 1) + "/" + date);
+=======
+                    var id = val.last_id[0].id;
+
+                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (id + 1) + "/" + date);
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                 } else if (this.$data.mode === 'edit') {
                     var _date = new Date().getFullYear(); //needs to be optimized to return original year
                     _date = _date.toString().slice(2, 4);
                     var _name = val.name.slice(0, 3).toUpperCase();
+<<<<<<< HEAD
                     var id = val.id;
                     _vue2.default.set(this.$data.form, 'sku', "ALTS/" + _name + "/" + id + "/" + _date);
+=======
+                    var _id = val.id;
+                    _vue2.default.set(this.$data.form, 'sku', "ALTS/" + _name + "/" + _id + "/" + _date);
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                 }
             },
             deep: true
@@ -846,8 +860,12 @@ var render = function() {
                           _vm._v(" "),
                           _vm._l(_vm.banks, function(ref) {
                             var name = ref.name
+<<<<<<< HEAD
                             var id = ref.id
                             return _c("option", { domProps: { value: id } }, [
+=======
+                            return _c("option", { domProps: { value: name } }, [
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                               _vm._v(_vm._s(name))
                             ])
                           })

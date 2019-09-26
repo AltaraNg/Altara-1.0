@@ -3774,7 +3774,10 @@ var Order = function () {
     function Order(order, customer) {
         _classCallCheck(this, Order);
 
+<<<<<<< HEAD
         console.log(order);
+=======
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
         this._order = order;
         this._customer = customer;
         this._paymentBanks = [];

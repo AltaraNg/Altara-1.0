@@ -3,7 +3,11 @@ import VueRouter from 'vue-router';
 import Flash from '../utilities/flash';
 import { store } from '../store/store';
 import { routerHistory, writeHistory } from 'vue-router-back-button';
+<<<<<<< HEAD
 import nventory from '../utilities/inventory.json';
+=======
+
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
 
 const Home = () =>
     import ('../views/HomePage.vue');
@@ -243,13 +247,7 @@ const router = new VueRouter({
                 { path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: { mode: 'edit' } },
                 { path: 'products/create', component: ProductForm, name: 'productCreate', meta: { mode: 'create' } },
 
-                {
-                    path: 'inventory',
-                    component: DataViewer,
-                    meta: { appModel: 'inventory', source: '/api/product', new: '/log/products' }
-                },
-                { path: 'products/:id/edit', component: ProductForm, name: 'productEdit', meta: { mode: 'edit' } },
-                { path: 'products/create', component: ProductForm, name: 'productCreate', meta: { mode: 'create' } },
+
 
                 {
                     path: 'categories',

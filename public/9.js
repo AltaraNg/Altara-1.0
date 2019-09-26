@@ -250,6 +250,78 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
 
 function initialize(to) {
     var urls = { create: "/api/product/create", edit: "/api/product/" + to.params.id + "/edit" };
@@ -262,6 +334,7 @@ exports.default = {
     data: function data() {
         return {
             form: {},
+<<<<<<< HEAD
             branches: [],
             products: [],
             mode: null,
@@ -271,6 +344,81 @@ exports.default = {
             method: 'POST',
             statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }],
             img_url: ''
+=======
+            branches: [{
+                'id': 1,
+                'name': 'Ikolaba'
+
+            }, {
+                'id': 2,
+                'name': 'Mushin'
+
+            }, {
+                'id': 3,
+                'name': 'Ojota'
+
+            }],
+            brands: [{
+                'id': 1,
+                'name': 'Nokia'
+
+            }, {
+                'id': 2,
+                'name': 'Hisense'
+
+            }, {
+                'id': 3,
+                'name': 'Samsung'
+
+            }, {
+                'id': 4,
+                'name': 'Jinsung'
+
+            }],
+            suppliers: [{
+                'id': 1,
+                'name': 'Panasonic'
+
+            }, {
+                'id': 2,
+                'name': 'Thomasson'
+
+            }, {
+                'id': 3,
+                'name': 'Indomitable'
+
+            }, {
+                'id': 4,
+                'name': 'Sunbo Electronics'
+
+            }],
+            products: [{
+                'id': 1,
+                'name': 'Fridge'
+
+            }, {
+                'id': 2,
+                'name': 'Phone'
+
+            }, {
+                'id': 3,
+                'name': 'Motorcycle'
+
+            }, {
+                'id': 4,
+                'name': 'Sewing Machine'
+
+            }],
+            mode: null,
+            error: {},
+            show: false,
+            showModalContent: false,
+            store: '/api/product',
+            product: 1,
+            method: 'POST',
+            statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }]
+
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -290,6 +438,10 @@ exports.default = {
         prepareForm: function prepareForm(data) {
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
             _vue2.default.set(this.$data, 'form', data.form);
+<<<<<<< HEAD
+=======
+            _vue2.default.set(this.$data, 'branches', data.branches);
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
             _vue2.default.set(this.$data, 'brands', data.brands);
             _vue2.default.set(this.$data, 'categories', data.categories);
             if (this.mode === 'edit') {
@@ -297,6 +449,7 @@ exports.default = {
                 this.method = 'PUT';
             }
             this.show = true;
+<<<<<<< HEAD
         },
         modal: function modal(name) {
             $("#" + name).modal('toggle');
@@ -355,6 +508,63 @@ exports.default = {
             deep: true
         }
     }
+=======
+        },
+        modal: function modal(name) {
+            $("#" + name).modal('toggle');
+            /*this method is used to automatically
+            * toggle the modal with the id of
+            * "name passed to it"*/
+            this.errors.clear(name);
+        },
+        displayAmortization: function displayAmortization() {
+            var _this = this;
+
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    _this.product = parseInt(_this.form.quantity);
+                    _this.showModalContent = true;
+                    return $("#amortization").modal('toggle');
+                } else _this.$networkErr('form');
+            });
+        },
+        onSave: function onSave() {
+            var _this2 = this;
+
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this2.$network()) {
+                        _this2.$LIPS(true);
+                        (0, _api.byMethod)(_this2.method, _this2.store, _this2.form).then(function (_ref2) {
+                            var data = _ref2.data;
+
+                            if (data.saved || data.updated) {
+                                (0, _log.log)(data.log, data.staff_id);
+                                _vue2.default.set(_this2.$data, 'form', data.form);
+                                _flash2.default.setSuccess(data.message, 5000);
+                                if (data['updated']) _this2.$router.push('/log/products');
+                            }
+                        }).catch(function (_ref3) {
+                            var r = _ref3.response;
+                            var data = r.data,
+                                status = r.status;
+
+                            if (status === 422) {
+                                _this2.error = data.errors ? data.errors : data;
+                                _this2.$networkErr('unique');
+                            }
+                        }).finally(function () {
+                            _this2.$scrollToTop();
+                            _this2.$LIPS(false);
+                        });
+                    } else _this2.$networkErr();
+                } else _this2.$networkErr('form');
+            });
+        },
+        processForm: function processForm() {}
+    },
+    watch: {}
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
 };
 
 /***/ }),
@@ -418,7 +628,11 @@ var render = function() {
         _c("custom-header", {
           attrs: {
             to: "/log/inventory",
+<<<<<<< HEAD
             title: _vm.mode + " inventory",
+=======
+            title: "Generate Inventory",
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
             "button-title": "view Inventory!"
           }
         }),
@@ -431,7 +645,11 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
+<<<<<<< HEAD
                   return _vm.onSave($event)
+=======
+                  return _vm.processForm($event)
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                 }
               }
             },
@@ -453,6 +671,17 @@ var render = function() {
                     },
                     [
                       _c("label", [_vm._v("Product")]),
+<<<<<<< HEAD
+                      _vm._v(" "),
+                      _c("typeahead", {
+                        attrs: { options: _vm.products, caption: "name" },
+                        model: {
+                          value: _vm.form.product_id,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "product_id", $$v)
+                          },
+                          expression: "form.product_id"
+=======
                       _vm._v(" "),
                       _c("typeahead", {
                         attrs: { options: _vm.products, caption: "name" },
@@ -475,6 +704,31 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
+                      _c("label", [_vm._v("Brand")]),
+                      _vm._v(" "),
+                      _c("typeahead", {
+                        attrs: { options: _vm.brands, caption: "name" },
+                        model: {
+                          value: _vm.form.brand_id,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "brand_id", $$v)
+                          },
+                          expression: "form.brand_id"
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
+                    [
+<<<<<<< HEAD
                       _c("label", [_vm._v("Branch")]),
                       _vm._v(" "),
                       _c("typeahead", {
@@ -492,6 +746,58 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
+=======
+                      _c("label", [_vm._v("Feature")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.feature,
+                            expression: "form.feature"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.form.feature },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "feature", $event.target.value)
+                          }
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", [_vm._v("Branch")]),
+                      _vm._v(" "),
+                      _c("typeahead", {
+                        attrs: { options: _vm.branches, caption: "name" },
+                        model: {
+                          value: _vm.form.branch_id,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "branch_id", $$v)
+                          },
+                          expression: "form.branch_id"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
+                  _vm._v(" "),
+                  _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -507,33 +813,54 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
+<<<<<<< HEAD
                             value: _vm.form.retail_price,
                             expression: "form.retail_price"
+=======
+                            value: _vm.form.quantity,
+                            expression: "form.quantity"
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                           },
                           {
                             name: "validate",
                             rawName: "v-validate",
+<<<<<<< HEAD
                             value: "required|max:50|numerical",
                             expression: "'required|max:50|numerical'"
+=======
+                            value: "required|max:50|numeric",
+                            expression: "'required|max:50|numeric'"
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                           }
                         ],
                         staticClass: "form-control",
                         attrs: {
+<<<<<<< HEAD
                           name: "price",
                           placeholder: "retail price",
                           type: "number"
                         },
                         domProps: { value: _vm.form.retail_price },
+=======
+                          name: "quantity",
+                          placeholder: "retail price"
+                        },
+                        domProps: { value: _vm.form.quantity },
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
+<<<<<<< HEAD
                             _vm.$set(
                               _vm.form,
                               "retail_price",
                               $event.target.value
                             )
+=======
+                            _vm.$set(_vm.form, "quantity", $event.target.value)
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                           }
                         }
                       }),
@@ -553,6 +880,7 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
+<<<<<<< HEAD
                       _c("label", { staticClass: "w-100 float-left" }, [
                         _vm._v("Availability Status")
                       ]),
@@ -611,6 +939,22 @@ var render = function() {
                         : _vm._e()
                     ],
                     2
+=======
+                      _c("label", [_vm._v("Supplier")]),
+                      _vm._v(" "),
+                      _c("typeahead", {
+                        attrs: { options: _vm.suppliers, caption: "name" },
+                        model: {
+                          value: _vm.form.supplier_id,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "supplier_id", $$v)
+                          },
+                          expression: "form.supplier_id"
+                        }
+                      })
+                    ],
+                    1
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                   )
                 ]
               ),
@@ -639,13 +983,22 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn bg-default",
-                        attrs: { disabled: _vm.$isProcessing, type: "submit" }
+                        attrs: { disabled: _vm.$isProcessing, type: "submit" },
+                        on: {
+                          click: function($event) {
+                            _vm.displayAmortization()
+                          }
+                        }
                       },
                       [
                         _vm._v(
+<<<<<<< HEAD
                           "\n                            " +
                             _vm._s(_vm._f("capitalize")(_vm.mode)) +
                             " Product "
+=======
+                          "\n                            Generate Inventory "
+>>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
@@ -656,7 +1009,166 @@ var render = function() {
               ])
             ]
           )
-        ])
+        ]),
+        _vm._v(" "),
+        _vm.showModalContent
+          ? _c(
+              "div",
+              {
+                staticClass: "modal fade repayment",
+                attrs: { id: "amortization" }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "modal-dialog modal-xl",
+                    attrs: { role: "document" }
+                  },
+                  [
+                    _c("div", { staticClass: "modal-content" }, [
+                      _c("div", { staticClass: "modal-header py-2" }, [
+                        _c("h6", { staticClass: "modal-title py-1" }, [
+                          _vm._v(
+                            "\n                            Inventory Order\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "close py-1",
+                            attrs: {
+                              "aria-label": "Close",
+                              "data-dismiss": "modal"
+                            }
+                          },
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass: "modal-close text-danger",
+                                attrs: { "aria-hidden": "true" }
+                              },
+                              [_c("i", { staticClass: "fas fa-times" })]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-body" }, [
+                        _c("div", { staticClass: "table-responsive" }, [
+                          _c("h5", { staticClass: "mt-3 mb-0" }, [
+                            _vm._v("Order Information")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "table",
+                            { staticClass: "table table-bordered" },
+                            [
+                              _c("thead", [
+                                _c("tr", { staticClass: "table-separator" }, [
+                                  _c("th", [_vm._v("s/n")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("inventory number")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Product Sku")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Name")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Branch")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Order Id")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Sold date")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Seller_id")])
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.product, function(n) {
+                                return _c("tbody", [
+                                  _c("tr", [
+                                    _c(
+                                      "td",
+                                      { staticClass: "font-weight-bold" },
+                                      [
+                                        _vm._v(
+                                          _vm._s(n) +
+                                            "\n                                    "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("td"),
+                                    _vm._v(" "),
+                                    _c("td"),
+                                    _vm._v(" "),
+                                    _c(
+                                      "td",
+                                      { staticClass: "font-weight-bold" },
+                                      [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form.productName,
+                                              expression: "form.productName"
+                                            }
+                                          ],
+                                          attrs: { name: "" },
+                                          domProps: {
+                                            value: _vm.form.productName
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                _vm.form,
+                                                "productName",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "td",
+                                      { staticClass: "font-weight-bold" },
+                                      [
+                                        _vm._v(
+                                          _vm._s(n) +
+                                            "\n                                    "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("td"),
+                                    _vm._v(" "),
+                                    _c("td"),
+                                    _vm._v(" "),
+                                    _c("td", {
+                                      staticClass: "font-weight-bold"
+                                    })
+                                  ])
+                                ])
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      ])
+                    ])
+                  ]
+                )
+              ]
+            )
+          : _vm._e()
       ],
       1
     )
