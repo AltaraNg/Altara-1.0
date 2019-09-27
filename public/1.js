@@ -257,11 +257,7 @@ exports.default = {
                 };
                 fileReader.readAsDataURL(this.preview);
             } else if (typeof this.preview === 'string') {
-<<<<<<< HEAD
                 this.image = 'https://s3.eu-west-2.amazonaws.com/altara-one/' + this.preview;
-=======
-                this.image = 'https://s3.eu-west-2.amazonaws.com/altara-one/product/' + this.preview;
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
             } else this.image = null;
         }
     }

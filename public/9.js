@@ -250,8 +250,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-<<<<<<< HEAD
-=======
 //
 //
 //
@@ -321,7 +319,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
 
 function initialize(to) {
     var urls = { create: "/api/product/create", edit: "/api/product/" + to.params.id + "/edit" };
@@ -334,17 +331,6 @@ exports.default = {
     data: function data() {
         return {
             form: {},
-<<<<<<< HEAD
-            branches: [],
-            products: [],
-            mode: null,
-            error: {},
-            show: false,
-            store: '/api/product',
-            method: 'POST',
-            statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }],
-            img_url: ''
-=======
             branches: [{
                 'id': 1,
                 'name': 'Ikolaba'
@@ -418,7 +404,6 @@ exports.default = {
             method: 'POST',
             statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }]
 
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -438,10 +423,7 @@ exports.default = {
         prepareForm: function prepareForm(data) {
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
             _vue2.default.set(this.$data, 'form', data.form);
-<<<<<<< HEAD
-=======
             _vue2.default.set(this.$data, 'branches', data.branches);
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
             _vue2.default.set(this.$data, 'brands', data.brands);
             _vue2.default.set(this.$data, 'categories', data.categories);
             if (this.mode === 'edit') {
@@ -449,66 +431,6 @@ exports.default = {
                 this.method = 'PUT';
             }
             this.show = true;
-<<<<<<< HEAD
-        },
-        modal: function modal(name) {
-            $("#" + name).modal('toggle');
-            /*this method is used to automatically
-            * toggle the modal with the id of
-            * "name passed to it"*/
-            this.errors.clear(name);
-        },
-        onSave: function onSave() {
-            var _this = this;
-
-            this.$validator.validateAll().then(function (result) {
-                if (result) {
-                    if (_this.$network()) {
-                        _this.$LIPS(true);
-                        (0, _api.byMethod)(_this.method, _this.store, _this.form).then(function (_ref2) {
-                            var data = _ref2.data;
-
-                            if (data.saved || data.updated) {
-                                (0, _log.log)(data.log, data.staff_id);
-                                _vue2.default.set(_this.$data, 'form', data.form);
-                                _flash2.default.setSuccess(data.message, 5000);
-                                if (data['updated']) _this.$router.push('/log/products');
-                            }
-                        }).catch(function (_ref3) {
-                            var r = _ref3.response;
-                            var data = r.data,
-                                status = r.status;
-
-                            if (status === 422) {
-                                _this.error = data.errors ? data.errors : data;
-                                _this.$networkErr('unique');
-                            }
-                        }).finally(function () {
-                            _this.$scrollToTop();
-                            _this.$LIPS(false);
-                        });
-                    } else _this.$networkErr();
-                } else _this.$networkErr('form');
-            });
-        }
-    },
-    watch: {
-        form: {
-            handler: function handler(val) {
-                var brand = this.brands.find(function (_ref4) {
-                    var id = _ref4.id;
-                    return id === val.brand_id;
-                });
-                var category = this.categories.find(function (_ref5) {
-                    var id = _ref5.id;
-                    return id === val.category_id;
-                });
-                _vue2.default.set(this.$data.form, 'name', val.feature + " " + (brand ? brand.name : '') + " " + (category ? category.name : ''));
-            },
-            deep: true
-        }
-    }
-=======
         },
         modal: function modal(name) {
             $("#" + name).modal('toggle');
@@ -564,7 +486,6 @@ exports.default = {
         processForm: function processForm() {}
     },
     watch: {}
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
 };
 
 /***/ }),
@@ -628,11 +549,7 @@ var render = function() {
         _c("custom-header", {
           attrs: {
             to: "/log/inventory",
-<<<<<<< HEAD
-            title: _vm.mode + " inventory",
-=======
             title: "Generate Inventory",
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
             "button-title": "view Inventory!"
           }
         }),
@@ -645,11 +562,7 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
-<<<<<<< HEAD
-                  return _vm.onSave($event)
-=======
                   return _vm.processForm($event)
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                 }
               }
             },
@@ -671,17 +584,6 @@ var render = function() {
                     },
                     [
                       _c("label", [_vm._v("Product")]),
-<<<<<<< HEAD
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.products, caption: "name" },
-                        model: {
-                          value: _vm.form.product_id,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "product_id", $$v)
-                          },
-                          expression: "form.product_id"
-=======
                       _vm._v(" "),
                       _c("typeahead", {
                         attrs: { options: _vm.products, caption: "name" },
@@ -714,7 +616,6 @@ var render = function() {
                             _vm.$set(_vm.form, "brand_id", $$v)
                           },
                           expression: "form.brand_id"
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                         }
                       })
                     ],
@@ -728,25 +629,6 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-<<<<<<< HEAD
-                      _c("label", [_vm._v("Branch")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.branches, caption: "name" },
-                        model: {
-                          value: _vm.form.category_id,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "category_id", $$v)
-                          },
-                          expression: "form.category_id"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
-=======
                       _c("label", [_vm._v("Feature")]),
                       _vm._v(" "),
                       _c("input", {
@@ -795,7 +677,6 @@ var render = function() {
                     ],
                     1
                   ),
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                   _vm._v(" "),
                   _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
                   _vm._v(" "),
@@ -813,54 +694,28 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-<<<<<<< HEAD
-                            value: _vm.form.retail_price,
-                            expression: "form.retail_price"
-=======
                             value: _vm.form.quantity,
                             expression: "form.quantity"
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                           },
                           {
                             name: "validate",
                             rawName: "v-validate",
-<<<<<<< HEAD
-                            value: "required|max:50|numerical",
-                            expression: "'required|max:50|numerical'"
-=======
                             value: "required|max:50|numeric",
                             expression: "'required|max:50|numeric'"
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                           }
                         ],
                         staticClass: "form-control",
                         attrs: {
-<<<<<<< HEAD
-                          name: "price",
-                          placeholder: "retail price",
-                          type: "number"
-                        },
-                        domProps: { value: _vm.form.retail_price },
-=======
                           name: "quantity",
                           placeholder: "retail price"
                         },
                         domProps: { value: _vm.form.quantity },
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-<<<<<<< HEAD
-                            _vm.$set(
-                              _vm.form,
-                              "retail_price",
-                              $event.target.value
-                            )
-=======
                             _vm.$set(_vm.form, "quantity", $event.target.value)
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                           }
                         }
                       }),
@@ -880,66 +735,6 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-<<<<<<< HEAD
-                      _c("label", { staticClass: "w-100 float-left" }, [
-                        _vm._v("Availability Status")
-                      ]),
-                      _vm._v(" "),
-                      _vm._l(_vm.statuses, function(ref) {
-                        var name = ref.name
-                        var value = ref.value
-                        return _c(
-                          "div",
-                          {
-                            staticClass: "radio p-0 col-md-6 col-6 float-left"
-                          },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.is_active,
-                                  expression: "form.is_active"
-                                },
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "required",
-                                  expression: "'required'"
-                                }
-                              ],
-                              attrs: {
-                                id: name,
-                                name: "status",
-                                type: "radio"
-                              },
-                              domProps: {
-                                value: value,
-                                checked: _vm._q(_vm.form.is_active, value)
-                              },
-                              on: {
-                                change: function($event) {
-                                  _vm.$set(_vm.form, "is_active", value)
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", { attrs: { for: name } }, [
-                              _vm._v(_vm._s(name))
-                            ])
-                          ]
-                        )
-                      }),
-                      _vm._v(" "),
-                      _vm.errors.first("status")
-                        ? _c("small", [
-                            _vm._v(_vm._s(_vm.errors.first("status")))
-                          ])
-                        : _vm._e()
-                    ],
-                    2
-=======
                       _c("label", [_vm._v("Supplier")]),
                       _vm._v(" "),
                       _c("typeahead", {
@@ -954,7 +749,6 @@ var render = function() {
                       })
                     ],
                     1
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                   )
                 ]
               ),
@@ -992,13 +786,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-<<<<<<< HEAD
-                          "\n                            " +
-                            _vm._s(_vm._f("capitalize")(_vm.mode)) +
-                            " Product "
-=======
                           "\n                            Generate Inventory "
->>>>>>> cd37893554694dcb2345da283ce5807e7e2ae099
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
