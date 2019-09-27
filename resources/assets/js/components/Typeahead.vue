@@ -45,6 +45,10 @@
             value: {
                 type: [String, Number],
                 default: null
+            },
+            nameValue: {
+                type: [String, Number],
+                default: null
             }
         },
         data() {
@@ -64,7 +68,10 @@
         watch: {
             value: function (newVal) {
                 if (newVal) this.select((this.options.find(option => option.id === newVal)))
-            }
+            },
+            // nameValue: function (newName) {
+            //     if (newName) this.select((this.options.find(option => option.name === newName)))
+            // }
         },
         methods: {
             onDownKey() {

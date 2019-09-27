@@ -43,7 +43,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64,38 +64,26 @@ exports.default = {
     data: function data() {
         return {
             portals: [{
-                url: 'verification', title: 'Document Verification', url_c: 'Verify Registered Customer!',
-                desc: 'For Verification of registered customers'
+                url: 'customer/create',
+                title: 'Customer Registration',
+                url_c: 'Register new customer now!',
+                desc: 'Registering new customers'
             }, {
-                url: 'customer/update', title: 'Customer Update', url_c: 'Update customers details!',
-                desc: 'For Updating existing customers details'
+                url: 'customer/update',
+                title: 'Customer Update',
+                url_c: 'Update customers details!',
+                desc: 'Updating customers details'
             }, {
-                url: 'message', title: 'Messaging', url_c: 'Send messages!',
-                desc: 'For sending messages to customers'
+                url: 'report',
+                title: 'Sales Reporting',
+                url_c: 'Get Reports',
+                desc: 'Real time DSA reports!',
+                aces: this.$store.getters.auth('DSACaptain')
             }, {
-                url: 'reminder/sms', title: 'Customer SMS Reminder', url_c: 'View SMS reminders',
-                desc: 'View all due SMS reminders!'
-            }, {
-                url: 'reminder/call', title: 'Customer Call Reminder', url_c: 'View Call reminders',
-                desc: 'View all due Call reminders!'
-            }, {
-                url: 'reminder/collection', title: 'Collection list', url_c: 'View collections',
-                desc: 'View all due collection!'
-            }, {
-                url: 'reminder/recovery', title: 'Recovery list', url_c: 'View Recoveries',
-                desc: 'View all due recovery!'
-            }, {
-                url: 'reminder/external-recovery', title: 'External recovery list', url_c: 'View Recoveries',
-                desc: 'View all due recovery!'
-            }, {
-                url: 'all-overdue', title: 'All overdue payments list', url_c: 'View All Overdue payments',
-                desc: 'View all overdue payment!'
-            }, {
-                url: '/customer', title: 'Customer List', url_c: 'View Customer List',
+                url: '/customer',
+                title: 'Customer List',
+                url_c: 'View Customer List',
                 desc: 'View all registered customers!'
-            }, {
-                url: 'sales', title: 'Sales List', url_c: 'View Sales List',
-                desc: 'View all Sales!'
             }]
         };
     }
@@ -108,47 +96,7 @@ exports.default = {
 //
 //
 //
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20f97f30\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/HomePage.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "fade" } }, [
-    _c(
-      "div",
-      _vm._l(_vm.portals, function(portal) {
-        return _c(
-          "div",
-          [
-            _c("portal-card", {
-              attrs: {
-                url: portal.url,
-                title: portal.title,
-                url_c: portal.url_c,
-                desc: portal.desc
-              }
-            })
-          ],
-          1
-        )
-      })
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-20f97f30", module.exports)
-  }
-}
+//
 
 /***/ }),
 
@@ -217,6 +165,48 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3c1dfcb6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/HomePage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "fade" } }, [
+    _c(
+      "div",
+      _vm._l(_vm.portals, function(portal) {
+        return _c(
+          "div",
+          [
+            _c("portal-card", {
+              attrs: {
+                url: portal.url,
+                title: portal.title,
+                url_c: portal.url_c,
+                desc: portal.desc,
+                aces: portal.aces
+              }
+            })
+          ],
+          1
+        )
+      })
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3c1dfcb6", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/portalCard.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -265,15 +255,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/DVA/HomePage.vue":
+/***/ "./resources/assets/js/views/DSA/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/HomePage.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20f97f30\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3c1dfcb6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/HomePage.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -290,7 +280,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\HomePage.vue"
+Component.options.__file = "resources\\assets\\js\\views\\DSA\\HomePage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -299,9 +289,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-20f97f30", Component.options)
+    hotAPI.createRecord("data-v-3c1dfcb6", Component.options)
   } else {
-    hotAPI.reload("data-v-20f97f30", Component.options)
+    hotAPI.reload("data-v-3c1dfcb6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
