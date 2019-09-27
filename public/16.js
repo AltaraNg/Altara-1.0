@@ -32,7 +32,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/supplier/form.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61,80 +61,9 @@ var _customHeader2 = _interopRequireDefault(_customHeader);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function initialize(to) {
-    var urls = { create: "/api/supplier/create", edit: "/api/supplier/" + to.params.id + "/edit" };
+    var urls = { create: "/api/category/create", edit: "/api/category/" + to.params.id + "/edit" };
     return urls[to.meta.mode];
 } //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -175,13 +104,11 @@ exports.default = {
     data: function data() {
         return {
             form: {},
-            banks: '',
             mode: null,
             error: {},
             show: false,
-            store: '/api/supplier',
-            method: 'POST',
-            statuses: [{ name: 'active', value: 1 }, { name: 'inactive', value: 0 }]
+            store: '/api/category',
+            method: 'POST'
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -199,16 +126,14 @@ exports.default = {
 
     methods: {
         prepareForm: function prepareForm(_ref2) {
-            var form = _ref2.form,
-                banks = _ref2.banks;
+            var form = _ref2.form;
 
             console.log(form);
             console.log(banks);
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
             _vue2.default.set(this.$data, 'form', form);
-            _vue2.default.set(this.$data, 'banks', banks);
             if (this.mode === 'edit') {
-                this.store = "/api/supplier/" + this.$route.params.id;
+                this.store = "/api/category/" + this.$route.params.id;
                 this.method = 'PUT';
             }
             this.show = true;
@@ -227,8 +152,9 @@ exports.default = {
                                 (0, _log.log)(data.log, _this.form.sku);
                                 _vue2.default.set(_this.$data, 'form', data.form);
                                 _flash2.default.setSuccess(data.message, 5000);
-                                if (data['updated']) _this.$router.push('/log/suppliers');
+                                if (data['updated']) _this.$router.push('/log/categories');
                             }
+                            _this.error = {};
                         }).catch(function (_ref4) {
                             var r = _ref4.response;
                             var data = r.data,
@@ -246,6 +172,7 @@ exports.default = {
                 } else _this.$networkErr('form');
             });
         }
+<<<<<<< HEAD
     },
     watch: {
 
@@ -267,6 +194,8 @@ exports.default = {
             },
             deep: true
         }
+=======
+>>>>>>> d980f923dd1e6338cebb330781f160d1b0141612
     }
 };
 
@@ -316,7 +245,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-424fefff\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/supplier/form.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0e6ca50d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -330,9 +259,9 @@ var render = function() {
       [
         _c("custom-header", {
           attrs: {
-            to: "/log/suppliers",
-            title: _vm.mode + " Supplier",
-            "button-title": "view suppliers!"
+            to: "/log/categories",
+            title: _vm.mode + " Category",
+            "button-title": "view categories!"
           }
         }),
         _vm._v(" "),
@@ -358,57 +287,10 @@ var render = function() {
                   _c(
                     "div",
                     {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                      staticClass: "form-group col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("SKU")]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.sku,
-                            expression: "form.sku"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          disabled: "",
-                          name: "sku",
-                          placeholder: "supplier sku",
-                          type: "text"
-                        },
-                        domProps: { value: _vm.form.sku },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.form, "sku", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm.errors.first("sku")
-                        ? _c("small", [_vm._v(_vm._s(_vm.errors.first("sku")))])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.error.sku
-                        ? _c("small", [_vm._v(_vm._s(_vm.error.sku[0]))])
-                        : _vm._e()
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Business Name")]),
+                      _c("label", [_vm._v("Category name")]),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
@@ -425,10 +307,10 @@ var render = function() {
                             expression: "'required|max:50|alpha_spaces'"
                           }
                         ],
-                        staticClass: "form-control",
+                        staticClass: "form-control mb-2",
                         attrs: {
-                          name: "name",
-                          placeholder: "supplier name",
+                          placeholder: "category name",
+                          name: "category name",
                           type: "text"
                         },
                         domProps: { value: _vm.form.name },
@@ -442,16 +324,17 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm.errors.first("name")
+                      _vm.errors.first("category name")
                         ? _c("small", [
-                            _vm._v(_vm._s(_vm.errors.first("name")))
+                            _vm._v(_vm._s(_vm.errors.first("category name")))
                           ])
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.error.sku
+                      _vm.error.name
                         ? _c("small", [_vm._v(_vm._s(_vm.error.name[0]))])
                         : _vm._e()
                     ]
+<<<<<<< HEAD
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
@@ -974,6 +857,9 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" })
+=======
+                  )
+>>>>>>> d980f923dd1e6338cebb330781f160d1b0141612
                 ]
               ),
               _vm._v(" "),
@@ -987,9 +873,13 @@ var render = function() {
                           "router-link",
                           {
                             staticClass: "mx-5 text-link mt-4 pt-2",
-                            attrs: { to: "/log/suppliers" }
+                            attrs: { to: "/log/categories" }
                           },
-                          [_vm._v("Cancel")]
+                          [
+                            _vm._v(
+                              "\n                            Cancel\n                        "
+                            )
+                          ]
                         )
                       : _vm._e(),
                     _vm._v(" "),
@@ -1003,7 +893,7 @@ var render = function() {
                         _vm._v(
                           "\n                            " +
                             _vm._s(_vm._f("capitalize")(_vm.mode)) +
-                            "  "
+                            " Category "
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
@@ -1026,7 +916,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-424fefff", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-0e6ca50d", module.exports)
   }
 }
 
@@ -1106,15 +996,15 @@ function log(action, description) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/LOG/supplier/form.vue":
+/***/ "./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/supplier/form.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/category/form.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-424fefff\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/supplier/form.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0e6ca50d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/category/form.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1131,7 +1021,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\LOG\\supplier\\form.vue"
+Component.options.__file = "resources\\assets\\js\\views\\LOG\\category\\form.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1140,9 +1030,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-424fefff", Component.options)
+    hotAPI.createRecord("data-v-0e6ca50d", Component.options)
   } else {
-    hotAPI.reload("data-v-424fefff", Component.options)
+    hotAPI.reload("data-v-0e6ca50d", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

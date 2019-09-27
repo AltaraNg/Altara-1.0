@@ -11,11 +11,11 @@
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Product</label>
-                            <typeahead :options="products" caption="name" v-model="form.product_id"/>
+                            <typeahead :options="products" caption="name" v-model="form.product"/>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Brand</label>
-                            <typeahead :options="brands" caption="name" v-model="form.brand_id"/>
+                            <typeahead :options="brands" caption="name" v-model="form.brand"/>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Feature</label>
@@ -23,7 +23,7 @@
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Branch</label>
-                            <typeahead :options="branches" caption="name" v-model="form.branch_id"/>
+                            <typeahead :options="branches" caption="name" v-model="form.branch"/>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Supplier</label>
-                            <typeahead :options="suppliers" caption="name" v-model="form.supplier_id"/>
+                            <typeahead :options="suppliers" caption="name" v-model="form.supplier"/>
                         </div>
 
                         <!--<div class="form-group col-md-6 col-12 float-left px-0 px-md-3">-->
@@ -94,18 +94,18 @@
                                         <th>Seller_id</th>
                                     </tr>
                                     </thead>
-                                    <tbody v-for="n in product">
+                                    <tbody v-for="n in number">
                                     <tr >
                                         <td class="font-weight-bold">{{n}}
                                         </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="font-weight-bold"><input name="" v-model="form.productName"/></td>
+                                        <td>{{product.id}}</td>
+                                        <td>{{product.name}}</td>
+                                        <td class="font-weight-bold">{{branch.name}}</td>
                                         <td class="font-weight-bold">{{n}}
                                         </td>
                                         <td></td>
                                         <td></td>
-                                        <td class="font-weight-bold"></td>
+                                        <td class="font-weight-bold">{{supplier.name}}</td>
                                     </tr>
                                     </tbody>
 
@@ -232,7 +232,12 @@
                 show: false,
                 showModalContent: false,
                 store: '/api/product',
-                product: 1,
+                number: 0,
+                product: null,
+                branch: null,
+                brand: null,
+                supplier: null,
+
                 method: 'POST',
                 statuses: [{name: 'available', value: 1}, {name: 'unavailable', value: 0}],
 
@@ -264,11 +269,17 @@
                 * "name passed to it"*/
                 this.errors.clear(name);
             },
+            getValue(id, array){
+                return array.find(damo => damo.id === id);
+            },
 
             displayAmortization() {
                 this.$validator.validateAll().then(result => {
                     if (result){
-                        this.product = parseInt(this.form.quantity);
+                        this.number = parseInt(this.form.quantity);
+                        this.product = this.getValue(this.form.product, this.products);
+                        this.branch = this.getValue(this.form.branch, this.branches);
+                        this.supplier = this.getValue(this.form.supplier, this.suppliers);
                         this.showModalContent = true;
                         return $(`#amortization`).modal('toggle');
                     }else this.$networkErr('form');
