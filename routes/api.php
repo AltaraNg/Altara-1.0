@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'bank' => 'BankController',
         'state' => 'StateController',
         'brand' => 'BrandController',
+        'altara_pay_report' => 'AltaraPayReportController',
         'branch' => 'BranchController',
         'address' => 'AddressController',
         'message' => 'MessageController',

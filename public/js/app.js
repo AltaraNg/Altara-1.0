@@ -5884,89 +5884,6 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/es6-promise/auto.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -43983,8 +43900,8 @@ var BranchForm = function BranchForm() {
 var POSForm = function POSForm() {
     return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/pos/form.vue"));
 };
-var PaymentForm = function PaymentForm() {
-    return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/payment/form.vue"));
+var AltaraPayReport = function AltaraPayReport() {
+    return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/altara-pay-report/form.vue"));
 };
 var CustomerLookup = function CustomerLookup() {
     return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/lookup/lookup.vue"));
@@ -44061,7 +43978,7 @@ var router = new _vueRouter2.default({
             component: AttendanceForm,
             name: 'attendanceCreateFsl',
             meta: { mode: 'create' }
-        }, { path: 'sales', component: OrderList, name: 'sales-fsl' }, { path: 'sales/create', component: POSForm, name: 'post-sales' }, { path: 'payment', component: PaymentForm, name: 'down-payment' }, { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva' }]
+        }, { path: 'sales', component: OrderList, name: 'sales-fsl' }, { path: 'sales/create', component: POSForm, name: 'post-sales' }, { path: 'altara-pay-report/create', component: AltaraPayReport, name: 'altara-pay-report', meta: { mode: 'create' } }, { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva' }]
     }, {
         path: '/log', component: LOG, meta: { LOG: true }, children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, {
             path: 'brands',

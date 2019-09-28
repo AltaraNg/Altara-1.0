@@ -34,11 +34,8 @@
                         url: 'sales', title: 'Sales List', url_c: 'View Sales List',
                         desc: 'View all Sales!', aces: this.auth('FSLLead')
                     }, {
-                        url: 'sales/create', title: 'Temp POS', url_c: 'Post Daily Sales',
-                        desc: 'Temp POS!', aces: this.auth('supervisor')
-                    }, {
-                        url: 'payment', title: 'Online Payment', url_c: 'Make Online Payment for Formal Sector',
-                        desc: 'Online Payment', aces: this.auth('supervisor')
+                        url: 'altara-pay-report/create', title: 'Altara Pay Daily Report ', url_c: 'Send Daily Showroom Report',
+                        desc: 'Altara Pay', aces: this.auth('supervisor')
                     }, {
                         url: 'lookup', title: 'Customer Lookup', url_c: 'Manage customer repayment details',
                         desc: 'Customer Lookup',
