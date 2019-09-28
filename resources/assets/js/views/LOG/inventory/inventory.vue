@@ -37,24 +37,13 @@
                             <typeahead :options="suppliers" caption="name" v-model="form.supplier"/>
                         </div>
 
-                        <!--<div class="form-group col-md-6 col-12 float-left px-0 px-md-3">-->
-                            <!--<label class="w-100 float-left">Availability Status</label>-->
-                            <!--<div class="radio p-0 col-md-6 col-6 float-left" v-for="{name,value} in statuses">-->
-                                <!--<input :id="name" :value="value" name="status" type="radio" v-model="form.is_active"-->
-                                       <!--v-validate="'required'">-->
-                                <!--<label :for="name">{{name}}</label>-->
-                            <!--</div>-->
-                            <!--<small v-if="errors.first('status')">{{ errors.first('status') }}</small>-->
-                        <!--</div>-->
-
-
-                    </div>
+               </div>
                     <div class="mb-5 px-0 row align-items-center">
                         <div class="clearfix d-flex justify-content-end w-100">
                             <router-link to="/log/products" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">
                                 Cancel
-                            </router-link>
-                            <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="displayAmortization()">
+                            </router-link>   
+                            <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="addProductForm()">
                                 Generate Inventory <i class="far fa-paper-plane ml-1"></i>
                             </button>
                         </div>
@@ -62,66 +51,68 @@
                 </form>
             </div>
 
-
-            <div class="modal fade repayment" id="amortization"  v-if="showModalContent">
-                <div class="modal-dialog modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">
-                                Inventory Order
-                            </h6>
-                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                                <span aria-hidden="true" class="modal-close text-danger">
-                                    <i class="fas fa-times"></i>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="modal-body">
-                            <div class="table-responsive">
-
-                                <h5 class="mt-3 mb-0">Order Information</h5>
-                                <table class="table table-bordered">
-                                    <thead>
-
+            <h5 class="mt-5 mb-0" v-if="canAddProduct">Add a new payment</h5>
+                                <table class="table table-bordered" v-if="canAddProduct">
+                                    <tbody class="text-center">
                                     <tr class="table-separator">
-                                        <th>s/n</th>
-                                        <th>inventory number</th>
-                                        <th>Product Sku</th>
-                                        <th>Name</th>
-                                        <th>Branch</th>
-                                        <th>Order Id</th>
-                                        <th>Sold date</th>
-                                        <th>Seller_id</th>
+                                        <td class="text-left">S/No.</td>
+                                        <th>Product SKU</th>
+                                        <th>Inventory SKU</th>
+                                        <th>Serial/IMEI Number</th>
+                                        <th>Recieved Date</th>
+                                        <th>Recieved By</th>
                                     </tr>
-                                    </thead>
-                                    <tbody v-for="n in number">
-                                    <tr >
-                                        <td class="font-weight-bold">{{n}}
-                                        </td>
-                                        <td>{{product.id}}</td>
-                                        <td>{{product.name}}</td>
-                                        <td class="font-weight-bold">{{branch.name}}</td>
-                                        <td class="font-weight-bold">{{n}}
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="font-weight-bold">{{supplier.name}}</td>
+                                    <tr v-for="(product,index) in productForm.products" >
+                                        <th>{{index+1}}</th>
+
+                                        <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" name="product_sku" type="text" 
+                                                       v-model="productForm.products[index].product_sku" disabled>
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" name="inventory_sku" type="text"  
+                                                 v-model="productForm.products[index].inventory_sku" disabled>
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                              <div class="form-group mb-0">
+                                                <input class="form-control" name="serial_no" type="text"  >
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                             <div class="form-group mb-0">
+                                                <input class="form-control" name="recieved_date" type="date"    >
+                                            </div>
+                                            <!-- <select class="custom-select w-100"
+                                                    v-model="productForm.payments[index]._payment_bank">
+                                                <option :value="id" v-for="{name, id} in getBanks">{{name}}</option>
+                                            </select> -->
+                                        </th>
+
+                                        <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" data-vv-as="date" name="date" type="text"
+                                                       :value="user.name" disabled>
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                            <button @click="deleteProduct(index)"
+                                                    class="ml-2 btn status status-sm my-sm-2 not-approved">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </th>
+
                                     </tr>
                                     </tbody>
-
                                 </table>
-
-
-
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
-
     </transition>
 </template>
 <script>
@@ -131,6 +122,7 @@
     import {byMethod, get} from '../../../utilities/api';
     import Typeahead from '../../../components/Typeahead';
     import CustomHeader from '../../../components/customHeader';
+    import Auth from '../../../utilities/auth';
 
 
     function initialize(to) {
@@ -144,6 +136,10 @@
         data() {
             return {
                 form: {},
+                 user: {
+                    name: Auth.state.user_name,
+                    id: Auth.state.user_id
+                },
                 branches: [
                     {
                         'id': 1,
@@ -240,6 +236,8 @@
 
                 method: 'POST',
                 statuses: [{name: 'available', value: 1}, {name: 'unavailable', value: 0}],
+                productForm: {products: []},
+                canAddProduct: true
 
             }
         },
@@ -260,34 +258,20 @@
                     this.method = 'PUT';
                 }
                 this.show = true;
+                this.canAddProduct = /*this.canUserAddPayment;*/ true;
+                this.productForm = {products: []};
             },
 
-            modal(name) {
-                $(`#${name}`).modal('toggle');
-                /*this method is used to automatically
-                * toggle the modal with the id of
-                * "name passed to it"*/
-                this.errors.clear(name);
+             processForm() {
+                // this.show = false;
+                // this.$LIPS(true);
+                // get(`/api/customer/lookup/${this.customer_id}`)
+                //     .then(res => this.updateView(res.data))
+                //     .catch(() => {
+                //         this.$LIPS(false);
+                //         Flash.setError('Error Fetching customer detail');
+                //     });
             },
-            getValue(id, array){
-                return array.find(damo => damo.id === id);
-            },
-
-            displayAmortization() {
-                this.$validator.validateAll().then(result => {
-                    if (result){
-                        this.number = parseInt(this.form.quantity);
-                        this.product = this.getValue(this.form.product, this.products);
-                        this.branch = this.getValue(this.form.branch, this.branches);
-                        this.supplier = this.getValue(this.form.supplier, this.suppliers);
-                        this.showModalContent = true;
-                        return $(`#amortization`).modal('toggle');
-                    }else this.$networkErr('form');
-                });
-
-
-
-    },
 
             onSave() {
                 this.$validator.validateAll().then(result => {
@@ -317,11 +301,36 @@
                     } else this.$networkErr('form');
                 })
             },
-            processForm() {
+    
 
+ addProductForm() {
+                
+                this.productForm.products.push({
+                    product_sku: 'AC/333/111',
+                    inventory_sku: 'IN/1234/ADFG',
+                    serial_no: 'ASFG76373B/123/ASS',
+                    recieved_date: this.$getDate(),
+                    _col: '',
+                    column: ''
+                });
 
+                this.reNumber();
+            },
 
-
+            deleteProduct(index) {
+                this.productForm.products.splice(index, 1);
+                this.reNumber();
+            },
+            
+              reNumber() {
+                this.productForm.products.forEach((product, index) => {
+                    /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
+                    * u want to display on the ui "4th repayment"
+                    * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
+                    let next =  index + 1;
+                    this.productForm.products[index]._col = next;
+                    this.productForm.products[index].column = this.$getColumn(next) + " Products";
+                })
             },
 
 

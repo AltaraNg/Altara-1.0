@@ -111,36 +111,6 @@ exports.default = {
         logReminder: function logReminder() {
             var _this = this;
 
-<<<<<<< HEAD
-            if (this.preview instanceof File) {
-                var fileReader = new FileReader();
-                fileReader.onload = function (event) {
-                    _this.image = event.target.result;
-                };
-                fileReader.readAsDataURL(this.preview);
-            } else if (typeof this.preview === 'string') {
-                this.image = 'https://s3.eu-west-2.amazonaws.com/altara-one/' + this.preview;
-            } else this.image = null;
-        }
-    }
-};
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _ImagePreview = __webpack_require__("./resources/assets/js/components/ImagePreview.vue");
-
-var _ImagePreview2 = _interopRequireDefault(_ImagePreview);
-=======
             this.$LIPS(true);
             delete this.order.reminder.order;
             delete this.order.reminder.canBeSelected;
@@ -153,7 +123,6 @@ var _ImagePreview2 = _interopRequireDefault(_ImagePreview);
         },
         logPromiseCall: function logPromiseCall() {
             var _this2 = this;
->>>>>>> d980f923dd1e6338cebb330781f160d1b0141612
 
             var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Reminder Logged!";
 
@@ -4143,6 +4112,7 @@ var Order = function () {
     function Order(order, customer) {
         _classCallCheck(this, Order);
 
+        console.log(order);
         this._order = order;
         this._customer = customer;
         this._paymentBanks = [];

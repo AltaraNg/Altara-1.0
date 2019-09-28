@@ -384,7 +384,7 @@
 
             displayAmortization(index) {
                 this.activeOrder = this.customer.orders[index];
-                this.canAddPayment = this.canUserAddPayment;
+                this.canAddPayment = /*this.canUserAddPayment;*/ true;
                 this.paymentForm = {payments: []};
                 this.showModalContent = true;
                 return $(`#amortization`).modal('toggle');
