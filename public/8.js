@@ -322,8 +322,6 @@ function initialize(to) {
 //
 //
 //
-//
-//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
@@ -455,6 +453,7 @@ exports.default = {
             //         Flash.setError('Error Fetching customer detail');
             //     });
         },
+        saveInventory: function saveInventory() {},
         onSave: function onSave() {
             var _this = this;
 
@@ -518,6 +517,26 @@ exports.default = {
             });
         }
     },
+    created: function created() {
+        var _this3 = this;
+
+        this.method = 'GET';
+        (0, _api.get)('http://127.0.0.1:8000/api/products').then(function (res) {
+            _this3.products = res.data.products;
+            console.log(_this3.products);
+        }).catch(function () {
+            _this3.$LIPS(false);
+            _flash2.default.setError('Error Fetching products');
+        });
+        (0, _api.get)('http://127.0.0.1:8000/api/suppliers').then(function (res) {
+            _this3.suppliers = res.data.suppliers;
+            console.log(_this3.suppliers);
+        }).catch(function () {
+            _this3.$LIPS(false);
+            _flash2.default.setError('Error Fetching suppliers');
+        });
+    },
+
     watch: {}
 };
 
@@ -632,85 +651,6 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Brand")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.brands, caption: "name" },
-                        model: {
-                          value: _vm.form.brand,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "brand", $$v)
-                          },
-                          expression: "form.brand"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Feature")]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.feature,
-                            expression: "form.feature"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "text" },
-                        domProps: { value: _vm.form.feature },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.form, "feature", $event.target.value)
-                          }
-                        }
-                      })
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Branch")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.branches, caption: "name" },
-                        model: {
-                          value: _vm.form.branch,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "branch", $$v)
-                          },
-                          expression: "form.branch"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
                   _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
                   _vm._v(" "),
                   _c(
@@ -768,7 +708,7 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Supplier")]),
+                      _c("label", [_vm._v("Supplier ID")]),
                       _vm._v(" "),
                       _c("typeahead", {
                         attrs: { options: _vm.suppliers, caption: "name" },
@@ -993,7 +933,23 @@ var render = function() {
                 2
               )
             ])
-          : _vm._e()
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "button",
+            {
+              staticClass:
+                "ml-2 btn status status-sm my-sm-2 bg-success align-content-md-center",
+              on: {
+                click: function($event) {
+                  _vm.saveInventory(_vm.index)
+                }
+              }
+            },
+            [_c("i", { staticClass: "fas fa-save" })]
+          )
+        ])
       ],
       1
     )

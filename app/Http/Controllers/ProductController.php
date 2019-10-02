@@ -24,6 +24,13 @@ class ProductController extends Controller
         ]);
     }
 
+    public function getProducts(){
+        $products = Product::all();
+        return response()->json([
+            'products'=> $products
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -13,18 +13,9 @@
                             <label>Product</label>
                             <typeahead :options="products" caption="name" v-model="form.product"/>
                         </div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Brand</label>
-                            <typeahead :options="brands" caption="name" v-model="form.brand"/>
-                        </div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Feature</label>
-                            <input class="form-control" type="text" v-model="form.feature"></input>
-                        </div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Branch</label>
-                            <typeahead :options="branches" caption="name" v-model="form.branch"/>
-                        </div>
+
+
+
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Quantity</label>
@@ -33,7 +24,7 @@
                             <small v-if="errors.first('price')">{{ errors.first('price') }}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Supplier</label>
+                            <label>Supplier ID</label>
                             <typeahead :options="suppliers" caption="name" v-model="form.supplier"/>
                         </div>
 
@@ -112,6 +103,13 @@
                                     </tr>
                                     </tbody>
                                 </table>
+            <div>
+
+            <button @click="saveInventory(index)"
+                    class="ml-2 btn status status-sm my-sm-2 bg-success align-content-md-center">
+                <i class="fas fa-save"></i>
+            </button>
+            </div>
         </div>
     </transition>
 </template>
@@ -273,6 +271,11 @@
                 //     });
             },
 
+            saveInventory(){
+
+
+            },
+
             onSave() {
                 this.$validator.validateAll().then(result => {
                     if (result) {
@@ -334,6 +337,29 @@
             },
 
 
+        },
+        created(){
+            this.method = 'GET';
+            get('http://127.0.0.1:8000/api/products').then(
+                res => {
+                    this.products = res.data.products;
+                    console.log(this.products);
+                }
+            ).catch( () => {
+                this.$LIPS(false);
+                Flash.setError('Error Fetching products');
+                }
+            );
+            get('http://127.0.0.1:8000/api/suppliers').then(
+                res => {
+                    this.suppliers = res.data.suppliers;
+                    console.log(this.suppliers);
+                }
+            ).catch( () => {
+                    this.$LIPS(false);
+                    Flash.setError('Error Fetching suppliers');
+                }
+            )
         },
         watch: {}
     }

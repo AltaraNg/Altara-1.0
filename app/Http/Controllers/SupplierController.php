@@ -38,6 +38,12 @@ class SupplierController extends Controller
             'banks' => $banks,
         ]);
     }
+    public function getSuppliers(){
+        $suppliers = Supplier::all();
+        return response()->json([
+            'suppliers'=> $suppliers
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
