@@ -49,6 +49,7 @@
                                         <td class="text-left">S/No.</td>
                                         <th>Product SKU</th>
                                         <th>Inventory SKU</th>
+                                        <th>Market Price</th>
                                         <th>Serial/IMEI Number</th>
                                         <th>Recieved Date</th>
                                         <th>Recieved By</th>
@@ -67,6 +68,13 @@
                                             <div class="form-group mb-0">
                                                 <input class="form-control" name="inventory_sku" type="text"  
                                                  v-model="productForm.products[index].inventory_sku" disabled>
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" name="inventory_sku" type="text"
+                                                       v-model="productForm.products[index].market_price" disabled>
                                             </div>
                                         </th>
 
@@ -138,23 +146,7 @@
                     name: Auth.state.user_name,
                     id: Auth.state.user_id
                 },
-                branches: [
-                    {
-                        'id': 1,
-                        'name': 'Ikolaba',
 
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Mushin',
-
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Ojota',
-
-                    }
-                ],
                 brands: [
                     {
                         'id': 1,
@@ -307,17 +299,34 @@
     
 
  addProductForm() {
-                
-                this.productForm.products.push({
-                    product_sku: 'AC/333/111',
-                    inventory_sku: 'IN/1234/ADFG',
-                    serial_no: 'ASFG76373B/123/ASS',
-                    recieved_date: this.$getDate(),
-                    _col: '',
-                    column: ''
-                });
 
-                this.reNumber();
+     this.$validator.validateAll().then(result => {
+         if (result){
+             const quantity = parseInt(this.form.quantity);
+             const product = this.getEntity(this.form.product, this.products);
+             const supplier = this.getEntity(this.form.supplier, this.suppliers);
+
+
+             //generates rows according to the quantity of products
+             for (let i = 0; i< quantity; i++){
+                 this.productForm.products.push({
+                     product_sku: `AC/${product.id}/111`,
+                     inventory_sku: 'IN/1234/ADFG',
+                     serial_no: 'ASFG76373B/123/ASS',
+                     market_price: product.retail_price,
+                     recieved_date: this.$getDate(),
+                     _col: '',
+                     column: ''
+                 });
+                 this.reNumber();
+             }
+
+
+
+         }
+     })
+                
+
             },
 
             deleteProduct(index) {
@@ -335,6 +344,11 @@
                     this.productForm.products[index].column = this.$getColumn(next) + " Products";
                 })
             },
+
+
+            getEntity(id, array){
+                return array.find(entity => entity.id === id)
+            }
 
 
         },

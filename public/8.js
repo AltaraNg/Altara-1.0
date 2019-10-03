@@ -322,6 +322,14 @@ function initialize(to) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
@@ -333,19 +341,7 @@ exports.default = {
                 name: _auth2.default.state.user_name,
                 id: _auth2.default.state.user_id
             },
-            branches: [{
-                'id': 1,
-                'name': 'Ikolaba'
 
-            }, {
-                'id': 2,
-                'name': 'Mushin'
-
-            }, {
-                'id': 3,
-                'name': 'Ojota'
-
-            }],
             brands: [{
                 'id': 1,
                 'name': 'Nokia'
@@ -488,51 +484,68 @@ exports.default = {
             });
         },
         addProductForm: function addProductForm() {
+            var _this2 = this;
 
-            this.productForm.products.push({
-                product_sku: 'AC/333/111',
-                inventory_sku: 'IN/1234/ADFG',
-                serial_no: 'ASFG76373B/123/ASS',
-                recieved_date: this.$getDate(),
-                _col: '',
-                column: ''
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    var quantity = parseInt(_this2.form.quantity);
+                    var product = _this2.getEntity(_this2.form.product, _this2.products);
+                    var supplier = _this2.getEntity(_this2.form.supplier, _this2.suppliers);
+
+                    //generates rows according to the quantity of products
+                    for (var i = 0; i < quantity; i++) {
+                        _this2.productForm.products.push({
+                            product_sku: "AC/" + product.id + "/111",
+                            inventory_sku: 'IN/1234/ADFG',
+                            serial_no: 'ASFG76373B/123/ASS',
+                            market_price: product.retail_price,
+                            recieved_date: _this2.$getDate(),
+                            _col: '',
+                            column: ''
+                        });
+                        _this2.reNumber();
+                    }
+                }
             });
-
-            this.reNumber();
         },
         deleteProduct: function deleteProduct(index) {
             this.productForm.products.splice(index, 1);
             this.reNumber();
         },
         reNumber: function reNumber() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.productForm.products.forEach(function (product, index) {
                 /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
                 * u want to display on the ui "4th repayment"
                 * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
                 var next = index + 1;
-                _this2.productForm.products[index]._col = next;
-                _this2.productForm.products[index].column = _this2.$getColumn(next) + " Products";
+                _this3.productForm.products[index]._col = next;
+                _this3.productForm.products[index].column = _this3.$getColumn(next) + " Products";
+            });
+        },
+        getEntity: function getEntity(id, array) {
+            return array.find(function (entity) {
+                return entity.id === id;
             });
         }
     },
     created: function created() {
-        var _this3 = this;
+        var _this4 = this;
 
         this.method = 'GET';
         (0, _api.get)('http://127.0.0.1:8000/api/products').then(function (res) {
-            _this3.products = res.data.products;
-            console.log(_this3.products);
+            _this4.products = res.data.products;
+            console.log(_this4.products);
         }).catch(function () {
-            _this3.$LIPS(false);
+            _this4.$LIPS(false);
             _flash2.default.setError('Error Fetching products');
         });
         (0, _api.get)('http://127.0.0.1:8000/api/suppliers').then(function (res) {
-            _this3.suppliers = res.data.suppliers;
-            console.log(_this3.suppliers);
+            _this4.suppliers = res.data.suppliers;
+            console.log(_this4.suppliers);
         }).catch(function () {
-            _this3.$LIPS(false);
+            _this4.$LIPS(false);
             _flash2.default.setError('Error Fetching suppliers');
         });
     },
@@ -791,6 +804,8 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [_vm._v("Inventory SKU")]),
                     _vm._v(" "),
+                    _c("th", [_vm._v("Market Price")]),
+                    _vm._v(" "),
                     _c("th", [_vm._v("Serial/IMEI Number")]),
                     _vm._v(" "),
                     _c("th", [_vm._v("Recieved Date")]),
@@ -871,6 +886,45 @@ var render = function() {
                                 _vm.$set(
                                   _vm.productForm.products[index],
                                   "inventory_sku",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.productForm.products[index].market_price,
+                                expression:
+                                  "productForm.products[index].market_price"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "inventory_sku",
+                              type: "text",
+                              disabled: ""
+                            },
+                            domProps: {
+                              value:
+                                _vm.productForm.products[index].market_price
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.productForm.products[index],
+                                  "market_price",
                                   $event.target.value
                                 )
                               }
