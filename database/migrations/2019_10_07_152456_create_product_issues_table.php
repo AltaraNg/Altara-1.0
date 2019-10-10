@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeeCategoriesTable extends Migration
+class CreateProductIssuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateEmployeeCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_categories', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
+        Schema::create('product_issues', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +27,6 @@ class CreateEmployeeCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_categories');
+        Schema::dropIfExists('product_issues');
     }
 }

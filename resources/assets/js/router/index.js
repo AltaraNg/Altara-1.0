@@ -225,7 +225,9 @@ const router = new VueRouter({
             meta: { LOG: true },
             children: [
                 { path: 'home', component: LOGHome, name: 'LOGHome' },
-                { path: 'inventory', component: Inventory, name: 'inventory' },
+
+
+                { path: 'inventory', component: Inventory, meta: { mode: 'create' } ,name: 'inventory' },
 
                 {
                     path: 'brands',

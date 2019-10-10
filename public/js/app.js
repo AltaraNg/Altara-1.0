@@ -44088,7 +44088,7 @@ var router = new _vueRouter2.default({
         path: '/log',
         component: LOG,
         meta: { LOG: true },
-        children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, {
+        children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory', component: Inventory, meta: { mode: 'create' }, name: 'inventory' }, {
             path: 'brands',
             component: DataViewer,
             meta: { appModel: 'brand', source: '/api/brand', new: '/log/brands' }

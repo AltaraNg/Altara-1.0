@@ -446,6 +446,7 @@ exports.default = {
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        console.log(to);
         (0, _api.get)(initialize(to)).then(function (_ref) {
             var data = _ref.data;
             return next(function (vm) {
@@ -460,6 +461,7 @@ exports.default = {
 
     methods: {
         prepareForm: function prepareForm(data) {
+            console.log(data);
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
             _vue2.default.set(this.$data, 'form', data.form);
             _vue2.default.set(this.$data, 'brands', data.brands);

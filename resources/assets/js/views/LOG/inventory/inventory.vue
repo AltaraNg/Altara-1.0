@@ -47,7 +47,7 @@
                                     <tbody class="text-center">
                                     <tr class="table-separator">
                                         <td class="text-left">S/No.</td>
-                                        <th>Product SKU</th>
+                                        <th>Product </th>
                                         <th>Inventory SKU</th>
                                         <th>Market Price</th>
                                         <th>Serial/IMEI Number</th>
@@ -60,7 +60,7 @@
                                         <th>
                                             <div class="form-group mb-0">
                                                 <input class="form-control" name="product_sku" type="text" 
-                                                       v-model="productForm.products[index].product_sku" disabled>
+                                                       v-model="productForm.products[index].product_name" disabled>
                                             </div>
                                         </th>
 
@@ -80,13 +80,13 @@
 
                                         <th>
                                               <div class="form-group mb-0">
-                                                <input class="form-control" name="serial_no" type="text"  >
+                                                <input class="form-control" name="serial_no" type="text" v-model="productForm.products[index].serial_no">
                                             </div>
                                         </th>
 
                                         <th>
                                              <div class="form-group mb-0">
-                                                <input class="form-control" name="recieved_date" type="date"    >
+                                                <input class="form-control" name="received_date" type="date" v-model="productForm.products[index].received_date" >
                                             </div>
                                             <!-- <select class="custom-select w-100"
                                                     v-model="productForm.payments[index]._payment_bank">
@@ -114,7 +114,7 @@
             <div>
 
             <button @click="saveInventory(index)"
-                    class="ml-2 btn status status-sm my-sm-2 bg-success align-content-md-center">
+                    class="ml-10 btn status status-sm my-sm-2 bg-success align-content-md-center">
                 <i class="fas fa-save"></i>
             </button>
             </div>
@@ -132,7 +132,7 @@
 
 
     function initialize(to) {
-        let urls = {create: `/api/product/create`, edit: `/api/product/${to.params.id}/edit`};
+        let urls = {create: `/api/inventory/create`, edit: `/api/product/${to.params.id}/edit`};
         return urls[to.meta.mode];
     }
 
@@ -146,82 +146,18 @@
                     name: Auth.state.user_name,
                     id: Auth.state.user_id
                 },
-
-                brands: [
-                    {
-                        'id': 1,
-                        'name': 'Nokia',
-
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Hisense',
-
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Samsung',
-
-                    },
-                    {
-                        'id': 4,
-                        'name': 'Jinsung',
-
-                    }
-                ],
-                suppliers: [
-                    {
-                        'id': 1,
-                        'name': 'Panasonic',
-
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Thomasson',
-
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Indomitable',
-
-                    },
-                    {
-                        'id': 4,
-                        'name': 'Sunbo Electronics',
-
-                    }
-                ],
-                products: [
-                    {
-                        'id': 1,
-                        'name': 'Fridge',
-
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Phone',
-
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Motorcycle',
-
-                    },
-                    {
-                        'id': 4,
-                        'name': 'Sewing Machine',
-
-                    }
-                ],
                 mode: null,
                 error: {},
+                index: null,
                 show: false,
                 showModalContent: false,
-                store: '/api/product',
+                store: '/api/inventory',
                 number: 0,
+                products: [],
+                suppliers: [],
                 product: null,
-                branch: null,
-                brand: null,
+                categories: null,
+                brands: null,
                 supplier: null,
 
                 method: 'POST',
@@ -232,19 +168,20 @@
             }
         },
         beforeRouteEnter(to, from, next) {
-            get(initialize(to))
+
+                get(initialize(to))
                 .then(({data}) => next(vm => vm.prepareForm(data)))
                 .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
         methods: {
             prepareForm(data) {
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                Vue.set(this.$data, 'form', data.form);
-                Vue.set(this.$data, 'branches', data.branches);
                 Vue.set(this.$data, 'brands', data.brands);
                 Vue.set(this.$data, 'categories', data.categories);
+                Vue.set(this.$data, 'suppliers', data.suppliers);
+                Vue.set(this.$data, 'products', data.products);
                 if (this.mode === 'edit') {
-                    this.store = `/api/product/${this.$route.params.id}`;
+                    this.store = `/api/inventory/${this.$route.params.id}`;
                     this.method = 'PUT';
                 }
                 this.show = true;
@@ -264,6 +201,10 @@
             },
 
             saveInventory(){
+
+                console.log(
+                   this.productForm.products
+                )
 
 
             },
@@ -303,6 +244,7 @@
      this.$validator.validateAll().then(result => {
          if (result){
              const quantity = parseInt(this.form.quantity);
+
              const product = this.getEntity(this.form.product, this.products);
              const supplier = this.getEntity(this.form.supplier, this.suppliers);
 
@@ -310,11 +252,12 @@
              //generates rows according to the quantity of products
              for (let i = 0; i< quantity; i++){
                  this.productForm.products.push({
-                     product_sku: `AC/${product.id}/111`,
-                     inventory_sku: 'IN/1234/ADFG',
-                     serial_no: 'ASFG76373B/123/ASS',
+                     product_name: product.name,
+                     product_id: product.id,
+                     inventory_sku: '',
+                     serial_no: '',
                      market_price: product.retail_price,
-                     recieved_date: this.$getDate(),
+                     received_date: this.$getDate(),
                      _col: '',
                      column: ''
                  });
@@ -353,28 +296,40 @@
 
         },
         created(){
-            this.method = 'GET';
-            get('http://127.0.0.1:8000/api/products').then(
-                res => {
-                    this.products = res.data.products;
-                    console.log(this.products);
-                }
-            ).catch( () => {
-                this.$LIPS(false);
-                Flash.setError('Error Fetching products');
-                }
-            );
-            get('http://127.0.0.1:8000/api/suppliers').then(
-                res => {
-                    this.suppliers = res.data.suppliers;
-                    console.log(this.suppliers);
-                }
-            ).catch( () => {
-                    this.$LIPS(false);
-                    Flash.setError('Error Fetching suppliers');
-                }
-            )
+
+
+
+
         },
-        watch: {}
+        watch: {
+            // productForm: {
+            //     handler: function (val) {
+            //         console.log(val);
+            //
+            //     },
+            //     deep: true
+            // },
+            productForm: {
+                handler: function () {
+                    let date = new Date().getFullYear();
+                    date = date.toString().slice(2,4);
+                    this.productForm.products.forEach( e =>{
+                        // let product = this.getEntity(e.product, this.products);
+                        let category_id = this.getEntity(e.product_id, this.products).category_id;
+                        let category_name = this.getEntity(category_id, this.categories).name;
+
+
+                    e.inventory_sku =   `${category_name.slice(0,3).toUpperCase()}-${e.product_name.slice(0,3).toUpperCase()}-0${e.serial_no.slice(3, -1)}`;
+
+                        // Vue.set(this.$data.e, 'inventory_sku', 'random' );
+
+                    });
+                },
+                // console.log(index);
+                deep: true
+            },
+
+
+        }
     }
 </script>
