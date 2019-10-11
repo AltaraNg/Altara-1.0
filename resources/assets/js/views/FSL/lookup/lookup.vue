@@ -224,7 +224,8 @@
                                     </tbody>
                                 </table>
 
-                                <h5 class="mt-5 mb-0" v-if="canAddPayment">Add a new payment</h5>
+                                <h5 class="mt-5 mb-0" v-if="canAddPayment">{{paymentFormType | capitalize}} a new
+                                    payment</h5>
                                 <table class="table table-bordered" v-if="canAddPayment">
                                     <tbody class="text-center">
 
@@ -242,10 +243,16 @@
                                         <th>{{index+1}}</th>
 
                                         <th>
-                                            <div class="form-group mb-0">
+                                            <div class="form-group mb-0" v-if="paymentFormType === 'add'">
                                                 <input class="form-control" name="date" type="text"
                                                        v-model="paymentForm.payments[index].column" disabled>
                                             </div>
+                                            <select class="custom-select w-100" v-else
+                                                    v-model="paymentForm.payments[index]._col">
+                                                <option :value="i" v-for="i in activeOrder.repaymentLevel">
+                                                    {{$getColumn(i) }} Repayment
+                                                </option>
+                                            </select>
                                         </th>
 
                                         <th>
@@ -256,7 +263,7 @@
                                         </th>
 
                                         <th>
-                                            <select class="custom-select w-100"
+                                            <select class="custom-select w-100" :disabled="paymentFormType === 'edit'"
                                                     v-model="paymentForm.payments[index]._payment_method">
                                                 <option :value="id" v-for="{name, id} in getPaymentMethods">
                                                     {{name | capitalize}}
@@ -265,7 +272,7 @@
                                         </th>
 
                                         <th>
-                                            <select class="custom-select w-100"
+                                            <select class="custom-select w-100" :disabled="paymentFormType === 'edit'"
                                                     v-model="paymentForm.payments[index]._payment_bank">
                                                 <option :value="id" v-for="{name, id} in getBanks">{{name}}</option>
                                             </select>
@@ -274,6 +281,7 @@
                                         <th>
                                             <div class="form-group mb-0">
                                                 <input class="form-control" name="date" type="date"
+                                                       :disabled="paymentFormType === 'edit'"
                                                        v-model="paymentForm.payments[index]._date">
                                             </div>
                                         </th>
@@ -299,10 +307,16 @@
                         </div>
                         <div class="modal-footer" :class="{'d-flex justify-content-end' : !canAddPayment}">
 
-                            <button @click="addPaymentForm()"
+                            <button @click="addPaymentForm('add')"
                                     v-if="canAddPayment"
                                     class="btn status my-sm-2">
                                 Add Payment
+                            </button>
+
+                            <button @click="addPaymentForm('edit')"
+                                    v-if="auth('DSALead')"
+                                    class="btn status my-sm-2">
+                                Edit Payment
                             </button>
 
                             <button @click="preparePayments()"
@@ -323,7 +337,6 @@
     </transition>
 </template>
 <script>
-    import Vue from 'vue';
     import {mapGetters} from 'vuex';
     import {log} from '../../../utilities/log';
     import Auth from '../../../utilities/auth';
@@ -353,7 +366,8 @@
                 headers: ['Date', 'Order No.', 'Product Name', 'Total Product Price',
                     'Percentage', 'Down Payment', 'Repayment Plans'],
                 paymentForm: null,
-                canAddPayment: null
+                canAddPayment: null,
+                paymentFormType: 'add'
             }
         },
 
@@ -390,21 +404,30 @@
                 return $(`#amortization`).modal('toggle');
             },
 
-            addPaymentForm() {
-                let level = this.activeOrder.repaymentLevel;
-                let nextRepayment = parseInt(level + this.paymentForm.payments.length + 1);
+            addPaymentForm(type) {
+                const level = this.activeOrder.repaymentLevel,
+                    nextRepayment = parseInt(level + this.paymentForm.payments.length + 1);
 
+                if (type !== this.paymentFormType) this.paymentForm.payments = [];
+                if (type === 'edit' && (level < 1 || this.paymentForm.payments.length >= level)) return;
                 if (level === this.activeOrder._count) return;
                 if (nextRepayment > this.activeOrder._count) return;
 
-                this.paymentForm.payments.push({
+                this.paymentFormType = type;
+
+                let newPaymentData = {
                     _pay: this.activeOrder.amountsToBePaid[0],
                     _date: this.$getDate(),
-                    _payment_method: '',
-                    _payment_bank: '',
                     _col: '',
                     column: ''
-                });
+                };
+
+                if (type === 'add') {
+                    newPaymentData._payment_bank = '';
+                    newPaymentData._payment_method = '';
+                }
+
+                this.paymentForm.payments.push(newPaymentData);
 
                 this.reNumber();
             },
@@ -432,8 +455,10 @@
                     let obj = {}, col = this.$getColumn(payment._col);
                     obj[`${col}_pay`] = payment._pay;
                     obj[`${col}_date`] = payment._date;
-                    obj[`${col}_payment_bank`] = payment._payment_bank;
-                    obj[`${col}_payment_method`] = payment._payment_method;
+                    if (this.paymentFormType === 'add') {
+                        obj[`${col}_payment_bank`] = payment._payment_bank;
+                        obj[`${col}_payment_method`] = payment._payment_method;
+                    }
                     payments = {...payments, ...obj};
                 });
                 this.activeOrder.payments = payments;
@@ -492,6 +517,7 @@
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
             },
             canUserAddPayment() {
+                if(this.auth('FSLLead')) return true;
                 return this.auth('supervisor') && (this.user.branch === this.activeOrder.branch.id);
             }
         },

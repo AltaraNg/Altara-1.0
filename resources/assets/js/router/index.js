@@ -25,8 +25,6 @@ const CAGHome = () => import( '../views/CAG/HomePage.vue');
 
 const OrderList = () => import( '../views/DVA/order/orderList.vue');
 const AllOverdue = () => import( '../views/DVA/allOverdue');
-/*const DVASMSReminder = () => import( '../views/DVA/reminder/SMSReminder.vue');
-const DVACallReminder = () => import( '../views/DVA/reminder/callReminder.vue');*/
 
 const Reminder = () => import( '../views/DVA/reminder/reminder.vue');
 

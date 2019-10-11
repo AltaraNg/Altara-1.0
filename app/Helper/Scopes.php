@@ -16,7 +16,7 @@ trait Scopes
         return isset($list) ? $query->whereIn($column, $reminderController->getDateForReminder($list, $request)) : $query;
     }
 
-    public function scopeGetOrPaginate($query, $request)
+    public function scopeGetOrPaginate($query, $request = null)
     {
         return isset($request['list']) ? $query->get() : $query->paginate($request['page_size']);
     }
