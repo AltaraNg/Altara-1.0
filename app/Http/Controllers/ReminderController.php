@@ -194,8 +194,6 @@ class ReminderController extends Controller
         }
 
         return response()->json([
-            //'payment_methods' => PaymentMethod::all(),
-            //'banks' => Bank::all(),
             'dva_id' => $user->id,
             'branch' => $user->branch_id,
             'orders' => $result
