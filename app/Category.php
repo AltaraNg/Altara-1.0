@@ -2,32 +2,43 @@
 
 namespace App;
 
+use App\Helper\DataViewer;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-   public $timestamps = false;
+    use DataViewer;
 
-   protected $fillable = ['name'];
+    public $timestamps = false;
 
-   public function brands()
-   {
-      return $this->belongsToMany(Brand::class, 'brand_category', 'category_id', 'brand_id');
-   }
+    protected $fillable = ['name'];
 
-   public function products()
-   {
-      return $this->hasMany(Product::class);
-   }
+    public static $columns = ['id', 'name'];
 
-   /*public function suppliers()
-   {
-      return $this->hasMany(Supplier::class);
-   }*/
-
-    public function suppliers()
+    public static function form() : iterable
     {
-        return $this->belongsToMany(Supplier::class, 'supplier_category', 'category_id', 'supplier_id');
+        return [
+            'name' => ''
+        ];
     }
 
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'brand_category', 'category_id', 'brand_id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    /*public function suppliers()
+    {
+        return $this->hasMany(Supplier::class);
+    }*/
+
+    /*public function suppliers()
+      {
+          return $this->belongsToMany(Supplier::class, 'supplier_category', 'category_id', 'supplier_id');
+      }*/
 }

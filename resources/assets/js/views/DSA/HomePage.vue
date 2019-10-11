@@ -2,7 +2,8 @@
     <transition name="fade">
         <div>
             <div v-for="portal in portals">
-                <portal-card :url="portal.url" :title="portal.title" :url_c="portal.url_c" :desc="portal.desc" :aces="portal.aces"/>
+                <portal-card :url="portal.url" :title="portal.title" :url_c="portal.url_c" :desc="portal.desc"
+                             :aces="portal.aces"/>
             </div>
         </div>
     </transition>
@@ -26,11 +27,11 @@
                         url_c: 'Update customers details!',
                         desc: 'Updating customers details',
                     }, {
-                        url: 'report/',
+                        url: 'report',
                         title: 'Sales Reporting',
                         url_c: 'Get Reports',
                         desc: 'Real time DSA reports!',
-                        aces: this.$store.getters.verifyDSACaptain,
+                        aces: this.$store.getters.auth('DSACaptain'),
                     }, {
                         url: '/customer',
                         title: 'Customer List',

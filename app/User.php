@@ -28,7 +28,7 @@ class User extends Authenticatable
      * view when the user creation
      * form is required */
 
-    public static function Form()
+    public static function Form() : iterable
     {
         return [
             'role_id' => '',
@@ -59,7 +59,6 @@ class User extends Authenticatable
             'guarantor_phone_no_2' => '',
             'guarantor_address_2' => '',
             'guarantor_relationship_2' => '',
-
             'cv' => '',
         ];
     }
@@ -138,5 +137,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function cautions()
+    {
+        return $this->hasMany(Caution::class);
+    }
+
+    public function cautionsIssued()
+    {
+        return $this->hasMany(Caution::class, 'issuer_id', 'id');
+    }
+
+    /*public function counterSales()
+    {
+        return $this->hasMany(Order::class, 'sales_agent_id', 'staff_id');
+    }*/
+
+    /*public function reminders()
+    {
+        return $this->hasMany(Reminder::class, 'id','dva_id');
+    }*/
 
 }

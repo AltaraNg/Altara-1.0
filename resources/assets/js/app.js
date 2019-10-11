@@ -6,8 +6,7 @@ import App from './App.vue';
 import router from './router';
 import {store} from './store/store';
 import VeeValidate from 'vee-validate';
-import './store/filters.js';
-import './store/globalFunctions.js';
+import './utilities/globalFunctions.js';
 
 Vue.use(VeeValidate, {
     events: 'input|blur',

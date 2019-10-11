@@ -13,7 +13,7 @@ class CreateSupplierCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_category', function (Blueprint $table) {
+        /*Schema::create('supplier_category', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('supplier_id')->index()->nullable();
@@ -24,7 +24,7 @@ class CreateSupplierCategoryTable extends Migration
             $table->engine = 'InnoDB';
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-        });
+        });*/
 
     }
 

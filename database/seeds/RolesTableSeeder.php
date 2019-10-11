@@ -42,7 +42,8 @@ class RolesTableSeeder extends Seeder
             'Delivery Driver',
             'Junior Accountant',
             'Buyer',
-            'Sales Coordinator'
+            'Software Application Support Officer',
+            'Sales Coordinator',
         ];
         for ($i = 0; $i < count($roles); $i++) {
             Role::create(['name' => $roles[$i]]);

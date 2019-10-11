@@ -45,7 +45,7 @@ class VerificationController extends Controller
         $verification->update($request->all());
         /** return the updated customer details*/
         return response()->json([
-            'response' => app('App\Http\Controllers\CustomerController')->show($request->customer_id)->original
+            'response' => (new CustomerController)->show($request->customer_id)->original
         ]);
     }
 

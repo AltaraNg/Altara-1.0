@@ -1,9 +1,11 @@
-<template>
+    <template>
     <transition name="fade">
-        <div :class="$route.meta.mode === 'full' ? 'px-md-4 px-2' : ''">
-            <app-navigation :forward="{ path: $routerHistory.next().path }" :pageTitle="'Customer Profile'"
-                            :pageTitleSmall="'Customer Profile'" :previous="{ path: $routerHistory.previous().path }"
-                            v-if="$route.meta.mode === 'full'"/>
+        <div :class="full && 'px-md-4 px-2'">
+            <app-navigation :forward="{ path: $routerHistory.next().path }"
+                            :previous="{ path: $routerHistory.previous().path }"
+                            :pageTitle="'Customer Profile'"
+                            :pageTitleSmall="'Customer Profile'"
+                            v-if="full"/>
             <div class="pt-md-3 pt-2 verification" id="employeeRegister" v-if="show">
                 <div class="customer-profile card position-relative">
                     <div class="design"></div>
@@ -11,7 +13,8 @@
                         <div class="pt-md-3 pt-sm-2 pt-1">
                             <div class="justify-content-center d-flex position-relative z-1">
                                 <span class="img-border">
-                                    <img :src="passport" alt="customer profile pic" class="profile-picture rounded-circle"
+                                    <img :src="passport" alt="customer profile pic"
+                                         class="profile-picture rounded-circle"
                                          v-if="customer.document.passport_url">
                                     <i class="no-image fas fa-user-alt" v-else></i>
                                 </span>
@@ -38,7 +41,7 @@
                             <div class="float-left p-0 m-0 col-md-4 col-sm-6 small-center">
                                 <h4 class="mt-0 pt-md-5 pt-sm-4 pt-0 mb-md-5 mb-sm-4 mb-3">
                                     <i class="mr-3 far fa-user-circle"></i>
-                                    <strong>{{name | capitalize}}</strong>
+                                    <strong>{{$getCustomerFullName(customer) | capitalize}}</strong>
                                 </h4>
                             </div>
                             <div class="float-left p-0 m-0 col-md-4 col-sm-6 d-flex justify-content-center">
@@ -47,11 +50,9 @@
                                 </h4>
                             </div>
                             <div class="float-left p-0 m-0 col-md-4 col-12 d-flex justify-content-center">
-                                <span class="status mt-md-5 my-sm-2 mt-0 approved shadow-sm" v-if="approved">
-                                    APPROVED<i class="ml-3 fas fa-check"></i>
-                                </span>
-                                <span class="status mt-md-5 my-sm-2 mt-0 not-approved shadow-sm" v-else>
-                                    NOT APPROVED<i class="ml-3 fas fa-times"></i>
+                                <span :class="`status mt-md-5 my-sm-2 mt-0 ${approved ? 'approved' : 'not-approved'}`">
+                                    {{approved ? 'APPROVED' : 'NOT APPROVED'}}
+                                    <i :class="`ml-3 fas fa-${approved ? 'check' : 'times'}`"></i>
                                 </span>
                             </div>
                         </div>
@@ -62,9 +63,9 @@
                                     <th class="text-muted"><i class="mr-3 fas fa-mobile-alt"></i>Phone Number</th>
                                     <td>{{customer.telephone}}</td>
                                 </tr>
-                                <tr>
+                                <tr v-if="$store.getters.auth('DVAAccess')">
                                     <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Address</th>
-                                    <td>{{address | capitalize }}
+                                    <td>{{$getCustomerAddress(customer) | capitalize }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -73,7 +74,8 @@
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 far fa-user-circle"></i>Registered By</th>
-                                    <td>{{customer.user.full_name | capitalize}}</td>
+                                    <td>{{customer.user ? customer.user.full_name : 'user not in record'| capitalize}}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 far fa-building"></i>Branch</th>
@@ -84,72 +86,46 @@
                         </div>
                     </div>
                 </div>
-                <div class="clearfix" v-if="$route.meta.mode === 'full'">
-                    <div>This is full profile!</div>
-                </div>
+                <div v-if="full">Full profile goes here</div>
             </div>
         </div>
     </transition>
 </template>
 <script>
     import Vue from 'vue';
-    import {get} from '../helpers/api';
-    import CustomerProfile from './CustomerProfile';
+    import {store} from '../store/store';
+    import {EventBus} from "../utilities/event-bus";
     import AppNavigation from '../components/AppNavigation';
+
+    const DVA = () => store.getters.auth('DVAAccess');
 
     export default {
         props: ['viewCustomer'],
-        components: {CustomerProfile, AppNavigation},
+        components: {AppNavigation},
         data() {
             return {
                 customer: '',
-                show: false,
+                show: false
             }
         },
         computed: {
+            full(){
+                return this.$route.meta.mode === 'full';
+            },
             passport() {
                 return `https://s3.eu-west-2.amazonaws.com/altara-one/${this.customer.document.passport_url}`;
-            },
-            name() {
-                return `${this.customer.first_name} ${this.customer.last_name}`;
             },
             branch() {
                 return `${this.customer.branch.description} ${this.customer.branch.name}`;
             },
-            address() {
-                return `${this.customer.add_houseno} ${this.customer.add_street} ${this.customer.area_address}, ${this.customer.city}, ${this.customer.state}.`;
-            },
-            approved() {
-                return (this.customer.verification.address === 1 &&
-                    this.customer.verification.id_card === 1 &&
-                    this.customer.verification.passport === 1 &&
-                    this.customer.verification.processing_fee === 1 &&
-                    this.customer.verification.work_guarantor === 1 &&
-                    this.customer.verification.personal_guarantor === 1);
-                /*This component is the customer profile proper. for optimal result.
-                * The data passed to this should be a response
-                * from the CustomerController@show
-                * this method is used to check the approval
-                * status for any customer details
-                * supplied to it.
-                * NB all the params above must be
-                * 1 for a customer t be approved*/
+            approved(){
+                return this.$getCustomerApprovalStatus(this.customer.verification);
             }
         },
         created() {
             $('.tooltip').remove();
             if (this.viewCustomer) this.setCustomer(this.viewCustomer);
-        },
-        beforeRouteEnter(to, from, next) {
-            get(`/api/customer/${to.params.id}`).then(res => {
-                next(vm => vm.setCustomer(res.data.customer));
-            });
-        },
-        beforeRouteUpdate(to, from, next) {
-            get(`/api/customer/${to.params.id}`).then(res => {
-                this.setCustomer(res.data.customer);
-                next();
-            });
+            EventBus.$on('customer', customer => this.setCustomer(customer));
         },
         methods: {
             setCustomer(customer) {
@@ -159,106 +135,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-    @import "../../sass/app/variables";
-
-    .customer-profile {
-        position: relative;
-
-        th {
-            width: auto;
-            font-weight: normal;
-        }
-
-        td, .data {
-            font-size: 1.5rem;
-            font-weight: 500;
-        }
-
-        .status {
-            padding: 1.2rem 3rem;
-            float: left;
-            color: white;
-            border-radius: .5rem;
-            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
-            font-weight: 700;
-            font-size: 1.3rem;
-
-            &.approved {
-                background-color: $color-green;
-            }
-
-            &.not-approved {
-                background-color: $color-red;
-            }
-        }
-
-        .design {
-            position: absolute;
-            top: 13rem;
-            bottom: 0;
-            left: 0;
-            width: 101%;
-            height: calc(100% - 8.1rem);
-            z-index: 0;
-            background: linear-gradient(45deg, #dedede 0%, #ffffff 100%);
-        }
-
-        .profile-picture, .no-image {
-            height: 16rem;
-            width: 16rem;
-            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .no-image {
-            background-color: #e3e3e3;
-            border-radius: 50%;
-            line-height: 16rem;
-            text-align: center;
-            font-size: 8rem;
-            color: rgba(0, 0, 0, 0.15);
-        }
-
-        .img-border {
-            padding: 1.1rem;
-            background-color: white;
-            border-radius: 50%;
-        }
-
-        .separator {
-            position: absolute;
-            left: 50%;
-            height: 70%;
-            width: 1px;
-            background-color: rgba(0, 0, 0, 0.1);
-            top: 3%;
-        }
-
-    }
-
-    @media (max-width: 600px) {
-        .customer-profile {
-            .design {
-                background: linear-gradient(180deg, #dedede 0%, #ffffff 100%);
-            }
-
-            .separator {
-                top: -11%;
-            }
-
-            .small-center {
-                text-align: center;
-            }
-
-            th {
-                width: 35%;
-            }
-
-            tbody {
-                padding: 1rem 1rem 0;
-                float: left;
-            }
-        }
-    }
-</style>

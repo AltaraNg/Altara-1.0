@@ -18,6 +18,14 @@
                {
                   url: 'employee', title: 'Staff Management', url_c: 'Manage staff Details!',
                   desc: 'For Registering new staff'
+               },
+               {
+                  url: 'attendance', title: 'Manage Attendance', url_c: 'Manage Attendance!',
+                  desc: 'Managing staff attendance'
+               },
+               {
+                  url: 'caution', title: 'Manage Caution', url_c: 'Manage Caution!',
+                  desc: 'Managing staff caution'
                }
             ]
          }

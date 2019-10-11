@@ -2,7 +2,8 @@
     <transition name="fade">
         <div>
             <div v-for="portal in portals">
-                <portal-card :url="portal.url" :title="portal.title" :url_c="portal.url_c" :desc="portal.desc" :aces="portal.aces"/>
+                <portal-card :url="portal.url" :title="portal.title" :url_c="portal.url_c" :desc="portal.desc"
+                             :aces="portal.aces"/>
             </div>
         </div>
     </transition>
@@ -12,30 +13,35 @@
 
     export default {
         components: {PortalCard},
+        methods:{
+            auth(role){
+                return this.$store.getters.auth(role);
+            }
+        },
         data() {
             return {
                 portals: [
                     {
-                        url: 'inventory', title: 'Products Inventory', url_c: 'View Inventory!',
-                        desc: 'For products inventory and management'
-                    },{
+                        url: 'attendance/create', title: 'Log Daily Attendance', url_c: 'Log Attendance!',
+                        desc: 'For Logging staff attendances!', aces: this.auth('supervisor'),
+                    }, {
                         url: 'branch', title: 'Manage Branches', url_c: 'Manage Branches now!',
-                        desc: 'Manage all the branch details',aces: this.$store.getters.verifyFSLLead,
+                        desc: 'Manage all the branch details', aces: this.auth('FSLLead'),
                     }, {
                         url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
                     }, {
-                        url: 'suppliers/create', title: 'Manage Supplier', url_c: 'Create/Update Supplier',
-                        desc: 'Manage all the suppliers details!',
+                        url: 'sales', title: 'Sales List', url_c: 'View Sales List',
+                        desc: 'View all Sales!'/*, aces: this.auth('FSLLead')*/
                     }, {
-                        url: 'brands/create', title: 'Manage Brands', url_c: 'Create/Update Brands',
-                        desc: 'Manage all the brands details!',
+                        url: 'sales/create', title: 'Temp POS', url_c: 'Post Daily Sales',
+                        desc: 'Temp POS!', aces: this.auth('supervisor')
                     }, {
-                        url: 'categories/create', title: 'Manage Categories', url_c: 'Create/Update Categories',
-                        desc: 'Manage all the category details!',
+                        url: 'payment', title: 'Online Payment', url_c: 'Make Online Payment for Formal Sector',
+                        desc: 'Online Payment', aces: this.auth('supervisor')
                     }, {
-                        url: 'products/create', title: 'Manage products', url_c: 'Create/Update products',
-                        desc: 'Manage all the product details!',
+                        url: 'lookup', title: 'Customer Lookup', url_c: 'Manage customer repayment details',
+                        desc: 'Customer Lookup',
                     }
                 ]
             }

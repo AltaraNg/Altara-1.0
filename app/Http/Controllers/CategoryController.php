@@ -14,7 +14,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $model = Category::select('id','name')->searchPaginateAndOrder();
+        $columns = Category::$columns;
+        return response()->json([
+            'model' => $model,
+            'columns' => $columns
+        ]);
     }
 
     /**
@@ -24,7 +29,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return response()->json([
+            'form' => Category::form(),
+        ]);
     }
 
     /**
@@ -35,7 +42,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(['name' => 'required|unique:categories']);
+        $branch = new Category($request->all());
+        $branch->save();
+        return response()->json([
+            'saved' => true,
+            'message' => 'Category Created!',
+            'form' => Category::form(),
+            'staff_id' => auth('api')->user()->staff_id,
+            'log' => 'CategoryCreated'
+        ]);
     }
 
     /**
@@ -52,24 +68,32 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $form = Category::findOrFail($id);
+        return response()->json(['form' => $form]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
+     * @param  \Illuminate\Http\Request $request
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate(['name' => 'required|unique:categories,name,' . $id]);
+        Category::whereId($id)->update($request->all());
+        return response()->json([
+            'updated' => true,
+            'message' => 'Category Updated!',
+            'staff_id' => auth('api')->user()->staff_id,
+            'log' => 'CategoryUpdated'
+        ]);
     }
 
     /**

@@ -25,8 +25,29 @@
                         url: 'message', title: 'Messaging', url_c: 'Send messages!',
                         desc: 'For sending messages to customers'
                     }, {
+                        url: 'reminder/sms', title: 'Customer SMS Reminder', url_c: 'View SMS reminders',
+                        desc: 'View all due SMS reminders!',
+                    }, {
+                        url: 'reminder/call', title: 'Customer Call Reminder', url_c: 'View Call reminders',
+                        desc: 'View all due Call reminders!',
+                    }, {
+                        url: 'reminder/collection', title: 'Collection list', url_c: 'View collections',
+                        desc: 'View all due collection!',
+                    }, {
+                        url: 'reminder/recovery', title: 'Recovery list', url_c: 'View Recoveries',
+                        desc: 'View all due recovery!',
+                    },{
+                        url: 'reminder/external-recovery', title: 'External recovery list', url_c: 'View Recoveries',
+                        desc: 'View all due recovery!',
+                    },{
+                        url: 'all-overdue', title: 'All overdue payments list', url_c: 'View All Overdue payments',
+                        desc: 'View all overdue payment!',
+                    }, {
                         url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                         desc: 'View all registered customers!',
+                    }, {
+                        url: 'sales', title: 'Sales List', url_c: 'View Sales List',
+                        desc: 'View all Sales!',
                     }
                 ]
             }
