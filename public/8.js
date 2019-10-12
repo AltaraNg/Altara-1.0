@@ -324,6 +324,7 @@ function initialize(to) {
 //
 //
 //
+//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
@@ -409,6 +410,7 @@ exports.default = {
             branch: null,
             brand: null,
             supplier: null,
+            quantity: '',
 
             method: 'POST',
             statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }],
@@ -489,17 +491,17 @@ exports.default = {
             });
         },
         addProductForm: function addProductForm() {
-
-            this.productForm.products.push({
-                product_sku: 'AC/333/111',
-                inventory_sku: 'IN/1234/ADFG',
-                serial_no: 'ASFG76373B/123/ASS',
-                recieved_date: this.$getDate(),
-                _col: '',
-                column: ''
-            });
-
-            this.reNumber();
+            for (var i = 1; i <= this.quantity; i++) {
+                this.productForm.products.push({
+                    product_sku: 'AC/333/111',
+                    inventory_sku: 'IN/1234/ADFG',
+                    serial_no: 'ASFG76373B/123/ASS',
+                    recieved_date: this.$getDate(),
+                    _col: '',
+                    column: ''
+                });
+                this.reNumber();
+            }
         },
         deleteProduct: function deleteProduct(index) {
             this.productForm.products.splice(index, 1);
@@ -727,8 +729,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.quantity,
-                            expression: "form.quantity"
+                            value: _vm.quantity,
+                            expression: "quantity"
                           },
                           {
                             name: "validate",
@@ -742,13 +744,13 @@ var render = function() {
                           name: "quantity",
                           placeholder: "retail price"
                         },
-                        domProps: { value: _vm.form.quantity },
+                        domProps: { value: _vm.quantity },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.form, "quantity", $event.target.value)
+                            _vm.quantity = $event.target.value
                           }
                         }
                       }),
@@ -810,7 +812,10 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn bg-default",
-                        attrs: { disabled: _vm.$isProcessing, type: "submit" },
+                        attrs: {
+                          disabled: _vm.$isProcessing || _vm.quantity == "",
+                          type: "submit"
+                        },
                         on: {
                           click: function($event) {
                             _vm.addProductForm()
@@ -951,8 +956,34 @@ var render = function() {
                       _c("th", [
                         _c("div", { staticClass: "form-group mb-0" }, [
                           _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.productForm.products[index].recieved_date,
+                                expression:
+                                  "productForm.products[index].recieved_date"
+                              }
+                            ],
                             staticClass: "form-control",
-                            attrs: { name: "recieved_date", type: "date" }
+                            attrs: { name: "recieved_date", type: "date" },
+                            domProps: {
+                              value:
+                                _vm.productForm.products[index].recieved_date
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.productForm.products[index],
+                                  "recieved_date",
+                                  $event.target.value
+                                )
+                              }
+                            }
                           })
                         ])
                       ]),

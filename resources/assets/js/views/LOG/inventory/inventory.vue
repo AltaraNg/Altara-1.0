@@ -29,7 +29,7 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Quantity</label>
                             <input class="form-control" name="quantity" placeholder="retail price"
-                                   v-model="form.quantity" v-validate="'required|max:50|numeric'">
+                                   v-model="quantity" v-validate="'required|max:50|numeric'">
                             <small v-if="errors.first('price')">{{ errors.first('price') }}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -43,7 +43,7 @@
                             <router-link to="/log/products" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">
                                 Cancel
                             </router-link>   
-                            <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="addProductForm()">
+                            <button :disabled="$isProcessing || quantity==''" class="btn bg-default" type="submit" @click="addProductForm()">
                                 Generate Inventory <i class="far fa-paper-plane ml-1"></i>
                             </button>
                         </div>
@@ -87,7 +87,8 @@
 
                                         <th>
                                              <div class="form-group mb-0">
-                                                <input class="form-control" name="recieved_date" type="date"    >
+                                                <input class="form-control" name="recieved_date" type="date"  
+                                                v-model="productForm.products[index].recieved_date" >
                                             </div>
                                             <!-- <select class="custom-select w-100"
                                                     v-model="productForm.payments[index]._payment_bank">
@@ -233,6 +234,7 @@
                 branch: null,
                 brand: null,
                 supplier: null,
+                quantity:'',
 
                 method: 'POST',
                 statuses: [{name: 'available', value: 1}, {name: 'unavailable', value: 0}],
@@ -304,8 +306,8 @@
     
 
  addProductForm() {
-                
-                this.productForm.products.push({
+                for (var i=1; i<=this.quantity;i++){
+                     this.productForm.products.push({
                     product_sku: 'AC/333/111',
                     inventory_sku: 'IN/1234/ADFG',
                     serial_no: 'ASFG76373B/123/ASS',
@@ -313,8 +315,9 @@
                     _col: '',
                     column: ''
                 });
-
                 this.reNumber();
+                }
+               
             },
 
             deleteProduct(index) {
