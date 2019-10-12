@@ -1,6 +1,6 @@
 webpackJsonp([13],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/payment/form.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/branch/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29,8 +29,6 @@ var _api = __webpack_require__("./resources/assets/js/utilities/api.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } //
-//
-//
 //
 //
 //
@@ -251,18 +249,17 @@ exports.default = {
                                             (0, _api.byMethod)(_this.method, _this.store, _this.form).then(function (_ref4) {
                                                 var data = _ref4.data;
 
-                                                if (data.saved || data.updated) {
+                                                if (data.created || data.updated) {
                                                     (0, _log.log)('Branch ' + _this.mode + 'd', '' + _this.form.employee_id);
                                                     _flash2.default.setSuccess('Branch ' + _this.mode + 'd successfully!', 20000);
                                                 }
+                                                _this.done();
                                             }).catch(function (e) {
                                                 e = e.response;
                                                 if (e.status === 422) {
                                                     _this.error = e.data.errors ? e.data.errors : e.data;
                                                     _this.$networkErr('unique');
                                                 }
-                                            }).finally(function () {
-                                                return _this.done();
                                             });
                                         } else _this.$networkErr();
                                     } else _this.$networkErr('form');
@@ -1074,7 +1071,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-435fbe38\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/payment/form.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-27d1d1a4\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/branch/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1618,8 +1615,8 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
-                              value: "required|email",
-                              expression: "'required|email'"
+                              value: "email",
+                              expression: "'email'"
                             }
                           ],
                           staticClass: "form-control",
@@ -1670,12 +1667,6 @@ var render = function() {
                                 rawName: "v-model",
                                 value: _vm.form.bank,
                                 expression: "form.bank"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required",
-                                expression: "'required'"
                               }
                             ],
                             staticClass: "custom-select w-100",
@@ -1719,13 +1710,7 @@ var render = function() {
                             })
                           ],
                           2
-                        ),
-                        _vm._v(" "),
-                        _vm.errors.first("bank")
-                          ? _c("small", [
-                              _vm._v(_vm._s(_vm.errors.first("bank")))
-                            ])
-                          : _vm._e()
+                        )
                       ]
                     ),
                     _vm._v(" "),
@@ -1747,12 +1732,6 @@ var render = function() {
                               rawName: "v-model",
                               value: _vm.form.account_name,
                               expression: "form.account_name"
-                            },
-                            {
-                              name: "validate",
-                              rawName: "v-validate",
-                              value: "required",
-                              expression: "'required'"
                             }
                           ],
                           staticClass: "form-control",
@@ -1775,13 +1754,7 @@ var render = function() {
                               )
                             }
                           }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.first("account_name")
-                          ? _c("small", [
-                              _vm._v(_vm._s(_vm.errors.first("account_name")))
-                            ])
-                          : _vm._e()
+                        })
                       ]
                     ),
                     _vm._v(" "),
@@ -1805,8 +1778,8 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
-                              value: "required|numeric|max:10|min:10",
-                              expression: "'required|numeric|max:10|min:10'"
+                              value: "numeric|max:10|min:10",
+                              expression: "'numeric|max:10|min:10'"
                             }
                           ],
                           staticClass: "form-control",
@@ -1912,7 +1885,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-435fbe38", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-27d1d1a4", module.exports)
   }
 }
 
@@ -1944,15 +1917,15 @@ function log(action, description) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/FSL/payment/form.vue":
+/***/ "./resources/assets/js/views/FSL/branch/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/payment/form.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/branch/form.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-435fbe38\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/payment/form.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-27d1d1a4\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/branch/form.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1969,7 +1942,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\payment\\form.vue"
+Component.options.__file = "resources\\assets\\js\\views\\FSL\\branch\\form.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1978,9 +1951,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-435fbe38", Component.options)
+    hotAPI.createRecord("data-v-27d1d1a4", Component.options)
   } else {
-    hotAPI.reload("data-v-435fbe38", Component.options)
+    hotAPI.reload("data-v-27d1d1a4", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

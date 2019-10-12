@@ -207,8 +207,6 @@
                 console.log(
                    this.productForm.products
                 )
-
-
             },
 
             onSave() {
@@ -242,21 +240,7 @@
     
 
  addProductForm() {
-<<<<<<< HEAD
-                for (var i=1; i<=this.quantity;i++){
-                     this.productForm.products.push({
-                    product_sku: 'AC/333/111',
-                    inventory_sku: 'IN/1234/ADFG',
-                    serial_no: 'ASFG76373B/123/ASS',
-                    recieved_date: this.$getDate(),
-                    _col: '',
-                    column: ''
-                });
-                this.reNumber();
-                }
-               
-=======
-
+console.log(this.quantity);
      this.$validator.validateAll().then(result => {
          if (result){
              const quantity = parseInt(this.form.quantity);
@@ -266,7 +250,7 @@
 
 
              //generates rows according to the quantity of products
-             for (let i = 0; i< quantity; i++){
+             for (let i = 0; i< this.quantity; i++){
                  this.productForm.products.push({
                      product_name: product.name,
                      product_id: product.id,
@@ -279,14 +263,10 @@
                  });
                  this.reNumber();
              }
-
-
-
          }
      })
-                
+            
 
->>>>>>> 643c58eac35fcf694cc291467b6f12561ee17cb0
             },
 
             deleteProduct(index) {
@@ -304,13 +284,9 @@
                     this.productForm.products[index].column = this.$getColumn(next) + " Products";
                 })
             },
-
-
             getEntity(id, array){
                 return array.find(entity => entity.id === id)
             }
-
-
         },
         created(){
 
