@@ -16,7 +16,7 @@ trait Scopes
         return isset($list) ? $query->whereIn($column, $reminderController->getDateForReminder($list, $request)) : $query;
     }
 
-    public function scopeGetOrPaginate($query, $request)
+    public function scopeGetOrPaginate($query, $request = null)
     {
         return isset($request['list']) ? $query->get() : $query->paginate($request['page_size']);
     }
@@ -74,6 +74,6 @@ trait Scopes
                 }
             ])
             ->select('id', 'order_date', 'sales_category_id', 'customer_id', 'product_sku', 'product_price',
-                'down_payment', 'sales_agent_id', 'sales_type_id', 'discount_id', 'repayment_amount');
+                'down_payment', 'sales_agent_id', 'sales_type_id', 'discount_id', 'repayment_amount','payment_method_id');
     }
 }

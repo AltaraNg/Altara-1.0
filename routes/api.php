@@ -53,6 +53,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/employee/{id}/update', 'AuthController@update');
     Route::get('/reset-password/{id}', 'AuthController@resetPassword');
     /*------*/
+    Route::get('/orders/user/{id}', 'OrderController@ordersByUser');
+    /*------*/
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
 });

@@ -48,6 +48,9 @@ class Order {
 
     setIsOrderFormal() {
         this._isOrderFormal = ['formal', 'salaried'].includes(this._customer.employment_status.toLowerCase());
+        if (parseInt(this.order.payment_method_id) === 4) {
+            this._isOrderFormal = true
+        }
     }
 
     setRepaymentData() {
@@ -70,7 +73,8 @@ class Order {
                 count = 12;
             }
         } else {
-            if (Order.isBankDraftAvailable() && this.isOrderFormal) {
+            if ((Order.isBankDraftAvailable() && this.isOrderFormal) ||
+                parseInt(this.order.payment_method_id) === 4) {
                 interval = 28;
                 count = 6;
             } else {
@@ -106,10 +110,10 @@ class Order {
     }
 
     setBranch() {
-        if(this.order['store_product']){
+        if (this.order['store_product']) {
             this._branch = store.state.branches
                 .find(branch => parseInt(branch.id) === parseInt(this.order.store_product['store_name']));
-        }else this._branch = null;
+        } else this._branch = null;
     }
 
     setPaymentStatusClasses() {
@@ -369,7 +373,7 @@ class OrderWithPromiseCall extends Order {
 
     generateAndSetNextSMSReminder() {
         let product_name = null;
-        if(this.order['store_product']) product_name = this.order.store_product.product_name;
+        if (this.order['store_product']) product_name = this.order.store_product.product_name;
         const {repayment_amount, order_date} = this.order;
 
         let message;

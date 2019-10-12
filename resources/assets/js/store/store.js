@@ -36,9 +36,9 @@ export const store = new Vuex.Store({
         LOGLead: [1, 2, 8, 9, 11],
         LOGAccess: [1, 2, 8, 9, 11],
         CAGAccess: [1, 2, 8, 9, 30],
-        authRole: parseInt(localStorage.getItem('role')),
         api_token: localStorage.getItem('api_token'),
-        user_id: localStorage.getItem('user_id'),
+        authRole: parseInt(localStorage.getItem('role')),
+        user_id: parseInt(localStorage.getItem('user_id')),
         months: [
             {id: '01', name: "January"},
             {id: '02', name: "February"},
@@ -62,6 +62,7 @@ export const store = new Vuex.Store({
         getBranches: state => state.branches,
         getPaymentMethods: state => state.paymentMethods,
         auth: state => role => state[role].includes(state.authRole),
+        getAuthUserDetails: state => ({userId: state.user_id,roleId: state.authRole}),
     },
     mutations: {
         mutateAuth: state => {

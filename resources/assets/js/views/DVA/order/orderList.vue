@@ -2,7 +2,7 @@
     <transition name="fade">
         <div id="reminder" class="attendance">
 
-            <custom-header :title="'Order Lists'"/>
+            <custom-header :title="'Order List'"/>
 
             <div class="mt-5 row attendance-head">
                 <div class="col-4 col-sm-3" v-for="{name} in filters">
@@ -16,7 +16,8 @@
             <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
                 <div class="col-4 col-sm-3" v-for="{name:filter,model} in filters">
                     <div class="row">
-                        <select class="custom-select" v-model="$data[model]" v-if="filter === 'branch'" @keyup.enter="fetchData()">
+                        <select class="custom-select" v-model="$data[model]" v-if="filter === 'branch'"
+                                @keyup.enter="fetchData()">
                             <option disabled selected value="">{{filter | capitalize}}</option>
                             <option :value="id" v-for="{name,id} in $store.getters.getBranches">
                                 {{name | capitalize}}
@@ -106,6 +107,10 @@
     import CustomHeader from '../../../components/customHeader';
 
     export default {
+        props: {
+            withBranchFilter: {default: true},
+            urlToFetchOrders: {default: '/api/reminder/create'}
+        },
 
         components: {CustomHeader, Order},
 
@@ -117,7 +122,6 @@
                 date_to: null,
                 page: 1,
                 filters: [
-                    {name: 'branch', model: 'branch_id'},
                     {name: 'date from', model: 'date_from'},
                     {name: 'date to', model: 'date_to'}
                 ],
@@ -135,7 +139,7 @@
                 this.$scrollToTop();
                 this.$LIPS(true);
                 let {page, page_size, date_from, date_to, branch_id} = this.$data;
-                get(`/api/reminder/create` +
+                get(this.urlToFetchOrders +
                     `${!!page ? `?page=${page}` : ''}` +
                     `${!!date_to ? `&date_to=${date_to}` : ''}` +
                     `${!!page_size ? `&page_size=${page_size}` : ''}` +
@@ -172,7 +176,9 @@
                 this.show = true;
             }
         },
+
         created() {
+            this.$props.withBranchFilter && this.filters.unshift({name: 'branch', model: 'branch_id'});
             this.$prepareBranches();
             this.fetchData();
         }

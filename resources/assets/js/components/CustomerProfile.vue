@@ -1,4 +1,4 @@
-<template>
+    <template>
     <transition name="fade">
         <div :class="full && 'px-md-4 px-2'">
             <app-navigation :forward="{ path: $routerHistory.next().path }"

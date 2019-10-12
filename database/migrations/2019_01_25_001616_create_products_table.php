@@ -20,9 +20,14 @@ class CreateProductsTable extends Migration
           $table->unsignedInteger('brand_id')->index()->nullable();//FK
           $table->unsignedInteger('category_id')->index()->nullable();//FK
           $table->string('retail_price');
-          $table->string('feature');
+          $table->string('features');
+          $table->string('img_url');
+          $table->string('popularity');
+          $table->string('type');
+          $table->boolean('is_active');
           $table->unsignedInteger('user_id')->index()->nullable();//FK
           $table->timestamps();
+
       });
 
       Schema::table('products', function ($table) {
