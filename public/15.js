@@ -251,14 +251,14 @@ exports.default = {
 
         form: {
             handler: function handler(val) {
-                //sku enerator functionif
+                //sku generator functionif
                 if (this.$data.mode === 'create') {
                     var date = new Date().getFullYear();
                     date = date.toString().slice(2, 4);
                     var name = val.name.slice(0, 3).toUpperCase();
                     val.last_id.length === 0 ? _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + 1 + "/" + date) : _vue2.default.set(this.$data.form, 'sku', "ALTS/" + name + "/" + (val.last_id[0].id + 1) + "/" + date);
                 } else if (this.$data.mode === 'edit') {
-                    var _date = new Date().getFullYear(); //needs to be optimized to return original year
+                    var _date = new Date().getFullYear();
                     _date = _date.toString().slice(2, 4);
                     var _name = val.name.slice(0, 3).toUpperCase();
                     var id = val.id;

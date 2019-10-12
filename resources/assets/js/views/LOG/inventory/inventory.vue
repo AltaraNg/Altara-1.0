@@ -13,18 +13,9 @@
                             <label>Product</label>
                             <typeahead :options="products" caption="name" v-model="form.product"/>
                         </div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Brand</label>
-                            <typeahead :options="brands" caption="name" v-model="form.brand"/>
-                        </div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Feature</label>
-                            <input class="form-control" type="text" v-model="form.feature"></input>
-                        </div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Branch</label>
-                            <typeahead :options="branches" caption="name" v-model="form.branch"/>
-                        </div>
+
+
+
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Quantity</label>
@@ -33,7 +24,7 @@
                             <small v-if="errors.first('price')">{{ errors.first('price') }}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Supplier</label>
+                            <label>Supplier ID</label>
                             <typeahead :options="suppliers" caption="name" v-model="form.supplier"/>
                         </div>
 
@@ -56,8 +47,9 @@
                                     <tbody class="text-center">
                                     <tr class="table-separator">
                                         <td class="text-left">S/No.</td>
-                                        <th>Product SKU</th>
+                                        <th>Product </th>
                                         <th>Inventory SKU</th>
+                                        <th>Market Price</th>
                                         <th>Serial/IMEI Number</th>
                                         <th>Recieved Date</th>
                                         <th>Recieved By</th>
@@ -68,7 +60,7 @@
                                         <th>
                                             <div class="form-group mb-0">
                                                 <input class="form-control" name="product_sku" type="text" 
-                                                       v-model="productForm.products[index].product_sku" disabled>
+                                                       v-model="productForm.products[index].product_name" disabled>
                                             </div>
                                         </th>
 
@@ -80,8 +72,15 @@
                                         </th>
 
                                         <th>
+                                            <div class="form-group mb-0">
+                                                <input class="form-control" name="inventory_sku" type="text"
+                                                       v-model="productForm.products[index].market_price" disabled>
+                                            </div>
+                                        </th>
+
+                                        <th>
                                               <div class="form-group mb-0">
-                                                <input class="form-control" name="serial_no" type="text"  >
+                                                <input class="form-control" name="serial_no" type="text" v-model="productForm.products[index].serial_no">
                                             </div>
                                         </th>
 
@@ -113,6 +112,13 @@
                                     </tr>
                                     </tbody>
                                 </table>
+            <div>
+
+            <button @click="saveInventory(index)"
+                    class="ml-10 btn status status-sm my-sm-2 bg-success align-content-md-center">
+                <i class="fas fa-save"></i>
+            </button>
+            </div>
         </div>
     </transition>
 </template>
@@ -127,7 +133,7 @@
 
 
     function initialize(to) {
-        let urls = {create: `/api/product/create`, edit: `/api/product/${to.params.id}/edit`};
+        let urls = {create: `/api/inventory/create`, edit: `/api/product/${to.params.id}/edit`};
         return urls[to.meta.mode];
     }
 
@@ -141,98 +147,18 @@
                     name: Auth.state.user_name,
                     id: Auth.state.user_id
                 },
-                branches: [
-                    {
-                        'id': 1,
-                        'name': 'Ikolaba',
-
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Mushin',
-
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Ojota',
-
-                    }
-                ],
-                brands: [
-                    {
-                        'id': 1,
-                        'name': 'Nokia',
-
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Hisense',
-
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Samsung',
-
-                    },
-                    {
-                        'id': 4,
-                        'name': 'Jinsung',
-
-                    }
-                ],
-                suppliers: [
-                    {
-                        'id': 1,
-                        'name': 'Panasonic',
-
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Thomasson',
-
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Indomitable',
-
-                    },
-                    {
-                        'id': 4,
-                        'name': 'Sunbo Electronics',
-
-                    }
-                ],
-                products: [
-                    {
-                        'id': 1,
-                        'name': 'Fridge',
-
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Phone',
-
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Motorcycle',
-
-                    },
-                    {
-                        'id': 4,
-                        'name': 'Sewing Machine',
-
-                    }
-                ],
                 mode: null,
                 error: {},
+                index: null,
                 show: false,
                 showModalContent: false,
-                store: '/api/product',
+                store: '/api/inventory',
                 number: 0,
+                products: [],
+                suppliers: [],
                 product: null,
-                branch: null,
-                brand: null,
+                categories: null,
+                brands: null,
                 supplier: null,
                 quantity:'',
 
@@ -244,19 +170,20 @@
             }
         },
         beforeRouteEnter(to, from, next) {
-            get(initialize(to))
+
+                get(initialize(to))
                 .then(({data}) => next(vm => vm.prepareForm(data)))
                 .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
         methods: {
             prepareForm(data) {
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                Vue.set(this.$data, 'form', data.form);
-                Vue.set(this.$data, 'branches', data.branches);
                 Vue.set(this.$data, 'brands', data.brands);
                 Vue.set(this.$data, 'categories', data.categories);
+                Vue.set(this.$data, 'suppliers', data.suppliers);
+                Vue.set(this.$data, 'products', data.products);
                 if (this.mode === 'edit') {
-                    this.store = `/api/product/${this.$route.params.id}`;
+                    this.store = `/api/inventory/${this.$route.params.id}`;
                     this.method = 'PUT';
                 }
                 this.show = true;
@@ -273,6 +200,15 @@
                 //         this.$LIPS(false);
                 //         Flash.setError('Error Fetching customer detail');
                 //     });
+            },
+
+            saveInventory(){
+
+                console.log(
+                   this.productForm.products
+                )
+
+
             },
 
             onSave() {
@@ -306,6 +242,7 @@
     
 
  addProductForm() {
+<<<<<<< HEAD
                 for (var i=1; i<=this.quantity;i++){
                      this.productForm.products.push({
                     product_sku: 'AC/333/111',
@@ -318,6 +255,38 @@
                 this.reNumber();
                 }
                
+=======
+
+     this.$validator.validateAll().then(result => {
+         if (result){
+             const quantity = parseInt(this.form.quantity);
+
+             const product = this.getEntity(this.form.product, this.products);
+             const supplier = this.getEntity(this.form.supplier, this.suppliers);
+
+
+             //generates rows according to the quantity of products
+             for (let i = 0; i< quantity; i++){
+                 this.productForm.products.push({
+                     product_name: product.name,
+                     product_id: product.id,
+                     inventory_sku: '',
+                     serial_no: '',
+                     market_price: product.retail_price,
+                     received_date: this.$getDate(),
+                     _col: '',
+                     column: ''
+                 });
+                 this.reNumber();
+             }
+
+
+
+         }
+     })
+                
+
+>>>>>>> 643c58eac35fcf694cc291467b6f12561ee17cb0
             },
 
             deleteProduct(index) {
@@ -337,7 +306,47 @@
             },
 
 
+            getEntity(id, array){
+                return array.find(entity => entity.id === id)
+            }
+
+
         },
-        watch: {}
+        created(){
+
+
+
+
+        },
+        watch: {
+            // productForm: {
+            //     handler: function (val) {
+            //         console.log(val);
+            //
+            //     },
+            //     deep: true
+            // },
+            productForm: {
+                handler: function () {
+                    let date = new Date().getFullYear();
+                    date = date.toString().slice(2,4);
+                    this.productForm.products.forEach( e =>{
+                        // let product = this.getEntity(e.product, this.products);
+                        let category_id = this.getEntity(e.product_id, this.products).category_id;
+                        let category_name = this.getEntity(category_id, this.categories).name;
+
+
+                    e.inventory_sku =   `${category_name.slice(0,3).toUpperCase()}-${e.product_name.slice(0,3).toUpperCase()}-0${e.serial_no.slice(3, -1)}`;
+
+                        // Vue.set(this.$data.e, 'inventory_sku', 'random' );
+
+                    });
+                },
+                // console.log(index);
+                deep: true
+            },
+
+
+        }
     }
 </script>

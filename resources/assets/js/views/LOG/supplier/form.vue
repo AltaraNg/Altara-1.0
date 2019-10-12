@@ -182,7 +182,7 @@
               
             form:{
              handler: function (val) {
-                 //sku enerator functionif
+                 //sku generator functionif
                  if (this.$data.mode === 'create'){
                      let date = new Date().getFullYear();
                     date = date.toString().slice(2,4);
@@ -190,7 +190,7 @@
                     (val.last_id.length === 0)?   Vue.set(this.$data.form, 'sku', `ALTS/${name}/${1}/${date}`):  Vue.set(this.$data.form, 'sku', `ALTS/${name}/${val.last_id[0].id +1}/${date}`);
                  }
                  else if (this.$data.mode === 'edit'){
-                      let date = new Date().getFullYear(); //needs to be optimized to return original year
+                      let date = new Date().getFullYear();
                     date = date.toString().slice(2,4);
                     let name = val.name.slice(0, 3).toUpperCase();
                     let id = val.id;

@@ -205,7 +205,7 @@ var _auth2 = _interopRequireDefault(_auth);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function initialize(to) {
-    var urls = { create: "/api/product/create", edit: "/api/product/" + to.params.id + "/edit" };
+    var urls = { create: "/api/inventory/create", edit: "/api/product/" + to.params.id + "/edit" };
     return urls[to.meta.mode];
 } //
 //
@@ -325,6 +325,14 @@ function initialize(to) {
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+//
+//
+//
+//
+>>>>>>> 643c58eac35fcf694cc291467b6f12561ee17cb0
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
@@ -336,79 +344,18 @@ exports.default = {
                 name: _auth2.default.state.user_name,
                 id: _auth2.default.state.user_id
             },
-            branches: [{
-                'id': 1,
-                'name': 'Ikolaba'
-
-            }, {
-                'id': 2,
-                'name': 'Mushin'
-
-            }, {
-                'id': 3,
-                'name': 'Ojota'
-
-            }],
-            brands: [{
-                'id': 1,
-                'name': 'Nokia'
-
-            }, {
-                'id': 2,
-                'name': 'Hisense'
-
-            }, {
-                'id': 3,
-                'name': 'Samsung'
-
-            }, {
-                'id': 4,
-                'name': 'Jinsung'
-
-            }],
-            suppliers: [{
-                'id': 1,
-                'name': 'Panasonic'
-
-            }, {
-                'id': 2,
-                'name': 'Thomasson'
-
-            }, {
-                'id': 3,
-                'name': 'Indomitable'
-
-            }, {
-                'id': 4,
-                'name': 'Sunbo Electronics'
-
-            }],
-            products: [{
-                'id': 1,
-                'name': 'Fridge'
-
-            }, {
-                'id': 2,
-                'name': 'Phone'
-
-            }, {
-                'id': 3,
-                'name': 'Motorcycle'
-
-            }, {
-                'id': 4,
-                'name': 'Sewing Machine'
-
-            }],
             mode: null,
             error: {},
+            index: null,
             show: false,
             showModalContent: false,
-            store: '/api/product',
+            store: '/api/inventory',
             number: 0,
+            products: [],
+            suppliers: [],
             product: null,
-            branch: null,
-            brand: null,
+            categories: null,
+            brands: null,
             supplier: null,
             quantity: '',
 
@@ -420,6 +367,7 @@ exports.default = {
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+
         (0, _api.get)(initialize(to)).then(function (_ref) {
             var data = _ref.data;
             return next(function (vm) {
@@ -435,12 +383,12 @@ exports.default = {
     methods: {
         prepareForm: function prepareForm(data) {
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
-            _vue2.default.set(this.$data, 'form', data.form);
-            _vue2.default.set(this.$data, 'branches', data.branches);
             _vue2.default.set(this.$data, 'brands', data.brands);
             _vue2.default.set(this.$data, 'categories', data.categories);
+            _vue2.default.set(this.$data, 'suppliers', data.suppliers);
+            _vue2.default.set(this.$data, 'products', data.products);
             if (this.mode === 'edit') {
-                this.store = "/api/product/" + this.$route.params.id;
+                this.store = "/api/inventory/" + this.$route.params.id;
                 this.method = 'PUT';
             }
             this.show = true;
@@ -456,6 +404,10 @@ exports.default = {
             //         this.$LIPS(false);
             //         Flash.setError('Error Fetching customer detail');
             //     });
+        },
+        saveInventory: function saveInventory() {
+
+            console.log(this.productForm.products);
         },
         onSave: function onSave() {
             var _this = this;
@@ -491,6 +443,7 @@ exports.default = {
             });
         },
         addProductForm: function addProductForm() {
+<<<<<<< HEAD
             for (var i = 1; i <= this.quantity; i++) {
                 this.productForm.products.push({
                     product_sku: 'AC/333/111',
@@ -502,25 +455,87 @@ exports.default = {
                 });
                 this.reNumber();
             }
+=======
+            var _this2 = this;
+
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    var quantity = parseInt(_this2.form.quantity);
+
+                    var product = _this2.getEntity(_this2.form.product, _this2.products);
+                    var supplier = _this2.getEntity(_this2.form.supplier, _this2.suppliers);
+
+                    //generates rows according to the quantity of products
+                    for (var i = 0; i < quantity; i++) {
+                        _this2.productForm.products.push({
+                            product_name: product.name,
+                            product_id: product.id,
+                            inventory_sku: '',
+                            serial_no: '',
+                            market_price: product.retail_price,
+                            received_date: _this2.$getDate(),
+                            _col: '',
+                            column: ''
+                        });
+                        _this2.reNumber();
+                    }
+                }
+            });
+>>>>>>> 643c58eac35fcf694cc291467b6f12561ee17cb0
         },
         deleteProduct: function deleteProduct(index) {
             this.productForm.products.splice(index, 1);
             this.reNumber();
         },
         reNumber: function reNumber() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.productForm.products.forEach(function (product, index) {
                 /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
                 * u want to display on the ui "4th repayment"
                 * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
                 var next = index + 1;
-                _this2.productForm.products[index]._col = next;
-                _this2.productForm.products[index].column = _this2.$getColumn(next) + " Products";
+                _this3.productForm.products[index]._col = next;
+                _this3.productForm.products[index].column = _this3.$getColumn(next) + " Products";
+            });
+        },
+        getEntity: function getEntity(id, array) {
+            return array.find(function (entity) {
+                return entity.id === id;
             });
         }
     },
-    watch: {}
+    created: function created() {},
+
+    watch: {
+        // productForm: {
+        //     handler: function (val) {
+        //         console.log(val);
+        //
+        //     },
+        //     deep: true
+        // },
+        productForm: {
+            handler: function handler() {
+                var _this4 = this;
+
+                var date = new Date().getFullYear();
+                date = date.toString().slice(2, 4);
+                this.productForm.products.forEach(function (e) {
+                    // let product = this.getEntity(e.product, this.products);
+                    var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
+                    var category_name = _this4.getEntity(category_id, _this4.categories).name;
+
+                    e.inventory_sku = category_name.slice(0, 3).toUpperCase() + "-" + e.product_name.slice(0, 3).toUpperCase() + "-0" + e.serial_no.slice(3, -1);
+
+                    // Vue.set(this.$data.e, 'inventory_sku', 'random' );
+                });
+            },
+            // console.log(index);
+            deep: true
+        }
+
+    }
 };
 
 /***/ }),
@@ -634,85 +649,6 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Brand")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.brands, caption: "name" },
-                        model: {
-                          value: _vm.form.brand,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "brand", $$v)
-                          },
-                          expression: "form.brand"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Feature")]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.feature,
-                            expression: "form.feature"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "text" },
-                        domProps: { value: _vm.form.feature },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.form, "feature", $event.target.value)
-                          }
-                        }
-                      })
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Branch")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.branches, caption: "name" },
-                        model: {
-                          value: _vm.form.branch,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "branch", $$v)
-                          },
-                          expression: "form.branch"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
                   _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
                   _vm._v(" "),
                   _c(
@@ -770,7 +706,7 @@ var render = function() {
                         "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Supplier")]),
+                      _c("label", [_vm._v("Supplier ID")]),
                       _vm._v(" "),
                       _c("typeahead", {
                         attrs: { options: _vm.suppliers, caption: "name" },
@@ -852,9 +788,11 @@ var render = function() {
                   _c("tr", { staticClass: "table-separator" }, [
                     _c("td", { staticClass: "text-left" }, [_vm._v("S/No.")]),
                     _vm._v(" "),
-                    _c("th", [_vm._v("Product SKU")]),
+                    _c("th", [_vm._v("Product ")]),
                     _vm._v(" "),
                     _c("th", [_vm._v("Inventory SKU")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Market Price")]),
                     _vm._v(" "),
                     _c("th", [_vm._v("Serial/IMEI Number")]),
                     _vm._v(" "),
@@ -875,9 +813,9 @@ var render = function() {
                                 name: "model",
                                 rawName: "v-model",
                                 value:
-                                  _vm.productForm.products[index].product_sku,
+                                  _vm.productForm.products[index].product_name,
                                 expression:
-                                  "productForm.products[index].product_sku"
+                                  "productForm.products[index].product_name"
                               }
                             ],
                             staticClass: "form-control",
@@ -887,7 +825,8 @@ var render = function() {
                               disabled: ""
                             },
                             domProps: {
-                              value: _vm.productForm.products[index].product_sku
+                              value:
+                                _vm.productForm.products[index].product_name
                             },
                             on: {
                               input: function($event) {
@@ -896,7 +835,7 @@ var render = function() {
                                 }
                                 _vm.$set(
                                   _vm.productForm.products[index],
-                                  "product_sku",
+                                  "product_name",
                                   $event.target.value
                                 )
                               }
@@ -947,8 +886,38 @@ var render = function() {
                       _c("th", [
                         _c("div", { staticClass: "form-group mb-0" }, [
                           _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.productForm.products[index].market_price,
+                                expression:
+                                  "productForm.products[index].market_price"
+                              }
+                            ],
                             staticClass: "form-control",
-                            attrs: { name: "serial_no", type: "text" }
+                            attrs: {
+                              name: "inventory_sku",
+                              type: "text",
+                              disabled: ""
+                            },
+                            domProps: {
+                              value:
+                                _vm.productForm.products[index].market_price
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.productForm.products[index],
+                                  "market_price",
+                                  $event.target.value
+                                )
+                              }
+                            }
                           })
                         ])
                       ]),
@@ -961,6 +930,7 @@ var render = function() {
                                 name: "model",
                                 rawName: "v-model",
                                 value:
+<<<<<<< HEAD
                                   _vm.productForm.products[index].recieved_date,
                                 expression:
                                   "productForm.products[index].recieved_date"
@@ -971,6 +941,16 @@ var render = function() {
                             domProps: {
                               value:
                                 _vm.productForm.products[index].recieved_date
+=======
+                                  _vm.productForm.products[index].serial_no,
+                                expression:
+                                  "productForm.products[index].serial_no"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { name: "serial_no", type: "text" },
+                            domProps: {
+                              value: _vm.productForm.products[index].serial_no
                             },
                             on: {
                               input: function($event) {
@@ -979,7 +959,47 @@ var render = function() {
                                 }
                                 _vm.$set(
                                   _vm.productForm.products[index],
+                                  "serial_no",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.productForm.products[index].received_date,
+                                expression:
+                                  "productForm.products[index].received_date"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { name: "received_date", type: "date" },
+                            domProps: {
+                              value:
+                                _vm.productForm.products[index].received_date
+>>>>>>> 643c58eac35fcf694cc291467b6f12561ee17cb0
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.productForm.products[index],
+<<<<<<< HEAD
                                   "recieved_date",
+=======
+                                  "received_date",
+>>>>>>> 643c58eac35fcf694cc291467b6f12561ee17cb0
                                   $event.target.value
                                 )
                               }
@@ -1024,7 +1044,23 @@ var render = function() {
                 2
               )
             ])
-          : _vm._e()
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "button",
+            {
+              staticClass:
+                "ml-10 btn status status-sm my-sm-2 bg-success align-content-md-center",
+              on: {
+                click: function($event) {
+                  _vm.saveInventory(_vm.index)
+                }
+              }
+            },
+            [_c("i", { staticClass: "fas fa-save" })]
+          )
+        ])
       ],
       1
     )

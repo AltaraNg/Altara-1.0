@@ -17,6 +17,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/customer/lookup/{customer}', 'CustomerController@customerLookup');
     Route::post('/customer/{customer}', 'CustomerController@update');
     Route::get('/user/getBranchUsers', 'UserController@getBranchUsers');
+    Route::get('/products', 'ProductController@getProducts');
+    Route::get('/inventory', 'ProductController@create');
+    Route::get('/suppliers', 'SupplierController@getSuppliers');
     Route::Resources([
         'log' => 'LogController',
         'user' => 'UserController',
@@ -42,6 +45,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'dsa_daily_registration' => 'DsaDailyRegistrationController',
         'repayment' => 'RepaymentController',
         'payment_method' => 'PaymentMethodController',
+        'inventory' => 'InventoryController'
     ]);
     /*------*/
     Route::post('/user/{id}/cv', 'UserController@uploadCV');
