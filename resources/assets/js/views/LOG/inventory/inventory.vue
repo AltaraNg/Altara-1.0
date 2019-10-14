@@ -113,10 +113,9 @@
                                 </table>
             <div>
 
-            <button @click="saveInventory(index)"
-                    class="ml-10 btn status status-sm my-sm-2 bg-success align-content-md-center">
-                <i class="fas fa-save"></i>
-            </button>
+                <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="saveInventory()">
+                    Save Inventory <i class="far fa-paper-plane ml-1"></i>
+                </button>
             </div>
         </div>
     </transition>
@@ -201,13 +200,15 @@
             },
 
             saveInventory(){
+                this.$validator.validateAll().then(result => {
+                    if (result){
+                        if (this.$network()) {
+                            this.$LIPS(true);
 
-                console.log(
-                   this.productForm.products
-                )
-
-
-            },
+                        }
+                    }
+                })
+                },
 
             onSave() {
                 this.$validator.validateAll().then(result => {
@@ -220,7 +221,7 @@
                                         log(data.log, data.staff_id);
                                         Vue.set(this.$data, 'form', data.form);
                                         Flash.setSuccess(data.message, 5000);
-                                        if (data['updated']) this.$router.push('/log/products');
+                                        if (data['updated']) this.$router.push('/log/inventory');
                                     }
                                 })
                                 .catch(({response: r}) => {
@@ -302,13 +303,6 @@
 
         },
         watch: {
-            // productForm: {
-            //     handler: function (val) {
-            //         console.log(val);
-            //
-            //     },
-            //     deep: true
-            // },
             productForm: {
                 handler: function () {
                     let date = new Date().getFullYear();
@@ -319,7 +313,7 @@
                         let category_name = this.getEntity(category_id, this.categories).name;
 
 
-                    e.inventory_sku =   `${category_name.slice(0,3).toUpperCase()}-${e.product_name.slice(0,3).toUpperCase()}-0${e.serial_no.slice(3, -1)}`;
+                    e.inventory_sku =   `${category_name.slice(0,3).toUpperCase()}-${e.product_name.slice(0,3).toUpperCase()}-0${e.serial_no.slice(3, -1)}-00${this.productForm.products.indexOf(e)}`;
 
                         // Vue.set(this.$data.e, 'inventory_sku', 'random' );
 

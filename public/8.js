@@ -329,7 +329,6 @@ function initialize(to) {
 //
 //
 //
-//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
@@ -402,24 +401,31 @@ exports.default = {
             //     });
         },
         saveInventory: function saveInventory() {
-
-            console.log(this.productForm.products);
-        },
-        onSave: function onSave() {
             var _this = this;
 
             this.$validator.validateAll().then(function (result) {
                 if (result) {
                     if (_this.$network()) {
                         _this.$LIPS(true);
-                        (0, _api.byMethod)(_this.method, _this.store, _this.form).then(function (_ref2) {
+                    }
+                }
+            });
+        },
+        onSave: function onSave() {
+            var _this2 = this;
+
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this2.$network()) {
+                        _this2.$LIPS(true);
+                        (0, _api.byMethod)(_this2.method, _this2.store, _this2.form).then(function (_ref2) {
                             var data = _ref2.data;
 
                             if (data.saved || data.updated) {
                                 (0, _log.log)(data.log, data.staff_id);
-                                _vue2.default.set(_this.$data, 'form', data.form);
+                                _vue2.default.set(_this2.$data, 'form', data.form);
                                 _flash2.default.setSuccess(data.message, 5000);
-                                if (data['updated']) _this.$router.push('/log/products');
+                                if (data['updated']) _this2.$router.push('/log/inventory');
                             }
                         }).catch(function (_ref3) {
                             var r = _ref3.response;
@@ -427,40 +433,40 @@ exports.default = {
                                 status = r.status;
 
                             if (status === 422) {
-                                _this.error = data.errors ? data.errors : data;
-                                _this.$networkErr('unique');
+                                _this2.error = data.errors ? data.errors : data;
+                                _this2.$networkErr('unique');
                             }
                         }).finally(function () {
-                            _this.$scrollToTop();
-                            _this.$LIPS(false);
+                            _this2.$scrollToTop();
+                            _this2.$LIPS(false);
                         });
-                    } else _this.$networkErr();
-                } else _this.$networkErr('form');
+                    } else _this2.$networkErr();
+                } else _this2.$networkErr('form');
             });
         },
         addProductForm: function addProductForm() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$validator.validateAll().then(function (result) {
                 if (result) {
-                    var quantity = parseInt(_this2.form.quantity);
+                    var quantity = parseInt(_this3.form.quantity);
 
-                    var product = _this2.getEntity(_this2.form.product, _this2.products);
-                    var supplier = _this2.getEntity(_this2.form.supplier, _this2.suppliers);
+                    var product = _this3.getEntity(_this3.form.product, _this3.products);
+                    var supplier = _this3.getEntity(_this3.form.supplier, _this3.suppliers);
 
                     //generates rows according to the quantity of products
                     for (var i = 0; i < quantity; i++) {
-                        _this2.productForm.products.push({
+                        _this3.productForm.products.push({
                             product_name: product.name,
                             product_id: product.id,
                             inventory_sku: '',
                             serial_no: '',
                             market_price: product.retail_price,
-                            received_date: _this2.$getDate(),
+                            received_date: _this3.$getDate(),
                             _col: '',
                             column: ''
                         });
-                        _this2.reNumber();
+                        _this3.reNumber();
                     }
                 }
             });
@@ -470,15 +476,15 @@ exports.default = {
             this.reNumber();
         },
         reNumber: function reNumber() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.productForm.products.forEach(function (product, index) {
                 /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
                 * u want to display on the ui "4th repayment"
                 * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
                 var next = index + 1;
-                _this3.productForm.products[index]._col = next;
-                _this3.productForm.products[index].column = _this3.$getColumn(next) + " Products";
+                _this4.productForm.products[index]._col = next;
+                _this4.productForm.products[index].column = _this4.$getColumn(next) + " Products";
             });
         },
         getEntity: function getEntity(id, array) {
@@ -490,25 +496,18 @@ exports.default = {
     created: function created() {},
 
     watch: {
-        // productForm: {
-        //     handler: function (val) {
-        //         console.log(val);
-        //
-        //     },
-        //     deep: true
-        // },
         productForm: {
             handler: function handler() {
-                var _this4 = this;
+                var _this5 = this;
 
                 var date = new Date().getFullYear();
                 date = date.toString().slice(2, 4);
                 this.productForm.products.forEach(function (e) {
                     // let product = this.getEntity(e.product, this.products);
-                    var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
-                    var category_name = _this4.getEntity(category_id, _this4.categories).name;
+                    var category_id = _this5.getEntity(e.product_id, _this5.products).category_id;
+                    var category_name = _this5.getEntity(category_id, _this5.categories).name;
 
-                    e.inventory_sku = category_name.slice(0, 3).toUpperCase() + "-" + e.product_name.slice(0, 3).toUpperCase() + "-0" + e.serial_no.slice(3, -1);
+                    e.inventory_sku = category_name.slice(0, 3).toUpperCase() + "-" + e.product_name.slice(0, 3).toUpperCase() + "-0" + e.serial_no.slice(3, -1) + "-00" + _this5.productForm.products.indexOf(e);
 
                     // Vue.set(this.$data.e, 'inventory_sku', 'random' );
                 });
@@ -1012,15 +1011,18 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass:
-                "ml-10 btn status status-sm my-sm-2 bg-success align-content-md-center",
+              staticClass: "btn bg-default",
+              attrs: { disabled: _vm.$isProcessing, type: "submit" },
               on: {
                 click: function($event) {
-                  _vm.saveInventory(_vm.index)
+                  _vm.saveInventory()
                 }
               }
             },
-            [_c("i", { staticClass: "fas fa-save" })]
+            [
+              _vm._v("\n                Save Inventory "),
+              _c("i", { staticClass: "far fa-paper-plane ml-1" })
+            ]
           )
         ])
       ],

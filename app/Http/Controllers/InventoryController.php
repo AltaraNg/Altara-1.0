@@ -58,41 +58,23 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:products',
-            'brand_id' => 'required|int',
-            'category_id' => 'required|int',
-            'retail_price' => 'required|int',
+            'inventory_sku' => 'required|unique:inventory',
+            'product_id' => 'required|int',
+            'receiver_id' => 'required|int',
+            'seller_id' => 'required|int',
+            'serial_number' => 'required',
+
+
         ]);
-        $user = auth('api')->user();
-        $request->user_id = $user->id;
-        $product = new Product($request->all());
-        // if ($request->hasFile($request['img_url']) && $request->file($request['img_url'])->isValid()) {
 
-        //     /** 3.a if check 3 is passed*/
-        //     /** get the image and assign to a variable */
-        //     $image = $request->file($request['img_url']);
+        $inventory = new Inventory($request->all());
 
-        //     /** Generate the file name(eg for passport name will be
-        //      * passport/[randomStringGeneratedFromTheFunctionCall->getFileName]) */
-        //     $filename = $request['img_url'] . '/' . $this->getFileName($request[$request['img_url']]);
-
-        //     /** the storage link*/
-        //     $s3 = Storage::disk('s3');
-
-        //     /** store the document in s3*/
-        //     $s3->put($filename, file_get_contents($image), 'public');
-        //     $product[$request['img_url'] . '_url'] = $filename;
-
-        // }
-
-        /** update the document_url(eg passport_url, id_url) to the filename generated*/
-
-        $product->save();
+        $inventory->save();
         return response()->json([
             'saved' => true,
             'message' => 'Product Created!',
-            'form' => Product::form(),
-            'staff_id' => $user->staff_id,
+            'form' => Inventory::form(),
+
             'log' => 'ProductCreated'
         ]);
 
