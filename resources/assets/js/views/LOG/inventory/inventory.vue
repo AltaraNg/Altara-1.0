@@ -255,7 +255,8 @@
                      market_price: product.retail_price,
                      received_date: this.$getDate(),
                      receiver_id: this.user.id,
-                     seller_id: this.user.id
+                     seller_id: this.user.id,
+                     status: ''
 
                  });
                  // this.reNumber();

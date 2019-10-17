@@ -15,11 +15,10 @@ class InventoryController extends Controller
     //
     public function index()
     {
-        $model = Inventory::select('id', 'name','retail_price')->searchPaginateAndOrder();
-        $columns = Inventory::$columns;
+
+
         return response()->json([
-            'model' => $model,
-            'columns' => $columns
+            'Message'=> "it works"
         ]);
     }
 
@@ -58,25 +57,25 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'inventory_sku' => 'required|unique:inventory',
+            'inventory_sku' => 'required|unique:inventories',
             'product_id' => 'required|int',
             'receiver_id' => 'required|int',
             'seller_id' => 'required|int',
-            'serial_number' => 'required',
-            'market_price' => 'required'
+
 
 
         ]);
 
         $inventory = new Inventory($request->all());
 
+
         $inventory->save();
         return response()->json([
             'saved' => true,
-            'message' => 'Product Created!',
-            'form' => Inventory::form(),
+            'message' => $inventory,
 
-            'log' => 'ProductCreated'
+
+            'log' => 'InventoryCreated'
         ]);
 
     }
