@@ -29,7 +29,16 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+//     MAIL_DRIVER=smtp
+// MAIL_HOST=smtp.mailtrap.io
+// MAIL_PORT=2525
+// MAIL_USERNAME=9d76e765ee1477
+// MAIL_PASSWORD=51fd5a511dd24f
+// MAIL_ENCRYPTION=null
+
+    // 'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    // 'host' => env('MAIL_HOST', 'mailtrap.io'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +51,9 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+    // 'port' => env('MAIL_PORT', 587),
+    // 'port' => env('MAIL_PORT', 2525),
+    'port' => env('MAIL_PORT', 465),
 
     /*
     |--------------------------------------------------------------------------
