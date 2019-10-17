@@ -28,7 +28,7 @@ class AddPriceColumnToInventory extends Migration
         Schema::table('inventories', function (Blueprint $table) {
 
             //
-            $table->string('market_price');
+            $table->string('market_price')->nullable();
         });
     }
 }

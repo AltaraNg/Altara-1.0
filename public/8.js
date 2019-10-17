@@ -460,73 +460,66 @@ exports.default = {
             //         Flash.setError('Error Fetching customer detail');
             //     });
         },
-        saveInventory: function saveInventory() {
+        onSave: function onSave() {
             var _this = this;
 
+            console.log(this.productForm.products);
             this.$validator.validateAll().then(function (result) {
                 if (result) {
                     if (_this.$network()) {
                         _this.$LIPS(true);
-                    }
-                }
+                        _this.productForm.products.forEach(function (e) {
+                            (0, _api.byMethod)(_this.method, _this.store, e).then(function (_ref2) {
+                                var data = _ref2.data;
+
+                                if (data.saved || data.updated) {
+                                    // log(data.log, data.staff_id);
+                                    _vue2.default.set(_this.$data, 'form', data.form);
+                                    _flash2.default.setSuccess(data.message, 5000);
+                                    if (data['updated']) _this.$router.push('/log/inventory');
+                                }
+                            }).catch(function (_ref3) {
+                                var r = _ref3.response;
+                                var data = r.data,
+                                    status = r.status;
+
+                                if (status === 422) {
+                                    _this.error = data.errors ? data.errors : data;
+                                    _this.$networkErr('unique');
+                                }
+                            }).finally(function () {
+                                _this.$scrollToTop();
+                                _this.$LIPS(false);
+                            });
+                        });
+                    } else _this.$networkErr();
+                } else _this.$networkErr('form');
             });
         },
-        onSave: function onSave() {
+        addProductForm: function addProductForm() {
             var _this2 = this;
 
             this.$validator.validateAll().then(function (result) {
                 if (result) {
-                    if (_this2.$network()) {
-                        _this2.$LIPS(true);
-                        (0, _api.byMethod)(_this2.method, _this2.store, _this2.form).then(function (_ref2) {
-                            var data = _ref2.data;
+                    var quantity = parseInt(_this2.form.quantity);
 
-                            if (data.saved || data.updated) {
-                                (0, _log.log)(data.log, data.staff_id);
-                                _vue2.default.set(_this2.$data, 'form', data.form);
-                                _flash2.default.setSuccess(data.message, 5000);
-                                if (data['updated']) _this2.$router.push('/log/inventory');
-                            }
-                        }).catch(function (_ref3) {
-                            var r = _ref3.response;
-                            var data = r.data,
-                                status = r.status;
-
-                            if (status === 422) {
-                                _this2.error = data.errors ? data.errors : data;
-                                _this2.$networkErr('unique');
-                            }
-                        }).finally(function () {
-                            _this2.$scrollToTop();
-                            _this2.$LIPS(false);
-                        });
-                    } else _this2.$networkErr();
-                } else _this2.$networkErr('form');
-            });
-        },
-        addProductForm: function addProductForm() {
-            var _this3 = this;
-
-            this.$validator.validateAll().then(function (result) {
-                if (result) {
-                    var quantity = parseInt(_this3.form.quantity);
-
-                    var product = _this3.getEntity(_this3.form.product, _this3.products);
-                    var supplier = _this3.getEntity(_this3.form.supplier, _this3.suppliers);
+                    var product = _this2.getEntity(_this2.form.product, _this2.products);
+                    var supplier = _this2.getEntity(_this2.form.supplier, _this2.suppliers);
 
                     //generates rows according to the quantity of products
                     for (var i = 0; i < quantity; i++) {
-                        _this3.productForm.products.push({
+                        _this2.productForm.products.push({
                             product_name: product.name,
                             product_id: product.id,
                             inventory_sku: '',
-                            serial_no: '',
+                            serial_number: '',
                             market_price: product.retail_price,
-                            received_date: _this3.$getDate(),
-                            _col: '',
-                            column: ''
+                            received_date: _this2.$getDate(),
+                            receiver_id: _this2.user.id,
+                            seller_id: _this2.user.id
+
                         });
-                        _this3.reNumber();
+                        // this.reNumber();
                     }
                 }
             });
@@ -536,15 +529,15 @@ exports.default = {
             this.reNumber();
         },
         reNumber: function reNumber() {
-            var _this4 = this;
+            var _this3 = this;
 
             this.productForm.products.forEach(function (product, index) {
                 /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
                 * u want to display on the ui "4th repayment"
                 * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
                 var next = index + 1;
-                _this4.productForm.products[index]._col = next;
-                _this4.productForm.products[index].column = _this4.$getColumn(next) + " Products";
+                _this3.productForm.products[index]._col = next;
+                _this3.productForm.products[index].column = _this3.$getColumn(next) + " Products";
             });
         },
         getEntity: function getEntity(id, array) {
@@ -558,16 +551,16 @@ exports.default = {
     watch: {
         productForm: {
             handler: function handler() {
-                var _this5 = this;
+                var _this4 = this;
 
                 var date = new Date().getFullYear();
                 date = date.toString().slice(2, 4);
                 this.productForm.products.forEach(function (e) {
                     // let product = this.getEntity(e.product, this.products);
-                    var category_id = _this5.getEntity(e.product_id, _this5.products).category_id;
-                    var category_name = _this5.getEntity(category_id, _this5.categories).name;
+                    var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
+                    var category_name = _this4.getEntity(category_id, _this4.categories).name;
 
-                    e.inventory_sku = category_name.slice(0, 3).toUpperCase() + "-" + e.product_name.slice(0, 3).toUpperCase() + "-0" + e.serial_no.slice(3, -1) + "-00" + _this5.productForm.products.indexOf(e);
+                    e.inventory_sku = category_name.slice(0, 3).toUpperCase() + "-" + e.product_name.slice(0, 3).toUpperCase() + "-0" + e.serial_number.slice(3, -1) + "-00" + _this4.productForm.products.indexOf(e);
 
                     // Vue.set(this.$data.e, 'inventory_sku', 'random' );
                 });
@@ -925,6 +918,7 @@ var render = function() {
                             }
                           }),
                       _vm._v(" "),
+<<<<<<< HEAD
                       _vm.errors.first("reason")
                         ? _c("small", [
                             _vm._v(_vm._s(_vm.errors.first("reason")))
@@ -977,6 +971,35 @@ var render = function() {
                                     (_vm.autoPenalty = $$a
                                       .slice(0, $$i)
                                       .concat($$a.slice($$i + 1)))
+=======
+                      _c("th", [
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.productForm.products[index].market_price,
+                                expression:
+                                  "productForm.products[index].market_price"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "market_price",
+                              type: "text",
+                              disabled: ""
+                            },
+                            domProps: {
+                              value:
+                                _vm.productForm.products[index].market_price
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+>>>>>>> 72a65642c88a7306fd9665c122c845572298c397
                                 }
                               } else {
                                 _vm.autoPenalty = $$c
@@ -1001,8 +1024,15 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
+<<<<<<< HEAD
                                 value: _vm.form.penalty,
                                 expression: "form.penalty"
+=======
+                                value:
+                                  _vm.productForm.products[index].serial_number,
+                                expression:
+                                  "productForm.products[index].serial_number"
+>>>>>>> 72a65642c88a7306fd9665c122c845572298c397
                               },
                               {
                                 name: "validate",
@@ -1012,9 +1042,16 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+<<<<<<< HEAD
                             attrs: {
                               disabled: _vm.autoPenalty,
                               name: "penalty"
+=======
+                            attrs: { name: "serial_no", type: "text" },
+                            domProps: {
+                              value:
+                                _vm.productForm.products[index].serial_number
+>>>>>>> 72a65642c88a7306fd9665c122c845572298c397
                             },
                             domProps: { value: _vm.form.penalty },
                             on: {
@@ -1023,8 +1060,13 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
+<<<<<<< HEAD
                                   _vm.form,
                                   "penalty",
+=======
+                                  _vm.productForm.products[index],
+                                  "serial_number",
+>>>>>>> 72a65642c88a7306fd9665c122c845572298c397
                                   $event.target.value
                                 )
                               }
@@ -1066,6 +1108,7 @@ var render = function() {
                             }
                           }),
                       _vm._v(" "),
+<<<<<<< HEAD
                       _vm.errors.first("penalty")
                         ? _c("small", [
                             _vm._v(_vm._s(_vm.errors.first("penalty")))
@@ -1084,6 +1127,46 @@ var render = function() {
                     },
                     [
                       _c("label", [_vm._v("Date")]),
+=======
+                      _c("th", [
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.productForm.products[index].receiver_id,
+                                expression:
+                                  "productForm.products[index].receiver_id"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              "data-vv-as": "date",
+                              name: "date",
+                              type: "text",
+                              vdisabled: ""
+                            },
+                            domProps: {
+                              value: _vm.productForm.products[index].receiver_id
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.productForm.products[index],
+                                  "receiver_id",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+>>>>>>> 72a65642c88a7306fd9665c122c845572298c397
                       _vm._v(" "),
                       _c("input", {
                         directives: [
@@ -1169,7 +1252,7 @@ var render = function() {
               attrs: { disabled: _vm.$isProcessing, type: "submit" },
               on: {
                 click: function($event) {
-                  _vm.saveInventory()
+                  _vm.onSave()
                 }
               }
             },
