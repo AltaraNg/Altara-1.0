@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class UpdateTable extends Migration
 {
@@ -12,6 +13,29 @@ class UpdateTable extends Migration
      */
     public function up()
     {
+
+        Schema::create('inventories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('product_id')->index()->nullable();//FK
+            $table->unsignedInteger('receiver_id')->index()->nullable();//FK
+            $table->unsignedInteger('seller_id')->index()->nullable();//FK
+            $table->string('inventory_sku');
+            $table->string('serial_number');
+            $table->string('market_price');
+
+            $table->string('sold_date')->nullable();
+            $table->string('received_date');
+            $table->string('status')->nullable();
+
+            $table->timestamps();
+            $table->foreign('seller_id')->references('id')->on('users');
+            $table->foreign('receiver_id')->references('id')->on('users');
+            $table->foreign('product_id')->references('id')->on('products');
+
+        });
+
+
+
         /*Schema::table('users', function ($table) {
             $table->string('guarantor_name')->after('next_of_kin_phone_no')->nullable();
             $table->string('guarantor_phone_no')->nullable();
@@ -53,9 +77,9 @@ class UpdateTable extends Migration
         });*/
 
 
-        Schema::table('reminders', function ($table) {
-            $table->boolean('is_visited')->nullable()->after('feedback');
-        });
+        // Schema::table('reminders', function ($table) {
+        //     $table->boolean('is_visited')->nullable()->after('feedback');
+        // });
 
     }
 
