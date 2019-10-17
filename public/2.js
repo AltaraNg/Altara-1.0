@@ -762,8 +762,10 @@ exports.default = {
                         while (1) {
                             switch (_context2.prev = _context2.next) {
                                 case 0:
+                                    console.log(data);
+
                                     if (!res.data.saved) {
-                                        _context2.next = 13;
+                                        _context2.next = 14;
                                         break;
                                     }
 
@@ -774,23 +776,23 @@ exports.default = {
                                     }).order;
 
                                     order['repayment_' + type] = res.data.amortization;
-                                    _context2.next = 5;
+                                    _context2.next = 6;
                                     return new _Amortization.Order(order, _this4.customer);
 
-                                case 5:
+                                case 6:
                                     _this4.activeOrder = _context2.sent;
 
                                     _this4.customer.orders[orderIndex] = _this4.activeOrder;
-                                    _context2.next = 9;
+                                    _context2.next = 10;
                                     return _this4.logAddedPayment(data);
 
-                                case 9:
+                                case 10:
                                     if (_this4.activeOrder.repaymentLevel === _this4.activeOrder.count) _this4.sendPaymentCompleteSMS();
                                     _this4.paymentForm = { payments: [] };
                                     _this4.$scrollToTop();
                                     _this4.$LIPS(false);
 
-                                case 13:
+                                case 14:
                                 case 'end':
                                     return _context2.stop();
                             }

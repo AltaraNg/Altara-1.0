@@ -73,14 +73,14 @@
 
                                         <th>
                                             <div class="form-group mb-0">
-                                                <input class="form-control" name="inventory_sku" type="text"
+                                                <input class="form-control" name="market_price" type="text"
                                                        v-model="productForm.products[index].market_price" disabled>
                                             </div>
                                         </th>
 
                                         <th>
                                               <div class="form-group mb-0">
-                                                <input class="form-control" name="serial_no" type="text" v-model="productForm.products[index].serial_no">
+                                                <input class="form-control" name="serial_no" type="text" v-model="productForm.products[index].serial_number" v-validate="'required'" >
                                             </div>
                                         </th>
 
@@ -97,7 +97,7 @@
                                         <th>
                                             <div class="form-group mb-0">
                                                 <input class="form-control" data-vv-as="date" name="date" type="text"
-                                                       :value="user.name" disabled>
+                                                       v-model="productForm.products[index].receiver_id" vdisabled >
                                             </div>
                                         </th>
 
@@ -113,7 +113,7 @@
                                 </table>
             <div>
 
-                <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="saveInventory()">
+                <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="onSave()">
                     Save Inventory <i class="far fa-paper-plane ml-1"></i>
                 </button>
             </div>
@@ -199,41 +199,36 @@
                 //     });
             },
 
-            saveInventory(){
-                this.$validator.validateAll().then(result => {
-                    if (result){
-                        if (this.$network()) {
-                            this.$LIPS(true);
 
-                        }
-                    }
-                })
-                },
 
             onSave() {
+                console.log(this.productForm.products)
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            byMethod(this.method, this.store, this.form)
-                                .then(({data}) => {
-                                    if (data.saved || data.updated) {
-                                        log(data.log, data.staff_id);
-                                        Vue.set(this.$data, 'form', data.form);
-                                        Flash.setSuccess(data.message, 5000);
-                                        if (data['updated']) this.$router.push('/log/inventory');
-                                    }
-                                })
-                                .catch(({response: r}) => {
-                                    let {data, status} = r;
-                                    if (status === 422) {
-                                        this.error = data.errors ? data.errors : data;
-                                        this.$networkErr('unique');
-                                    }
-                                }).finally(() => {
-                                this.$scrollToTop();
-                                this.$LIPS(false);
-                            });
+                            this.productForm.products.forEach(e => {
+                                byMethod(this.method, this.store, e)
+                                    .then(({data}) => {
+                                        if (data.saved || data.updated) {
+                                            // log(data.log, data.staff_id);
+                                            Vue.set(this.$data, 'form', data.form);
+                                            Flash.setSuccess(data.message, 5000);
+                                            if (data['updated']) this.$router.push('/log/inventory');
+                                        }
+                                    })
+                                    .catch(({response: r}) => {
+                                        let {data, status} = r;
+                                        if (status === 422) {
+                                            this.error = data.errors ? data.errors : data;
+                                            this.$networkErr('unique');
+                                        }
+                                    }).finally(() => {
+                                    this.$scrollToTop();
+                                    this.$LIPS(false);
+                                });
+                            })
+
                         } else this.$networkErr()
                     } else this.$networkErr('form');
                 })
@@ -256,13 +251,14 @@
                      product_name: product.name,
                      product_id: product.id,
                      inventory_sku: '',
-                     serial_no: '',
+                     serial_number: '',
                      market_price: product.retail_price,
                      received_date: this.$getDate(),
-                     _col: '',
-                     column: ''
+                     receiver_id: this.user.id,
+                     seller_id: this.user.id
+
                  });
-                 this.reNumber();
+                 // this.reNumber();
              }
 
 
@@ -313,7 +309,7 @@
                         let category_name = this.getEntity(category_id, this.categories).name;
 
 
-                    e.inventory_sku =   `${category_name.slice(0,3).toUpperCase()}-${e.product_name.slice(0,3).toUpperCase()}-0${e.serial_no.slice(3, -1)}-00${this.productForm.products.indexOf(e)}`;
+                    e.inventory_sku =   `${category_name.slice(0,3).toUpperCase()}-${e.product_name.slice(0,3).toUpperCase()}-0${e.serial_number.slice(3, -1)}-00${this.productForm.products.indexOf(e)}`;
 
                         // Vue.set(this.$data.e, 'inventory_sku', 'random' );
 

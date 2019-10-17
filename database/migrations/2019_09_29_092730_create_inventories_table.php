@@ -20,16 +20,17 @@ class CreateInventoriesTable extends Migration
             $table->unsignedInteger('seller_id')->index()->nullable();//FK
             $table->string('inventory_sku');
             $table->string('serial_number');
+            $table->string('market_price');
 
-            $table->string('sold_date');
+            $table->string('sold_date')->nullable();
             $table->string('received_date');
-            $table->string('status');
-            $table->unsignedInteger('issues_id')->index()->nullable();//FK
+            $table->string('status')->nullable();
+
             $table->timestamps();
             $table->foreign('seller_id')->references('id')->on('users');
             $table->foreign('receiver_id')->references('id')->on('users');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('issues_id')->references('id')->on('product_issues');
+
         });
     }
 

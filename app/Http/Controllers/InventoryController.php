@@ -63,6 +63,7 @@ class InventoryController extends Controller
             'receiver_id' => 'required|int',
             'seller_id' => 'required|int',
             'serial_number' => 'required',
+            'market_price' => 'required'
 
 
         ]);

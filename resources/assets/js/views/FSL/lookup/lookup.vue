@@ -449,6 +449,7 @@
                 data = {payments: this.activeOrder.payments, repayment_id: this.activeOrder.order.id, type};
 
                 post(`/api/repayment`, data).then(async res => {
+                    console.log(data);
                     if (res.data.saved) {
                         order = (this.customer.orders.find((order, index) => {
                             let found = order.order.id === data.repayment_id;
