@@ -515,7 +515,7 @@
                         if (this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess')) return true;
                         //the branch to be used for this filter should be the branch of the
                         // product being bought not the branch of the customer
-                        console.log(parseInt(newOrder.order.store_product.store_name) === res.branch);
+                       
                         return parseInt(newOrder.order.store_product.store_name) === res.branch;
                     };
 
