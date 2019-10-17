@@ -11,7 +11,7 @@ class Inventory extends Model
     //
     use DataViewer;
 
-    protected $fillable = ['seller_id', 'receiver_id', 'product_id', 'status', 'inventory_sku', 'serial_number', 'issues_id'];
+    protected $fillable = ['seller_id', 'receiver_id', 'product_id', 'status', 'inventory_sku', 'serial_number', 'market_price'];
 
     public static $columns = ['id', 'name', 'retail_price in Naira'];
 
