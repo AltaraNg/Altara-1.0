@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPriceColumnToInventory extends Migration
+class UpdateInventoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,9 @@ class AddPriceColumnToInventory extends Migration
     {
         Schema::table('inventories', function (Blueprint $table) {
             //
+
+            $table->dropColumn('seller_id');
+
         });
     }
 
@@ -26,9 +29,9 @@ class AddPriceColumnToInventory extends Migration
     public function down()
     {
         Schema::table('inventories', function (Blueprint $table) {
-
             //
-            $table->string('market_price')->nullable();
+            $table->unsignedInteger('seller_id')->index()->nullable();
+
         });
     }
 }

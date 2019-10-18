@@ -7,6 +7,7 @@ use App\Category;
 use App\Brand;
 use App\Product;
 use App\Supplier;
+use App\Branch;
 
 use Illuminate\Http\Request;
 
@@ -15,10 +16,11 @@ class InventoryController extends Controller
     //
     public function index()
     {
-
-
+        $model = Inventory::select('id', 'name','retail_price')->searchPaginateAndOrder();
+        $columns = Inventory::$columns;
         return response()->json([
-            'Message'=> "it works"
+            'model' => $model,
+            'columns' => $columns
         ]);
     }
 
@@ -37,6 +39,7 @@ class InventoryController extends Controller
     public function create()
     {
         $brands = Brand::all();
+        $branches = Branch::all();
         $categories = Category::all();
         $products = Product::all();
         $suppliers = Supplier::all();
@@ -44,7 +47,8 @@ class InventoryController extends Controller
             'brands' => $brands,
             'categories' => $categories,
             'products' => $products,
-            'suppliers' => $suppliers
+            'suppliers' => $suppliers,
+            'branches' => $branches
         ]);
     }
 
@@ -56,26 +60,13 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'inventory_sku' => 'required|unique:inventories',
-            'product_id' => 'required|int',
-            'receiver_id' => 'required|int',
-            'seller_id' => 'required|int',
-
-
-
-        ]);
-
         $inventory = new Inventory($request->all());
-
-
         $inventory->save();
         return response()->json([
             'saved' => true,
-            'message' => "Inventory Saved",
-
-
-            'log' => 'InventoryCreated'
+            'message' => 'Product Created!',
+            'form' => Inventory::form(),
+            'log' => 'ProductCreated'
         ]);
 
     }
