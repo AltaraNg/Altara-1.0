@@ -235,7 +235,6 @@
     
 
  addProductForm() {
-console.log(this.quantity);
      this.$validator.validateAll().then(result => {
          if (result){
              const quantity = parseInt(this.form.quantity);
@@ -243,12 +242,12 @@ console.log(this.quantity);
              const product = this.getEntity(this.form.product, this.products);
              const supplier = this.getEntity(this.form.supplier, this.suppliers);
 
-
              //generates rows according to the quantity of products
              for (let i = 0; i< this.quantity; i++){
                  this.productForm.products.push({
                      product_name: product.name,
                      product_id: product.id,
+                     supplier_id:supplier.id,
                      inventory_sku: '',
                      serial_number: '',
                      market_price: product.retail_price,
@@ -299,8 +298,6 @@ console.log(this.quantity);
                         // let product = this.getEntity(e.product, this.products);
                         let category_id = this.getEntity(e.product_id, this.products).category_id;
                         let category_name = this.getEntity(category_id, this.categories).name;
-
-
                     e.inventory_sku =   `${category_name.slice(0,3).toUpperCase()}-${e.product_name.slice(0,3).toUpperCase()}-0${e.serial_number.slice(3, -1)}-00${this.productForm.products.indexOf(e)}`;
 
                         // Vue.set(this.$data.e, 'inventory_sku', 'random' );

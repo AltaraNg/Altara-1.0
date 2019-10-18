@@ -57,25 +57,12 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'inventory_sku' => 'required|unique:inventory',
-            'product_id' => 'required|int',
-            'receiver_id' => 'required|int',
-            'seller_id' => 'required|int',
-            'serial_number' => 'required',
-            'market_price' => 'required'
-
-
-        ]);
-
         $inventory = new Inventory($request->all());
-
         $inventory->save();
         return response()->json([
             'saved' => true,
             'message' => 'Product Created!',
             'form' => Inventory::form(),
-
             'log' => 'ProductCreated'
         ]);
 
