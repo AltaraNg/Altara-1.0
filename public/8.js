@@ -456,7 +456,8 @@ exports.default = {
                             market_price: product.retail_price,
                             received_date: _this2.$getDate(),
                             receiver_id: _this2.user.id,
-                            seller_id: _this2.user.id
+                            seller_id: _this2.user.id,
+                            status: ''
 
                         });
                         // this.reNumber();
