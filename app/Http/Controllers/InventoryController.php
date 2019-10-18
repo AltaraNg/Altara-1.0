@@ -72,7 +72,7 @@ class InventoryController extends Controller
         $inventory->save();
         return response()->json([
             'saved' => true,
-            'message' => $inventory,
+            'message' => "Inventory Saved",
 
 
             'log' => 'InventoryCreated'

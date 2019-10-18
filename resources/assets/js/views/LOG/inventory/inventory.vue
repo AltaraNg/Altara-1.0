@@ -256,10 +256,12 @@
                      received_date: this.$getDate(),
                      receiver_id: this.user.id,
                      seller_id: this.user.id,
-                     status: ''
+                     status: '',
+                     _col: '',
+                     column: ''
 
                  });
-                 // this.reNumber();
+                 this.reNumber();
              }
 
 

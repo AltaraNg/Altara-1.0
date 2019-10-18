@@ -457,10 +457,12 @@ exports.default = {
                             received_date: _this2.$getDate(),
                             receiver_id: _this2.user.id,
                             seller_id: _this2.user.id,
-                            status: ''
+                            status: '',
+                            _col: '',
+                            column: ''
 
                         });
-                        // this.reNumber();
+                        _this2.reNumber();
                     }
                 }
             });
