@@ -18,7 +18,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/customer/{customer}', 'CustomerController@update');
     Route::get('/user/getBranchUsers', 'UserController@getBranchUsers');
     Route::get('/products', 'ProductController@getProducts');
-    Route::get('/inventory', 'ProductController@create');
+
     Route::get('/suppliers', 'SupplierController@getSuppliers');
     Route::Resources([
         'log' => 'LogController',

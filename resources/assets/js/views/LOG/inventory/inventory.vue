@@ -63,8 +63,8 @@
             <th>Market Price</th>
             <th>Serial/IMEI Number</th>
             <th>Branch</th>
-            <th>Recieved Date</th>
-            <th>Recieved By</th>
+            <th>Received Date</th>
+            <th>Received By</th>
           </tr>
           <tr v-for="(product,index) in productForm.products">
             <th>{{index+1}}</th>
@@ -250,7 +250,7 @@ export default {
     },
 
     onSave() {
-      console.log(this.productForm.products);
+
       this.$validator.validateAll().then(result => {
         if (result) {
           if (this.$network()) {
@@ -286,6 +286,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           const product = this.getEntity(this.form.product, this.products);
+
           const supplier = this.getEntity(this.form.supplier, this.suppliers);
 
           //generates rows according to the quantity of products
@@ -331,8 +332,7 @@ export default {
   watch: {
     productForm: {
       handler: function() {
-        let date = new Date().getFullYear();
-        date = date.toString().slice(2, 4);
+
         this.productForm.products.forEach(e => {
           let category_id = this.getEntity(e.product_id, this.products)
             .category_id;

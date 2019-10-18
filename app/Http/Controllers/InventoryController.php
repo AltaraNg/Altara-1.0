@@ -16,20 +16,15 @@ class InventoryController extends Controller
     //
     public function index()
     {
-        $model = Inventory::select('id', 'name','retail_price')->searchPaginateAndOrder();
-        $columns = Inventory::$columns;
+        $model = Inventory::select('id', 'inventory_sku','market_price')->searchPaginateAndOrder();
+        $columns = Product::$columns;
         return response()->json([
             'model' => $model,
             'columns' => $columns
         ]);
     }
 
-    public function getInventory(){
-        $inventory = Inventory::all();
-        return response()->json([
-            'products'=> $inventory,
-        ]);
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -60,13 +55,21 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+        'inventory_sku' => 'required|unique:inventories',
+       'branch_id' => 'required|int',
+        'product_id' => 'required|int',
+        'receiver_id' => 'required|int',
+        'supplier_id' => 'required|int',
+    ]);
         $inventory = new Inventory($request->all());
         $inventory->save();
         return response()->json([
             'saved' => true,
-            'message' => 'Product Created!',
+            'message' => 'Inventory Created!',
             'form' => Inventory::form(),
-            'log' => 'ProductCreated'
+            'log' => 'InventoryCreated'
+
         ]);
 
     }

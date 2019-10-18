@@ -452,7 +452,6 @@ exports.default = {
     onSave: function onSave() {
       var _this = this;
 
-      console.log(this.productForm.products);
       this.$validator.validateAll().then(function (result) {
         if (result) {
           if (_this.$network()) {
@@ -491,6 +490,7 @@ exports.default = {
       this.$validator.validateAll().then(function (result) {
         if (result) {
           var product = _this2.getEntity(_this2.form.product, _this2.products);
+
           var supplier = _this2.getEntity(_this2.form.supplier, _this2.suppliers);
 
           //generates rows according to the quantity of products
@@ -540,8 +540,6 @@ exports.default = {
       handler: function handler() {
         var _this4 = this;
 
-        var date = new Date().getFullYear();
-        date = date.toString().slice(2, 4);
         this.productForm.products.forEach(function (e) {
           var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
           var category_name = _this4.getEntity(category_id, _this4.categories).name;
@@ -805,9 +803,9 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [_vm._v("Branch")]),
                     _vm._v(" "),
-                    _c("th", [_vm._v("Recieved Date")]),
+                    _c("th", [_vm._v("Received Date")]),
                     _vm._v(" "),
-                    _c("th", [_vm._v("Recieved By")])
+                    _c("th", [_vm._v("Received By")])
                   ]),
                   _vm._v(" "),
                   _vm._l(_vm.productForm.products, function(product, index) {
