@@ -175,7 +175,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
@@ -205,9 +205,68 @@ var _auth2 = _interopRequireDefault(_auth);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function initialize(to) {
-    var urls = { create: "/api/inventory/create", edit: "/api/product/" + to.params.id + "/edit" };
-    return urls[to.meta.mode];
+  var urls = {
+    create: "/api/inventory/create",
+    edit: "/api/product/" + to.params.id + "/edit"
+  };
+  return urls[to.meta.mode];
 } //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -329,187 +388,170 @@ function initialize(to) {
 //
 
 exports.default = {
-    components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
-    props: {},
-    data: function data() {
-        return {
-            form: {},
-            user: {
-                name: _auth2.default.state.user_name,
-                id: _auth2.default.state.user_id
-            },
-            mode: null,
-            error: {},
-            index: null,
-            show: false,
-            showModalContent: false,
-            store: '/api/inventory',
-            number: 0,
-            products: [],
-            suppliers: [],
-            product: null,
-            categories: null,
-            brands: null,
-            supplier: null,
-            quantity: '',
+  components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
+  props: {},
+  data: function data() {
+    return {
+      form: {},
+      user: {
+        name: _auth2.default.state.user_name,
+        id: _auth2.default.state.user_id
+      },
+      mode: null,
+      error: {},
+      index: null,
+      show: false,
+      showModalContent: false,
+      store: "/api/inventory",
+      number: 0,
+      products: [],
+      suppliers: [],
+      product: null,
+      categories: null,
+      brands: null,
+      supplier: null,
+      branches: null,
+      quantity: "",
 
-            method: 'POST',
-            statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }],
-            productForm: { products: [] },
-            canAddProduct: true
+      method: "POST",
+      statuses: [{ name: "available", value: 1 }, { name: "unavailable", value: 0 }],
+      productForm: { products: [] },
+      canAddProduct: true
+    };
+  },
+  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    (0, _api.get)(initialize(to)).then(function (_ref) {
+      var data = _ref.data;
+      return next(function (vm) {
+        return vm.prepareForm(data);
+      });
+    }).catch(function () {
+      return next(function () {
+        return _flash2.default.setError("Error Preparing form");
+      });
+    });
+  },
 
-        };
+  methods: {
+    prepareForm: function prepareForm(data) {
+      console.log(data);
+      this.branches = data.branches;
+      _vue2.default.set(this.$data, "mode", this.$route.meta.mode);
+      _vue2.default.set(this.$data, "brands", data.brands);
+      _vue2.default.set(this.$data, "categories", data.categories);
+      _vue2.default.set(this.$data, "suppliers", data.suppliers);
+      _vue2.default.set(this.$data, "products", data.products);
+      if (this.mode === "edit") {
+        this.store = "/api/inventory/" + this.$route.params.id;
+        this.method = "PUT";
+      }
+      this.show = true;
+      this.canAddProduct = /*this.canUserAddPayment;*/true;
+      this.productForm = { products: [] };
     },
-    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    onSave: function onSave() {
+      var _this = this;
 
-        (0, _api.get)(initialize(to)).then(function (_ref) {
-            var data = _ref.data;
-            return next(function (vm) {
-                return vm.prepareForm(data);
-            });
-        }).catch(function () {
-            return next(function () {
-                return _flash2.default.setError('Error Preparing form');
-            });
-        });
-    },
+      console.log(this.productForm.products);
+      this.$validator.validateAll().then(function (result) {
+        if (result) {
+          if (_this.$network()) {
+            _this.$LIPS(true);
+            _this.productForm.products.forEach(function (e) {
+              (0, _api.byMethod)(_this.method, _this.store, e).then(function (_ref2) {
+                var data = _ref2.data;
 
-    methods: {
-        prepareForm: function prepareForm(data) {
-            _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
-            _vue2.default.set(this.$data, 'brands', data.brands);
-            _vue2.default.set(this.$data, 'categories', data.categories);
-            _vue2.default.set(this.$data, 'suppliers', data.suppliers);
-            _vue2.default.set(this.$data, 'products', data.products);
-            if (this.mode === 'edit') {
-                this.store = "/api/inventory/" + this.$route.params.id;
-                this.method = 'PUT';
-            }
-            this.show = true;
-            this.canAddProduct = /*this.canUserAddPayment;*/true;
-            this.productForm = { products: [] };
-        },
-        processForm: function processForm() {
-            // this.show = false;
-            // this.$LIPS(true);
-            // get(`/api/customer/lookup/${this.customer_id}`)
-            //     .then(res => this.updateView(res.data))
-            //     .catch(() => {
-            //         this.$LIPS(false);
-            //         Flash.setError('Error Fetching customer detail');
-            //     });
-        },
-        onSave: function onSave() {
-            var _this = this;
-
-            console.log(this.productForm.products);
-            this.$validator.validateAll().then(function (result) {
-                if (result) {
-                    if (_this.$network()) {
-                        _this.$LIPS(true);
-                        _this.productForm.products.forEach(function (e) {
-                            (0, _api.byMethod)(_this.method, _this.store, e).then(function (_ref2) {
-                                var data = _ref2.data;
-
-                                if (data.saved || data.updated) {
-                                    // log(data.log, data.staff_id);
-                                    _vue2.default.set(_this.$data, 'form', data.form);
-                                    _flash2.default.setSuccess(data.message, 5000);
-                                    if (data['updated']) _this.$router.push('/log/inventory');
-                                }
-                            }).catch(function (_ref3) {
-                                var r = _ref3.response;
-                                var data = r.data,
-                                    status = r.status;
-
-                                if (status === 422) {
-                                    _this.error = data.errors ? data.errors : data;
-                                    _this.$networkErr('unique');
-                                }
-                            }).finally(function () {
-                                _this.$scrollToTop();
-                                _this.$LIPS(false);
-                            });
-                        });
-                    } else _this.$networkErr();
-                } else _this.$networkErr('form');
-            });
-        },
-        addProductForm: function addProductForm() {
-            var _this2 = this;
-
-            this.$validator.validateAll().then(function (result) {
-                if (result) {
-                    var quantity = parseInt(_this2.form.quantity);
-
-                    var product = _this2.getEntity(_this2.form.product, _this2.products);
-                    var supplier = _this2.getEntity(_this2.form.supplier, _this2.suppliers);
-
-                    //generates rows according to the quantity of products
-                    for (var i = 0; i < _this2.quantity; i++) {
-                        _this2.productForm.products.push({
-                            product_name: product.name,
-                            product_id: product.id,
-                            supplier_id: supplier.id,
-                            inventory_sku: '',
-                            serial_number: '',
-                            market_price: product.retail_price,
-                            received_date: _this2.$getDate(),
-                            receiver_id: _this2.user.id,
-                            seller_id: _this2.user.id,
-                            status: ''
-
-                        });
-                        // this.reNumber();
-                    }
+                if (data.saved || data.updated) {
+                  // log(data.log, data.staff_id);
+                  _vue2.default.set(_this.$data, "form", data.form);
+                  _flash2.default.setSuccess(data.message, 5000);
+                  if (data["updated"]) _this.$router.push("/log/inventory");
                 }
-            });
-        },
-        deleteProduct: function deleteProduct(index) {
-            this.productForm.products.splice(index, 1);
-            this.reNumber();
-        },
-        reNumber: function reNumber() {
-            var _this3 = this;
+              }).catch(function (_ref3) {
+                var r = _ref3.response;
+                var data = r.data,
+                    status = r.status;
 
-            this.productForm.products.forEach(function (product, index) {
-                /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
-                * u want to display on the ui "4th repayment"
-                * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
-                var next = index + 1;
-                _this3.productForm.products[index]._col = next;
-                _this3.productForm.products[index].column = _this3.$getColumn(next) + " Products";
+                if (status === 422) {
+                  _this.error = data.errors ? data.errors : data;
+                  _this.$networkErr("unique");
+                }
+              }).finally(function () {
+                _this.$scrollToTop();
+                _this.$LIPS(false);
+              });
             });
-        },
-        getEntity: function getEntity(id, array) {
-            return array.find(function (entity) {
-                return entity.id === id;
-            });
-        }
+          } else _this.$networkErr();
+        } else _this.$networkErr("form");
+      });
     },
-    created: function created() {},
+    addProductForm: function addProductForm() {
+      var _this2 = this;
 
-    watch: {
-        productForm: {
-            handler: function handler() {
-                var _this4 = this;
+      this.$validator.validateAll().then(function (result) {
+        if (result) {
+          var product = _this2.getEntity(_this2.form.product, _this2.products);
+          var supplier = _this2.getEntity(_this2.form.supplier, _this2.suppliers);
 
-                var date = new Date().getFullYear();
-                date = date.toString().slice(2, 4);
-                this.productForm.products.forEach(function (e) {
-                    // let product = this.getEntity(e.product, this.products);
-                    var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
-                    var category_name = _this4.getEntity(category_id, _this4.categories).name;
-                    e.inventory_sku = category_name.slice(0, 3).toUpperCase() + "-" + e.product_name.slice(0, 3).toUpperCase() + "-0" + e.serial_number.slice(3, -1) + "-00" + _this4.productForm.products.indexOf(e);
-
-                    // Vue.set(this.$data.e, 'inventory_sku', 'random' );
-                });
-            },
-            // console.log(index);
-            deep: true
+          //generates rows according to the quantity of products
+          for (var i = 0; i < _this2.quantity; i++) {
+            _this2.productForm.products.push({
+              product_name: product.name,
+              product_id: product.id,
+              supplier_id: supplier.id,
+              inventory_sku: "",
+              serial_number: "",
+              branch_id: "",
+              market_price: product.retail_price,
+              received_date: _this2.$getDate(),
+              receiver_id: _this2.user.id
+            });
+            // this.reNumber();
+          }
         }
+      });
+    },
+    deleteProduct: function deleteProduct(index) {
+      this.productForm.products.splice(index, 1);
+      this.reNumber();
+    },
+    reNumber: function reNumber() {
+      var _this3 = this;
 
+      this.productForm.products.forEach(function (product, index) {
+        /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
+         * u want to display on the ui "4th repayment"
+         * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
+        var next = index + 1;
+        _this3.productForm.products[index]._col = next;
+        _this3.productForm.products[index].column = _this3.$getColumn(next) + " Products";
+      });
+    },
+    getEntity: function getEntity(id, array) {
+      return array.find(function (entity) {
+        return entity.id === id;
+      });
     }
+  },
+  created: function created() {},
+
+  watch: {
+    productForm: {
+      handler: function handler() {
+        var _this4 = this;
+
+        var date = new Date().getFullYear();
+        date = date.toString().slice(2, 4);
+        this.productForm.products.forEach(function (e) {
+          var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
+          var category_name = _this4.getEntity(category_id, _this4.categories).name;
+          e.inventory_sku = (category_name.slice(0, 3) + "-" + e.product_name.slice(0, 3) + "-" + e.serial_number.slice(e.serial_number.length - 4) + "-0" + (_this4.productForm.products.indexOf(e) + 1)).toUpperCase();
+          e.serial_number = e.serial_number.toUpperCase();
+        });
+      },
+      deep: true
+    }
+  }
 };
 
 /***/ }),
@@ -586,7 +628,6 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
-                  return _vm.processForm($event)
                 }
               }
             },
@@ -598,8 +639,6 @@ var render = function() {
                     "my-4 clearfix p-5 row bg-white shadow-sm card-radius"
                 },
                 [
-                  _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
-                  _vm._v(" "),
                   _c(
                     "div",
                     {
@@ -623,13 +662,34 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "spaceBetween mb-md-2 mb-0" }),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-4 col-6 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", [_vm._v("Supplier ID")]),
+                      _vm._v(" "),
+                      _c("typeahead", {
+                        attrs: { options: _vm.suppliers, caption: "name" },
+                        model: {
+                          value: _vm.form.supplier,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "supplier", $$v)
+                          },
+                          expression: "form.supplier"
+                        }
+                      })
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
                     "div",
                     {
                       staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                        "form-group col-md-2 col-4 float-left px-0 px-md-3"
                     },
                     [
                       _c("label", [_vm._v("Quantity")]),
@@ -671,29 +731,6 @@ var render = function() {
                           ])
                         : _vm._e()
                     ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Supplier ID")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.suppliers, caption: "name" },
-                        model: {
-                          value: _vm.form.supplier,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "supplier", $$v)
-                          },
-                          expression: "form.supplier"
-                        }
-                      })
-                    ],
-                    1
                   )
                 ]
               ),
@@ -710,11 +747,7 @@ var render = function() {
                             staticClass: "mx-5 text-link mt-4 pt-2",
                             attrs: { to: "/log/products" }
                           },
-                          [
-                            _vm._v(
-                              "\n                            Cancel\n                        "
-                            )
-                          ]
+                          [_vm._v("Cancel")]
                         )
                       : _vm._e(),
                     _vm._v(" "),
@@ -734,7 +767,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                            Generate Inventory "
+                          "\n              Generate Inventory\n              "
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
@@ -762,13 +795,15 @@ var render = function() {
                   _c("tr", { staticClass: "table-separator" }, [
                     _c("td", { staticClass: "text-left" }, [_vm._v("S/No.")]),
                     _vm._v(" "),
-                    _c("th", [_vm._v("Product ")]),
+                    _c("th", [_vm._v("Product")]),
                     _vm._v(" "),
                     _c("th", [_vm._v("Inventory SKU")]),
                     _vm._v(" "),
                     _c("th", [_vm._v("Market Price")]),
                     _vm._v(" "),
                     _c("th", [_vm._v("Serial/IMEI Number")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Branch")]),
                     _vm._v(" "),
                     _c("th", [_vm._v("Recieved Date")]),
                     _vm._v(" "),
@@ -939,22 +974,78 @@ var render = function() {
                       _vm._v(" "),
                       _c("th", [
                         _c("div", { staticClass: "form-group mb-0" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.productForm.products[index].branch_id,
+                                  expression:
+                                    "productForm.products[index].branch_id"
+                                }
+                              ],
+                              staticClass: "custom-select w-100",
+                              attrs: { name: "branch_id" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.productForm.products[index],
+                                    "branch_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "" } }, [
+                                _vm._v("select branch")
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.branches, function(branch) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: branch.id } },
+                                  [_vm._v(_vm._s(branch.name))]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _c("div", { staticClass: "form-group mb-0" }, [
                           _c("input", {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
                                 value:
-                                  _vm.productForm.products[index].recieved_date,
+                                  _vm.productForm.products[index].received_date,
                                 expression:
-                                  "productForm.products[index].recieved_date"
+                                  "productForm.products[index].received_date"
                               }
                             ],
                             staticClass: "form-control",
-                            attrs: { name: "recieved_date", type: "date" },
+                            attrs: { name: "received_date", type: "date" },
                             domProps: {
                               value:
-                                _vm.productForm.products[index].recieved_date
+                                _vm.productForm.products[index].received_date
                             },
                             on: {
                               input: function($event) {
@@ -963,7 +1054,7 @@ var render = function() {
                                 }
                                 _vm.$set(
                                   _vm.productForm.products[index],
-                                  "recieved_date",
+                                  "received_date",
                                   $event.target.value
                                 )
                               }
@@ -979,10 +1070,8 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value:
-                                  _vm.productForm.products[index].receiver_id,
-                                expression:
-                                  "productForm.products[index].receiver_id"
+                                value: _vm.user.name,
+                                expression: "user.name"
                               }
                             ],
                             staticClass: "form-control",
@@ -990,21 +1079,15 @@ var render = function() {
                               "data-vv-as": "date",
                               name: "date",
                               type: "text",
-                              vdisabled: ""
+                              disabled: ""
                             },
-                            domProps: {
-                              value: _vm.productForm.products[index].receiver_id
-                            },
+                            domProps: { value: _vm.user.name },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
                                 }
-                                _vm.$set(
-                                  _vm.productForm.products[index],
-                                  "receiver_id",
-                                  $event.target.value
-                                )
+                                _vm.$set(_vm.user, "name", $event.target.value)
                               }
                             }
                           })
@@ -1047,7 +1130,7 @@ var render = function() {
               }
             },
             [
-              _vm._v("\n                Save Inventory "),
+              _vm._v("\n        Save Inventory\n        "),
               _c("i", { staticClass: "far fa-paper-plane ml-1" })
             ]
           )

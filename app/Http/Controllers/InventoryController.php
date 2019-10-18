@@ -7,6 +7,7 @@ use App\Category;
 use App\Brand;
 use App\Product;
 use App\Supplier;
+use App\Branch;
 
 use Illuminate\Http\Request;
 
@@ -38,6 +39,7 @@ class InventoryController extends Controller
     public function create()
     {
         $brands = Brand::all();
+        $branches = Branch::all();
         $categories = Category::all();
         $products = Product::all();
         $suppliers = Supplier::all();
@@ -45,7 +47,8 @@ class InventoryController extends Controller
             'brands' => $brands,
             'categories' => $categories,
             'products' => $products,
-            'suppliers' => $suppliers
+            'suppliers' => $suppliers,
+            'branches' => $branches
         ]);
     }
 
