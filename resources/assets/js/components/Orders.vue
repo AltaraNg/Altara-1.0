@@ -377,164 +377,36 @@
         },
 
         computed: {
-            ...mapGetters(['auth'])
+            ...mapGetters(['auth', 'getAuthUserDetails'])
         },
 
         methods: {
 
-            async prepareForm(res) {
+            async prepareForm({orders}) {
                 this.show = false;
                 this.showModalContent = false;
-                this.orders = [];
-                await res.orders.forEach((order, index) => {
-
-                    //console.log(index, order);
-
-                    let newOrder = order instanceof Order ? order : new OrderWithPromiseCall(order, res.dva_id);
-
-                    //console.log(newOrder.order.id, newOrder.order.store_product);
-
-                    /*let hasMissedPayment = () => {
-                        /!*for the list 1 and 8 return true i.e no need for has
-                        missed payment since it's obvious we are dealing with just one date
-                        * 1st list is for all the customers that picked today
-                        * 8th list is for all the promise calls all the promise call must be shown to *!/
-                        if ([8, 1].includes(this.list) || this.mode === "normal-list") return true;
-
-                        let payDay,
-                            /!*payDay holds the date
-                            of the first vacant repayment*!/
-
-                            dayInterval,
-                            /!*dayInterval the number of days before or after a certain
-                            repayment date. this varies according to collections app brief*!/
-
-                            datePool = [],
-                            /!*datePool hold an array of dates of length ranging from 1 to 3 in length
-                            * is the current date is monday the date-pool will include dates for
-                            * monday, sunday and saturday else it just hold the current date*!/
-
-                            today = new Date(),
-
-                            isMonday = today.getDay() === 1,
-                            /!*isMonday how a boolean value of whether
-                            the current date is monday or not*!/
-
-                            collectionsList = [9, 10, 11, 12, 13, 14],
-
-                            accumulatedDays = (isMonday || collectionsList.includes(this.list)) ? 3 : 1;
-                        /!*accumulatedDays hold 1 or 3,
-                        1 if the current date is not on a monday and
-                        3 if the current date is on a monday*!/
-
-                        if (!(!!newOrder.repaymentData)) return false;
-
-                        /!*step 1::
-                        * the count is either 7 or 13,
-                        * the loop runs for 6 or 12 times*!/
-                        for (let i = 1; i < newOrder.count + 1; i++) {
-
-                            /!*get the resultant column 1st, 2nd, 3rd etc*!/
-                            let column = this.$getColumn(i);
-
-                            /!*step 2. get the first occurrence of a vacant pay eg. 5th_pay*!/
-                            if (!newOrder.repaymentData[column + "_pay"]) {
-
-                                /!*step 3. find the corresponding due date for the vacant pay
-                                * The generateDates returns an array of the due
-                                dates for the order under consideration*!/
-                                payDay = (OrderWithPromiseCall
-                                    .generateDueDates(newOrder.order.order_date, newOrder.interval, newOrder.count))
-                                    [i - 1];
-
-
-                                /!*[i - 1] explained.
-                                * eg if the i = 5,
-                                * column = 5th_pay,
-                                * then the 4th ( [5-1] - this is the 5th element or 4th index, array is 0 indexed)
-                                * index of the resultant array is the pay day we are interested in*!/
-                                break;
-                            }
-                        }
-
-                        /!*step 4. assign the appropriate intervals
-                        * NB:: This intervals where generated from the days
-                        * stipulated on the collections app brief note that the case
-                        * corresponds to the steps also indicated in the collections app brief*!/
-                        switch (this.list) {
-                            case 2:
-                                dayInterval = 7;
-                                break;
-                            case 3:
-                                dayInterval = 3;
-                                break;
-                            case 4:
-                                dayInterval = 0;
-                                break;
-                            case 5:
-                                dayInterval = 1;
-                                break;
-                            case 6:
-                                dayInterval = 5;
-                                break;
-                            case 7:
-                                dayInterval = 31;
-                                break;
-
-                            case 9://collections visit: 1
-                                dayInterval = 38;
-                                break;
-                            case 10://collections visit: 2
-                                dayInterval = 45;
-                                break;
-
-                            case 11://recovery visit: 1
-                                dayInterval = 61;
-                                break;
-                            case 12://recovery visit: 2
-                                dayInterval = 75;
-                                break;
-                            case 13://recovery visit: 2
-                                dayInterval = 90;
-                                break;
-
-                            case 14://external recovery - lawyer visit: 2
-                                dayInterval = 121;
-                                break;
-                        }
-
-                        if (["collection", "recovery", "call", "external-recovery"].includes(this.mode)) {
-                            for (let p = 0; p < accumulatedDays; p++)
-                                datePool.push(this.$getDate(today.addDays(-(p + dayInterval))));
-                        }
-
-                        if (this.mode === 'sms') {
-                            for (let p = 0; p < accumulatedDays; p++)
-                                datePool.push(this.$getDate(today.addDays(p + dayInterval)));
-                        }
-
-                        return datePool.includes(payDay);
-                    };
-
-                    let isMyBranch = () => {
-                        if (this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess')) return true;
-                        //the branch to be used for this filter should be the branch of the
-                        // product being bought not the branch of the customer
-                        return parseInt(newOrder.order.store_product.store_name) === res.branch;
-                    };*/
-
-                    //if (isMyBranch() && hasMissedPayment()) this.orders.push(newOrder)
-                    /*if (isMyBranch() && hasMissedPayment()) */this.orders.push(newOrder)
-                });
-
-                !!this.orders.length && (this.show = true);
+                this.orders = await this.convertRequestOrdersToOrderClassInstance(orders);
+                this.orders.length && (this.show = true);
                 this.$LIPS(false);
+            },
+
+            convertRequestOrdersToOrderClassInstance(orders) {
+                let orderInstancesArr = [];
+                for (let key in orders) {
+                    let newOrder =
+                        orders[key] instanceof Order ?
+                            orders[key]
+                            :
+                            new OrderWithPromiseCall(orders[key], this.getAuthUserDetails.userId);
+                    orderInstancesArr.push(newOrder)
+                }
+                return orderInstancesArr;
             },
 
             fetchList(list) {
                 this.$LIPS(true);
-                let filerWithBranch = !(this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess'));
-                get(url({query: {list, filerWithBranch}})).then(({data}) => {
+                let filterWithBranch = !(this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess'));
+                get(url({query: {list, filterWithBranch}})).then(({data}) => {
                     if (list === 8) data.orders = data.orders.map(promiseCall => promiseCall.order);
                     this.prepareForm(data);
                 });

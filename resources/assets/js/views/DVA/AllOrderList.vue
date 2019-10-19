@@ -92,22 +92,21 @@
                                 <!---->
                             </ul>
                         </nav>
-
                     </div>
                 </div>
             </div>
-
         </div>
     </transition>
 </template>
 <script>
-    import {get} from '../../../utilities/api';
-    import Flash from "../../../utilities/flash";
-    import Order from "../../../components/Orders";
-    import CustomHeader from '../../../components/customHeader';
+    import {get} from '../../utilities/api';
+    import Flash from "../../utilities/flash";
+    import Order from "../../components/Orders";
+    import CustomHeader from '../../components/customHeader';
 
     export default {
         props: {
+            //TODO::verify if its necessary to make this a prop
             withBranchFilter: {default: true},
             urlToFetchOrders: {default: '/api/reminder/create'}
         },
@@ -134,17 +133,16 @@
         },
 
         methods: {
-
             fetchData() {
                 this.$scrollToTop();
                 this.$LIPS(true);
                 let {page, page_size, date_from, date_to, branch_id} = this.$data;
                 get(this.urlToFetchOrders +
                     `${!!page ? `?page=${page}` : ''}` +
-                    `${!!date_to ? `&date_to=${date_to}` : ''}` +
-                    `${!!page_size ? `&page_size=${page_size}` : ''}` +
-                    `${!!branch_id ? `&branch_id=${branch_id}` : ''}` +
-                    `${!!date_from ? `&date_from=${date_from}` : ''}`)
+                    `${!!date_to ? `&dateTo=${date_to}` : ''}` +
+                    `${!!page_size ? `&pageSize=${page_size}` : ''}` +
+                    `${!!branch_id ? `&branchId=${branch_id}` : ''}` +
+                    `${!!date_from ? `&dateFrom=${date_from}` : ''}`)
                     .then(({data}) => this.prepareForm(data))
                     .catch(() => Flash.setError('Error Preparing form'));
             },
@@ -165,13 +163,8 @@
 
             prepareForm(data) {
                 this.show = false;
-                this.orders = null;
-                this.response = {};
                 this.orders = data.orders;
-                let orders = data.orders.data,
-                    {payment_methods, banks, dva_id, branch} = data;
-                this.response = {payment_methods, banks, dva_id, branch, orders};
-                this.$scrollToTop();
+                this.response = {orders: data.orders.data};
                 this.$LIPS(false);
                 this.show = true;
             }

@@ -11,13 +11,15 @@ class OrderController extends Controller
     {
         $request = [
             'page' => request('page'),
-            'date_to' => request('date_to'),
-            'date_from' => request('date_from'),
-            'page_size' => request('page_size'),
+            'dateTo' => request('dateTo'),
+            'dateFrom' => request('dateFrom'),
+            'pageSize' => request('pageSize'),
+            'branchId' => request('branchId')
         ];
 
         $customers = Customer::where('user_id', $id)->pluck('id');
         $orders = Order::whereIn('customer_id', $customers)->orderWithOtherTables($request)->getOrPaginate($request);
+
         return response()->json([
             'orders' => $orders
         ]);

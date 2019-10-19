@@ -6,7 +6,7 @@
 </template>
 <script>
     import {mapGetters} from 'vuex';
-    import OrderList from '../DVA/order/orderList';
+    import OrderList from '../DVA/AllOrderList';
 
     export default {
         components: {OrderList},

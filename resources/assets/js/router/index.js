@@ -23,8 +23,8 @@ const DVAVerification = () => import( '../views/DVA/verification/verification.vu
 const CAG = () => import( '../views/CAG/index.vue');
 const CAGHome = () => import( '../views/CAG/HomePage.vue');
 
-const OrderList = () => import( '../views/DVA/order/orderList.vue');
-const AllOverdue = () => import( '../views/DVA/allOverdue');
+const OrderList = () => import( '../views/DVA/AllOrderList.vue');
+const AllOverdue = () => import( '../views/DVA/AllOverduePayment');
 
 const Reminder = () => import( '../views/DVA/reminder/reminder.vue');
 

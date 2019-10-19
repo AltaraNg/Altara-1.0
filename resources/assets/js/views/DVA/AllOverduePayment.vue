@@ -60,6 +60,7 @@
     </transition>
 </template>
 <script>
+    import {mapGetters} from "vuex";
     import {get} from '../../utilities/api';
     import Flash from "../../utilities/flash";
     import Order from "../../components/Orders";
@@ -67,7 +68,6 @@
     import {OrderWithPromiseCall} from "../../utilities/Amortization";
 
     export default {
-
         components: {CustomHeader, Order},
 
         data() {
@@ -75,7 +75,7 @@
                 branch_id: '',
                 overdue_days: 1,
                 filters: [{name: 'branch', model: 'branch_id'}, {name: 'overdue days', model: 'overdue_days'}],
-                orders: null,
+                orders: [],
                 response: {},
                 show: false,
                 headings:
@@ -83,54 +83,39 @@
             }
         },
 
-        methods: {
+        computed:{
+            ...mapGetters(['getAuthUserDetails'])
+        },
 
+        methods: {
             fetchData() {
                 this.$scrollToTop();
                 this.$LIPS(true);
                 let {branch_id, overdue_days} = this.$data;
-                get(`/api/reminder/create` +
-                    `${!!overdue_days ? `?overdue_days=${overdue_days}` : ''}` +
-                    `${!!branch_id ? `&branch_id=${branch_id}` : ''}`)
+                get(`/api/reminder/create?list=overdue` +
+                    `${!!overdue_days ? `&overdueDays=${overdue_days}` : ''}` +
+                    `${!!branch_id ? `&branchId=${branch_id}` : ''}`)
                     .then(({data}) => this.prepareForm(data))
                     .catch(() => Flash.setError('Error Preparing form'));
             },
 
             prepareForm(data) {
                 this.show = false;
-                this.orders = null;
-                this.response = {};
-                let filteredOrders = [];
-
-                data.orders.forEach(order => {
-                    let payDay,
-                        today = new Date(),
-                        newOrder = new OrderWithPromiseCall(order, data.dva_id);
-
-                    if (!(!!newOrder.repaymentData)) return false;
-
-                    for (let i = 1; i < newOrder.count + 1; i++) {
-                        let column = this.$getColumn(i);
-                        if (!newOrder.repaymentData[column + "_pay"]) {
-                            payDay = newOrder.dueDates[i - 1];
-                            break;
-                        }
-                    }
-
-                    let datePool = this.$getDate(today.addDays(-this.overdue_days));
-                    if (datePool === payDay) filteredOrders.push(newOrder);
-                });
-
-                this.orders = filteredOrders;
-                let {payment_methods, banks, dva_id, branch} = data;
-                this.response = {payment_methods, banks, dva_id, branch, orders: this.orders};
-                this.$scrollToTop();
+                let orders = [];
+                for (let key in data.orders) {
+                    orders.push(new OrderWithPromiseCall(data.orders[key], this.getAuthUserDetails.userId))
+                }
+                this.orders = orders;
+                this.response = {orders};
+                this.orders.length && (this.show = true);
                 this.$LIPS(false);
-                this.show = true;
             }
         },
+
         created() {
+            this.$preparePaymentMethods();
             this.$prepareBranches();
+            this.$prepareBanks();
             this.fetchData();
         }
     }

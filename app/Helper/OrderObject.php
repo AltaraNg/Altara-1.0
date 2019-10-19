@@ -19,7 +19,7 @@ trait OrderObject
 
         switch ($list) {
             case 'overdue':
-                $days = $requestObject['overdue_days'];
+                $days = $requestObject['overdueDays'];
                 $count = 1;
                 break;
             case 2://sms reminder: 2
@@ -71,14 +71,17 @@ trait OrderObject
 
         for ($a = 0; $a < $count; $a++) {
             $informal[$a] = [date('Y-m-d', strtotime($today . ' - ' . ($a + $days) . ' days'))];
-            for ($i = 1; $i < 12; $i++) $informal[$a][$i] = date('Y-m-d', strtotime($informal[$a][$i - 1] . ' - 14 days'));
+            for ($i = 1; $i < 12; $i++) {
+                $informal[$a][$i] =
+                    date('Y-m-d', strtotime($informal[$a][$i - 1] . ' - 14 days'));
+            }
         }
 
         $dateArr = $count == 3 ? call_user_func_array('array_merge', $informal) : $informal[0];
         return $dateArr;
     }
 
-    public static function doesOrderHaveValidRepaymentDetail($order)
+    public static function isOrderRepaymentDetailValid($order)
     {
         return (isset($order->repayment_formal) || isset($order->repayment_informal));
     }
@@ -168,5 +171,45 @@ trait OrderObject
             array_push($dueDates, $date);
         }
         return $dueDates;
+    }
+
+    public static function getFirstMissedPaymentDate($order)
+    {
+        extract(Self::getCountAndInterval($order));
+
+        for ($i = 1; $i < ($count + 1); $i++) {
+            $column = Self::getColumn($i);
+            $repaymentData = Self::getRepaymentData($order);
+            $col = $column . "_pay";
+            if ((int)$repaymentData->$col < 1) {
+                return Self::generateDueDates($order->order_date, $interval, $count)[$i - 1];
+            }
+        }
+        return null;
+    }
+
+    public static function getPossibleRepaymentDatesForASuppliedDate($requestObject)
+    {
+        $datePool = [];
+        $list = $requestObject['list'];
+        $mode = Self::REMINDER_TYPES[$list]['mode'];
+        $dayInterval = Self::REMINDER_TYPES[$list]['dayInterval'];
+        $list === 'overdue' && $dayInterval = $requestObject['overdueDays'];
+        $accumulatedDays = date("D") == "Mon" || in_array($list, Self::COLLECTIONS_LIST)
+            ? 3 : 1;
+
+        if ($mode === 'sms') {
+            for ($p = 0; $p < $accumulatedDays; $p++) {
+                $date = (new DateTime())->modify('+' . ($p + $dayInterval) . ' day')->format('Y-m-d');
+                array_push($datePool, $date);
+            }
+        } else {
+            for ($p = 0; $p < $accumulatedDays; $p++) {
+                $date = (new DateTime())->modify('-' . ($p + $dayInterval) . ' day')->format('Y-m-d');
+                array_push($datePool, $date);
+            }
+        }
+
+        return $datePool;
     }
 }

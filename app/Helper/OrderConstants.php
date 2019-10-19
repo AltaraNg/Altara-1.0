@@ -8,9 +8,11 @@ interface OrderConstants
 {
     const PROMISE_CALL_LIST = 8;
     const DIRECT_DEBIT_PAYMENT_METHOD = 4;
+    const FIRST_SMS_AND_PROMISE_CALL = [8, 1];
     const COLLECTIONS_LIST = [9, 10, 11, 12, 13, 14];
     const DIRECT_DEBIT_IMPLEMENTATION_DATE = '2019-07-07';
     const REMINDER_TYPES = [
+        'overdue' => ['mode' => 'overdue', 'name' => 'overdue', 'dayInterval' => null],
         '2' => ['mode' => 'sms', 'name' => 'secondSMS', 'dayInterval' => 7],
         '3' => ['mode' => 'sms', 'name' => 'thirdSMS', 'dayInterval' => 3],
         '4' => ['mode' => 'call', 'name' => 'firstCall', 'dayInterval' => 0],
