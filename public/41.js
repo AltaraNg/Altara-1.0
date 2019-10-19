@@ -544,7 +544,7 @@ exports.default = {
             var order = this.customer.orders[index];
 
             //initialize the order and do the necessary settings;
-            var order2 = new _Amortization.Order(order, this.customer);
+            var order2 = new _Amortization.OrderObject(order, this.customer);
 
             _vue2.default.set(this.$data, 'currentOrder', order);
             _vue2.default.set(this.$data, 'currentOrderClass', order2);
