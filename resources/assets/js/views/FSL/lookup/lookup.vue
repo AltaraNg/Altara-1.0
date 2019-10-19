@@ -281,7 +281,6 @@
                                         <th>
                                             <div class="form-group mb-0">
                                                 <input class="form-control" name="date" type="date"
-                                                       :disabled="paymentFormType === 'edit'"
                                                        v-model="paymentForm.payments[index]._date">
                                             </div>
                                         </th>
