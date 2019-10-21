@@ -308,6 +308,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 
 exports.default = {
 
@@ -1017,6 +1018,7 @@ var render = function() {
                                     : _vm._e(),
                                   _vm._v(" "),
                                   _vm.isModel("branch") ||
+                                  _vm.isModel("inventory") ||
                                   _vm.isModel("product") ||
                                   _vm.isModel("brand") ||
                                   _vm.isModel("category") ||

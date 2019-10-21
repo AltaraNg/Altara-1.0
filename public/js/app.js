@@ -44008,7 +44008,7 @@ var LOG = function LOG() {
 var LOGHome = function LOGHome() {
     return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/HomePage.vue"));
 };
-var Inventory = function Inventory() {
+var InventoryForm = function InventoryForm() {
     return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
 };
 var SuppliersForm = function SuppliersForm() {
@@ -44088,7 +44088,7 @@ var router = new _vueRouter2.default({
         path: '/log',
         component: LOG,
         meta: { LOG: true },
-        children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory', component: Inventory, meta: { mode: 'create' }, name: 'inventory' }, {
+        children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory/:id/edit', component: InventoryForm, meta: { mode: 'edit' }, name: 'inventoryEdit' }, { path: 'inventory/create', component: InventoryForm, meta: { mode: 'create' }, name: 'inventoryCreate' }, { path: 'inventory', component: DataViewer, meta: { appModel: 'inventory', source: '/api/inventory', new: '/log/inventory' } }, {
             path: 'brands',
             component: DataViewer,
             meta: { appModel: 'brand', source: '/api/brand', new: '/log/brands' }

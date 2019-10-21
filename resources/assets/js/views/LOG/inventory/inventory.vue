@@ -260,7 +260,7 @@ export default {
                 .then(({ data }) => {
                   if (data.saved || data.updated) {
                     // log(data.log, data.staff_id);
-                    Vue.set(this.$data, "form", data.form);
+                    Vue.set(this.$data, "productForm", data.form);
                     Flash.setSuccess(data.message, 5000);
                     if (data["updated"]) this.$router.push("/log/inventory");
                   }

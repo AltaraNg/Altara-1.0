@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 class Inventory extends Model
 {
     //
+    use DataViewer;
 
 
     protected $fillable = ['receiver_id','branch_id', 'supplier_id','product_id', 'inventory_sku', 'serial_number', 'market_price', 'sold_date', 'received_date', 'status'];
 
-    public static $columns = ['id', 'name', 'retail_price in Naira'];
+    public static $columns = ['id', 'inventory sku', 'serial_number', 'market_price' ];
 
     public static function form(): iterable
     {
@@ -23,9 +24,9 @@ class Inventory extends Model
             'product_id' => '',
             'inventory_sku' => '',
             'receiver_id' => '',
-            'seller_id' => '',
+            'market_price' => '',
             'serial_number' => '',
-            'status' => '',
+            'branch' => '',
             'issues_id' => ''
 
         ];

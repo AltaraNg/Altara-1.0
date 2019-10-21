@@ -103,6 +103,7 @@
                                         </td>
                                         <td v-if="
                                         isModel('branch') ||
+                                        isModel('inventory')||
                                         isModel('product') ||
                                         isModel('brand') ||
                                         isModel('category') ||

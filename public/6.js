@@ -493,7 +493,7 @@ exports.default = {
                                 (0, _log.log)(data.log, data.staff_id);
                                 _vue2.default.set(_this.$data, 'form', data.form);
                                 _flash2.default.setSuccess(data.message, 5000);
-                                if (data['updated']) _this.$router.push('/log/products');
+                                if (data['updated']) _this.$router.push('/log/inventory');
                             }
                         }).catch(function (_ref3) {
                             var r = _ref3.response;

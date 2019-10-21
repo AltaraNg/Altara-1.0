@@ -90,7 +90,7 @@ const LOG = () =>
     import ('../views/LOG/index.vue');
 const LOGHome = () =>
     import ('../views/LOG/HomePage.vue');
-const Inventory = () =>
+const InventoryForm = () =>
     import ('../views/LOG/inventory/inventory.vue');
 const SuppliersForm = () =>
     import ('../views/LOG/supplier/form.vue');
@@ -226,8 +226,9 @@ const router = new VueRouter({
             children: [
                 { path: 'home', component: LOGHome, name: 'LOGHome' },
 
-
-                { path: 'inventory', component: Inventory, meta: { mode: 'create' } ,name: 'inventory' },
+                { path: 'inventory/:id/edit', component: InventoryForm, meta: { mode: 'edit' } ,name: 'inventoryEdit' },
+                { path: 'inventory/create', component: InventoryForm, meta: { mode: 'create' } ,name: 'inventoryCreate' },
+                { path: 'inventory', component: DataViewer, meta: { appModel: 'inventory', source: '/api/inventory' ,new: '/log/inventory'}  },
 
                 {
                     path: 'brands',
