@@ -11,6 +11,8 @@ class Reminder extends Model
 
     protected $fillable = ["customer_id", "order_id", "sms_id", "repayment_level", "feedback", "dva_id", "type", "date"];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     public $timestamps = false;
 
     public function customer()
