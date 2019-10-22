@@ -1,13 +1,14 @@
 <template>
   <transition name="fade">
     <div class="pt-md-3 pt-2 attendance-view" id="index">
+      <div v-if="mode === 'create'">
       <custom-header
         :to="'/log/inventory'"
         :title="'Generate Inventory'"
         :button-title="'view Inventory!'"
       />
 
-      <div class="attendance-body">
+      <div class="attendance-body" >
         <form @submit.prevent enctype="multipart/form-data">
           <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
             <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -52,8 +53,9 @@
           </div>
         </form>
       </div>
+      </div>
 
-      <h5 class="mt-5 mb-0" v-if="canAddProduct">Add a new payment</h5>
+      <h5 class="mt-5 mb-0" v-if="canAddProduct">{{mode|capitalize}} Inventory</h5>
       <table class="table table-bordered" v-if="canAddProduct">
         <tbody class="text-center">
           <tr class="table-separator">
@@ -186,7 +188,7 @@ import Auth from "../../../utilities/auth";
 function initialize(to) {
   let urls = {
     create: `/api/inventory/create`,
-    edit: `/api/product/${to.params.id}/edit`
+    edit: `/api/inventory/${to.params.id}/edit`
   };
   return urls[to.meta.mode];
 }
@@ -232,8 +234,12 @@ export default {
       .catch(() => next(() => Flash.setError("Error Preparing form")));
   },
   methods: {
+
+      getForm(){
+
+      },
     prepareForm(data) {
-      console.log(data);
+
       this.branches = data.branches;
       Vue.set(this.$data, "mode", this.$route.meta.mode);
       Vue.set(this.$data, "brands", data.brands);
@@ -243,6 +249,28 @@ export default {
       if (this.mode === "edit") {
         this.store = `/api/inventory/${this.$route.params.id}`;
         this.method = "PUT";
+        this.index = 0;
+        console.log('i am here');
+
+        this.productForm.products.push({
+                product_name: 'data.form.',
+                product_id: 'product.id',
+                supplier_id: "",
+                inventory_sku: data.form.inventory_sku,
+                serial_number: "",
+                branch_id: "",
+                market_price: "product.retail_price",
+                received_date: "this.$getDate()",
+                receiver_id: "this.user.id"
+            });
+
+
+
+
+
+
+
+
       }
       this.show = true;
       this.canAddProduct = /*this.canUserAddPayment;*/ true;
@@ -328,7 +356,11 @@ export default {
       return array.find(entity => entity.id === id);
     }
   },
-  created() {},
+  computed: {
+      editForm: function(){
+
+      }
+  },
   watch: {
     productForm: {
       handler: function() {

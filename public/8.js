@@ -207,10 +207,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function initialize(to) {
   var urls = {
     create: "/api/inventory/create",
-    edit: "/api/product/" + to.params.id + "/edit"
+    edit: "/api/inventory/" + to.params.id + "/edit"
   };
   return urls[to.meta.mode];
 } //
+//
+//
 //
 //
 //
@@ -433,8 +435,9 @@ exports.default = {
   },
 
   methods: {
+    getForm: function getForm() {},
     prepareForm: function prepareForm(data) {
-      console.log(data);
+
       this.branches = data.branches;
       _vue2.default.set(this.$data, "mode", this.$route.meta.mode);
       _vue2.default.set(this.$data, "brands", data.brands);
@@ -444,6 +447,20 @@ exports.default = {
       if (this.mode === "edit") {
         this.store = "/api/inventory/" + this.$route.params.id;
         this.method = "PUT";
+        this.index = 0;
+        console.log('i am here');
+
+        this.productForm.products.push({
+          product_name: 'data.form.',
+          product_id: 'product.id',
+          supplier_id: "",
+          inventory_sku: data.form.inventory_sku,
+          serial_number: "",
+          branch_id: "",
+          market_price: "product.retail_price",
+          received_date: "this.$getDate()",
+          receiver_id: "this.user.id"
+        });
       }
       this.show = true;
       this.canAddProduct = /*this.canUserAddPayment;*/true;
@@ -533,8 +550,9 @@ exports.default = {
       });
     }
   },
-  created: function created() {},
-
+  computed: {
+    editForm: function editForm() {}
+  },
   watch: {
     productForm: {
       handler: function handler() {
@@ -610,177 +628,201 @@ var render = function() {
       "div",
       { staticClass: "pt-md-3 pt-2 attendance-view", attrs: { id: "index" } },
       [
-        _c("custom-header", {
-          attrs: {
-            to: "/log/inventory",
-            title: "Generate Inventory",
-            "button-title": "view Inventory!"
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "attendance-body" }, [
-          _c(
-            "form",
-            {
-              attrs: { enctype: "multipart/form-data" },
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                }
-              }
-            },
-            [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "my-4 clearfix p-5 row bg-white shadow-sm card-radius"
-                },
-                [
+        _vm.mode === "create"
+          ? _c(
+              "div",
+              [
+                _c("custom-header", {
+                  attrs: {
+                    to: "/log/inventory",
+                    title: "Generate Inventory",
+                    "button-title": "view Inventory!"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "attendance-body" }, [
                   _c(
-                    "div",
+                    "form",
                     {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Product")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.products, caption: "name" },
-                        model: {
-                          value: _vm.form.product,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "product", $$v)
-                          },
-                          expression: "form.product"
+                      attrs: { enctype: "multipart/form-data" },
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
                         }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-4 col-6 float-left px-0 px-md-3"
+                      }
                     },
                     [
-                      _c("label", [_vm._v("Supplier ID")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.suppliers, caption: "name" },
-                        model: {
-                          value: _vm.form.supplier,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "supplier", $$v)
-                          },
-                          expression: "form.supplier"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-2 col-4 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Quantity")]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.quantity,
-                            expression: "quantity"
-                          },
-                          {
-                            name: "validate",
-                            rawName: "v-validate",
-                            value: "required|max:50|numeric",
-                            expression: "'required|max:50|numeric'"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          name: "quantity",
-                          placeholder: "retail price"
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "my-4 clearfix p-5 row bg-white shadow-sm card-radius"
                         },
-                        domProps: { value: _vm.quantity },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.quantity = $event.target.value
-                          }
-                        }
-                      }),
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                            },
+                            [
+                              _c("label", [_vm._v("Product")]),
+                              _vm._v(" "),
+                              _c("typeahead", {
+                                attrs: {
+                                  options: _vm.products,
+                                  caption: "name"
+                                },
+                                model: {
+                                  value: _vm.form.product,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "product", $$v)
+                                  },
+                                  expression: "form.product"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "form-group col-md-4 col-6 float-left px-0 px-md-3"
+                            },
+                            [
+                              _c("label", [_vm._v("Supplier ID")]),
+                              _vm._v(" "),
+                              _c("typeahead", {
+                                attrs: {
+                                  options: _vm.suppliers,
+                                  caption: "name"
+                                },
+                                model: {
+                                  value: _vm.form.supplier,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "supplier", $$v)
+                                  },
+                                  expression: "form.supplier"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "form-group col-md-2 col-4 float-left px-0 px-md-3"
+                            },
+                            [
+                              _c("label", [_vm._v("Quantity")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.quantity,
+                                    expression: "quantity"
+                                  },
+                                  {
+                                    name: "validate",
+                                    rawName: "v-validate",
+                                    value: "required|max:50|numeric",
+                                    expression: "'required|max:50|numeric'"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  name: "quantity",
+                                  placeholder: "retail price"
+                                },
+                                domProps: { value: _vm.quantity },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.quantity = $event.target.value
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.first("price")
+                                ? _c("small", [
+                                    _vm._v(_vm._s(_vm.errors.first("price")))
+                                  ])
+                                : _vm._e()
+                            ]
+                          )
+                        ]
+                      ),
                       _vm._v(" "),
-                      _vm.errors.first("price")
-                        ? _c("small", [
-                            _vm._v(_vm._s(_vm.errors.first("price")))
-                          ])
-                        : _vm._e()
+                      _c(
+                        "div",
+                        { staticClass: "mb-5 px-0 row align-items-center" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "clearfix d-flex justify-content-end w-100"
+                            },
+                            [
+                              _vm.mode === "edit"
+                                ? _c(
+                                    "router-link",
+                                    {
+                                      staticClass: "mx-5 text-link mt-4 pt-2",
+                                      attrs: { to: "/log/products" }
+                                    },
+                                    [_vm._v("Cancel")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn bg-default",
+                                  attrs: {
+                                    disabled:
+                                      _vm.$isProcessing || _vm.quantity == "",
+                                    type: "submit"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.addProductForm()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              Generate Inventory\n              "
+                                  ),
+                                  _c("i", {
+                                    staticClass: "far fa-paper-plane ml-1"
+                                  })
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]
+                      )
                     ]
                   )
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
-                _c(
-                  "div",
-                  { staticClass: "clearfix d-flex justify-content-end w-100" },
-                  [
-                    _vm.mode === "edit"
-                      ? _c(
-                          "router-link",
-                          {
-                            staticClass: "mx-5 text-link mt-4 pt-2",
-                            attrs: { to: "/log/products" }
-                          },
-                          [_vm._v("Cancel")]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn bg-default",
-                        attrs: {
-                          disabled: _vm.$isProcessing || _vm.quantity == "",
-                          type: "submit"
-                        },
-                        on: {
-                          click: function($event) {
-                            _vm.addProductForm()
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n              Generate Inventory\n              "
-                        ),
-                        _c("i", { staticClass: "far fa-paper-plane ml-1" })
-                      ]
-                    )
-                  ],
-                  1
-                )
-              ])
-            ]
-          )
-        ]),
+                ])
+              ],
+              1
+            )
+          : _vm._e(),
         _vm._v(" "),
         _vm.canAddProduct
           ? _c("h5", { staticClass: "mt-5 mb-0" }, [
-              _vm._v("Add a new payment")
+              _vm._v(_vm._s(_vm._f("capitalize")(_vm.mode)) + " Inventory")
             ])
           : _vm._e(),
         _vm._v(" "),
@@ -1133,8 +1175,7 @@ var render = function() {
             ]
           )
         ])
-      ],
-      1
+      ]
     )
   ])
 }
