@@ -1,4 +1,4 @@
-    <template>
+<template>
     <transition name="fade">
         <div :class="full && 'px-md-4 px-2'">
             <app-navigation :forward="{ path: $routerHistory.next().path }"
@@ -50,10 +50,11 @@
                                 </h4>
                             </div>
                             <div class="float-left p-0 m-0 col-md-4 col-12 d-flex justify-content-center">
-                                <span :class="`status mt-md-5 my-sm-2 mt-0 ${approved ? 'approved' : 'not-approved'}`">
-                                    {{approved ? 'APPROVED' : 'NOT APPROVED'}}
-                                    <i :class="`ml-3 fas fa-${approved ? 'check' : 'times'}`"></i>
-                                </span>
+                                <ApprovalStatusButton
+                                        size="big"
+                                        :key="customer.id"
+                                        :customer-name="$getCustomerFullName(customer)"
+                                        :is-approved="approved"/>
                             </div>
                         </div>
                         <div class="pt-4">
@@ -96,12 +97,13 @@
     import {store} from '../store/store';
     import {EventBus} from "../utilities/event-bus";
     import AppNavigation from '../components/AppNavigation';
+    import ApprovalStatusButton from '../components/ApprovalStatusButton';
 
     const DVA = () => store.getters.auth('DVAAccess');
 
     export default {
         props: ['viewCustomer'],
-        components: {AppNavigation},
+        components: {ApprovalStatusButton, AppNavigation},
         data() {
             return {
                 customer: '',
@@ -109,7 +111,7 @@
             }
         },
         computed: {
-            full(){
+            full() {
                 return this.$route.meta.mode === 'full';
             },
             passport() {
@@ -118,7 +120,7 @@
             branch() {
                 return `${this.customer.branch.description} ${this.customer.branch.name}`;
             },
-            approved(){
+            approved() {
                 return this.$getCustomerApprovalStatus(this.customer.verification);
             }
         },

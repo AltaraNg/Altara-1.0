@@ -58,12 +58,16 @@ class UpdateTable extends Migration
         });*/
 
 
-        Schema::table('brands', function ($table) {
+        /*Schema::table('brands', function ($table) {
             $table->timestamps();
-        });
+        });*/
 
-        Schema::table('categories', function ($table) {
+        /*Schema::table('categories', function ($table) {
             $table->timestamps();
+        });*/
+
+        Schema::table('customers', function ($table) {
+            $table->unsignedInteger('managed_by')->index()->nullable()->after('user_id');
         });
 
     }

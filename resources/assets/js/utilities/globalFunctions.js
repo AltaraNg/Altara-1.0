@@ -129,6 +129,10 @@ Vue.prototype.$prepareBanks = () => {
         .then(r => store.dispatch('mutateBanks', r.data.banks));
 };
 
+Vue.prototype.$prepareTypeaheadUsersList = () => {
+    !store.getters.getTypeaheadUsersList && get('/api/users/list_type/type_ahead')
+        .then(r => store.dispatch('mutateTypeaheadUsersList', r.data.users));
+};
 
 /**convert a time in 24 hours format to 12 hours format**/
 Vue.prototype.$timeConvert = time => {

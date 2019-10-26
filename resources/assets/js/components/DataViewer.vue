@@ -65,13 +65,13 @@
                                     <tr v-for="model in model.data">
                                         <td v-for="(value,key) in model">
                                             <span v-if="key !== 'verification'">{{value}}</span>
-                                            <router-link
-                                                    :class="`status mx-auto status-sm shadow-sm ${value ? 'approved' : 'not-approved'}`"
-                                                    :to="$store.getters.auth('DVAAccess') ? `dva/verification?id=${model.id}` : ''"
-                                                    v-else>
-                                                {{value ? 'APPROVED' : 'NOT APPROVED'}}
-                                                <i :class="`ml-3 fas fa-${value ? 'check' : 'times'}`"></i>
-                                            </router-link>
+                                            <ApprovalStatusButton
+                                                    v-else
+                                                    size="small"
+                                                    :key="model.id"
+                                                    :is-approved="value"
+                                                    :customer-name="$getCustomerFullName(model)"
+                                                    :link="`dva/verification?id=${model.id}`"/>
                                         </td>
 
                                         <td v-if="isModel('user')">
@@ -239,12 +239,12 @@
     import Flash from '../utilities/flash';
     import {Message} from '../utilities/sms';
     import {byMethod, get} from '../utilities/api';
-
     import AppNavigation from '../components/AppNavigation';
+    import ApprovalStatusButton from '../components/ApprovalStatusButton';
 
     export default {
 
-        components: {AppNavigation},
+        components: {ApprovalStatusButton, AppNavigation},
 
         data() {
             return {
@@ -368,7 +368,7 @@
                 if (this.$network()) {
                     this.$LIPS(true);
                     get(`/api/reset-password/${this.form.id}`).then(({data}) => {
-                        let {password:psw} = data,//extract password from the data received
+                        let {password: psw} = data,//extract password from the data received
                             {staff_id: id, phone_number: tel} = this.form,
                             body = `Password reset successful! if your did not request for a new password kindly`
                                 + ` report back immediately, your staff ID is ${id}, new password: ${psw}`;

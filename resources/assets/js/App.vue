@@ -69,6 +69,7 @@
                 </transition>
                 <router-view></router-view>
             </div>
+            <ChangeCustomerManagerModal/>
         </div>
     </transition>
 </template>
@@ -78,11 +79,13 @@
     import Loader from "./components/Loader.vue";
     import SideNav from "./components/SideNav.vue";
     import {interceptors, post} from "./utilities/api";
+    import ChangeCustomerManagerModal from './components/ChangeCustomerManagerModal';
 
     export default {
         components: {
             SideNav,
-            Loader
+            Loader,
+            ChangeCustomerManagerModal
         },
         data() {
             return {

@@ -23,6 +23,12 @@ export const store = new Vuex.Store({
         loader: true,
         ProfileAccess: [],
         ProfileEditAccess: [],
+        typeaheadUsersList: null,
+        api_token: localStorage.getItem('api_token'),
+        authRole: parseInt(localStorage.getItem('role')),
+        user_id: parseInt(localStorage.getItem('user_id')),
+
+        /*object for access controls*/
         DSALead: [1, 2, 8, 9, 15],
         DSACaptain: [1, 2, 8, 9, 15, 17, 29],
         DSAAccess: [1, 2, 8, 9, 15, 17, 18, 29],
@@ -36,9 +42,7 @@ export const store = new Vuex.Store({
         LOGLead: [1, 2, 8, 9, 11],
         LOGAccess: [1, 2, 8, 9, 11],
         CAGAccess: [1, 2, 8, 9, 30],
-        api_token: localStorage.getItem('api_token'),
-        authRole: parseInt(localStorage.getItem('role')),
-        user_id: parseInt(localStorage.getItem('user_id')),
+
         months: [
             {id: '01', name: "January"},
             {id: '02', name: "February"},
@@ -61,8 +65,9 @@ export const store = new Vuex.Store({
         getMonths: state => state.months,
         getBranches: state => state.branches,
         getPaymentMethods: state => state.paymentMethods,
+        getTypeaheadUsersList: state => state.typeaheadUsersList,
         auth: state => role => state[role].includes(state.authRole),
-        getAuthUserDetails: state => ({userId: state.user_id,roleId: state.authRole}),
+        getAuthUserDetails: state => ({userId: state.user_id, roleId: state.authRole})
     },
     mutations: {
         mutateAuth: state => {
@@ -72,17 +77,18 @@ export const store = new Vuex.Store({
         },
         mutateBanks: (state, banks) => Vue.set(state, 'banks', banks),
         mutateStates: (state, states) => Vue.set(state, 'states', states),
+        mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
         mutateBranches: (state, branches) => Vue.set(state, 'branches', branches),
         mutatePaymentMethods: (state, paymentMethods) => Vue.set(state, 'paymentMethods', paymentMethods),
-        mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
-
+        mutateTypeaheadUsersList: (state, typeaheadUsersList) => Vue.set(state, 'typeaheadUsersList', typeaheadUsersList)
     },
     actions: {
         mutateAuth: ({commit}) => commit('mutateAuth'),
         mutateBanks: ({commit}, banks) => commit('mutateBanks', banks),
         mutateStates: ({commit}, states) => commit('mutateStates', states),
         mutateBranches: ({commit}, branches) => commit('mutateBranches', branches),
-        mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
         mutateProfileAccess: ({commit}, payload) => commit('mutateProfileAccess', payload),
+        mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
+        mutateTypeaheadUsersList: ({commit}, typeaheadUsersList) => commit('mutateTypeaheadUsersList', typeaheadUsersList),
     }
 });
