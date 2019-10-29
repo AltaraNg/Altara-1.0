@@ -104,7 +104,7 @@ class InventoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'inventory_sku' => 'required|unique:inventories',
+//            'inventory_sku' => 'required|unique:inventory',
             'branch_id' => 'required|int',
             'product_id' => 'required|int',
             'receiver_id' => 'required|int',
@@ -114,7 +114,7 @@ class InventoryController extends Controller
         Inventory::whereId($id)->update($request->all());
         return response()->json([
             'updated' => true,
-            'message' => 'Product Updated!',
+            'message' => 'Inventory Updated!',
             'staff_id' => auth('api')->user()->staff_id,
             'log' => 'InventoryUpdated'
         ]);

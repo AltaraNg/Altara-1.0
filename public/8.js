@@ -447,24 +447,28 @@ exports.default = {
       if (this.mode === "edit") {
         this.store = "/api/inventory/" + this.$route.params.id;
         this.method = "PUT";
-        this.index = 0;
-        console.log('i am here');
 
+        // Vue.set(this.$data.productForm, product, {
+        //     'id': 1,
+        //     'name': 'damola'
+        // });
+
+
+        //const product = this.getEntity(this.form.product, this.products);
         this.productForm.products.push({
-          product_name: 'data.form.',
-          product_id: 'product.id',
-          supplier_id: "",
-          inventory_sku: data.form.inventory_sku,
-          serial_number: "",
-          branch_id: "",
-          market_price: "product.retail_price",
-          received_date: "this.$getDate()",
-          receiver_id: "this.user.id"
+          'product_name': this.getEntity(data.form.product_id, this.products).name,
+          'product_id': data.form.product_id,
+          'supplier_id': data.form.supplier_id,
+          'inventory_sku': data.form.inventory_sku,
+          'serial_number': data.form.serial_number,
+          'branch_id': data.form.branch_id,
+          'market_price': data.form.market_price,
+          'received_date': data.form.received_date,
+          'receiver_id': 1
         });
       }
       this.show = true;
       this.canAddProduct = /*this.canUserAddPayment;*/true;
-      this.productForm = { products: [] };
     },
     onSave: function onSave() {
       var _this = this;
@@ -474,6 +478,9 @@ exports.default = {
           if (_this.$network()) {
             _this.$LIPS(true);
             _this.productForm.products.forEach(function (e) {
+              if (_this.mode = "edit") {
+                delete e.product_name;
+              }
               (0, _api.byMethod)(_this.method, _this.store, e).then(function (_ref2) {
                 var data = _ref2.data;
 
@@ -553,6 +560,7 @@ exports.default = {
   computed: {
     editForm: function editForm() {}
   },
+
   watch: {
     productForm: {
       handler: function handler() {
