@@ -388,6 +388,12 @@ function initialize(to) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 exports.default = {
   components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
@@ -822,367 +828,466 @@ var render = function() {
                       )
                     ]
                   )
-                ])
-              ],
-              1
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.canAddProduct
-          ? _c("h5", { staticClass: "mt-5 mb-0" }, [
-              _vm._v(_vm._s(_vm._f("capitalize")(_vm.mode)) + " Inventory")
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.canAddProduct
-          ? _c("table", { staticClass: "table table-bordered" }, [
-              _c(
-                "tbody",
-                { staticClass: "text-center" },
-                [
-                  _c("tr", { staticClass: "table-separator" }, [
-                    _c("td", { staticClass: "text-left" }, [_vm._v("S/No.")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Product")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Inventory SKU")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Market Price")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Serial/IMEI Number")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Branch")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Received Date")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Received By")])
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.productForm.products, function(product, index) {
-                    return _c("tr", [
-                      _c("th", [_vm._v(_vm._s(index + 1))]),
+                ]),
+                _vm._v(" "),
+                _vm.productForm.products.length > 0
+                  ? _c("div", { staticClass: "attendance-body" }, [
+                      _vm.canAddProduct
+                        ? _c("h5", { staticClass: "mt-5 mb-0" }, [
+                            _vm._v("Generate Inventory")
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c("th", [
-                        _c("div", { staticClass: "form-group mb-0" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.productForm.products[index].product_name,
-                                expression:
-                                  "productForm.products[index].product_name"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              name: "product_sku",
-                              type: "text",
-                              disabled: ""
-                            },
-                            domProps: {
-                              value:
-                                _vm.productForm.products[index].product_name
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.productForm.products[index],
-                                  "product_name",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c("div", { staticClass: "form-group mb-0" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.productForm.products[index].inventory_sku,
-                                expression:
-                                  "productForm.products[index].inventory_sku"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              name: "inventory_sku",
-                              type: "text",
-                              disabled: ""
-                            },
-                            domProps: {
-                              value:
-                                _vm.productForm.products[index].inventory_sku
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.productForm.products[index],
-                                  "inventory_sku",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c("div", { staticClass: "form-group mb-0" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.productForm.products[index].market_price,
-                                expression:
-                                  "productForm.products[index].market_price"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              name: "market_price",
-                              type: "text",
-                              disabled: ""
-                            },
-                            domProps: {
-                              value:
-                                _vm.productForm.products[index].market_price
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.productForm.products[index],
-                                  "market_price",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c("div", { staticClass: "form-group mb-0" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.productForm.products[index].serial_number,
-                                expression:
-                                  "productForm.products[index].serial_number"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required",
-                                expression: "'required'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { name: "serial_no", type: "text" },
-                            domProps: {
-                              value:
-                                _vm.productForm.products[index].serial_number
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.productForm.products[index],
-                                  "serial_number",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c("div", { staticClass: "form-group mb-0" }, [
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value:
-                                    _vm.productForm.products[index].branch_id,
-                                  expression:
-                                    "productForm.products[index].branch_id"
-                                }
+                      _vm.canAddProduct
+                        ? _c("table", { staticClass: "table table-bordered" }, [
+                            _c(
+                              "tbody",
+                              { staticClass: "text-center" },
+                              [
+                                _c("tr", { staticClass: "table-separator" }, [
+                                  _c("td", { staticClass: "text-left" }, [
+                                    _vm._v("S/No.")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Product")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Inventory SKU")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Market Price")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Serial/IMEI Number")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Branch")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Received Date")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Received By")])
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.productForm.products, function(
+                                  product,
+                                  index
+                                ) {
+                                  return _c("tr", [
+                                    _c("th", [_vm._v(_vm._s(index + 1))]),
+                                    _vm._v(" "),
+                                    _c("th", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "form-group mb-0" },
+                                        [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ].product_name,
+                                                expression:
+                                                  "productForm.products[index].product_name"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              name: "product_sku",
+                                              type: "text",
+                                              disabled: ""
+                                            },
+                                            domProps: {
+                                              value:
+                                                _vm.productForm.products[index]
+                                                  .product_name
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ],
+                                                  "product_name",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("th", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "form-group mb-0" },
+                                        [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ].inventory_sku,
+                                                expression:
+                                                  "productForm.products[index].inventory_sku"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              name: "inventory_sku",
+                                              type: "text",
+                                              disabled: ""
+                                            },
+                                            domProps: {
+                                              value:
+                                                _vm.productForm.products[index]
+                                                  .inventory_sku
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ],
+                                                  "inventory_sku",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("th", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "form-group mb-0" },
+                                        [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ].market_price,
+                                                expression:
+                                                  "productForm.products[index].market_price"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              name: "market_price",
+                                              type: "text",
+                                              disabled: ""
+                                            },
+                                            domProps: {
+                                              value:
+                                                _vm.productForm.products[index]
+                                                  .market_price
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ],
+                                                  "market_price",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("th", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "form-group mb-0" },
+                                        [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ].serial_number,
+                                                expression:
+                                                  "productForm.products[index].serial_number"
+                                              },
+                                              {
+                                                name: "validate",
+                                                rawName: "v-validate",
+                                                value: "required",
+                                                expression: "'required'"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              name: "serial_no",
+                                              type: "text"
+                                            },
+                                            domProps: {
+                                              value:
+                                                _vm.productForm.products[index]
+                                                  .serial_number
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ],
+                                                  "serial_number",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("th", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "form-group mb-0" },
+                                        [
+                                          _c(
+                                            "select",
+                                            {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value:
+                                                    _vm.productForm.products[
+                                                      index
+                                                    ].branch_id,
+                                                  expression:
+                                                    "productForm.products[index].branch_id"
+                                                }
+                                              ],
+                                              staticClass:
+                                                "custom-select w-100",
+                                              attrs: { name: "branch_id" },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$selectedVal = Array.prototype.filter
+                                                    .call(
+                                                      $event.target.options,
+                                                      function(o) {
+                                                        return o.selected
+                                                      }
+                                                    )
+                                                    .map(function(o) {
+                                                      var val =
+                                                        "_value" in o
+                                                          ? o._value
+                                                          : o.value
+                                                      return val
+                                                    })
+                                                  _vm.$set(
+                                                    _vm.productForm.products[
+                                                      index
+                                                    ],
+                                                    "branch_id",
+                                                    $event.target.multiple
+                                                      ? $$selectedVal
+                                                      : $$selectedVal[0]
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "" } },
+                                                [_vm._v("select branch")]
+                                              ),
+                                              _vm._v(" "),
+                                              _vm._l(_vm.branches, function(
+                                                branch
+                                              ) {
+                                                return _c(
+                                                  "option",
+                                                  {
+                                                    domProps: {
+                                                      value: branch.id
+                                                    }
+                                                  },
+                                                  [_vm._v(_vm._s(branch.name))]
+                                                )
+                                              })
+                                            ],
+                                            2
+                                          )
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("th", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "form-group mb-0" },
+                                        [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value:
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ].received_date,
+                                                expression:
+                                                  "productForm.products[index].received_date"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              name: "received_date",
+                                              type: "date"
+                                            },
+                                            domProps: {
+                                              value:
+                                                _vm.productForm.products[index]
+                                                  .received_date
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.productForm.products[
+                                                    index
+                                                  ],
+                                                  "received_date",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("th", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "form-group mb-0" },
+                                        [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.user.name,
+                                                expression: "user.name"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              "data-vv-as": "date",
+                                              name: "date",
+                                              type: "text",
+                                              disabled: ""
+                                            },
+                                            domProps: { value: _vm.user.name },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.user,
+                                                  "name",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("th", [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "ml-2 btn status status-sm my-sm-2 not-approved",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.deleteProduct(index)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fas fa-times"
+                                          })
+                                        ]
+                                      )
+                                    ])
+                                  ])
+                                })
                               ],
-                              staticClass: "custom-select w-100",
-                              attrs: { name: "branch_id" },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.productForm.products[index],
-                                    "branch_id",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { value: "" } }, [
-                                _vm._v("select branch")
-                              ]),
-                              _vm._v(" "),
-                              _vm._l(_vm.branches, function(branch) {
-                                return _c(
-                                  "option",
-                                  { domProps: { value: branch.id } },
-                                  [_vm._v(_vm._s(branch.name))]
-                                )
-                              })
-                            ],
-                            2
-                          )
-                        ])
-                      ]),
+                              2
+                            )
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c("th", [
-                        _c("div", { staticClass: "form-group mb-0" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.productForm.products[index].received_date,
-                                expression:
-                                  "productForm.products[index].received_date"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { name: "received_date", type: "date" },
-                            domProps: {
-                              value:
-                                _vm.productForm.products[index].received_date
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.productForm.products[index],
-                                  "received_date",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c("div", { staticClass: "form-group mb-0" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.user.name,
-                                expression: "user.name"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              "data-vv-as": "date",
-                              name: "date",
-                              type: "text",
-                              disabled: ""
-                            },
-                            domProps: { value: _vm.user.name },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(_vm.user, "name", $event.target.value)
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
+                      _c("div", [
                         _c(
                           "button",
                           {
-                            staticClass:
-                              "ml-2 btn status status-sm my-sm-2 not-approved",
+                            staticClass: "btn bg-default",
+                            attrs: {
+                              disabled: _vm.$isProcessing,
+                              type: "submit"
+                            },
                             on: {
                               click: function($event) {
-                                _vm.deleteProduct(index)
+                                _vm.onSave()
                               }
                             }
                           },
-                          [_c("i", { staticClass: "fas fa-times" })]
+                          [
+                            _vm._v(
+                              "\n            Save Inventory\n            "
+                            ),
+                            _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                          ]
                         )
                       ])
                     ])
-                  })
-                ],
-                2
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("div", [
-          _c(
-            "button",
-            {
-              staticClass: "btn bg-default",
-              attrs: { disabled: _vm.$isProcessing, type: "submit" },
-              on: {
-                click: function($event) {
-                  _vm.onSave()
-                }
-              }
-            },
-            [
-              _vm._v("\n        Save Inventory\n        "),
-              _c("i", { staticClass: "far fa-paper-plane ml-1" })
-            ]
-          )
-        ])
+                  : _vm._e()
+              ],
+              1
+            )
+          : _vm._e()
       ]
     )
   ])

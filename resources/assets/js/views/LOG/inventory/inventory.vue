@@ -53,126 +53,132 @@
           </div>
         </form>
       </div>
-      </div>
+        <div class="attendance-body" v-if="productForm.products.length > 0">
+          <h5 class="mt-5 mb-0" v-if="canAddProduct">Generate Inventory</h5>
+          <table class="table table-bordered" v-if="canAddProduct">
+            <tbody class="text-center">
+            <tr class="table-separator">
+              <td class="text-left">S/No.</td>
+              <th>Product</th>
+              <th>Inventory SKU</th>
+              <th>Market Price</th>
+              <th>Serial/IMEI Number</th>
+              <th>Branch</th>
+              <th>Received Date</th>
+              <th>Received By</th>
+            </tr>
+            <tr v-for="(product,index) in productForm.products">
+              <th>{{index+1}}</th>
 
-      <h5 class="mt-5 mb-0" v-if="canAddProduct">{{mode|capitalize}} Inventory</h5>
-      <table class="table table-bordered" v-if="canAddProduct">
-        <tbody class="text-center">
-          <tr class="table-separator">
-            <td class="text-left">S/No.</td>
-            <th>Product</th>
-            <th>Inventory SKU</th>
-            <th>Market Price</th>
-            <th>Serial/IMEI Number</th>
-            <th>Branch</th>
-            <th>Received Date</th>
-            <th>Received By</th>
-          </tr>
-          <tr v-for="(product,index) in productForm.products">
-            <th>{{index+1}}</th>
+              <th>
+                <div class="form-group mb-0">
+                  <input
+                          class="form-control"
+                          name="product_sku"
+                          type="text"
+                          v-model="productForm.products[index].product_name"
+                          disabled
+                  />
+                </div>
+              </th>
 
-            <th>
-              <div class="form-group mb-0">
-                <input
-                  class="form-control"
-                  name="product_sku"
-                  type="text"
-                  v-model="productForm.products[index].product_name"
-                  disabled
-                />
-              </div>
-            </th>
+              <th>
+                <div class="form-group mb-0">
+                  <input
+                          class="form-control"
+                          name="inventory_sku"
+                          type="text"
+                          v-model="productForm.products[index].inventory_sku"
+                          disabled
+                  />
+                </div>
+              </th>
 
-            <th>
-              <div class="form-group mb-0">
-                <input
-                  class="form-control"
-                  name="inventory_sku"
-                  type="text"
-                  v-model="productForm.products[index].inventory_sku"
-                  disabled
-                />
-              </div>
-            </th>
+              <th>
+                <div class="form-group mb-0">
+                  <input
+                          class="form-control"
+                          name="market_price"
+                          type="text"
+                          v-model="productForm.products[index].market_price"
+                          disabled
+                  />
+                </div>
+              </th>
 
-            <th>
-              <div class="form-group mb-0">
-                <input
-                  class="form-control"
-                  name="market_price"
-                  type="text"
-                  v-model="productForm.products[index].market_price"
-                  disabled
-                />
-              </div>
-            </th>
+              <th>
+                <div class="form-group mb-0">
+                  <input
+                          class="form-control"
+                          name="serial_no"
+                          type="text"
+                          v-model="productForm.products[index].serial_number"
+                          v-validate="'required'"
+                  />
+                </div>
+              </th>
 
-            <th>
-              <div class="form-group mb-0">
-                <input
-                  class="form-control"
-                  name="serial_no"
-                  type="text"
-                  v-model="productForm.products[index].serial_number"
-                  v-validate="'required'"
-                />
-              </div>
-            </th>
+              <th>
+                <div class="form-group mb-0">
+                  <select
+                          class="custom-select w-100"
+                          name="branch_id"
+                          v-model="productForm.products[index].branch_id"
+                  >
+                    <option value>select branch</option>
+                    <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
+                  </select>
+                </div>
+              </th>
 
-            <th>
-              <div class="form-group mb-0">
-                <select
-                  class="custom-select w-100"
-                  name="branch_id"
-                  v-model="productForm.products[index].branch_id"
+              <th>
+                <div class="form-group mb-0">
+                  <input
+                          class="form-control"
+                          name="received_date"
+                          type="date"
+                          v-model="productForm.products[index].received_date"
+                  />
+                </div>
+              </th>
+
+              <th>
+                <div class="form-group mb-0">
+                  <input
+                          class="form-control"
+                          data-vv-as="date"
+                          name="date"
+                          type="text"
+                          v-model="user.name"
+                          disabled
+                  />
+                </div>
+              </th>
+
+              <th>
+                <button
+                        @click="deleteProduct(index)"
+                        class="ml-2 btn status status-sm my-sm-2 not-approved"
                 >
-                  <option value>select branch</option>
-                  <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
-                </select>
-              </div>
-            </th>
-
-            <th>
-              <div class="form-group mb-0">
-                <input
-                  class="form-control"
-                  name="received_date"
-                  type="date"
-                  v-model="productForm.products[index].received_date"
-                />
-              </div>
-            </th>
-
-            <th>
-              <div class="form-group mb-0">
-                <input
-                  class="form-control"
-                  data-vv-as="date"
-                  name="date"
-                  type="text"
-                  v-model="user.name"
-                  disabled
-                />
-              </div>
-            </th>
-
-            <th>
-              <button
-                @click="deleteProduct(index)"
-                class="ml-2 btn status status-sm my-sm-2 not-approved"
-              >
-                <i class="fas fa-times"></i>
-              </button>
-            </th>
-          </tr>
-        </tbody>
-      </table>
-      <div>
-        <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="onSave()">
-          Save Inventory
-          <i class="far fa-paper-plane ml-1"></i>
-        </button>
+                  <i class="fas fa-times"></i>
+                </button>
+              </th>
+            </tr>
+            </tbody>
+          </table>
+          <div>
+            <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="onSave()">
+              Save Inventory
+              <i class="far fa-paper-plane ml-1"></i>
+            </button>
+          </div>
+        </div>
       </div>
+
+
+
+
+
     </div>
   </transition>
 </template>
