@@ -7,8 +7,9 @@
         :title="'Generate Inventory'"
         :button-title="'view Inventory!'"
       />
+      </div>
 
-      <div class="attendance-body" >
+      <div class="attendance-body" v-if="mode === 'create'">
         <form @submit.prevent enctype="multipart/form-data">
           <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
             <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -33,7 +34,7 @@
               <small v-if="errors.first('price')">{{ errors.first('price') }}</small>
             </div>
           </div>
-          <div class="mb-5 px-0 row align-items-center">
+          <div class="mb-5 px-0 row align-items-center" >
             <div class="clearfix d-flex justify-content-end w-100">
               <router-link
                 to="/log/products"
@@ -179,7 +180,7 @@
 
 
 
-    </div>
+
   </transition>
 </template>
 <script>
