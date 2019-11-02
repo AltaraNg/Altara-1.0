@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
 use App\Order;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     public function ordersByUser($id)
     {
+        $orders = [];
+        $customersIdArr = [];
         $request = [
             'page' => request('page'),
             'dateTo' => request('dateTo'),
@@ -17,11 +19,25 @@ class OrderController extends Controller
             'branchId' => request('branchId')
         ];
 
-        $customers = Customer::where('user_id', $id)->pluck('id');
-        $orders = Order::whereIn('customer_id', $customers)->orderWithOtherTables($request)->getOrPaginate($request);
+        $customers =
+            DB::select(
+                DB::raw(
+                    "SELECT id FROM `customers` WHERE COALESCE(customers.managed_by, customers.user_id) = " . $id . " "));
+
+        foreach ($customers as $customer) {
+            array_push($customersIdArr, $customer->id);
+        }
+
+        if (count($customersIdArr) > 0) {
+            $orders = Order::whereIn('customer_id', $customersIdArr)->orderWithOtherTables($request)->getOrPaginate($request);
+        }
+
+        if (isset($orders['data'])) {
+            $orders = [];
+        }
 
         return response()->json([
-            'orders' => $orders
+            'orders' => $orders,
         ]);
     }
 }

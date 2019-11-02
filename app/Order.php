@@ -9,7 +9,6 @@ class Order extends Model
 {
     use Scopes;
 
-    //protected $table = "purchase";
     protected $table = "orders";
 
     protected $primaryKey = 'id';

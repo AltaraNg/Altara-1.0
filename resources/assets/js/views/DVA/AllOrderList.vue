@@ -4,34 +4,33 @@
 
             <custom-header :title="'Order List'"/>
 
-            <div class="mt-5 row attendance-head">
-                <div class="col-4 col-sm-3" v-for="{name} in filters">
-                    <div class="row">
-                        <div class="light-heading"><span class="d-none d-sm-inline">Select</span> {{name | capitalize}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
-                <div class="col-4 col-sm-3" v-for="{name:filter,model} in filters">
+                <div class="col-4 col-lg" v-for="{name:filter,model} in filters">
                     <div class="row">
-                        <select class="custom-select" v-model="$data[model]" v-if="filter === 'branch'"
-                                @keyup.enter="fetchData()">
-                            <option disabled selected value="">{{filter | capitalize}}</option>
-                            <option :value="id" v-for="{name,id} in $store.getters.getBranches">
-                                {{name | capitalize}}
-                            </option>
-                        </select>
+
+                        <div class="light-heading mb-1">
+                            <span class="d-none d-sm-inline">Select </span>
+                            {{filter | capitalize}}
+                        </div>
+
+                        <div class="form-group w-100" v-if="filter === 'branch'">
+                            <select class="custom-select" v-model="$data[model]"
+                                    @keyup.enter="fetchData()">
+                                <option disabled selected value="">{{filter | capitalize}}</option>
+                                <option :value="id" v-for="{name,id} in getBranches">
+                                    {{name | capitalize}}
+                                </option>
+                            </select>
+                        </div>
+
                         <div class="form-group w-100" v-else>
                             <input class="form-control" type="date" v-model="$data[model]" @keyup.enter="fetchData()">
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-3">
-                    <div class="row d-flex justify-content-end">
-                        <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
-                    </div>
+
+                <div class="col-12 col-lg p-0 flex-row-bottom">
+                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
                 </div>
             </div>
 
@@ -45,7 +44,7 @@
 
             <order v-if="show" :start-index="orders.from" :pre-loaded-order="response" :mode="'normal-list'"/>
 
-            <div class="mt-1 attendance-body" v-if="show">
+            <div class="mt-1 attendance-body" v-if="show && orders.current_page">
                 <div class="mb-5 px-0 row align-items-center">
                     <div class="w-100 mb-4 mt-5 mx-0 hr"></div>
                     <div class="clearfix w-100 mt-4 d-flex bd-highlight">
@@ -99,6 +98,7 @@
     </transition>
 </template>
 <script>
+    import {mapGetters} from "vuex";
     import {get} from '../../utilities/api';
     import Flash from "../../utilities/flash";
     import Order from "../../components/Orders";
@@ -112,6 +112,8 @@
         },
 
         components: {CustomHeader, Order},
+
+        computed: {...mapGetters(['getBranches'])},
 
         data() {
             return {
@@ -177,3 +179,12 @@
         }
     }
 </script>
+
+<style scoped>
+    .flex-row-bottom {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: flex-end;
+    }
+</style>
