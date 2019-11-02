@@ -58,15 +58,3 @@ ALTER TABLE orders
 
 UPDATE orders
 SET orders.status_id = 1;
-#
-# ALTER TABLE orders
-#     CHANGE `status_id` `status_id` int unsigned NOT NULL;
-#
-# # SHOW VARIABLES LIKE 'sql_mode';
-# set GLOBAL sql_mode = "STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO";
-#
-# alter table orders
-#     add constraint order_status_id_foreign foreign key (status_id) references `status` (`id`);
-
-
-update orders set orders.status_id = 2 where id = 'APAP00784';
