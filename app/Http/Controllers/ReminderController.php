@@ -52,14 +52,17 @@ class ReminderController extends Controller implements OrderConstants
         return PromiseCall::select('order_id', 'date')
             ->dateFilter('date', $requestObject)
             ->with(['order' => function ($query) use ($requestObject) {
-                return $query->orderWithOtherTables($requestObject);
+                return $query
+                    ->where('status_id', Self::ORDER_STATUS_OK)
+                    ->orderWithOtherTables($requestObject);
             }])
             ->getOrPaginate($requestObject);
     }
 
     public function fetchRemindersListByRequestList($requestObject)
     {
-        return Order::dateFilter('order_date', $requestObject)
+        return Order::where('status_id', Self::ORDER_STATUS_OK)
+            ->dateFilter('order_date', $requestObject)
             ->orderWithOtherTables($requestObject)
             ->getOrPaginate($requestObject);
     }

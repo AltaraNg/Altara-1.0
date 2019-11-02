@@ -13,13 +13,13 @@
               aria-expanded="false">
         </span>
         <div class="dropdown-menu">
-            <a class="dropdown-item" href="#" @click="toggleModal" v-if="auth('DSACaptain')">Change Sales Agent</a>
+            <a class="dropdown-item" href="javascript:" @click="toggleModal" v-if="auth('DSACaptain')">Change Sales Agent</a>
         </div>
     </div>
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import {EventBus} from "../utilities/event-bus";
 
     export default {
@@ -35,7 +35,9 @@
             toggleModal() {
                 const data = {customerId: this.$vnode.key, customerName: this.customerName};
                 EventBus.$emit('toggleChangeCustomerManagerModal', data);
-            }
+            },
+
+            ...mapActions('ModalAccess', ['showCustomerManagerModal'])
         },
 
         computed: {
@@ -46,8 +48,14 @@
                     (this.link ? `status status-sm ${this.status}` : `status mt-md-5 my-sm-2 mt-0 ${this.status}`);
             }
         },
+
         created() {
             this.status = this.isApproved ? 'approved' : 'not-approved';
+            this.showCustomerManagerModal(true);
+        },
+
+        destroyed() {
+            this.showCustomerManagerModal(false);
         }
     }
 </script>

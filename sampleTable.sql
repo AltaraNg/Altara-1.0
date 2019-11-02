@@ -25,9 +25,48 @@ alter table `customer_management_histories`
     add constraint `customer_management_histories_customer_id_foreign`
         foreign key (`customer_id`) references `customers` (`id`);
 
-
 alter table `customers`
-    add `managed_by` int unsigned null;
+    add `managed_by` int unsigned null after `user_id`;
 
 alter table `customers`
     add index `customers_managed_by_index` (`managed_by`);
+
+alter table `customers`
+    add constraint `customers_managed_by_foreign` foreign key (`managed_by`) references `users` (`id`);
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------for the order status feature - Table changes------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+create table `status`
+(
+    `id`   int unsigned not null auto_increment primary key,
+    `name` varchar(191) not null
+)
+    default character set utf8mb4
+    collate 'utf8mb4_unicode_ci';
+
+insert into status (`name`)
+values ('ok'),
+       ('returned'),
+       ('repossessed');
+
+# set GLOBAL sql_mode = " ";
+
+ALTER TABLE orders
+    CHANGE `return` `status_id` tinyint(1) NULL default 1;
+
+UPDATE orders
+SET orders.status_id = 1;
+#
+# ALTER TABLE orders
+#     CHANGE `status_id` `status_id` int unsigned NOT NULL;
+#
+# # SHOW VARIABLES LIKE 'sql_mode';
+# set GLOBAL sql_mode = "STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO";
+#
+# alter table orders
+#     add constraint order_status_id_foreign foreign key (status_id) references `status` (`id`);
+
+
+update orders set orders.status_id = 2 where id = 'APAP00784';

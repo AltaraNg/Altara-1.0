@@ -6,6 +6,7 @@ namespace App\Helper;
 
 interface OrderConstants
 {
+    const ORDER_STATUS_OK = 1;
     const PROMISE_CALL_LIST = 8;
     const DIRECT_DEBIT_PAYMENT_METHOD = 4;
     const FIRST_SMS_AND_PROMISE_CALL = [8, 1];

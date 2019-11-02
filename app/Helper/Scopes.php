@@ -40,6 +40,7 @@ trait Scopes
                 return $query2->whereBetween('order_date', [$date_from, $date_to]);
             })
             ->with([
+                'status',
                 'discount',
                 'salesCategory',
                 'repaymentFormal',
@@ -78,6 +79,6 @@ trait Scopes
             ])
             ->select('id', 'order_date', 'sales_category_id', 'customer_id', 'product_sku',
                 'product_price', 'down_payment', 'sales_agent_id', 'sales_type_id',
-                'discount_id', 'repayment_amount', 'payment_method_id');
+                'discount_id', 'repayment_amount', 'payment_method_id', 'status_id');
     }
 }

@@ -132,13 +132,18 @@
                                         <td>Order Id</td>
                                         <td>Product</td>
                                         <th>Branch</th>
+                                        <th>Status</th>
                                     </tr>
                                     <tr>
                                         <td class="font-weight-bold">{{activeOrder.customerName}}
                                         </td>
                                         <th>{{activeOrder.order.id}}</th>
                                         <th>{{activeOrder.order.store_product.product_name}}</th>
-                                        <td class="font-weight-bold">{{activeOrder.branch.name}}</td>
+                                        <td>{{activeOrder.branch.name}}</td>
+                                        <td class="font-weight-bold"
+                                            :class="activeOrder.order.status.name.toLocaleString() === 'ok' ? 'paid' : 'missed'">
+                                            {{activeOrder.order.status.name}}
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -516,7 +521,7 @@
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
             },
             canUserAddPayment() {
-                if(this.auth('FSLLead')) return true;
+                if (this.auth('FSLLead')) return true;
                 return this.auth('supervisor') && (this.user.branch === this.activeOrder.branch.id);
             }
         },

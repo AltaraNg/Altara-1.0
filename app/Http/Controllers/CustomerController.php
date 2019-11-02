@@ -246,7 +246,7 @@ class CustomerController extends Controller
     {
         $customer = Customer::where('id', $id)->with(['document', 'verification', 'branch', 'orders' => function ($query) {
             return $query->with([
-                'repayment', 'repaymentFormal', 'repaymentInformal',
+                'repayment', 'repaymentFormal', 'repaymentInformal','status',
                 'storeProduct', 'discount', 'salesCategory', 'salesType',
                 'floorAgent' => function ($q) {
                     return $q->select('id', 'staff_id', 'full_name');

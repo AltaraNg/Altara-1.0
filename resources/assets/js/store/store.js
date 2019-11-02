@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import 'es6-promise/auto'
 import Vuex from 'vuex'
+import ModalAccess from './modules/modalAccess.store';
 
 const getYears = () => {
     let years = [], startYear = new Date().getFullYear();
@@ -9,7 +10,12 @@ const getYears = () => {
 };
 
 Vue.use(Vuex);
+const debug = process.env.NODE_ENV !== 'production';
 export const store = new Vuex.Store({
+    modules: {
+        ModalAccess
+    },
+    //strict: debug,//TODO: uncomment this later to be able to structure vuex for scaling
     state: {
         years: getYears(),
         banks: null,

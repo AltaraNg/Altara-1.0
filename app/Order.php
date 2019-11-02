@@ -82,4 +82,9 @@ class Order extends Model
     {
         return $this->belongsTo(SalesType::class);
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 }
