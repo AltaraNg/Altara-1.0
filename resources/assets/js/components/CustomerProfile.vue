@@ -94,6 +94,7 @@
 </template>
 <script>
     import Vue from 'vue';
+    import {mapActions} from 'vuex';
     import {store} from '../store/store';
     import {EventBus} from "../utilities/event-bus";
     import AppNavigation from '../components/AppNavigation';
@@ -128,12 +129,19 @@
             $('.tooltip').remove();
             if (this.viewCustomer) this.setCustomer(this.viewCustomer);
             EventBus.$on('customer', customer => this.setCustomer(customer));
+            this.showCustomerManagerModal(true);
         },
         methods: {
             setCustomer(customer) {
                 Vue.set(this.$data, 'customer', customer);
                 this.show = true;
-            }
+            },
+
+            ...mapActions('ModalAccess', ['showCustomerManagerModal'])
+        },
+
+        destroyed() {
+            this.showCustomerManagerModal(false);
         }
     }
 </script>

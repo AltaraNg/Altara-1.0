@@ -235,6 +235,7 @@
 </template>
 <script>
     import Vue from 'vue';
+    import {mapActions} from 'vuex';
     import {log} from "../utilities/log";
     import Flash from '../utilities/flash';
     import {Message} from '../utilities/sms';
@@ -290,6 +291,7 @@
                 $('tr.current').removeClass('current');
                 $(this).addClass('current');
             });
+            this.showCustomerManagerModal(true);
         },
 
         updated() {
@@ -405,6 +407,12 @@
             isModel(m) {
                 return this.$route.meta.appModel === m;
             },
+
+            ...mapActions('ModalAccess', ['showCustomerManagerModal'])
+        },
+
+        destroyed() {
+            this.showCustomerManagerModal(false);
         }
     }
 </script>

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex';
+    import {mapGetters} from "vuex";
     import {EventBus} from "../utilities/event-bus";
 
     export default {
@@ -35,9 +35,7 @@
             toggleModal() {
                 const data = {customerId: this.$vnode.key, customerName: this.customerName};
                 EventBus.$emit('toggleChangeCustomerManagerModal', data);
-            },
-
-            ...mapActions('ModalAccess', ['showCustomerManagerModal'])
+            }
         },
 
         computed: {
@@ -51,11 +49,6 @@
 
         created() {
             this.status = this.isApproved ? 'approved' : 'not-approved';
-            this.showCustomerManagerModal(true);
-        },
-
-        destroyed() {
-            this.showCustomerManagerModal(false);
         }
     }
 </script>
