@@ -55,7 +55,12 @@ class UserController extends Controller
         $users = null;
         switch ($type) {
             case 'type_ahead':
-                $users = User::whereIn('role_id', [15, 17, 18])->select('id', 'full_name')->orderBy('full_name')->get();
+                $users = User::where('date_of_exit', '=', '')
+                    ->orWhereNull('date_of_exit')
+                    ->whereIn('role_id', [15, 17, 18])
+                    ->select('id', 'full_name')
+                    ->orderBy('full_name')
+                    ->get();
                 break;
         }
         return response()->json([
