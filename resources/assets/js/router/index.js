@@ -37,6 +37,10 @@ const HRMHome = () => import( '../views/HRM/HomePage.vue');
 const DataViewer = () => import( '../components/DataViewer.vue');
 const EmployeeForm = () => import( '../views/HRM/employee/employeeForm.vue');
 
+const AltaraPay = () => import( '../views/AltaraPay/index.vue');
+const AltaraPayHome = () => import( '../views/AltaraPay/HomePage.vue');
+const DirectDebitSales = () => import( '../views/AltaraPay/sales/DirectDebitSales.vue');
+
 const Caution = () => import( '../views/HRM/caution/index.vue');
 const CautionForm = () => import( '../views/HRM/caution/form.vue');
 
@@ -84,6 +88,16 @@ const router = new VueRouter({
             ]
         },
         {
+            path: '/altarapay', component: AltaraPay, meta: {ALTARAPAY: true}, children: [
+                {path: '/', redirect: {name: 'AltaraPayHome'}},
+                {path: 'home', component: AltaraPayHome, name: 'AltaraPayHome'},
+                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-altarapay'},
+                {path: 'verification', component: DVAVerification, name: 'verification-altarapay'},
+                {path: 'direct-debit-sales', component: DirectDebitSales, name: 'direct-debit-sales'},
+                {path: 'direct-debit-overdue', component: AllOverdue, name: 'direct-debit-overdue', meta: {mode: 'direct-debit'}},
+            ]
+        },
+        {
             path: '/dva', component: DVA, meta: {DVA: true}, children: [
                 {path: '/', redirect: {name: 'DVAHome'}},
                 {path: 'home', component: DVAHome, name: 'DVAHome'},
@@ -103,8 +117,7 @@ const router = new VueRouter({
                 {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},
                 {path: 'reminder/recovery', component: Reminder, name: 'recovery', meta: {mode: 'recovery'}},
                 {path: 'reminder/external-recovery', component: Reminder, name: 'external-recovery', meta: {mode: 'external-recovery'}},
-
-                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-dva', meta: {mode: 'all-overdue'}},
+                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-dva'},
             ]
         },
         {
@@ -112,7 +125,7 @@ const router = new VueRouter({
                 {path: '/', redirect: {name: 'CAGHome'}},
                 {path: 'home', component: CAGHome, name: 'CAGHome'},
                 {path: 'sales', component: OrderList, name: 'sales-cag'},
-                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-cag', meta: {mode: 'all-overdue'}},
+                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-cag'},
             ]
         },
         {

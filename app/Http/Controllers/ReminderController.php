@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\ExtractRequestObject;
 use App\Helper\OrderConstants;
 use App\Helper\OrderObject;
 use App\Order;
@@ -11,11 +12,12 @@ use Illuminate\Http\Request;
 
 class ReminderController extends Controller implements OrderConstants
 {
-    use OrderObject;
+    use OrderObject, ExtractRequestObject;
 
     public function create(Request $request)
     {
-        $requestObject = [
+
+        /*$requestObject = [
             'list' => $request['list'],
             'page' => $request['page'],
             'dateTo' => $request['dateTo'],
@@ -23,7 +25,10 @@ class ReminderController extends Controller implements OrderConstants
             'pageSize' => $request['pageSize'],
             'branchId' => $request['branchId'],
             'overdueDays' => $request['overdueDays']
-        ];
+        ];*/
+
+        $requestObject = $this->extractRequestObject($request);
+
         $list = $requestObject['list'];
         if ($request['filterWithBranch'] === true && !isset($request['branchId']))
             $requestObject['branchId'] = auth('api')->user()->branch_id;
@@ -63,9 +68,13 @@ class ReminderController extends Controller implements OrderConstants
 
     public function fetchRemindersListByRequestList($requestObject)
     {
-        return Order::when(isset($requestObject['list']), function ($query2) {
-            return $query2->where('status_id', Self::ORDER_STATUS_OK);
-        })
+        return Order::when(isset($requestObject['list']),
+            function ($query2) {
+                return $query2->where('status_id', Self::ORDER_STATUS_OK);
+            })
+            ->when(isset($requestObject['direct-debit']), function ($query3) {
+                return $query3->where('payment_method_id', Self::DIRECT_DEBIT_PAYMENT_METHOD);
+            })
             ->dateFilter('order_date', $requestObject)
             ->orderWithOtherTables($requestObject)
             ->getOrPaginate($requestObject);

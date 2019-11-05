@@ -9,6 +9,8 @@ const getYears = () => {
     return years;
 };
 
+const admin = [1, 2, 8, 9];
+
 Vue.use(Vuex);
 const debug = process.env.NODE_ENV !== 'production';
 export const store = new Vuex.Store({
@@ -35,20 +37,20 @@ export const store = new Vuex.Store({
         user_id: parseInt(localStorage.getItem('user_id')),
 
         /*object for access controls*/
-        DSALead: [1, 2, 8, 9, 15],
-        DSACaptain: [1, 2, 8, 9, 15, 17, 29],
-        DSAAccess: [1, 2, 8, 9, 15, 17, 18, 29],
-        DVALead: [1, 2, 8, 9, 13, 16],
-        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
-        HRMAccess: [1, 2, 6, 7, 8, 9],
-        peoplesOps: [1, 2, 6, 7, 8, 9],
-        FSLLead: [1, 2, 8, 9, 11],
-        supervisor: [1, 2, 8, 9, 11, 14],
-        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
-        LOGLead: [1, 2, 8, 9, 11],
-        LOGAccess: [1, 2, 8, 9, 11],
-        CAGAccess: [1, 2, 8, 9, 30],
-
+        DSALead: [...admin, 15],
+        DSACaptain: [...admin, 15, 17, 29],
+        DSAAccess: [...admin, 15, 17, 18, 29],
+        DVALead: [...admin, 13, 16],
+        DVAAccess: [...admin, 13, 16, 21, 22, 23],
+        HRMAccess: [...admin, 6, 7],
+        peoplesOps: [...admin, 6, 7,],
+        FSLLead: [...admin, 11],
+        supervisor: [...admin, 11, 14],
+        FSLAccess: [...admin, 11, 14, 19],
+        LOGLead: [...admin, 11],
+        LOGAccess: [...admin, 11],
+        CAGAccess: [...admin, 30],
+        ALTARAPAYAccess: [...admin],
         months: [
             {id: '01', name: "January"},
             {id: '02', name: "February"},
@@ -73,7 +75,7 @@ export const store = new Vuex.Store({
         getPaymentMethods: state => state.paymentMethods,
         getTypeaheadUsersList: state => state.typeaheadUsersList,
         auth: state => role => state[role].includes(state.authRole),
-        getAuthUserDetails: state => ({userId: state.user_id, roleId: state.authRole})
+        getAuthUserDetails: state => ({userId: state.user_id, roleId: state.authRole, apiToken: state.api_token})
     },
     mutations: {
         mutateAuth: state => {

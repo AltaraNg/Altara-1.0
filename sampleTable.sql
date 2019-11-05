@@ -58,3 +58,5 @@ ALTER TABLE orders
 
 UPDATE orders
 SET orders.status_id = 1;
+
+/*migrations effected on 3/11/2019*/

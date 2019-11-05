@@ -83,7 +83,7 @@
             }
         },
 
-        computed:{
+        computed: {
             ...mapGetters(['getAuthUserDetails'])
         },
 
@@ -92,7 +92,9 @@
                 this.$scrollToTop();
                 this.$LIPS(true);
                 let {branch_id, overdue_days} = this.$data;
+                const mode = this.$route.meta.mode;
                 get(`/api/reminder/create?list=overdue` +
+                    `${!!mode ? `&direct-debit=direct-debit` : ''}` +
                     `${!!overdue_days ? `&overdueDays=${overdue_days}` : ''}` +
                     `${!!branch_id ? `&branchId=${branch_id}` : ''}`)
                     .then(({data}) => this.prepareForm(data))
@@ -107,7 +109,7 @@
                 }
                 this.orders = orders;
                 this.response = {orders};
-                this.orders.length && (this.show = true);
+                this.show = true;
                 this.$LIPS(false);
             }
         },
