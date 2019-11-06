@@ -291,7 +291,7 @@
                 $('tr.current').removeClass('current');
                 $(this).addClass('current');
             });
-            this.showCustomerManagerModal(true);
+            this.addCustomerOptionsModalsToDom();
         },
 
         updated() {
@@ -408,11 +408,14 @@
                 return this.$route.meta.appModel === m;
             },
 
-            ...mapActions('ModalAccess', ['showCustomerManagerModal'])
+            ...mapActions('ModalAccess', [
+                'addCustomerOptionsModalsToDom',
+                'removeCustomerOptionsModalsFromDom'
+            ])
         },
 
         destroyed() {
-            this.showCustomerManagerModal(false);
+            this.removeCustomerOptionsModalsFromDom();
         }
     }
 </script>

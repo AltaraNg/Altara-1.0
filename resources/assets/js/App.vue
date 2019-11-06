@@ -69,6 +69,7 @@
                 </transition>
                 <router-view></router-view>
             </div>
+            <SMSModal v-if="showSMSModal"/>
             <ChangeCustomerManagerModal v-if="showCustomerManagerModal"/>
         </div>
     </transition>
@@ -80,12 +81,14 @@
     import Loader from "./components/Loader.vue";
     import SideNav from "./components/SideNav.vue";
     import {interceptors, post} from "./utilities/api";
-    import ChangeCustomerManagerModal from './components/ChangeCustomerManagerModal';
+    import SMSModal from './components/modals/SMSModal';
+    import ChangeCustomerManagerModal from './components/modals/ChangeCustomerManagerModal';
 
     export default {
         components: {
             SideNav,
             Loader,
+            SMSModal,
             ChangeCustomerManagerModal
         },
         data() {
@@ -121,7 +124,7 @@
             });
         },
         computed: {
-            ...mapGetters('ModalAccess', ['showCustomerManagerModal']),
+            ...mapGetters('ModalAccess', ['showCustomerManagerModal', 'showSMSModal']),
             auth() {
                 return this.authState.api_token && this.authState.user_id;
             },

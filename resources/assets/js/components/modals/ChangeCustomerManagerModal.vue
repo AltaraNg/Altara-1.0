@@ -36,11 +36,11 @@
 
 <script>
     import {mapGetters} from 'vuex';
-    import Typeahead from './Typeahead';
-    import {log} from '../utilities/log';
-    import {post} from "../utilities/api";
-    import Flash from "../utilities/flash";
-    import {EventBus} from '../utilities/event-bus';
+    import Typeahead from '../Typeahead';
+    import {log} from '../../utilities/log';
+    import {post} from "../../utilities/api";
+    import Flash from "../../utilities/flash";
+    import {EventBus} from '../../utilities/event-bus';
 
     export default {
 
@@ -99,6 +99,7 @@
                     })
                     .finally(() => {
                         this.handleModalToggle({customerName: null, customerId: null});
+                        this.$scrollToTop();
                         this.$LIPS(false);
                     });
             }

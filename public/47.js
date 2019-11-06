@@ -73,6 +73,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 
@@ -83,15 +93,24 @@ exports.default = {
 
     data: function data() {
         return {
-            status: null
+            status: null,
+            options: [{
+                caption: 'Change sales agent',
+                modal: 'toggleChangeCustomerManagerModal',
+                authAccess: 'DSACaptain'
+            }, {
+                caption: 'Send message',
+                modal: 'toggleChangeCustomerManagerModal',
+                authAccess: 'DVAAccess'
+            }]
         };
     },
 
 
     methods: {
-        toggleModal: function toggleModal() {
+        toggleModal: function toggleModal(modalName) {
             var data = { customerId: this.$vnode.key, customerName: this.customerName };
-            _eventBus.EventBus.$emit('toggleChangeCustomerManagerModal', data);
+            _eventBus.EventBus.$emit(modalName, data);
         }
     },
 
@@ -2022,19 +2041,31 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "dropdown-menu" }, [
-        _vm.auth("DSACaptain")
-          ? _c(
-              "a",
-              {
-                staticClass: "dropdown-item",
-                attrs: { href: "javascript:" },
-                on: { click: _vm.toggleModal }
-              },
-              [_vm._v("Change Sales Agent")]
-            )
-          : _vm._e()
-      ])
+      _c(
+        "div",
+        { staticClass: "dropdown-menu" },
+        _vm._l(_vm.options, function(option) {
+          return _vm.auth(option.authAccess)
+            ? _c(
+                "a",
+                {
+                  staticClass: "dropdown-item",
+                  attrs: { href: "javascript:" },
+                  on: {
+                    click: function($event) {
+                      _vm.toggleModal(option.modal)
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n            " + _vm._s(option.caption) + "\n        "
+                  )
+                ]
+              )
+            : _vm._e()
+        })
+      )
     ],
     1
   )

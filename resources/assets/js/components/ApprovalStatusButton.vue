@@ -8,12 +8,13 @@
             <i :class="`ml-3 fas fa-${isApproved ? 'check' : 'times'}`"></i>
         </router-link>
         <span :class="buttonClass + ' dropdown-toggle dropdown-toggle-split d-flex align-items-center'"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         </span>
         <div class="dropdown-menu">
-            <a class="dropdown-item" href="javascript:" @click="toggleModal" v-if="auth('DSACaptain')">Change Sales Agent</a>
+            <a v-for="option in options" class="dropdown-item" href="javascript:"
+               @click="toggleModal(option.modal)" v-if="auth(option.authAccess)">
+                {{option.caption}}
+            </a>
         </div>
     </div>
 </template>
@@ -27,14 +28,28 @@
 
         data() {
             return {
-                status: null
+                status: null,
+                options: [
+                    {
+                        caption: 'Change sales agent',
+                        modal: 'toggleChangeCustomerManagerModal',
+                        authAccess: 'DSACaptain'
+                    }, {
+                        caption: 'Send message',
+                        modal: 'SMSModal',
+                        authAccess: 'DVAAccess'
+                    }
+                ]
             }
         },
 
         methods: {
-            toggleModal() {
-                const data = {customerId: this.$vnode.key, customerName: this.customerName};
-                EventBus.$emit('toggleChangeCustomerManagerModal', data);
+            toggleModal(modalName) {
+                const data = {
+                    customerId: this.$vnode.key,
+                    customerName: this.customerName
+                };
+                EventBus.$emit(modalName, data);
             }
         },
 

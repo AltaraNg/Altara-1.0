@@ -129,7 +129,7 @@
             $('.tooltip').remove();
             if (this.viewCustomer) this.setCustomer(this.viewCustomer);
             EventBus.$on('customer', customer => this.setCustomer(customer));
-            this.showCustomerManagerModal(true);
+            this.addCustomerOptionsModalsToDom();
         },
         methods: {
             setCustomer(customer) {
@@ -137,11 +137,14 @@
                 this.show = true;
             },
 
-            ...mapActions('ModalAccess', ['showCustomerManagerModal'])
+            ...mapActions('ModalAccess', [
+                'addCustomerOptionsModalsToDom',
+                'removeCustomerOptionsModalsFromDom'
+            ])
         },
 
         destroyed() {
-            this.showCustomerManagerModal(false);
+            this.removeCustomerOptionsModalsFromDom();
         }
     }
 </script>
