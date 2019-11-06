@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import 'es6-promise/auto'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import 'es6-promise/auto';
+import Vuex from 'vuex';
 
 const getYears = () => {
     let years = [], startYear = new Date().getFullYear();
@@ -15,11 +15,14 @@ export const store = new Vuex.Store({
         banks: null,
         states: null,
         branches: null,
+        brands: null,
+        products: null,
+        categories: null,
         paymentMethods: null,
-        lifestyleBranches: [8]
+        lifestyleBranches: [8],
         /*note this is different from other number used in the array
         below, this one is the id of the lifestyle branches
-        the others below are role id for users*/,
+        the others below are role id for users*/
         loader: true,
         ProfileAccess: [],
         ProfileEditAccess: [],
@@ -56,6 +59,9 @@ export const store = new Vuex.Store({
     },
     getters: {
         getBanks: state => state.banks,
+        getProducts: state => state.products,
+        getCategories: state => state.categories,
+        getBrands: state => state.brands,
         getYears: state => state.years,
         getStates: state => state.states,
         getMonths: state => state.months,
@@ -72,6 +78,9 @@ export const store = new Vuex.Store({
         mutateBanks: (state, banks) => Vue.set(state, 'banks', banks),
         mutateStates: (state, states) => Vue.set(state, 'states', states),
         mutateBranches: (state, branches) => Vue.set(state, 'branches', branches),
+        mutateProducts: (state, products) => Vue.set(state, 'products', products),
+        mutateBrands: (state, brands) => Vue.set(state, 'brands', brands),
+        mutateCategories: (state, categories) => Vue.set(state, 'categories', categories),
         mutatePaymentMethods: (state, paymentMethods) => Vue.set(state, 'paymentMethods', paymentMethods),
         mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
 
@@ -81,6 +90,9 @@ export const store = new Vuex.Store({
         mutateBanks: ({commit}, banks) => commit('mutateBanks', banks),
         mutateStates: ({commit}, states) => commit('mutateStates', states),
         mutateBranches: ({commit}, branches) => commit('mutateBranches', branches),
+        mutateProducts: ({commit}, products) => commit('mutateProducts', products),
+        mutateBrands: ({commit}, brands) => commit('mutateBrands', brands),
+        mutateCategories: ({commit}, categories) => commit('mutateCategories', categories),
         mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
         mutateProfileAccess: ({commit}, payload) => commit('mutateProfileAccess', payload),
     }

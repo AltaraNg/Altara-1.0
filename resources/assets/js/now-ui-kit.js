@@ -195,7 +195,7 @@ let nowuiKit = {
             }
         });
     }
-}
+};
 
 
 var big_image;
@@ -234,4 +234,4 @@ function debounce(func, wait, immediate) {
         }, wait);
         if (immediate && !timeout) func.apply(context, args);
     };
-};
+}

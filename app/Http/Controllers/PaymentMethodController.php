@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\PaymentMethod;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PaymentMethodController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -22,7 +23,7 @@ class PaymentMethodController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -32,8 +33,8 @@ class PaymentMethodController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -43,8 +44,8 @@ class PaymentMethodController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
+     * @param PaymentMethod $paymentMethod
+     * @return Response
      */
     public function show(PaymentMethod $paymentMethod)
     {
@@ -54,8 +55,8 @@ class PaymentMethodController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
+     * @param PaymentMethod $paymentMethod
+     * @return Response
      */
     public function edit(PaymentMethod $paymentMethod)
     {
@@ -65,9 +66,9 @@ class PaymentMethodController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param PaymentMethod $paymentMethod
+     * @return Response
      */
     public function update(Request $request, PaymentMethod $paymentMethod)
     {
@@ -77,8 +78,8 @@ class PaymentMethodController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
+     * @param PaymentMethod $paymentMethod
+     * @return Response
      */
     public function destroy(PaymentMethod $paymentMethod)
     {

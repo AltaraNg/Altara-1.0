@@ -8,13 +8,14 @@ use App\PaymentMethod;
 use App\PromiseCall;
 use App\Reminder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ReminderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -150,7 +151,7 @@ class ReminderController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -205,8 +206,8 @@ class ReminderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -217,8 +218,8 @@ class ReminderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Reminder $reminder
-     * @return \Illuminate\Http\Response
+     * @param Reminder $reminder
+     * @return Response
      */
     public function show(Reminder $reminder)
     {
@@ -228,8 +229,8 @@ class ReminderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Reminder $reminder
-     * @return \Illuminate\Http\Response
+     * @param Reminder $reminder
+     * @return Response
      */
     public function edit(Reminder $reminder)
     {
@@ -239,9 +240,9 @@ class ReminderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Reminder $reminder
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Reminder $reminder
+     * @return Response
      */
     public function update(Request $request, Reminder $reminder)
     {
@@ -251,8 +252,8 @@ class ReminderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Reminder $reminder
-     * @return \Illuminate\Http\Response
+     * @param Reminder $reminder
+     * @return Response
      */
     public function destroy(Reminder $reminder)
     {

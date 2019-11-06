@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		40: 0
+/******/ 		41: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -43852,7 +43852,7 @@ function debounce(func, wait, immediate) {
         }, wait);
         if (immediate && !timeout) func.apply(context, args);
     };
-};
+}
 
 /***/ }),
 
@@ -43889,48 +43889,48 @@ var _inventory2 = _interopRequireDefault(_inventory);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
-    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
+    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
 };
 
 var Login = function Login() {
-    return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
+    return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
 };
 
 var NotFound = function NotFound() {
-    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
+    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
 };
 
 var DSA = function DSA() {
-    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
+    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/index.vue"));
 };
 var DSAHome = function DSAHome() {
-    return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
+    return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
 };
 var DSAReport = function DSAReport() {
-    return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
+    return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
 };
 var CustomerForm = function CustomerForm() {
     return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, "./resources/assets/js/views/shared/customerForm.vue"));
 };
 
 var DVA = function DVA() {
-    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
+    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/index.vue"));
 };
 var DVAHome = function DVAHome() {
-    return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
+    return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
 };
 var DVAMessage = function DVAMessage() {
-    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
+    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
 };
 var DVAVerification = function DVAVerification() {
     return __webpack_require__.e/* import() */(3).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
 };
 
 var CAG = function CAG() {
-    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/index.vue"));
+    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/index.vue"));
 };
 var CAGHome = function CAGHome() {
-    return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/HomePage.vue"));
+    return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/HomePage.vue"));
 };
 
 var OrderList = function OrderList() {
@@ -43947,78 +43947,82 @@ var Reminder = function Reminder() {
 };
 
 var Profile = function Profile() {
-    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
+    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
 };
 var ProfileEdit = function ProfileEdit() {
-    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
+    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
 };
 var ProfileHome = function ProfileHome() {
-    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
+    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
 };
 
 var HRM = function HRM() {
-    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
+    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
 };
 var HRMHome = function HRMHome() {
-    return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
+    return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
 };
 var DataViewer = function DataViewer() {
-    return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/components/DataViewer.vue"));
+    return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/components/DataViewer.vue"));
 };
 var EmployeeForm = function EmployeeForm() {
     return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/employeeForm.vue"));
 };
 
 var Caution = function Caution() {
-    return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/index.vue"));
+    return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/index.vue"));
 };
 var CautionForm = function CautionForm() {
-    return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/form.vue"));
+    return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/form.vue"));
 };
 
 var FSL = function FSL() {
-    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
+    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
 };
 var FSLHome = function FSLHome() {
-    return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
+    return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
 };
 var BranchForm = function BranchForm() {
-    return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
+    return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
 };
 var POSForm = function POSForm() {
-    return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/pos/form.vue"));
+    return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/pos/form.vue"));
 };
 var PaymentForm = function PaymentForm() {
-    return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/payment/form.vue"));
+    return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/payment/form.vue"));
 };
 var CustomerLookup = function CustomerLookup() {
     return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/lookup/lookup.vue"));
 };
 
 var Attendance = function Attendance() {
-    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
+    return __webpack_require__.e/* import() */(40).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
 };
 var AttendanceForm = function AttendanceForm() {
-    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
+    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
 };
 
 var LOG = function LOG() {
-    return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/index.vue"));
+    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/index.vue"));
 };
 var LOGHome = function LOGHome() {
-    return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/HomePage.vue"));
+    return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/HomePage.vue"));
 };
 var InventoryForm = function InventoryForm() {
-    return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
+    return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
 };
 var SuppliersForm = function SuppliersForm() {
-    return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/supplier/form.vue"));
+    return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/supplier/form.vue"));
+};
+
+var ProductSearch = function ProductSearch() {
+    return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/ProductSearch.vue"));
 };
 var BrandForm = function BrandForm() {
-    return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/brand/form.vue"));
+    return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/brand/form.vue"));
 };
 var CategoryForm = function CategoryForm() {
-    return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/category/form.vue"));
+    return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/category/form.vue"));
 };
 var ProductForm = function ProductForm() {
     return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/product/form.vue"));
@@ -44088,7 +44092,7 @@ var router = new _vueRouter2.default({
         path: '/log',
         component: LOG,
         meta: { LOG: true },
-        children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory/:id/edit', component: InventoryForm, meta: { mode: 'edit' }, name: 'inventoryEdit' }, { path: 'inventory/create', component: InventoryForm, meta: { mode: 'create' }, name: 'inventoryCreate' }, { path: 'inventory', component: DataViewer, meta: { appModel: 'inventory', source: '/api/inventory', new: '/log/inventory' } }, {
+        children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory/:id/edit', component: InventoryForm, meta: { mode: 'edit' }, name: 'inventoryEdit' }, { path: 'inventory/create', component: InventoryForm, meta: { mode: 'create' }, name: 'inventoryCreate' }, { path: 'inventory', component: DataViewer, meta: { appModel: 'inventory', source: '/api/inventory', new: '/log/inventory' } }, { path: 'inventory/search', component: ProductSearch, name: 'productSearch' }, {
             path: 'brands',
             component: DataViewer,
             meta: { appModel: 'brand', source: '/api/brand', new: '/log/brands' }
@@ -44179,12 +44183,15 @@ var store = exports.store = new _vuex2.default.Store({
         banks: null,
         states: null,
         branches: null,
+        brands: null,
+        products: null,
+        categories: null,
         paymentMethods: null,
-        lifestyleBranches: [8]
+        lifestyleBranches: [8],
         /*note this is different from other number used in the array
         below, this one is the id of the lifestyle branches
         the others below are role id for users*/
-        , loader: true,
+        loader: true,
         ProfileAccess: [],
         ProfileEditAccess: [],
         DSALead: [1, 2, 8, 9, 15],
@@ -44208,6 +44215,15 @@ var store = exports.store = new _vuex2.default.Store({
     getters: {
         getBanks: function getBanks(state) {
             return state.banks;
+        },
+        getProducts: function getProducts(state) {
+            return state.products;
+        },
+        getCategories: function getCategories(state) {
+            return state.categories;
+        },
+        getBrands: function getBrands(state) {
+            return state.brands;
         },
         getYears: function getYears(state) {
             return state.years;
@@ -44245,6 +44261,15 @@ var store = exports.store = new _vuex2.default.Store({
         mutateBranches: function mutateBranches(state, branches) {
             return _vue2.default.set(state, 'branches', branches);
         },
+        mutateProducts: function mutateProducts(state, products) {
+            return _vue2.default.set(state, 'products', products);
+        },
+        mutateBrands: function mutateBrands(state, brands) {
+            return _vue2.default.set(state, 'brands', brands);
+        },
+        mutateCategories: function mutateCategories(state, categories) {
+            return _vue2.default.set(state, 'categories', categories);
+        },
         mutatePaymentMethods: function mutatePaymentMethods(state, paymentMethods) {
             return _vue2.default.set(state, 'paymentMethods', paymentMethods);
         },
@@ -44270,12 +44295,24 @@ var store = exports.store = new _vuex2.default.Store({
             var commit = _ref4.commit;
             return commit('mutateBranches', branches);
         },
-        mutatePaymentMethods: function mutatePaymentMethods(_ref5, paymentMethods) {
+        mutateProducts: function mutateProducts(_ref5, products) {
             var commit = _ref5.commit;
+            return commit('mutateProducts', products);
+        },
+        mutateBrands: function mutateBrands(_ref6, brands) {
+            var commit = _ref6.commit;
+            return commit('mutateBrands', brands);
+        },
+        mutateCategories: function mutateCategories(_ref7, categories) {
+            var commit = _ref7.commit;
+            return commit('mutateCategories', categories);
+        },
+        mutatePaymentMethods: function mutatePaymentMethods(_ref8, paymentMethods) {
+            var commit = _ref8.commit;
             return commit('mutatePaymentMethods', paymentMethods);
         },
-        mutateProfileAccess: function mutateProfileAccess(_ref6, payload) {
-            var commit = _ref6.commit;
+        mutateProfileAccess: function mutateProfileAccess(_ref9, payload) {
+            var commit = _ref9.commit;
             return commit('mutateProfileAccess', payload);
         }
     }
@@ -44581,6 +44618,26 @@ _vue2.default.prototype.$prepareBranches = function () {
 _vue2.default.prototype.$prepareStates = function () {
     !_store.store.getters.getStates && (0, _api.get)('/api/state').then(function (r) {
         return _store.store.dispatch('mutateStates', r.data.states);
+    });
+};
+
+_vue2.default.prototype.$prepareCategories = function () {
+    console.log('I am working');
+    !_store.store.getters.getCategories && (0, _api.get)('/api/categories').then(function (r) {
+        return _store.store.dispatch('mutateCategories', r.data.categories);
+    });
+};
+_vue2.default.prototype.$prepareProducts = function () {
+
+    !_store.store.getters.getProducts && (0, _api.get)('/api/products').then(function (r) {
+        return _store.store.dispatch('mutateProducts', r.data.products);
+    });
+};
+
+_vue2.default.prototype.$prepareBrands = function () {
+
+    !_store.store.getters.getBrands && (0, _api.get)('/api/brands').then(function (r) {
+        return _store.store.dispatch('mutateBrands', r.data.brands);
     });
 };
 

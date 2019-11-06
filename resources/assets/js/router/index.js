@@ -3,7 +3,8 @@ import VueRouter from 'vue-router';
 import Flash from '../utilities/flash';
 import { store } from '../store/store';
 import { routerHistory, writeHistory } from 'vue-router-back-button';
-import nventory from '../utilities/inventory.json';
+import inventory from '../utilities/inventory.json';
+
 
 const Home = () =>
     import ('../views/HomePage.vue');
@@ -94,6 +95,9 @@ const InventoryForm = () =>
     import ('../views/LOG/inventory/inventory.vue');
 const SuppliersForm = () =>
     import ('../views/LOG/supplier/form.vue');
+
+const ProductSearch = () =>
+    import ('../views/LOG/inventory/ProductSearch.vue');
 const BrandForm = () =>
     import ('../views/LOG/brand/form.vue');
 const CategoryForm = () =>
@@ -228,7 +232,8 @@ const router = new VueRouter({
 
                 { path: 'inventory/:id/edit', component: InventoryForm, meta: { mode: 'edit' } ,name: 'inventoryEdit' },
                 { path: 'inventory/create', component: InventoryForm, meta: { mode: 'create' } ,name: 'inventoryCreate' },
-                { path: 'inventory', component: DataViewer, meta: { appModel: 'inventory', source: '/api/inventory' ,new: '/log/inventory'}  },
+                { path: 'inventory', component: DataViewer, meta: { appModel: 'inventory', source: '/api/inventory' ,new: '/log/inventory'},},
+                { path: 'inventory/search', component: ProductSearch, name: 'productSearch'},
 
                 {
                     path: 'brands',

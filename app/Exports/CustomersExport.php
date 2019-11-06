@@ -3,13 +3,14 @@
 namespace App\Exports;
 
 use App\Branch;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class CustomersExport implements FromCollection
 {
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     /** initialize request*/
     private $request;

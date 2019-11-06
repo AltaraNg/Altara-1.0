@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Bank;
 use App\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -27,7 +28,7 @@ class SupplierController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -48,8 +49,8 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -87,8 +88,8 @@ class SupplierController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Supplier $suppliers
-     * @return \Illuminate\Http\Response
+     * @param Supplier $suppliers
+     * @return Response
      */
     public function show(Supplier $suppliers)
     {
@@ -99,7 +100,7 @@ class SupplierController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -114,9 +115,9 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param Request $request
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -159,8 +160,8 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Supplier $suppliers
-     * @return \Illuminate\Http\Response
+     * @param Supplier $suppliers
+     * @return Response
      */
     public function destroy(Supplier $suppliers)
     {

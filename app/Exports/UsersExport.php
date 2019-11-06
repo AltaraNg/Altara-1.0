@@ -5,12 +5,13 @@ namespace App\Exports;
 use App\Customer;
 use App\Order;
 use App\User;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class UsersExport implements FromCollection
 {
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
 
     private $request;

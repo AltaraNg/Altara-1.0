@@ -149,14 +149,14 @@
             }
         },
         beforeRouteEnter(to, from, next) {
-            console.log(to)
+            console.log(to);
                 get(initialize(to))
                 .then(({data}) => next(vm => vm.prepareForm(data)))
                 .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
         methods: {
             prepareForm(data) {
-                console.log(data)
+                console.log(data);
                     Vue.set(this.$data, 'mode', this.$route.meta.mode);
                 Vue.set(this.$data, 'form', data.form);
                 Vue.set(this.$data, 'brands', data.brands);

@@ -2132,7 +2132,7 @@
                         this.occName = element.names;
                         this.newCustomer.employment_status = element.category;
                         this.isClick = true;
-                        this.isOther = (element.id === 12) ? true : false
+                        this.isOther = (element.id === 12) ? true : false;
                         if (element.id === 12) {
                             this.isOther = true;
                         } else {

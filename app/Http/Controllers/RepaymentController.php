@@ -6,13 +6,14 @@ use App\Repayment;
 use App\RepaymentFormal;
 use App\RepaymentInformal;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class RepaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -22,7 +23,7 @@ class RepaymentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -32,8 +33,8 @@ class RepaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -60,8 +61,8 @@ class RepaymentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Repayment  $repayment
-     * @return \Illuminate\Http\Response
+     * @param Repayment $repayment
+     * @return Response
      */
     public function show(Repayment $repayment)
     {
@@ -71,8 +72,8 @@ class RepaymentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Repayment  $repayment
-     * @return \Illuminate\Http\Response
+     * @param Repayment $repayment
+     * @return Response
      */
     public function edit(Repayment $repayment)
     {
@@ -82,9 +83,9 @@ class RepaymentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Repayment  $repayment
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Repayment $repayment
+     * @return Response
      */
     public function update(Request $request, Repayment $repayment)
     {
@@ -94,8 +95,8 @@ class RepaymentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Repayment  $repayment
-     * @return \Illuminate\Http\Response
+     * @param Repayment $repayment
+     * @return Response
      */
     public function destroy(Repayment $repayment)
     {

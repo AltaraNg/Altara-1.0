@@ -6,13 +6,14 @@ namespace App\Http\Controllers;
 use App\User;*/
 use App\{User, Caution};
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CautionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -30,7 +31,7 @@ class CautionController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -45,8 +46,8 @@ class CautionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -64,8 +65,8 @@ class CautionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Caution $caution
-     * @return \Illuminate\Http\Response
+     * @param Caution $caution
+     * @return Response
      */
     public function show(Caution $caution)
     {
@@ -75,8 +76,8 @@ class CautionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Caution $caution
-     * @return \Illuminate\Http\Response
+     * @param Caution $caution
+     * @return Response
      */
     public function edit(Caution $caution)
     {
@@ -86,9 +87,9 @@ class CautionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Caution $caution
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Caution $caution
+     * @return Response
      */
     public function update(Request $request, Caution $caution)
     {
@@ -98,8 +99,8 @@ class CautionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Caution $caution
-     * @return \Illuminate\Http\Response
+     * @param Caution $caution
+     * @return Response
      */
     public function destroy(Caution $caution)
     {

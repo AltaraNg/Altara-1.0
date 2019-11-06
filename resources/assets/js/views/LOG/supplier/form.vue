@@ -138,8 +138,8 @@
         },
         methods: {
             prepareForm({form,banks}) {
-                console.log(form)
-                console.log(banks)
+                console.log(form);
+                console.log(banks);
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
                 Vue.set(this.$data, 'form', form);
                 Vue.set(this.$data, 'banks', banks);

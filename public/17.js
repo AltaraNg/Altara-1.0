@@ -32,7 +32,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/brand/form.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61,10 +61,9 @@ var _customHeader2 = _interopRequireDefault(_customHeader);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function initialize(to) {
-    var urls = { create: "/api/brand/create", edit: "/api/brand/" + to.params.id + "/edit" };
+    var urls = { create: "/api/category/create", edit: "/api/category/" + to.params.id + "/edit" };
     return urls[to.meta.mode];
 } //
-//
 //
 //
 //
@@ -108,7 +107,7 @@ exports.default = {
             mode: null,
             error: {},
             show: false,
-            store: '/api/brand',
+            store: '/api/category',
             method: 'POST'
         };
     },
@@ -132,7 +131,7 @@ exports.default = {
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
             _vue2.default.set(this.$data, 'form', form);
             if (this.mode === 'edit') {
-                this.store = "/api/brand/" + this.$route.params.id;
+                this.store = "/api/category/" + this.$route.params.id;
                 this.method = 'PUT';
             }
             this.show = true;
@@ -151,7 +150,7 @@ exports.default = {
                                 (0, _log.log)(data.log, data.staff_id);
                                 _vue2.default.set(_this.$data, 'form', data.form);
                                 _flash2.default.setSuccess(data.message, 5000);
-                                if (data['updated']) _this.$router.push('/log/brands');
+                                if (data['updated']) _this.$router.push('/log/categories');
                             }
                             _this.error = {};
                         }).catch(function (_ref4) {
@@ -220,7 +219,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3dbe9c5e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/brand/form.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0e6ca50d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -234,9 +233,9 @@ var render = function() {
       [
         _c("custom-header", {
           attrs: {
-            to: "/log/brands",
-            title: _vm.mode + " brand",
-            "button-title": "view brands!"
+            to: "/log/categories",
+            title: _vm.mode + " Category",
+            "button-title": "view categories!"
           }
         }),
         _vm._v(" "),
@@ -265,7 +264,7 @@ var render = function() {
                       staticClass: "form-group col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Brand name")]),
+                      _c("label", [_vm._v("Category name")]),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
@@ -284,8 +283,8 @@ var render = function() {
                         ],
                         staticClass: "form-control mb-2",
                         attrs: {
-                          placeholder: "brand name",
-                          name: "brand name",
+                          placeholder: "category name",
+                          name: "category name",
                           type: "text"
                         },
                         domProps: { value: _vm.form.name },
@@ -299,9 +298,9 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm.errors.first("brand name")
+                      _vm.errors.first("category name")
                         ? _c("small", [
-                            _vm._v(_vm._s(_vm.errors.first("brand name")))
+                            _vm._v(_vm._s(_vm.errors.first("category name")))
                           ])
                         : _vm._e(),
                       _vm._v(" "),
@@ -323,7 +322,7 @@ var render = function() {
                           "router-link",
                           {
                             staticClass: "mx-5 text-link mt-4 pt-2",
-                            attrs: { to: "/log/brands" }
+                            attrs: { to: "/log/categories" }
                           },
                           [
                             _vm._v(
@@ -343,7 +342,7 @@ var render = function() {
                         _vm._v(
                           "\n                            " +
                             _vm._s(_vm._f("capitalize")(_vm.mode)) +
-                            " Brand "
+                            " Category "
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
@@ -366,7 +365,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3dbe9c5e", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-0e6ca50d", module.exports)
   }
 }
 
@@ -446,15 +445,15 @@ function log(action, description) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/LOG/brand/form.vue":
+/***/ "./resources/assets/js/views/LOG/category/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/brand/form.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/category/form.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3dbe9c5e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/brand/form.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0e6ca50d\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/category/form.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -471,7 +470,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\LOG\\brand\\form.vue"
+Component.options.__file = "resources\\assets\\js\\views\\LOG\\category\\form.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -480,9 +479,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3dbe9c5e", Component.options)
+    hotAPI.createRecord("data-v-0e6ca50d", Component.options)
   } else {
-    hotAPI.reload("data-v-3dbe9c5e", Component.options)
+    hotAPI.reload("data-v-0e6ca50d", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

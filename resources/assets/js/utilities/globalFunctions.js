@@ -119,6 +119,23 @@ Vue.prototype.$prepareStates = () => {
         .then(r => store.dispatch('mutateStates', r.data.states));
 };
 
+Vue.prototype.$prepareCategories = () => {
+    console.log('I am working');
+    !store.getters.getCategories && get('/api/categories')
+        .then(r => store.dispatch('mutateCategories', r.data.categories));
+};
+Vue.prototype.$prepareProducts = () => {
+
+    !store.getters.getProducts && get('/api/products')
+        .then(r => store.dispatch('mutateProducts', r.data.products));
+};
+
+Vue.prototype.$prepareBrands = () => {
+
+    !store.getters.getBrands && get('/api/brands')
+        .then(r => store.dispatch('mutateBrands', r.data.brands));
+};
+
 Vue.prototype.$preparePaymentMethods = () => {
     !store.getters.getPaymentMethods && get('/api/payment_method')
         .then(r => store.dispatch('mutatePaymentMethods', r.data.paymentMethods));

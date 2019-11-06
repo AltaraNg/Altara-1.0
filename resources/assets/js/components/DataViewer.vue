@@ -11,13 +11,22 @@
                     <div class="px-5 py-4">
                         <div class="px-3 clearfix">
                             <h5 class="h5-custom float-left m-0">{{$route.meta.appModel | capitalize}} Management</h5>
+
+                                <router-link :to="'/log/inventory/search'" class="btn btn-primary bg-default m-0" v-if="isModel('inventory')">
+                                    Search Products
+                                </router-link>
+
                             <router-link :to="`${$route.meta.new}/create`"
                                          class="float-right btn btn-primary bg-default m-0">
                                 Add {{$route.meta.appModel}}!
                             </router-link>
                         </div>
                     </div>
+
                     <hr class="m-0">
+
+
+
                     <div>
                         <!--data viewer starts here-->
                         <div class="card-body p-4 p-md-5">
@@ -243,9 +252,10 @@
 
     import AppNavigation from '../components/AppNavigation';
 
+
     export default {
 
-        components: {AppNavigation},
+        components: {AppNavigation, },
 
         data() {
             return {
@@ -286,6 +296,7 @@
         created() {
             this.$prepareStates();
             this.$prepareBranches();
+            // this.$prepareProducts();
             this.fetchIndexData();
             $(document).on('click', 'tr', function () {
                 $('tr.current').removeClass('current');
@@ -319,7 +330,7 @@
                     this.query.direction = this.query.direction === 'desc' ? 'asc' : 'desc';
                 else {
                     this.query.column = column;
-                    this.query.direcntion = 'asc';
+                    this.query.direction = 'asc';
                 }
                 this.fetchIndexData();
             },

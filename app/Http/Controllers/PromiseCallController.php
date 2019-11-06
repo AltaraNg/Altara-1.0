@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\PromiseCall;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PromiseCallController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -20,7 +21,7 @@ class PromiseCallController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -30,8 +31,8 @@ class PromiseCallController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -44,8 +45,8 @@ class PromiseCallController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\PromiseCall $promiseCall
-     * @return \Illuminate\Http\Response
+     * @param PromiseCall $promiseCall
+     * @return Response
      */
     public function show(PromiseCall $promiseCall)
     {
@@ -55,8 +56,8 @@ class PromiseCallController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\PromiseCall $promiseCall
-     * @return \Illuminate\Http\Response
+     * @param PromiseCall $promiseCall
+     * @return Response
      */
     public function edit(PromiseCall $promiseCall)
     {
@@ -66,9 +67,9 @@ class PromiseCallController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\PromiseCall $promiseCall
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param PromiseCall $promiseCall
+     * @return Response
      */
     public function update(Request $request, PromiseCall $promiseCall)
     {
@@ -78,8 +79,8 @@ class PromiseCallController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\PromiseCall $promiseCall
-     * @return \Illuminate\Http\Response
+     * @param PromiseCall $promiseCall
+     * @return Response
      */
     public function destroy(PromiseCall $promiseCall)
     {

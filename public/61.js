@@ -43,7 +43,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64,31 +64,24 @@ exports.default = {
     data: function data() {
         return {
             portals: [{
-                url: 'customer/create',
-                title: 'Customer Registration',
-                url_c: 'Register new customer now!',
-                desc: 'Registering new customers'
+                url: 'inventory', title: 'Inventory', url_c: 'View Inventory!',
+                desc: 'For inventory and management'
             }, {
-                url: 'customer/update',
-                title: 'Customer Update',
-                url_c: 'Update customers details!',
-                desc: 'Updating customers details'
+                url: 'suppliers', title: 'Manage Suppliers', url_c: 'Create/Update Supplier',
+                desc: 'Manage all the suppliers details!'
             }, {
-                url: 'report',
-                title: 'Sales Reporting',
-                url_c: 'Get Reports',
-                desc: 'Real time DSA reports!',
-                aces: this.$store.getters.auth('DSACaptain')
+                url: 'brands', title: 'Manage Brands', url_c: 'Create/Update Brands',
+                desc: 'Manage all the brands details!'
             }, {
-                url: '/customer',
-                title: 'Customer List',
-                url_c: 'View Customer List',
-                desc: 'View all registered customers!'
+                url: 'categories', title: 'Manage Categories', url_c: 'Create/Update Categories',
+                desc: 'Manage all the category details!'
+            }, {
+                url: 'products', title: 'Manage Products', url_c: 'Create/Update Products',
+                desc: 'Manage all the product details!'
             }]
         };
     }
 }; //
-//
 //
 //
 //
@@ -165,7 +158,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3c1dfcb6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/HomePage.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b75fd5a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -201,7 +194,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3c1dfcb6", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-5b75fd5a", module.exports)
   }
 }
 
@@ -255,15 +248,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/DSA/HomePage.vue":
+/***/ "./resources/assets/js/views/LOG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DSA/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/HomePage.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3c1dfcb6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DSA/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5b75fd5a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/HomePage.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -280,7 +273,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DSA\\HomePage.vue"
+Component.options.__file = "resources\\assets\\js\\views\\LOG\\HomePage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -289,9 +282,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3c1dfcb6", Component.options)
+    hotAPI.createRecord("data-v-5b75fd5a", Component.options)
   } else {
-    hotAPI.reload("data-v-3c1dfcb6", Component.options)
+    hotAPI.reload("data-v-5b75fd5a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

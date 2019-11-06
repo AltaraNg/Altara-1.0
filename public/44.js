@@ -18,9 +18,11 @@ var _flash2 = _interopRequireDefault(_flash);
 
 var _eventBus = __webpack_require__("./resources/assets/js/utilities/event-bus.js");
 
+var _Amortization = __webpack_require__("./resources/assets/js/utilities/Amortization.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+//
 //
 //
 //
@@ -96,20 +98,12 @@ exports.default = {
         mode: null,
         index: null,
         startIndex: { default: 1 },
-        dva_id: null,
-        paySummary: null,
-        repaymentLevel: null,
-        order: { default: {} },
-        isRepaymentValid: null
+        order: { default: null, type: _Amortization.Order }
     },
 
-    data: function data() {
-        return {
-            selected: false
-        };
-    },
     created: function created() {
-        _eventBus.EventBus.$on('selectOrderItem', this.toggleSelect);
+        //EventBus.$on('selectOrderItem', this.toggleSelect);
+        this.order.setReminder(this.mode);
     },
 
 
@@ -118,11 +112,13 @@ exports.default = {
             var _this = this;
 
             this.$LIPS(true);
-            delete this.reminder.order;
-            delete this.reminder.canBeSelected;
-            (0, _api.post)('/api/reminder', { reminders: [this.reminder] }).then(function (_ref) {
+            delete this.order.reminder.order;
+            delete this.order.reminder.canBeSelected;
+            (0, _api.post)('/api/reminder', { reminders: [this.order.reminder] }).then(function (_ref) {
                 var data = _ref.data;
-                return data.saved ? _this.logPromiseCall() : _this.$displayErrorMessage('Error Logging reminders!');
+                return data.saved && _this.logPromiseCall();
+            }).catch(function () {
+                return _this.$displayErrorMessage('Error Logging reminders!');
             });
         },
         logPromiseCall: function logPromiseCall() {
@@ -130,10 +126,12 @@ exports.default = {
 
             var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Reminder Logged!";
 
-            if (this.promiseCall.date) {
-                (0, _api.post)('/api/promise_call', this.promiseCall).then(function (_ref2) {
+            if (this.order.promiseCall.date) {
+                (0, _api.post)('/api/promise_call', this.order.promiseCall).then(function (_ref2) {
                     var data = _ref2.data;
-                    return data.saved ? _this2.done(message + " Promise call added!") : _this2.$displayErrorMessage('Error Logging promise call!');
+                    return data.saved && _this2.done(message + " Promise call added!");
+                }).catch(function () {
+                    return _this2.$displayErrorMessage('Error Logging promise call!');
                 });
             } else this.done(message);
         },
@@ -142,61 +140,12 @@ exports.default = {
             _flash2.default.setSuccess(message, 5000);
             this.$emit('done');
         },
-        isReminderSent: function isReminderSent() {
-            var _this3 = this;
+        toggleSelect: function toggleSelect() {
+            var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-            var value = true,
-                date;
-            if (this.order.reminders.length > 0) {
-                var today = this.$getDate();
-                this.order.reminders.forEach(function (reminder) {
-                    //refactor below by using regx characters to split
-                    var reminderDateTimeArr = reminder.date.split(' '); //(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
-                    var dateArr = reminderDateTimeArr[0].split('-'); //'2019-03-24' -> ['2019','03','24']
-                    var timeArr = reminderDateTimeArr[1].split(':'); //'02:00:00' -> ['02','00','00']
-                    var arr = [].concat(_toConsumableArray(dateArr), _toConsumableArray(timeArr)) // ['2019','03','24','02','00','00']
-                    .map(function (item) {
-                        return parseInt(item, 10);
-                    }); //[2019,3,24,2,0,0]
-                    date = _this3.$getDate(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
-                    date === today && (value = false);
-                });
+            if (this.order.reminder.canBeSelected) {
+                this.order.isSelected = val !== null ? val : !this.order.isSelected;
             }
-            return value;
-        },
-        toggleSelect: function toggleSelect(value) {
-            if (this.reminder.canBeSelected) {
-                this.selected = value;
-                this.$emit('updateReminderList', this.reminder, value);
-            }
-        }
-    },
-    computed: {
-        reminder: function reminder() {
-            var reminder = {
-                'customer_id': this.order.customer.id,
-                'order_id': this.order.id,
-                'repayment_level': this.repaymentLevel,
-                'dva_id': this.dva_id,
-                'type': this.mode,
-                'canBeSelected': this.isReminderSent()
-            };
-            if (this.mode === 'sms') {
-                reminder.contacts = this.order.customer.telephone;
-                reminder.sms_id = null;
-            }
-            return reminder;
-        },
-        promiseCall: function promiseCall() {
-            return {
-                order_id: this.order.id,
-                user_id: this.dva_id,
-                customer_id: this.order.customer.id,
-                date: null
-            };
-        },
-        getFinancialStatus: function getFinancialStatus() {
-            return !this.isRepaymentValid ? 'no detail!' : "Paid: " + this.paySummary.amountPaid + " | Debt: " + this.paySummary.outstandingDebt;
         }
     }
 };
@@ -213,7 +162,16 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
 //
 //
 //
@@ -570,7 +528,11 @@ var _OrderItem = __webpack_require__("./resources/assets/js/components/OrderItem
 
 var _OrderItem2 = _interopRequireDefault(_OrderItem);
 
+var _Amortization = __webpack_require__("./resources/assets/js/utilities/Amortization.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var url = function url(to) {
     return '/api/reminder/create?list=' + to.query.list;
@@ -592,14 +554,11 @@ exports.default = {
 
     data: function data() {
         return {
-            orders: {},
+            orders: [],
             show: false,
-            banks: null,
-            reminder: [],
-            currentOrder: {},
-            paymentSummary: null,
-            payment_methods: null,
-            showModalContent: false
+            showModalContent: false,
+            Order: _Amortization.Order,
+            activeOrder: null
         };
     },
 
@@ -607,196 +566,179 @@ exports.default = {
     computed: _extends({}, (0, _vuex.mapGetters)(['auth'])),
 
     methods: {
-        prepareForm: function prepareForm(res) {
-            var _this = this;
+        prepareForm: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(res) {
+                var _this = this;
 
-            this.show = false;
-            this.showModalContent = false;
-            this.banks = res.banks;
-            this.dva_id = res.dva_id;
-            this.payment_methods = res.payment_methods;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                this.show = false;
+                                this.showModalContent = false;
+                                this.orders = [];
+                                _context.next = 5;
+                                return res.orders.forEach(function (order) {
+                                    var newOrder = order instanceof _Amortization.Order ? order : new _Amortization.OrderWithPromiseCall(order, res.dva_id);
 
-            this.orders = res.orders.filter(function (order) {
-                var _getCountAndRepayment = _this.getCountAndRepaymentData(order),
-                    repaymentData = _getCountAndRepayment.repaymentData,
-                    _amortizationPlan = _this.amortizationPlan(order),
-                    count = _amortizationPlan.count,
-                    interval = _amortizationPlan.interval;
+                                    var hasMissedPayment = function hasMissedPayment() {
+                                        /*for the list 1 and 8 return true i.e no need for has
+                                        missed payment since it's obvious we are dealing with just one date
+                                        * 1st list is for all the customers that picked today
+                                        * 8th list is for all the promise calls all the promise call must be shown to */
+                                        if ([8, 1].includes(_this.list) || _this.mode === "normal-list") return true;
 
-                var hasMissedPayment = function hasMissedPayment() {
-                    /*for the list 1 and 8 return true i.e no need for has
-                    missed payment since it's obvious we are dealing with just one date
-                    * 1st list is for all the customers that picked today
-                    * 8th list is for all the promise calls all the promise call must be shown to */
-                    if ([8, 1].includes(_this.list) || _this.mode === "normal-list") return true;
+                                        var payDay = void 0,
 
-                    var payDay = void 0,
+                                        /*payDay holds the date
+                                        of the first vacant repayment*/
 
-                    /*payDay holds the date
-                    of the first vacant repayment*/
+                                        dayInterval = void 0,
 
-                    dayInterval = void 0,
+                                        /*dayInterval the number of days before or after a certain
+                                        repayment date. this varies according to collections app brief*/
 
-                    /*dayInterval the number of days before or after a certain
-                    repayment date. this varies according to collections app brief*/
+                                        datePool = [],
 
-                    datePool = [],
+                                        /*datePool hold an array of dates of length ranging from 1 to 3 in length
+                                        * is the current date is monday the date-pool will include dates for
+                                        * monday, sunday and saturday else it just hold the current date*/
 
-                    /*datePool hold an array of dates of length ranging from 1 to 3 in length
-                    * is the current date is monday the date-pool will include dates for
-                    * monday, sunday and saturday else it just hold the current date*/
+                                        today = new Date(),
+                                            isMonday = today.getDay() === 1,
 
-                    today = new Date(),
-                        isMonday = today.getDay() === 1,
+                                        /*isMonday how a boolean value of whether
+                                        the current date is monday or not*/
 
-                    /*isMonday how a boolean value of whether
-                    the current date is monday or not*/
+                                        collectionsList = [9, 10, 11, 12, 13, 14],
+                                            accumulatedDays = isMonday || collectionsList.includes(_this.list) ? 3 : 1;
+                                        /*accumulatedDays hold 1 or 3,
+                                        1 if the current date is not on a monday and
+                                        3 if the current date is on a monday*/
 
-                    collectionsList = [9, 10, 11, 12, 13, 14],
-                        accumulatedDays = isMonday || collectionsList.includes(_this.list) ? 3 : 1;
-                    /*accumulatedDays hold 1 or 3,
-                    1 if the current date is not on a monday and
-                    3 if the current date is on a monday*/
+                                        if (!!!newOrder.repaymentData) return false;
 
-                    if (!!!repaymentData) return false;
+                                        /*step 1::
+                                        * the count is either 7 or 13,
+                                        * the loop runs for 6 or 12 times*/
+                                        for (var i = 1; i < newOrder.count + 1; i++) {
 
-                    /*step 1::
-                    * the count is either 7 or 13,
-                    * the loop runs for 6 or 12 times*/
-                    for (var i = 1; i < count + 1; i++) {
+                                            /*get the resultant column 1st, 2nd, 3rd etc*/
+                                            var column = _this.$getColumn(i);
 
-                        /*get the resultant column 1st, 2nd, 3rd etc*/
-                        var column = _this.$getColumn(i);
+                                            /*step 2. get the first occurrence of a vacant pay eg. 5th_pay*/
+                                            if (!newOrder.repaymentData[column + "_pay"]) {
 
-                        /*step 2. get the first occurrence of a vacant pay eg. 5th_pay*/
-                        if (!repaymentData[column + "_pay"]) {
+                                                /*step 3. find the corresponding due date for the vacant pay
+                                                * The generateDates returns an array of the due
+                                                dates for the order under consideration*/
+                                                payDay = _Amortization.OrderWithPromiseCall.generateDueDates(newOrder.order.order_date, newOrder.interval, newOrder.count)[i - 1];
 
-                            /*step 3. find the corresponding due date for the vacant pay
-                            * The generateDates returns an array of the due
-                            dates for the order under consideration*/
-                            payDay = _this.generateDates({ startDate: order.order_date, interval: interval, count: count })[i - 1];
-                            /*[i - 1] explained.
-                            * eg if the i = 5,
-                            * column = 5th_pay,
-                            * then the 4th ( [5-1] - this is the 5th element or 4th index, array is 0 indexed)
-                            * index of the resultant array is the pay day we are interested in*/
-                            break;
+                                                /*[i - 1] explained.
+                                                * eg if the i = 5,
+                                                * column = 5th_pay,
+                                                * then the 4th ( [5-1] - this is the 5th element or 4th index, array is 0 indexed)
+                                                * index of the resultant array is the pay day we are interested in*/
+                                                break;
+                                            }
+                                        }
+
+                                        /*step 4. assign the appropriate intervals
+                                        * NB:: This intervals where generated from the days
+                                        * stipulated on the collections app brief note that the case
+                                        * corresponds to the steps also indicated in the collections app brief*/
+                                        switch (_this.list) {
+                                            case 2:
+                                                dayInterval = 7;
+                                                break;
+                                            case 3:
+                                                dayInterval = 3;
+                                                break;
+                                            case 4:
+                                                dayInterval = 0;
+                                                break;
+                                            case 5:
+                                                dayInterval = 1;
+                                                break;
+                                            case 6:
+                                                dayInterval = 5;
+                                                break;
+                                            case 7:
+                                                dayInterval = 31;
+                                                break;
+
+                                            case 9:
+                                                //collections visit: 1
+                                                dayInterval = 38;
+                                                break;
+                                            case 10:
+                                                //collections visit: 2
+                                                dayInterval = 45;
+                                                break;
+
+                                            case 11:
+                                                //recovery visit: 1
+                                                dayInterval = 61;
+                                                break;
+                                            case 12:
+                                                //recovery visit: 2
+                                                dayInterval = 75;
+                                                break;
+                                            case 13:
+                                                //recovery visit: 2
+                                                dayInterval = 90;
+                                                break;
+
+                                            case 14:
+                                                //external recovery - lawyer visit: 2
+                                                dayInterval = 121;
+                                                break;
+                                        }
+
+                                        if (["collection", "recovery", "call", "external-recovery"].includes(_this.mode)) {
+                                            for (var p = 0; p < accumulatedDays; p++) {
+                                                datePool.push(_this.$getDate(today.addDays(-(p + dayInterval))));
+                                            }
+                                        }
+
+                                        if (_this.mode === 'sms') {
+                                            for (var _p = 0; _p < accumulatedDays; _p++) {
+                                                datePool.push(_this.$getDate(today.addDays(_p + dayInterval)));
+                                            }
+                                        }
+
+                                        return datePool.includes(payDay);
+                                    };
+
+                                    var isMyBranch = function isMyBranch() {
+                                        if (_this.auth('DVALead') || _this.auth('FSLLead') || _this.auth('CAGAccess')) return true;
+                                        //the branch to be used for this filter should be the branch of the
+                                        // product being bought not the branch of the customer
+                                        return parseInt(newOrder.order.store_product.store_name) === res.branch;
+                                    };
+
+                                    if (isMyBranch() && hasMissedPayment()) _this.orders.push(newOrder);
+                                });
+
+                            case 5:
+
+                                !!this.orders.length && (this.show = true);
+                                this.$LIPS(false);
+
+                            case 7:
+                            case 'end':
+                                return _context.stop();
                         }
                     }
+                }, _callee, this);
+            }));
 
-                    /*step 4. assign the appropriate intervals
-                    * NB:: This intervals where generated from the days
-                    * stipulated on the collections app brief note that the case
-                    * corresponds to the steps also indicated in the collections app brief*/
-                    switch (_this.list) {
-                        case 2:
-                            dayInterval = 7;
-                            break;
-                        case 3:
-                            dayInterval = 3;
-                            break;
-                        case 4:
-                            dayInterval = 0;
-                            break;
-                        case 5:
-                            dayInterval = 1;
-                            break;
-                        case 6:
-                            dayInterval = 5;
-                            break;
-                        case 7:
-                            dayInterval = 31;
-                            break;
-
-                        case 9:
-                            //collections visit: 1
-                            dayInterval = 38;
-                            break;
-                        case 10:
-                            //collections visit: 2
-                            dayInterval = 45;
-                            break;
-
-                        case 11:
-                            //recovery visit: 1
-                            dayInterval = 61;
-                            break;
-                        case 12:
-                            //recovery visit: 2
-                            dayInterval = 75;
-                            break;
-                        case 13:
-                            //recovery visit: 2
-                            dayInterval = 90;
-                            break;
-
-                        case 14:
-                            //external recovery - lawyer visit: 2
-                            dayInterval = 121;
-                            break;
-                    }
-
-                    //if (this.mode === "collection" || this.mode === "recovery" || this.mode === "call"){
-                    if (["collection", "recovery", "call", "external-recovery"].includes(_this.mode)) {
-                        for (var p = 0; p < accumulatedDays; p++) {
-                            datePool.push(_this.$getDate(today.addDays(-(p + dayInterval))));
-                        }
-                    }
-
-                    if (_this.mode === 'sms') {
-                        for (var _p = 0; _p < accumulatedDays; _p++) {
-                            datePool.push(_this.$getDate(today.addDays(_p + dayInterval)));
-                        }
-                    }
-
-                    return datePool.includes(payDay);
-                };
-
-                var isMyBranch = function isMyBranch() {
-                    if (_this.auth('DVALead') || _this.auth('FSLLead') || _this.auth('CAGAccess')) return true;
-                    //the branch to be used for this filter should be the branch of the
-                    // product being bought not the branch of the customer
-                    return parseInt(order.store_product.store_name) === res.branch;
-                    //return order.customer.branch.id === res.branch;
-                };
-
-                /*console.log('store name: ' + parseInt(order.store_product.store_name) + ' | ' + order.store_product.store_name,
-                    '--------- res branch: ' + res.branch,
-                    '--------- isMyBranch: ' + isMyBranch(),
-                    '--------- hasMissedPayment: ' + hasMissedPayment(),
-                    '--------- final: ' + (isMyBranch() && hasMissedPayment()));*/
-
-                return isMyBranch() && hasMissedPayment();
-            });
-
-            !!this.orders.length && (this.show = true);
-            this.$LIPS(false);
-        },
-
-
-        isOrderFormal: function isOrderFormal(order) {
-            return ['formal', 'salaried'].includes(order.customer.employment_status.toLowerCase());
-        },
-
-        generateDates: function generateDates(_ref) {
-            var startDate = _ref.startDate,
-                interval = _ref.interval,
-                count = _ref.count;
-
-            var dates = [];
-            for (var i = 0; i < count; i++) {
-                var orderDate = new Date(startDate).addDays((i + 1) * interval);
-                var dateString = this.$getDate(orderDate);
-                dates.push(dateString);
+            function prepareForm(_x) {
+                return _ref.apply(this, arguments);
             }
-            return dates;
-        },
 
-
-        renderMessage: function renderMessage(reminder) {
-            return !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback;
-        },
-
+            return prepareForm;
+        }(),
         fetchList: function fetchList(list) {
             var _this2 = this;
 
@@ -804,312 +746,115 @@ exports.default = {
             (0, _api.get)(url({ query: { list: list } })).then(function (_ref2) {
                 var data = _ref2.data;
 
-                if (list === 8) {
-                    var orders = [];
-                    data.orders.forEach(function (promiseCall) {
-                        return orders.push(promiseCall.order);
-                    });
-                    data.orders = orders;
-                }
+                if (list === 8) data.orders = data.orders.map(function (promiseCall) {
+                    return promiseCall.order;
+                });
                 _this2.prepareForm(data);
             });
         },
+        displayDetails: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(order, modal) {
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                _context2.next = 2;
+                                return _vue2.default.set(this.$data, 'activeOrder', order);
 
+                            case 2:
+                                this.showModalContent = true;
+                                return _context2.abrupt('return', $('#' + modal).modal('toggle'));
 
-        isPaymentDue: function isPaymentDue(dueDate) {
-            return new Date() > new Date(dueDate);
-        },
+                            case 4:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
 
-        getDiscount: function getDiscount(_ref3) {
-            var discount = _ref3.discount;
-            return discount.name + ' (' + discount.percentage_discount + ')';
-        },
+            function displayDetails(_x2, _x3) {
+                return _ref3.apply(this, arguments);
+            }
 
-        isRepaymentValid: function isRepaymentValid(order) {
-            return !( /*!order['repayment'] && */!order['repayment_formal'] && !order['repayment_informal']);
+            return displayDetails;
+        }(),
+        processSelected: function processSelected() {
+            this.$LIPS(true);
+            var selectedOrders = this.orders.filter(function (order) {
+                return order.isSelected;
+            });
+            if (!selectedOrders.length) {
+                this.$displayErrorMessage('please select at least one!');
+                return this.$LIPS(false);
+            }
+            this.sendSMSReminders(selectedOrders);
         },
-
-        displayDetails: function displayDetails(order, modal) {
-            this.paymentSummary = this.calcPaymentSummary(order);
-            _vue2.default.set(this.$data, 'currentOrder', order);
-            this.showModalContent = true;
-            return $('#' + modal).modal('toggle');
-        },
-        getCountAndRepaymentData: function getCountAndRepaymentData(order) {
-            var data = { count: this.amortizationPlan(order).count };
-            if (order['repayment_formal'] != null) data.repaymentData = order.repayment_formal;
-            if (order['repayment_informal'] != null) data.repaymentData = order.repayment_informal;
-            return data;
-        },
-        calcPaymentSummary: function calcPaymentSummary(order) {
+        sendSMSReminders: function sendSMSReminders(selectedOrders) {
             var _this3 = this;
 
-            var datesDefaulted = [];
-            var amountPerDefault = 500;
-            var fmt = function fmt(cur) {
-                return _this3.$formatCurrency(cur);
-            };
-            var amountPaid = this.$roundDownAmt(parseInt(order.down_payment));
-
-            var _amortizationPlan2 = this.amortizationPlan(order),
-                count = _amortizationPlan2.count,
-                interval = _amortizationPlan2.interval;
-
-            var _getCountAndRepayment2 = this.getCountAndRepaymentData(order),
-                repaymentData = _getCountAndRepayment2.repaymentData;
-
-            var dueDates = this.generateDates({ startDate: order.order_date, interval: interval, count: count });
-            dueDates.forEach(function (dueDate, index) {
-                return _this3.isPaymentDue(_this3.$getDate(new Date(dueDate).addDays(5))) && datesDefaulted.push({ dueDate: dueDate, actualPayDate: repaymentData[_this3.$getColumn(index) + "_date"] });
-            });
-            if (!!repaymentData) {
-                for (var i = 1; i < count + 1; i++) {
-                    amountPaid += this.$roundDownAmt(repaymentData[this.$getColumn(i) + '_pay']);
-                }
-            } else amountPaid = 0;
-            var discount = order.discount.percentage_discount;
-
-            var multiplicationFactor = count === 6 ? 0.5 : 1;
-            var repaymentCoveredAsDiscount = function repaymentCoveredAsDiscount() {
-                return discount > 0 ? discount === 5 ? 1 : 2 : 0;
-            };
-            var discountAmount = order.repayment_amount * multiplicationFactor * repaymentCoveredAsDiscount();
-            discountAmount = this.$roundDownAmt(discountAmount);
-
-            var defaultFee = datesDefaulted.length * amountPerDefault;
-            var discountedTotal = this.$roundDownAmt(order["product_price"] - discountAmount);
-
-            return {
-                amountPaid: fmt(amountPaid),
-                discountAmount: fmt(this.$roundDownAmt(discountAmount)),
-                outstandingDebt: fmt(this.$roundDownAmt(parseInt(order["product_price"]) - amountPaid)),
-                discountedTotal: fmt(discountedTotal),
-                defaultFee: fmt(defaultFee),
-                totalPlusDefault: fmt(discountedTotal + defaultFee)
-            };
-        },
-        getRepayment: function getRepayment(order) {
-            var clause = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-            if (!this.isRepaymentValid(order)) return null;
-            var data = [],
-                _getCountAndRepayment3 = this.getCountAndRepaymentData(order),
-                repaymentData = _getCountAndRepayment3.repaymentData;
-            var _amortizationPlan3 = this.amortizationPlan(order),
-                interval = _amortizationPlan3.interval,
-                count = _amortizationPlan3.count;
-
-            if (clause === null) return this.generateDates({ startDate: order.order_date, interval: interval, count: count });
-            if (clause === 'repayments') return new Array(count).fill(this.$roundDownAmt(order.repayment_amount), 0, count);
-            for (var i = 1; i < count + 1; i++) {
-                data.push(repaymentData[this.$getColumn(i) + clause]);
-            }return data;
-        },
-        getPaymentStatusClasses: function getPaymentStatusClasses(order) {
-            if (!this.isRepaymentValid(order)) return null;
-            var data = [],
-                _getCountAndRepayment4 = this.getCountAndRepaymentData(order),
-                repaymentData = _getCountAndRepayment4.repaymentData,
-                _amortizationPlan4 = this.amortizationPlan(order),
-                count = _amortizationPlan4.count,
-                dueDates = this.getRepayment(order);
-
-            for (var i = 1; i < count + 1; i++) {
-                var status = { class: null, icon: null };
-                var position = this.$getColumn(i);
-                var isDue = this.isPaymentDue(dueDates[i - 1]);
-                var amountPaid = parseInt(repaymentData[position + '_pay']);
-                if (amountPaid) {
-                    status.class = 'paid';
-                    status.icon = 'fa-check';
-                } else if (isDue && !amountPaid) {
-                    status.class = 'missed';
-                    status.icon = 'fa-times';
-                } else if (!isDue) {
-                    status.class = 'pending';
-                    status.icon = 'fa-hourglass-start';
-                }
-                data.push(status);
-            }
-            return data;
-        },
-        getRepaymentLevel: function getRepaymentLevel(order) {
-            if (!this.isRepaymentValid(order)) return 0;
-            var level = 0,
-                _amortizationPlan5 = this.amortizationPlan(order),
-                count = _amortizationPlan5.count,
-                _getCountAndRepayment5 = this.getCountAndRepaymentData(order),
-                repaymentData = _getCountAndRepayment5.repaymentData;
-
-            for (var i = 1; i < count + 1; i++) {
-                if (repaymentData[this.$getColumn(i) + '_pay'] > 0) level++;
-            }return level + "/" + count;
-        },
-        convertPaymentMethodOrBankToName: function convertPaymentMethodOrBankToName(id, type) {
-            return !id ? null : this.$data[type].find(function (obj) {
-                return obj.id === id;
-            }).name;
-        },
-        updateReminder: function updateReminder(reminder, selected) {
-            if (!selected) {
-                var index = void 0;
-                this.reminder.forEach(function (obj, i) {
-                    return obj.order_id === reminder.order_id && (index = i);
-                });
-                this.reminder.splice(index, 1);
-            } else this.reminder.push(reminder);
-        },
-        processSelected: function processSelected() {
-            var _this4 = this;
-
-            if (!this.reminder.length) {
-                this.$displayErrorMessage('please select at least one!');
-                return;
-            }
-            this.$LIPS(true);
-            var smsContactList = this.reminder.map(function (obj) {
-                var newObject = JSON.parse(JSON.stringify(obj));
-                newObject.order = _this4.orders.find(function (_ref4) {
-                    var id = _ref4.id;
-                    return id === obj.order_id;
-                });
-                newObject.message = _this4.generateCustomMessage(newObject.order);
-                return newObject;
-            });
-            this.sendSMSReminders(smsContactList);
-        },
-        sendSMSReminders: function sendSMSReminders(smsContactList) {
-            var _this5 = this;
-
             var messages = [];
-            smsContactList.forEach(function (value, index) {
-                var sms = new _sms.Message(value.message, value.contacts, false, value.dva_id);
+            selectedOrders.forEach(function (order, index) {
+                var sms = new _sms.Message(order.nextSMSReminder, order.reminder.contacts, false, order.dvaId);
                 sms.send(function (r) {
                     if (r.status === 200) {
                         delete sms.logToDB;
                         messages.push(sms);
                     }
-                    if (index + 1 === smsContactList.length) _this5.logSentMessages(messages, smsContactList);
+                    if (index + 1 === selectedOrders.length) _this3.logSentMessages(selectedOrders, messages);
                 });
             });
         },
-        logSentMessages: function logSentMessages(messages, smsContactList) {
-            var _this6 = this;
+        logSentMessages: function logSentMessages(selectedOrders, messages) {
+            var _this4 = this;
 
-            if (!!messages) {
-                (0, _api.post)('/api/message', { messages: messages, bulk: true }).then(function (_ref5) {
-                    var data = _ref5.data;
+            if (messages.length > 0) {
+                (0, _api.post)('/api/message', { messages: messages, bulk: true }).then(function (_ref4) {
+                    var data = _ref4.data;
                     var sentAndLogged = data.sentAndLogged,
                         ids = data.ids;
 
-                    if (sentAndLogged) _this6.logSentReminders(smsContactList, ids);else _this6.$displayErrorMessage('Error Logging sent sms details!');
+                    if (sentAndLogged) _this4.logSentReminders(selectedOrders, ids);else _this4.$displayErrorMessage('Error Logging sent sms details!');
                 });
             } else this.$displayErrorMessage('Error sending messages!');
         },
-        logSentReminders: function logSentReminders(selectedList, ids) {
-            var _this7 = this;
+        logSentReminders: function logSentReminders(selectedOrders, ids) {
+            var _this5 = this;
 
             ids.reverse();
-            var newList = JSON.parse(JSON.stringify(selectedList));
-            newList.forEach(function (value, index) {
-                value.sms_id = ids[index];
-                delete value.message;
-                delete value.order;
-                delete value.contacts;
-                delete value.canBeSelected;
-            });
             if (ids.length > 0) {
-                (0, _api.post)('/api/reminder', { reminders: newList }).then(function (_ref6) {
-                    var data = _ref6.data;
+                var newList = selectedOrders.map(function (order, index) {
+                    order.reminder.sms_id = ids[index];
+                    delete order.reminder.contacts;
+                    delete order.reminder.canBeSelected;
+                    return order.reminder;
+                });
+                (0, _api.post)('/api/reminder', { reminders: newList }).then(function (_ref5) {
+                    var data = _ref5.data;
 
                     if (data.saved) {
                         _flash2.default.setSuccess('Reminders have been sent successfully!', 50000);
-                        _this7.fetchList(_this7.list);
-                    } else _this7.$displayErrorMessage('Error sending reminders!');
-                    _this7.$scrollToTop();
+                        _this5.fetchList(_this5.list);
+                    } else _this5.$displayErrorMessage('Error sending reminders!');
+                    _this5.$scrollToTop();
                 });
             } else this.$displayErrorMessage('Error logging sent messages!');
-        },
-        generateCustomMessage: function generateCustomMessage(order) {
-            var _this8 = this;
-
-            var customer = order.customer,
-                store_product = order.store_product,
-                order_date = order.order_date,
-                repayment_amount = order.repayment_amount;
-            var product_name = store_product.product_name,
-                first_name = customer.first_name,
-                last_name = customer.last_name;
-            var message = void 0,
-                genDateArgs = _extends({ startDate: order_date }, this.amortizationPlan(order));
-            var dates = this.generateDates(genDateArgs);
-            var repaymentLevel = this.getRepaymentLevel(order).split("/")[0];
-            if (this.list === 1) {
-                message = 'Hello ' + first_name + ' ' + last_name + ', thanks for patronizing us.' + ' The following is the breakdown of the repayment plan for' + (' the purchase of ' + product_name + ':%0a');
-                if (dates.length > 0) dates.forEach(function (date, index) {
-                    return message += _this8.$getColumn(index + 1) + ": " + date + " => " + _this8.$formatCurrency(_this8.$roundDownAmt(repayment_amount)) + "%0a";
-                });
-            } else {
-                message = 'Hello ' + first_name + ' ' + last_name + ', This is to remind you that your' + (' ' + this.$getColumn(parseInt(repaymentLevel) + 1) + ' repayment of ' + this.$formatCurrency(this.$roundDownAmt(repayment_amount)) + ' for ' + product_name) + (' will be due on ' + dates[repaymentLevel] + '. we will be expecting you.');
-            }
-            return message + "Please remember to pay on time to avoid late fees and other penalties.%0aThank you.";
-        },
-        amortizationPlan: function amortizationPlan() {
-            var order = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.currentOrder;
-
-            //'2019-07-07' this is the date the bank draft was implemented
-            // and hence used as a factor to check for
-            // if amortization should be 12 or 6
-            var interval = void 0,
-                count = void 0;
-            if (new Date(order.order_date) <= new Date('2019-07-07')) {
-                if (order['repayment_formal'] != null) {
-                    interval = 28;
-                    count = 6;
-                }
-                if (order['repayment_informal'] != null) {
-                    interval = 14;
-                    count = 12;
-                }
-            } else {
-                if (this.isBankDraftAvailable(order) && this.isOrderFormal(order)) {
-                    interval = 28;
-                    count = 6;
-                } else {
-                    interval = 14;
-                    count = 12;
-                }
-            }
-            return { interval: interval, count: count };
-        },
-        isBankDraftAvailable: function isBankDraftAvailable() {
-            //this is where the code for checking for bank draft will go
-            return false;
-        },
-        repaymentCaption: function repaymentCaption(order) {
-            var _amortizationPlan6 = this.amortizationPlan(order),
-                count = _amortizationPlan6.count,
-                data = [];
-
-            for (var i = 1; i <= count; i++) {
-                var prefix = this.$getColumn(i).split('');
-                var appendix = [];
-                for (var j = 1; j <= 2; j++) {
-                    appendix.unshift(prefix.pop());
-                }data.push('<td>' + prefix.join('') + '<sup>' + appendix.join('') + '</sup></td>');
-            }
-            return data;
         }
     },
 
     mounted: function mounted() {
-        var _this9 = this;
+        var _this6 = this;
 
         this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
         $(document).on("hidden.bs.modal", '.modal', function () {
-            _this9.currentOrder = null;
-            _this9.showModalContent = false;
+            _this6.activeOrder = null;
+            _this6.showModalContent = false;
         });
+    },
+    created: function created() {
+        this.$prepareBanks();
+        this.$prepareBranches();
+        this.$preparePaymentMethods();
     }
 };
 
@@ -1327,7 +1072,7 @@ exports.default = {
             var lastPage = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
             if (this.orders.prev_page_url) {
-                this.page = lastPage ? lastPage : this.page + 1;
+                this.page = lastPage ? lastPage : this.page - 1;
                 this.fetchData();
             }
         },
@@ -1353,6 +1098,14 @@ exports.default = {
         this.fetchData();
     }
 };
+
+/***/ }),
+
+/***/ "./node_modules/babel-runtime/regenerator/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime-module.js");
+
 
 /***/ }),
 
@@ -1454,6 +1207,782 @@ function toComment(sourceMap) {
 
 /***/ }),
 
+/***/ "./node_modules/regenerator-runtime/runtime-module.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// This method of obtaining a reference to the global object needs to be
+// kept identical to the way it is obtained in runtime.js
+var g = (function() { return this })() || Function("return this")();
+
+// Use `getOwnPropertyNames` because not all browsers support calling
+// `hasOwnProperty` on the global `self` object in a worker. See #183.
+var hadRuntime = g.regeneratorRuntime &&
+  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
+
+// Save the old regeneratorRuntime in case it needs to be restored later.
+var oldRuntime = hadRuntime && g.regeneratorRuntime;
+
+// Force reevalutation of runtime.js.
+g.regeneratorRuntime = undefined;
+
+module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime.js");
+
+if (hadRuntime) {
+  // Restore the original runtime.
+  g.regeneratorRuntime = oldRuntime;
+} else {
+  // Remove the global property added by runtime.js.
+  try {
+    delete g.regeneratorRuntime;
+  } catch(e) {
+    g.regeneratorRuntime = undefined;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/regenerator-runtime/runtime.js":
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+!(function(global) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  var inModule = typeof module === "object";
+  var runtime = global.regeneratorRuntime;
+  if (runtime) {
+    if (inModule) {
+      // If regeneratorRuntime is defined globally and we're in a module,
+      // make the exports object identical to regeneratorRuntime.
+      module.exports = runtime;
+    }
+    // Don't bother evaluating the rest of this file if the runtime was
+    // already defined globally.
+    return;
+  }
+
+  // Define the runtime globally (as expected by generated code) as either
+  // module.exports (if we're in a module) or a new, empty object.
+  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  runtime.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  runtime.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  runtime.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  runtime.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration. If the Promise is rejected, however, the
+          // result for this iteration will be rejected with the same
+          // reason. Note that rejections of yielded Promises are not
+          // thrown back into the generator function, as is the case
+          // when an awaited Promise is rejected. This difference in
+          // behavior between yield and await is important, because it
+          // allows the consumer to decide what to do with the yielded
+          // rejection (swallow it and continue, manually .throw it back
+          // into the generator, abandon iteration, whatever). With
+          // await, by contrast, there is no opportunity to examine the
+          // rejection reason outside the generator function, so the
+          // only option is to throw it from the await expression, and
+          // let the generator function handle the exception.
+          result.value = unwrapped;
+          resolve(result);
+        }, reject);
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  runtime.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList)
+    );
+
+    return runtime.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        if (delegate.iterator.return) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  runtime.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  runtime.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+})(
+  // In sloppy mode, unbound `this` refers to the global object, fallback to
+  // Function constructor if we're in global strict mode. That is sadly a form
+  // of indirect eval which violates Content Security Policy.
+  (function() { return this })() || Function("return this")()
+);
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-02013d35\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/customHeader.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1515,58 +2044,63 @@ var render = function() {
       [
         _vm.mode === "normal-list"
           ? _c("span")
-          : _vm.reminder.canBeSelected &&
+          : _vm.order.reminder.canBeSelected &&
             ["collection", "recovery", "call", "external-recovery"].includes(
               _vm.mode
             )
             ? _c(
                 "span",
                 {
-                  staticClass: "user mx-auto waiting-reminder",
+                  staticClass: "user mx-auto bg-pending text-white",
                   on: { click: _vm.logReminder }
                 },
                 [_c("i", { staticClass: "fas fa-hourglass-start" })]
               )
-            : _vm.reminder.canBeSelected && _vm.mode === "sms"
+            : _vm.order.reminder.canBeSelected && _vm.mode === "sms"
               ? _c("div", { staticClass: "d-flex align-items-center" }, [
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.selected,
-                        expression: "selected"
+                        value: _vm.order.isSelected,
+                        expression: "order.isSelected"
                       }
                     ],
                     staticClass:
                       "form-check-input my-0 mx-4 float-left position-relative ",
                     attrs: { type: "checkbox" },
                     domProps: {
-                      checked: Array.isArray(_vm.selected)
-                        ? _vm._i(_vm.selected, null) > -1
-                        : _vm.selected
+                      checked: Array.isArray(_vm.order.isSelected)
+                        ? _vm._i(_vm.order.isSelected, null) > -1
+                        : _vm.order.isSelected
                     },
                     on: {
-                      click: function($event) {
-                        _vm.toggleSelect(!_vm.selected)
-                      },
+                      click: _vm.toggleSelect,
                       change: function($event) {
-                        var $$a = _vm.selected,
+                        var $$a = _vm.order.isSelected,
                           $$el = $event.target,
                           $$c = $$el.checked ? true : false
                         if (Array.isArray($$a)) {
                           var $$v = null,
                             $$i = _vm._i($$a, $$v)
                           if ($$el.checked) {
-                            $$i < 0 && (_vm.selected = $$a.concat([$$v]))
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.order,
+                                "isSelected",
+                                $$a.concat([$$v])
+                              )
                           } else {
                             $$i > -1 &&
-                              (_vm.selected = $$a
-                                .slice(0, $$i)
-                                .concat($$a.slice($$i + 1)))
+                              _vm.$set(
+                                _vm.order,
+                                "isSelected",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
                           }
                         } else {
-                          _vm.selected = $$c
+                          _vm.$set(_vm.order, "isSelected", $$c)
                         }
                       }
                     }
@@ -1603,7 +2137,7 @@ var render = function() {
           }
         }
       },
-      [_vm._v("\n        " + _vm._s(_vm.order.order_date) + "\n    ")]
+      [_vm._v("\n        " + _vm._s(_vm.order.order.order_date) + "\n    ")]
     ),
     _vm._v(" "),
     _c(
@@ -1641,7 +2175,7 @@ var render = function() {
           }
         }
       },
-      [_vm._v("\n        " + _vm._s(_vm.getFinancialStatus) + "\n    ")]
+      [_vm._v("\n        " + _vm._s(_vm.order.financialStatus) + "\n    ")]
     ),
     _vm._v(" "),
     _c(
@@ -1659,7 +2193,7 @@ var render = function() {
       [
         _vm._v(
           "\n        " +
-            _vm._s(_vm.order.reminders.length) +
+            _vm._s(_vm.order.order.reminders.length) +
             " reminder(s) sent\n    "
         )
       ]
@@ -1676,11 +2210,27 @@ var render = function() {
             _c("span", { staticClass: "present" }, [
               _c("span", { staticClass: "radio w-50 pr-3 mb-0 float-left" }, [
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.order.reminder.is_visited,
+                      expression: "order.reminder.is_visited"
+                    }
+                  ],
                   attrs: {
                     type: "radio",
-                    value: "yes",
                     id: "present" + _vm.index,
                     name: "isPresent" + _vm.index
+                  },
+                  domProps: {
+                    value: true,
+                    checked: _vm._q(_vm.order.reminder.is_visited, true)
+                  },
+                  on: {
+                    change: function($event) {
+                      _vm.$set(_vm.order.reminder, "is_visited", true)
+                    }
                   }
                 }),
                 _vm._v(" "),
@@ -1691,11 +2241,27 @@ var render = function() {
               _vm._v(" "),
               _c("span", { staticClass: "radio w-50 pl-3 mb-0 float-left" }, [
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.order.reminder.is_visited,
+                      expression: "order.reminder.is_visited"
+                    }
+                  ],
                   attrs: {
                     type: "radio",
-                    value: "no",
                     id: "absent" + _vm.index,
                     name: "isPresent" + _vm.index
+                  },
+                  domProps: {
+                    value: false,
+                    checked: _vm._q(_vm.order.reminder.is_visited, false)
+                  },
+                  on: {
+                    change: function($event) {
+                      _vm.$set(_vm.order.reminder, "is_visited", false)
+                    }
                   }
                 }),
                 _vm._v(" "),
@@ -1721,19 +2287,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.reminder.feedback,
-                  expression: "reminder.feedback"
+                  value: _vm.order.reminder.feedback,
+                  expression: "order.reminder.feedback"
                 }
               ],
               staticClass: "form-control",
-              attrs: { rows: "1", disabled: !_vm.reminder.canBeSelected },
-              domProps: { value: _vm.reminder.feedback },
+              attrs: { rows: "1", disabled: !_vm.order.reminder.canBeSelected },
+              domProps: { value: _vm.order.reminder.feedback },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.reminder, "feedback", $event.target.value)
+                  _vm.$set(_vm.order.reminder, "feedback", $event.target.value)
                 }
               }
             })
@@ -1754,19 +2320,22 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.promiseCall.date,
-                  expression: "promiseCall.date"
+                  value: _vm.order.promiseCall.date,
+                  expression: "order.promiseCall.date"
                 }
               ],
               staticClass: "form-control",
-              attrs: { type: "date", disabled: !_vm.reminder.canBeSelected },
-              domProps: { value: _vm.promiseCall.date },
+              attrs: {
+                type: "date",
+                disabled: !_vm.order.reminder.canBeSelected
+              },
+              domProps: { value: _vm.order.promiseCall.date },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.promiseCall, "date", $event.target.value)
+                  _vm.$set(_vm.order.promiseCall, "date", $event.target.value)
                 }
               }
             })
@@ -1805,22 +2374,17 @@ var render = function() {
             },
             _vm._l(_vm.orders, function(order, index) {
               return _c("order-item", {
-                key: order.id,
+                key: order.order.id,
                 attrs: {
                   index: index,
                   "start-index": _vm.startIndex,
                   order: order,
-                  dva_id: _vm.dva_id,
-                  "is-repayment-valid": _vm.isRepaymentValid(order),
-                  "pay-summary": _vm.calcPaymentSummary(order),
-                  "repayment-level": _vm.getRepaymentLevel(order),
                   mode: _vm.mode
                 },
                 on: {
                   done: function($event) {
                     _vm.fetchList(_vm.list)
                   },
-                  updateReminderList: _vm.updateReminder,
                   display: _vm.displayDetails
                 }
               })
@@ -1876,14 +2440,14 @@ var render = function() {
                         _c("tr", [
                           _c("th", [_vm._v("Order ID")]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.currentOrder.id))])
+                          _c("td", [_vm._v(_vm._s(_vm.activeOrder.order.id))])
                         ]),
                         _vm._v(" "),
                         _c("tr", [
                           _c("th", [_vm._v("Order date")]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(_vm.currentOrder.order_date))
+                            _vm._v(_vm._s(_vm.activeOrder.order.order_date))
                           ])
                         ]),
                         _vm._v(" "),
@@ -1893,7 +2457,7 @@ var render = function() {
                           _c("td", [
                             _vm._v(
                               _vm._s(
-                                _vm.currentOrder.store_product.product_name
+                                _vm.activeOrder.order.store_product.product_name
                               )
                             )
                           ])
@@ -1906,7 +2470,7 @@ var render = function() {
                             _vm._v(
                               _vm._s(
                                 _vm.$formatCurrency(
-                                  _vm.currentOrder.repayment_amount
+                                  _vm.activeOrder.amountsToBePaid[0]
                                 )
                               )
                             )
@@ -1920,7 +2484,7 @@ var render = function() {
                             _vm._v(
                               _vm._s(
                                 _vm.$formatCurrency(
-                                  _vm.currentOrder.down_payment
+                                  _vm.activeOrder.order.down_payment
                                 )
                               )
                             )
@@ -1933,9 +2497,7 @@ var render = function() {
                           _c("td", [
                             _vm._v(
                               _vm._s(
-                                _vm._f("capitalize")(
-                                  _vm.getDiscount(_vm.currentOrder)
-                                )
+                                _vm._f("capitalize")(_vm.activeOrder.discount)
                               )
                             )
                           ])
@@ -1948,7 +2510,7 @@ var render = function() {
                             _vm._v(
                               _vm._s(
                                 _vm._f("capitalize")(
-                                  _vm.currentOrder.sales_type.name
+                                  _vm.activeOrder.order.sales_type.name
                                 )
                               )
                             )
@@ -1962,7 +2524,7 @@ var render = function() {
                             _vm._v(
                               _vm._s(
                                 _vm.$formatCurrency(
-                                  _vm.currentOrder.product_price
+                                  _vm.activeOrder.order.product_price
                                 )
                               )
                             )
@@ -1975,10 +2537,10 @@ var render = function() {
                           _c("td", [
                             _vm._v(
                               _vm._s(
-                                _vm.currentOrder["floor_agent"]
-                                  ? _vm.currentOrder.floor_agent.full_name
+                                _vm.activeOrder.order["floor_agent"]
+                                  ? _vm.activeOrder.order.floor_agent.full_name
                                   : null
-                              )
+                              ) + "\n                                "
                             )
                           ])
                         ])
@@ -2011,7 +2573,7 @@ var render = function() {
                           _c("th", [_vm._v("Customer ID")]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(_vm.currentOrder.customer.id))
+                            _vm._v(_vm._s(_vm.activeOrder.customer.id))
                           ])
                         ]),
                         _vm._v(" "),
@@ -2022,7 +2584,7 @@ var render = function() {
                             _vm._v(
                               _vm._s(
                                 _vm.$getCustomerFullName(
-                                  _vm.currentOrder.customer
+                                  _vm.activeOrder.customer
                                 )
                               )
                             )
@@ -2036,7 +2598,7 @@ var render = function() {
                             _vm._v(
                               _vm._s(
                                 _vm.$getCustomerAddress(
-                                  _vm.currentOrder.customer
+                                  _vm.activeOrder.customer
                                 )
                               )
                             )
@@ -2047,7 +2609,7 @@ var render = function() {
                           _c("th", [_vm._v("Phone")]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(_vm.currentOrder.customer.telephone))
+                            _vm._v(_vm._s(_vm.activeOrder.customer.telephone))
                           ])
                         ]),
                         _vm._v(" "),
@@ -2055,9 +2617,7 @@ var render = function() {
                           _c("th", [_vm._v("Branch")]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(
-                              _vm._s(_vm.currentOrder.customer.branch.name)
-                            )
+                            _vm._v(_vm._s(_vm.activeOrder.customer.branch.name))
                           ])
                         ]),
                         _vm._v(" "),
@@ -2066,9 +2626,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              _vm._s(
-                                _vm.currentOrder.customer.employment_status
-                              )
+                              _vm._s(_vm.activeOrder.customer.employment_status)
                             )
                           ])
                         ]),
@@ -2078,16 +2636,8 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              _vm._s(
-                                _vm.currentOrder.customer
-                                  .work_guarantor_first_name +
-                                  " " +
-                                  _vm.currentOrder.customer
-                                    .work_guarantor_last_name +
-                                  " - " +
-                                  _vm.currentOrder.customer
-                                    .work_guarantor_relationship
-                              ) + "\n                                "
+                              _vm._s(_vm.activeOrder.customerWGName) +
+                                "\n                                "
                             )
                           ])
                         ]),
@@ -2098,7 +2648,7 @@ var render = function() {
                           _c("td", [
                             _vm._v(
                               _vm._s(
-                                _vm.currentOrder.customer.work_guarantor_telno
+                                _vm.activeOrder.customer.work_guarantor_telno
                               )
                             )
                           ])
@@ -2109,16 +2659,8 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              _vm._s(
-                                _vm.currentOrder.customer
-                                  .personal_guarantor_first_name +
-                                  " " +
-                                  _vm.currentOrder.customer
-                                    .personal_guarantor_last_name +
-                                  " - " +
-                                  _vm.currentOrder.customer
-                                    .personal_guarantor_relationship
-                              ) + "\n                                "
+                              _vm._s(_vm.activeOrder.customerPGName) +
+                                "\n                                "
                             )
                           ])
                         ]),
@@ -2129,7 +2671,7 @@ var render = function() {
                           _c("td", [
                             _vm._v(
                               _vm._s(
-                                _vm.currentOrder.customer
+                                _vm.activeOrder.customer
                                   .personal_guarantor_telno
                               )
                             )
@@ -2150,7 +2692,7 @@ var render = function() {
                                     target: "_blank",
                                     to:
                                       "/dva/verification?id=" +
-                                      _vm.currentOrder.customer.id
+                                      _vm.activeOrder.customer.id
                                   }
                                 },
                                 [
@@ -2191,7 +2733,7 @@ var render = function() {
                         "\n                        Repayment Plan/Summary - " +
                           _vm._s(
                             _vm._f("capitalize")(
-                              _vm.currentOrder.customer.employment_status
+                              _vm.activeOrder.customer.employment_status
                             )
                           ) +
                           "\n                    "
@@ -2204,6 +2746,42 @@ var render = function() {
                   _c("div", { staticClass: "modal-body" }, [
                     _c("div", { staticClass: "table-responsive" }, [
                       _c("h5", { staticClass: "mt-3 mb-0" }, [
+                        _vm._v("Order Information")
+                      ]),
+                      _vm._v(" "),
+                      _c("table", { staticClass: "table table-bordered" }, [
+                        _c("tbody", [
+                          _vm._m(6),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", { staticClass: "font-weight-bold" }, [
+                              _vm._v(
+                                _vm._s(_vm.activeOrder.customerName) +
+                                  "\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(_vm.activeOrder.order.id))
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.activeOrder.order.store_product
+                                    .product_name
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "font-weight-bold" }, [
+                              _vm._v(_vm._s(_vm.activeOrder.branch.name))
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("h5", { staticClass: "mt-5 mb-0" }, [
                         _vm._v("Amortization Schedule")
                       ]),
                       _vm._v(" "),
@@ -2215,7 +2793,7 @@ var render = function() {
                               _c("th", [_vm._v("Repayment")]),
                               _vm._v(" "),
                               _vm._l(
-                                _vm.repaymentCaption(_vm.currentOrder),
+                                _vm.activeOrder.repaymentCaptions,
                                 function(caption) {
                                   return _c("td", {
                                     domProps: { innerHTML: _vm._s(caption) }
@@ -2232,12 +2810,9 @@ var render = function() {
                             [
                               _c("th", [_vm._v("Due Date")]),
                               _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(_vm.currentOrder),
-                                function(date) {
-                                  return _c("td", [_vm._v(_vm._s(date))])
-                                }
-                              )
+                              _vm._l(_vm.activeOrder.dueDates, function(date) {
+                                return _c("td", [_vm._v(_vm._s(date))])
+                              })
                             ],
                             2
                           ),
@@ -2247,12 +2822,11 @@ var render = function() {
                             [
                               _c("th", [_vm._v("Actual Pay Day")]),
                               _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(_vm.currentOrder, "_date"),
-                                function(date) {
-                                  return _c("td", [_vm._v(_vm._s(date))])
-                                }
-                              )
+                              _vm._l(_vm.activeOrder.actualPayDates, function(
+                                date
+                              ) {
+                                return _c("td", [_vm._v(_vm._s(date))])
+                              })
                             ],
                             2
                           ),
@@ -2264,7 +2838,7 @@ var render = function() {
                               _c("th", [_vm._v("Status")]),
                               _vm._v(" "),
                               _vm._l(
-                                _vm.getPaymentStatusClasses(_vm.currentOrder),
+                                _vm.activeOrder.paymentStatusClasses,
                                 function(status) {
                                   return _c("td", { class: status.class }, [
                                     _c("i", {
@@ -2284,21 +2858,13 @@ var render = function() {
                             [
                               _c("th", [_vm._v("Repayment Amount")]),
                               _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(
-                                  _vm.currentOrder,
-                                  "repayments"
-                                ),
-                                function(payment) {
-                                  return _c("td", [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(_vm.$formatCurrency(payment)) +
-                                        "\n                                "
-                                    )
-                                  ])
-                                }
-                              )
+                              _vm._l(_vm.activeOrder.amountsToBePaid, function(
+                                payment
+                              ) {
+                                return _c("td", [
+                                  _vm._v(_vm._s(_vm.$formatCurrency(payment)))
+                                ])
+                              })
                             ],
                             2
                           ),
@@ -2309,12 +2875,11 @@ var render = function() {
                               _c("th", [_vm._v("Actual Amount Paid")]),
                               _vm._v(" "),
                               _vm._l(
-                                _vm.getRepayment(_vm.currentOrder, "_pay"),
+                                _vm.activeOrder.actualAmountsPaid,
                                 function(payment) {
                                   return _c("td", [
                                     _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(_vm.$formatCurrency(payment)) +
+                                      _vm._s(_vm.$formatCurrency(payment)) +
                                         "\n                                "
                                     )
                                   ])
@@ -2330,30 +2895,26 @@ var render = function() {
                             [
                               _c("th", [_vm._v("Payment Method")]),
                               _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(
-                                  _vm.currentOrder,
-                                  "_payment_method"
-                                ),
-                                function(repaymentMethod) {
-                                  return _c(
-                                    "td",
-                                    { staticClass: "text-capitalize" },
-                                    [
-                                      _vm._v(
-                                        "\n                                    " +
-                                          _vm._s(
-                                            _vm.convertPaymentMethodOrBankToName(
-                                              repaymentMethod,
-                                              "payment_methods"
-                                            )
-                                          ) +
-                                          "\n                                "
-                                      )
-                                    ]
-                                  )
-                                }
-                              )
+                              _vm._l(_vm.activeOrder.paymentMethods, function(
+                                repaymentMethod
+                              ) {
+                                return _c(
+                                  "td",
+                                  { staticClass: "text-capitalize" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(
+                                          _vm.Order.convertToName(
+                                            repaymentMethod,
+                                            "paymentMethods"
+                                          )
+                                        ) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              })
                             ],
                             2
                           ),
@@ -2363,30 +2924,26 @@ var render = function() {
                             [
                               _c("th", [_vm._v("Bank")]),
                               _vm._v(" "),
-                              _vm._l(
-                                _vm.getRepayment(
-                                  _vm.currentOrder,
-                                  "_payment_bank"
-                                ),
-                                function(repaymentBank) {
-                                  return _c(
-                                    "td",
-                                    { staticClass: "text-capitalize" },
-                                    [
-                                      _vm._v(
-                                        "\n                                    " +
-                                          _vm._s(
-                                            _vm.convertPaymentMethodOrBankToName(
-                                              repaymentBank,
-                                              "banks"
-                                            )
-                                          ) +
-                                          "\n                                "
-                                      )
-                                    ]
-                                  )
-                                }
-                              )
+                              _vm._l(_vm.activeOrder.paymentBanks, function(
+                                repaymentBank
+                              ) {
+                                return _c(
+                                  "td",
+                                  { staticClass: "text-capitalize" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(
+                                          _vm.Order.convertToName(
+                                            repaymentBank,
+                                            "banks"
+                                          )
+                                        ) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              })
                             ],
                             2
                           )
@@ -2406,19 +2963,9 @@ var render = function() {
                             _vm._v(" "),
                             _c("th", [
                               _vm._v(
-                                "\n                                    " +
-                                  _vm._s(
-                                    _vm._f("capitalize")(
-                                      _vm.currentOrder["discount"]["name"]
-                                    )
-                                  ) +
-                                  "\n                                    -\n                                    (" +
-                                  _vm._s(
-                                    _vm.currentOrder["discount"][
-                                      "percentage_discount"
-                                    ]
-                                  ) +
-                                  ")\n                                "
+                                _vm._s(
+                                  _vm._f("capitalize")(_vm.activeOrder.discount)
+                                )
                               )
                             ]),
                             _vm._v(" "),
@@ -2429,7 +2976,7 @@ var render = function() {
                                 _vm._s(
                                   _vm.$formatCurrency(
                                     _vm.$roundDownAmt(
-                                      _vm.currentOrder["product_price"]
+                                      _vm.activeOrder.order["product_price"]
                                     )
                                   )
                                 )
@@ -2439,7 +2986,7 @@ var render = function() {
                             _c("td", [_vm._v("Total Paid")]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm._v(_vm._s(_vm.paymentSummary.amountPaid))
+                              _vm._v(_vm._s(_vm.activeOrder.amountPaid))
                             ])
                           ]),
                           _vm._v(" "),
@@ -2449,19 +2996,19 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm._v(_vm._s(_vm.paymentSummary.discountAmount))
+                              _vm._v(_vm._s(_vm.activeOrder.discountAmount))
                             ]),
                             _vm._v(" "),
                             _c("td", [_vm._v("Total After Discount")]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm._v(_vm._s(_vm.paymentSummary.discountedTotal))
+                              _vm._v(_vm._s(_vm.activeOrder.discountedTotal))
                             ]),
                             _vm._v(" "),
                             _c("td", [_vm._v("Total Debt")]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm._v(_vm._s(_vm.paymentSummary.outstandingDebt))
+                              _vm._v(_vm._s(_vm.activeOrder.outstandingDebt))
                             ])
                           ]),
                           _vm._v(" "),
@@ -2475,7 +3022,7 @@ var render = function() {
                                 _vm._s(
                                   _vm.$formatCurrency(
                                     _vm.$roundDownAmt(
-                                      _vm.currentOrder.down_payment
+                                      _vm.activeOrder.order["down_payment"]
                                     )
                                   )
                                 )
@@ -2485,15 +3032,13 @@ var render = function() {
                             _c("td", [_vm._v("Total Plus Default Fee")]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm._v(
-                                _vm._s(_vm.paymentSummary.totalPlusDefault)
-                              )
+                              _vm._v(_vm._s(_vm.activeOrder.totalPlusDefault))
                             ]),
                             _vm._v(" "),
                             _c("td", [_vm._v("Default Fee")]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm._v(_vm._s(_vm.paymentSummary.defaultFee))
+                              _vm._v(_vm._s(_vm.activeOrder.defaultFee))
                             ])
                           ])
                         ])
@@ -2501,7 +3046,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(6)
+                  _vm._m(7)
                 ])
               : _vm._e()
           ]
@@ -2521,52 +3066,52 @@ var render = function() {
           { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(7),
+              _vm._m(8),
               _vm._v(" "),
               _vm.showModalContent
                 ? _c("div", { staticClass: "modal-body" }, [
                     _c("div", { staticClass: "table-responsive" }, [
-                      _vm.currentOrder.reminders.length
+                      _vm.activeOrder.order.reminders.length
                         ? _c(
                             "table",
                             {
                               staticClass: "table table-bordered table-striped"
                             },
                             [
-                              _vm._m(8),
+                              _vm._m(9),
                               _vm._v(" "),
                               _c(
                                 "tbody",
-                                _vm._l(_vm.currentOrder.reminders, function(
-                                  reminder,
-                                  index
-                                ) {
-                                  return _c("tr", [
-                                    _c("th", [_vm._v(_vm._s(index + 1))]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm.$dateTimeConvert(reminder.date)
+                                _vm._l(
+                                  _vm.activeOrder.order.reminders,
+                                  function(reminder, index) {
+                                    return _c("tr", [
+                                      _c("th", [_vm._v(_vm._s(index + 1))]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.$dateTimeConvert(reminder.date)
+                                          )
                                         )
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(reminder.type))]),
-                                    _vm._v(" "),
-                                    _c("td", {
-                                      domProps: {
-                                        innerHTML: _vm._s(
-                                          _vm.renderMessage(reminder)
-                                        )
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(_vm._s(reminder.user.full_name))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [_vm._v(_vm._s(reminder.type))]),
+                                      _vm._v(" "),
+                                      _c("td", {
+                                        domProps: {
+                                          innerHTML: _vm._s(
+                                            _vm.Order.renderMessage(reminder)
+                                          )
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(reminder.user.full_name))
+                                      ])
                                     ])
-                                  ])
-                                })
+                                  }
+                                )
                               )
                             ]
                           )
@@ -2579,7 +3124,7 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm._m(9)
+              _vm._m(10)
             ])
           ]
         )
@@ -2722,26 +3267,41 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "a",
-        {
-          staticClass: "text-link mt-3 w-100",
-          staticStyle: { "text-align": "right" },
-          attrs: { "data-dismiss": "modal", href: "javascript:" }
-        },
-        [_vm._v("close dialogue")]
-      )
+    return _c("tr", { staticClass: "table-separator" }, [
+      _c("td", [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("Order Id")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("Product")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Branch")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "modal-footer d-flex justify-content-end" },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "text-link mt-3",
+            attrs: { "data-dismiss": "modal", href: "javascript:" }
+          },
+          [_vm._v("close dialogue")]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header py-2" }, [
-      _c("h6", { staticClass: "modal-title py-1" }, [
-        _vm._v("Reminder History")
-      ]),
+      _c("h6", { staticClass: "modal-title py-1" }, [_vm._v("History")]),
       _vm._v(" "),
       _c(
         "a",
@@ -3209,7 +3769,7 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_vm._v("Next")]
+                                  [_vm._v("prev")]
                                 )
                               ]
                             ),
@@ -3729,6 +4289,587 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
+
+/***/ }),
+
+/***/ "./resources/assets/js/utilities/Amortization.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _store = __webpack_require__("./resources/assets/js/store/store.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var vue = new _vue2.default();
+
+var Order = function () {
+    function Order(order, customer) {
+        _classCallCheck(this, Order);
+
+        console.log(order);
+        this._order = order;
+        this._customer = customer;
+        this._paymentBanks = [];
+        this._paymentMethods = [];
+        this._actualPayDates = [];
+        this._actualAmountsPaid = [];
+        this._amountsToBePaid = [];
+        this._repaymentCaptions = [];
+        this._paymentStatusClasses = [];
+        this._repaymentLevel = 0;
+
+        /*summary*/
+        this._amountPaid = null;
+        this._discountAmount = null;
+        this._outstandingDebt = null;
+        this._discountedTotal = null;
+        this._defaultFee = null;
+        this._totalPlusDefault = null;
+
+        /*for repayments*/
+        this._payments = {};
+
+        /*init setters*/
+        this.setIsOrderFormal();
+        this.setIsRepaymentValid();
+        this.setRepaymentData();
+        this.setCountAndInterval();
+        this.setCommonDetails();
+        this.setDueDates();
+        this.setPaymentStatusClasses();
+        this.calcAndSetPaymentSummary();
+        this.setBranch();
+        this.setDiscount();
+    }
+
+    /*custom setters*/
+
+
+    _createClass(Order, [{
+        key: 'setIsRepaymentValid',
+        value: function setIsRepaymentValid() {
+            this._isRepaymentValid = !(!this.order['repayment_formal'] && !this.order['repayment_informal']);
+        }
+    }, {
+        key: 'setIsOrderFormal',
+        value: function setIsOrderFormal() {
+            this._isOrderFormal = ['formal', 'salaried'].includes(this._customer.employment_status.toLowerCase());
+        }
+    }, {
+        key: 'setRepaymentData',
+        value: function setRepaymentData() {
+            if (this.order['repayment_formal'] != null) this._repaymentData = this.order.repayment_formal;
+            if (this.order['repayment_informal'] != null) this._repaymentData = this.order.repayment_informal;
+        }
+    }, {
+        key: 'setCountAndInterval',
+        value: function setCountAndInterval() {
+            //'2019-07-07' this is the date the bank draft was implemented
+            // and hence used as a factor to check for
+            // if amortization should be 12 or 6
+            var interval = void 0,
+                count = void 0;
+            if (new Date(this.order.order_date) <= new Date('2019-07-07')) {
+                if (this.order['repayment_formal'] != null) {
+                    interval = 28;
+                    count = 6;
+                }
+                if (this.order['repayment_informal'] != null) {
+                    interval = 14;
+                    count = 12;
+                }
+            } else {
+                if (Order.isBankDraftAvailable() && this.isOrderFormal) {
+                    interval = 28;
+                    count = 6;
+                } else {
+                    interval = 14;
+                    count = 12;
+                }
+            }
+            this._count = count;
+            this._interval = interval;
+        }
+    }, {
+        key: 'setDueDates',
+        value: function setDueDates() {
+            this._dueDates = Order.generateDueDates(this.order.order_date, this.interval, this.count);
+        }
+    }, {
+        key: 'setCommonDetails',
+        value: function setCommonDetails() {
+            if (!this.isRepaymentValid) return;
+            for (var i = 1; i < this.count + 1; i++) {
+                /*for repayment captions*/
+                var prefix = vue.$getColumn(i).split('');
+                var appendix = [];
+                for (var j = 1; j <= 2; j++) {
+                    appendix.unshift(prefix.pop());
+                }this._repaymentCaptions.push('<td>' + prefix.join('') + '<sup>' + appendix.join('') + '</sup></td>');
+
+                this._actualPayDates.push(this.repaymentData[vue.$getColumn(i) + '_date']);
+                this._actualAmountsPaid.push(this.repaymentData[vue.$getColumn(i) + '_pay']);
+                this._paymentBanks.push(this.repaymentData[vue.$getColumn(i) + '_payment_bank']);
+                this._paymentMethods.push(this.repaymentData[vue.$getColumn(i) + '_payment_method']);
+                this._amountsToBePaid.push(vue.$roundDownAmt(this.order.repayment_amount));
+
+                if (this.repaymentData[vue.$getColumn(i) + '_pay'] > 0) this._repaymentLevel++;
+            }
+        }
+    }, {
+        key: 'setBranch',
+        value: function setBranch() {
+            var _this = this;
+
+            this._branch = _store.store.state.branches.find(function (branch) {
+                return parseInt(branch.id) === parseInt(_this.order.store_product.store_name);
+            });
+        }
+    }, {
+        key: 'setPaymentStatusClasses',
+        value: function setPaymentStatusClasses() {
+            if (!this.isRepaymentValid) /*this._repayment = null;*/return;
+            for (var i = 1; i < this.count + 1; i++) {
+                var status = { class: null, icon: null };
+                var position = vue.$getColumn(i);
+                var isDue = Order.isPaymentDue(this.dueDates[i - 1]);
+                var amountPaid = parseInt(this.repaymentData[position + '_pay']);
+                if (amountPaid) {
+                    status.class = 'paid';
+                    status.icon = 'fa-check';
+                } else if (isDue && !amountPaid) {
+                    status.class = 'missed';
+                    status.icon = 'fa-times';
+                } else if (!isDue) {
+                    status.class = 'pending';
+                    status.icon = 'fa-hourglass-start';
+                }
+                this._paymentStatusClasses.push(status);
+            }
+        }
+    }, {
+        key: 'calcAndSetPaymentSummary',
+        value: function calcAndSetPaymentSummary() {
+            /*helper function*/
+            var fmt = function fmt(cur) {
+                return vue.$formatCurrency(cur);
+            },
+                _order = this.order,
+                repayment_amount = _order.repayment_amount,
+                down_payment = _order.down_payment,
+                product_price = _order.product_price;
+
+            /*discount amount*/
+            var mFactor = this.count === 6 ? 0.5 : 1,
+                discount = this.order.discount.percentage_discount,
+                repaymentAsDiscount = discount > 0 ? discount === 5 ? 1 : 2 : 0,
+                discountAmount = vue.$roundDownAmt(repayment_amount * mFactor * repaymentAsDiscount);
+
+            this._discountAmount = fmt(discountAmount);
+
+            /*(total)amount paid = down payment + total repayments  + discount(if any)*/
+            var amountPaid = 0,
+                totalRepayments = 0;
+            if (!!this.repaymentData) {
+                for (var i = 0; i < this.count + 1; i++) {
+                    var repayment = parseInt(this.actualAmountsPaid[i]);
+                    totalRepayments += !!repayment ? vue.$roundDownAmt(repayment) : 0;
+                }
+                amountPaid = vue.$roundDownAmt(parseInt(down_payment)) + totalRepayments + discountAmount;
+            }
+            this._amountPaid = fmt(amountPaid);
+
+            /*discounted total :: total amount to be paid - discount*/
+            var discountedTotal = vue.$roundDownAmt(product_price - discountAmount);
+            this._discountedTotal = fmt(discountedTotal);
+
+            /*total default fee*/
+            var amountPerDefault = 500;
+            var datesDefaulted = [];
+            var defaultFee = 0;
+            if (new Date(this.order.order_date) > new Date('2019-07-07')) {
+                //the order is a new record then use the default fee
+                /**this is where the calculation for the default fee goes into*/
+                /*this.dueDates.forEach((dueDate, index) =>
+                Order.isPaymentDue(vue.$getDate(new Date(dueDate).addDays(5))) &&
+                datesDefaulted.push({dueDate, actualPayDate: this.actualPayDates[index]}));*/
+                defaultFee = datesDefaulted.length * amountPerDefault;
+            }
+            this._defaultFee = fmt(defaultFee);
+
+            /*total plus default*/
+            this._totalPlusDefault = fmt(discountedTotal + defaultFee);
+
+            /*outstanding debt*/
+            this._outstandingDebt = fmt(vue.$roundDownAmt(parseInt(product_price) - amountPaid));
+        }
+    }, {
+        key: 'setDiscount',
+        value: function setDiscount() {
+            this._discount = this.order.discount.name + " " + this.order.discount.percentage_discount;
+        }
+
+        /*getters*/
+
+    }, {
+        key: 'payments',
+        set: function set(payments) {
+            this._payments = payments;
+        },
+        get: function get() {
+            return this._payments;
+        }
+    }, {
+        key: 'repaymentLevel',
+        get: function get() {
+            return this._repaymentLevel;
+        }
+    }, {
+        key: 'order',
+        get: function get() {
+            return this._order;
+        }
+    }, {
+        key: 'customer',
+        get: function get() {
+            return this._customer;
+        }
+    }, {
+        key: 'isRepaymentValid',
+        get: function get() {
+            return this._isRepaymentValid;
+        }
+    }, {
+        key: 'isOrderFormal',
+        get: function get() {
+            return this._isOrderFormal;
+        }
+    }, {
+        key: 'repaymentData',
+        get: function get() {
+            return this._repaymentData;
+        }
+    }, {
+        key: 'count',
+        get: function get() {
+            return this._count;
+        }
+    }, {
+        key: 'interval',
+        get: function get() {
+            return this._interval;
+        }
+    }, {
+        key: 'dueDates',
+        get: function get() {
+            return this._dueDates;
+        }
+    }, {
+        key: 'paymentStatusClasses',
+        get: function get() {
+            return this._paymentStatusClasses;
+        }
+    }, {
+        key: 'repaymentCaptions',
+        get: function get() {
+            return this._repaymentCaptions;
+        }
+    }, {
+        key: 'paymentBanks',
+        get: function get() {
+            return this._paymentBanks;
+        }
+    }, {
+        key: 'paymentMethods',
+        get: function get() {
+            return this._paymentMethods;
+        }
+    }, {
+        key: 'actualPayDates',
+        get: function get() {
+            return this._actualPayDates;
+        }
+    }, {
+        key: 'actualAmountsPaid',
+        get: function get() {
+            return this._actualAmountsPaid;
+        }
+    }, {
+        key: 'amountsToBePaid',
+        get: function get() {
+            return this._amountsToBePaid;
+        }
+    }, {
+        key: 'amountPaid',
+        get: function get() {
+            return this._amountPaid;
+        }
+    }, {
+        key: 'discountAmount',
+        get: function get() {
+            return this._discountAmount;
+        }
+    }, {
+        key: 'outstandingDebt',
+        get: function get() {
+            return this._outstandingDebt;
+        }
+    }, {
+        key: 'discountedTotal',
+        get: function get() {
+            return this._discountedTotal;
+        }
+    }, {
+        key: 'defaultFee',
+        get: function get() {
+            return this._defaultFee;
+        }
+    }, {
+        key: 'totalPlusDefault',
+        get: function get() {
+            return this._totalPlusDefault;
+        }
+    }, {
+        key: 'branch',
+        get: function get() {
+            return this._branch;
+        }
+    }, {
+        key: 'discount',
+        get: function get() {
+            return this._discount;
+        }
+    }, {
+        key: 'customerName',
+        get: function get() {
+            return this.customer.first_name + " " + this.customer.last_name;
+        }
+    }, {
+        key: 'customerWGName',
+        get: function get() {
+            var _customer = this.customer,
+                a = _customer.work_guarantor_first_name,
+                b = _customer.work_guarantor_last_name,
+                c = _customer.work_guarantor_relationship;
+
+            return a + ' ' + b + ' - ' + c;
+        }
+    }, {
+        key: 'customerPGName',
+        get: function get() {
+            var _customer2 = this.customer,
+                a = _customer2.personal_guarantor_first_name,
+                b = _customer2.personal_guarantor_last_name,
+                c = _customer2.personal_guarantor_relationship;
+
+            return a + ' ' + b + ' - ' + c;
+        }
+
+        /*static methods*/
+
+    }], [{
+        key: 'generateDueDates',
+        value: function generateDueDates(startDate, interval, count) {
+            var dates = [];
+            for (var i = 0; i < count; i++) {
+                var orderDate = new Date(startDate).addDays((i + 1) * interval);
+                var dateString = vue.$getDate(orderDate);
+                dates.push(dateString);
+            }
+            return dates;
+        }
+    }, {
+        key: 'isPaymentDue',
+        value: function isPaymentDue(dueDate) {
+            return new Date() > new Date(dueDate);
+        }
+    }, {
+        key: 'isBankDraftAvailable',
+        value: function isBankDraftAvailable() {
+            return false;
+        }
+    }, {
+        key: 'renderMessage',
+        value: function renderMessage(reminder) {
+            return !!reminder['sms'] ? reminder.sms.message.replace(/%0a/g, '</br>') : reminder.feedback;
+        }
+    }, {
+        key: 'convertToName',
+        value: function convertToName(id, type) {
+            return !id ? null : _store.store.state[type].find(function (obj) {
+                return obj.id === id;
+            }).name;
+        }
+    }]);
+
+    return Order;
+}();
+
+var OrderWithPromiseCall = function (_Order) {
+    _inherits(OrderWithPromiseCall, _Order);
+
+    function OrderWithPromiseCall(order, dvaId) {
+        _classCallCheck(this, OrderWithPromiseCall);
+
+        var _this2 = _possibleConstructorReturn(this, (OrderWithPromiseCall.__proto__ || Object.getPrototypeOf(OrderWithPromiseCall)).call(this, order, order.customer));
+
+        _this2._isReminderSent = false;
+        _this2._dvaId = dvaId;
+        _this2._isSelected = false;
+        _this2.setReminder(null);
+        _this2.setIsReminderSent();
+        _this2.setFinancialStatus();
+        _this2.setPromiseCall();
+        _this2.generateAndSetNextSMSReminder();
+        return _this2;
+    }
+
+    /*custom setters*/
+
+
+    _createClass(OrderWithPromiseCall, [{
+        key: 'setIsReminderSent',
+        value: function setIsReminderSent() {
+            var _this3 = this;
+
+            var date = void 0;
+            var today = vue.$getDate();
+            this.order.reminders.forEach(function (reminder) {
+                //refactor below by using regx characters to split
+                var reminderDateTimeArr = reminder.date.split(' '); //(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
+                var dateArr = reminderDateTimeArr[0].split('-'); //'2019-03-24' -> ['2019','03','24']
+                var timeArr = reminderDateTimeArr[1].split(':'); //'02:00:00' -> ['02','00','00']
+                var arr = [].concat(_toConsumableArray(dateArr), _toConsumableArray(timeArr)) // ['2019','03','24','02','00','00']
+                .map(function (item) {
+                    return parseInt(item, 10);
+                }); //[2019,3,24,2,0,0]
+                date = vue.$getDate(new Date(Date.UTC.apply(Date, _toConsumableArray(arr))), false);
+                date === today && (_this3._isReminderSent = true);
+            });
+        }
+    }, {
+        key: 'setFinancialStatus',
+        value: function setFinancialStatus() {
+            this._financialStatus = !this.isRepaymentValid ? 'no detail!' : 'Paid: ' + this.amountPaid + ' | Debt: ' + this.outstandingDebt;
+        }
+    }, {
+        key: 'generateAndSetNextSMSReminder',
+        value: function generateAndSetNextSMSReminder() {
+            var _order2 = this.order,
+                repayment_amount = _order2.repayment_amount,
+                order_date = _order2.order_date,
+                product_name = this.order.store_product.product_name;
+
+
+            var message = void 0;
+            if (order_date === vue.$getDate()) {
+                message = 'Hello ' + this.customerName + ', thanks for patronizing us.' + ' The following is the breakdown of the repayment plan for' + (' the purchase of ' + product_name + ':%0a');
+                this.dueDates.forEach(function (date, index) {
+                    return message += vue.$getColumn(index + 1) + ": " + date + " => " + vue.$formatCurrency(vue.$roundDownAmt(repayment_amount)) + "%0a";
+                });
+            } else {
+                message = 'Hello ' + this.customerName + ', This is to remind you that your' + (' ' + vue.$getColumn(parseInt(this.repaymentLevel) + 1) + ' repayment of') + (' ' + vue.$formatCurrency(vue.$roundDownAmt(repayment_amount)) + ' for ' + product_name) + (' will be due on ' + this.dueDates[this.repaymentLevel] + '. we will be expecting you.');
+            }
+            this._nextSMSReminder = message + "Please remember to pay on time to avoid" + " late fees and other penalties.%0aThank you.";
+        }
+
+        //NB:: this method is called from outside of this class.
+        //to use always call this method after instantiating the class.
+
+    }, {
+        key: 'setReminder',
+        value: function setReminder(type) {
+            this._reminder = {
+                type: type,
+                'feedback': null,
+                'is_visited': null,
+                'dva_id': this.dvaId,
+                'order_id': this.order.id,
+                'customer_id': this.customer.id,
+                'canBeSelected': !this.isReminderSent,
+                'repayment_level': this.repaymentLevel + "/" + this.count
+            };
+            if (type === 'sms') {
+                this._reminder.sms_id = null;
+                this._reminder.contacts = this.customer.telephone;
+            }
+        }
+    }, {
+        key: 'setPromiseCall',
+        value: function setPromiseCall() {
+            this._promiseCall = {
+                order_id: this.order.id,
+                user_id: this.dvaId,
+                customer_id: this.customer.id,
+                date: null
+            };
+        }
+
+        /*setters*/
+
+    }, {
+        key: 'isSelected',
+        set: function set(value) {
+            this._isSelected = value;
+        }
+
+        /*getters*/
+        ,
+        get: function get() {
+            return this._isSelected;
+        }
+    }, {
+        key: 'isReminderSent',
+        get: function get() {
+            return this._isReminderSent;
+        }
+    }, {
+        key: 'dvaId',
+        get: function get() {
+            return this._dvaId;
+        }
+    }, {
+        key: 'financialStatus',
+        get: function get() {
+            return this._financialStatus;
+        }
+    }, {
+        key: 'nextSMSReminder',
+        get: function get() {
+            return this._nextSMSReminder;
+        }
+    }, {
+        key: 'reminder',
+        get: function get() {
+            return this._reminder;
+        }
+    }, {
+        key: 'promiseCall',
+        get: function get() {
+            return this._promiseCall;
+        }
+    }]);
+
+    return OrderWithPromiseCall;
+}(Order);
+
+module.exports = { Order: Order, OrderWithPromiseCall: OrderWithPromiseCall };
 
 /***/ }),
 
