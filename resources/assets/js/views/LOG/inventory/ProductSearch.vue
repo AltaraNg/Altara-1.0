@@ -2,7 +2,7 @@
     <transition name="fade">
 
         <div class="pt-md-3 pt-2 attendance-view" id="index">
-            <h1>We are here</h1>
+
             <div >
                 <custom-header
                         :to="'/log/inventory'"
@@ -21,13 +21,18 @@
 
                         <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
                             <label>Show Room</label>
-                            <typeahead :options="getBranches" caption="name" v-model="form.showRoom" />
+                            <typeahead :options="getBranches" caption="name" v-model="form.branch" />
                         </div>
 
                         <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
                             <label>Brand</label>
-                            <typeahead :options="getBrands" caption="name" v-model="form.brands" />
+                            <typeahead :options="getBrands" caption="name" v-model="form.brand" />
                         </div>
+                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
+                            <label>Status</label>
+                            <typeahead :options="status" caption="name" v-model="form.status" />
+                        </div>
+
                     </div>
                     <div class="mb-5 px-0 row align-items-center" >
                         <div class="clearfix d-flex justify-content-end w-100">
@@ -37,28 +42,120 @@
                                     v-if="mode ==='edit'"
                             >Cancel</router-link>
                             <button
-                                    :disabled="$isProcessing || quantity==''"
+                                    :disabled="Object.keys(form).length < 4"
                                     class="btn bg-default"
                                     type="submit"
                                     @click="addProductForm()"
                             >
-                                Generate Inventory
+                                Search Product
                                 <i class="far fa-paper-plane ml-1"></i>
                             </button>
 
 
-                            <button
-                                    class="btn bg-default"
-                                    type="submit"
-                                    @click="prepareForm()"
-                            >
-                                testing
-                                <i class="far fa-paper-plane ml-1"></i>
-                            </button>
+
                         </div>
                     </div>
                 </form>
             </div>
+
+            <div class="attendance-body" v-if="productForm.products.length > 0">
+                <h5 class="mt-5 mb-0" v-if="canAddProduct">Search results</h5>
+                <table class="table table-bordered" v-if="canAddProduct">
+                    <tbody class="text-center">
+                    <tr class="table-separator">
+                        <td class="text-left">S/No.</td>
+                        <th>Product</th>
+                        <th>Inventory SKU</th>
+                        <th>Market Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                    <tr v-for="(product,index) in productForm.products">
+                        <th>{{index+1}}</th>
+
+                        <th>
+                            <div class="form-group mb-0">
+                                <input
+                                        class="form-control"
+                                        name="product_sku"
+                                        type="text"
+                                        v-model="productForm.products[index].product_name"
+                                        disabled
+                                />
+                            </div>
+                        </th>
+
+                        <th>
+                            <div class="form-group mb-0">
+                                <input
+                                        class="form-control"
+                                        name="inventory_sku"
+                                        type="text"
+                                        v-model="productForm.products[index].inventory_sku"
+                                        disabled
+                                />
+                            </div>
+                        </th>
+
+                        <th>
+                            <div class="form-group mb-0">
+                                <input
+                                        class="form-control"
+                                        name="market_price"
+                                        type="text"
+                                        v-model="productForm.products[index].market_price"
+                                        disabled
+                                />
+                            </div>
+                        </th>
+
+
+
+
+
+                        <th>
+                            <div class="form-group mb-0">
+                                <input
+                                        class="form-control"
+                                        name="received_date"
+                                        type="date"
+                                        v-model="productForm.products[index].product_id"
+                                />
+                            </div>
+                        </th>
+
+                        <th>
+                            <div class="form-group mb-0">
+                                <input
+                                        class="form-control"
+                                        data-vv-as="date"
+                                        name="date"
+                                        type="text"
+                                        v-model="user.name"
+                                        disabled
+                                />
+                            </div>
+                        </th>
+
+                        <th>
+                            <button
+                                    @click="deleteProduct(index)"
+                                    class="ml-2 btn status status-sm my-sm-2 not-approved"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="onSave()">
+                        Save Inventory
+                        <i class="far fa-paper-plane ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+
 
         </div>
 
@@ -102,6 +199,10 @@
                 mode: null,
                 error: {},
                 index: null,
+                status: [
+                    {id: 1, name: 'available'},
+                    {id: 2, name: 'sold out'},
+                ],
                 show: false,
                 showModalContent: false,
                 store: "/api/inventory",
@@ -120,6 +221,7 @@
                     {name: "available", value: 1},
                     {name: "unavailable", value: 0}
                 ],
+                productForm: {products:[]},
 
                 canAddProduct: true
             };
@@ -140,55 +242,13 @@
 
         methods: {
 
-            getForm(){
 
-            },
+
+
             prepareForm() {
 
-                // this.branches = data.branches;
-                // Vue.set(this.$data, "mode", this.$route.meta.mode);
-                // Vue.set(this.$data, "brands", data.brands);
-                // Vue.set(this.$data, "categories", data.categories);
-                // Vue.set(this.$data, "suppliers", data.suppliers);
-                //console.log(this.products);
+
                 console.log(this.getCategories);
-
-                //console.log(this.$store.getters.getProducts);
-
-
-                // Vue.set(this.$data, "products", this.$store.getters.getProducts);
-
-
-                // if (this.mode === "edit") {
-                //     this.store = `/api/inventory/${this.$route.params.id}`;
-                //     this.method = "PUT";
-
-
-                    // Vue.set(this.$data.productForm, product, {
-                    //     'id': 1,
-                    //     'name': 'damola'
-                    // });
-
-
-                    //const product = this.getEntity(this.form.product, this.products);
-                    // this.productForm.products.push({
-                    //     'product_name': this.getEntity(data.form.product_id, this.products).name,
-                    //     'product_id': data.form.product_id,
-                    //     'supplier_id': data.form.supplier_id,
-                    //     'inventory_sku': data.form.inventory_sku,
-                    //     'serial_number': data.form.serial_number,
-                    //     'branch_id': data.form.branch_id,
-                    //     'market_price': data.form.market_price,
-                    //     'received_date': data.form.received_date,
-                    //     'receiver_id': 1
-                    // });
-
-
-
-
-
-
-
 
 
                 this.show = true;
@@ -233,29 +293,35 @@
             },
 
             addProductForm() {
-                this.$validator.validateAll().then(result => {
-                    if (result) {
-                        const product = this.getEntity(this.form.product, this.products);
+                let gotProduct = this.getMatchingProduct(this.form);
+                 //generates rows according to the quantity of products
+                gotProduct.forEach(product => {
+                    this.productForm.products.push({
+                        product_name: product.name,
+                        market_price: product.retail_price,
+                        product_id: product.id,
 
-                        const supplier = this.getEntity(this.form.supplier, this.suppliers);
-
-                        //generates rows according to the quantity of products
-                        for (let i = 0; i < this.quantity; i++) {
-                            this.productForm.products.push({
-                                product_name: product.name,
-                                product_id: product.id,
-                                supplier_id: supplier.id,
-                                inventory_sku: "",
-                                serial_number: "",
-                                branch_id: "",
-                                market_price: product.retail_price,
-                                received_date: this.$getDate(),
-                                receiver_id: this.user.id
-                            });
-                            // this.reNumber();
-                        }
-                    }
+                    });
+                    this.reNumber();
                 });
+                 // for (let i = 0; i < this.quantity; i++) {
+                 //     this.productForm.products.push({
+                 //         product_name: product.name,
+                 //         product_id: product.id,
+                 //                supplier_id: supplier.id,
+                 //                inventory_sku: "",
+                 //                serial_number: "",
+                 //                branch_id: "",
+                 //                market_price: product.retail_price,
+                 //                received_date: this.$getDate(),
+                 //                receiver_id: this.user.id
+                 //            });
+                 //            // this.reNumber();
+                 //        }
+                 //
+                 //
+
+                // console.log(this.getMatchingProduct(this.form));
             },
 
             deleteProduct(index) {
@@ -276,6 +342,10 @@
             },
             getEntity(id, array) {
                 return array.find(entity => entity.id === id);
+            },
+
+            getMatchingProduct({category, brand}){
+                return this.getProducts.filter(({category_id, brand_id}) => category_id === category && brand_id === brand)
             }
         },
         computed: {

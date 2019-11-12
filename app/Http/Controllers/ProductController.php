@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use EloquentBuilder;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
@@ -27,6 +28,12 @@ class ProductController extends Controller
 
     public function getProducts(){
         $products = Product::all();
+        return response()->json([
+            'products'=> $products
+        ]);
+    }
+    public function searchProducts(Request $request){
+        $products = Product::where('category_id', $request->id);
         return response()->json([
             'products'=> $products
         ]);
