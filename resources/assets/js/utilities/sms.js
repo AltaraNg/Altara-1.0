@@ -22,12 +22,13 @@ export class Message {
     }
 
     send(callback) {
-        get(`/api/message/create?to=${this.contacts}&message=${this.message}`).then(res => {
+        get(`/api/message/create?to=${this.contacts}&message=${this.message}`).then(async res => {
             if (res.status === 200 && this.logToDB) {
+                var sentMessageIds;
                 delete this.logToDB;
-                post('/api/message', this)
+                await post('/api/message', this).then(({data:{ids}}) => sentMessageIds = ids);
             }
-            return !!callback && callback(res);
+            return !!callback && callback(res, sentMessageIds);
         }).catch(err => !!callback && callback(err));
     }
 }

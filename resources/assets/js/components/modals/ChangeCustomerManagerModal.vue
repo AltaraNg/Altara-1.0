@@ -10,13 +10,12 @@
                         <span class="modal-close text-danger"><i class="fas fa-times"></i></span>
                     </a>
                 </div>
-                <div class="modal-body" id="index">
+                <div class="modal-body" id="index" v-if="customer">
                     <div class="form-group clearfix">
                         <div class="clearfix">
                             <div class="form-group">
                                 <label>Customer name</label>
-                                <input class="form-control"
-                                       :value="customerName + ' (ID ' + customerId + ')' " type="text" disabled>
+                                <input class="form-control" :value="$getCustomerFullName(customer) + ' - ID: ' + customer.id" type="text" disabled>
                             </div>
                             <div class="form-group">
                                 <label>DSA name</label>
@@ -51,9 +50,7 @@
                 value: null,
                 DSAId: null,
                 DSAName: null,
-                customerId: null,
-                customerName: null,
-                customerBranchId: null,
+                customer:null,
                 showChangeCustomerManagerModal: true
             }
         },
@@ -63,22 +60,21 @@
         },
 
         methods: {
-            handleModalToggle({customerName, customerId}) {
-                this.customerId = customerId;
-                this.customerName = customerName;
+            handleModalToggle(customer) {
+                this.customer = customer;
                 $("#changeCustomerManagerModal").modal("toggle");
             },
 
             changeCustomerManager() {
-                const data = {customer_id: this.customerId, user_id: this.DSAId};
-                if (!this.DSAId || !this.customerId) {
+                const data = {customer_id: this.customer.id, user_id: this.DSAId};
+                if (!this.DSAId || !this.customer.id) {
                     return Flash.setError("Please fill the form correctly to continue");
                 }
                 this.$LIPS(true);
                 post('/api/update_customer_manager', data)
                     .then(response => {
                         if (response.status === 201) {
-                            log(`CustomerAssignedNewDsa`, "CustomerId: " + this.customerId + " newDsa: " + this.DSAId);
+                            log(`CustomerAssignedNewDsa`, "CustomerId: " + this.customer.id + " newDsa: " + this.DSAId);
                             Flash.setSuccess("A new DSA has been assigned to the customer.", 5000);
                             EventBus.$emit('clearTypeAhead');
                         }

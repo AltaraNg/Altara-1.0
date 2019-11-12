@@ -25,7 +25,7 @@ class MessageController extends Controller
      */
     public function create()
     {
-        //return response()->json(request('message'), 200);
+        return response()->json(request('message'), 200);
         $ch = curl_init();
         $receiver = urlencode(request('to'));
         $message = urlencode(request('message'));
@@ -50,35 +50,16 @@ class MessageController extends Controller
             Message::insert($request['messages']);
             $ids = Message::orderBy('id', 'desc')->take(count($request['messages']))->pluck('id');
         } else {
-            $message = new Message($request->all());
-            $message->user_id = auth('api')->user()->id;
-            $message->save();
+            // $message = new Message($request->all());
+            $request['user_id'] =  auth('api')->user()->id;
+            $ids = [Message::insertGetId($request->all())];
+            // $message->user_id = auth('api')->user()->id;
+            // $message->save();
         }
         /** return the response flag(true) */
         return response()->json([
             'sentAndLogged' => true,
             'ids' => $ids ?? null
         ]);
-    }
-
-    public function show(Message $message)
-    {
-        //
-    }
-
-    public function edit(Message $message)
-    {
-        //
-    }
-
-    public function update(Request $request, Message $message)
-    {
-        //
-    }
-
-
-    public function destroy(Message $message)
-    {
-        //
     }
 }

@@ -30,7 +30,7 @@ class CustomerController extends Controller
         /** gets list of customers(paginated), searchPaginateAndOrder is a custom
          * query scope used by all the models that use data viewer trait
          * in this application */
-        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration')
+        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration','telephone')
             ->with('verification')
             ->searchPaginateAndOrder();
         /** the columns used to render the data viewer for customers list*/

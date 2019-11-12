@@ -11,8 +11,11 @@
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         </span>
         <div class="dropdown-menu">
-            <a v-for="option in options" class="dropdown-item" href="javascript:"
-               @click="toggleModal(option.modal)" v-if="auth(option.authAccess)">
+            <a v-for="option in filteredOptions"
+                class="dropdown-item"
+                href="javascript:"
+                :key="option.modal"
+                @click="toggleModal(option.modal)">
                 {{option.caption}}
             </a>
         </div>
@@ -24,12 +27,12 @@
     import {EventBus} from "../utilities/event-bus";
 
     export default {
-        props: ['link', 'size', 'isApproved', 'customerName'],
+        props: ['link', 'size', 'customer'],
 
         data() {
             return {
                 status: null,
-                options: [
+                unfilteredOptions: [
                     {
                         caption: 'Change sales agent',
                         modal: 'toggleChangeCustomerManagerModal',
@@ -45,16 +48,20 @@
 
         methods: {
             toggleModal(modalName) {
-                const data = {
-                    customerId: this.$vnode.key,
-                    customerName: this.customerName
-                };
-                EventBus.$emit(modalName, data);
+                EventBus.$emit(modalName, this.customer);
             }
         },
 
         computed: {
             ...mapGetters(['auth']),
+
+            filteredOptions(){
+                return this.unfilteredOptions.filter(option => this.auth(option.authAccess))
+            },
+
+            isApproved(){
+                return this.$getCustomerApprovalStatus(this.customer.verification);
+            },
 
             buttonClass() {
                 return this.size &&

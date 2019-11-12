@@ -50,11 +50,7 @@
                                 </h4>
                             </div>
                             <div class="float-left p-0 m-0 col-md-4 col-12 d-flex justify-content-center">
-                                <ApprovalStatusButton
-                                        size="big"
-                                        :key="customer.id"
-                                        :customer-name="$getCustomerFullName(customer)"
-                                        :is-approved="approved"/>
+                                <ApprovalStatusButton size="big" :key="customer.id" :customer="customer"/>
                             </div>
                         </div>
                         <div class="pt-4">
