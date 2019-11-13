@@ -19,19 +19,19 @@
                             <typeahead :options="getCategories" caption="name" v-model="form.category" />
                         </div>
 
-                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
-                            <label>Show Room</label>
-                            <typeahead :options="getBranches" caption="name" v-model="form.branch" />
-                        </div>
+<!--                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">-->
+<!--                            <label>Show Room</label>-->
+<!--                            <typeahead :options="getBranches" caption="name" v-model="form.branch" />-->
+<!--                        </div>-->
 
                         <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
                             <label>Brand</label>
                             <typeahead :options="getBrands" caption="name" v-model="form.brand" />
                         </div>
-                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
-                            <label>Status</label>
-                            <typeahead :options="status" caption="name" v-model="form.status" />
-                        </div>
+<!--                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">-->
+<!--                            <label>Status</label>-->
+<!--                            <typeahead :options="status" caption="name" v-model="form.status" />-->
+<!--                        </div>-->
 
                     </div>
                     <div class="mb-5 px-0 row align-items-center" >
@@ -42,7 +42,7 @@
                                     v-if="mode ==='edit'"
                             >Cancel</router-link>
                             <button
-                                    :disabled="Object.keys(form).length < 4"
+                                    :disabled="Object.keys(form).length < 2"
                                     class="btn bg-default"
                                     type="submit"
                                     @click="addProductForm()"
@@ -90,7 +90,7 @@
                                         class="form-control"
                                         name="inventory_sku"
                                         type="text"
-                                        v-model="productForm.products[index].inventory_sku"
+                                        v-model="productForm.products[index].product_id"
                                         disabled
                                 />
                             </div>
@@ -107,7 +107,7 @@
                                 />
                             </div>
                         </th>
-
+s
 
 
 
@@ -116,25 +116,14 @@
                             <div class="form-group mb-0">
                                 <input
                                         class="form-control"
-                                        name="received_date"
-                                        type="date"
-                                        v-model="productForm.products[index].product_id"
-                                />
-                            </div>
-                        </th>
-
-                        <th>
-                            <div class="form-group mb-0">
-                                <input
-                                        class="form-control"
-                                        data-vv-as="date"
-                                        name="date"
+                                        name="quantity"
                                         type="text"
-                                        v-model="user.name"
-                                        disabled
+                                        v-model="productForm.products[index].quantity"
                                 />
                             </div>
                         </th>
+
+
 
                         <th>
                             <button
@@ -172,7 +161,7 @@
     import Vue from "vue";
     import { log } from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
-    import { byMethod, get } from "../../../utilities/api";
+    import { getMethod, get } from "../../../utilities/api";
     import Typeahead from "../../../components/Typeahead";
 
 
@@ -189,6 +178,7 @@
     export default {
         name: "ProductSearch",
         components: { Typeahead, CustomHeader },
+        // mixins: [Vue2Filters.mixin],
         data() {
             return {
                 form: {},
@@ -205,8 +195,9 @@
                 ],
                 show: false,
                 showModalContent: false,
-                store: "/api/inventory",
+                search: "/api/products/search",
                 number: 0,
+
                 // products: [],
                 suppliers: [],
                 product: null,
@@ -234,7 +225,7 @@
         //         .catch(() => next(() => Flash.setError("Error Preparing form")));
         // },
         created(){
-            this.$prepareProducts();
+            this.$prepareInventories();
             this.$prepareBranches();
             this.$prepareCategories();
             this.$prepareBrands();
@@ -293,36 +284,36 @@
             },
 
             addProductForm() {
-                let gotProduct = this.getMatchingProduct(this.form);
-                 //generates rows according to the quantity of products
-                gotProduct.forEach(product => {
-                    this.productForm.products.push({
-                        product_name: product.name,
-                        market_price: product.retail_price,
-                        product_id: product.id,
+                getMethod('GET', this.search, this.form)
+                    .then(({ data }) => {
+                        // console.log(data.products)
+                        this.productForm.products = [];
+                        data.products.forEach(product => {
+                            this.productForm.products.push({
+                                product_name: product.name,
+                                market_price: product.retail_price,
+                                product_id: product.id,
+                                quantity: this.getMatchingProduct(product).length
 
-                    });
-                    this.reNumber();
-                });
-                 // for (let i = 0; i < this.quantity; i++) {
-                 //     this.productForm.products.push({
-                 //         product_name: product.name,
-                 //         product_id: product.id,
-                 //                supplier_id: supplier.id,
-                 //                inventory_sku: "",
-                 //                serial_number: "",
-                 //                branch_id: "",
-                 //                market_price: product.retail_price,
-                 //                received_date: this.$getDate(),
-                 //                receiver_id: this.user.id
-                 //            });
-                 //            // this.reNumber();
-                 //        }
-                 //
-                 //
+                            });
+                            this.reNumber();
+                        });
+                    })
 
-                // console.log(this.getMatchingProduct(this.form));
-            },
+            }
+                // let gotProduct = this.getMatchingProduct(this.form);
+                //  //generates rows according to the quantity of products
+                // gotProduct.forEach(product => {
+                //     this.productForm.products.push({
+                //         product_name: product.name,
+                //         market_price: product.retail_price,
+                //         product_id: product.id,
+                //
+                //     });
+                //     this.reNumber();
+                // });
+
+            ,
 
             deleteProduct(index) {
                 this.productForm.products.splice(index, 1);
@@ -344,12 +335,15 @@
                 return array.find(entity => entity.id === id);
             },
 
-            getMatchingProduct({category, brand}){
-                return this.getProducts.filter(({category_id, brand_id}) => category_id === category && brand_id === brand)
+            getMatchingProduct({id}){
+                /*
+                this should get product based on the category and brand ids
+                 */
+                return this.getInventories.filter(inventory => inventory.id === id)
             }
         },
         computed: {
-            ...mapGetters(['getProducts', "getBranches", 'getCategories', 'getBrands']),
+            ...mapGetters(['getInventories', "getBranches", 'getCategories', 'getBrands']),
 
 
         },
@@ -360,22 +354,8 @@
 
         watch: {
             productForm: {
-                handler: function() {
 
-                    this.productForm.products.forEach(e => {
-                        let category_id = this.getEntity(e.product_id, this.products)
-                            .category_id;
-                        let category_name = this.getEntity(category_id, this.categories).name;
-                        e.inventory_sku = `${category_name.slice(
-                            0,
-                            3
-                        )}-${e.product_name.slice(0, 3)}-${e.serial_number.slice(
-                            e.serial_number.length - 4
-                        )}-0${this.productForm.products.indexOf(e)+1}`.toUpperCase();
-                        e.serial_number = e.serial_number.toUpperCase();
-                    });
-                },
-                deep: true
+
             }
         }
     };

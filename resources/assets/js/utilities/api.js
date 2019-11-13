@@ -1,5 +1,5 @@
-import axios from 'axios'
-import Auth from './auth'
+import axios from 'axios';
+import Auth from './auth';
 
 export const get = url => axios({method: 'GET', url, headers: {'Authorization': `Bearer ${Auth.state.api_token}`}});
 export const post = (url, data) => axios({
@@ -14,6 +14,14 @@ export const byMethod = (method, url, data) => axios({
     data,
     headers: {'Authorization': `Bearer ${Auth.state.api_token}`}
 });
+
+export const getMethod = (method, url, data) => axios({
+    method,
+    url,
+    params: data,
+    headers: {'Authorization': `Bearer ${Auth.state.api_token}`}
+});
+
 export const postD = (url, data) => axios({
     url,
     data,
@@ -25,7 +33,7 @@ export const del = url => axios({url, method: 'DELETE', headers: {'Authorization
 
 export const interceptors = cb => axios.interceptors.response.use(res => res, err => {
     cb(err);
-    return Promise.reject(err)
+    return Promise.reject(err);
 });
 
 /*helper functions for easier calls use of

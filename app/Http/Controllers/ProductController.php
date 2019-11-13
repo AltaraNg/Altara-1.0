@@ -8,6 +8,7 @@ use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -33,9 +34,23 @@ class ProductController extends Controller
         ]);
     }
     public function searchProducts(Request $request){
-        $products = Product::where('category_id', $request->id);
+        $query = DB::table('products');
+        if ($request->brand != null){
+            $query->where('brand_id', '=', $request->brand);
+        }
+        if ($request->category != null){
+            $query->where('category_id', '=', $request->category);
+        }
+        if ($request->status != null){
+            $query->where('status', '=', $request->status);
+        }
+        if ($request->branch != null){
+            $query->where('branch_id', '=', $request->branch);
+        }
+        $products = $query->orderBy('brand_id')->get();
+
         return response()->json([
-            'products'=> $products
+            'products' => $products
         ]);
     }
 

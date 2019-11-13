@@ -124,10 +124,10 @@ Vue.prototype.$prepareCategories = () => {
     !store.getters.getCategories && get('/api/categories')
         .then(r => store.dispatch('mutateCategories', r.data.categories));
 };
-Vue.prototype.$prepareProducts = () => {
+Vue.prototype.$prepareInventories = () => {
 
-    !store.getters.getProducts && get('/api/products')
-        .then(r => store.dispatch('mutateProducts', r.data.products));
+    !store.getters.getInventories && get('/api/inventories')
+        .then(r => store.dispatch('mutateInventories', r.data.inventories));
 };
 
 Vue.prototype.$prepareBrands = () => {

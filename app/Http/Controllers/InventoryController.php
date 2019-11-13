@@ -28,6 +28,13 @@ class InventoryController extends Controller
         ]);
     }
 
+    public function getInventories(){
+        $inventories = Inventory::all();
+        return response()->json([
+            'inventories' => $inventories
+        ]);
+    }
+
 
 
     /**

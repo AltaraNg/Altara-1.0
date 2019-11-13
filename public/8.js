@@ -336,17 +336,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 
@@ -386,6 +375,7 @@ function initialize(to) {
 exports.default = {
     name: "ProductSearch",
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
+    // mixins: [Vue2Filters.mixin],
     data: function data() {
         return {
             form: {},
@@ -399,8 +389,9 @@ exports.default = {
             status: [{ id: 1, name: 'available' }, { id: 2, name: 'sold out' }],
             show: false,
             showModalContent: false,
-            store: "/api/inventory",
+            search: "/api/products/search",
             number: 0,
+
             // products: [],
             suppliers: [],
             product: null,
@@ -424,7 +415,7 @@ exports.default = {
     //         .catch(() => next(() => Flash.setError("Error Preparing form")));
     // },
     created: function created() {
-        this.$prepareProducts();
+        this.$prepareInventories();
         this.$prepareBranches();
         this.$prepareCategories();
         this.$prepareBrands();
@@ -450,7 +441,7 @@ exports.default = {
                             if (_this.mode = "edit") {
                                 delete e.product_name;
                             }
-                            (0, _api.byMethod)(_this.method, _this.store, e).then(function (_ref) {
+                            byMethod(_this.method, _this.store, e).then(function (_ref) {
                                 var data = _ref.data;
 
                                 if (data.saved || data.updated) {
@@ -480,36 +471,37 @@ exports.default = {
         addProductForm: function addProductForm() {
             var _this2 = this;
 
-            var gotProduct = this.getMatchingProduct(this.form);
-            //generates rows according to the quantity of products
-            gotProduct.forEach(function (product) {
-                _this2.productForm.products.push({
-                    product_name: product.name,
-                    market_price: product.retail_price,
-                    product_id: product.id
+            (0, _api.getMethod)('GET', this.search, this.form).then(function (_ref3) {
+                var data = _ref3.data;
 
+                // console.log(data.products)
+                _this2.productForm.products = [];
+                data.products.forEach(function (product) {
+                    _this2.productForm.products.push({
+                        product_name: product.name,
+                        market_price: product.retail_price,
+                        product_id: product.id,
+                        quantity: _this2.getMatchingProduct(product).length
+
+                    });
+                    _this2.reNumber();
                 });
-                _this2.reNumber();
             });
-            // for (let i = 0; i < this.quantity; i++) {
-            //     this.productForm.products.push({
-            //         product_name: product.name,
-            //         product_id: product.id,
-            //                supplier_id: supplier.id,
-            //                inventory_sku: "",
-            //                serial_number: "",
-            //                branch_id: "",
-            //                market_price: product.retail_price,
-            //                received_date: this.$getDate(),
-            //                receiver_id: this.user.id
-            //            });
-            //            // this.reNumber();
-            //        }
-            //
-            //
+        }
+        // let gotProduct = this.getMatchingProduct(this.form);
+        //  //generates rows according to the quantity of products
+        // gotProduct.forEach(product => {
+        //     this.productForm.products.push({
+        //         product_name: product.name,
+        //         market_price: product.retail_price,
+        //         product_id: product.id,
+        //
+        //     });
+        //     this.reNumber();
+        // });
 
-            // console.log(this.getMatchingProduct(this.form));
-        },
+
+        ,
         deleteProduct: function deleteProduct(index) {
             this.productForm.products.splice(index, 1);
             this.reNumber();
@@ -531,33 +523,21 @@ exports.default = {
                 return entity.id === id;
             });
         },
-        getMatchingProduct: function getMatchingProduct(_ref3) {
-            var category = _ref3.category,
-                brand = _ref3.brand;
+        getMatchingProduct: function getMatchingProduct(_ref4) {
+            var id = _ref4.id;
 
-            return this.getProducts.filter(function (_ref4) {
-                var category_id = _ref4.category_id,
-                    brand_id = _ref4.brand_id;
-                return category_id === category && brand_id === brand;
+            /*
+            this should get product based on the category and brand ids
+             */
+            return this.getInventories.filter(function (inventory) {
+                return inventory.id === id;
             });
         }
     },
-    computed: _extends({}, (0, _vuex.mapGetters)(['getProducts', "getBranches", 'getCategories', 'getBrands'])),
+    computed: _extends({}, (0, _vuex.mapGetters)(['getInventories', "getBranches", 'getCategories', 'getBrands'])),
 
     watch: {
-        productForm: {
-            handler: function handler() {
-                var _this4 = this;
-
-                this.productForm.products.forEach(function (e) {
-                    var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
-                    var category_name = _this4.getEntity(category_id, _this4.categories).name;
-                    e.inventory_sku = (category_name.slice(0, 3) + "-" + e.product_name.slice(0, 3) + "-" + e.serial_number.slice(e.serial_number.length - 4) + "-0" + (_this4.productForm.products.indexOf(e) + 1)).toUpperCase();
-                    e.serial_number = e.serial_number.toUpperCase();
-                });
-            },
-            deep: true
-        }
+        productForm: {}
     }
 };
 
@@ -780,29 +760,6 @@ var render = function() {
                         "form-group col-md-4 col-6 float-left px-0 px-md-3"
                     },
                     [
-                      _c("label", [_vm._v("Show Room")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.getBranches, caption: "name" },
-                        model: {
-                          value: _vm.form.branch,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "branch", $$v)
-                          },
-                          expression: "form.branch"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-4 col-6 float-left px-0 px-md-3"
-                    },
-                    [
                       _c("label", [_vm._v("Brand")]),
                       _vm._v(" "),
                       _c("typeahead", {
@@ -813,29 +770,6 @@ var render = function() {
                             _vm.$set(_vm.form, "brand", $$v)
                           },
                           expression: "form.brand"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-4 col-6 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", [_vm._v("Status")]),
-                      _vm._v(" "),
-                      _c("typeahead", {
-                        attrs: { options: _vm.status, caption: "name" },
-                        model: {
-                          value: _vm.form.status,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "status", $$v)
-                          },
-                          expression: "form.status"
                         }
                       })
                     ],
@@ -865,7 +799,7 @@ var render = function() {
                       {
                         staticClass: "btn bg-default",
                         attrs: {
-                          disabled: Object.keys(_vm.form).length < 4,
+                          disabled: Object.keys(_vm.form).length < 2,
                           type: "submit"
                         },
                         on: {
@@ -876,7 +810,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                            Search Product\n                            "
+                          "\n                                Search Product\n                                "
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
@@ -974,9 +908,9 @@ var render = function() {
                                       rawName: "v-model",
                                       value:
                                         _vm.productForm.products[index]
-                                          .inventory_sku,
+                                          .product_id,
                                       expression:
-                                        "productForm.products[index].inventory_sku"
+                                        "productForm.products[index].product_id"
                                     }
                                   ],
                                   staticClass: "form-control",
@@ -987,8 +921,7 @@ var render = function() {
                                   },
                                   domProps: {
                                     value:
-                                      _vm.productForm.products[index]
-                                        .inventory_sku
+                                      _vm.productForm.products[index].product_id
                                   },
                                   on: {
                                     input: function($event) {
@@ -997,7 +930,7 @@ var render = function() {
                                       }
                                       _vm.$set(
                                         _vm.productForm.products[index],
-                                        "inventory_sku",
+                                        "product_id",
                                         $event.target.value
                                       )
                                     }
@@ -1046,7 +979,7 @@ var render = function() {
                                 })
                               ])
                             ]),
-                            _vm._v(" "),
+                            _vm._v("\ns\n\n\n\n\n                        "),
                             _c("th", [
                               _c("div", { staticClass: "form-group mb-0" }, [
                                 _c("input", {
@@ -1056,19 +989,16 @@ var render = function() {
                                       rawName: "v-model",
                                       value:
                                         _vm.productForm.products[index]
-                                          .product_id,
+                                          .quantity,
                                       expression:
-                                        "productForm.products[index].product_id"
+                                        "productForm.products[index].quantity"
                                     }
                                   ],
                                   staticClass: "form-control",
-                                  attrs: {
-                                    name: "received_date",
-                                    type: "date"
-                                  },
+                                  attrs: { name: "quantity", type: "text" },
                                   domProps: {
                                     value:
-                                      _vm.productForm.products[index].product_id
+                                      _vm.productForm.products[index].quantity
                                   },
                                   on: {
                                     input: function($event) {
@@ -1077,42 +1007,7 @@ var render = function() {
                                       }
                                       _vm.$set(
                                         _vm.productForm.products[index],
-                                        "product_id",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.user.name,
-                                      expression: "user.name"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    "data-vv-as": "date",
-                                    name: "date",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: { value: _vm.user.name },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.user,
-                                        "name",
+                                        "quantity",
                                         $event.target.value
                                       )
                                     }
@@ -1158,7 +1053,7 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                    Save Inventory\n                    "
+                      "\n                        Save Inventory\n                        "
                     ),
                     _c("i", { staticClass: "far fa-paper-plane ml-1" })
                   ]
