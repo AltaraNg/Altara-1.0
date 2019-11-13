@@ -2,6 +2,8 @@
 
 namespace App\Helper;
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 trait ExtractRequestObject
 {
     public function extractRequestObject($requestObj)
@@ -14,7 +16,8 @@ trait ExtractRequestObject
             'pageSize' => $requestObj['pageSize'],
             'branchId' => $requestObj['branchId'],
             'overdueDays' => $requestObj['overdueDays'],
-            'direct-debit' => $requestObj['direct-debit']
+            'direct-debit' => $requestObj['direct-debit'],
+            'filterWithBranch' => $requestObj['filterWithBranch']
         ];
     }
 }

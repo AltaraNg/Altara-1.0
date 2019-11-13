@@ -16,21 +16,10 @@ class ReminderController extends Controller implements OrderConstants
 
     public function create(Request $request)
     {
-
-        /*$requestObject = [
-            'list' => $request['list'],
-            'page' => $request['page'],
-            'dateTo' => $request['dateTo'],
-            'dateFrom' => $request['dateFrom'],
-            'pageSize' => $request['pageSize'],
-            'branchId' => $request['branchId'],
-            'overdueDays' => $request['overdueDays']
-        ];*/
-
         $requestObject = $this->extractRequestObject($request);
 
         $list = $requestObject['list'];
-        if ($request['filterWithBranch'] === true && !isset($request['branchId']))
+        if (((Boolean) $request['filterWithBranch'] === true) && !isset($request['branchId']))
             $requestObject['branchId'] = auth('api')->user()->branch_id;
 
         $reminderList = $list == SELF::PROMISE_CALL_LIST ?

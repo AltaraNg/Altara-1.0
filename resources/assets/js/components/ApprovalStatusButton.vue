@@ -37,11 +37,11 @@
                         caption: 'Change sales agent',
                         modal: 'toggleChangeCustomerManagerModal',
                         authAccess: 'DSACaptain'
-                    }, {
+                    }/*, {
                         caption: 'Send message',
                         modal: 'SMSModal',
                         authAccess: 'DVAAccess'
-                    }
+                    }*/
                 ]
             }
         },

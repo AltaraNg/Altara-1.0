@@ -5,14 +5,14 @@ Order Information
         <div class="tab-content mt-1 attendance-body" v-if="show">
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <order-item
-                        v-for="(order,index) in orders"
-                        :key="order.order.id"
-                        :index="index"
-                        :start-index="startIndex"
-                        :order="order"
-                        :mode="mode"
-                        @done="fetchList(list)"
-                        @display="displayDetails"/>
+                    v-for="(order,index) in orders"
+                    :key="order.order.id"
+                    :index="index"
+                    :start-index="startIndex"
+                    :order="order"
+                    :mode="mode"
+                    @done="fetchList(list)"
+                    @display="displayDetails"/>
             </div>
             <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
         </div>
@@ -356,7 +356,7 @@ Order Information
     import OrderItem from '../components/OrderItem';
     import {Order, OrderWithPromiseCall} from "../utilities/Amortization";
 
-    let url = to => `/api/reminder/create?list=${to.query.list}`;
+    let url = to => `/api/reminder/create?list=${to.query.list + (to.query.filterWithBranch ? `&filterWithBranch=` + to.query.filterWithBranch : '')}`;
 
     export default {
         components: {OrderItem},
