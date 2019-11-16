@@ -1,7 +1,7 @@
 <template>
-    <div class="CustomSMSButton" @click="toggleModal('SMSModal')">
+    <span class="CustomSMSButton d-flex align-items-center justify-content-center" @click="toggleModal('SMSModal')">
         <i class="fas fa-envelope"></i>
-    </div>
+    </span>
 </template>
 
 <script>
@@ -57,13 +57,5 @@
         }
     };
 </script>
-
-<style type="scss" scoped>
-    .CustomSMSButton {
-        i {
-            font-size: 18px;
-        }
-    }
-</style>
 
 

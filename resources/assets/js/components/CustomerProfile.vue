@@ -48,7 +48,7 @@
                                 <h4 class="mt-0 pt-md-5 pt-sm-4 pt-0 mb-md-5 mb-sm-4 mb-4 text-muted">
                                     <strong>Customer ID: {{customer.id}}</strong>
                                 </h4>
-                                <span class="mt-0 pt-md-5 pt-sm-4 pt-0 mb-md-5 mb-sm-4 mb-4 px-3"
+                                <span class="mt-0 pt-md-4 pt-sm-3 pt-0 mb-md-5 mb-sm-4 mb-4 px-3"
                                       v-if="auth('DVAAccess')">
                                     <CustomSMSButton :customer="customer" :key="customer.id"/>
                                 </span>

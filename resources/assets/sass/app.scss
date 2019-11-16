@@ -1371,6 +1371,23 @@ tr.current {
     }
 }
 
+.CustomSMSButton {
+    height: 4rem;
+    position: relative;
+    line-height: 4rem;
+    width: 4rem;
+    color: darkgray;
+    border-radius: 50%;
+    text-align: center;
+    margin: 1rem auto;
+    &:hover{
+        background-color: whitesmoke;
+        color: darkgray;
+        -webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+    }
+}
+
 @media (max-width: 990px) {
     html {
         font-size: 59%;
