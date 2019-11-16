@@ -37,11 +37,7 @@
                         caption: 'Change sales agent',
                         modal: 'toggleChangeCustomerManagerModal',
                         authAccess: 'DSACaptain'
-                    }/*, {
-                        caption: 'Send message',
-                        modal: 'SMSModal',
-                        authAccess: 'DVAAccess'
-                    }*/
+                    }
                 ]
             }
         },
@@ -55,11 +51,11 @@
         computed: {
             ...mapGetters(['auth']),
 
-            filteredOptions(){
+            filteredOptions() {
                 return this.unfilteredOptions.filter(option => this.auth(option.authAccess))
             },
 
-            isApproved(){
+            isApproved() {
                 return this.$getCustomerApprovalStatus(this.customer.verification);
             },
 
@@ -72,7 +68,7 @@
         created() {
             this.status = this.isApproved ? 'approved' : 'not-approved';
         }
-    }
+    };
 </script>
 
 

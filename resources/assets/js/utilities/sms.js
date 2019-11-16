@@ -23,10 +23,10 @@ export class Message {
 
     send(callback) {
         get(`/api/message/create?to=${this.contacts}&message=${this.message}`).then(async res => {
+            let sentMessageIds;
             if (res.status === 200 && this.logToDB) {
-                var sentMessageIds;
                 delete this.logToDB;
-                await post('/api/message', this).then(({data:{ids}}) => sentMessageIds = ids);
+                await post('/api/message', this).then(({data: {ids}}) => sentMessageIds = ids);
             }
             return !!callback && callback(res, sentMessageIds);
         }).catch(err => !!callback && callback(err));

@@ -81,7 +81,7 @@
     import Loader from "./components/Loader.vue";
     import SideNav from "./components/SideNav.vue";
     import {interceptors, post} from "./utilities/api";
-    import SMSModal from './components/modals/SMSModal';
+    import SMSModal from './components/CustomSMSButton/SMSModal';
     import ChangeCustomerManagerModal from './components/modals/ChangeCustomerManagerModal';
 
     export default {

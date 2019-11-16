@@ -48,6 +48,10 @@
                                 <h4 class="mt-0 pt-md-5 pt-sm-4 pt-0 mb-md-5 mb-sm-4 mb-4 text-muted">
                                     <strong>Customer ID: {{customer.id}}</strong>
                                 </h4>
+                                <span class="mt-0 pt-md-5 pt-sm-4 pt-0 mb-md-5 mb-sm-4 mb-4 px-3"
+                                      v-if="auth('DVAAccess')">
+                                    <CustomSMSButton :customer="customer" :key="customer.id"/>
+                                </span>
                             </div>
                             <div class="float-left p-0 m-0 col-md-4 col-12 d-flex justify-content-center">
                                 <ApprovalStatusButton size="big" :key="customer.id" :customer="customer"/>
@@ -60,7 +64,7 @@
                                     <th class="text-muted"><i class="mr-3 fas fa-mobile-alt"></i>Phone Number</th>
                                     <td>{{customer.telephone}}</td>
                                 </tr>
-                                <tr v-if="$store.getters.auth('DVAAccess')">
+                                <tr v-if="auth('DVAAccess')">
                                     <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Address</th>
                                     <td>{{$getCustomerAddress(customer) | capitalize }}
                                     </td>
@@ -90,43 +94,51 @@
 </template>
 <script>
     import Vue from 'vue';
-    import {mapActions} from 'vuex';
-    import {store} from '../store/store';
+    import {mapGetters, mapActions} from 'vuex';
     import {EventBus} from "../utilities/event-bus";
     import AppNavigation from '../components/AppNavigation';
     import ApprovalStatusButton from '../components/ApprovalStatusButton';
-
-    const DVA = () => store.getters.auth('DVAAccess');
+    import CustomSMSButton from '../components/CustomSMSButton/CustomSMSButton';
 
     export default {
         props: ['viewCustomer'],
-        components: {ApprovalStatusButton, AppNavigation},
+
+        components: {ApprovalStatusButton, AppNavigation, CustomSMSButton},
+
         data() {
             return {
                 customer: '',
                 show: false
             }
         },
+
         computed: {
             full() {
                 return this.$route.meta.mode === 'full';
             },
+
             passport() {
                 return `https://s3.eu-west-2.amazonaws.com/altara-one/${this.customer.document.passport_url}`;
             },
+
             branch() {
                 return `${this.customer.branch.description} ${this.customer.branch.name}`;
             },
+
             approved() {
                 return this.$getCustomerApprovalStatus(this.customer.verification);
-            }
+            },
+
+            ...mapGetters(['auth'])
         },
+
         created() {
             $('.tooltip').remove();
             if (this.viewCustomer) this.setCustomer(this.viewCustomer);
             EventBus.$on('customer', customer => this.setCustomer(customer));
             this.addCustomerOptionsModalsToDom();
         },
+
         methods: {
             setCustomer(customer) {
                 Vue.set(this.$data, 'customer', customer);

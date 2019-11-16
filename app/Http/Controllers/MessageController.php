@@ -8,17 +8,6 @@ use Illuminate\Http\Request;
 class MessageController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -41,22 +30,15 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        /** we keep track of all the successfully messages sent to anybody through this portal.
-         * This is a control measure */
-        /** create the message instance*/
-
         if ($request['bulk']) {
             unset($request['bulk']);
             Message::insert($request['messages']);
             $ids = Message::orderBy('id', 'desc')->take(count($request['messages']))->pluck('id');
         } else {
-            // $message = new Message($request->all());
-            $request['user_id'] =  auth('api')->user()->id;
+            $request['user_id'] = auth('api')->user()->id;
             $ids = [Message::insertGetId($request->all())];
-            // $message->user_id = auth('api')->user()->id;
-            // $message->save();
         }
-        /** return the response flag(true) */
+
         return response()->json([
             'sentAndLogged' => true,
             'ids' => $ids ?? null

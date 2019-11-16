@@ -396,21 +396,19 @@ class OrderWithPromiseCall extends Order {
 
     //NB:: this method is called from outside of this class.
     //to use always call this method after instantiating the class.
-    setReminder(type) {
+    setReminder(type, SMSId = null) {
         this._reminder = {
             type,
             'feedback': null,
             'is_visited': null,
             'dva_id': this.dvaId,
-            'order_id': this.order.id,
+            'order_id': this.order.id.replace(/ +/g, ""),
             'customer_id': this.customer.id,
             'canBeSelected': !this.isReminderSent,
             'repayment_level': this.repaymentLevel + "/" + this.count
         };
-        if (type === 'sms') {
-            this._reminder.sms_id = null;
-            this._reminder.contacts = this.customer.telephone;
-        }
+        if (type === 'sms') this._reminder.contacts = this.customer.telephone;
+        if (type === 'sms' || 'custom-sms') this._reminder.sms_id = SMSId;
     }
 
     setPromiseCall() {

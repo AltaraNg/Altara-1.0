@@ -209,9 +209,8 @@ Order Information
                                     <th>{{activeOrder.order.id}}</th>
                                     <th>{{activeOrder.order.store_product.product_name}}</th>
                                     <td>{{activeOrder.branch.name}}</td>
-                                    <td class="font-weight-bold"
-                                        :class="activeOrder.order.status.name.toLocaleString() === 'ok' ? 'paid' : 'missed'">
-                                        {{activeOrder.order.status.name}}
+                                    <td class="font-weight-bold" :class="orderStatusClass(activeOrder)">
+                                        {{orderStatus(activeOrder)}}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -387,6 +386,13 @@ Order Information
         },
 
         methods: {
+
+            orderStatus: activeOrder => activeOrder.order.status ? activeOrder.order.status.name : 0,
+
+            orderStatusClass(activeOrder) {
+                const orderStatus = this.orderStatus(activeOrder);
+                if (orderStatus) return orderStatus.toLocaleString() === 'ok' ? 'paid' : 'missed';
+            },
 
             async prepareForm({orders}) {
                 this.show = false;

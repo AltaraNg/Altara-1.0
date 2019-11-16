@@ -98,10 +98,10 @@
     </transition>
 </template>
 <script>
-    import {mapGetters} from "vuex";
     import {get} from '../../utilities/api';
     import Flash from "../../utilities/flash";
     import Order from "../../components/Orders";
+    import {mapGetters, mapActions} from "vuex";
     import CustomHeader from '../../components/customHeader';
 
     export default {
@@ -151,14 +151,14 @@
 
             next(firstPage = null) {
                 if (this.orders.next_page_url) {
-                    this.page = firstPage ? firstPage : this.page + 1;
+                    this.page = firstPage ? firstPage : parseInt(this.page) + 1;
                     this.fetchData();
                 }
             },
 
             prev(lastPage = null) {
                 if (this.orders.prev_page_url) {
-                    this.page = lastPage ? lastPage : this.page - 1;
+                    this.page = lastPage ? lastPage : parseInt(this.page) - 1;
                     this.fetchData();
                 }
             },
@@ -169,13 +169,23 @@
                 this.response = {orders: data.orders.data};
                 this.$LIPS(false);
                 this.show = true;
-            }
+            },
+
+            ...mapActions('ModalAccess', [
+                'addCustomerOptionsModalsToDom',
+                'removeCustomerOptionsModalsFromDom'
+            ])
         },
 
         created() {
             this.$props.withBranchFilter && this.filters.unshift({name: 'branch', model: 'branch_id'});
+            this.addCustomerOptionsModalsToDom();
             this.$prepareBranches();
             this.fetchData();
+        },
+
+        destroyed() {
+            this.removeCustomerOptionsModalsFromDom();
         }
     }
 </script>

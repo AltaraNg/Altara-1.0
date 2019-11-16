@@ -94,7 +94,12 @@ const router = new VueRouter({
                 {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-altarapay'},
                 {path: 'verification', component: DVAVerification, name: 'verification-altarapay'},
                 {path: 'direct-debit-sales', component: DirectDebitSales, name: 'direct-debit-sales'},
-                {path: 'direct-debit-overdue', component: AllOverdue, name: 'direct-debit-overdue', meta: {mode: 'direct-debit'}},
+                {
+                    path: 'direct-debit-overdue',
+                    component: AllOverdue,
+                    name: 'direct-debit-overdue',
+                    meta: {mode: 'direct-debit'}
+                },
             ]
         },
         {
@@ -110,13 +115,18 @@ const router = new VueRouter({
                     name: 'customerUpdate'
                 },
                 {path: 'verification', component: DVAVerification, name: 'verification'},
-                {path: 'sales', component: OrderList, name: 'sales-dva'},
+                {path: 'sales', component: OrderList, name: 'sales-dva', meta: {customSMS: true}},
 
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
                 {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},
                 {path: 'reminder/recovery', component: Reminder, name: 'recovery', meta: {mode: 'recovery'}},
-                {path: 'reminder/external-recovery', component: Reminder, name: 'external-recovery', meta: {mode: 'external-recovery'}},
+                {
+                    path: 'reminder/external-recovery',
+                    component: Reminder,
+                    name: 'external-recovery',
+                    meta: {mode: 'external-recovery'}
+                },
                 {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-dva'},
             ]
         },
@@ -124,7 +134,7 @@ const router = new VueRouter({
             path: '/cag', component: CAG, meta: {CAG: true}, children: [
                 {path: '/', redirect: {name: 'CAGHome'}},
                 {path: 'home', component: CAGHome, name: 'CAGHome'},
-                {path: 'sales', component: OrderList, name: 'sales-cag'},
+                {path: 'sales', component: OrderList, name: 'sales-cag', meta: {customSMS: false}},
                 {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-cag'},
             ]
         },
@@ -166,7 +176,7 @@ const router = new VueRouter({
                     name: 'attendanceCreateFsl',
                     meta: {mode: 'create'}
                 },
-                {path: 'sales', component: OrderList, name: 'sales-fsl'},
+                {path: 'sales', component: OrderList, name: 'sales-fsl', meta: {customSMS: false}},
                 {path: 'sales/create', component: POSForm, name: 'post-sales'},
                 {path: 'payment', component: PaymentForm, name: 'down-payment'},
                 {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva'},

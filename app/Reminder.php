@@ -9,7 +9,7 @@ class Reminder extends Model
 {
     use Scopes;
 
-    protected $fillable = ["customer_id", "order_id", "sms_id", "repayment_level", "feedback", "dva_id", "type", "date"];
+    protected $fillable = ["customer_id", "order_id", "sms_id", "repayment_level", "feedback", "dva_id", "type", "date", "is_visited"];
 
     protected $hidden = ['created_at', 'updated_at'];
 
