@@ -29,6 +29,10 @@ body {
     z-index: 1;
 }
 
+.z-2 {
+    z-index: 2;
+}
+
 .show {
     display: block;
 }
@@ -538,7 +542,7 @@ table a i {
     &-view {
         .weekend {
             background: repeating-linear-gradient(45deg, rgba(227, 210, 163, .2), rgba(227, 210, 163, 0.2) 2px, rgba(0, 0, 0, 0.0) 2px,
-                    rgba(0, 0, 0, 0) 8px), #fffff1;
+                rgba(0, 0, 0, 0) 8px), #fffff1;
         }
 
         .heading.day {
@@ -1049,67 +1053,78 @@ tr.current {
 
 .portal-card {
     transition: all .2s;
+
     &:hover {
-        transform : scale(1.02);
+        transform: scale(1.02);
     }
-    box-shadow    : 0 5px 25px 0 rgba(0, 0, 0, .2);
-    border-radius : .7rem;
-    overflow      : hidden;
+
+    box-shadow: 0 5px 25px 0 rgba(0, 0, 0, .2);
+    border-radius: .7rem;
+    overflow: hidden;
+
     p {
-        font-size   : 1.5rem;
-        font-weight : 300;
+        font-size: 1.5rem;
+        font-weight: 300;
     }
+
     .portion {
-        background-color : white;
-        position         : relative;
-        padding          : 3rem;
+        background-color: white;
+        position: relative;
+        padding: 3rem;
+
         &.first {
-            border-bottom : 1px solid #ebebeb;
-            background    : linear-gradient(30deg, #ebebeb 0%, #f5f5f5 100%);
+            border-bottom: 1px solid #ebebeb;
+            background: linear-gradient(30deg, #ebebeb 0%, #f5f5f5 100%);
         }
     }
+
     .portal-title {
-        color       : #074a74;
-        font-size   : 1.5 * $default-font-size;
-        padding-top : 1.5rem;
-        float       : left;
+        color: #074a74;
+        font-size: 1.5 * $default-font-size;
+        padding-top: 1.5rem;
+        float: left;
     }
 
     .deco {
-        position         : absolute;
-        top              : 4rem;
-        width            : 7rem;
-        height           : .3rem;
-        left             : 3rem;
-        border-radius    : 4rem;
-        background-color : #074a74;
+        position: absolute;
+        top: 4rem;
+        width: 7rem;
+        height: .3rem;
+        left: 3rem;
+        border-radius: 4rem;
+        background-color: #074a74;
+
         &.second {
-            left             : 10.5rem;
-            background-color : #fe5a11;
+            left: 10.5rem;
+            background-color: #fe5a11;
         }
     }
+
     .deco-down {
-        position   : absolute;
-        z-index    : 10;
-        bottom     : -1px;
-        background : linear-gradient(30deg, #ebebeb 0%, #f5f5f5 100%);
+        position: absolute;
+        z-index: 10;
+        bottom: -1px;
+        background: linear-gradient(30deg, #ebebeb 0%, #f5f5f5 100%);
+
         &.first {
-            height     : .5rem;
-            width      : 100%;
-            left       : 0;
-            border-top : 1px solid #ebebeb;
+            height: .5rem;
+            width: 100%;
+            left: 0;
+            border-top: 1px solid #ebebeb;
         }
+
         &.second {
-            width         : 45%;
-            transform     : skewX(-35deg);
-            right         : -2rem;
-            border-radius : 0.5rem 0 0 0;
-            border        : 1px solid #ebebeb;
-            padding       : 1.2rem 1rem;
+            width: 45%;
+            transform: skewX(-35deg);
+            right: -2rem;
+            border-radius: 0.5rem 0 0 0;
+            border: 1px solid #ebebeb;
+            padding: 1.2rem 1rem;
         }
     }
+
     a {
-        transform : translateX(20%) skewX(35deg);
+        transform: translateX(20%) skewX(35deg);
     }
 }
 
@@ -1119,7 +1134,7 @@ tr.current {
     position: relative;
     z-index: 1;
 
-    &__open{
+    &__open {
         border: 1px solid lighten($default-color, 15%);
     }
 
@@ -1174,7 +1189,8 @@ tr.current {
     &__item {
         display: block;
         border-top: 1px solid #f4f4f4;
-        &:hover{
+
+        &:hover {
             background: lighten($default-color, 70%);
         }
     }
@@ -1307,22 +1323,22 @@ tr.current {
     }
 
     #table-guide td {
-        width        : 6rem;
-        text-align   : center;
-        height       : unset;
-        float        : left;
-        margin-right : 1rem;
+        width: 6rem;
+        text-align: center;
+        height: unset;
+        float: left;
+        margin-right: 1rem;
     }
 
     #table-guide td span {
-        margin-bottom : 1rem;
-        line-height   : 2;
-        float         : left;
-        width         : 100%;
+        margin-bottom: 1rem;
+        line-height: 2;
+        float: left;
+        width: 100%;
     }
 
     #table-guide > div > div {
-        padding : 0 4rem 3rem;
+        padding: 0 4rem 3rem;
     }
 }
 
@@ -1355,19 +1371,21 @@ tr.current {
     }
 }
 
-.card-radius{
+.card-radius {
     border-radius: .4rem;
 }
 
 .product .card {
     @include transition(.2s);
+
     &:hover {
-        transform : scale(1.02);
+        transform: scale(1.02);
     }
+
     i, svg {
-        font-size : 9rem;
-        opacity   : .1;
-        margin    : 1rem auto;
+        font-size: 9rem;
+        opacity: .1;
+        margin: 1rem auto;
     }
 }
 
@@ -1380,7 +1398,8 @@ tr.current {
     border-radius: 50%;
     text-align: center;
     margin: 1rem auto;
-    &:hover{
+
+    &:hover {
         background-color: whitesmoke;
         color: darkgray;
         -webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
@@ -1479,19 +1498,23 @@ tr.current {
 
     .portal-card {
         .portion {
-            padding : 2rem 2.5rem;
+            padding: 2rem 2.5rem;
         }
+
         .deco {
-            top      : 3rem;
-            height   : .2rem;
-            left     : 2.5rem;
+            top: 3rem;
+            height: .2rem;
+            left: 2.5rem;
+
             &.second {
-                left : 10rem;
+                left: 10rem;
             }
         }
+
         .deco-down.second {
-            padding : .8rem .5rem;
+            padding: .8rem .5rem;
         }
+
         a {
             padding: 8px 16px;
             transform: translateX(14%) skewX(35deg);
@@ -1510,7 +1533,7 @@ tr.current {
 
     .product {
         i, svg {
-            font-size : 1.2rem;
+            font-size: 1.2rem;
         }
     }
 }
@@ -1590,8 +1613,9 @@ tr.current {
 
     .portal-card {
         .deco-down.second {
-            padding : .9rem .5rem;
+            padding: .9rem .5rem;
         }
+
         a {
             padding: 9px 16px;
             transform: translateX(25%) skewX(35deg);
@@ -1606,7 +1630,7 @@ tr.current {
 
     .product {
         i, svg {
-            font-size : 1rem;
+            font-size: 1rem;
         }
     }
 }

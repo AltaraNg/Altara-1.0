@@ -1,39 +1,14 @@
 <template>
     <transition name="fade">
-
         <div id="reminder">
 
-            <div class="mt-5 attendance-head">
-                <div class="card">
-                    <ul class="nav nav-tabs bg-default justify-content-center">
-                        <h6>Customer Lookup</h6>
-                    </ul>
-                    <div class="card-body p-4">
-                        <form @submit.prevent="processForm">
-                            <div class="m-0 p-0 col-12 form-group clearfix">
-                                <label class="w-100">Customer ID</label>
-                                <input @onkeyUp="check"
-                                       class="form-control col-lg-9 col-md-8 col-sm-8 col-12 float-left mt-1"
-                                       data-vv-as="customer id"
-                                       name="customer_id"
-                                       v-model="customer_id"
-                                       v-validate="'required|numeric'">
-                                <div class="col-lg-3 col-md-4 col-sm-4 col-12 float-right px-md-3 mt-md-0 px-sm-3 mt-sm-0 mt-2 px-0">
-                                    <button :disabled="check" class="btn btn-block bg-default my-1" type="submit">
-                                        Fetch customer details <i class="far fa-paper-plane ml-1"></i>
-                                    </button>
-                                </div>
-                                <small class="form-text text-muted w-100" v-if="errors.has('customer_id')">
-                                    {{errors.first('customer_id')}}
-                                </small>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <AutocompleteSearch
+                title="customer lookup"
+                @customer-selected="processForm"
+                :url="'/api/customer/autocomplete'"/>
 
             <transition name="fade">
-                <div v-if="customer && show">
+                <div v-if="customer && show" class="z-1 position-relative">
 
                     <div class="attendance-head">
                         <customer-profile :view-customer="customer"/>
@@ -57,30 +32,37 @@
                                     <span class="user mx-auto">{{index+1}}</span>
                                 </div>
 
-                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                <div
+                                    class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{order.order.order_date}}
                                 </div>
 
-                                <div class="col-12 col-xs-2 col-md col-lg d-flex user-name align-items-center justify-content-center">
+                                <div
+                                    class="col-12 col-xs-2 col-md col-lg d-flex user-name align-items-center justify-content-center">
                                     {{order.order.id}}
                                 </div>
 
-                                <div class="col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center">
+                                <div
+                                    class="col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{order.order.store_product.product_name}}
                                 </div>
 
-                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                <div
+                                    class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{$formatCurrency(order.order.product_price)}}
                                 </div>
 
-                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                <div
+                                    class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{order.order.sales_category.name}}
                                 </div>
 
-                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                <div
+                                    class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{$formatCurrency(order.order.down_payment)}}
                                 </div>
-                                <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
+                                <div
+                                    class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     <button @click="displayAmortization(index)" class="btn status my-sm-2"
                                             :class="order.count === order.repaymentLevel ? 'approved' : 'pending'">
                                         View Plan
@@ -350,10 +332,11 @@
     import {Order} from '../../../utilities/Amortization';
     import CustomHeader from '../../../components/customHeader';
     import CustomerProfile from '../../../components/CustomerProfile';
+    import AutocompleteSearch from "../../../components/AutocompleteSearch/AutocompleteSearch";
 
     export default {
 
-        components: {CustomHeader, CustomerProfile},
+        components: {CustomHeader, CustomerProfile, AutocompleteSearch},
 
         data() {
             return {
@@ -380,7 +363,7 @@
                 let {customer, user} = data;
                 if (!!customer.length) {
                     customer = customer[0];
-                    if (!(!!customer.document['id'])) customer.document = {id_card_url: "", passport_url: ""};
+                    if (!customer.document) customer.document = {id_card_url: "", passport_url: ""};
                     this.user.branch = user.branch_id;
                     this.customer = customer;
                     this.customer.orders = customer.orders.map(order => new Order(order, customer));
@@ -389,10 +372,10 @@
                 this.$LIPS(false);
             },
 
-            processForm() {
+            processForm(customerId) {
                 this.show = false;
                 this.$LIPS(true);
-                get(`/api/customer/lookup/${this.customer_id}`)
+                get(`/api/customer/lookup/${customerId}`)
                     .then(res => this.updateView(res.data))
                     .catch(() => {
                         this.$LIPS(false);
@@ -517,9 +500,7 @@
 
         computed: {
             ...mapGetters(['getBanks', 'getPaymentMethods', 'auth']),
-            check() {
-                return (!(!(this.$isProcessing) && (!!this.customer_id)));
-            },
+
             canUserAddPayment() {
                 if (this.auth('FSLLead')) return true;
                 return this.auth('supervisor') && (this.user.branch === this.activeOrder.branch.id);

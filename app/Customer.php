@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helper\AutoCompleteSearchTrait;
 use App\Helper\DataViewer;
 use App\Helper\Scopes;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ class Customer extends Model
     /** this is a generic trait created to serve as a generic
      * scope for fetching and paginating the
      * model where it is called */
-    use DataViewer, Scopes;
+    use DataViewer, Scopes, AutoCompleteSearchTrait;
 
     protected $guarded = [];
 
@@ -19,7 +20,7 @@ class Customer extends Model
 
     /** columns to be used to render the list(Data viewer) of customers in the view*/
     public static $columns = [
-        'id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration','telephone'
+        'id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration', 'telephone'
     ];
 
     /** this is the user object form, it is sent to the js

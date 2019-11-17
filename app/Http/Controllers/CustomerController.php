@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Address;
-use App\Bank;
+use App\State;
 use App\Branch;
+use App\Address;
 use App\Customer;
 use App\Document;
-use App\PaymentMethod;
-use App\PersonalGuarantor;
-use App\ProcessingFee;
-use App\State;
-use App\User;
 use App\Verification;
+use App\ProcessingFee;
 use App\WorkGuarantor;
-use function foo\func;
+use App\PersonalGuarantor;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class CustomerController extends Controller
 {
@@ -30,7 +27,7 @@ class CustomerController extends Controller
         /** gets list of customers(paginated), searchPaginateAndOrder is a custom
          * query scope used by all the models that use data viewer trait
          * in this application */
-        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration','telephone')
+        $model = Customer::select('id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration', 'telephone')
             ->with('verification')
             ->searchPaginateAndOrder();
         /** the columns used to render the data viewer for customers list*/
@@ -42,11 +39,6 @@ class CustomerController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         /** fetch list of all states*/
@@ -64,12 +56,6 @@ class CustomerController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         /** 1. validate the customer's phone number */
@@ -98,12 +84,6 @@ class CustomerController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         /** 1. fetch customer*/
@@ -156,24 +136,6 @@ class CustomerController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         /** 1. Strip all the eager loaded model attached
@@ -246,7 +208,7 @@ class CustomerController extends Controller
     {
         $customer = Customer::where('id', $id)->with(['document', 'verification', 'branch', 'orders' => function ($query) {
             return $query->with([
-                'repayment', 'repaymentFormal', 'repaymentInformal','status',
+                'repayment', 'repaymentFormal', 'repaymentInformal', 'status',
                 'storeProduct', 'discount', 'salesCategory', 'salesType',
                 'floorAgent' => function ($q) {
                     return $q->select('id', 'staff_id', 'full_name');
@@ -260,15 +222,33 @@ class CustomerController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function autocompleteSearch(Request $request)
     {
-        //
+        if (!isset($request->searchableFields)) {
+            return response()->json(['message' => 'nothing to search.'], 400);
+        }
+
+        try {
+            $customers = Customer::autocompleteSearch($request)->get();
+        } catch (QueryException $exception) {
+            return response()->json(['message' => 'bad request. Try again later.'], 400);
+        }
+
+        return response()->json(['customers' => $customers]);
+    }
+
+    public static function getSelectColumns($searchColumns)
+    {
+        /**
+         * Searching with phone numbers displays : phone_no & full name
+         * Searching with customer id displays : customer id & full name
+         * Searching with full name displays : full name
+         *
+         * */
+        $columns = ['id', 'first_name', 'last_name'];
+        in_array('telephone', $searchColumns) && array_push($columns, 'telephone');
+        in_array('middle_name', $searchColumns) && array_push($columns, 'middle_name');
+        return $columns;
     }
 
 }

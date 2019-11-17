@@ -14,6 +14,7 @@
 Route::post('/login', 'AuthController@login');
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/branches', 'BranchController@allBranches');
+    Route::post('/customer/autocomplete', 'CustomerController@autocompleteSearch');
     Route::get('/customer/lookup/{customer}', 'CustomerController@customerLookup');
     Route::post('/customer/{customer}', 'CustomerController@update');
     Route::get('/user/getBranchUsers', 'UserController@getBranchUsers');

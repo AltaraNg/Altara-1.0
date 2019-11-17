@@ -31,8 +31,10 @@ Date.prototype.addDays = function (days) {
 
 /**NB functions her can be accessed anywhere on the project(vue components)
  * by using this.$functionName the argument c stands for customer
- * i used c just to reduce file size**/
-Vue.prototype.$getCustomerFullName = c => c ? `${c.first_name} ${c.last_name}` : null;
+ * I used c just to reduce file size**/
+Vue.prototype.$getCustomerFullName = (c, withMiddleName = false) =>
+    c ? `${c.first_name + (c.middle_name ? " " + c.middle_name + " " : " ") + c.last_name}` : null;
+
 Vue.prototype.$getCustomerAddress = c =>
     c ? `${c.add_houseno} ${c.add_street} ${c.area_address}, ${c.city}, ${c.state}.` : null;
 

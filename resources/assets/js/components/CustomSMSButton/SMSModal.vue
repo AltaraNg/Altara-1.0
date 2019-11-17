@@ -20,11 +20,11 @@
                             </div>
 
                             <div class="form-group">
-                            <span class="radio mr-5"
-                                  v-for="type in ['custom', 'auto-generate']">
-                                <input :id="type" :value="type" type="radio" v-model="messageType">
-                                <label :for="type">{{type | capitalize}} Message</label>
-                            </span>
+                                <span class="radio mr-5"
+                                      v-for="type in ['custom', 'auto-generate']">
+                                    <input :id="type" :value="type" type="radio" v-model="messageType">
+                                    <label :for="type">{{type | capitalize}} Message</label>
+                                </span>
                             </div>
 
                             <div class="form-group">
