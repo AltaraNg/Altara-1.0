@@ -120,7 +120,7 @@ Vue.prototype.$prepareStates = () => {
 };
 
 Vue.prototype.$prepareCategories = () => {
-    console.log('I am working');
+
     !store.getters.getCategories && get('/api/categories')
         .then(r => store.dispatch('mutateCategories', r.data.categories));
 };

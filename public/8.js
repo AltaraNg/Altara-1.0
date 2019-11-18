@@ -336,6 +336,41 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 
@@ -405,7 +440,9 @@ exports.default = {
             statuses: [{ name: "available", value: 1 }, { name: "unavailable", value: 0 }],
             productForm: { products: [] },
 
-            canAddProduct: true
+            canAddProduct: true,
+            requestSent: false
+
         };
     },
 
@@ -476,14 +513,16 @@ exports.default = {
 
                 // console.log(data.products)
                 _this2.productForm.products = [];
+                _this2.requestSent = true;
                 data.products.forEach(function (product) {
                     _this2.productForm.products.push({
                         product_name: product.name,
                         market_price: product.retail_price,
                         product_id: product.id,
-                        quantity: _this2.getMatchingProduct(product).length
+                        quantity: _this2.getMatchingProduct(product.id).length
 
                     });
+
                     _this2.reNumber();
                 });
             });
@@ -523,14 +562,12 @@ exports.default = {
                 return entity.id === id;
             });
         },
-        getMatchingProduct: function getMatchingProduct(_ref4) {
-            var id = _ref4.id;
-
+        getMatchingProduct: function getMatchingProduct(id) {
             /*
             this should get product based on the category and brand ids
              */
             return this.getInventories.filter(function (inventory) {
-                return inventory.id === id;
+                return inventory.product_id === id;
             });
         }
     },
@@ -554,89 +591,6 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 exports.push([module.i, "\n#product-search[data-v-52a532c2]{\n    width: 50%;\n    margin: auto;\n    padding-top: 20px;\n}\nbutton[data-v-52a532c2]{\n    display: inline;\n}\n\n", ""]);
 
 // exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
 
 
 /***/ }),
@@ -702,8 +656,8 @@ var render = function() {
           [
             _c("custom-header", {
               attrs: {
-                to: "/log/inventory",
-                title: "Generate Inventory",
+                to: "/log/inventory/search",
+                title: "Search Products",
                 "button-title": "view Inventory!"
               }
             })
@@ -838,13 +792,11 @@ var render = function() {
                       { staticClass: "text-center" },
                       [
                         _c("tr", { staticClass: "table-separator" }, [
-                          _c("td", { staticClass: "text-left" }, [
+                          _c("th", { staticClass: "text-left" }, [
                             _vm._v("S/No.")
                           ]),
                           _vm._v(" "),
                           _c("th", [_vm._v("Product")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Inventory SKU")]),
                           _vm._v(" "),
                           _c("th", [_vm._v("Market Price")]),
                           _vm._v(" "),
@@ -860,126 +812,34 @@ var render = function() {
                             _vm._v(" "),
                             _c("th", [
                               _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.productForm.products[index]
-                                          .product_name,
-                                      expression:
-                                        "productForm.products[index].product_name"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "product_sku",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: {
-                                    value:
+                                _c("p", [
+                                  _vm._v(
+                                    _vm._s(
                                       _vm.productForm.products[index]
                                         .product_name
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "product_name",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
+                                    )
+                                  )
+                                ])
                               ])
                             ]),
                             _vm._v(" "),
                             _c("th", [
                               _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.productForm.products[index]
-                                          .product_id,
-                                      expression:
-                                        "productForm.products[index].product_id"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "inventory_sku",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: {
-                                    value:
-                                      _vm.productForm.products[index].product_id
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "product_id",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
+                                _c("p", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("currency")(
                                         _vm.productForm.products[index]
                                           .market_price,
-                                      expression:
-                                        "productForm.products[index].market_price"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "market_price",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: {
-                                    value:
-                                      _vm.productForm.products[index]
-                                        .market_price
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "market_price",
-                                        $event.target.value
+                                        "₦",
+                                        0
                                       )
-                                    }
-                                  }
-                                })
+                                    )
+                                  )
+                                ])
                               ])
                             ]),
-                            _vm._v("\ns\n\n\n\n\n                        "),
+                            _vm._v(" "),
                             _c("th", [
                               _c("div", { staticClass: "form-group mb-0" }, [
                                 _c("input", {
@@ -995,7 +855,11 @@ var render = function() {
                                     }
                                   ],
                                   staticClass: "form-control",
-                                  attrs: { name: "quantity", type: "text" },
+                                  attrs: {
+                                    name: "quantity",
+                                    type: "text",
+                                    disabled: ""
+                                  },
                                   domProps: {
                                     value:
                                       _vm.productForm.products[index].quantity
@@ -1021,15 +885,39 @@ var render = function() {
                                 "button",
                                 {
                                   staticClass:
-                                    "ml-2 btn status status-sm my-sm-2 not-approved",
+                                    "ml-2 btn status status-sm my-sm-2 bg-default",
                                   on: {
                                     click: function($event) {
-                                      _vm.deleteProduct(index)
+                                      _vm.showModalContent()
                                     }
                                   }
                                 },
-                                [_c("i", { staticClass: "fas fa-times" })]
-                              )
+                                [
+                                  _vm._v(
+                                    "\n                                View\n                            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm.productForm.products[index].quantity > 1
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "ml-2 btn status status-sm my-sm-2 bg-default",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.viewAllProducts(index)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                View All\n                            "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
                             ])
                           ])
                         })
@@ -1058,6 +946,14 @@ var render = function() {
                     _c("i", { staticClass: "far fa-paper-plane ml-1" })
                   ]
                 )
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.productForm.products.length === 0 && _vm.requestSent
+          ? _c("div", { staticClass: "attendance-body" }, [
+              _c("p", { staticClass: "text-center text-info" }, [
+                _vm._v("There are no products matching the criteria")
               ])
             ])
           : _vm._e()

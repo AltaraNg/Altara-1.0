@@ -5,8 +5,8 @@
 
             <div >
                 <custom-header
-                        :to="'/log/inventory'"
-                        :title="'Generate Inventory'"
+                        :to="'/log/inventory/search'"
+                        :title="'Search Products'"
                         :button-title="'view Inventory!'"
                 />
             </div>
@@ -63,9 +63,9 @@
                 <table class="table table-bordered" v-if="canAddProduct">
                     <tbody class="text-center">
                     <tr class="table-separator">
-                        <td class="text-left">S/No.</td>
+                        <th class="text-left">S/No.</th>
                         <th>Product</th>
-                        <th>Inventory SKU</th>
+
                         <th>Market Price</th>
                         <th>Quantity</th>
                     </tr>
@@ -74,43 +74,31 @@
 
                         <th>
                             <div class="form-group mb-0">
-                                <input
-                                        class="form-control"
-                                        name="product_sku"
-                                        type="text"
-                                        v-model="productForm.products[index].product_name"
-                                        disabled
-                                />
+<!--                                <input-->
+<!--                                        class="form-control"-->
+<!--                                        name="product_sku"-->
+<!--                                        type="text"-->
+<!--                                        v-model="productForm.products[index].product_name"-->
+<!--                                        disabled-->
+<!--                                />-->
+                                <p>{{ productForm.products[index].product_name }}</p>
                             </div>
                         </th>
+
+
 
                         <th>
                             <div class="form-group mb-0">
-                                <input
-                                        class="form-control"
-                                        name="inventory_sku"
-                                        type="text"
-                                        v-model="productForm.products[index].product_id"
-                                        disabled
-                                />
+<!--                                <input-->
+<!--                                        class="form-control"-->
+<!--                                        name="market_price"-->
+<!--                                        type="text"-->
+<!--                                        v-model="productForm.products[index].market_price"-->
+<!--                                        disabled-->
+<!--                                />-->
+                                <p>{{ productForm.products[index].market_price | currency('₦', 0)}}</p>
                             </div>
                         </th>
-
-                        <th>
-                            <div class="form-group mb-0">
-                                <input
-                                        class="form-control"
-                                        name="market_price"
-                                        type="text"
-                                        v-model="productForm.products[index].market_price"
-                                        disabled
-                                />
-                            </div>
-                        </th>
-s
-
-
-
 
                         <th>
                             <div class="form-group mb-0">
@@ -119,19 +107,26 @@ s
                                         name="quantity"
                                         type="text"
                                         v-model="productForm.products[index].quantity"
+                                        disabled
                                 />
                             </div>
                         </th>
 
-
-
                         <th>
                             <button
-                                    @click="deleteProduct(index)"
-                                    class="ml-2 btn status status-sm my-sm-2 not-approved"
+                                    @click="showModalContent()"
+                                    class="ml-2 btn status status-sm my-sm-2 bg-default"
                             >
-                                <i class="fas fa-times"></i>
+                                View
                             </button>
+                            <button
+                                    v-if="productForm.products[index].quantity >1"
+                                    @click="viewAllProducts(index)"
+                                    class="ml-2 btn status status-sm my-sm-2 bg-default"
+                            >
+                                View All
+                            </button>
+
                         </th>
                     </tr>
                     </tbody>
@@ -143,6 +138,46 @@ s
                     </button>
                 </div>
             </div>
+            <div class="attendance-body" v-if="productForm.products.length === 0 && requestSent">
+                <p class="text-center text-info">There are no products matching the criteria</p>
+            </div>
+
+<!--            <div class="modal fade repayment" id="amortization" v-if="showModalContent">-->
+<!--                <div class="modal-dialog modal-xl" role="document">-->
+<!--                    <div class="modal-content" >-->
+<!--                        <div class="modal-header py-2">-->
+<!--                            Here we are-->
+<!--                        </div>-->
+<!--                        <div class="modal-body">-->
+<!--                            <div class="table-responsive">-->
+
+<!--                                <h5 class="mt-3 mb-0">Order Information</h5>-->
+<!--                                <table class="table table-bordered">-->
+<!--                                    <tbody>-->
+<!--                                    <tr class="table-separator">-->
+<!--                                        <td>Name</td>-->
+<!--                                        <td>Order Id</td>-->
+<!--                                        <td>Product</td>-->
+<!--                                        <th>Branch</th>-->
+<!--                                    </tr>-->
+
+<!--                                </table>-->
+
+
+
+
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="modal-footer" >-->
+
+
+
+<!--                            <a class="text-link mt-3" data-dismiss="modal" href="javascript:"-->
+<!--                               style="text-align: right">close dialogue</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
 
 
@@ -214,7 +249,9 @@ s
                 ],
                 productForm: {products:[]},
 
-                canAddProduct: true
+                canAddProduct: true,
+                requestSent: false
+
             };
 
 
@@ -288,14 +325,16 @@ s
                     .then(({ data }) => {
                         // console.log(data.products)
                         this.productForm.products = [];
+                        this.requestSent = true;
                         data.products.forEach(product => {
                             this.productForm.products.push({
                                 product_name: product.name,
                                 market_price: product.retail_price,
                                 product_id: product.id,
-                                quantity: this.getMatchingProduct(product).length
+                                quantity: this.getMatchingProduct(product.id).length
 
                             });
+
                             this.reNumber();
                         });
                     })
@@ -335,11 +374,11 @@ s
                 return array.find(entity => entity.id === id);
             },
 
-            getMatchingProduct({id}){
+            getMatchingProduct(id){
                 /*
                 this should get product based on the category and brand ids
                  */
-                return this.getInventories.filter(inventory => inventory.id === id)
+                return this.getInventories.filter(inventory => inventory.product_id === id)
             }
         },
         computed: {
