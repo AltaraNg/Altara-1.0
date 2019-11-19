@@ -391,7 +391,20 @@ Order Information
 
             orderStatusClass(activeOrder) {
                 const orderStatus = this.orderStatus(activeOrder);
-                if (orderStatus) return orderStatus.toLocaleString() === 'ok' ? 'paid' : 'missed';
+                //if (orderStatus) return orderStatus.toLocaleString() === 'ok' ? 'paid' : 'missed';
+                let statusClass;
+                switch (orderStatus) {
+                    case 'ok':
+                        statusClass = 'ok';
+                        break;
+                    case 'returned':
+                        statusClass = 'returned';
+                        break;
+                    case 'repossessed':
+                        statusClass = 'repossessed';
+                        break;
+                }
+                return statusClass;
             },
 
             async prepareForm({orders}) {
