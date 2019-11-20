@@ -365,12 +365,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 
@@ -423,7 +417,7 @@ exports.default = {
             index: null,
             status: [{ id: 1, name: 'available' }, { id: 2, name: 'sold out' }],
             show: false,
-            showModalContent: false,
+
             search: "/api/products/search",
             number: 0,
 
@@ -435,6 +429,9 @@ exports.default = {
             supplier: null,
             branches: null,
             quantity: "",
+            showDiv: false,
+            searchInventory: [],
+            modalTitle: '',
 
             method: "POST",
             statuses: [{ name: "available", value: 1 }, { name: "unavailable", value: 0 }],
@@ -467,63 +464,74 @@ exports.default = {
             this.show = true;
             this.canAddProduct = /*this.canUserAddPayment;*/true;
         },
-        onSave: function onSave() {
+        modal: function modal(name, product) {
+            var temp = this.getMatchingProduct(product.product_id);
+            _vue2.default.set(this.$data, "searchInventory", temp);
+            _vue2.default.set(this.$data, "modalTitle", product.product_name);
+
+            $("#" + name).modal('toggle');
+            /*this method is used to automatically
+            * toggle the modal with the id of
+            * "name passed to it"*/
+            this.errors.clear(name);
+        },
+
+
+        // onSave() {
+        //
+        //     this.$validator.validateAll().then(result => {
+        //         if (result) {
+        //             if (this.$network()) {
+        //                 this.$LIPS(true);
+        //                 this.productForm.products.forEach(e => {
+        //                     if (this.mode = "edit"){
+        //                         delete e.product_name;
+        //                     }
+        //                     byMethod(this.method, this.store, e)
+        //                         .then(({ data }) => {
+        //                             if (data.saved || data.updated) {
+        //                                 // log(data.log, data.staff_id);
+        //                                 Vue.set(this.$data, "productForm", data.form);
+        //                                 Flash.setSuccess(data.message, 5000);
+        //                                 if (data["updated"]) this.$router.push("/log/inventory");
+        //                             }
+        //                         })
+        //                         .catch(({ response: r }) => {
+        //                             let { data, status } = r;
+        //                             if (status === 422) {
+        //                                 this.error = data.errors ? data.errors : data;
+        //                                 this.$networkErr("unique");
+        //                             }
+        //                         })
+        //                         .finally(() => {
+        //                             this.$scrollToTop();
+        //                             this.$LIPS(false);
+        //                         });
+        //                 });
+        //             } else this.$networkErr();
+        //         } else this.$networkErr("form");
+        //     });
+        // },
+
+        addProductForm: function addProductForm() {
             var _this = this;
 
-            this.$validator.validateAll().then(function (result) {
-                if (result) {
-                    if (_this.$network()) {
-                        _this.$LIPS(true);
-                        _this.productForm.products.forEach(function (e) {
-                            if (_this.mode = "edit") {
-                                delete e.product_name;
-                            }
-                            byMethod(_this.method, _this.store, e).then(function (_ref) {
-                                var data = _ref.data;
-
-                                if (data.saved || data.updated) {
-                                    // log(data.log, data.staff_id);
-                                    _vue2.default.set(_this.$data, "productForm", data.form);
-                                    _flash2.default.setSuccess(data.message, 5000);
-                                    if (data["updated"]) _this.$router.push("/log/inventory");
-                                }
-                            }).catch(function (_ref2) {
-                                var r = _ref2.response;
-                                var data = r.data,
-                                    status = r.status;
-
-                                if (status === 422) {
-                                    _this.error = data.errors ? data.errors : data;
-                                    _this.$networkErr("unique");
-                                }
-                            }).finally(function () {
-                                _this.$scrollToTop();
-                                _this.$LIPS(false);
-                            });
-                        });
-                    } else _this.$networkErr();
-                } else _this.$networkErr("form");
-            });
-        },
-        addProductForm: function addProductForm() {
-            var _this2 = this;
-
-            (0, _api.getMethod)('GET', this.search, this.form).then(function (_ref3) {
-                var data = _ref3.data;
+            (0, _api.getMethod)('GET', this.search, this.form).then(function (_ref) {
+                var data = _ref.data;
 
                 // console.log(data.products)
-                _this2.productForm.products = [];
-                _this2.requestSent = true;
+                _this.productForm.products = [];
+                _this.requestSent = true;
                 data.products.forEach(function (product) {
-                    _this2.productForm.products.push({
+                    _this.productForm.products.push({
                         product_name: product.name,
                         market_price: product.retail_price,
                         product_id: product.id,
-                        quantity: _this2.getMatchingProduct(product.id).length
+                        quantity: _this.getMatchingProduct(product.id).length
 
                     });
 
-                    _this2.reNumber();
+                    _this.reNumber();
                 });
             });
         }
@@ -546,15 +554,15 @@ exports.default = {
             this.reNumber();
         },
         reNumber: function reNumber() {
-            var _this3 = this;
+            var _this2 = this;
 
             this.productForm.products.forEach(function (product, index) {
                 /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
                  * u want to display on the ui "4th repayment"
                  * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
                 var next = index + 1;
-                _this3.productForm.products[index]._col = next;
-                _this3.productForm.products[index].column = _this3.$getColumn(next) + " Products";
+                _this2.productForm.products[index]._col = next;
+                _this2.productForm.products[index].column = _this2.$getColumn(next) + " Products";
             });
         },
         getEntity: function getEntity(id, array) {
@@ -575,7 +583,13 @@ exports.default = {
 
     watch: {
         productForm: {}
+    },
+    filters: {
+        numberZero: function numberZero(num) {
+            return num === 0 ? 'Not Available' : num;
+        }
     }
+
 };
 
 /***/ }),
@@ -591,6 +605,89 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 exports.push([module.i, "\n#product-search[data-v-52a532c2]{\n    width: 50%;\n    margin: auto;\n    padding-top: 20px;\n}\nbutton[data-v-52a532c2]{\n    display: inline;\n}\n\n", ""]);
 
 // exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
 
 
 /***/ }),
@@ -808,9 +905,9 @@ var render = function() {
                           index
                         ) {
                           return _c("tr", [
-                            _c("th", [_vm._v(_vm._s(index + 1))]),
+                            _c("td", [_vm._v(_vm._s(index + 1))]),
                             _vm._v(" "),
-                            _c("th", [
+                            _c("td", [
                               _c("div", { staticClass: "form-group mb-0" }, [
                                 _c("p", [
                                   _vm._v(
@@ -823,7 +920,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("th", [
+                            _c("td", [
                               _c("div", { staticClass: "form-group mb-0" }, [
                                 _c("p", [
                                   _vm._v(
@@ -840,65 +937,21 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("th", [
+                            _c("td", [
                               _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.productForm.products[index]
-                                          .quantity,
-                                      expression:
-                                        "productForm.products[index].quantity"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "quantity",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: {
-                                    value:
-                                      _vm.productForm.products[index].quantity
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "quantity",
-                                        $event.target.value
+                                _c("p", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("numberZero")(
+                                        _vm.productForm.products[index].quantity
                                       )
-                                    }
-                                  }
-                                })
+                                    )
+                                  )
+                                ])
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("th", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "ml-2 btn status status-sm my-sm-2 bg-default",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.showModalContent()
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                View\n                            "
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
+                            _c("td", [
                               _vm.productForm.products[index].quantity > 1
                                 ? _c(
                                     "button",
@@ -907,13 +960,16 @@ var render = function() {
                                         "ml-2 btn status status-sm my-sm-2 bg-default",
                                       on: {
                                         click: function($event) {
-                                          _vm.viewAllProducts(index)
+                                          _vm.modal(
+                                            "modal",
+                                            _vm.productForm.products[index]
+                                          )
                                         }
                                       }
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                View All\n                            "
+                                        "\n                                View\n                            "
                                       )
                                     ]
                                   )
@@ -925,28 +981,7 @@ var render = function() {
                       2
                     )
                   ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn bg-default",
-                    attrs: { disabled: _vm.$isProcessing, type: "submit" },
-                    on: {
-                      click: function($event) {
-                        _vm.onSave()
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                        Save Inventory\n                        "
-                    ),
-                    _c("i", { staticClass: "far fa-paper-plane ml-1" })
-                  ]
-                )
-              ])
+                : _vm._e()
             ])
           : _vm._e(),
         _vm._v(" "),
@@ -956,7 +991,84 @@ var render = function() {
                 _vm._v("There are no products matching the criteria")
               ])
             ])
-          : _vm._e()
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "modal fade", attrs: { id: "modal" } }, [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header py-2" }, [
+                _c("h6", { staticClass: "modal-title py-1" }, [
+                  _vm._v(_vm._s(_vm.modalTitle))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "close py-1",
+                    attrs: {
+                      "aria-label": "Close",
+                      "data-dismiss": "modal",
+                      href: "javascript:"
+                    }
+                  },
+                  [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "modal-close text-danger",
+                        attrs: { "aria-hidden": "true" }
+                      },
+                      [_c("i", { staticClass: "fas fa-times" })]
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("table", { staticClass: "table table-bordered" }, [
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", [_vm._v("S/N")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Inventory SKU")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Market Price")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Serial/IMEI Number")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.searchInventory, function(product, index) {
+                      return _c("tr", [
+                        _c("td", [_vm._v(_vm._s(index + 1))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(_vm.searchInventory[index].inventory_sku)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(_vm.searchInventory[index].market_price)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(_vm.searchInventory[index].serial_number)
+                          )
+                        ])
+                      ])
+                    })
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
       ]
     )
   ])

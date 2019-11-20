@@ -70,9 +70,9 @@
                         <th>Quantity</th>
                     </tr>
                     <tr v-for="(product,index) in productForm.products">
-                        <th>{{index+1}}</th>
+                        <td>{{index+1}}</td>
 
-                        <th>
+                        <td>
                             <div class="form-group mb-0">
 <!--                                <input-->
 <!--                                        class="form-control"-->
@@ -83,11 +83,11 @@
 <!--                                />-->
                                 <p>{{ productForm.products[index].product_name }}</p>
                             </div>
-                        </th>
+                        </td>
 
 
 
-                        <th>
+                        <td>
                             <div class="form-group mb-0">
 <!--                                <input-->
 <!--                                        class="form-control"-->
@@ -98,86 +98,80 @@
 <!--                                />-->
                                 <p>{{ productForm.products[index].market_price | currency('₦', 0)}}</p>
                             </div>
-                        </th>
+                        </td>
 
-                        <th>
+                        <td>
                             <div class="form-group mb-0">
-                                <input
-                                        class="form-control"
-                                        name="quantity"
-                                        type="text"
-                                        v-model="productForm.products[index].quantity"
-                                        disabled
-                                />
+                                <p>{{productForm.products[index].quantity | numberZero}}</p>
                             </div>
-                        </th>
+                        </td>
 
-                        <th>
+                        <td>
                             <button
-                                    @click="showModalContent()"
+                                    v-if="productForm.products[index].quantity >1"
+                                    @click="modal('modal', productForm.products[index])"
                                     class="ml-2 btn status status-sm my-sm-2 bg-default"
                             >
                                 View
                             </button>
-                            <button
-                                    v-if="productForm.products[index].quantity >1"
-                                    @click="viewAllProducts(index)"
-                                    class="ml-2 btn status status-sm my-sm-2 bg-default"
-                            >
-                                View All
-                            </button>
 
-                        </th>
+
+
+                        </td>
                     </tr>
                     </tbody>
                 </table>
-                <div>
-                    <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="onSave()">
-                        Save Inventory
-                        <i class="far fa-paper-plane ml-1"></i>
-                    </button>
-                </div>
+<!--                <div>-->
+<!--                    <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="onSave()">-->
+<!--                        Save Inventory-->
+<!--                        <i class="far fa-paper-plane ml-1"></i>-->
+<!--                    </button>-->
+<!--                </div>-->
             </div>
             <div class="attendance-body" v-if="productForm.products.length === 0 && requestSent">
                 <p class="text-center text-info">There are no products matching the criteria</p>
             </div>
 
-<!--            <div class="modal fade repayment" id="amortization" v-if="showModalContent">-->
-<!--                <div class="modal-dialog modal-xl" role="document">-->
-<!--                    <div class="modal-content" >-->
-<!--                        <div class="modal-header py-2">-->
-<!--                            Here we are-->
-<!--                        </div>-->
-<!--                        <div class="modal-body">-->
-<!--                            <div class="table-responsive">-->
-
-<!--                                <h5 class="mt-3 mb-0">Order Information</h5>-->
-<!--                                <table class="table table-bordered">-->
-<!--                                    <tbody>-->
-<!--                                    <tr class="table-separator">-->
-<!--                                        <td>Name</td>-->
-<!--                                        <td>Order Id</td>-->
-<!--                                        <td>Product</td>-->
-<!--                                        <th>Branch</th>-->
-<!--                                    </tr>-->
-
-<!--                                </table>-->
 
 
 
+            <div :id="'modal'" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header py-2">
+                            <h6 class="modal-title py-1">{{modalTitle}}</h6>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal" href="javascript:">
+                <span aria-hidden="true" class="modal-close text-danger">
+                    <i class="fas fa-times"></i>
+                </span>
+                            </a>
+                        </div>
 
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="modal-footer" >-->
+                        <div>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>S/N</th>
+                                    <th>Inventory SKU</th>
+                                    <th>Market Price</th>
+                                    <th>Serial/IMEI Number</th>
 
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(product,index) in searchInventory">
+                                    <td>{{index + 1}}</td>
+                                    <td>{{searchInventory[index].inventory_sku}}</td>
+                                    <td>{{searchInventory[index].market_price}}</td>
+                                    <td>{{searchInventory[index].serial_number}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-
-<!--                            <a class="text-link mt-3" data-dismiss="modal" href="javascript:"-->
-<!--                               style="text-align: right">close dialogue</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -229,7 +223,7 @@
                     {id: 2, name: 'sold out'},
                 ],
                 show: false,
-                showModalContent: false,
+
                 search: "/api/products/search",
                 number: 0,
 
@@ -241,6 +235,9 @@
                 supplier: null,
                 branches: null,
                 quantity: "",
+                showDiv: false,
+                searchInventory: [],
+                modalTitle: '',
 
                 method: "POST",
                 statuses: [
@@ -283,42 +280,55 @@
                 this.canAddProduct = /*this.canUserAddPayment;*/ true;
 
             },
+            modal(name, product) {
+                let temp = this.getMatchingProduct(product.product_id);
+                Vue.set(this.$data, "searchInventory", temp);
+                Vue.set(this.$data, "modalTitle", product.product_name);
 
-            onSave() {
+                $(`#${name}`).modal('toggle');
+                /*this method is used to automatically
+                * toggle the modal with the id of
+                * "name passed to it"*/
+                this.errors.clear(name);
 
-                this.$validator.validateAll().then(result => {
-                    if (result) {
-                        if (this.$network()) {
-                            this.$LIPS(true);
-                            this.productForm.products.forEach(e => {
-                                if (this.mode = "edit"){
-                                    delete e.product_name;
-                                }
-                                byMethod(this.method, this.store, e)
-                                    .then(({ data }) => {
-                                        if (data.saved || data.updated) {
-                                            // log(data.log, data.staff_id);
-                                            Vue.set(this.$data, "productForm", data.form);
-                                            Flash.setSuccess(data.message, 5000);
-                                            if (data["updated"]) this.$router.push("/log/inventory");
-                                        }
-                                    })
-                                    .catch(({ response: r }) => {
-                                        let { data, status } = r;
-                                        if (status === 422) {
-                                            this.error = data.errors ? data.errors : data;
-                                            this.$networkErr("unique");
-                                        }
-                                    })
-                                    .finally(() => {
-                                        this.$scrollToTop();
-                                        this.$LIPS(false);
-                                    });
-                            });
-                        } else this.$networkErr();
-                    } else this.$networkErr("form");
-                });
+
             },
+
+            // onSave() {
+            //
+            //     this.$validator.validateAll().then(result => {
+            //         if (result) {
+            //             if (this.$network()) {
+            //                 this.$LIPS(true);
+            //                 this.productForm.products.forEach(e => {
+            //                     if (this.mode = "edit"){
+            //                         delete e.product_name;
+            //                     }
+            //                     byMethod(this.method, this.store, e)
+            //                         .then(({ data }) => {
+            //                             if (data.saved || data.updated) {
+            //                                 // log(data.log, data.staff_id);
+            //                                 Vue.set(this.$data, "productForm", data.form);
+            //                                 Flash.setSuccess(data.message, 5000);
+            //                                 if (data["updated"]) this.$router.push("/log/inventory");
+            //                             }
+            //                         })
+            //                         .catch(({ response: r }) => {
+            //                             let { data, status } = r;
+            //                             if (status === 422) {
+            //                                 this.error = data.errors ? data.errors : data;
+            //                                 this.$networkErr("unique");
+            //                             }
+            //                         })
+            //                         .finally(() => {
+            //                             this.$scrollToTop();
+            //                             this.$LIPS(false);
+            //                         });
+            //                 });
+            //             } else this.$networkErr();
+            //         } else this.$networkErr("form");
+            //     });
+            // },
 
             addProductForm() {
                 getMethod('GET', this.search, this.form)
@@ -396,7 +406,13 @@
 
 
             }
+        },
+        filters: {
+            numberZero: function(num) {
+                return num === 0 ? 'Not Available' : num
+            }
         }
+
     };
 </script>
 
