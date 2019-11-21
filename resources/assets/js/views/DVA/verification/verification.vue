@@ -653,12 +653,12 @@
             },
 
             done(){
-                return;//TODO:I was asked to disable the sms sent when a customer is approved
-                if (this.$getCustomerApprovalStatus(this.verification)){
+                return null;//TODO:I was asked to disable the sms sent when a customer is approved
+                /*if (this.$getCustomerApprovalStatus(this.verification)){
                     let body =
                         "Dear " + this.$getCustomerFullName(this.customer) + ", Congratulations, You have been approved. Come to the store to make a purchase. Altara Credit Limited.";
                     (new Message(body, this.customer.telephone, true, this.user.id)).send();
-                }
+                }*/
             },
 
             processForm() {

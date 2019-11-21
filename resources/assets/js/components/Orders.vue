@@ -208,8 +208,9 @@
                                     <th>{{activeOrder.order.id}}</th>
                                     <th>{{activeOrder.order.store_product.product_name}}</th>
                                     <td>{{activeOrder.branch.name}}</td>
-                                    <td class="font-weight-bold" :class="orderStatusClass(activeOrder)">
-                                        {{orderStatus(activeOrder)}}
+                                    <td class="font-weight-bold"
+                                        :class="getOrderStatusClass(getOrderStatus(activeOrder))">
+                                        {{getOrderStatus(activeOrder)}}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -353,6 +354,7 @@
     import {get, post} from "../utilities/api";
     import OrderItem from '../components/OrderItem';
     import {Order, OrderWithPromiseCall} from "../utilities/Amortization";
+    import {getOrderStatus, getOrderStatusClass} from '../components/order/orderStatusCssClass';
 
     let url = to => `/api/reminder/create?list=${to.query.list + (to.query.filterWithBranch ? `&filterWithBranch=` + to.query.filterWithBranch : '')}`;
 
@@ -374,9 +376,9 @@
             return {
                 orders: [],
                 show: false,
-                showModalContent: false,
                 Order: Order,
                 activeOrder: null,
+                showModalContent: false,
             }
         },
 
@@ -385,26 +387,9 @@
         },
 
         methods: {
+            getOrderStatus: activeOrder => getOrderStatus(activeOrder),
 
-            orderStatus: activeOrder => activeOrder.order.status ? activeOrder.order.status.name : 0,
-
-            orderStatusClass(activeOrder) {
-                const orderStatus = this.orderStatus(activeOrder);
-                //if (orderStatus) return orderStatus.toLocaleString() === 'ok' ? 'paid' : 'missed';
-                let statusClass;
-                switch (orderStatus) {
-                    case 'ok':
-                        statusClass = 'ok';
-                        break;
-                    case 'returned':
-                        statusClass = 'returned';
-                        break;
-                    case 'repossessed':
-                        statusClass = 'repossessed';
-                        break;
-                }
-                return statusClass;
-            },
+            getOrderStatusClass: orderStatus => getOrderStatusClass(orderStatus),
 
             async prepareForm({orders}) {
                 this.show = false;

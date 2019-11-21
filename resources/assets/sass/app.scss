@@ -542,7 +542,7 @@ table a i {
     &-view {
         .weekend {
             background: repeating-linear-gradient(45deg, rgba(227, 210, 163, .2), rgba(227, 210, 163, 0.2) 2px, rgba(0, 0, 0, 0.0) 2px,
-                rgba(0, 0, 0, 0) 8px), #fffff1;
+                    rgba(0, 0, 0, 0) 8px), #fffff1;
         }
 
         .heading.day {
@@ -835,21 +835,24 @@ table a i {
     max-width: 1140px;
 }
 
-.repayment {
-    .paid {
-        background-color: rgba($color-green, 0.05);
-        color: $color-green;
-    }
+.ok, .paid {
+    background-color: rgba($color-green, 0.09);
+    color: $color-green;
+}
 
-    .missed {
-        background-color: rgba($color-red, 0.05);
-        color: $color-red;
-    }
+.repossessed, .missed {
+    background-color: rgba($color-red, 0.09);
+    color: $color-red;
+}
 
-    .pending {
-        background-color: rgba($default-color, 0.05);
-        color: $default-color;
-    }
+.returned {
+    background-color: rgba($waiting-color, 0.09);
+    color: $waiting-color;
+}
+
+.pending {
+    background-color: rgba($default-color, 0.09);
+    color: $default-color;
 }
 
 tr.current {

@@ -148,21 +148,3 @@
         }
     }
 </script>
-<style lang="scss">
-    @import "../../sass/app/variables";
-
-    .ok {
-        background-color: rgba($color-green, 0.1);
-        color: $color-green;
-    }
-
-    .repossessed {
-        background-color: rgba($color-red, 0.1);
-        color: $color-red;
-    }
-
-    .returned {
-        background-color: rgba($waiting-color, 0.1);
-        color: $waiting-color;
-    }
-</style>
