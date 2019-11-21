@@ -1,4 +1,3 @@
-Order Information
 <template>
     <div>
 
