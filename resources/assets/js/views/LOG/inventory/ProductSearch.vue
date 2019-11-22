@@ -19,19 +19,19 @@
                             <typeahead :options="getCategories" caption="name" v-model="form.category" />
                         </div>
 
-<!--                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">-->
-<!--                            <label>Show Room</label>-->
-<!--                            <typeahead :options="getBranches" caption="name" v-model="form.branch" />-->
-<!--                        </div>-->
+                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
+                            <label>Show Room</label>
+                            <typeahead :options="getBranches" caption="name" v-model="form.branch" />
+                        </div>
 
                         <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
                             <label>Brand</label>
                             <typeahead :options="getBrands" caption="name" v-model="form.brand" />
                         </div>
-<!--                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">-->
-<!--                            <label>Status</label>-->
-<!--                            <typeahead :options="status" caption="name" v-model="form.status" />-->
-<!--                        </div>-->
+                        <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
+                            <label>Status</label>
+                            <typeahead :options="status" caption="name" v-model="form.availability" />
+                        </div>
 
                     </div>
                     <div class="mb-5 px-0 row align-items-center" >
@@ -74,13 +74,7 @@
 
                         <td>
                             <div class="form-group mb-0">
-<!--                                <input-->
-<!--                                        class="form-control"-->
-<!--                                        name="product_sku"-->
-<!--                                        type="text"-->
-<!--                                        v-model="productForm.products[index].product_name"-->
-<!--                                        disabled-->
-<!--                                />-->
+
                                 <p>{{ productForm.products[index].product_name }}</p>
                             </div>
                         </td>
@@ -89,13 +83,7 @@
 
                         <td>
                             <div class="form-group mb-0">
-<!--                                <input-->
-<!--                                        class="form-control"-->
-<!--                                        name="market_price"-->
-<!--                                        type="text"-->
-<!--                                        v-model="productForm.products[index].market_price"-->
-<!--                                        disabled-->
-<!--                                />-->
+
                                 <p>{{ productForm.products[index].market_price | currency('₦', 0)}}</p>
                             </div>
                         </td>
@@ -121,12 +109,7 @@
                     </tr>
                     </tbody>
                 </table>
-<!--                <div>-->
-<!--                    <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="onSave()">-->
-<!--                        Save Inventory-->
-<!--                        <i class="far fa-paper-plane ml-1"></i>-->
-<!--                    </button>-->
-<!--                </div>-->
+
             </div>
             <div class="attendance-body" v-if="productForm.products.length === 0 && requestSent">
                 <p class="text-center text-info">There are no products matching the criteria</p>
@@ -220,7 +203,7 @@
                 index: null,
                 status: [
                     {id: 1, name: 'available'},
-                    {id: 2, name: 'sold out'},
+                    {id: 0, name: 'sold out'},
                 ],
                 show: false,
 

@@ -9,7 +9,7 @@ class Product extends Model
 {
     use DataViewer;
 
-    protected $fillable = ['name', 'feature', 'user_id', 'brand_id', 'category_id', 'retail_price', 'img_url', 'is_active'];
+    protected $fillable = ['name', 'feature', 'user_id', 'brand_id', 'category_id', 'retail_price', 'img_url', 'availability', 'branch_id'];
 
     public static $columns = ['id', 'name', 'retail_price in Naira'];
 
@@ -35,6 +35,9 @@ class Product extends Model
     public function category()
     {
        return $this->belongsTo(Category::class);
+    }
+    public function branch(){
+        return $this->belongsTo(Branch::class);
     }
 
     /*public function adder()

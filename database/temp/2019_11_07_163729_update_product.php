@@ -16,8 +16,8 @@ class UpdateProduct extends Migration
         Schema::table('products', function (Blueprint $table) {
             //
             $table->unsignedInteger('branch_id')->index()->nullable();
-            $table->dropColumn('is_active');
-            $table->string('availability');
+            $table->dropColumn('availability');
+            $table->boolean('availability')->nullable();
 
             $table->foreign('branch_id')->references('id')->on('branches');
         });

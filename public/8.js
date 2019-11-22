@@ -348,23 +348,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 
@@ -415,7 +398,7 @@ exports.default = {
             mode: null,
             error: {},
             index: null,
-            status: [{ id: 1, name: 'available' }, { id: 2, name: 'sold out' }],
+            status: [{ id: 1, name: 'available' }, { id: 0, name: 'sold out' }],
             show: false,
 
             search: "/api/products/search",
@@ -811,6 +794,29 @@ var render = function() {
                         "form-group col-md-4 col-6 float-left px-0 px-md-3"
                     },
                     [
+                      _c("label", [_vm._v("Show Room")]),
+                      _vm._v(" "),
+                      _c("typeahead", {
+                        attrs: { options: _vm.getBranches, caption: "name" },
+                        model: {
+                          value: _vm.form.branch,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "branch", $$v)
+                          },
+                          expression: "form.branch"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-4 col-6 float-left px-0 px-md-3"
+                    },
+                    [
                       _c("label", [_vm._v("Brand")]),
                       _vm._v(" "),
                       _c("typeahead", {
@@ -821,6 +827,29 @@ var render = function() {
                             _vm.$set(_vm.form, "brand", $$v)
                           },
                           expression: "form.brand"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-4 col-6 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", [_vm._v("Status")]),
+                      _vm._v(" "),
+                      _c("typeahead", {
+                        attrs: { options: _vm.status, caption: "name" },
+                        model: {
+                          value: _vm.form.availability,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "availability", $$v)
+                          },
+                          expression: "form.availability"
                         }
                       })
                     ],
@@ -861,7 +890,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                                Search Product\n                                "
+                          "\n                            Search Product\n                            "
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
@@ -969,7 +998,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                View\n                            "
+                                        "\n                            View\n                        "
                                       )
                                     ]
                                   )

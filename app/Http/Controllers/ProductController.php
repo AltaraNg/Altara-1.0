@@ -42,7 +42,7 @@ class ProductController extends Controller
             $query->where('category_id', '=', $request->category);
         }
         if ($request->status != null){
-            $query->where('status', '=', $request->status);
+            $query->where('availability', '=', $request->status);
         }
         if ($request->branch != null){
             $query->where('branch_id', '=', $request->branch);
