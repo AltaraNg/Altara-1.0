@@ -512,7 +512,6 @@
     import Vue from 'vue';
     import {log} from '../../../utilities/log';
     import Flash from '../../../utilities/flash';
-    import {Message} from '../../../utilities/sms';
     import {get, post} from '../../../utilities/api';
     import {EventBus} from '../../../utilities/event-bus';
     import {toMulipartedForm} from '../../../utilities/form';
@@ -652,7 +651,7 @@
                 } else Flash.setError(data.message, 5000);
             },
 
-            done(){
+            done() {
                 return null;//TODO:I was asked to disable the sms sent when a customer is approved
                 /*if (this.$getCustomerApprovalStatus(this.verification)){
                     let body =
@@ -662,7 +661,9 @@
             },
 
             processForm() {
-                if (this.$route.name === 'verification') this.$router.push(`verification?id=${this.customer_id}`);
+                if (this.$route.meta.mode === 'verification') {
+                    this.$router.push(`verification?id=${this.customer_id}`);
+                }
                 if (this.$route.name === 'customerUpdate') {
                     this.$router.push(`update?id=${this.customer_id}`);
                     get(init(this.$route.query))

@@ -115,7 +115,7 @@
                     this.$router.push("/login");
                 }
                 if (err.response.status === 500) Flash.setError(err.response.statusText);
-                if (err.response.status === 404) this.$router.push("/not-found");
+                if (err.response.status === 404 && this.auth) this.$router.push("/not-found");
             });
             window.addEventListener('load', () => {
                 this.showStatus(navigator.onLine);

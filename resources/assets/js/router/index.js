@@ -91,9 +91,14 @@ const router = new VueRouter({
             path: '/altarapay', component: AltaraPay, meta: {ALTARAPAY: true}, children: [
                 {path: '/', redirect: {name: 'AltaraPayHome'}},
                 {path: 'home', component: AltaraPayHome, name: 'AltaraPayHome'},
-                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-altarapay'},
-                {path: 'verification', component: DVAVerification, name: 'verification-altarapay'},
-                {path: 'direct-debit-sales', component: DirectDebitSales, name: 'direct-debit-sales'},
+                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-altarapay', meta: {customSMS: true}},
+                {
+                    path: 'verification',
+                    component: DVAVerification,
+                    name: 'verification-altarapay',
+                    meta: {mode: 'verification'}
+                },
+                {path: 'direct-debit-sales', component: DirectDebitSales, name: 'direct-debit-sales', meta: {customSMS: true}},
                 {
                     path: 'direct-debit-overdue',
                     component: AllOverdue,
@@ -114,7 +119,7 @@ const router = new VueRouter({
                     alias: '/dsa/customer/update',
                     name: 'customerUpdate'
                 },
-                {path: 'verification', component: DVAVerification, name: 'verification'},
+                {path: 'verification', component: DVAVerification, name: 'verification', meta: {mode: 'verification'}},
                 {path: 'sales', component: OrderList, name: 'sales-dva', meta: {customSMS: true}},
 
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
@@ -176,10 +181,10 @@ const router = new VueRouter({
                     name: 'attendanceCreateFsl',
                     meta: {mode: 'create'}
                 },
-                {path: 'sales', component: OrderList, name: 'sales-fsl', meta: {customSMS: false}},
+                {path: 'sales', component: OrderList, name: 'sales-fsl', meta: {customSMS: true}},
                 {path: 'sales/create', component: POSForm, name: 'post-sales'},
                 {path: 'payment', component: PaymentForm, name: 'down-payment'},
-                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva'},
+                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: {customSMS: true}},
             ]
         },
         {

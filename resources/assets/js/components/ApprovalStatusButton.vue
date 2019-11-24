@@ -3,7 +3,7 @@
         <router-link
                 :tag="link ? 'a' : 'span'"
                 :class="buttonClass + ' text-uppercase'"
-                :to="link && auth('DVAAccess') ? link : ''" data-function="display">
+                :to="getLink" data-function="display">
             {{status.split('-').join(' ')}}
             <i :class="`ml-3 fas fa-${isApproved ? 'check' : 'times'}`"></i>
         </router-link>
@@ -62,6 +62,14 @@
             buttonClass() {
                 return this.size &&
                     (this.link ? `status status-sm ${this.status}` : `status mt-md-5 my-sm-2 mt-0 ${this.status}`);
+            },
+
+            getLink(){
+                if(this.link){
+                    if(this.auth('DVAAccess')) return 'dva/' + this.link;
+                    if(this.auth('ALTARAPAYAccess')) return 'altarapay/' + this.link;
+                }
+                return '#';
             }
         },
 

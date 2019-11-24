@@ -51,12 +51,19 @@ values ('ok'),
        ('returned'),
        ('repossessed');
 
-# set GLOBAL sql_mode = " ";
-
 ALTER TABLE orders
     CHANGE `return` `status_id` tinyint(1) NULL default 1;
 
 UPDATE orders
 SET orders.status_id = 1;
 
-/*migrations effected on 3/11/2019*/
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------Added on 23rd Nov, 2019-----------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+# check all duplicate orders(orders with same product sku)
+
+SELECT id, product_sku, COUNT(product_sku) FROM orders GROUP BY product_sku HAVING COUNT(product_sku) > 1;
+
+ALTER TABLE orders ADD UNIQUE (product_sku);

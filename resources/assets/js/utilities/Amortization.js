@@ -354,6 +354,7 @@ class OrderWithPromiseCall extends Order {
     setIsReminderSent() {
         let date;
         let today = vue.$getDate();
+        if (!this.order.reminders || !this.order.reminders.length > 0) return;
         this.order.reminders.forEach(reminder => {
             //refactor below by using regx characters to split
             let reminderDateTimeArr = reminder.date.split(' ');//(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']

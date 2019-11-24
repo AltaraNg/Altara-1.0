@@ -65,20 +65,12 @@
                                     <tr v-for="model in model.data">
                                         <td v-for="(value,key) in model">
                                             <span v-if="!['verification'].includes(key)">{{value}}</span>
-                                            <!-- <ApprovalStatusButton
-                                                    v-else
-                                                    size="small"
-                                                    :key="model.id"
-                                                    :is-approved="value"
-                                                    :customer-name="$getCustomerFullName(model)"
-                                                    :link="`dva/verification?id=${model.id}`"/> -->
-
                                             <ApprovalStatusButton
                                                 v-else
                                                 size="small"
                                                 :key="model.id"
                                                 :customer="model"
-                                                :link="`dva/verification?id=${model.id}`"/>
+                                                :link="`verification?id=${model.id}`"/>
                                         </td>
 
                                         <td v-if="isModel('user')">

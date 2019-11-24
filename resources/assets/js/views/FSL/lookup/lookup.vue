@@ -55,41 +55,39 @@
                     <div class="tab-content mt-1 attendance-body">
                         <div class="tab-pane active text-center" v-if="show && customer.orders.length > 0">
                             <div class="mb-3 row attendance-item" v-for="(order, index) in customer.orders">
-
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center"
                                      style="max-width: 100px">
                                     <span class="user mx-auto">{{index+1}}</span>
+                                    <span v-if="$route.meta.customSMS">
+                                        <CustomSMSButton :order="order" :customer="customer" :key="order.order.id"/>
+                                    </span>
                                 </div>
-
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{order.order.order_date}}
                                 </div>
-
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex user-name align-items-center justify-content-center">
                                     {{order.order.id}}
                                 </div>
-
                                 <div class="col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{order.order.store_product.product_name}}
                                 </div>
-
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{$formatCurrency(order.order.product_price)}}
                                 </div>
-
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{order.order.sales_category.name}}
                                 </div>
-
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{$formatCurrency(order.order.down_payment)}}
                                 </div>
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
-                                    <button @click="displayAmortization(index)" class="btn status my-sm-2"
-                                            :class="order.count === order.repaymentLevel ? 'approved' : 'pending'">
+                                    <button :class="order.count === order.repaymentLevel ? 'approved' : 'pending'"
+                                            @click="displayAmortization(index)"
+                                            class="btn status my-sm-2">
                                         View Plan
-                                        <i class="fas ml-3" style="font-size: 1.4rem"
-                                           :class="order.count === order.repaymentLevel ? 'fa-check-circle' : 'fa-hourglass-half'"></i>
+                                        <i :class="order.count === order.repaymentLevel ? 'fa-check-circle' : 'fa-hourglass-half'"
+                                           class="fas ml-3"
+                                           style="font-size: 1.4rem"></i>
                                     </button>
                                 </div>
                             </div>
@@ -103,11 +101,9 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="mt-5 mb-3 attendance-head">
                         <div class="w-100 my-5 mx-0 hr"></div>
                     </div>
-
                 </div>
             </transition>
 
@@ -143,8 +139,8 @@
                                         <th>{{activeOrder.order.id}}</th>
                                         <th>{{activeOrder.order.store_product.product_name}}</th>
                                         <td class="font-weight-bold">{{activeOrder.branch.name}}</td>
-                                        <td class="font-weight-bold"
-                                            :class="getOrderStatusClass(getOrderStatus(activeOrder))">
+                                        <td :class="getOrderStatusClass(getOrderStatus(activeOrder))"
+                                            class="font-weight-bold">
                                             {{getOrderStatus(activeOrder)}}
                                         </td>
                                     </tr>
@@ -169,7 +165,7 @@
                                     <tr class="table-separator">
                                         <th>Status</th>
                                         <td :class="status.class" v-for="status in activeOrder.paymentStatusClasses">
-                                            <i class="fas" :class="status.icon"></i>
+                                            <i :class="status.icon" class="fas"></i>
                                         </td>
                                     </tr>
                                     <tr class="table-separator">
@@ -232,109 +228,100 @@
                                     </tbody>
                                 </table>
 
-                                <h5 class="mt-5 mb-0" v-if="canUserAddPayment">{{paymentFormType | capitalize}} a new
-                                    payment</h5>
-                                <table class="table table-bordered" v-if="canUserAddPayment">
-                                    <tbody class="text-center">
+                                <div v-if="canEditPayment">
+                                    <h5 class="mt-5 mb-0">
+                                        {{paymentFormType | capitalize}} a new payment
+                                    </h5>
+                                    <table class="table table-bordered">
+                                        <tbody class="text-center">
+                                        <tr class="table-separator">
+                                            <td class="text-left">S/No.</td>
+                                            <th>Repayment</th>
+                                            <th>Amount</th>
+                                            <th>Payment Method</th>
+                                            <th>Bank</th>
+                                            <th>Date</th>
+                                            <th>Collected By</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        <tr v-for="(payment,index) in paymentForm.payments">
+                                            <th>{{index+1}}</th>
+                                            <th>
+                                                <div class="form-group mb-0" v-if="paymentFormType === 'add'">
+                                                    <input class="form-control" disabled name="date"
+                                                           type="text" v-model="paymentForm.payments[index].column">
+                                                </div>
+                                                <select class="custom-select w-100" v-else
+                                                        v-model="paymentForm.payments[index]._col">
+                                                    <option :value="i" v-for="i in activeOrder.repaymentLevel">
+                                                        {{$getColumn(i) }} Repayment
+                                                    </option>
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <div class="form-group mb-0">
+                                                    <input class="form-control" name="date" type="text"
+                                                           v-model="paymentForm.payments[index]._pay">
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <select :disabled="paymentFormType === 'edit'"
+                                                        class="custom-select w-100"
+                                                        v-model="paymentForm.payments[index]._payment_method">
+                                                    <option :value="id" v-for="{name, id} in getPaymentMethods">
+                                                        {{name | capitalize}}
+                                                    </option>
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <select :disabled="paymentFormType === 'edit'"
+                                                        class="custom-select w-100"
+                                                        v-model="paymentForm.payments[index]._payment_bank">
+                                                    <option :value="id" v-for="{name, id} in getBanks">{{name}}</option>
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <div class="form-group mb-0">
+                                                    <input :disabled="paymentFormType === 'edit'" class="form-control"
+                                                           name="date"
+                                                           type="date"
+                                                           v-model="paymentForm.payments[index]._date">
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="form-group mb-0">
+                                                    <input :value="user.name" class="form-control" data-vv-as="date"
+                                                           disabled
+                                                           name="date" type="text">
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <button @click="deletePayment(index)"
+                                                        class="ml-2 btn status status-sm my-sm-2 not-approved">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                    <tr class="table-separator">
-                                        <td class="text-left">S/No.</td>
-                                        <th>Repayment</th>
-                                        <th>Amount</th>
-                                        <th>Payment Method</th>
-                                        <th>Bank</th>
-                                        <th>Date</th>
-                                        <th>Collected By</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    <tr v-for="(payment,index) in paymentForm.payments">
-                                        <th>{{index+1}}</th>
-
-                                        <th>
-                                            <div class="form-group mb-0" v-if="paymentFormType === 'add'">
-                                                <input class="form-control" name="date" type="text"
-                                                       v-model="paymentForm.payments[index].column" disabled>
-                                            </div>
-                                            <select class="custom-select w-100" v-else
-                                                    v-model="paymentForm.payments[index]._col">
-                                                <option :value="i" v-for="i in activeOrder.repaymentLevel">
-                                                    {{$getColumn(i) }} Repayment
-                                                </option>
-                                            </select>
-                                        </th>
-
-                                        <th>
-                                            <div class="form-group mb-0">
-                                                <input class="form-control" name="date" type="text"
-                                                       v-model="paymentForm.payments[index]._pay">
-                                            </div>
-                                        </th>
-
-                                        <th>
-                                            <select class="custom-select w-100" :disabled="paymentFormType === 'edit'"
-                                                    v-model="paymentForm.payments[index]._payment_method">
-                                                <option :value="id" v-for="{name, id} in getPaymentMethods">
-                                                    {{name | capitalize}}
-                                                </option>
-                                            </select>
-                                        </th>
-
-                                        <th>
-                                            <select class="custom-select w-100" :disabled="paymentFormType === 'edit'"
-                                                    v-model="paymentForm.payments[index]._payment_bank">
-                                                <option :value="id" v-for="{name, id} in getBanks">{{name}}</option>
-                                            </select>
-                                        </th>
-
-                                        <th>
-                                            <div class="form-group mb-0">
-                                                <input class="form-control" name="date" type="date"
-                                                       :disabled="paymentFormType === 'edit'"
-                                                       v-model="paymentForm.payments[index]._date">
-                                            </div>
-                                        </th>
-
-                                        <th>
-                                            <div class="form-group mb-0">
-                                                <input class="form-control" data-vv-as="date" name="date" type="text"
-                                                       :value="user.name" disabled>
-                                            </div>
-                                        </th>
-
-                                        <th>
-                                            <button @click="deletePayment(index)"
-                                                    class="ml-2 btn status status-sm my-sm-2 not-approved">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </th>
-
-                                    </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
-                        <div class="modal-footer" :class="{'d-flex justify-content-end' : !canUserAddPayment}">
-
-                            <button @click="addPaymentForm('add')"
-                                    v-if="canUserAddPayment"
-                                    class="btn status my-sm-2">
+                        <div :class="{'d-flex justify-content-end' : !canEditPayment}" class="modal-footer">
+                            <button @click="addPaymentForm('add')" class="btn status my-sm-2" v-if="canAddPayment">
                                 Add Payment
                             </button>
-
-                            <button @click="addPaymentForm('edit')"
-                                    v-if="canUserEditPayment"
-                                    class="btn status my-sm-2">
+                            <button @click="addPaymentForm('edit')" class="btn status my-sm-2" v-if="canEditPayment">
                                 Edit Payment
                             </button>
-
-                            <button @click="preparePayments()"
-                                    v-if="canUserAddPayment"
-                                    class="btn status my-sm-2 approved ml-4">
+                            <button @click="preparePayments()" class="btn status my-sm-2 approved ml-4"
+                                    v-if="canEditPayment">
                                 Click here to Submit Payment(s)!
                             </button>
-
-                            <a class="text-link mt-3" data-dismiss="modal" href="javascript:"
-                               style="text-align: right">close dialogue</a>
+                            <a class="text-link mt-3" data-dismiss="modal" href="javascript:" style="text-align: right">
+                                close dialogue
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -348,15 +335,16 @@
     import Auth from '../../../utilities/auth';
     import Flash from '../../../utilities/flash';
     import {get, post} from '../../../utilities/api';
-    import {Order} from '../../../utilities/Amortization';
+    import {Order, OrderWithPromiseCall} from '../../../utilities/Amortization';
     import CustomHeader from '../../../components/customHeader';
     import CustomerProfile from '../../../components/CustomerProfile';
+    import CustomSMSButton from '../../../components/CustomSMSButton/CustomSMSButton';
     import {getOrderStatus, getOrderStatusClass} from '../../../components/order/orderStatusCssClass';
     //import AutocompleteSearch from "../../../components/AutocompleteSearch/AutocompleteSearch";
 
     export default {
 
-        components: {CustomHeader, CustomerProfile/*, AutocompleteSearch*/},
+        components: {CustomHeader, CustomerProfile, CustomSMSButton/*, AutocompleteSearch*/},
 
         data() {
             return {
@@ -386,7 +374,17 @@
                     !customer.document && (customer.document = {id_card_url: "", passport_url: ""});
                     this.user.branch = user.branch_id;
                     this.customer = customer;
-                    this.customer.orders = customer.orders.map(order => new Order(order, customer));
+                   // try {
+                        this.customer.orders = customer.orders.map(order => {
+                            let orderWithCustomer = order;
+                            orderWithCustomer.customer = this.customer;
+                            return new OrderWithPromiseCall(orderWithCustomer, this.getAuthUserDetails.userId);
+                        });
+                    /*} catch (e) {
+                        Flash.setError("Error initializing order. Please contact the system admin");
+                        console.error(e);
+                    }*/
+
                     this.show = true;
                 } else Flash.setError("Customer not found.", 5000);
                 this.$LIPS(false);
@@ -411,8 +409,8 @@
             },
 
             addPaymentForm(type) {
-                const level = this.activeOrder.repaymentLevel,
-                    nextRepayment = parseInt(level + this.paymentForm.payments.length + 1);
+                const level = this.activeOrder.repaymentLevel;
+                const nextRepayment = parseInt(level + this.paymentForm.payments.length + 1);
 
                 if (type !== this.paymentFormType) this.paymentForm.payments = [];
                 if (type === 'edit' && (level < 1 || this.paymentForm.payments.length >= level)) return;
@@ -455,7 +453,7 @@
             },
 
             preparePayments() {
-                if (!this.canUserAddPayment) return;
+                if (!this.canAddPayment) return;
                 let payments = {};
                 this.paymentForm.payments.forEach(payment => {
                     let obj = {}, col = this.$getColumn(payment._col);
@@ -472,7 +470,7 @@
             },
 
             savePayments() {
-                if (!this.canUserAddPayment) return;
+                if (!this.canAddPayment) return;
                 this.$LIPS(true);
                 let type, data, order, orderIndex;
                 if (this.activeOrder.count === 6) type = 'formal';
@@ -523,18 +521,18 @@
         },
 
         computed: {
-            ...mapGetters(['getBanks', 'getPaymentMethods', 'auth']),
+            ...mapGetters(['getBanks', 'getPaymentMethods', 'auth', 'getAuthUserDetails']),
 
             check() {
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
             },
 
-            canUserAddPayment() {
+            canAddPayment() {
                 if (this.auth('FSLLead')) return true;
                 return this.auth('supervisor') && (this.user.branch === this.activeOrder.branch.id);
             },
 
-            canUserEditPayment() {
+            canEditPayment() {
                 if (this.auth('FSLLead')) return true;
                 return this.auth('FSLAccess') && (this.user.branch === this.activeOrder.branch.id);
             }

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\State;
-use App\Branch;
 use App\Address;
+use App\Branch;
 use App\Customer;
 use App\Document;
-use App\Verification;
-use App\ProcessingFee;
-use App\WorkGuarantor;
 use App\PersonalGuarantor;
-use Illuminate\Http\Request;
+use App\ProcessingFee;
+use App\State;
+use App\Verification;
+use App\WorkGuarantor;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {

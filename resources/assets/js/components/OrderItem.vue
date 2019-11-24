@@ -13,7 +13,9 @@
                        v-model="order.isSelected" @click="toggleSelect">
             </div>
             <span class="user mx-auto sent-reminder" v-else><i class="fas fa-check"></i></span>
-                <span class="user mx-auto li" :class="statusClass">{{startIndex + index}}</span>
+            <span class="user mx-auto" :class="getOrderStatusClass(getOrderStatus(order))">
+                {{startIndex + index}}
+            </span>
 
             <span v-if="$route.meta.customSMS">
                 <CustomSMSButton :order="order" :key="order.order.id"/>
@@ -81,6 +83,7 @@
     //import {EventBus} from "../utilities/event-bus";
     import {Order} from "../utilities/Amortization";
     import CustomSMSButton from '../components/CustomSMSButton/CustomSMSButton';
+    import {getOrderStatus, getOrderStatusClass} from '../components/order/orderStatusCssClass';
 
     export default {
         components: {CustomSMSButton},
@@ -97,26 +100,11 @@
             this.order.setReminder(this.mode);
         },
 
-        computed: {
-            statusClass() {
-                if (this.mode !== 'normal-list') return null;
-                let statusClass;
-                switch (this.order.order.status.id) {
-                    case 1:
-                        statusClass = 'ok';
-                        break;
-                    case 2:
-                        statusClass = 'returned';
-                        break;
-                    case 3:
-                        statusClass = 'repossessed';
-                        break;
-                }
-                return statusClass;
-            }
-        },
-
         methods: {
+            getOrderStatus: activeOrder => getOrderStatus(activeOrder),
+
+            getOrderStatusClass: orderStatus => getOrderStatusClass(orderStatus),
+
             logReminder() {
                 this.$LIPS(true);
                 delete this.order.reminder.order;

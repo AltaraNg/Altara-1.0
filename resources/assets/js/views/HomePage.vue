@@ -1,6 +1,5 @@
 <template>
     <div class="col-md-12 px-md-3 p-0">
-        <!--<div v-for="{name,url,icon} in cards" v-if="$store.getters.auth(name+'Access')"-->
         <div v-for="{name,url,icon} in cards" v-if="auth(name+'Access')"
              class="col-md-4 col-sm-6 float-left product py-md-2 py-0 px-md-4 px-3">
             <router-link class="card" :to="url">
@@ -29,8 +28,8 @@
     </div>
 </template>
 <script>
-    import Auth from '../utilities/auth';
     import {mapGetters} from "vuex";
+    import Auth from '../utilities/auth';
 
     export default {
         data() {
@@ -46,9 +45,11 @@
                 ]
             }
         },
+
         computed: {
             ...mapGetters(['auth']),
         },
+
         beforeCreate() {
             Auth.initialize();
             if (!this.$store.state.api_token && !this.$store.state.authRole) this.$store.dispatch('mutateAuth');

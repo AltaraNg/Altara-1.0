@@ -78,7 +78,7 @@
             customerName() {
                 let customer;
                 if (this.customer != null) customer = this.customer;
-                if (this.order != null) customer = this.order.order.customer;
+                else if (this.order != null) customer = this.order.order.customer;
                 return this.$getCustomerFullName(customer)
             },
 
@@ -113,7 +113,13 @@
             },
 
             linkSMSToOrderAsReminder(smsIds) {
-                this.order.setReminder('custom-sms', smsIds[0]);
+                /*console.log(smsIds);
+                console.log(this.order);
+                try {*/
+                    this.order.setReminder('custom-sms', smsIds[0]);
+              /*  }catch (e) {
+                    console.log(e);
+                }*/
                 delete this.order.reminder.canBeSelected;
                 delete this.order.reminder.contacts;
                 post('/api/reminder', {reminders: [this.order.reminder]})

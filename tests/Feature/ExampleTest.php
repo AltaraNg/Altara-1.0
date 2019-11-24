@@ -5,17 +5,11 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class LoginTest extends TestCase
+class LoginTest2 extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testA()
+    public function testIfApplicationLoadsUp()
     {
         $response = $this->get('/');
-
         $response->assertStatus(200);
     }
 
