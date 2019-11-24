@@ -1,7 +1,7 @@
 <template>
-    <!--<span class="CustomSMSButton d-flex align-items-center justify-content-center" @click="toggleModal('SMSModal')">
+    <span class="CustomSMSButton d-flex align-items-center justify-content-center" @click="toggleModal('SMSModal')">
         <i class="fas fa-envelope"></i>
-    </span>-->
+    </span>
 </template>
 
 <script>
