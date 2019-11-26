@@ -142,7 +142,9 @@
                 let optionArr = [];
                 this.searchColumn === 'id' && optionArr.push(option.id);
                 this.searchColumn === 'telephone' && optionArr.push(option.telephone);
-                optionArr.push(this.$getCustomerFullName(option, !!option.middle_name));
+                const fullName = option.hasOwnProperty('full_name') ?
+                    option.full_name : this.$getCustomerFullName(option, !!option.middle_name);
+                optionArr.push(fullName);
                 return this.styleAutocomplete(optionArr);
             },
 

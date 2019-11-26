@@ -1,6 +1,12 @@
 <template>
     <transition name="fade">
-        <div :class="full && 'px-md-4 px-2'">
+        <div :class="full && 'px-md-4 px-2'"
+
+
+             style="margin-left: 5rem; margin-right: 5rem;">
+            <!--TODO cleanup-->
+
+
             <app-navigation :forward="{ path: $routerHistory.next().path }"
                             :previous="{ path: $routerHistory.previous().path }"
                             :pageTitle="'Customer Profile'"

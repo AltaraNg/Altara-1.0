@@ -2,7 +2,12 @@
     <transition name="fade">
         <div class="pt-md-3 pt-2 verification" id="employeeRegister">
 
-            <div class="card">
+            <AutocompleteSearch
+                    title="customer verification"
+                    @customer-selected="processForm"
+                    :url="'/api/customer/autocomplete'"/>
+
+            <!--<div class="card">
                 <ul class="nav nav-tabs bg-default justify-content-center">
                     <h6>{{action | capitalize}} Customer</h6>
                 </ul>
@@ -27,12 +32,18 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div>-->
 
             <transition name="fade">
                 <div v-if="customer">
                     <customer-profile :view-customer="customer"/>
-                    <div v-if="action !== 'update'">
+                    <div v-if="action !== 'update'"
+
+
+
+                         style="float: left; margin-left: 4rem; margin-right: 4rem;"><!--TODO: cleanup-->
+
+
                         <div class="float-left col-lg-3 col-sm-6 px-0 px-sm-3" v-for="type in cardView">
                             <div :class="DivClass(type)" class="card card-stats">
                                 <div class="card-body ">
@@ -517,6 +528,7 @@
     import {toMulipartedForm} from '../../../utilities/form';
     import ImageUpload from '../../../components/ImageUpload';
     import CustomerProfile from '../../../components/CustomerProfile';
+    import AutocompleteSearch from "../../../components/AutocompleteSearch/AutocompleteSearch";
 
     const init = ({id}) => `/api/customer/${id}`;
 
@@ -533,7 +545,7 @@
             /*the image upload is used for the customer id and passport upload.
             * its a separate component on its own and can be called
             * anywhere on the application*/
-            CustomerProfile
+            CustomerProfile, AutocompleteSearch
         },
 
         data() {
@@ -660,12 +672,12 @@
                 }*/
             },
 
-            processForm() {
+            processForm(id) {
                 if (this.$route.meta.mode === 'verification') {
-                    this.$router.push(`verification?id=${this.customer_id}`);
+                    this.$router.push(`verification?id=${id}`);
                 }
                 if (this.$route.name === 'customerUpdate') {
-                    this.$router.push(`update?id=${this.customer_id}`);
+                    this.$router.push(`update?id=${id}`);
                     get(init(this.$route.query))
                         .then(res => this.updateView(res.data))
                         .catch(e => this.updateView(e.response.data))

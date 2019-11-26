@@ -1,7 +1,14 @@
 <template>
     <div class="clearfix pt-md-3 pt-2" id="customerRegister">
         <verification :action="'update'" @update="updateCustomer" v-if="mode === 'update'"/>
-        <div class="card" v-if="newCustomer.id && mode === 'update' || mode === 'register'">
+        <div class="card" v-if="newCustomer.id && mode === 'update' || mode === 'register'"
+
+
+
+             :style="mode === 'update' ? 'margin-left: 5rem;margin-right: 5rem;width: auto;' : ''">
+            <!--TODO cleanup-->
+
+
             <ul class="nav nav-tabs justify-content-center bg-default">
                 <h6>{{mode | capitalize}} Customer</h6>
             </ul>

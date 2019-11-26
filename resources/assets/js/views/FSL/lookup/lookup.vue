@@ -2,12 +2,12 @@
     <transition name="fade">
         <div id="reminder">
 
-            <!--<AutocompleteSearch
-                title="customer lookup"
-                @customer-selected="processForm"
-                :url="'/api/customer/autocomplete'"/>-->
+            <AutocompleteSearch
+                    title="customer lookup"
+                    @customer-selected="processForm"
+                    :url="'/api/customer/autocomplete'"/>
 
-            <div class="mt-5 attendance-head">
+            <!--<div class="mt-5 attendance-head">
                 <div class="card">
                     <ul class="nav nav-tabs bg-default justify-content-center">
                         <h6>Customer Lookup</h6>
@@ -34,14 +34,14 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
             <transition name="fade">
                 <div v-if="customer && show">
 
-                    <div class="attendance-head">
+<!--                    <div class="attendance-hea TODO:: cleanup d">-->
                         <customer-profile :view-customer="customer"/>
-                    </div>
+<!--                    </div>-->
 
                     <custom-header :title="'All order(s)'"/>
 
@@ -335,16 +335,16 @@
     import Auth from '../../../utilities/auth';
     import Flash from '../../../utilities/flash';
     import {get, post} from '../../../utilities/api';
-    import {Order, OrderWithPromiseCall} from '../../../utilities/Amortization';
     import CustomHeader from '../../../components/customHeader';
     import CustomerProfile from '../../../components/CustomerProfile';
+    import {Order, OrderWithPromiseCall} from '../../../utilities/Amortization';
     import CustomSMSButton from '../../../components/CustomSMSButton/CustomSMSButton';
+    import AutocompleteSearch from "../../../components/AutocompleteSearch/AutocompleteSearch";
     import {getOrderStatus, getOrderStatusClass} from '../../../components/order/orderStatusCssClass';
-    //import AutocompleteSearch from "../../../components/AutocompleteSearch/AutocompleteSearch";
 
     export default {
 
-        components: {CustomHeader, CustomerProfile, CustomSMSButton/*, AutocompleteSearch*/},
+        components: {CustomHeader, CustomerProfile, CustomSMSButton, AutocompleteSearch},
 
         data() {
             return {
@@ -374,17 +374,11 @@
                     !customer.document && (customer.document = {id_card_url: "", passport_url: ""});
                     this.user.branch = user.branch_id;
                     this.customer = customer;
-                   // try {
-                        this.customer.orders = customer.orders.map(order => {
-                            let orderWithCustomer = order;
-                            orderWithCustomer.customer = this.customer;
-                            return new OrderWithPromiseCall(orderWithCustomer, this.getAuthUserDetails.userId);
-                        });
-                    /*} catch (e) {
-                        Flash.setError("Error initializing order. Please contact the system admin");
-                        console.error(e);
-                    }*/
-
+                    this.customer.orders = customer.orders.map(order => {
+                        let orderWithCustomer = order;
+                        orderWithCustomer.customer = this.customer;
+                        return new OrderWithPromiseCall(orderWithCustomer, this.getAuthUserDetails.userId);
+                    });
                     this.show = true;
                 } else Flash.setError("Customer not found.", 5000);
                 this.$LIPS(false);

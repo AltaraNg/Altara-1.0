@@ -13,6 +13,7 @@ use App\Verification;
 use App\WorkGuarantor;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -228,11 +229,38 @@ class CustomerController extends Controller
             return response()->json(['message' => 'nothing to search.'], 400);
         }
 
+        $searchColumns = array_keys($request->searchableFields);
+        $searchValues = array_values($request->searchableFields);
+
         try {
-            $customers = Customer::autocompleteSearch($request)->get();
+            if (in_array('middle_name', $searchColumns)) {
+                $customers = DB::select(DB::raw("SELECT id,
+                    CONCAT(
+                        COALESCE(`first_name`,''),' ',
+                        COALESCE(`middle_name`,''),' ',
+                        COALESCE(`last_name`,'')
+                    ) AS 'full_name' FROM `customers` where (
+                        ($searchColumns[0] LIKE '$searchValues[0]') ||
+                        ($searchColumns[1] LIKE '$searchValues[1]') ||
+                        ($searchColumns[2] LIKE '$searchValues[2]')
+                    ) || (
+                        ($searchColumns[0] LIKE '%%$searchValues[0]') ||
+                        ($searchColumns[1] LIKE '%%$searchValues[1]') ||
+                        ($searchColumns[2] LIKE '%%$searchValues[2]')
+                    ) || (
+                        ($searchColumns[0] LIKE '%%$searchValues[0]%%') ||
+                        ($searchColumns[1] LIKE '%%$searchValues[1]%%') ||
+                        ($searchColumns[2] LIKE '%%$searchValues[2]%%')
+                    ) LIMIT 20"
+                ));
+            } else {
+                $customers = Customer::autocompleteSearch($request)->get();
+            }
         } catch (QueryException $exception) {
             return response()->json(['message' => 'bad request. Try again later.'], 400);
         }
+        /*TODO cleanup*/
+
 
         return response()->json(['customers' => $customers]);
     }
