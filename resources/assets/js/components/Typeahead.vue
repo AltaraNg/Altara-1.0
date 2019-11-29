@@ -11,6 +11,8 @@
                    class="typeahead__search"
                    ref="search"
                    type="text"
+                   value="null"
+
                    v-model="search">
             <span class="typeahead__text" ref="text">
             {{displayText}}
@@ -112,3 +114,12 @@
         }
     }
 </script>
+<style scoped>
+    input{
+        position: fixed;
+    }
+    ul{
+        position: relative;
+        z-index: 2;
+    }
+</style>

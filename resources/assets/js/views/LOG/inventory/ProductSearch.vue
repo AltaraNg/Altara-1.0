@@ -20,7 +20,7 @@
                         </div>
 
                         <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
-                            <label>Show Room</label>
+                            <label>Show-Room</label>
                             <typeahead :options="getBranches" caption="name" v-model="form.branch" />
                         </div>
 
@@ -63,11 +63,11 @@
                 <table class="table table-bordered" v-if="canAddProduct">
                     <tbody class="text-center">
                     <tr class="table-separator">
-                        <th class="text-left">S/No.</th>
-                        <th>Product</th>
+                        <th class="text-center">S/No.</th>
+                        <th class="text-center">Product</th>
 
-                        <th>Market Price</th>
-                        <th>Quantity</th>
+                        <th class="text-center">Market Price</th>
+                        <th class="text-center">Quantity</th>
                     </tr>
                     <tr v-for="(product,index) in productForm.products">
                         <td>{{index+1}}</td>
@@ -150,6 +150,9 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <div class="float-right">
+                                <button class="btn-default">edit</button>
+                            </div>
                         </div>
 
                     </div>
@@ -318,6 +321,7 @@
                     .then(({ data }) => {
                         // console.log(data.products)
                         this.productForm.products = [];
+
                         this.requestSent = true;
                         data.products.forEach(product => {
                             this.productForm.products.push({

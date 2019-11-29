@@ -27,7 +27,7 @@ class Inventory extends Model
             'market_price' => '',
             'serial_number' => '',
             'branch' => '',
-            'issues_id' => ''
+
 
         ];
     }

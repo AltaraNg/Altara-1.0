@@ -79,7 +79,7 @@ class InventoryController extends Controller
         return response()->json([
             'saved' => true,
             'message' => 'Inventory Created!',
-            'form' => Inventory::form(),
+//            'form' => Inventory::form(),
             'log' => 'InventoryCreated'
 
         ]);
