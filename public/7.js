@@ -1594,7 +1594,49 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-529d75ca\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/employee/employeeForm.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-319f68d5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "image" },
+    [
+      _vm.value && _vm.usage === "verification"
+        ? _c("image-preview", {
+            attrs: { preview: _vm.value },
+            on: {
+              close: function($event) {
+                return _vm.$emit("input", null)
+              }
+            }
+          })
+        : _c("div", [
+            _c("input", {
+              attrs: { type: "file", accept: "images/*" },
+              on: { change: _vm.upload }
+            })
+          ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-319f68d5", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-54e76424\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/employee/employeeForm.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2614,7 +2656,7 @@ var render = function() {
                                   },
                                   on: {
                                     change: function($event) {
-                                      _vm.$set(_vm.form, "gender", sex)
+                                      return _vm.$set(_vm.form, "gender", sex)
                                     }
                                   }
                                 }),
@@ -3612,7 +3654,7 @@ var render = function() {
                                       staticClass: "view_cv mr-4",
                                       on: {
                                         click: function($event) {
-                                          _vm.viewCV(_vm.form.cv_url)
+                                          return _vm.viewCV(_vm.form.cv_url)
                                         }
                                       }
                                     },
@@ -3736,13 +3778,13 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-529d75ca", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-54e76424", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-787cf924\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -3760,7 +3802,7 @@ var render = function() {
             on: {
               click: function($event) {
                 $event.preventDefault()
-                _vm.$emit("close")
+                return _vm.$emit("close")
               }
             }
           },
@@ -3775,49 +3817,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-78eff338", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "image" },
-    [
-      _vm.value && _vm.usage === "verification"
-        ? _c("image-preview", {
-            attrs: { preview: _vm.value },
-            on: {
-              close: function($event) {
-                _vm.$emit("input", null)
-              }
-            }
-          })
-        : _c("div", [
-            _c("input", {
-              attrs: { type: "file", accept: "images/*" },
-              on: { change: _vm.upload }
-            })
-          ])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7e5db395", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-787cf924", module.exports)
   }
 }
 
@@ -3831,7 +3831,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImagePreview.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-787cf924\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -3848,7 +3848,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\ImagePreview.vue"
+Component.options.__file = "resources/assets/js/components/ImagePreview.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -3857,9 +3857,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-78eff338", Component.options)
+    hotAPI.createRecord("data-v-787cf924", Component.options)
   } else {
-    hotAPI.reload("data-v-78eff338", Component.options)
+    hotAPI.reload("data-v-787cf924", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -3879,7 +3879,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-319f68d5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -3896,7 +3896,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\ImageUpload.vue"
+Component.options.__file = "resources/assets/js/components/ImageUpload.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -3905,9 +3905,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7e5db395", Component.options)
+    hotAPI.createRecord("data-v-319f68d5", Component.options)
   } else {
-    hotAPI.reload("data-v-7e5db395", Component.options)
+    hotAPI.reload("data-v-319f68d5", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -4073,7 +4073,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/employee/employeeForm.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-529d75ca\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/employee/employeeForm.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-54e76424\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/employee/employeeForm.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -4090,7 +4090,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\HRM\\employee\\employeeForm.vue"
+Component.options.__file = "resources/assets/js/views/HRM/employee/employeeForm.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -4099,9 +4099,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-529d75ca", Component.options)
+    hotAPI.createRecord("data-v-54e76424", Component.options)
   } else {
-    hotAPI.reload("data-v-529d75ca", Component.options)
+    hotAPI.reload("data-v-54e76424", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

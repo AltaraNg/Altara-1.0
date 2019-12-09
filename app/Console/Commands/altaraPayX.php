@@ -39,15 +39,30 @@ class altaraPayX extends Command
         ->join('repayment_formal', 'repayment_formal.repayment_id','orders.id')
         ->join('customers', 'customers.id','orders.customer_id')
         ->where('repayment_formal.date_of_next_payment','=', date('Y-m-d'))
-        ->select('paystack_auth_code.*', 'customers.email', 'orders.customer_id', 'orders.repayment_amount', 'repayment_formal.date_of_next_payment')
+        ->select('paystack_auth_code.*', 'customers.email','customers.branch_id', 'orders.customer_id', 'orders.repayment_amount', 'repayment_formal.date_of_next_payment')
         ->get();
         return $daily_data;
     }
 
-    public function callApiData($data, $auth_code, $email, $amount, $ref)
+    public function callApiData($data, $branch_id, $auth_code, $email, $amount, $ref)
     {
-        $subaccount = 'ACCT_88vzjvjeskbfe39';
-        
+
+        $branch[] = (object) array('id' => 2, 'code' => 'ACCT_z6a4tsvupmoo0hz');
+        $branch[] = (object) array('id' => 4, 'code' => 'ACCT_93q2vycqxrg4nau');
+        $branch[] = (object) array('id' => 5, 'code' => 'ACCT_ahye96qmminhs36');
+        $branch[] = (object) array('id' => 6, 'code' => 'ACCT_88vzjvjeskbfe39');
+        $branch[] = (object) array('id' => 8, 'code' => 'ACCT_8p45z039s2inwwe');
+        $branch[] = (object) array('id' => 9, 'code' => 'ACCT_88vzjvjeskbfe39');
+        $branch[] = (object) array('id' => 11, 'code' => 'ACCT_w3ola5amahnl7mc');
+        $branch[] = (object) array('id' => 12, 'code' => 'ACCT_fmntykscho1l47g');
+       
+        foreach($branch as $value){
+            if ($value->id == $branch_id){
+                $subaccount = $value->code;
+            }
+            
+        }
+    
         $result = array();
         // Pass the customer's authorisation code, email and amount
         $postdata =  array( 'authorization_code' => $auth_code,'email' => $email, 'amount' => $amount,"reference" => $ref, 'subaccount'=> $subaccount);
@@ -70,6 +85,7 @@ class altaraPayX extends Command
         curl_close ($ch);
         if ($request) {
           $result = json_decode($request, true);
+        //   print_r($result);
         }
                if ($result['data']['status']== 'success'){
             // $this->successUpdate($data);
@@ -153,8 +169,10 @@ class altaraPayX extends Command
     public function handle()
     {
         foreach($this->getDailydata() as $value){
-            $this->callApiData($value, $value->auth_code, $value->email, (int)(strval($value->repayment_amount)."00") , rand(1, 10000000));
+            $this->callApiData($value, $value->branch_id, $value->auth_code, $value->email, (int)(strval($value->repayment_amount)."00") , rand(1, 10000000));
         }
-        //
+        
+        
+
     }
 }

@@ -31,8 +31,9 @@ class AltaraPayReportController extends Controller
         ->join('orders', 'orders.id','paystack_auth_code.order_id')
         ->join('repayment_formal', 'repayment_formal.repayment_id','orders.id')
         ->join('customers', 'customers.id','orders.customer_id')
+        ->join('new_products', 'new_products.product_id','orders.product_sku')
         ->where('repayment_formal.date_of_next_payment','=', date('Y-m-d'))
-        ->select('paystack_auth_code.*', 'customers.email', 'orders.customer_id', 'orders.repayment_amount', 'repayment_formal.date_of_next_payment')
+        ->select('paystack_auth_code.*','new_products.pc_pprice', 'customers.email','customers.branch_id', 'orders.customer_id', 'orders.repayment_amount', 'orders.order_date', 'repayment_formal.date_of_next_payment')
         ->get();
 
         return response()->json([

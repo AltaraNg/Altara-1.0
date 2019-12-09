@@ -473,7 +473,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2f542aae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-18fd8fee\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -561,13 +561,13 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2f542aae", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-18fd8fee", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53eb4313\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/DataViewer.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-fa04345a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/DataViewer.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -688,7 +688,8 @@ var render = function() {
                                 )
                               ]
                             )
-                          })
+                          }),
+                          0
                         )
                       ]
                     ),
@@ -738,7 +739,8 @@ var render = function() {
                             return _c("option", { domProps: { value: key } }, [
                               _vm._v(_vm._s(value))
                             ])
-                          })
+                          }),
+                          0
                         )
                       ]
                     ),
@@ -767,7 +769,7 @@ var render = function() {
                           on: {
                             keyup: function($event) {
                               if (
-                                !("button" in $event) &&
+                                !$event.type.indexOf("key") &&
                                 _vm._k(
                                   $event.keyCode,
                                   "enter",
@@ -778,7 +780,7 @@ var render = function() {
                               ) {
                                 return null
                               }
-                              _vm.fetchIndexData()
+                              return _vm.fetchIndexData()
                             },
                             input: function($event) {
                               if ($event.target.composing) {
@@ -809,7 +811,7 @@ var render = function() {
                               "btn btn-block bg-default mb-0 mt-3 mt-md-4",
                             on: {
                               click: function($event) {
-                                _vm.fetchIndexData()
+                                return _vm.fetchIndexData()
                               }
                             }
                           },
@@ -838,7 +840,7 @@ var render = function() {
                                       attrs: { scope: "col" },
                                       on: {
                                         click: function($event) {
-                                          _vm.toggleOrder(column)
+                                          return _vm.toggleOrder(column)
                                         }
                                       }
                                     },
@@ -967,7 +969,7 @@ var render = function() {
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  _vm.update(
+                                                  return _vm.update(
                                                     model,
                                                     "editPortalAccess"
                                                   )
@@ -998,7 +1000,7 @@ var render = function() {
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  _vm.update(
+                                                  return _vm.update(
                                                     model,
                                                     "editPassword"
                                                   )
@@ -1034,7 +1036,7 @@ var render = function() {
                                             },
                                             on: {
                                               click: function($event) {
-                                                _vm.$router.push(
+                                                return _vm.$router.push(
                                                   _vm.$route.meta.new +
                                                     "/" +
                                                     model.id +
@@ -1054,7 +1056,8 @@ var render = function() {
                                 ],
                                 2
                               )
-                            })
+                            }),
+                            0
                           )
                         ]
                       )
@@ -1109,7 +1112,7 @@ var render = function() {
                                     staticClass: "page-link",
                                     on: {
                                       click: function($event) {
-                                        _vm.prev()
+                                        return _vm.prev()
                                       }
                                     }
                                   },
@@ -1137,7 +1140,7 @@ var render = function() {
                                     staticClass: "page-link",
                                     on: {
                                       click: function($event) {
-                                        _vm.next()
+                                        return _vm.next()
                                       }
                                     }
                                   },
@@ -1173,7 +1176,7 @@ var render = function() {
                               on: {
                                 keyup: function($event) {
                                   if (
-                                    !("button" in $event) &&
+                                    !$event.type.indexOf("key") &&
                                     _vm._k(
                                       $event.keyCode,
                                       "enter",
@@ -1184,7 +1187,7 @@ var render = function() {
                                   ) {
                                     return null
                                   }
-                                  _vm.fetchIndexData()
+                                  return _vm.fetchIndexData()
                                 },
                                 input: function($event) {
                                   if ($event.target.composing) {
@@ -1308,7 +1311,7 @@ var render = function() {
                                           },
                                           on: {
                                             change: function($event) {
-                                              _vm.$set(
+                                              return _vm.$set(
                                                 _vm.form,
                                                 "portal_access",
                                                 value
@@ -1358,7 +1361,7 @@ var render = function() {
                                   },
                                   on: {
                                     click: function($event) {
-                                      _vm.myLog(_vm.form.id)
+                                      return _vm.myLog(_vm.form.id)
                                     }
                                   }
                                 },
@@ -1520,7 +1523,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-53eb4313", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-fa04345a", module.exports)
   }
 }
 
@@ -1534,7 +1537,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2f542aae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-18fd8fee\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1551,7 +1554,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\AppNavigation.vue"
+Component.options.__file = "resources/assets/js/components/AppNavigation.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1560,9 +1563,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2f542aae", Component.options)
+    hotAPI.createRecord("data-v-18fd8fee", Component.options)
   } else {
-    hotAPI.reload("data-v-2f542aae", Component.options)
+    hotAPI.reload("data-v-18fd8fee", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1582,7 +1585,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/DataViewer.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53eb4313\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/DataViewer.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-fa04345a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/DataViewer.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1599,7 +1602,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\DataViewer.vue"
+Component.options.__file = "resources/assets/js/components/DataViewer.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1608,9 +1611,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-53eb4313", Component.options)
+    hotAPI.createRecord("data-v-fa04345a", Component.options)
   } else {
-    hotAPI.reload("data-v-53eb4313", Component.options)
+    hotAPI.reload("data-v-fa04345a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

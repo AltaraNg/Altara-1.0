@@ -1938,7 +1938,143 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-07317a72\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-18fd8fee\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "h4",
+    {
+      staticClass: "mx-md-3 mx-0 py-0 my-0 text-center clearfix",
+      attrs: { id: "app-navigation" }
+    },
+    [
+      _vm.$routerHistory.hasPrevious()
+        ? _c(
+            "router-link",
+            {
+              staticClass:
+                "text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3",
+              attrs: { to: _vm.previous, id: "back" }
+            },
+            [
+              _c("span", { staticClass: "mr-5 float-left" }, [
+                _c("i", {
+                  staticClass: "far fa-arrow-alt-circle-left float-left"
+                }),
+                _vm._v(" "),
+                _c(
+                  "small",
+                  { staticClass: "float-left ml-2 d-none d-sm-block" },
+                  [_vm._v("Back")]
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "strong",
+        {
+          staticClass: "mx-auto w-100 float-left",
+          attrs: { "data-title": "title" }
+        },
+        [
+          _c("span", { staticClass: "d-none d-sm-block" }, [
+            _vm._v(_vm._s(_vm.pageTitle))
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "d-block d-sm-none" }, [
+            _vm._v(_vm._s(_vm.pageTitleSmall))
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.$routerHistory.hasForward()
+        ? _c(
+            "router-link",
+            {
+              staticClass:
+                "text-secondary float-right mr-1 pr-2 mr-sm-4 pr-sm-3",
+              attrs: { to: _vm.forward, id: "forward" }
+            },
+            [
+              _c("span", { staticClass: "ml-5 float-right" }, [
+                _c("i", {
+                  staticClass: "far fa-arrow-alt-circle-right float-right"
+                }),
+                _vm._v(" "),
+                _c(
+                  "small",
+                  { staticClass: "float-right mr-2 d-none d-sm-block" },
+                  [_vm._v("Forward")]
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-18fd8fee", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-319f68d5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "image" },
+    [
+      _vm.value && _vm.usage === "verification"
+        ? _c("image-preview", {
+            attrs: { preview: _vm.value },
+            on: {
+              close: function($event) {
+                return _vm.$emit("input", null)
+              }
+            }
+          })
+        : _c("div", [
+            _c("input", {
+              attrs: { type: "file", accept: "images/*" },
+              on: { change: _vm.upload }
+            })
+          ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-319f68d5", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-36606568\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2187,7 +2323,7 @@ var render = function() {
                                         staticClass: "card-footer pointer",
                                         on: {
                                           click: function($event) {
-                                            _vm.modal(type + "_modal")
+                                            return _vm.modal(type + "_modal")
                                           }
                                         }
                                       },
@@ -2225,7 +2361,7 @@ var render = function() {
                                                     _vm._s(
                                                       _vm._f("capitalize")(
                                                         type == "passport" ||
-                                                        type == "id_card"
+                                                          type == "id_card"
                                                           ? _vm.customer[
                                                               "document"
                                                             ].staff_name
@@ -2308,7 +2444,7 @@ var render = function() {
                                   on: {
                                     submit: function($event) {
                                       $event.preventDefault()
-                                      _vm.save(type, type + "_modal")
+                                      return _vm.save(type, type + "_modal")
                                     }
                                   }
                                 },
@@ -2415,7 +2551,7 @@ var render = function() {
                               },
                               on: {
                                 click: function($event) {
-                                  _vm.modal("address_modal")
+                                  return _vm.modal("address_modal")
                                 }
                               }
                             },
@@ -2434,7 +2570,7 @@ var render = function() {
                             on: {
                               submit: function($event) {
                                 $event.preventDefault()
-                                _vm.validate("address")
+                                return _vm.validate("address")
                               }
                             }
                           },
@@ -2638,7 +2774,7 @@ var render = function() {
                                         },
                                         on: {
                                           change: function($event) {
-                                            _vm.$set(
+                                            return _vm.$set(
                                               _vm.address,
                                               "customer_meetup",
                                               "yes"
@@ -2677,7 +2813,7 @@ var render = function() {
                                         },
                                         on: {
                                           change: function($event) {
-                                            _vm.$set(
+                                            return _vm.$set(
                                               _vm.address,
                                               "customer_meetup",
                                               "no"
@@ -2749,7 +2885,7 @@ var render = function() {
                                         },
                                         on: {
                                           change: function($event) {
-                                            _vm.$set(
+                                            return _vm.$set(
                                               _vm.address,
                                               "confirm_address",
                                               "yes"
@@ -2790,7 +2926,7 @@ var render = function() {
                                         },
                                         on: {
                                           change: function($event) {
-                                            _vm.$set(
+                                            return _vm.$set(
                                               _vm.address,
                                               "confirm_address",
                                               "no"
@@ -3056,7 +3192,7 @@ var render = function() {
                                         },
                                         on: {
                                           change: function($event) {
-                                            _vm.$set(
+                                            return _vm.$set(
                                               _vm.address,
                                               "aware_of_plan",
                                               "yes"
@@ -3096,7 +3232,7 @@ var render = function() {
                                         },
                                         on: {
                                           change: function($event) {
-                                            _vm.$set(
+                                            return _vm.$set(
                                               _vm.address,
                                               "aware_of_plan",
                                               "no"
@@ -3425,7 +3561,9 @@ var render = function() {
                                                   attrs: { type: "button" },
                                                   on: {
                                                     click: function($event) {
-                                                      _vm.modal("address_modal")
+                                                      return _vm.modal(
+                                                        "address_modal"
+                                                      )
                                                     }
                                                   }
                                                 },
@@ -3542,7 +3680,7 @@ var render = function() {
                                   on: {
                                     submit: function($event) {
                                       $event.preventDefault()
-                                      _vm.validate(type)
+                                      return _vm.validate(type)
                                     }
                                   }
                                 },
@@ -4039,7 +4177,7 @@ var render = function() {
                                                         change: function(
                                                           $event
                                                         ) {
-                                                          _vm.$set(
+                                                          return _vm.$set(
                                                             _vm.$data[type],
                                                             "consent",
                                                             "1"
@@ -4096,7 +4234,7 @@ var render = function() {
                                                         change: function(
                                                           $event
                                                         ) {
-                                                          _vm.$set(
+                                                          return _vm.$set(
                                                             _vm.$data[type],
                                                             "consent",
                                                             "0"
@@ -4350,107 +4488,13 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-07317a72", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-36606568", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2f542aae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "h4",
-    {
-      staticClass: "mx-md-3 mx-0 py-0 my-0 text-center clearfix",
-      attrs: { id: "app-navigation" }
-    },
-    [
-      _vm.$routerHistory.hasPrevious()
-        ? _c(
-            "router-link",
-            {
-              staticClass:
-                "text-secondary float-left ml-1 pl-2 ml-sm-4 pl-sm-3",
-              attrs: { to: _vm.previous, id: "back" }
-            },
-            [
-              _c("span", { staticClass: "mr-5 float-left" }, [
-                _c("i", {
-                  staticClass: "far fa-arrow-alt-circle-left float-left"
-                }),
-                _vm._v(" "),
-                _c(
-                  "small",
-                  { staticClass: "float-left ml-2 d-none d-sm-block" },
-                  [_vm._v("Back")]
-                )
-              ])
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "strong",
-        {
-          staticClass: "mx-auto w-100 float-left",
-          attrs: { "data-title": "title" }
-        },
-        [
-          _c("span", { staticClass: "d-none d-sm-block" }, [
-            _vm._v(_vm._s(_vm.pageTitle))
-          ]),
-          _vm._v(" "),
-          _c("span", { staticClass: "d-block d-sm-none" }, [
-            _vm._v(_vm._s(_vm.pageTitleSmall))
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _vm.$routerHistory.hasForward()
-        ? _c(
-            "router-link",
-            {
-              staticClass:
-                "text-secondary float-right mr-1 pr-2 mr-sm-4 pr-sm-3",
-              attrs: { to: _vm.forward, id: "forward" }
-            },
-            [
-              _c("span", { staticClass: "ml-5 float-right" }, [
-                _c("i", {
-                  staticClass: "far fa-arrow-alt-circle-right float-right"
-                }),
-                _vm._v(" "),
-                _c(
-                  "small",
-                  { staticClass: "float-right mr-2 d-none d-sm-block" },
-                  [_vm._v("Forward")]
-                )
-              ])
-            ]
-          )
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2f542aae", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-787cf924\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -4468,7 +4512,7 @@ var render = function() {
             on: {
               click: function($event) {
                 $event.preventDefault()
-                _vm.$emit("close")
+                return _vm.$emit("close")
               }
             }
           },
@@ -4483,55 +4527,13 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-78eff338", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-787cf924", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "image" },
-    [
-      _vm.value && _vm.usage === "verification"
-        ? _c("image-preview", {
-            attrs: { preview: _vm.value },
-            on: {
-              close: function($event) {
-                _vm.$emit("input", null)
-              }
-            }
-          })
-        : _c("div", [
-            _c("input", {
-              attrs: { type: "file", accept: "images/*" },
-              on: { change: _vm.upload }
-            })
-          ])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7e5db395", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-f4889778\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/CustomerProfile.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-aabe6cf8\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/CustomerProfile.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -4892,7 +4894,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-f4889778", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-aabe6cf8", module.exports)
   }
 }
 
@@ -4906,7 +4908,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppNavigation.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2f542aae\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-18fd8fee\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppNavigation.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -4923,7 +4925,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\AppNavigation.vue"
+Component.options.__file = "resources/assets/js/components/AppNavigation.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -4932,9 +4934,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2f542aae", Component.options)
+    hotAPI.createRecord("data-v-18fd8fee", Component.options)
   } else {
-    hotAPI.reload("data-v-2f542aae", Component.options)
+    hotAPI.reload("data-v-18fd8fee", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -4954,7 +4956,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/CustomerProfile.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-f4889778\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/CustomerProfile.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-aabe6cf8\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/CustomerProfile.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -4971,7 +4973,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\CustomerProfile.vue"
+Component.options.__file = "resources/assets/js/components/CustomerProfile.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -4980,9 +4982,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f4889778", Component.options)
+    hotAPI.createRecord("data-v-aabe6cf8", Component.options)
   } else {
-    hotAPI.reload("data-v-f4889778", Component.options)
+    hotAPI.reload("data-v-aabe6cf8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -5002,7 +5004,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImagePreview.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-78eff338\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-787cf924\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImagePreview.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -5019,7 +5021,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\ImagePreview.vue"
+Component.options.__file = "resources/assets/js/components/ImagePreview.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -5028,9 +5030,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-78eff338", Component.options)
+    hotAPI.createRecord("data-v-787cf924", Component.options)
   } else {
-    hotAPI.reload("data-v-78eff338", Component.options)
+    hotAPI.reload("data-v-787cf924", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -5050,7 +5052,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ImageUpload.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7e5db395\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-319f68d5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ImageUpload.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -5067,7 +5069,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\ImageUpload.vue"
+Component.options.__file = "resources/assets/js/components/ImageUpload.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -5076,9 +5078,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7e5db395", Component.options)
+    hotAPI.createRecord("data-v-319f68d5", Component.options)
   } else {
-    hotAPI.reload("data-v-7e5db395", Component.options)
+    hotAPI.reload("data-v-319f68d5", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -5265,7 +5267,7 @@ var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/comp
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-07317a72\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-36606568\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/DVA/verification/verification.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -5282,7 +5284,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\DVA\\verification\\verification.vue"
+Component.options.__file = "resources/assets/js/views/DVA/verification/verification.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -5291,9 +5293,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-07317a72", Component.options)
+    hotAPI.createRecord("data-v-36606568", Component.options)
   } else {
-    hotAPI.reload("data-v-07317a72", Component.options)
+    hotAPI.reload("data-v-36606568", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
