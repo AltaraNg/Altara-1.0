@@ -75,7 +75,7 @@
                         <td>
                             <div class="form-group mb-0">
 
-                                <p>{{ productForm.products[index].product_name }}</p>
+                                <p>{{ product.product_name }}</p>
                             </div>
                         </td>
 
@@ -84,20 +84,20 @@
                         <td>
                             <div class="form-group mb-0">
 
-                                <p>{{ productForm.products[index].market_price | currency('₦', 0)}}</p>
+                                <p>{{ product.market_price | currency('₦', 0)}}</p>
                             </div>
                         </td>
 
                         <td>
                             <div class="form-group mb-0">
-                                <p>{{productForm.products[index].quantity | numberZero}}</p>
+                                <p>{{product.quantity | numberZero}}</p>
                             </div>
                         </td>
 
                         <td>
                             <button
-                                    v-if="productForm.products[index].quantity >1"
-                                    @click="modal('modal', productForm.products[index])"
+                                    v-if="product.quantity >0"
+                                    @click="modal('modal', product)"
                                     class="ml-2 btn status status-sm my-sm-2 bg-default"
                             >
                                 View
@@ -124,12 +124,11 @@
                         <div class="modal-header py-2">
                             <h6 class="modal-title py-1">{{modalTitle}}</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal" href="javascript:">
-                <span aria-hidden="true" class="modal-close text-danger">
-                    <i class="fas fa-times"></i>
-                </span>
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="fas fa-times"></i>
+                                </span>
                             </a>
                         </div>
-
                         <div>
                             <table class="table table-bordered">
                                 <thead>
@@ -138,24 +137,37 @@
                                     <th>Inventory SKU</th>
                                     <th>Market Price</th>
                                     <th>Serial/IMEI Number</th>
+                                    <th>Received By</th>
+                                    <th>Received Date</th>
+                                    <th>Sold Date</th>
+                                    <th>Branch</th>
+
+
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(product,index) in searchInventory">
+                                <tr v-for="(inventory_item,index) in searchInventory">
                                     <td>{{index + 1}}</td>
-                                    <td>{{searchInventory[index].inventory_sku}}</td>
-                                    <td>{{searchInventory[index].market_price}}</td>
-                                    <td>{{searchInventory[index].serial_number}}</td>
+                                    <td>{{inventory_item.inventory_sku}}</td>
+                                    <td>{{inventory_item.market_price}}</td>
+                                    <td>{{inventory_item.serial_number}}</td>
+                                    <td>received by</td>
+                                    <td>{{inventory_item.received_date}}</td>
+                                    <td>{{inventory_item.sold_date}}</td>
+                                    <td>{{getEntity(inventory_item.branch_id, getBranches).name}}</td>
+
                                 </tr>
                                 </tbody>
                             </table>
                             <div class="float-right">
-                                <button class="btn-default">edit</button>
+                                <button class="btn-default btn">edit</button>
                             </div>
+
                         </div>
 
                     </div>
+
                 </div>
             </div>
 
@@ -239,11 +251,7 @@
 
 
         },
-        // beforeRouteEnter(to, from, next) {
-        //     get(initialize(to))
-        //         .then(({ data }) => next(vm => vm.prepareForm(data)))
-        //         .catch(() => next(() => Flash.setError("Error Preparing form")));
-        // },
+
         created(){
             this.$prepareInventories();
             this.$prepareBranches();
@@ -266,7 +274,10 @@
                 this.canAddProduct = /*this.canUserAddPayment;*/ true;
 
             },
+
+
             modal(name, product) {
+                // get inventory product matching in the inventory
                 let temp = this.getMatchingProduct(product.product_id);
                 Vue.set(this.$data, "searchInventory", temp);
                 Vue.set(this.$data, "modalTitle", product.product_name);
@@ -280,41 +291,7 @@
 
             },
 
-            // onSave() {
-            //
-            //     this.$validator.validateAll().then(result => {
-            //         if (result) {
-            //             if (this.$network()) {
-            //                 this.$LIPS(true);
-            //                 this.productForm.products.forEach(e => {
-            //                     if (this.mode = "edit"){
-            //                         delete e.product_name;
-            //                     }
-            //                     byMethod(this.method, this.store, e)
-            //                         .then(({ data }) => {
-            //                             if (data.saved || data.updated) {
-            //                                 // log(data.log, data.staff_id);
-            //                                 Vue.set(this.$data, "productForm", data.form);
-            //                                 Flash.setSuccess(data.message, 5000);
-            //                                 if (data["updated"]) this.$router.push("/log/inventory");
-            //                             }
-            //                         })
-            //                         .catch(({ response: r }) => {
-            //                             let { data, status } = r;
-            //                             if (status === 422) {
-            //                                 this.error = data.errors ? data.errors : data;
-            //                                 this.$networkErr("unique");
-            //                             }
-            //                         })
-            //                         .finally(() => {
-            //                             this.$scrollToTop();
-            //                             this.$LIPS(false);
-            //                         });
-            //                 });
-            //             } else this.$networkErr();
-            //         } else this.$networkErr("form");
-            //     });
-            // },
+
 
             addProductForm() {
                 getMethod('GET', this.search, this.form)
@@ -337,17 +314,7 @@
                     })
 
             }
-                // let gotProduct = this.getMatchingProduct(this.form);
-                //  //generates rows according to the quantity of products
-                // gotProduct.forEach(product => {
-                //     this.productForm.products.push({
-                //         product_name: product.name,
-                //         market_price: product.retail_price,
-                //         product_id: product.id,
-                //
-                //     });
-                //     this.reNumber();
-                // });
+
 
             ,
 
@@ -382,6 +349,8 @@
             ...mapGetters(['getInventories', "getBranches", 'getCategories', 'getBrands']),
 
 
+
+
         },
 
 
@@ -412,6 +381,16 @@
     }
     button{
         display: inline;
+    }
+    .table{
+        background: white;
+    }
+    .modal-dialog{
+        width: 100%;
+        min-width: 450px;
+    }
+    .modal-dialog table{
+        width: 100%;
     }
 
 </style>

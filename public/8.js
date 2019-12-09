@@ -353,6 +353,18 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 
@@ -430,12 +442,6 @@ exports.default = {
 
         };
     },
-
-    // beforeRouteEnter(to, from, next) {
-    //     get(initialize(to))
-    //         .then(({ data }) => next(vm => vm.prepareForm(data)))
-    //         .catch(() => next(() => Flash.setError("Error Preparing form")));
-    // },
     created: function created() {
         this.$prepareInventories();
         this.$prepareBranches();
@@ -453,6 +459,7 @@ exports.default = {
             this.canAddProduct = /*this.canUserAddPayment;*/true;
         },
         modal: function modal(name, product) {
+            // get inventory product matching in the inventory
             var temp = this.getMatchingProduct(product.product_id);
             _vue2.default.set(this.$data, "searchInventory", temp);
             _vue2.default.set(this.$data, "modalTitle", product.product_name);
@@ -463,44 +470,6 @@ exports.default = {
             * "name passed to it"*/
             this.errors.clear(name);
         },
-
-
-        // onSave() {
-        //
-        //     this.$validator.validateAll().then(result => {
-        //         if (result) {
-        //             if (this.$network()) {
-        //                 this.$LIPS(true);
-        //                 this.productForm.products.forEach(e => {
-        //                     if (this.mode = "edit"){
-        //                         delete e.product_name;
-        //                     }
-        //                     byMethod(this.method, this.store, e)
-        //                         .then(({ data }) => {
-        //                             if (data.saved || data.updated) {
-        //                                 // log(data.log, data.staff_id);
-        //                                 Vue.set(this.$data, "productForm", data.form);
-        //                                 Flash.setSuccess(data.message, 5000);
-        //                                 if (data["updated"]) this.$router.push("/log/inventory");
-        //                             }
-        //                         })
-        //                         .catch(({ response: r }) => {
-        //                             let { data, status } = r;
-        //                             if (status === 422) {
-        //                                 this.error = data.errors ? data.errors : data;
-        //                                 this.$networkErr("unique");
-        //                             }
-        //                         })
-        //                         .finally(() => {
-        //                             this.$scrollToTop();
-        //                             this.$LIPS(false);
-        //                         });
-        //                 });
-        //             } else this.$networkErr();
-        //         } else this.$networkErr("form");
-        //     });
-        // },
-
         addProductForm: function addProductForm() {
             var _this = this;
 
@@ -523,21 +492,7 @@ exports.default = {
                     _this.reNumber();
                 });
             });
-        }
-        // let gotProduct = this.getMatchingProduct(this.form);
-        //  //generates rows according to the quantity of products
-        // gotProduct.forEach(product => {
-        //     this.productForm.products.push({
-        //         product_name: product.name,
-        //         market_price: product.retail_price,
-        //         product_id: product.id,
-        //
-        //     });
-        //     this.reNumber();
-        // });
-
-
-        ,
+        },
         deleteProduct: function deleteProduct(index) {
             this.productForm.products.splice(index, 1);
             this.reNumber();
@@ -591,7 +546,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n#product-search[data-v-52a532c2]{\n    width: 50%;\n    margin: auto;\n    padding-top: 20px;\n}\nbutton[data-v-52a532c2]{\n    display: inline;\n}\n\n", ""]);
+exports.push([module.i, "\n#product-search[data-v-52a532c2]{\n    width: 50%;\n    margin: auto;\n    padding-top: 20px;\n}\nbutton[data-v-52a532c2]{\n    display: inline;\n}\n.table[data-v-52a532c2]{\n    background: white;\n}\n.modal-dialog[data-v-52a532c2]{\n    width: 100%;\n    min-width: 450px;\n}\n.modal-dialog table[data-v-52a532c2]{\n    width: 100%;\n}\n\n", ""]);
 
 // exports
 
@@ -609,89 +564,6 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 exports.push([module.i, "\ninput[data-v-6da2cc40]{\n    position: fixed;\n}\nul[data-v-6da2cc40]{\n    position: relative;\n    z-index: 2;\n}\n", ""]);
 
 // exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
 
 
 /***/ }),
@@ -965,14 +837,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [
                               _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("p", [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.productForm.products[index]
-                                        .product_name
-                                    )
-                                  )
-                                ])
+                                _c("p", [_vm._v(_vm._s(product.product_name))])
                               ])
                             ]),
                             _vm._v(" "),
@@ -982,8 +847,7 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       _vm._f("currency")(
-                                        _vm.productForm.products[index]
-                                          .market_price,
+                                        product.market_price,
                                         "₦",
                                         0
                                       )
@@ -998,9 +862,7 @@ var render = function() {
                                 _c("p", [
                                   _vm._v(
                                     _vm._s(
-                                      _vm._f("numberZero")(
-                                        _vm.productForm.products[index].quantity
-                                      )
+                                      _vm._f("numberZero")(product.quantity)
                                     )
                                   )
                                 ])
@@ -1008,7 +870,7 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _vm.productForm.products[index].quantity > 1
+                              product.quantity > 0
                                 ? _c(
                                     "button",
                                     {
@@ -1016,10 +878,7 @@ var render = function() {
                                         "ml-2 btn status status-sm my-sm-2 bg-default",
                                       on: {
                                         click: function($event) {
-                                          _vm.modal(
-                                            "modal",
-                                            _vm.productForm.products[index]
-                                          )
+                                          _vm.modal("modal", product)
                                         }
                                       }
                                     },
@@ -1090,31 +949,53 @@ var render = function() {
                       _vm._v(" "),
                       _c("th", [_vm._v("Market Price")]),
                       _vm._v(" "),
-                      _c("th", [_vm._v("Serial/IMEI Number")])
+                      _c("th", [_vm._v("Serial/IMEI Number")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Received By")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Received Date")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Sold Date")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Branch")])
                     ])
                   ]),
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.searchInventory, function(product, index) {
+                    _vm._l(_vm.searchInventory, function(
+                      inventory_item,
+                      index
+                    ) {
                       return _c("tr", [
                         _c("td", [_vm._v(_vm._s(index + 1))]),
                         _vm._v(" "),
                         _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.searchInventory[index].inventory_sku)
-                          )
+                          _vm._v(_vm._s(inventory_item.inventory_sku))
                         ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(inventory_item.market_price))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(inventory_item.serial_number))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("received by")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(inventory_item.received_date))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(inventory_item.sold_date))]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            _vm._s(_vm.searchInventory[index].market_price)
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.searchInventory[index].serial_number)
+                            _vm._s(
+                              _vm.getEntity(
+                                inventory_item.branch_id,
+                                _vm.getBranches
+                              ).name
+                            )
                           )
                         ])
                       ])
@@ -1123,7 +1004,9 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "float-right" }, [
-                  _c("button", { staticClass: "btn-default" }, [_vm._v("edit")])
+                  _c("button", { staticClass: "btn-default btn" }, [
+                    _vm._v("edit")
+                  ])
                 ])
               ])
             ])

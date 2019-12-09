@@ -425,6 +425,7 @@ textarea.form-control.is-invalid:focus {
 }
 
 .modal {
+
     &-header {
         background-color: rgba($color-black, .02);
     }
@@ -448,6 +449,11 @@ textarea.form-control.is-invalid:focus {
     & .form-group {
         margin-bottom: 2rem;
     }
+
+    table{
+        table-layout: auto;
+        width: 100%;
+    };
 
 }
 

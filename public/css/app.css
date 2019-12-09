@@ -16571,6 +16571,11 @@ textarea.form-control.is-invalid:focus {
   margin-bottom: 2rem;
 }
 
+.modal table {
+  table-layout: auto;
+  width: 100%;
+}
+
 table button i, table a i {
   font-size: 1.2rem;
 }
