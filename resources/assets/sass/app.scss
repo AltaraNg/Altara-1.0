@@ -426,6 +426,8 @@ textarea.form-control.is-invalid:focus {
 
 .modal {
 
+
+
     &-header {
         background-color: rgba($color-black, .02);
     }
@@ -452,7 +454,7 @@ textarea.form-control.is-invalid:focus {
 
     table{
         table-layout: auto;
-        width: 100%;
+
     };
 
 }
@@ -1398,7 +1400,7 @@ tr.current {
         display: table;
     }
     .modal-dialog {
-        max-width: 64rem;
+        max-width: 100rem;
     }
 
     .attendance {

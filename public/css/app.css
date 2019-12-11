@@ -5114,6 +5114,7 @@ button.close {
 
 .modal-dialog {
     position: relative;
+    min-width: 680px;
     width: auto;
     margin: 10px
 }
@@ -5211,7 +5212,7 @@ button.close {
 
 @media (min-width:576px) {
     .modal-dialog {
-        max-width: 500px;
+        max-width: 680px;
         margin: 30px auto
     }
     .modal-sm {
@@ -8846,7 +8847,8 @@ a.text-dark:hover {
 
 .invisible {
     visibility: hidden!important
-}/*!
+}
+/*!
 
  =========================================================
  * Now-ui-kit - v1.1.0
@@ -16573,7 +16575,6 @@ textarea.form-control.is-invalid:focus {
 
 .modal table {
   table-layout: auto;
-  width: 100%;
 }
 
 table button i, table a i {
@@ -17572,7 +17573,7 @@ tr.current {
     display: table;
   }
   .modal-dialog {
-    max-width: 64rem;
+    max-width: 100rem;
   }
   .attendance .custom-select, .attendance input {
     width: 90%;

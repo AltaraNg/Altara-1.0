@@ -116,10 +116,8 @@
             </div>
 
 
-
-
             <div :id="'modal'" class="modal fade">
-                <div class="modal-dialog">
+                <div class="modal-dialog ">
                     <div class="modal-content">
                         <div class="modal-header py-2">
                             <h6 class="modal-title py-1">{{modalTitle}}</h6>
@@ -130,7 +128,7 @@
                             </a>
                         </div>
                         <div>
-                            <table class="table table-bordered">
+                            <table class="table-responsive table-bordered">
                                 <thead>
                                 <tr>
                                     <th>S/N</th>
@@ -160,9 +158,9 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <div class="float-right">
-                                <button class="btn-default btn">edit</button>
-                            </div>
+<!--                            <div class="float-right">-->
+<!--                                <button class="btn-default btn" @click="">edit</button>-->
+<!--                            </div>-->
 
                         </div>
 
@@ -173,7 +171,13 @@
 
 
 
+
+
+
+
+
         </div>
+
 
 
 
@@ -374,23 +378,29 @@
 
 
 <style scoped>
-    #product-search{
-        width: 50%;
-        margin: auto;
-        padding-top: 20px;
-    }
-    button{
-        display: inline;
-    }
-    .table{
-        background: white;
-    }
-    .modal-dialog{
-        width: 100%;
-        min-width: 450px;
-    }
-    .modal-dialog table{
+    .modal table{
         width: 100%;
     }
+    .modal th{
+        font-size: 1.2rem;
+        color: #074a74;
+    }
+
+    .modal td{
+        font-size: 1rem;
+        color: #074a74;
+        padding: 0 2px 0 4px;
+    }
+    .modal button{
+        background-color: #0e5f92;
+    }
+    .modal h6{
+        color: #0e5f92;
+        font-size: 1.4rem;
+    }
+
+
+
+
 
 </style>

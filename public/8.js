@@ -365,6 +365,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
 
 var _vuex = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 
@@ -546,7 +550,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n#product-search[data-v-52a532c2]{\n    width: 50%;\n    margin: auto;\n    padding-top: 20px;\n}\nbutton[data-v-52a532c2]{\n    display: inline;\n}\n.table[data-v-52a532c2]{\n    background: white;\n}\n.modal-dialog[data-v-52a532c2]{\n    width: 100%;\n    min-width: 450px;\n}\n.modal-dialog table[data-v-52a532c2]{\n    width: 100%;\n}\n\n", ""]);
+exports.push([module.i, "\n.modal table[data-v-52a532c2]{\n    width: 100%;\n}\n.modal th[data-v-52a532c2]{\n    font-size: 1.2rem;\n    color: #074a74;\n}\n.modal td[data-v-52a532c2]{\n    font-size: 1rem;\n    color: #074a74;\n    padding: 0 2px 0 4px;\n}\n.modal button[data-v-52a532c2]{\n    background-color: #0e5f92;\n}\n.modal h6[data-v-52a532c2]{\n    color: #0e5f92;\n    font-size: 1.4rem;\n}\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -564,6 +568,89 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 exports.push([module.i, "\ninput[data-v-6da2cc40]{\n    position: fixed;\n}\nul[data-v-6da2cc40]{\n    position: relative;\n    z-index: 2;\n}\n", ""]);
 
 // exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
 
 
 /***/ }),
@@ -783,7 +870,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                            Search Product\n                            "
+                          "\n                                Search Product\n                                "
                         ),
                         _c("i", { staticClass: "far fa-paper-plane ml-1" })
                       ]
@@ -884,7 +971,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                            View\n                        "
+                                        "\n                                View\n                            "
                                       )
                                     ]
                                   )
@@ -909,7 +996,7 @@ var render = function() {
           : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "modal fade", attrs: { id: "modal" } }, [
-          _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-dialog " }, [
             _c("div", { staticClass: "modal-content" }, [
               _c("div", { staticClass: "modal-header py-2" }, [
                 _c("h6", { staticClass: "modal-title py-1" }, [
@@ -940,74 +1027,74 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", [
-                _c("table", { staticClass: "table table-bordered" }, [
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", [_vm._v("S/N")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Inventory SKU")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Market Price")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Serial/IMEI Number")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Received By")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Received Date")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Sold Date")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Branch")])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.searchInventory, function(
-                      inventory_item,
-                      index
-                    ) {
-                      return _c("tr", [
-                        _c("td", [_vm._v(_vm._s(index + 1))]),
+                _c(
+                  "table",
+                  { staticClass: "table-responsive table-bordered" },
+                  [
+                    _c("thead", [
+                      _c("tr", [
+                        _c("th", [_vm._v("S/N")]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(inventory_item.inventory_sku))
-                        ]),
+                        _c("th", [_vm._v("Inventory SKU")]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(inventory_item.market_price))]),
+                        _c("th", [_vm._v("Market Price")]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(inventory_item.serial_number))
-                        ]),
+                        _c("th", [_vm._v("Serial/IMEI Number")]),
                         _vm._v(" "),
-                        _c("td", [_vm._v("received by")]),
+                        _c("th", [_vm._v("Received By")]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(inventory_item.received_date))
-                        ]),
+                        _c("th", [_vm._v("Received Date")]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(inventory_item.sold_date))]),
+                        _c("th", [_vm._v("Sold Date")]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(
-                              _vm.getEntity(
-                                inventory_item.branch_id,
-                                _vm.getBranches
-                              ).name
-                            )
-                          )
-                        ])
+                        _c("th", [_vm._v("Branch")])
                       ])
-                    })
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "float-right" }, [
-                  _c("button", { staticClass: "btn-default btn" }, [
-                    _vm._v("edit")
-                  ])
-                ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.searchInventory, function(
+                        inventory_item,
+                        index
+                      ) {
+                        return _c("tr", [
+                          _c("td", [_vm._v(_vm._s(index + 1))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(inventory_item.inventory_sku))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(inventory_item.market_price))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(inventory_item.serial_number))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("received by")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(inventory_item.received_date))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(inventory_item.sold_date))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.getEntity(
+                                  inventory_item.branch_id,
+                                  _vm.getBranches
+                                ).name
+                              )
+                            )
+                          ])
+                        ])
+                      })
+                    )
+                  ]
+                )
               ])
             ])
           ])
