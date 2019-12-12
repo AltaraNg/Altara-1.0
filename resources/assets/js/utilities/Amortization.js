@@ -354,7 +354,7 @@ class OrderWithPromiseCall extends Order {
     setIsReminderSent() {
         let date;
         let today = vue.$getDate();
-        if (!this.order.reminders || !this.order.reminders.length > 0) return;
+        if (this.order.reminders.length < 1) return;
         this.order.reminders.forEach(reminder => {
             //refactor below by using regx characters to split
             let reminderDateTimeArr = reminder.date.split(' ');//(2019-03-24 02:00:00) -> ['2019-03-24','02:00:00']
@@ -362,7 +362,8 @@ class OrderWithPromiseCall extends Order {
             let timeArr = reminderDateTimeArr[1].split(':');//'02:00:00' -> ['02','00','00']
             let arr = [...dateArr, ...timeArr] // ['2019','03','24','02','00','00']
                 .map(item => parseInt(item, 10)); //[2019,3,24,2,0,0]
-            date = vue.$getDate(new Date(Date.UTC(...arr)), false);
+            arr[1]--;//month starts from 0 in javascript dates hence january(1) will be january(0) in javascript dates
+            date = vue.$getDate(new Date(Date.UTC(...arr)));
             date === today && (this._isReminderSent = true);
         });
     }

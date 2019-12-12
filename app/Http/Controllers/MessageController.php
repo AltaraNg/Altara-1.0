@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class MessageController extends Controller
 {
@@ -14,7 +15,10 @@ class MessageController extends Controller
      */
     public function create()
     {
-        //return response()->json(request('message'), 200);
+        $isInProduction = App::environment() === 'production';
+        if(!$isInProduction) {
+            return response()->json(request('message'), 200);
+        }
         $ch = curl_init();
         $receiver = urlencode(request('to'));
         $message = urlencode(request('message'));

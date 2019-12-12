@@ -1,6 +1,6 @@
 <?php
 
-//Route::post('data', null);
+Route::get('/data', function(){});
 
 Route::get('/{vue?}', function () {
     return view('welcome');
