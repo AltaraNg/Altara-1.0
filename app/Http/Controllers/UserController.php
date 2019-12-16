@@ -31,6 +31,13 @@ class UserController extends Controller
         ]);
     }
 
+    public function getUsers(){
+        $users = User::all();
+        return response()->json([
+            'users' => $users
+        ]);
+    }
+
     public function create()
     {
         /** fetch the user object empty form*/

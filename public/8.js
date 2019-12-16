@@ -451,6 +451,7 @@ exports.default = {
         this.$prepareBranches();
         this.$prepareCategories();
         this.$prepareBrands();
+        this.$prepareUsers();
     },
 
 
@@ -527,7 +528,7 @@ exports.default = {
             });
         }
     },
-    computed: _extends({}, (0, _vuex.mapGetters)(['getInventories', "getBranches", 'getCategories', 'getBrands'])),
+    computed: _extends({}, (0, _vuex.mapGetters)(['getInventories', "getBranches", 'getCategories', 'getBrands', 'getUsers'])),
 
     watch: {
         productForm: {}
@@ -550,7 +551,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.modal table[data-v-52a532c2]{\n    width: 100%;\n}\n.modal th[data-v-52a532c2]{\n    font-size: 1.2rem;\n    color: #074a74;\n}\n.modal td[data-v-52a532c2]{\n    font-size: 1rem;\n    color: #074a74;\n    padding: 0 2px 0 4px;\n}\n.modal button[data-v-52a532c2]{\n    background-color: #0e5f92;\n}\n.modal h6[data-v-52a532c2]{\n    color: #0e5f92;\n    font-size: 1.4rem;\n}\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.modal table[data-v-52a532c2]{\n    width: 100%;\n    margin: auto;\n}\n.modal th[data-v-52a532c2]{\n    font-size: 1.4rem;\n    color: #074a74;\n    text-align: center;\n    padding: 4px 8px;\n}\n.modal td[data-v-52a532c2]{\n    font-size: 1.2rem;\n    color: #074a74;\n    padding: 4px 8px;\n    font-weight: 500;\n}\n.modal button[data-v-52a532c2]{\n    background-color: #0e5f92;\n}\n.modal h6[data-v-52a532c2]{\n    color: #0e5f92;\n    font-size: 1.4rem;\n}\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -1072,7 +1073,16 @@ var render = function() {
                             _vm._v(_vm._s(inventory_item.serial_number))
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v("received by")]),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.getEntity(
+                                  inventory_item.receiver_id,
+                                  _vm.getUsers
+                                ).full_name
+                              )
+                            )
+                          ]),
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(_vm._s(inventory_item.received_date))

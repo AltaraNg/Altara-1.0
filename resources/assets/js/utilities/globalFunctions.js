@@ -136,6 +136,12 @@ Vue.prototype.$prepareBrands = () => {
         .then(r => store.dispatch('mutateBrands', r.data.brands));
 };
 
+Vue.prototype.$prepareUsers = () => {
+
+    !store.getters.getUsers && get('/api/users')
+        .then(r => store.dispatch('mutateUsers', r.data.users));
+};
+
 Vue.prototype.$preparePaymentMethods = () => {
     !store.getters.getPaymentMethods && get('/api/payment_method')
         .then(r => store.dispatch('mutatePaymentMethods', r.data.paymentMethods));

@@ -150,7 +150,7 @@
                                     <td>{{inventory_item.inventory_sku}}</td>
                                     <td>{{inventory_item.market_price}}</td>
                                     <td>{{inventory_item.serial_number}}</td>
-                                    <td>received by</td>
+                                    <td>{{getEntity(inventory_item.receiver_id, getUsers).full_name}}</td>
                                     <td>{{inventory_item.received_date}}</td>
                                     <td>{{inventory_item.sold_date}}</td>
                                     <td>{{getEntity(inventory_item.branch_id, getBranches).name}}</td>
@@ -261,6 +261,7 @@
             this.$prepareBranches();
             this.$prepareCategories();
             this.$prepareBrands();
+            this.$prepareUsers();
         },
 
         methods: {
@@ -350,7 +351,7 @@
             }
         },
         computed: {
-            ...mapGetters(['getInventories', "getBranches", 'getCategories', 'getBrands']),
+            ...mapGetters(['getInventories', "getBranches", 'getCategories', 'getBrands', 'getUsers']),
 
 
 
@@ -380,16 +381,23 @@
 <style scoped>
     .modal table{
         width: 100%;
+        margin: auto;
     }
     .modal th{
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         color: #074a74;
+        text-align: center;
+        padding: 4px 8px;
+
+
     }
 
     .modal td{
-        font-size: 1rem;
+        font-size: 1.2rem;
         color: #074a74;
-        padding: 0 2px 0 4px;
+        padding: 4px 8px;
+        font-weight: 500;
+
     }
     .modal button{
         background-color: #0e5f92;

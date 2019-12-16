@@ -13,6 +13,7 @@ export const store = new Vuex.Store({
     state: {
         years: getYears(),
         banks: null,
+        users:null,
         states: null,
         branches: null,
         brands: null,
@@ -62,6 +63,7 @@ export const store = new Vuex.Store({
         getInventories: state => state.inventories,
         getCategories: state => state.categories,
         getBrands: state => state.brands,
+        getUsers: state => state.users,
         getYears: state => state.years,
         getStates: state => state.states,
         getMonths: state => state.months,
@@ -83,6 +85,7 @@ export const store = new Vuex.Store({
         mutateCategories: (state, categories) => Vue.set(state, 'categories', categories),
         mutatePaymentMethods: (state, paymentMethods) => Vue.set(state, 'paymentMethods', paymentMethods),
         mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
+        mutateUsers: (state, users) => Vue.set(state, 'users', users)
 
     },
     actions: {
@@ -96,5 +99,6 @@ export const store = new Vuex.Store({
         mutateCategories: ({commit}, categories) => commit('mutateCategories', categories),
         mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
         mutateProfileAccess: ({commit}, payload) => commit('mutateProfileAccess', payload),
+        mutateUsers: ({commit}, users) => commit('mutateUsers', users)
     }
 });

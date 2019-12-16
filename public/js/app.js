@@ -44964,6 +44964,7 @@ var store = exports.store = new _vuex2.default.Store({
     state: {
         years: getYears(),
         banks: null,
+        users: null,
         states: null,
         branches: null,
         brands: null,
@@ -45007,6 +45008,9 @@ var store = exports.store = new _vuex2.default.Store({
         },
         getBrands: function getBrands(state) {
             return state.brands;
+        },
+        getUsers: function getUsers(state) {
+            return state.users;
         },
         getYears: function getYears(state) {
             return state.years;
@@ -45058,6 +45062,9 @@ var store = exports.store = new _vuex2.default.Store({
         },
         mutateProfileAccess: function mutateProfileAccess(state, payload) {
             return state.ProfileAccess.push(payload);
+        },
+        mutateUsers: function mutateUsers(state, users) {
+            return _vue2.default.set(state, 'users', users);
         }
 
     },
@@ -45101,6 +45108,10 @@ var store = exports.store = new _vuex2.default.Store({
         mutateProfileAccess: function mutateProfileAccess(_ref10, payload) {
             var commit = _ref10.commit;
             return commit('mutateProfileAccess', payload);
+        },
+        mutateUsers: function mutateUsers(_ref11, users) {
+            var commit = _ref11.commit;
+            return commit('mutateUsers', users);
         }
     }
 });
@@ -45435,6 +45446,13 @@ _vue2.default.prototype.$prepareBrands = function () {
 
     !_store.store.getters.getBrands && (0, _api.get)('/api/brands').then(function (r) {
         return _store.store.dispatch('mutateBrands', r.data.brands);
+    });
+};
+
+_vue2.default.prototype.$prepareUsers = function () {
+
+    !_store.store.getters.getUsers && (0, _api.get)('/api/users').then(function (r) {
+        return _store.store.dispatch('mutateUsers', r.data.users);
     });
 };
 
