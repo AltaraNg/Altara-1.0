@@ -35,8 +35,9 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => env('DB_DATABASE', database_path("\database\database.sqlite")),
             'prefix' => '',
+            'foreign_key_constraints' => true,
         ],
 
         'mysql' => [
@@ -77,6 +78,12 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
         ],
+        'sqlite_testing' => [
+            'driver' => 'sqlite',
+            'database' => 'C:\Users\Altara 1\Desktop\Altara-1.0\database\database.sqlite',
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]
 
     ],
 

@@ -23,4 +23,15 @@ class BankTest extends TestCase
         $response->assertSuccessful();
   
     }
+
+    public function testCreateBank()
+    {
+        $user = factory(User::class)->make();
+        $user->api_token = str_random(60);
+        $bank  = [
+        'name' => "Fidelity"
+        ];
+        $response = $this->actingAs($user, 'api')->post('/api/banks');
+        $response->assertSuccessful();
+    }
 }

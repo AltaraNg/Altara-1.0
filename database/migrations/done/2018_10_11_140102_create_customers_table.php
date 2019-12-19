@@ -132,7 +132,7 @@ class CreateCustomersTable extends Migration
             $table->foreign('branch_id')->references('id')->on('branches');
         });
 
-        DB::update("ALTER TABLE customers AUTO_INCREMENT = 6000;");
+//        DB::update("ALTER TABLE customers AUTO_INCREMENT = 6000;");
     }
 
     /**

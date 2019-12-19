@@ -2,39 +2,43 @@
 
 namespace Tests\Feature;
 
+use App\Brand;
+use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\User;
 
-class CategoryTest extends TestCase
+class brandTest extends TestCase
 {
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testGetOneCategory()
+    public function testGetOneBrand()
     {
         $id = 1;
         $user = factory(User::class)->make();
         $user->api_token = str_random(60);
-        $response = $this->actingAs($user, 'api')->get(`/api/category/$id`);
+        $response = $this->actingAs($user, 'api')->get(`/api/brand/$id`);
         $response->assertSuccessful();
     }
-    public function testGetAllCategories(){
+    public function testGetAllBrands(){
         $user = factory(User::class)->make();
+        $brand = factory(Brand::class)->make();
         $user->api_token = str_random(60);
-        $response = $this->actingAs($user, 'api')->get(`/api/category`);
+        $response = $this->actingAs($user, 'api')->get(`/api/brand`);
         $response->assertSuccessful();
     }
-    public function testCreateCategory(){
+    public function testCreateBrand(){
         $user = factory(User::class)->make();
         $user->api_token = str_random(60);
-        $category = [
-            'name' => 'Vehicle'
+        $brand = [
+            'name' => 'Yaml'
         ];
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/category', $category);
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/brand', $brand);
         $response->assertSuccessful();
+        $response->assertJson([
+            'message' => 'Brand Created!']);
     }
 }

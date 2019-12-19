@@ -21,4 +21,20 @@ class BranchTest extends TestCase
         $response = $this->actingAs($user, 'api')->get('/api/branch/1');
         $response->assertSuccessful();
     }
+    public function testGetAllBranch()
+    {
+        $user = factory(User::class)->make();
+        $user->api_token = str_random(60);
+        $response = $this->actingAs($user, 'api')->get('/api/branches');
+        $response->assertJsonCount(1);
+        $response->assertSuccessful();
+    }
+    public function testCreateBranch()
+    {
+        $user = factory(User::class)->make();
+        $user->api_token = str_random(60);
+        $newBranch = [
+
+        ];
+    }
 }
