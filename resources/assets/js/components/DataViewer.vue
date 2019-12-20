@@ -12,12 +12,12 @@
                         <div class="px-3 clearfix">
                             <h5 class="h5-custom float-left m-0">{{$route.meta.appModel | capitalize}} Management</h5>
 
-                                <router-link :to="'/log/inventory/search'" class="btn btn-primary bg-default m-0" v-if="isModel('inventory')">
+                                <router-link :to="'/log/inventory/search'" id="first" class="float-right mx-4 btn btn-primary bg-default m-0 " v-if="isModel('inventory')">
                                     Search Products
                                 </router-link>
 
                             <router-link :to="`${$route.meta.new}/create`"
-                                         class="float-right btn btn-primary bg-default m-0">
+                                         class="float-right btn btn-primary bg-default m-0 mx-4" id="second">
                                 Add {{$route.meta.appModel}}!
                             </router-link>
                         </div>
@@ -420,3 +420,4 @@
         }
     }
 </script>
+

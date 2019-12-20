@@ -48,7 +48,7 @@
                 @click="addProductForm()"
               >
                 Generate Inventory
-                <i class="far fa-paper-plane ml-1"></i>
+                <i class="fas fa-cog ml-1"></i>
               </button>
             </div>
           </div>
@@ -168,9 +168,9 @@
             </tbody>
           </table>
           <div>
-            <button :disabled="$isProcessing" class="btn bg-default" type="submit" @click="onSave()">
+            <button :disabled="$isProcessing" class="btn bg-default float-right" type="submit" @click="onSave()">
               Save Inventory
-              <i class="far fa-paper-plane ml-1"></i>
+              <i class="far fa-save ml-1"></i>
             </button>
           </div>
         </div>

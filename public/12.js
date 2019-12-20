@@ -626,8 +626,9 @@ var render = function() {
                       ? _c(
                           "router-link",
                           {
-                            staticClass: "btn btn-primary bg-default m-0",
-                            attrs: { to: "/log/inventory/search" }
+                            staticClass:
+                              "float-right mx-4 btn btn-primary bg-default m-0 ",
+                            attrs: { to: "/log/inventory/search", id: "first" }
                           },
                           [
                             _vm._v(
@@ -641,8 +642,11 @@ var render = function() {
                       "router-link",
                       {
                         staticClass:
-                          "float-right btn btn-primary bg-default m-0",
-                        attrs: { to: _vm.$route.meta.new + "/create" }
+                          "float-right btn btn-primary bg-default m-0 mx-4",
+                        attrs: {
+                          to: _vm.$route.meta.new + "/create",
+                          id: "second"
+                        }
                       },
                       [
                         _vm._v(

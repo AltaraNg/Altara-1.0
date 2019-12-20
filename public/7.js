@@ -931,9 +931,7 @@ var render = function() {
                               _vm._v(
                                 "\n              Generate Inventory\n              "
                               ),
-                              _c("i", {
-                                staticClass: "far fa-paper-plane ml-1"
-                              })
+                              _c("i", { staticClass: "fas fa-cog ml-1" })
                             ]
                           )
                         ],
@@ -1314,7 +1312,7 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn bg-default",
+                    staticClass: "btn bg-default float-right",
                     attrs: { disabled: _vm.$isProcessing, type: "submit" },
                     on: {
                       click: function($event) {
@@ -1324,7 +1322,7 @@ var render = function() {
                   },
                   [
                     _vm._v("\n            Save Inventory\n            "),
-                    _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                    _c("i", { staticClass: "far fa-save ml-1" })
                   ]
                 )
               ])
