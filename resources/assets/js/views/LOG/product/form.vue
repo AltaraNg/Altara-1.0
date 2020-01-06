@@ -46,56 +46,15 @@
                             <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
                         </div>
 
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="w-100 float-left">Product Image</label>
-                            <div @click="modal('modal')" class="card-footer pointer">
-                                <i class="now-ui-icons arrows-1_cloud-upload-94"></i>
+<!--                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">-->
+<!--                            <label class="w-100 float-left">Product Image</label>-->
+<!--                            <image-upload v-model="form.img_url"></image-upload>-->
 
-                            <small >Upload file</small>
-                             <input class="form-control" name="img_url" placeholder="retail price"
-                                    v-model="form.img_url" v-validate="'required'">
-
-
-                                </div>
-
-
-
-                        </div>
+<!--                        </div>-->
 
                         <!-- image upload -->
 
-                        <div :id="'modal'" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header py-2">
-                <h6 class="modal-title py-1"> Upload Picture </h6>
-                <a aria-label="Close" class="close py-1" data-dismiss="modal" href="javascript:">
-                <span aria-hidden="true" class="modal-close text-danger">
-                    <i class="fas fa-times"></i>
-                </span>
-                </a>
-            </div>
-            <form @submit.prevent="save(form.img_url)">
-                <div class="modal-body">
-                    <div class="upload-image p-2">
-                        <div class="upload-box">
-                            <image-upload v-model="form.img_url"/>
-                        </div>
-                    </div>
-                    <small v-if="error[img_url]">{{error[type][0]}}</small>
-                </div>
-                <div class="modal-footer">
-                    <button class="m-2 btn btn-secondary" data-dismiss="modal" type="button">
-                        cancel
-                    </button>
-                    <button :disabled="$isProcessing" class="m-2 btn bg-default" type="submit">
-                        Save changes <i class="far fa-paper-plane ml-1"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
 
 
 
@@ -145,18 +104,18 @@
                 store: '/api/product',
                 method: 'POST',
                 statuses: [{name: 'available', value: 1}, {name: 'unavailable', value: 0}],
-                img_url: ''
+
             }
         },
         beforeRouteEnter(to, from, next) {
-            console.log(to);
+
                 get(initialize(to))
                 .then(({data}) => next(vm => vm.prepareForm(data)))
                 .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
         methods: {
             prepareForm(data) {
-                console.log(data);
+
                     Vue.set(this.$data, 'mode', this.$route.meta.mode);
                 Vue.set(this.$data, 'form', data.form);
                 Vue.set(this.$data, 'brands', data.brands);

@@ -16,7 +16,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $model = Supplier::select('id', 'sku', 'name', 'phone_number', 'email', 'contact_person_name', 'status', 'date_of_reg')
+        $model = Supplier::select('id', 'sku', 'name', 'phone_number', 'email', 'contact_person_phone', 'status', 'date_of_reg')
             ->searchPaginateAndOrder();
         $columns = Supplier::$columns;
         return response()->json([
@@ -80,7 +80,7 @@ class SupplierController extends Controller
             'saved' => true,
             'message' => 'Supplier Created!',
             'form' => Supplier::form(),
-            'staff_id' => $user->staff_id,
+            'staff_id' => auth('api')->user()->staff_id,
             'log' => 'SupplierCreated'
         ]);
     }
@@ -138,7 +138,7 @@ class SupplierController extends Controller
         $supplier->sku = $request->sku;
         $supplier->date_of_reg = $request->date_of_reg;
         $supplier->status = $request->status;
-        $supplier->contact_person_name = $request->contact_person_name;
+        $supplier->contact_person_phone = $request->contact_person_phone;
         $supplier->bank_name = $request->bank_name;
         $supplier->bank_account_no = $request->bank_account_no;
         $supplier->phone_number = $request->phone_number;

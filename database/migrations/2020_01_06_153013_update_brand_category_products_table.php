@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateProductTable extends Migration
+class UpdateBrandCategoryProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class UpdateProductTable extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            //
-            $table->dropColumn('availability');
-            $table->boolean('availability')->nullable();
+        //
+        Schema::table('brands', function (Blueprint $table){
+            $table->boolean('is_available');
+        });
+        Schema::table('categories', function(Blueprint $table){
+            $table->boolean('is_available');
         });
     }
 
@@ -27,8 +29,6 @@ class UpdateProductTable extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            //
-        });
+        //
     }
 }

@@ -20,7 +20,11 @@
             <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
               <label>Supplier ID</label>
               <typeahead :options="suppliers" caption="name" v-model="form.supplier" />
-            </div>
+          </div>
+              <div class="form-group col-md-4 col-6 float-left px-0 px-md-3">
+                  <label>Branch</label>
+                  <typeahead :options="branches" caption="name" v-model="form.branch" />
+              </div>
 
             <div class="form-group col-md-2 col-4 float-left px-0 px-md-3">
               <label>Quantity</label>
@@ -64,7 +68,7 @@
               <th>Inventory SKU</th>
               <th>Market Price</th>
               <th>Serial/IMEI Number</th>
-              <th>Branch</th>
+
               <th>Received Date</th>
               <th>Received By</th>
             </tr>
@@ -74,7 +78,7 @@
               <th>
                 <div class="form-group mb-0">
                   <input
-                          class="form-control"
+                          class="form-control "
                           name="product_sku"
                           type="text"
                           v-model="productForm.products[index].product_name"
@@ -86,7 +90,7 @@
               <th>
                 <div class="form-group mb-0">
                   <input
-                          class="form-control"
+                          class="form-control "
                           name="inventory_sku"
                           type="text"
                           v-model="productForm.products[index].inventory_sku"
@@ -119,18 +123,7 @@
                 </div>
               </th>
 
-              <th>
-                <div class="form-group mb-0">
-                  <select
-                          class="custom-select w-100"
-                          name="branch_id"
-                          v-model="productForm.products[index].branch_id"
-                  >
-                    <option value>select branch</option>
-                    <option :value="branch.id" v-for="branch in branches">{{branch.name}}</option>
-                  </select>
-                </div>
-              </th>
+
 
               <th>
                 <div class="form-group mb-0">
@@ -146,7 +139,7 @@
               <th>
                 <div class="form-group mb-0">
                   <input
-                          class="form-control"
+                          class="form-control "
                           data-vv-as="date"
                           name="date"
                           type="text"
@@ -251,6 +244,7 @@ export default {
       Vue.set(this.$data, "mode", this.$route.meta.mode);
       Vue.set(this.$data, "brands", data.brands);
       Vue.set(this.$data, "categories", data.categories);
+      Vue.set(this.$data, "branches", data.branches);
       Vue.set(this.$data, "suppliers", data.suppliers);
       Vue.set(this.$data, "products", data.products);
       if (this.mode === "edit") {
@@ -300,10 +294,11 @@ export default {
                 if (this.mode = "edit"){
                     delete e.product_name;
                 }
+                e.branch_id = this.form.branch;
               byMethod(this.method, this.store, e)
                 .then(({ data }) => {
                   if (data.saved || data.updated) {
-                    // log(data.log, data.staff_id);
+                    log(data.log, data.staff_id);
 
                     Flash.setSuccess(data.message, 5000);
                     this.$router.push("/log/inventory/");
@@ -341,7 +336,6 @@ export default {
               supplier_id: supplier.id,
               inventory_sku: "",
               serial_number: "",
-              branch_id: "",
               market_price: product.retail_price,
               received_date: this.$getDate(),
               receiver_id: this.user.id
@@ -404,4 +398,8 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+    .disabled{
+        background-color: white;
+    }
+</style>

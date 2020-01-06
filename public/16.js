@@ -202,8 +202,7 @@ exports.default = {
             var form = _ref2.form,
                 banks = _ref2.banks;
 
-            console.log(form);
-            console.log(banks);
+
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
             _vue2.default.set(this.$data, 'form', form);
             _vue2.default.set(this.$data, 'banks', banks);
@@ -224,7 +223,7 @@ exports.default = {
                             var data = _ref3.data;
 
                             if (data.saved || data.updated) {
-                                (0, _log.log)(data.log, _this.form.sku);
+                                (0, _log.log)(data.log, data.staff_id);
                                 _vue2.default.set(_this.$data, 'form', data.form);
                                 _flash2.default.setSuccess(data.message, 5000);
                                 if (data['updated']) _this.$router.push('/log/suppliers');
@@ -623,8 +622,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.contact_person_name,
-                            expression: "form.contact_person_name"
+                            value: _vm.form.contact_person_phone,
+                            expression: "form.contact_person_phone"
                           },
                           {
                             name: "validate",
@@ -640,7 +639,7 @@ var render = function() {
                           placeholder: "phone",
                           type: "text"
                         },
-                        domProps: { value: _vm.form.contact_person_name },
+                        domProps: { value: _vm.form.contact_person_phone },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
@@ -648,7 +647,7 @@ var render = function() {
                             }
                             _vm.$set(
                               _vm.form,
-                              "contact_person_name",
+                              "contact_person_phone",
                               $event.target.value
                             )
                           }

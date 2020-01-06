@@ -76,8 +76,8 @@ class Order {
                 count = 6;
             } else {
                 interval = 14;
-                count = 12;
-            }
+            count = 12;
+        }
         }
         this._count = count;
         this._interval = interval;

@@ -1831,7 +1831,7 @@ pre code {
 
 .form-control:disabled,
 .form-control[readonly] {
-    background-color: #e9ecef;
+    background-color: white;
     opacity: 1
 }
 
@@ -17288,7 +17288,6 @@ tr.current {
   border-radius: 3px;
   border: 1px solid #E3E3E3;
   position: relative;
-  z-index: 1;
 }
 
 .typeahead__open {
@@ -17341,6 +17340,7 @@ tr.current {
   left: -1px;
   right: 0;
   border-radius: 0 0 4px 4px;
+  z-index: 3;
 }
 
 .typeahead__item {

@@ -11,14 +11,15 @@ class Brand extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'is_available'];
 
-    public static $columns = ['id', 'name'];
+    public static $columns = ['id', 'name', 'availability'];
 
     public static function form() : iterable
     {
         return [
-            'name' => ''
+            'name' => '',
+            'is_available' => true
         ];
     }
 

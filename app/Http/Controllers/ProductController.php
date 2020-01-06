@@ -9,6 +9,7 @@ use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -85,28 +86,29 @@ class ProductController extends Controller
             'retail_price' => 'required|int',
         ]);
         $user = auth('api')->user();
-        $request->user_id = $user->id;
         $product = new Product($request->all());
-        // if ($request->hasFile($request['img_url']) && $request->file($request['img_url'])->isValid()) {
+        $request->user_id = $user->id;
 
-        //     /** 3.a if check 3 is passed*/
-        //     /** get the image and assign to a variable */
-        //     $image = $request->file($request['img_url']);
-
-        //     /** Generate the file name(eg for passport name will be
-        //      * passport/[randomStringGeneratedFromTheFunctionCall->getFileName]) */
-        //     $filename = $request['img_url'] . '/' . $this->getFileName($request[$request['img_url']]);
-
-        //     /** the storage link*/
-        //     $s3 = Storage::disk('s3');
-
-        //     /** store the document in s3*/
-        //     $s3->put($filename, file_get_contents($image), 'public');
-        //     $product[$request['img_url'] . '_url'] = $filename;
-
-        // }
-
-            /** update the document_url(eg passport_url, id_url) to the filename generated*/
+//         if ($request->hasFile($request['img_url']) && $request->file($request['img_url'])->isValid()) {
+//
+//             /** 3.a if check 3 is passed*/
+//             /** get the image and assign to a variable */
+//             $image = $request->file($request['img_url']);
+//
+//             /** Generate the file name(eg for passport name will be
+//              * passport/[randomStringGeneratedFromTheFunctionCall->getFileName]) */
+//             $filename = $request['img_url'] . '/' . $this->getFileName($request[$request['img_url']]);
+//
+//             /** the storage link*/
+//             $s3 = Storage::disk('s3');
+//
+//             /** store the document in s3*/
+//             $s3->put($filename, file_get_contents($image), 'public');
+//             $product[$request['img_url'] . '_url'] = $filename;
+//
+//         }
+//
+//            /** update the document_url(eg passport_url, id_url) to the filename generated*/
 
         $product->save();
         return response()->json([

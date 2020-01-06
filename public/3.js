@@ -4500,7 +4500,7 @@ var render = function() {
     "div",
     { staticClass: "image" },
     [
-      _vm.value && _vm.usage === "verification"
+      _vm.value
         ? _c("image-preview", {
             attrs: { preview: _vm.value },
             on: {

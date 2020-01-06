@@ -1,6 +1,6 @@
 <template>
     <div class="image">
-        <image-preview :preview="value" @close="$emit('input', null)" v-if="value && usage === 'verification'"/>
+        <image-preview :preview="value" @close="$emit('input', null)" v-if="value"/>
         <div v-else><input type="file" accept="images/*" @change="upload"></div>
     </div>
 </template>

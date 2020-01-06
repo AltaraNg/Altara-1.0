@@ -388,47 +388,6 @@ function initialize(to) {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default, ImageUpload: _ImageUpload2.default },
@@ -443,12 +402,12 @@ exports.default = {
             show: false,
             store: '/api/product',
             method: 'POST',
-            statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }],
-            img_url: ''
+            statuses: [{ name: 'available', value: 1 }, { name: 'unavailable', value: 0 }]
+
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-        console.log(to);
+
         (0, _api.get)(initialize(to)).then(function (_ref) {
             var data = _ref.data;
             return next(function (vm) {
@@ -463,7 +422,7 @@ exports.default = {
 
     methods: {
         prepareForm: function prepareForm(data) {
-            console.log(data);
+
             _vue2.default.set(this.$data, 'mode', this.$route.meta.mode);
             _vue2.default.set(this.$data, 'form', data.form);
             _vue2.default.set(this.$data, 'brands', data.brands);
@@ -543,7 +502,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\ninput[data-v-6da2cc40]{\n    position: fixed;\n}\nul[data-v-6da2cc40]{\n    position: relative;\n    z-index: 2;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -975,188 +934,6 @@ var render = function() {
                         : _vm._e()
                     ],
                     2
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
-                    },
-                    [
-                      _c("label", { staticClass: "w-100 float-left" }, [
-                        _vm._v("Product Image")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "card-footer pointer",
-                          on: {
-                            click: function($event) {
-                              _vm.modal("modal")
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "now-ui-icons arrows-1_cloud-upload-94"
-                          }),
-                          _vm._v(" "),
-                          _c("small", [_vm._v("Upload file")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.img_url,
-                                expression: "form.img_url"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required",
-                                expression: "'required'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              name: "img_url",
-                              placeholder: "retail price"
-                            },
-                            domProps: { value: _vm.form.img_url },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "img_url",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "modal fade", attrs: { id: "modal" } },
-                    [
-                      _c("div", { staticClass: "modal-dialog" }, [
-                        _c("div", { staticClass: "modal-content" }, [
-                          _c("div", { staticClass: "modal-header py-2" }, [
-                            _c("h6", { staticClass: "modal-title py-1" }, [
-                              _vm._v(" Upload Picture ")
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass: "close py-1",
-                                attrs: {
-                                  "aria-label": "Close",
-                                  "data-dismiss": "modal",
-                                  href: "javascript:"
-                                }
-                              },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass: "modal-close text-danger",
-                                    attrs: { "aria-hidden": "true" }
-                                  },
-                                  [_c("i", { staticClass: "fas fa-times" })]
-                                )
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "form",
-                            {
-                              on: {
-                                submit: function($event) {
-                                  $event.preventDefault()
-                                  _vm.save(_vm.form.img_url)
-                                }
-                              }
-                            },
-                            [
-                              _c("div", { staticClass: "modal-body" }, [
-                                _c("div", { staticClass: "upload-image p-2" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "upload-box" },
-                                    [
-                                      _c("image-upload", {
-                                        model: {
-                                          value: _vm.form.img_url,
-                                          callback: function($$v) {
-                                            _vm.$set(_vm.form, "img_url", $$v)
-                                          },
-                                          expression: "form.img_url"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _vm.error[_vm.img_url]
-                                  ? _c("small", [
-                                      _vm._v(_vm._s(_vm.error[_vm.type][0]))
-                                    ])
-                                  : _vm._e()
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "modal-footer" }, [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "m-2 btn btn-secondary",
-                                    attrs: {
-                                      "data-dismiss": "modal",
-                                      type: "button"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                        cancel\n                    "
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "m-2 btn bg-default",
-                                    attrs: {
-                                      disabled: _vm.$isProcessing,
-                                      type: "submit"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                        Save changes "
-                                    ),
-                                    _c("i", {
-                                      staticClass: "far fa-paper-plane ml-1"
-                                    })
-                                  ]
-                                )
-                              ])
-                            ]
-                          )
-                        ])
-                      ])
-                    ]
                   )
                 ]
               ),
@@ -1419,7 +1196,7 @@ var render = function() {
     "div",
     { staticClass: "image" },
     [
-      _vm.value && _vm.usage === "verification"
+      _vm.value
         ? _c("image-preview", {
             attrs: { preview: _vm.value },
             on: {

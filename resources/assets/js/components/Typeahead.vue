@@ -115,11 +115,6 @@
     }
 </script>
 <style scoped>
-    input{
-        position: fixed;
-    }
-    ul{
-        position: relative;
-        z-index: 2;
-    }
+
+
 </style>

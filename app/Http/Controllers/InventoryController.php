@@ -17,7 +17,7 @@ class InventoryController extends Controller
     //
     public function index()
     {
-        $model = Inventory::select('id', 'inventory_sku', 'serial_number','market_price' )->searchPaginateAndOrder();
+        $model = Inventory::select('id', 'inventory_sku', 'serial_number','market_price', 'branch_id', 'receiver_id')->searchPaginateAndOrder();
         $columns = Inventory::$columns;
 
 
@@ -79,7 +79,7 @@ class InventoryController extends Controller
         return response()->json([
             'saved' => true,
             'message' => 'Inventory Created!',
-//            'form' => Inventory::form(),
+            'staff_id' => auth('api')->user()->staff_id,
             'log' => 'InventoryCreated'
 
         ]);

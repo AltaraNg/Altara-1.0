@@ -14,7 +14,7 @@ class Inventory extends Model
 
     protected $fillable = ['receiver_id','branch_id', 'supplier_id','product_id', 'inventory_sku', 'serial_number', 'market_price', 'sold_date', 'received_date', 'status'];
 
-    public static $columns = ['id', 'inventory sku', 'serial_number', 'market_price' ];
+    public static $columns = ['id', 'inventory sku', 'serial_number', 'market_price', 'branch', 'received by' ];
 
     public static function form(): iterable
     {

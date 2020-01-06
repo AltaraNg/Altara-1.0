@@ -42,7 +42,7 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Contact person phone</label>
                             <input class="form-control" data-vv-as="contact person phone" name="contact_phone" placeholder="phone"
-                                   type="text" v-model="form.contact_person_name" v-validate="'required|length:11|numeric'">
+                                   type="text" v-model="form.contact_person_phone" v-validate="'required|length:11|numeric'">
                             <small v-if="errors.first('contact_phone')">{{ errors.first('contact_phone') }}</small>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
@@ -138,8 +138,7 @@
         },
         methods: {
             prepareForm({form,banks}) {
-                console.log(form);
-                console.log(banks);
+
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
                 Vue.set(this.$data, 'form', form);
                 Vue.set(this.$data, 'banks', banks);
@@ -157,7 +156,7 @@
                             byMethod(this.method, this.store, this.form)
                                 .then(({data}) => {
                                     if (data.saved || data.updated) {
-                                        log(data.log, this.form.sku);
+                                        log(data.log, data.staff_id);
                                         Vue.set(this.$data, 'form', data.form);
                                         Flash.setSuccess(data.message, 5000);
                                         if (data['updated']) this.$router.push('/log/suppliers');

@@ -390,13 +390,6 @@ function initialize(to) {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
   components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
@@ -451,6 +444,7 @@ exports.default = {
       _vue2.default.set(this.$data, "mode", this.$route.meta.mode);
       _vue2.default.set(this.$data, "brands", data.brands);
       _vue2.default.set(this.$data, "categories", data.categories);
+      _vue2.default.set(this.$data, "branches", data.branches);
       _vue2.default.set(this.$data, "suppliers", data.suppliers);
       _vue2.default.set(this.$data, "products", data.products);
       if (this.mode === "edit") {
@@ -490,11 +484,12 @@ exports.default = {
               if (_this.mode = "edit") {
                 delete e.product_name;
               }
+              e.branch_id = _this.form.branch;
               (0, _api.byMethod)(_this.method, _this.store, e).then(function (_ref2) {
                 var data = _ref2.data;
 
                 if (data.saved || data.updated) {
-                  // log(data.log, data.staff_id);
+                  (0, _log.log)(data.log, data.staff_id);
 
                   _flash2.default.setSuccess(data.message, 5000);
                   _this.$router.push("/log/inventory/");
@@ -534,7 +529,6 @@ exports.default = {
               supplier_id: supplier.id,
               inventory_sku: "",
               serial_number: "",
-              branch_id: "",
               market_price: product.retail_price,
               received_date: _this2.$getDate(),
               receiver_id: _this2.user.id
@@ -597,7 +591,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.disabled{\n    background-color: white;\n}\n", ""]);
 
 // exports
 
@@ -612,7 +606,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\ninput[data-v-6da2cc40]{\n    position: fixed;\n}\nul[data-v-6da2cc40]{\n    position: relative;\n    z-index: 2;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -844,6 +838,29 @@ var render = function() {
                         "div",
                         {
                           staticClass:
+                            "form-group col-md-4 col-6 float-left px-0 px-md-3"
+                        },
+                        [
+                          _c("label", [_vm._v("Branch")]),
+                          _vm._v(" "),
+                          _c("typeahead", {
+                            attrs: { options: _vm.branches, caption: "name" },
+                            model: {
+                              value: _vm.form.branch,
+                              callback: function($$v) {
+                                _vm.$set(_vm.form, "branch", $$v)
+                              },
+                              expression: "form.branch"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
                             "form-group col-md-2 col-4 float-left px-0 px-md-3"
                         },
                         [
@@ -971,8 +988,6 @@ var render = function() {
                           _vm._v(" "),
                           _c("th", [_vm._v("Serial/IMEI Number")]),
                           _vm._v(" "),
-                          _c("th", [_vm._v("Branch")]),
-                          _vm._v(" "),
                           _c("th", [_vm._v("Received Date")]),
                           _vm._v(" "),
                           _c("th", [_vm._v("Received By")])
@@ -999,7 +1014,7 @@ var render = function() {
                                         "productForm.products[index].product_name"
                                     }
                                   ],
-                                  staticClass: "form-control",
+                                  staticClass: "form-control ",
                                   attrs: {
                                     name: "product_sku",
                                     type: "text",
@@ -1040,7 +1055,7 @@ var render = function() {
                                         "productForm.products[index].inventory_sku"
                                     }
                                   ],
-                                  staticClass: "form-control",
+                                  staticClass: "form-control ",
                                   attrs: {
                                     name: "inventory_sku",
                                     type: "text",
@@ -1153,65 +1168,6 @@ var render = function() {
                             _vm._v(" "),
                             _c("th", [
                               _c("div", { staticClass: "form-group mb-0" }, [
-                                _c(
-                                  "select",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value:
-                                          _vm.productForm.products[index]
-                                            .branch_id,
-                                        expression:
-                                          "productForm.products[index].branch_id"
-                                      }
-                                    ],
-                                    staticClass: "custom-select w-100",
-                                    attrs: { name: "branch_id" },
-                                    on: {
-                                      change: function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.productForm.products[index],
-                                          "branch_id",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("option", { attrs: { value: "" } }, [
-                                      _vm._v("select branch")
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm._l(_vm.branches, function(branch) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: branch.id } },
-                                        [_vm._v(_vm._s(branch.name))]
-                                      )
-                                    })
-                                  ],
-                                  2
-                                )
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
                                 _c("input", {
                                   directives: [
                                     {
@@ -1261,7 +1217,7 @@ var render = function() {
                                       expression: "user.name"
                                     }
                                   ],
-                                  staticClass: "form-control",
+                                  staticClass: "form-control ",
                                   attrs: {
                                     "data-vv-as": "date",
                                     name: "date",

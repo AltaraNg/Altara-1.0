@@ -10,7 +10,7 @@ class Supplier extends Model
 {
     use DataViewer;
 
-    public static $columns = ['id', 'sku', 'name', 'phone_number', 'email', 'contact_person_name', 'status', 'date_of_reg'];
+    public static $columns = ['id', 'sku', 'name', 'phone_number', 'email', 'contact_person_phone', 'status', 'date_of_reg'];
 
     protected $fillable = [
         'user_id',
@@ -21,7 +21,7 @@ class Supplier extends Model
         'email',
         'date_of_reg',
         'status',
-        'contact_person_name',
+        'contact_person_phone',
         'bank_account_name',
         'bank_account_no',
         'bank_name',
@@ -45,7 +45,7 @@ class Supplier extends Model
             'status' => 1,
             'address' => '',
             'phone_number' => '',
-            'contact_person_name' => '',
+            'contact_person_phone' => '',
             'bank_name' => '',
             'bank_account_no' => '',
             'bank_account_name' => '',
