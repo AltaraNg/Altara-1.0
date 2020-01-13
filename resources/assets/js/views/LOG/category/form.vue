@@ -15,6 +15,19 @@
                             <small v-if="errors.first('category name')">{{ errors.first('category name') }}</small>
                             <small v-if="error.name">{{error.name[0]}}</small>
                         </div>
+
+                        <div class="form-group col-12 px-0 px-md-3">
+                            <label>Status</label>
+                            <br>
+                            <select v-model="form.is_available" class="custom-select w-25">
+                                <option v-for="(value, key) in status" :value="value">
+                                    {{key}}
+                                </option>
+
+                            </select>
+                            <small v-if="errors.first('Available')">{{ errors.first('Available') }}</small>
+                            <small v-if="error.name">{{error.name[0]}}</small>
+                        </div>
                     </div>
                     <div class="mb-5 px-0 row align-items-center">
                         <div class="clearfix d-flex justify-content-end w-100">
@@ -55,6 +68,10 @@
                 show: false,
                 store: '/api/category',
                 method: 'POST',
+                status: {
+                    'available': 1,
+                    'unavailable': 0
+                }
             }
         },
         beforeRouteEnter(to, from, next) {

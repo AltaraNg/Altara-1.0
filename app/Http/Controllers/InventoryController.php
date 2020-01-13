@@ -11,6 +11,7 @@ use App\Branch;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
@@ -44,11 +45,11 @@ class InventoryController extends Controller
      */
     public function create()
     {
-        $brands = Brand::all();
+        $brands = DB::table('brands')->where('is_available', '=', true)->get();
         $branches = Branch::all();
-        $categories = Category::all();
+        $categories = DB::table('categories')->where('is_available', '=', true)->get();
         $products = Product::all();
-        $suppliers = Supplier::all();
+        $suppliers = DB::table('suppliers')->where('status', '=', true)->get();
         return response()->json([
             'brands' => $brands,
             'categories' => $categories,

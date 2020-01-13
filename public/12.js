@@ -318,6 +318,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 
 exports.default = {
 
@@ -478,6 +480,17 @@ exports.default = {
 
         isModel: function isModel(m) {
             return this.$route.meta.appModel === m;
+        }
+    },
+    filters: {
+        status: function status(value) {
+            if (value === 0) {
+                return 'No';
+            } else if (value === 1) {
+                return 'Yes';
+            } else {
+                return value;
+            }
         }
     }
 };

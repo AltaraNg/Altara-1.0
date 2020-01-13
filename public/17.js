@@ -96,6 +96,19 @@ function initialize(to) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
 
@@ -108,7 +121,11 @@ exports.default = {
             error: {},
             show: false,
             store: '/api/category',
-            method: 'POST'
+            method: 'POST',
+            status: {
+                'available': 1,
+                'unavailable': 0
+            }
         };
     },
     beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -308,7 +325,66 @@ var render = function() {
                         ? _c("small", [_vm._v(_vm._s(_vm.error.name[0]))])
                         : _vm._e()
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-12 px-0 px-md-3" }, [
+                    _c("label", [_vm._v("Status")]),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.is_available,
+                            expression: "form.is_available"
+                          }
+                        ],
+                        staticClass: "custom-select w-25",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.form,
+                              "is_available",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      _vm._l(_vm.status, function(value, key) {
+                        return _c("option", { domProps: { value: value } }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(key) +
+                              "\n                            "
+                          )
+                        ])
+                      })
+                    ),
+                    _vm._v(" "),
+                    _vm.errors.first("Available")
+                      ? _c("small", [
+                          _vm._v(_vm._s(_vm.errors.first("Available")))
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.error.name
+                      ? _c("small", [_vm._v(_vm._s(_vm.error.name[0]))])
+                      : _vm._e()
+                  ])
                 ]
               ),
               _vm._v(" "),

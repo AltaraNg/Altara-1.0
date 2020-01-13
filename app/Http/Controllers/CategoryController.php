@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $model = Category::select('id','name')->searchPaginateAndOrder();
+        $model = Category::select('id','name', 'is_available')->searchPaginateAndOrder();
         $columns = Category::$columns;
         return response()->json([
             'model' => $model,
@@ -25,7 +26,7 @@ class CategoryController extends Controller
 
     public function getCategories()
     {
-        $categories = Category::all();
+        $categories = DB::table('categories')->where('is_available', '=', 1)->get();
         return response()->json([
             'categories'=> $categories
         ]);

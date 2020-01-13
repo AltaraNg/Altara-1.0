@@ -9,9 +9,9 @@ class Product extends Model
 {
     use DataViewer;
 
-    protected $fillable = ['name', 'feature', 'user_id', 'brand_id', 'category_id', 'retail_price',  'availability', 'branch_id'];
+    protected $fillable = ['name', 'feature', 'user_id', 'brand_id', 'category_id', 'retail_price',  'availability'];
 
-    public static $columns = ['id', 'name', 'retail_price in Naira'];
+    public static $columns = ['id', 'name', 'retail_price in Naira', 'brand', 'category', 'status'];
 
     public static function form(): iterable
     {
@@ -36,9 +36,7 @@ class Product extends Model
     {
        return $this->belongsTo(Category::class);
     }
-    public function branch(){
-        return $this->belongsTo(Branch::class);
-    }
+
 
     /*public function adder()
     {

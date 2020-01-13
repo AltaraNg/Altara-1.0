@@ -19,6 +19,7 @@
          </span>
         </div>
         <ul class="typeahead__list" v-if="open">
+
             <li :key="index" class="typeahead__item" v-for="(option, index) in filteredOptions">
                 <a :class="[selectIndex === index ? 'typeahead__active' : '']"
                    @mousedown.prevent="select(option)"

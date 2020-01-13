@@ -74,6 +74,8 @@
                                     <tr v-for="model in model.data">
                                         <td v-for="(value,key) in model">
                                             <span v-if="key !== 'verification'">{{value}}</span>
+
+
                                             <router-link
                                                     :class="`status mx-auto status-sm shadow-sm ${value ? 'approved' : 'not-approved'}`"
                                                     :to="$store.getters.auth('DVAAccess') ? `dva/verification?id=${model.id}` : ''"
@@ -417,6 +419,18 @@
             isModel(m) {
                 return this.$route.meta.appModel === m;
             },
+        },
+        filters: {
+            status: function (value) {
+                if (value === 0){
+                    return 'No'
+                }else if(value === 1){
+                    return 'Yes'
+                }
+                else {
+                    return value
+                }
+            }
         }
     }
 </script>

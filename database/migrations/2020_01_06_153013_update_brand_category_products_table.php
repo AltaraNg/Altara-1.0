@@ -14,11 +14,18 @@ class UpdateBrandCategoryProductsTable extends Migration
     public function up()
     {
         //
-        Schema::table('brands', function (Blueprint $table){
-            $table->boolean('is_available');
+//        Schema::table('brands', function (Blueprint $table){
+//            $table->boolean('is_available');
+//        });
+//        Schema::table('categories', function(Blueprint $table){
+//            $table->boolean('is_available');
+//        });
+        Schema::table('suppliers', function(Blueprint $table){
+            $table->dropColumn('status');
+
         });
-        Schema::table('categories', function(Blueprint $table){
-            $table->boolean('is_available');
+        Schema::table('suppliers', function (Blueprint $table){
+            $table->boolean('status');
         });
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {
@@ -15,7 +16,7 @@ class BrandController extends Controller
     */
    public function index()
    {
-       $model = Brand::select('id','name')->searchPaginateAndOrder();
+       $model = Brand::select('id','name', 'is_available')->searchPaginateAndOrder();
        $columns = Brand::$columns;
        return response()->json([
            'model' => $model,
@@ -24,7 +25,7 @@ class BrandController extends Controller
    }
 
    public function getBrands(){
-       $brands = Brand::all();
+       $brands = DB::table('brands')->where('is_available', '=', true)->get();
        return response()->json([
            'brands'=> $brands
        ]);

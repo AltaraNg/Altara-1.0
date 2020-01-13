@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $model = Product::select('id', 'name','retail_price')->searchPaginateAndOrder();
+        $model = Product::select('id', 'name','retail_price', 'brand_id', 'category_id', 'availabiity')->searchPaginateAndOrder();
         $columns = Product::$columns;
         return response()->json([
             'model' => $model,
@@ -62,8 +62,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $brands = Brand::all();
-        $categories = Category::all();
+        $brands = DB::table('brands')->where('is_available', '=', true)->get();
+
+        $categories = DB::table('categories')->where('is_available', '=', 1)->get();
+
         return response()->json([
             'brands' => $brands,
             'form' => Product::form(),

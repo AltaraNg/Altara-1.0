@@ -73,10 +73,7 @@ class Branch extends Model
         return $this->belongsTo(Bank::class);
     }
 
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'branch_id', 'id');
-    }
+
 
     public function attendances()
     {
