@@ -73,7 +73,7 @@ Vue.prototype.$roundDownAmt = amount => (Math.floor(amount / 100) * 100);
 /**return the network status(true | false) of the system if connected to a
  network not NB: this doesn't work with internet access. it only
  detects the system is connected to a network**/
-Vue.prototype.$network = () => window.navigator.onLine;
+Vue.prototype.$network = () => process.env.NODE_ENV === 'development' ? true : window.navigator.onLine;
 
 
 /**currency formatter**/
