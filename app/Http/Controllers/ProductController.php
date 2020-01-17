@@ -20,7 +20,20 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $model = Product::select('id', 'name','retail_price', 'brand_id', 'category_id', 'availabiity')->searchPaginateAndOrder();
+        $model = Product::select('id', 'name', 'retail_price', 'category_id', 'brand_id', 'availabiity')
+            ->where('category_id','LIKE','%1%')
+//        join('categories', 'products.category_id', '=', 'categories.id')
+//
+
+//            ->join('brands', 'products.brand_id', '=', 'brands.id')
+//            ->select('products.id', 'products.name', 'products.retail_price', 'categories.name', 'brands.name', 'products.availabiity')
+            ->searchPaginateAndOrder();
+
+
+//            ->join('categories', 'products.category_id', '=', 'categories.id')
+//            ->join('brands', 'products.brand_id', '=', 'brands.id')
+
+
         $columns = Product::$columns;
         return response()->json([
             'model' => $model,

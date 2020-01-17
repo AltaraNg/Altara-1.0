@@ -16,7 +16,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $model = Category::select('id','name', 'is_available')->searchPaginateAndOrder();
+        $model = Category::select('id','name', DB::raw('(CASE 
+        WHEN categories.is_available = "0" THEN "Inactive"
+        ELSE "Active"
+        END)
+        '))->searchPaginateAndOrder();
         $columns = Category::$columns;
         return response()->json([
             'model' => $model,

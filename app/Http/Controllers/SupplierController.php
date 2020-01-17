@@ -6,6 +6,7 @@ use App\Bank;
 use App\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
 {
@@ -16,7 +17,11 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $model = Supplier::select('id', 'sku', 'name', 'phone_number', 'email', 'contact_person_phone', 'status', 'date_of_reg')
+        $model = Supplier::select('id', 'sku', 'name', 'phone_number', 'email', 'contact_person_phone', DB::raw('(CASE 
+        WHEN suppliers.status = "0" THEN "Inactive"
+        ELSE "Active"
+        END)
+        '), 'date_of_reg')
             ->searchPaginateAndOrder();
         $columns = Supplier::$columns;
         return response()->json([

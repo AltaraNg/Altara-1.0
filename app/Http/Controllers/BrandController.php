@@ -16,7 +16,11 @@ class BrandController extends Controller
     */
    public function index()
    {
-       $model = Brand::select('id','name', 'is_available')->searchPaginateAndOrder();
+       $model = Brand::select('id','name', DB::raw('(CASE 
+        WHEN brands.is_available = "0" THEN "Inactive"
+        ELSE "Active"
+        END)
+        '))->searchPaginateAndOrder();
        $columns = Brand::$columns;
        return response()->json([
            'model' => $model,

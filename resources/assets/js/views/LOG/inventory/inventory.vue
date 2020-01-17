@@ -383,12 +383,15 @@ export default {
         this.productForm.products.forEach(e => {
           let category_id = this.getEntity(e.product_id, this.products)
             .category_id;
+          console.log(category_id);
           let category_name = this.getEntity(category_id, this.categories).name;
           e.inventory_sku = `${category_name.slice(
             0,
             3
           )}-${e.product_name.slice(0, 3)}-${e.serial_number.slice(
-            e.serial_number.length - 4
+            e.serial_number.length - 4+
+
+
           )}-0${this.productForm.products.indexOf(e)+1}`.toUpperCase();
           e.serial_number = e.serial_number.toUpperCase();
         });
