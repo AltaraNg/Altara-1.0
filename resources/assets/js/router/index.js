@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Flash from '../utilities/flash';
 import {store} from '../store/store';
-import {routerHistory, writeHistory} from 'vue-router-back-button'
+import {routerHistory, writeHistory} from 'vue-router-back-button';
 
 const Home = () => import( '../views/HomePage.vue');
 
@@ -98,7 +98,12 @@ const router = new VueRouter({
                     name: 'verification-altarapay',
                     meta: {mode: 'verification'}
                 },
-                {path: 'direct-debit-sales', component: DirectDebitSales, name: 'direct-debit-sales', meta: {customSMS: true}},
+                {
+                    path: 'direct-debit-sales',
+                    component: DirectDebitSales,
+                    name: 'direct-debit-sales',
+                    meta: {customSMS: true}
+                },
                 {
                     path: 'direct-debit-overdue',
                     component: AllOverdue,
@@ -133,6 +138,12 @@ const router = new VueRouter({
                     meta: {mode: 'external-recovery'}
                 },
                 {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-dva'},
+                {
+                    path: 'lookup',
+                    component: CustomerLookup,
+                    name: 'customer-lookup-dva',
+                    meta: {customSMS: false, readOnly: true}// TODO:: cleanup
+                },
             ]
         },
         {
@@ -184,7 +195,12 @@ const router = new VueRouter({
                 {path: 'sales', component: OrderList, name: 'sales-fsl', meta: {customSMS: true}},
                 {path: 'sales/create', component: POSForm, name: 'post-sales'},
                 {path: 'payment', component: PaymentForm, name: 'down-payment'},
-                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: {customSMS: true}},
+                {
+                    path: 'lookup',
+                    component: CustomerLookup,
+                    name: 'customer-lookup-fsl',
+                    meta: {customSMS: true, readOnly: false}
+                },
             ]
         },
         {
@@ -238,7 +254,8 @@ const router = new VueRouter({
 
 router.mode = 'html5';
 router.afterEach(writeHistory);
-router.afterEach(() => store.state.loader = false);
+// router.afterEach(() => store.state.loader = false);
+router.afterEach(() => store.dispatch('toggleLoader', false));
 router.beforeEach((to, from, next) => {
     /*route access control*/
     let home = (((to.path).split("/")).filter(Boolean)[0]).toUpperCase();
@@ -257,4 +274,4 @@ router.beforeEach((to, from, next) => {
     * : the : 'NotFound'*/
     next();
 });
-export default router
+export default router// TODO:: cleanup

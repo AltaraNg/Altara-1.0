@@ -1,7 +1,8 @@
-import Vue from 'vue'
-import 'es6-promise/auto'
-import Vuex from 'vuex'
-import ModalAccess from './modules/modalAccess.store';
+import Vue from 'vue';
+import Vuex from 'vuex';
+import 'es6-promise/auto';
+import modules from './modules';
+import createLogger from 'vuex/dist/logger';
 
 const getYears = () => {
     let years = [], startYear = new Date().getFullYear();
@@ -14,10 +15,9 @@ const admin = [1, 2, 8, 9];
 Vue.use(Vuex);
 const debug = process.env.NODE_ENV !== 'production';
 export const store = new Vuex.Store({
-    modules: {
-        ModalAccess
-    },
-    //strict: debug,//TODO: uncomment this later to be able to structure vuex for scaling
+    modules,//all modules automatically imported. just follow the store modules naming convention
+    plugins: debug ? [createLogger()] : [],
+    strict: debug,//TODO: uncomment this later to be able to structure vuex for scaling
     state: {
         years: getYears(),
         banks: null,
@@ -88,7 +88,9 @@ export const store = new Vuex.Store({
         mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
         mutateBranches: (state, branches) => Vue.set(state, 'branches', branches),
         mutatePaymentMethods: (state, paymentMethods) => Vue.set(state, 'paymentMethods', paymentMethods),
-        mutateTypeaheadUsersList: (state, typeaheadUsersList) => Vue.set(state, 'typeaheadUsersList', typeaheadUsersList)
+        mutateTypeaheadUsersList: (state, typeaheadUsersList) => Vue.set(state, 'typeaheadUsersList', typeaheadUsersList),
+
+        TOGGLE_LOADER: (state, data) => Vue.set(state, 'loader', data)
     },
     actions: {
         mutateAuth: ({commit}) => commit('mutateAuth'),
@@ -98,5 +100,9 @@ export const store = new Vuex.Store({
         mutateProfileAccess: ({commit}, payload) => commit('mutateProfileAccess', payload),
         mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
         mutateTypeaheadUsersList: ({commit}, typeaheadUsersList) => commit('mutateTypeaheadUsersList', typeaheadUsersList),
+
+
+        toggleLoader: ({commit}, bool) => commit('TOGGLE_LOADER', bool)
+        // TODO:: cleanup
     }
 });
