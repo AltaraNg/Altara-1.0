@@ -50,6 +50,24 @@ class UserController extends Controller
         ]);
     }
 
+    public function getListForTypeahead($type)
+    {
+        $users = null;
+        switch ($type) {
+            case 'type_ahead':
+                $users = User::where('date_of_exit', '=', '')
+                    ->orWhereNull('date_of_exit')
+                    ->whereIn('role_id', [15, 17, 18])
+                    ->select('id', 'full_name')
+                    ->orderBy('full_name')
+                    ->get();
+                break;
+        }
+        return response()->json([
+            'users' => $users
+        ]);
+    }
+
     public function store(Request $request)
     {
         $this->extendValidator();

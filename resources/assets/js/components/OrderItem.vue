@@ -3,8 +3,9 @@
 
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" style="max-width: 120px">
             <span v-if="mode === 'normal-list'"></span>
-            <span v-else-if="order.reminder.canBeSelected && ['collection','recovery','call','external-recovery'].includes(mode)"
-                  class="user mx-auto bg-pending text-white" @click="logReminder">
+            <span
+                v-else-if="order.reminder.canBeSelected && ['collection','recovery','call','external-recovery'].includes(mode)"
+                class="user mx-auto bg-pending text-white" @click="logReminder">
                 <i class="fas fa-hourglass-start"></i>
             </span>
             <div v-else-if="order.reminder.canBeSelected && mode === 'sms'" class="d-flex align-items-center">
@@ -12,7 +13,13 @@
                        v-model="order.isSelected" @click="toggleSelect">
             </div>
             <span class="user mx-auto sent-reminder" v-else><i class="fas fa-check"></i></span>
-            <span class="user mx-auto">{{startIndex + index}}</span>
+            <span class="user mx-auto" :class="getOrderStatusClass(getOrderStatus(order))">
+                {{startIndex + index}}
+            </span>
+
+            <span v-if="$route.meta.customSMS">
+                <CustomSMSButton :order="order" :key="order.order.id"/>
+            </span>
         </div>
 
         <div class="col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center">
@@ -43,11 +50,13 @@
              v-if="['collection','recovery','external-recovery'].includes(mode)">
             <span class="present">
                 <span class="radio w-50 pr-3 mb-0 float-left">
-                    <input type="radio" :value="true" :id="`present${index}`" :name="`isPresent${index}`"  v-model="order.reminder.is_visited">
+                    <input type="radio" :value="true" :id="`present${index}`" :name="`isPresent${index}`"
+                           v-model="order.reminder.is_visited">
                     <label :for="`present${index}`">yes</label>
                 </span>
                 <span class="radio w-50 pl-3 mb-0 float-left">
-                    <input type="radio" :value="false" :id="`absent${index}`" :name="`isPresent${index}`"  v-model="order.reminder.is_visited">
+                    <input type="radio" :value="false" :id="`absent${index}`" :name="`isPresent${index}`"
+                           v-model="order.reminder.is_visited">
                     <label :for="`absent${index}`">no</label>
                 </span>
             </span>
@@ -71,14 +80,18 @@
 <script>
     import {post} from "../utilities/api";
     import Flash from "../utilities/flash";
-    import {EventBus} from "../utilities/event-bus";
+    //import {EventBus} from "../utilities/event-bus";
     import {Order} from "../utilities/Amortization";
+    import CustomSMSButton from '../components/CustomSMSButton/CustomSMSButton';
+    import {getOrderStatus, getOrderStatusClass} from '../components/order/orderStatusCssClass';
 
     export default {
+        components: {CustomSMSButton},
+
         props: {
-            mode: null,
             index: null,
             startIndex: {default: 1},
+            mode: {default: null, type: String},
             order: {default: null, type: Order}
         },
 
@@ -88,6 +101,10 @@
         },
 
         methods: {
+            getOrderStatus: activeOrder => getOrderStatus(activeOrder),
+
+            getOrderStatusClass: orderStatus => getOrderStatusClass(orderStatus),
+
             logReminder() {
                 this.$LIPS(true);
                 delete this.order.reminder.order;

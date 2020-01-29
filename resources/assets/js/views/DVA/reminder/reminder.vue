@@ -9,7 +9,7 @@
                            data-toggle="tab" href="#reminder-panel" @click="listToOrder = 8"
                            role="tab" v-html="'Promise ' + mode()"></a>
                     </li>
-                    <li class="col p-0 nav-item mb-0" v-for="(tab,index) in details.tabs">
+                    <li class="col p-0 nav-item mb-0" v-for="(tab,index) in details.tabs" :key="index">
                         <a aria-selected="true" class="nav-link" :class="(index === 0 && !mode('call')) && 'active'"
                            data-toggle="tab" href="#reminder-panel" @click="listToOrder = details.list + index"
                            role="tab" v-html="tab + ' ' + mode()"></a>

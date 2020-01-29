@@ -1,6 +1,8 @@
-import Vue from 'vue'
-import 'es6-promise/auto'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import 'es6-promise/auto';
+import modules from './modules';
+import createLogger from 'vuex/dist/logger';
 
 const getYears = () => {
     let years = [], startYear = new Date().getFullYear();
@@ -8,8 +10,14 @@ const getYears = () => {
     return years;
 };
 
+const admin = [1, 2, 8, 9];
+
 Vue.use(Vuex);
+const debug = process.env.NODE_ENV !== 'production';
 export const store = new Vuex.Store({
+    modules,//all modules automatically imported. just follow the store modules naming convention
+    plugins: debug ? [createLogger()] : [],
+    strict: debug,//TODO: uncomment this later to be able to structure vuex for scaling
     state: {
         years: getYears(),
         banks: null,
@@ -23,22 +31,26 @@ export const store = new Vuex.Store({
         loader: true,
         ProfileAccess: [],
         ProfileEditAccess: [],
-        DSALead: [1, 2, 8, 9, 15],
-        DSACaptain: [1, 2, 8, 9, 15, 17, 29],
-        DSAAccess: [1, 2, 8, 9, 15, 17, 18, 29],
-        DVALead: [1, 2, 8, 9, 13, 16],
-        DVAAccess: [1, 2, 8, 9, 13, 16, 21, 22, 23],
-        HRMAccess: [1, 2, 6, 7, 8, 9],
-        peoplesOps: [1, 2, 6, 7, 8, 9],
-        FSLLead: [1, 2, 8, 9, 11],
-        supervisor: [1, 2, 8, 9, 11, 14],
-        FSLAccess: [1, 2, 8, 9, 11, 14, 19],
-        LOGLead: [1, 2, 8, 9, 11],
-        LOGAccess: [1, 2, 8, 9, 11],
-        CAGAccess: [1, 2, 8, 9, 30],
+        typeaheadUsersList: null,
         api_token: localStorage.getItem('api_token'),
         authRole: parseInt(localStorage.getItem('role')),
         user_id: parseInt(localStorage.getItem('user_id')),
+
+        /*object for access controls*/
+        DSALead: [...admin, 15],
+        DSACaptain: [...admin, 15, 17, 29],
+        DSAAccess: [...admin, 15, 17, 18, 29],
+        DVALead: [...admin, 13, 16],
+        DVAAccess: [...admin, 13, 16, 21, 22, 23],
+        HRMAccess: [...admin, 6, 7],
+        peoplesOps: [...admin, 6, 7,],
+        FSLLead: [...admin, 11],
+        supervisor: [...admin, 11, 14],
+        FSLAccess: [...admin, 11, 14, 19],
+        LOGLead: [...admin, 11],
+        LOGAccess: [...admin, 11],
+        CAGAccess: [...admin, 30],
+        ALTARAPAYAccess: [...admin, 33],
         months: [
             {id: '01', name: "January"},
             {id: '02', name: "February"},
@@ -61,8 +73,9 @@ export const store = new Vuex.Store({
         getMonths: state => state.months,
         getBranches: state => state.branches,
         getPaymentMethods: state => state.paymentMethods,
+        getTypeaheadUsersList: state => state.typeaheadUsersList,
         auth: state => role => state[role].includes(state.authRole),
-        getAuthUserDetails: state => ({userId: state.user_id,roleId: state.authRole}),
+        getAuthUserDetails: state => ({userId: state.user_id, roleId: state.authRole, apiToken: state.api_token})
     },
     mutations: {
         mutateAuth: state => {
@@ -72,17 +85,24 @@ export const store = new Vuex.Store({
         },
         mutateBanks: (state, banks) => Vue.set(state, 'banks', banks),
         mutateStates: (state, states) => Vue.set(state, 'states', states),
+        mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
         mutateBranches: (state, branches) => Vue.set(state, 'branches', branches),
         mutatePaymentMethods: (state, paymentMethods) => Vue.set(state, 'paymentMethods', paymentMethods),
-        mutateProfileAccess: (state, payload) => state.ProfileAccess.push(payload),
+        mutateTypeaheadUsersList: (state, typeaheadUsersList) => Vue.set(state, 'typeaheadUsersList', typeaheadUsersList),
 
+        TOGGLE_LOADER: (state, data) => Vue.set(state, 'loader', data)
     },
     actions: {
         mutateAuth: ({commit}) => commit('mutateAuth'),
         mutateBanks: ({commit}, banks) => commit('mutateBanks', banks),
         mutateStates: ({commit}, states) => commit('mutateStates', states),
         mutateBranches: ({commit}, branches) => commit('mutateBranches', branches),
-        mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
         mutateProfileAccess: ({commit}, payload) => commit('mutateProfileAccess', payload),
+        mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
+        mutateTypeaheadUsersList: ({commit}, typeaheadUsersList) => commit('mutateTypeaheadUsersList', typeaheadUsersList),
+
+
+        toggleLoader: ({commit}, bool) => commit('TOGGLE_LOADER', bool)
+        // TODO:: cleanup
     }
 });

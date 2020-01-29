@@ -4,34 +4,33 @@
 
             <custom-header :title="'Order List'"/>
 
-            <div class="mt-5 row attendance-head">
-                <div class="col-4 col-sm-3" v-for="{name} in filters">
-                    <div class="row">
-                        <div class="light-heading"><span class="d-none d-sm-inline">Select</span> {{name | capitalize}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
-                <div class="col-4 col-sm-3" v-for="{name:filter,model} in filters">
+                <div class="col-4 col-lg" v-for="{name:filter,model} in filters">
                     <div class="row">
-                        <select class="custom-select" v-model="$data[model]" v-if="filter === 'branch'"
-                                @keyup.enter="fetchData()">
-                            <option disabled selected value="">{{filter | capitalize}}</option>
-                            <option :value="id" v-for="{name,id} in $store.getters.getBranches">
-                                {{name | capitalize}}
-                            </option>
-                        </select>
+
+                        <div class="light-heading mb-1">
+                            <span class="d-none d-sm-inline">Select </span>
+                            {{filter | capitalize}}
+                        </div>
+
+                        <div class="form-group w-100" v-if="filter === 'branch'">
+                            <select class="custom-select" v-model="$data[model]"
+                                    @keyup.enter="fetchData()">
+                                <option disabled selected value="">{{filter | capitalize}}</option>
+                                <option :value="id" v-for="{name,id} in getBranches">
+                                    {{name | capitalize}}
+                                </option>
+                            </select>
+                        </div>
+
                         <div class="form-group w-100" v-else>
                             <input class="form-control" type="date" v-model="$data[model]" @keyup.enter="fetchData()">
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-3">
-                    <div class="row d-flex justify-content-end">
-                        <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
-                    </div>
+
+                <div class="col-12 col-lg p-0 flex-row-bottom">
+                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
                 </div>
             </div>
 
@@ -45,7 +44,7 @@
 
             <order v-if="show" :start-index="orders.from" :pre-loaded-order="response" :mode="'normal-list'"/>
 
-            <div class="mt-1 attendance-body" v-if="show">
+            <div class="mt-1 attendance-body" v-if="show && orders.current_page">
                 <div class="mb-5 px-0 row align-items-center">
                     <div class="w-100 mb-4 mt-5 mx-0 hr"></div>
                     <div class="clearfix w-100 mt-4 d-flex bd-highlight">
@@ -92,27 +91,29 @@
                                 <!---->
                             </ul>
                         </nav>
-
                     </div>
                 </div>
             </div>
-
         </div>
     </transition>
 </template>
 <script>
-    import {get} from '../../../utilities/api';
-    import Flash from "../../../utilities/flash";
-    import Order from "../../../components/Orders";
-    import CustomHeader from '../../../components/customHeader';
+    import {get} from '../../utilities/api';
+    import Flash from "../../utilities/flash";
+    import Order from "../../components/Orders";
+    import {mapGetters, mapActions} from "vuex";
+    import CustomHeader from '../../components/customHeader';
 
     export default {
         props: {
+            //TODO::verify if its necessary to make this a prop
             withBranchFilter: {default: true},
             urlToFetchOrders: {default: '/api/reminder/create'}
         },
 
         components: {CustomHeader, Order},
+
+        computed: {...mapGetters(['getBranches'])},
 
         data() {
             return {
@@ -134,53 +135,66 @@
         },
 
         methods: {
-
             fetchData() {
                 this.$scrollToTop();
                 this.$LIPS(true);
                 let {page, page_size, date_from, date_to, branch_id} = this.$data;
                 get(this.urlToFetchOrders +
                     `${!!page ? `?page=${page}` : ''}` +
-                    `${!!date_to ? `&date_to=${date_to}` : ''}` +
-                    `${!!page_size ? `&page_size=${page_size}` : ''}` +
-                    `${!!branch_id ? `&branch_id=${branch_id}` : ''}` +
-                    `${!!date_from ? `&date_from=${date_from}` : ''}`)
+                    `${!!date_to ? `&dateTo=${date_to}` : ''}` +
+                    `${!!page_size ? `&pageSize=${page_size}` : ''}` +
+                    `${!!branch_id ? `&branchId=${branch_id}` : ''}` +
+                    `${!!date_from ? `&dateFrom=${date_from}` : ''}`)
                     .then(({data}) => this.prepareForm(data))
                     .catch(() => Flash.setError('Error Preparing form'));
             },
 
             next(firstPage = null) {
                 if (this.orders.next_page_url) {
-                    this.page = firstPage ? firstPage : this.page + 1;
+                    this.page = firstPage ? firstPage : parseInt(this.page) + 1;
                     this.fetchData();
                 }
             },
 
             prev(lastPage = null) {
                 if (this.orders.prev_page_url) {
-                    this.page = lastPage ? lastPage : this.page - 1;
+                    this.page = lastPage ? lastPage : parseInt(this.page) - 1;
                     this.fetchData();
                 }
             },
 
             prepareForm(data) {
                 this.show = false;
-                this.orders = null;
-                this.response = {};
                 this.orders = data.orders;
-                let orders = data.orders.data,
-                    {payment_methods, banks, dva_id, branch} = data;
-                this.response = {payment_methods, banks, dva_id, branch, orders};
-                this.$scrollToTop();
+                this.response = {orders: data.orders.data};
                 this.$LIPS(false);
                 this.show = true;
-            }
+            },
+
+            ...mapActions('ModalAccess', [
+                'addCustomerOptionsModalsToDom',
+                'removeCustomerOptionsModalsFromDom'
+            ])
         },
 
         created() {
             this.$props.withBranchFilter && this.filters.unshift({name: 'branch', model: 'branch_id'});
+            this.addCustomerOptionsModalsToDom();
             this.$prepareBranches();
             this.fetchData();
+        },
+
+        destroyed() {
+            this.removeCustomerOptionsModalsFromDom();
         }
     }
 </script>
+
+<style scoped>
+    .flex-row-bottom {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: flex-end;
+    }
+</style>
