@@ -383,7 +383,7 @@ export default {
         this.productForm.products.forEach(e => {
           let category_id = this.getEntity(e.product_id, this.products)
             .category_id;
-          console.log(category_id);
+          // console.log(category_id);
           let category_name = this.getEntity(category_id, this.categories).name;
           e.inventory_sku = `${category_name.slice(
             0,

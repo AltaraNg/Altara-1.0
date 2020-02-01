@@ -572,7 +572,7 @@ exports.default = {
 
         this.productForm.products.forEach(function (e) {
           var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
-          console.log(category_id);
+          // console.log(category_id);
           var category_name = _this4.getEntity(category_id, _this4.categories).name;
           e.inventory_sku = (category_name.slice(0, 3) + "-" + e.product_name.slice(0, 3) + "-" + e.serial_number.slice(e.serial_number.length - 4) + "-0" + (_this4.productForm.products.indexOf(e) + 1)).toUpperCase();
           e.serial_number = e.serial_number.toUpperCase();

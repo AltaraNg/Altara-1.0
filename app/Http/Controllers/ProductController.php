@@ -56,10 +56,7 @@ class ProductController extends Controller
             $query->where('category_id', '=', $request->category);
         }
         if ($request->status != null){
-            $query->where('availability', '=', $request->status);
-        }
-        if ($request->branch != null){
-            $query->where('branch_id', '=', $request->branch);
+            $query->where('is_active', '=', $request->status);
         }
         $products = $query->orderBy('brand_id')->get();
 
@@ -101,26 +98,31 @@ class ProductController extends Controller
             'retail_price' => 'required|int',
         ]);
         $user = auth('api')->user();
-        $product = new Product($request->all());
-        $request->user_id = $user->id;
 
-         if ($request->hasFile($request['img_url']) && $request->file($request['img_url'])->isValid()) {
-             dd('I got here');
+        $product = new Product($request->all());
+        $product->user_id = $user->id;
+
+        $this->validate($request, [
+            'img_url' => 'image|max:512|dimensions:max_width=1200,max_height=1200|mimes:jpeg,jpg,png'
+        ]);
+
+         if ($request->hasFile('img_url') && $request->file('img_url')->isValid()) {
+
 
              /** 3.a if check 3 is passed*/
              /** get the image and assign to a variable */
-             $image = $request->file($request['img_url']);
+             $image = $request->file('img_url');
 
              /** Generate the file name(eg for passport name will be
               * passport/[randomStringGeneratedFromTheFunctionCall->getFileName]) */
-             $filename = $request['img_url'] . '/' . $this->getFileName($request[$request['img_url']]);
+             $filename = 'products' . '/' . $this->getFileName($request->img_url);
 
              /** the storage link*/
              $s3 = Storage::disk('s3');
 
              /** store the document in s3*/
              $s3->put($filename, file_get_contents($image), 'public');
-             $product[$request['img_url'] . '_url'] = $filename;
+             $product->img_url = $filename;
 
          }
 
