@@ -81,6 +81,8 @@ const PaymentForm = () =>
     import ('../views/FSL/payment/form.vue');
 const CustomerLookup = () =>
     import ('../views/FSL/lookup/lookup.vue');
+const PurchaseLogForm = () =>
+    import ('../views/FSL/purchase_log/form.vue');
 
 const Attendance = () =>
     import ('../views/FSL/attendance/index.vue');
@@ -221,6 +223,7 @@ const router = new VueRouter({
                 { path: 'sales/create', component: POSForm, name: 'post-sales' },
                 { path: 'payment', component: PaymentForm, name: 'down-payment' },
                 { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva' },
+                { path: 'purchase_log', component: PurchaseLogForm, name: 'purchase-log' },
             ]
         },
         {

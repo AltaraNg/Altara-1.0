@@ -46,11 +46,11 @@
                             <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
                         </div>
 
-<!--                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">-->
-<!--                            <label class="w-100 float-left">Product Image</label>-->
-<!--                            <image-upload v-model="form.img_url"></image-upload>-->
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                            <label class="w-100 float-left">Product Image</label>
+                            <image-upload v-model="form.img_url"></image-upload>
 
-<!--                        </div>-->
+                        </div>
 
                         <!-- image upload -->
 
@@ -84,6 +84,7 @@
     import Typeahead from '../../../components/Typeahead';
     import CustomHeader from '../../../components/customHeader';
     import ImageUpload from '../../../components/ImageUpload';
+    import {toMulipartedForm} from '../../../utilities/form';
 
     function initialize(to) {
         let urls = {create: `/api/product/create`, edit: `/api/product/${to.params.id}/edit`};
@@ -116,7 +117,7 @@
         methods: {
             prepareForm(data) {
 
-                    Vue.set(this.$data, 'mode', this.$route.meta.mode);
+                Vue.set(this.$data, 'mode', this.$route.meta.mode);
                 Vue.set(this.$data, 'form', data.form);
                 Vue.set(this.$data, 'brands', data.brands);
                 Vue.set(this.$data, 'categories', data.categories);
@@ -140,7 +141,8 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            byMethod(this.method, this.store, this.form)
+                            const form = toMulipartedForm(this.form);
+                            byMethod(this.method, this.store, form)
                                 .then(({data}) => {
                                     if (data.saved || data.updated) {
                                         log(data.log, data.staff_id);

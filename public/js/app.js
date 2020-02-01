@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		41: 0
+/******/ 		42: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -44672,7 +44672,7 @@ var _inventory2 = _interopRequireDefault(_inventory);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
-    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
+    return __webpack_require__.e/* import() */(40).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
 };
 
 var Login = function Login() {
@@ -44680,7 +44680,7 @@ var Login = function Login() {
 };
 
 var NotFound = function NotFound() {
-    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
+    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
 };
 
 var DSA = function DSA() {
@@ -44730,13 +44730,13 @@ var Reminder = function Reminder() {
 };
 
 var Profile = function Profile() {
-    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
+    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
 };
 var ProfileEdit = function ProfileEdit() {
-    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
+    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
 };
 var ProfileHome = function ProfileHome() {
-    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
+    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
 };
 
 var HRM = function HRM() {
@@ -44777,12 +44777,15 @@ var PaymentForm = function PaymentForm() {
 var CustomerLookup = function CustomerLookup() {
     return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/lookup/lookup.vue"));
 };
+var PurchaseLogForm = function PurchaseLogForm() {
+    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/purchase_log/form.vue"));
+};
 
 var Attendance = function Attendance() {
-    return __webpack_require__.e/* import() */(40).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
+    return __webpack_require__.e/* import() */(41).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
 };
 var AttendanceForm = function AttendanceForm() {
-    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
+    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
 };
 
 var LOG = function LOG() {
@@ -44870,7 +44873,7 @@ var router = new _vueRouter2.default({
             component: AttendanceForm,
             name: 'attendanceCreateFsl',
             meta: { mode: 'create' }
-        }, { path: 'sales', component: OrderList, name: 'sales-fsl' }, { path: 'sales/create', component: POSForm, name: 'post-sales' }, { path: 'payment', component: PaymentForm, name: 'down-payment' }, { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva' }]
+        }, { path: 'sales', component: OrderList, name: 'sales-fsl' }, { path: 'sales/create', component: POSForm, name: 'post-sales' }, { path: 'payment', component: PaymentForm, name: 'down-payment' }, { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva' }, { path: 'purchase_log', component: PurchaseLogForm, name: 'purchase-log' }]
     }, {
         path: '/log',
         component: LOG,

@@ -42,6 +42,10 @@
                     }, {
                         url: 'lookup', title: 'Customer Lookup', url_c: 'Manage customer repayment details',
                         desc: 'Customer Lookup',
+                    },
+                    {
+                        url: 'purchase_log', title: 'Purchase Log', url_c: 'Log daily purchases',
+                        desc: 'Purchase Log',
                     }
                 ]
             }

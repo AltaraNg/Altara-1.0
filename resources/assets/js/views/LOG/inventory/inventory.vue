@@ -389,7 +389,7 @@ export default {
             0,
             3
           )}-${e.product_name.slice(0, 3)}-${e.serial_number.slice(
-            e.serial_number.length - 4+
+            e.serial_number.length - 4
 
 
           )}-0${this.productForm.products.indexOf(e)+1}`.toUpperCase();

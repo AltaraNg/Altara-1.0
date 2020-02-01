@@ -306,89 +306,93 @@ var _ImageUpload = __webpack_require__("./resources/assets/js/components/ImageUp
 
 var _ImageUpload2 = _interopRequireDefault(_ImageUpload);
 
+var _form = __webpack_require__("./resources/assets/js/utilities/form.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function initialize(to) {
     var urls = { create: "/api/product/create", edit: "/api/product/" + to.params.id + "/edit" };
     return urls[to.meta.mode];
-} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+}
 
 exports.default = {
     components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default, ImageUpload: _ImageUpload2.default },
@@ -448,7 +452,8 @@ exports.default = {
                 if (result) {
                     if (_this.$network()) {
                         _this.$LIPS(true);
-                        (0, _api.byMethod)(_this.method, _this.store, _this.form).then(function (_ref2) {
+                        var form = (0, _form.toMulipartedForm)(_this.form);
+                        (0, _api.byMethod)(_this.method, _this.store, form).then(function (_ref2) {
                             var data = _ref2.data;
 
                             if (data.saved || data.updated) {
@@ -935,6 +940,30 @@ var render = function() {
                         : _vm._e()
                     ],
                     2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", { staticClass: "w-100 float-left" }, [
+                        _vm._v("Product Image")
+                      ]),
+                      _vm._v(" "),
+                      _c("image-upload", {
+                        model: {
+                          value: _vm.form.img_url,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "img_url", $$v)
+                          },
+                          expression: "form.img_url"
+                        }
+                      })
+                    ],
+                    1
                   )
                 ]
               ),
@@ -953,7 +982,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                                Cancel\n                            "
+                              "\n                            Cancel\n                        "
                             )
                           ]
                         )
@@ -967,7 +996,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                                " +
+                          "\n                            " +
                             _vm._s(_vm._f("capitalize")(_vm.mode)) +
                             " Product "
                         ),
@@ -1732,6 +1761,57 @@ var _vue2 = _interopRequireDefault(_vue);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EventBus = exports.EventBus = new _vue2.default();
+
+/***/ }),
+
+/***/ "./resources/assets/js/utilities/form.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.toMulipartedForm = toMulipartedForm;
+exports.objectToFormData = objectToFormData;
+function toMulipartedForm(form, mode) {
+    if (mode === 'edit' && typeof form.image === 'string') {
+        //remove reactivity
+        var temp = JSON.parse(JSON.stringify(form));
+        delete temp.image;
+        return temp;
+    } else {
+        return objectToFormData(form);
+    }
+}
+
+function objectToFormData(obj, form, namespace) {
+    var fd = form || new FormData();
+    var formKey = void 0;
+    for (var property in obj) {
+        if (obj.hasOwnProperty(property)) {
+            if (namespace) {
+                formKey = namespace + '[' + property + ']';
+            } else {
+                formKey = property;
+            }
+            if (obj[property] instanceof Array) {
+                for (var i = 0; i < obj[property].length; i++) {
+                    objectToFormData(obj[property][i], fd, property + '[' + i + ']');
+                }
+            } else if (_typeof(obj[property]) === 'object' && !(obj[property] instanceof File)) {
+                objectToFormData(obj[property], fd, property);
+            } else {
+                fd.append(formKey, obj[property]);
+            }
+        }
+    }
+    return fd;
+}
 
 /***/ }),
 

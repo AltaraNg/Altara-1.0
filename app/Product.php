@@ -9,7 +9,7 @@ class Product extends Model
 {
     use DataViewer;
 
-    protected $fillable = ['name', 'feature', 'user_id', 'brand_id', 'category_id', 'retail_price',  'availability'];
+    protected $fillable = ['name', 'feature', 'user_id', 'brand_id', 'category_id', 'retail_price',  'is_active', 'img_url'];
 
     public static $columns = ['id', 'name', 'retail_price in Naira', 'brand', 'category', 'status'];
 
@@ -23,6 +23,7 @@ class Product extends Model
             'category_id' => '',
             'retail_price' => '',
             'feature' => '',
+            'img_url' => '',
             'is_active' => false,
 
 

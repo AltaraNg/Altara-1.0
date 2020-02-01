@@ -133,6 +133,9 @@ exports.default = {
 //
 //
 //
+//
+//
+//
 
 /***/ }),
 
@@ -168,14 +171,14 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/inventory/inventory.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/caution/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
@@ -194,396 +197,298 @@ var _Typeahead = __webpack_require__("./resources/assets/js/components/Typeahead
 
 var _Typeahead2 = _interopRequireDefault(_Typeahead);
 
+var _eventBus = __webpack_require__("./resources/assets/js/utilities/event-bus.js");
+
 var _customHeader = __webpack_require__("./resources/assets/js/components/customHeader.vue");
 
 var _customHeader2 = _interopRequireDefault(_customHeader);
 
-var _auth = __webpack_require__("./resources/assets/js/utilities/auth.js");
-
-var _auth2 = _interopRequireDefault(_auth);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function initialize(to) {
-  var urls = {
-    create: "/api/inventory/create",
-    edit: "/api/inventory/" + to.params.id + "/edit"
-  };
-  return urls[to.meta.mode];
-} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 exports.default = {
-  components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
-  props: {},
-  data: function data() {
-    return {
-      form: {},
-      user: {
-        name: _auth2.default.state.user_name,
-        id: _auth2.default.state.user_id
-      },
-      mode: null,
-      error: {},
-      index: null,
-      show: false,
-      showModalContent: false,
-      store: "/api/inventory",
-      number: 0,
-      products: [],
-      suppliers: [],
-      product: null,
-      categories: null,
-      brands: null,
-      supplier: null,
-      branches: null,
-      quantity: "",
-
-      method: "POST",
-      statuses: [{ name: "available", value: 1 }, { name: "unavailable", value: 0 }],
-      productForm: { products: [] },
-      canAddProduct: true
-    };
-  },
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-    (0, _api.get)(initialize(to)).then(function (_ref) {
-      var data = _ref.data;
-      return next(function (vm) {
-        return vm.prepareForm(data);
-      });
-    }).catch(function () {
-      return next(function () {
-        return _flash2.default.setError("Error Preparing form");
-      });
-    });
-  },
-
-  methods: {
-    getForm: function getForm() {},
-    prepareForm: function prepareForm(data) {
-
-      this.branches = data.branches;
-      _vue2.default.set(this.$data, "mode", this.$route.meta.mode);
-      _vue2.default.set(this.$data, "brands", data.brands);
-      _vue2.default.set(this.$data, "categories", data.categories);
-      _vue2.default.set(this.$data, "suppliers", data.suppliers);
-      _vue2.default.set(this.$data, "products", data.products);
-      if (this.mode === "edit") {
-        this.store = "/api/inventory/" + this.$route.params.id;
-        this.method = "PUT";
-
-        // Vue.set(this.$data.productForm, product, {
-        //     'id': 1,
-        //     'name': 'damola'
-        // });
-
-
-        //const product = this.getEntity(this.form.product, this.products);
-        this.productForm.products.push({
-          'product_name': this.getEntity(data.form.product_id, this.products).name,
-          'product_id': data.form.product_id,
-          'supplier_id': data.form.supplier_id,
-          'inventory_sku': data.form.inventory_sku,
-          'serial_number': data.form.serial_number,
-          'branch_id': data.form.branch_id,
-          'market_price': data.form.market_price,
-          'received_date': data.form.received_date,
-          'receiver_id': 1
+    components: { Typeahead: _Typeahead2.default, CustomHeader: _customHeader2.default },
+    data: function data() {
+        return {
+            users: null,
+            columns: {},
+            show: false,
+            form: {},
+            error: {},
+            issuer: {},
+            autoPenalty: true,
+            autoReason: true,
+            cautions: null,
+            value: null
+        };
+    },
+    beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+        (0, _api.get)("/api/caution/create").then(function (_ref) {
+            var data = _ref.data;
+            return next(function (vm) {
+                return vm.prepareForm(data);
+            });
+        }).catch(function () {
+            return next(function () {
+                return _flash2.default.setError('Error Preparing form');
+            });
         });
-      }
-      this.show = true;
-      this.canAddProduct = /*this.canUserAddPayment;*/true;
     },
-    onSave: function onSave() {
-      var _this = this;
 
-      this.$validator.validateAll().then(function (result) {
-        if (result) {
-          if (_this.$network()) {
-            _this.$LIPS(true);
-            _this.productForm.products.forEach(function (e) {
-              if (_this.mode = "edit") {
-                delete e.product_name;
-              }
-              (0, _api.byMethod)(_this.method, _this.store, e).then(function (_ref2) {
-                var data = _ref2.data;
+    methods: {
+        onSave: function onSave() {
+            var _this = this;
 
-                if (data.saved || data.updated) {
-                  // log(data.log, data.staff_id);
-                  _vue2.default.set(_this.$data, "productForm", data.form);
-                  _flash2.default.setSuccess(data.message, 5000);
-                  if (data["updated"]) _this.$router.push("/log/inventory");
-                }
-              }).catch(function (_ref3) {
-                var r = _ref3.response;
-                var data = r.data,
-                    status = r.status;
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    if (_this.$network()) {
+                        _this.$LIPS(true);
+                        _this.error = {};
+                        (0, _api.post)('/api/caution', { form: _this.form }).then(function (_ref2) {
+                            var data = _ref2.data;
 
-                if (status === 422) {
-                  _this.error = data.errors ? data.errors : data;
-                  _this.$networkErr("unique");
-                }
-              }).finally(function () {
-                _this.$scrollToTop();
-                _this.$LIPS(false);
-              });
+                            if (data.saved) {
+                                (0, _log.log)("CautionSent", "" + _this.users.find(function (_ref3) {
+                                    var id = _ref3.id;
+                                    return id === _this.form.user_id;
+                                }).staff_id);
+                                _this.prepareForm(data);
+                                _flash2.default.setSuccess("Caution sent!", 5000);
+                            }
+                        }).catch(function (e) {
+                            e = e.response;
+                            if (e.status === 422) {
+                                _this.error = e.data.errors ? e.data.errors : e.data;
+                                _this.$networkErr('unique');
+                            }
+                        }).finally(function () {
+                            _this.$LIPS(false);
+                            _this.$scrollToTop();
+                        });
+                    } else _this.$networkErr();
+                } else _this.$networkErr('form');
             });
-          } else _this.$networkErr();
-        } else _this.$networkErr("form");
-      });
-    },
-    addProductForm: function addProductForm() {
-      var _this2 = this;
+        },
+        prepareForm: function prepareForm(_ref4) {
+            var form = _ref4.form,
+                users = _ref4.users,
+                cautions = _ref4.cautionsList;
 
-      this.$validator.validateAll().then(function (result) {
-        if (result) {
-          var product = _this2.getEntity(_this2.form.product, _this2.products);
-
-          var supplier = _this2.getEntity(_this2.form.supplier, _this2.suppliers);
-
-          //generates rows according to the quantity of products
-          for (var i = 0; i < _this2.quantity; i++) {
-            _this2.productForm.products.push({
-              product_name: product.name,
-              product_id: product.id,
-              supplier_id: supplier.id,
-              inventory_sku: "",
-              serial_number: "",
-              branch_id: "",
-              market_price: product.retail_price,
-              received_date: _this2.$getDate(),
-              receiver_id: _this2.user.id
+            _vue2.default.set(this.$data, 'form', form);
+            _vue2.default.set(this.$data, 'users', users);
+            _vue2.default.set(this.$data, 'cautions', cautions);
+            this.issuer = users.find(function (_ref5) {
+                var id = _ref5.id;
+                return id === form.issuer_id;
             });
-            // this.reNumber();
-          }
+            this.show = true;
+            this.$LIPS(false);
+            this.value = null;
+            _eventBus.EventBus.$emit('clearTypeAhead');
         }
-      });
     },
-    deleteProduct: function deleteProduct(index) {
-      this.productForm.products.splice(index, 1);
-      this.reNumber();
-    },
-    reNumber: function reNumber() {
-      var _this3 = this;
-
-      this.productForm.products.forEach(function (product, index) {
-        /*this line below mean if the repayment level is 3 i.e the customer has made 3 repayment
-         * u want to display on the ui "4th repayment"
-         * so repaymentLevel(3) + index(0 - length of the added payments) + 1*/
-        var next = index + 1;
-        _this3.productForm.products[index]._col = next;
-        _this3.productForm.products[index].column = _this3.$getColumn(next) + " Products";
-      });
-    },
-    getEntity: function getEntity(id, array) {
-      return array.find(function (entity) {
-        return entity.id === id;
-      });
+    watch: {
+        form: {
+            handler: function handler(val) {
+                var caution = this.cautions.find(function (obj) {
+                    return obj.reason === val.reason;
+                });
+                _vue2.default.set(this.$data.form, 'penalty', caution ? caution.penalty : '');
+            },
+            deep: true
+        }
     }
-  },
-  computed: {
-    editForm: function editForm() {}
-  },
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-  watch: {
-    productForm: {
-      handler: function handler() {
-        var _this4 = this;
+/***/ }),
 
-        this.productForm.products.forEach(function (e) {
-          var category_id = _this4.getEntity(e.product_id, _this4.products).category_id;
-          var category_name = _this4.getEntity(category_id, _this4.categories).name;
-          e.inventory_sku = (category_name.slice(0, 3) + "-" + e.product_name.slice(0, 3) + "-" + e.serial_number.slice(e.serial_number.length - 4) + "-0" + (_this4.productForm.products.indexOf(e) + 1)).toUpperCase();
-          e.serial_number = e.serial_number.toUpperCase();
-        });
-      },
-      deep: true
-    }
-  }
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6da2cc40\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Typeahead.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
 };
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
 
 /***/ }),
 
@@ -631,7 +536,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-59317872\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/inventory/inventory.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2823b23b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/caution/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -643,579 +548,521 @@ var render = function() {
       "div",
       { staticClass: "pt-md-3 pt-2 attendance-view", attrs: { id: "index" } },
       [
-        _vm.mode === "create"
-          ? _c(
-              "div",
-              [
-                _c("custom-header", {
-                  attrs: {
-                    to: "/log/inventory",
-                    title: "Generate Inventory",
-                    "button-title": "view Inventory!"
-                  }
-                })
-              ],
-              1
-            )
-          : _vm._e(),
+        _c("custom-header", {
+          attrs: {
+            to: ".",
+            title: "Send Caution",
+            "button-title": "view cautions!"
+          }
+        }),
         _vm._v(" "),
-        _vm.mode === "create"
-          ? _c("div", { staticClass: "attendance-body" }, [
+        _c("div", { staticClass: "attendance-body" }, [
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.onSave($event)
+                }
+              }
+            },
+            [
               _c(
-                "form",
-                {
-                  attrs: { enctype: "multipart/form-data" },
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                    }
-                  }
-                },
+                "div",
+                { staticClass: "p-5 row bg-white shadow-sm card-radius" },
                 [
                   _c(
                     "div",
                     {
                       staticClass:
-                        "my-4 clearfix p-5 row bg-white shadow-sm card-radius"
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
                     },
                     [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                      _c("label", [_vm._v("Employee Name")]),
+                      _vm._v(" "),
+                      _c("typeahead", {
+                        attrs: {
+                          options: _vm.users,
+                          value: _vm.value,
+                          caption: "full_name"
                         },
-                        [
-                          _c("label", [_vm._v("Product")]),
-                          _vm._v(" "),
-                          _c("typeahead", {
-                            attrs: { options: _vm.products, caption: "name" },
-                            model: {
-                              value: _vm.form.product,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "product", $$v)
-                              },
-                              expression: "form.product"
-                            }
-                          })
-                        ],
-                        1
-                      ),
+                        model: {
+                          value: _vm.form.user_id,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "user_id", $$v)
+                          },
+                          expression: "form.user_id"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", [_vm._v("Issued by")]),
                       _vm._v(" "),
                       _c(
-                        "div",
+                        "select",
                         {
-                          staticClass:
-                            "form-group col-md-4 col-6 float-left px-0 px-md-3"
-                        },
-                        [
-                          _c("label", [_vm._v("Supplier ID")]),
-                          _vm._v(" "),
-                          _c("typeahead", {
-                            attrs: { options: _vm.suppliers, caption: "name" },
-                            model: {
-                              value: _vm.form.supplier,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "supplier", $$v)
-                              },
-                              expression: "form.supplier"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "form-group col-md-2 col-4 float-left px-0 px-md-3"
-                        },
-                        [
-                          _c("label", [_vm._v("Quantity")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.quantity,
-                                expression: "quantity"
-                              },
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required|max:50|numeric",
-                                expression: "'required|max:50|numeric'"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              name: "quantity",
-                              placeholder: "retail price"
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.issuer_id,
+                              expression: "form.issuer_id"
                             },
-                            domProps: { value: _vm.quantity },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.quantity = $event.target.value
-                              }
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required",
+                              expression: "'required'"
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.first("price")
-                            ? _c("small", [
-                                _vm._v(_vm._s(_vm.errors.first("price")))
-                              ])
-                            : _vm._e()
+                          ],
+                          staticClass: "custom-select w-100",
+                          attrs: {
+                            "data-vv-validate-on": "blur",
+                            disabled: "",
+                            name: "issued_by"
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "issuer_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { domProps: { value: _vm.issuer.id } }, [
+                            _vm._v(_vm._s(_vm.issuer.full_name))
+                          ])
                         ]
                       )
                     ]
                   ),
                   _vm._v(" "),
+                  _c("div", { staticClass: "spaceAfter" }),
+                  _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "mb-5 px-0 row align-items-center" },
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
                     [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "clearfix d-flex justify-content-end w-100"
-                        },
-                        [
-                          _vm.mode === "edit"
-                            ? _c(
-                                "router-link",
-                                {
-                                  staticClass: "mx-5 text-link mt-4 pt-2",
-                                  attrs: { to: "/log/products" }
-                                },
-                                [_vm._v("Cancel")]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c(
-                            "button",
+                      _c("div", { staticClass: "form-check pl-3 ml-1" }, [
+                        _c("input", {
+                          directives: [
                             {
-                              staticClass: "btn bg-default",
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.autoReason,
+                              expression: "autoReason"
+                            }
+                          ],
+                          staticClass: "form-check-input",
+                          attrs: {
+                            id: "reason",
+                            type: "checkbox",
+                            value: "true"
+                          },
+                          domProps: {
+                            checked: Array.isArray(_vm.autoReason)
+                              ? _vm._i(_vm.autoReason, "true") > -1
+                              : _vm.autoReason
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.autoReason,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = "true",
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    (_vm.autoReason = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.autoReason = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.autoReason = $$c
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-check-label",
+                            attrs: { for: "reason" }
+                          },
+                          [_vm._v("Select Reason From List")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm.autoReason
+                        ? _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.reason,
+                                  expression: "form.reason"
+                                },
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              staticClass: "custom-select w-100",
                               attrs: {
-                                disabled:
-                                  _vm.$isProcessing || _vm.quantity == "",
-                                type: "submit"
+                                "data-vv-validate-on": "blur",
+                                name: "reason",
+                                disabled: !_vm.autoReason
                               },
                               on: {
-                                click: function($event) {
-                                  _vm.addProductForm()
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.form,
+                                    "reason",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
                                 }
                               }
                             },
                             [
-                              _vm._v(
-                                "\n              Generate Inventory\n              "
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    disabled: "",
+                                    selected: "",
+                                    value: ""
+                                  }
+                                },
+                                [_vm._v("-- select reason --")]
                               ),
-                              _c("i", {
-                                staticClass: "far fa-paper-plane ml-1"
+                              _vm._v(" "),
+                              _vm._l(_vm.cautions, function(ref) {
+                                var reason = ref.reason
+                                return _c(
+                                  "option",
+                                  { domProps: { value: reason } },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(_vm._f("capitalize")(reason)) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                )
                               })
-                            ]
+                            ],
+                            2
                           )
+                        : _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.reason,
+                                expression: "form.reason"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required",
+                                expression: "'required'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              disabled: _vm.autoReason,
+                              name: "reason",
+                              rows: "2"
+                            },
+                            domProps: { value: _vm.form.reason },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "reason",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                      _vm._v(" "),
+                      _vm.errors.first("reason")
+                        ? _c("small", [
+                            _vm._v(_vm._s(_vm.errors.first("reason")))
+                          ])
+                        : _vm._e()
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("div", { staticClass: "form-check pl-3 ml-1" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.autoPenalty,
+                              expression: "autoPenalty"
+                            }
+                          ],
+                          staticClass: "form-check-input",
+                          attrs: {
+                            id: "penalty",
+                            type: "checkbox",
+                            value: "true"
+                          },
+                          domProps: {
+                            checked: Array.isArray(_vm.autoPenalty)
+                              ? _vm._i(_vm.autoPenalty, "true") > -1
+                              : _vm.autoPenalty
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.autoPenalty,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = "true",
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    (_vm.autoPenalty = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.autoPenalty = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.autoPenalty = $$c
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-check-label",
+                            attrs: { for: "penalty" }
+                          },
+                          [_vm._v("Add Penalty Automatically")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm.autoPenalty
+                        ? _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.penalty,
+                                expression: "form.penalty"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required",
+                                expression: "'required'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              disabled: _vm.autoPenalty,
+                              name: "penalty"
+                            },
+                            domProps: { value: _vm.form.penalty },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "penalty",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        : _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.penalty,
+                                expression: "form.penalty"
+                              },
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required",
+                                expression: "'required'"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              disabled: _vm.autoPenalty,
+                              rows: "2",
+                              name: "penalty"
+                            },
+                            domProps: { value: _vm.form.penalty },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "penalty",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                      _vm._v(" "),
+                      _vm.errors.first("penalty")
+                        ? _c("small", [
+                            _vm._v(_vm._s(_vm.errors.first("penalty")))
+                          ])
+                        : _vm._e()
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "spaceBefore" }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group col-md-6 col-12 float-left px-0 px-md-3"
+                    },
+                    [
+                      _c("label", [_vm._v("Date")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.date,
+                            expression: "form.date"
+                          },
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: "required",
+                            expression: "'required'"
+                          }
                         ],
-                        1
-                      )
+                        staticClass: "form-control",
+                        attrs: {
+                          "data-vv-as": "date",
+                          name: "date",
+                          type: "date"
+                        },
+                        domProps: { value: _vm.form.date },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "date", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.first("date")
+                        ? _c("small", [
+                            _vm._v(_vm._s(_vm.errors.first("date")))
+                          ])
+                        : _vm._e()
                     ]
                   )
                 ]
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.productForm.products.length > 0
-          ? _c("div", { staticClass: "attendance-body" }, [
-              _vm.canAddProduct
-                ? _c("h5", { staticClass: "mt-5 mb-0" }, [
-                    _vm._v("Generate Inventory")
-                  ])
-                : _vm._e(),
+              ),
               _vm._v(" "),
-              _vm.canAddProduct
-                ? _c("table", { staticClass: "table table-bordered" }, [
-                    _c(
-                      "tbody",
-                      { staticClass: "text-center" },
-                      [
-                        _c("tr", { staticClass: "table-separator" }, [
-                          _c("td", { staticClass: "text-left" }, [
-                            _vm._v("S/No.")
-                          ]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Product")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Inventory SKU")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Market Price")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Serial/IMEI Number")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Branch")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Received Date")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Received By")])
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(_vm.productForm.products, function(
-                          product,
-                          index
-                        ) {
-                          return _c("tr", [
-                            _c("th", [_vm._v(_vm._s(index + 1))]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.productForm.products[index]
-                                          .product_name,
-                                      expression:
-                                        "productForm.products[index].product_name"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "product_sku",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: {
-                                    value:
-                                      _vm.productForm.products[index]
-                                        .product_name
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "product_name",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.productForm.products[index]
-                                          .inventory_sku,
-                                      expression:
-                                        "productForm.products[index].inventory_sku"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "inventory_sku",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: {
-                                    value:
-                                      _vm.productForm.products[index]
-                                        .inventory_sku
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "inventory_sku",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.productForm.products[index]
-                                          .market_price,
-                                      expression:
-                                        "productForm.products[index].market_price"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "market_price",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: {
-                                    value:
-                                      _vm.productForm.products[index]
-                                        .market_price
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "market_price",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.productForm.products[index]
-                                          .serial_number,
-                                      expression:
-                                        "productForm.products[index].serial_number"
-                                    },
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: { name: "serial_no", type: "text" },
-                                  domProps: {
-                                    value:
-                                      _vm.productForm.products[index]
-                                        .serial_number
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "serial_number",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c(
-                                  "select",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value:
-                                          _vm.productForm.products[index]
-                                            .branch_id,
-                                        expression:
-                                          "productForm.products[index].branch_id"
-                                      }
-                                    ],
-                                    staticClass: "custom-select w-100",
-                                    attrs: { name: "branch_id" },
-                                    on: {
-                                      change: function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.productForm.products[index],
-                                          "branch_id",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("option", { attrs: { value: "" } }, [
-                                      _vm._v("select branch")
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm._l(_vm.branches, function(branch) {
-                                      return _c(
-                                        "option",
-                                        { domProps: { value: branch.id } },
-                                        [_vm._v(_vm._s(branch.name))]
-                                      )
-                                    })
-                                  ],
-                                  2
-                                )
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value:
-                                        _vm.productForm.products[index]
-                                          .received_date,
-                                      expression:
-                                        "productForm.products[index].received_date"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "received_date",
-                                    type: "date"
-                                  },
-                                  domProps: {
-                                    value:
-                                      _vm.productForm.products[index]
-                                        .received_date
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.productForm.products[index],
-                                        "received_date",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c("div", { staticClass: "form-group mb-0" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.user.name,
-                                      expression: "user.name"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    "data-vv-as": "date",
-                                    name: "date",
-                                    type: "text",
-                                    disabled: ""
-                                  },
-                                  domProps: { value: _vm.user.name },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.user,
-                                        "name",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "ml-2 btn status status-sm my-sm-2 not-approved",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.deleteProduct(index)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "fas fa-times" })]
-                              )
-                            ])
-                          ])
-                        })
-                      ],
-                      2
-                    )
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", [
+              _c("div", { staticClass: "mb-5 px-0 row align-items-center" }, [
+                _c("div", { staticClass: "w-100 mb-4 mt-5 mx-0 hr" }),
+                _vm._v(" "),
                 _c(
-                  "button",
-                  {
-                    staticClass: "btn bg-default",
-                    attrs: { disabled: _vm.$isProcessing, type: "submit" },
-                    on: {
-                      click: function($event) {
-                        _vm.onSave()
-                      }
-                    }
-                  },
+                  "div",
+                  { staticClass: "clearfix d-flex justify-content-end w-100" },
                   [
-                    _vm._v("\n            Save Inventory\n            "),
-                    _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn bg-default",
+                        attrs: { disabled: _vm.$isProcessing, type: "submit" }
+                      },
+                      [
+                        _vm._v("\n                            Submit Caution "),
+                        _c("i", { staticClass: "far fa-paper-plane ml-1" })
+                      ]
+                    )
                   ]
                 )
               ])
-            ])
-          : _vm._e()
-      ]
+            ]
+          )
+        ])
+      ],
+      1
     )
   ])
 }
@@ -1225,13 +1072,13 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-59317872", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-2823b23b", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6da2cc40\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Typeahead.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6da2cc40\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Typeahead.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1269,7 +1116,7 @@ var render = function() {
             ],
             ref: "search",
             staticClass: "typeahead__search",
-            attrs: { type: "text" },
+            attrs: { type: "text", value: "null" },
             domProps: { value: _vm.search },
             on: {
               blur: _vm.onBlur,
@@ -1380,21 +1227,315 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6da2cc40\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Typeahead.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6da2cc40\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Typeahead.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("e2d34c0a", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6da2cc40\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Typeahead.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6da2cc40\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Typeahead.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/lib/addStylesClient.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__("./node_modules/vue-style-loader/lib/listToStyles.js")
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/lib/listToStyles.js":
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/Typeahead.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6da2cc40\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Typeahead.vue")
+}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Typeahead.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6da2cc40\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Typeahead.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6da2cc40\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Typeahead.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-6da2cc40"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -1523,15 +1664,15 @@ function log(action, description) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/LOG/inventory/inventory.vue":
+/***/ "./resources/assets/js/views/HRM/caution/form.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/LOG/inventory/inventory.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/caution/form.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-59317872\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/LOG/inventory/inventory.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2823b23b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/caution/form.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1548,7 +1689,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\LOG\\inventory\\inventory.vue"
+Component.options.__file = "resources\\assets\\js\\views\\HRM\\caution\\form.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1557,9 +1698,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-59317872", Component.options)
+    hotAPI.createRecord("data-v-2823b23b", Component.options)
   } else {
-    hotAPI.reload("data-v-59317872", Component.options)
+    hotAPI.reload("data-v-2823b23b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
