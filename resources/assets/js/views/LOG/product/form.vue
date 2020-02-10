@@ -55,11 +55,6 @@
                         <!-- image upload -->
 
 
-
-
-
-
-
                     </div>
                     <div class="mb-5 px-0 row align-items-center">
                         <div class="clearfix d-flex justify-content-end w-100">
@@ -141,7 +136,7 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            const form = toMulipartedForm(this.form);
+                            const form = toMulipartedForm(this.form, 'edit');
                             byMethod(this.method, this.store, form)
                                 .then(({data}) => {
                                     if (data.saved || data.updated) {
@@ -166,7 +161,7 @@
                 })
             },
 
-             
+
 
 
         },
