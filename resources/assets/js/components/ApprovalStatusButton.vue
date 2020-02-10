@@ -1,9 +1,9 @@
 <template>
     <div class="position-relative d-flex align-items-stretch">
         <router-link
-                :tag="link ? 'a' : 'span'"
-                :class="buttonClass + ' text-uppercase'"
-                :to="getLink" data-function="display">
+            :tag="link ? 'a' : 'span'"
+            :class="buttonClass + ' text-uppercase'"
+            :to="getLink" data-function="display">
             {{status.split('-').join(' ')}}
             <i :class="`ml-3 fas fa-${isApproved ? 'check' : 'times'}`"></i>
         </router-link>
@@ -12,10 +12,10 @@
         </span>
         <div class="dropdown-menu">
             <a v-for="option in filteredOptions"
-                class="dropdown-item"
-                href="javascript:"
-                :key="option.modal"
-                @click="toggleModal(option.modal)">
+               class="dropdown-item"
+               href="javascript:"
+               :key="option.modal"
+               @click="toggleModal(option.modal)">
                 {{option.caption}}
             </a>
         </div>
@@ -64,10 +64,10 @@
                     (this.link ? `status status-sm ${this.status}` : `status mt-md-5 my-sm-2 mt-0 ${this.status}`);
             },
 
-            getLink(){
-                if(this.link){
-                    if(this.auth('DVAAccess')) return 'dva/' + this.link;
-                    if(this.auth('ALTARAPAYAccess')) return 'altarapay/' + this.link;
+            getLink() {
+                if (this.link) {
+                    if (this.auth('DVAAccess')) return 'dva/' + this.link;
+                    if (this.auth('ALTARAPAYAccess')) return 'altarapay/' + this.link;
                 }
                 return '#';
             }

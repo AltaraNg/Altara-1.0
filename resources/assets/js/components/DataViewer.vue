@@ -348,7 +348,6 @@
                                     this.$store.getters.getStates.find(obj => obj.id === curr.state_id).name;
                                 if (data[0].branch_id) curr.branch_id =
                                     this.$store.getters.getBranches.find(obj => obj.id === curr.branch_id).name;
-                                if (this.isModel('customer')) curr.verification = this.$getCustomerApprovalStatus(curr.verification);
                             });
                         }
                         Vue.set(this.$data, 'model', res.data.model);
