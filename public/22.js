@@ -43,14 +43,14 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+   value: true
 });
 
 var _portalCard = __webpack_require__("./resources/assets/js/components/portalCard.vue");
@@ -60,43 +60,22 @@ var _portalCard2 = _interopRequireDefault(_portalCard);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: { PortalCard: _portalCard2.default },
-    methods: {
-        auth: function auth(role) {
-            return this.$store.getters.auth(role);
-        }
-    },
-    data: function data() {
-        return {
-            portals: [{
-                url: 'attendance/create', title: 'Log Daily Attendance', url_c: 'Log Attendance!',
-                desc: 'For Logging staff attendances!', aces: this.auth('supervisor')
-            }, {
-                url: 'branch', title: 'Manage Branches', url_c: 'Manage Branches now!',
-                desc: 'Manage all the branch details', aces: this.auth('FSLLead')
-            }, {
-                url: '/customer', title: 'Customer List', url_c: 'View Customer List',
-                desc: 'View all registered customers!'
-            }, {
-                url: 'sales', title: 'Sales List', url_c: 'View Sales List',
-                desc: 'View all Sales!', aces: this.auth('FSLLead')
-            }, {
-                url: 'sales/create', title: 'Temp POS', url_c: 'Post Daily Sales',
-                desc: 'Temp POS!', aces: this.auth('supervisor')
-            }, {
-                url: 'payment', title: 'Online Payment', url_c: 'Make Online Payment for Formal Sector',
-                desc: 'Online Payment', aces: this.auth('supervisor')
-            }, {
-                url: 'lookup', title: 'Customer Lookup', url_c: 'Manage customer repayment details',
-                desc: 'Customer Lookup'
-            }, {
-                url: 'purchase_log', title: 'Purchase Log', url_c: 'Log daily purchases',
-                desc: 'Purchase Log'
-            }]
-        };
-    }
+   components: { PortalCard: _portalCard2.default },
+   data: function data() {
+      return {
+         portals: [{
+            url: 'employee', title: 'Staff Management', url_c: 'Manage staff Details!',
+            desc: 'For Registering new staff'
+         }, {
+            url: 'attendance', title: 'Manage Attendance', url_c: 'Manage Attendance!',
+            desc: 'Managing staff attendance'
+         }, {
+            url: 'caution', title: 'Manage Caution', url_c: 'Manage Caution!',
+            desc: 'Managing staff caution'
+         }]
+      };
+   }
 }; //
-//
 //
 //
 //
@@ -173,7 +152,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-599c6738\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/HomePage.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b67afb58\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -189,11 +168,10 @@ var render = function() {
           [
             _c("portal-card", {
               attrs: {
-                url: portal.url,
-                title: portal.title,
-                url_c: portal.url_c,
                 desc: portal.desc,
-                aces: portal.aces
+                title: portal.title,
+                url: portal.url,
+                url_c: portal.url_c
               }
             })
           ],
@@ -209,7 +187,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-599c6738", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-b67afb58", module.exports)
   }
 }
 
@@ -263,15 +241,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/FSL/HomePage.vue":
+/***/ "./resources/assets/js/views/HRM/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/FSL/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/HRM/HomePage.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-599c6738\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/FSL/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b67afb58\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/HRM/HomePage.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -288,7 +266,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\views\\FSL\\HomePage.vue"
+Component.options.__file = "resources\\assets\\js\\views\\HRM\\HomePage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -297,9 +275,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-599c6738", Component.options)
+    hotAPI.createRecord("data-v-b67afb58", Component.options)
   } else {
-    hotAPI.reload("data-v-599c6738", Component.options)
+    hotAPI.reload("data-v-b67afb58", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
