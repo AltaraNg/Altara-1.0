@@ -9,10 +9,10 @@ jobs:
       # Specify the version you desire here
       - image: circleci/php:7.4-node-browsers
       - image: circleci/mysql:5.7
-          environment:
-            MYSQL_USER: root
-            MYSQL_ROOT_PASSWORD: passwod
-            MYSQL_DATABASE: altara
+        environment:
+          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: passwod
+          MYSQL_DATABASE: altara
     working_directory: ~/repo
     steps:
       - checkout
