@@ -101,11 +101,12 @@ jobs:
           command: |
             sudo docker-php-ext-install zip
             sudo docker-php-ext-install pdo_mysql
-            sudo apt install -y mysql-client
+            sudo apt install -y mariadb-client
       - run: sudo composer self-update
 
       # Download and cache dependencies
       - restore_cache:
+          name: Restore composer cache
           keys:
             - v1-dependencies-{{ checksum "composer.json" }}
             # fallback to using the latest cache if no exact match is found
@@ -118,11 +119,47 @@ jobs:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
 
+      # Yarn
+      - restore_cache:
+          name: Restore yarn cache
+          keys:
+            - yarn-{{ checksum "yarn.lock" }}
+            - yarn-
+
+      - run: yarn
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: yarn-{{ checksum "composer.json" }}
+
+      - run: npm run production
+
+      # prepare the database
       - run:
-          name: Setup Laravel stuffs
+          name: "Create Environment file and generate app key"
           command: |
-            php artisan migrate --force
-      - run: php vendor/bin/codecept run api
+            mv .env.testing .env
+            php artisan key:generate
+
+      - run:
+          name: "Create database and run migration"
+          command: |
+            php artisan migrate --env=testing
+            php artisan db:seed
+
+      - run:
+          name: "Generate JWT encryption keys"
+          command: php artisan
+
+      # run tests with Codeception
+      - run:
+          name: "Run Tests"
+          command: php vendor/bin/codecept run api
+      - store_test_results:
+          path: tests/_output
+      - store_artifacts:
+          path: tests/_output
 
 workflows:
   version: 2
