@@ -134,8 +134,6 @@ jobs:
             - node_modules
           key: yarn-{{ checksum "composer.json" }}
 
-      - run: npm run production
-
       # prepare the database
       - run:
           name: "Create Environment file and generate app key"
