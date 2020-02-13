@@ -99,10 +99,9 @@ jobs:
       - run:
           name: Install PHP exts
           command: |
+            sudo apt update
+            sudo apt install -y mariadb-client libpq-dev
             sudo docker-php-ext-install zip
-            sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev g++
-            sudo apt install -y mariadb-client
       - run: sudo composer self-update
 
       # Download and cache dependencies
