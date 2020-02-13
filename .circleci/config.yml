@@ -102,6 +102,9 @@ jobs:
             sudo apt update
             sudo apt install -y mariadb-client libpq-dev
             sudo docker-php-ext-install zip
+            sudo docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+            sudo docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+            docker-php-ext-install gd
       - run: sudo composer self-update
 
       # Download and cache dependencies
