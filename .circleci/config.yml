@@ -20,13 +20,13 @@
 #      - run:
 #          name: "Prepare Environment"
 #          command: |
-            sudo apt-get install -y libzip-dev
-            sudo docker-php-ext-install zip
-            sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev g++
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install intl
-            sudo docker-php-ext-install pdo_mysql
+#            sudo apt-get install -y libzip-dev
+#            sudo docker-php-ext-install zip
+#            sudo apt-get update
+#            sudo apt-get install -y zlib1g-dev libicu-dev g++
+#            sudo docker-php-ext-configure intl
+#            sudo docker-php-ext-install intl
+#            sudo docker-php-ext-install pdo_mysql
 #
 #      - run: sudo composer self-update
 #
@@ -102,6 +102,7 @@ jobs:
             sudo docker-php-ext-install zip
             sudo apt-get update
             sudo apt-get install -y zlib1g-dev libicu-dev g++
+            sudo apt-get install php-mbstring
             sudo docker-php-ext-configure intl
             sudo docker-php-ext-install intl
             sudo docker-php-ext-install pdo_mysql
