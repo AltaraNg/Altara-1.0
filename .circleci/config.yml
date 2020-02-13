@@ -100,7 +100,7 @@ jobs:
           name: Install PHP exts
           command: |
             sudo apt update
-            sudo apt install -y mariadb-client libpq-dev
+            sudo apt install -y mariadb-client libpq-dev libpng-dev
             sudo docker-php-ext-install zip
             sudo docker-php-ext-install gd
       - run: sudo composer self-update
