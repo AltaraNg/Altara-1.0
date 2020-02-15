@@ -155,12 +155,17 @@ jobs:
 
       # run tests with Codeception
       - run:
-          name: "Run Tests"
+          name: "Run Backend Tests"
           command: php vendor/bin/codecept run api
       - store_test_results:
           path: tests/_output
       - store_artifacts:
           path: tests/_output
+
+      # run tests with Jest
+      - run:
+          name: "Run Frontend Tests"
+          command: vue-cli-service test:unit
 
 workflows:
   version: 2
