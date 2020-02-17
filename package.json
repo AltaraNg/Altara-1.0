@@ -37,8 +37,7 @@
         "ts-jest": "^25.2.0",
         "vue": "^2.5.16",
         "vue-jest": "^3.0.5",
-        "vue-router-back-button": "^1.1.1",
-        "vue-test-utils": "^1.0.0-beta.11"
+        "vue-router-back-button": "^1.1.1"
     },
     "dependencies": {
         "datatables.net": "^1.10.19",
