@@ -79,7 +79,7 @@ jobs:
       # run tests with Jest
       - run:
           name: "Run Frontend Tests"
-          command: vue-cli-service test:unit
+          command: npm run test:unit
 
 workflows:
   version: 2
