@@ -16,6 +16,7 @@ class ReminderController extends Controller implements OrderConstants
 
     public function create(Request $request)
     {
+//        dump($request);
         $requestObject = $this->extractRequestObject($request);
 
         $list = $requestObject['list'];
@@ -25,7 +26,7 @@ class ReminderController extends Controller implements OrderConstants
         $reminderList = $list == SELF::PROMISE_CALL_LIST ?
             $this->fetchPromiseCallRemindersList($requestObject) :
             $this->fetchRemindersListByRequestList($requestObject);
-
+        dump($reminderList[0]);
         if (isset($list) && !in_array($list, SELF::FIRST_SMS_AND_PROMISE_CALL)) {
             $reminderList = json_decode(json_encode($reminderList, true));
             $reminderList = array_filter($reminderList, function ($order) use ($list, $requestObject) {
@@ -35,7 +36,7 @@ class ReminderController extends Controller implements OrderConstants
                 return in_array($lastMissedRepaymentDate, $repaymentDatesArr);
             });
         }
-
+        dd($reminderList);
         return response()->json([
             'orders' => $reminderList
         ]);

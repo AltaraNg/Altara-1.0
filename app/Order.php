@@ -87,4 +87,13 @@ class Order extends Model
     {
         return $this->belongsTo(Status::class);
     }
+
+    /**
+     * Relationship between Order and RenewalList
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function renewal()
+    {
+        return $this->hasOne(RenewalList::class);
+    }
 }
