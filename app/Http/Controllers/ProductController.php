@@ -92,10 +92,10 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:products',
-            'brand_id' => 'required|int',
-            'category_id' => 'required|int',
-            'retail_price' => 'required|int',
+//            'name' => 'required|unique:products',
+//            'brand_id' => 'required|int',
+//            'category_id' => 'required|int',
+//            'retail_price' => 'required|int',
         ]);
         $user = auth('api')->user();
 
