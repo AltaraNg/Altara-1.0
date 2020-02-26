@@ -13,12 +13,26 @@ class RenewalList extends Model
      *
      * @var array
      */
-    public static $rules=[
+    public static $rules = [
         'order_id' => 'required|exists:orders,id',
         'feedback' => 'required',
         'status' => 'required|in:successful,callback,unreachable',
-        'callback_date' => 'sometimes',
-        'callback_time' => 'sometimes'
+        'callback_date' => 'sometimes|required_if:status,callback',
+        'callback_time' => 'sometimes|required_if:status,callback'
+    ];
+
+    /**
+     * The model's default update rules.
+     *
+     * @return array
+     * @var array
+     */
+
+    public static $updateRules = [
+        'feedback' => 'required',
+        'status' => 'required|in:successful,callback,unreachable',
+        'callback_date' => 'sometimes|required_if:status,callback',
+        'callback_time' => 'sometimes|required_if:status,callback'
     ];
 
     /**

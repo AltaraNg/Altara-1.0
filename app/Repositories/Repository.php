@@ -55,6 +55,11 @@ abstract class Repository
         return $model;
     }
 
+    public function updateOrCreate($model, $target,$data) {
+        $model->updateOrCreate($target, $data);
+        return $model;
+    }
+
     public function delete($model) {
         $model->delete();
         return $model;

@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helper\ExtractRequestObject;
 use App\Helper\OrderObject;
-use App\Order;
 use App\RenewalList;
 use App\Repositories\RenewalListRepository;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class RenewalListController extends Controller
 {
@@ -30,30 +27,20 @@ class RenewalListController extends Controller
 
     /**
      * Generate Orders that has two repayment left
-     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index()
     {
-        $requestObject = $this->extractRequestObject($request);
-//        $requestObject['branchId'] = 2;
-        $order = Order::whereIn('id', function ($query) {
-            $query->select('repayment_id')
-                ->from('repayment_formal')
-                ->where('date_of_next_payment', Carbon::today())
-                ->where('4th_pay', '>', 0)
-                ->where(function ($query){
-                    $query->where('5th_pay', '=', 0)
-                        ->orWhere('5th_pay', 'null')
-                        ->orWhereNull('5th_pay');
-                });
-        })
-            ->dateFilter('order_date', $requestObject)
-            ->orderWithOtherTables($requestObject)
-            ->getOrPaginate($requestObject);
-            $this->listRepo->getList();
-        dd($order);
+        $this->validate(request(), ['branch_id' => 'sometimes|required']);
+        $orders = $this->listRepo->generateTwoRepaymentList();
+
+        return response()->json(['data' => $orders, 'message' => 'Successfully Updated'], 200);
     }
 
+    /**
+     * Persist Renewal List Orders that are treated
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store()
     {
         $data = $this->validate(request(), RenewalList::$rules);
@@ -62,26 +49,29 @@ class RenewalListController extends Controller
         return response()->json(['data' => $response, 'message' => 'Successfully created'], 201);
     }
 
+    /**
+     * Generate treated renewal list orders based on status
+     * @param string $status
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function list(string $status)
     {
-        if(!request('branch_id')) return response()->json(['data' => [], 'message' => 'Branch Id is expected'], 401);
+        $this->validate(request(), ['branch_id' => 'sometimes|required']);
         $orders = $this->listRepo->getListByType($status);
 
         return response()->json(['data' => $orders, 'message' => 'Successfully request'], 200);
     }
 
+    /**
+     * Update Callbacks and Unreachable treated Orders
+     * @param RenewalList $item
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(RenewalList $item)
     {
-        $data = $this->validate(request(), [
-            'feedback' => 'sometimes|required',
-            'status' => 'sometimes|required|in:successful,callback,unreachable'
-        ]);
-        $result = $item->update($data);
+        $data = $this->validate(request(), RenewalList::$updateRules);
+        $this->listRepo->update($item, $data);
 
         return response()->json(['data' => $item, 'message' => 'Successfully Updated'], 200);
-//        dump($result);
-//        if ($result === 'callback'){
-//            $result->callback()->update($data);
-//        }
     }
 }
