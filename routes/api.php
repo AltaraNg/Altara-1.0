@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'category' => 'CategoryController',
         'document' => 'DocumentController',
         'supplier' => 'SupplierController',
-        'reminder' => 'ReminderController',
+//        'reminder' => 'ReminderController',
         'attendance' => 'AttendanceController',
         'promise_call' => 'PromiseCallController',
         'verification' => 'VerificationController',
@@ -59,3 +59,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
 });
+
+Route::get('/renewal-list', 'RenewalListController@index');
+Route::get('/renewal-list/{status}', 'RenewalListController@list');
+Route::post('/renewal-list', 'RenewalListController@store');
+Route::put('/renewal-list/{item}', 'RenewalListController@update');
+Route::Resources(['reminder' => 'ReminderController']);
