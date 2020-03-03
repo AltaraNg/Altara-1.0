@@ -89,7 +89,7 @@ class RenewalListRepository extends Repository
     {
         return $query->select('repayment_id')
             ->from($payment_type)
-            ->where('date_of_next_payment', Carbon::today())
+//            ->where('date_of_next_payment', Carbon::today())
             ->where($from, '>', 0)
             ->where(function ($query) use ($to) {
                 $query->where($to, '=', 0)
