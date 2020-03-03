@@ -24,7 +24,7 @@ class RenewalListRepository extends Repository
 
     public function store(array $data)
     {
-        $order = Order::find(request(self::BRANCH_ID));
+        $order = Order::find(request('order_id'));
         $response = $order->renewal()->create($this->getData(['feedback', 'status'], $data));
 
         if ($this->getRequestType()) {
