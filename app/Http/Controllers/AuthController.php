@@ -30,6 +30,8 @@ class AuthController extends Controller
                     'api_token' => $user->api_token,
                     'user_name' => $user->full_name,
                     'portal_access' => $user->portal_access,
+                    'branch_id' => $user->branch_id,
+
                     'message' => 'You have successfully logged in'
                 ]);
             }
