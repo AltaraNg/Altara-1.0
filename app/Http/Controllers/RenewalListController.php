@@ -43,7 +43,7 @@ class RenewalListController extends Controller
      */
     public function store()
     {
-        $data = $this->validate(request(), RenewalList::$rules);
+        $data = $this->validate(request(), RenewalList::rules());
         $response = $this->listRepo->store($data);
 
         return response()->json(['data' => $response, 'message' => 'Successfully created'], 201);
@@ -69,7 +69,7 @@ class RenewalListController extends Controller
      */
     public function update(RenewalList $renewal_list)
     {
-        $data = $this->validate(request(), RenewalList::$updateRules);
+        $data = $this->validate(request(), RenewalList::updateRules());
         $this->listRepo->update($renewal_list, $data);
 
         return response()->json(['data' => $renewal_list, 'message' => 'Successfully Updated'], 200);

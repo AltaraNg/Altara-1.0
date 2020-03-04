@@ -11,29 +11,39 @@ class RenewalList extends Model
     /**
      * The model's default rules.
      *
+     * @return array
      * @var array
      */
-    public static $rules = [
-        'order_id' => 'required|exists:orders,id',
-        'feedback' => 'required',
-        'status' => 'required|in:successful,callback,unreachable',
-        'callback_date' => 'sometimes|required_if:status,callback',
-        'callback_time' => 'sometimes|required_if:status,callback'
-    ];
+
+    public static function rules()
+    {
+        $callback = self::getCallbackId();
+        return [
+            'order_id' => 'required|exists:orders,id',
+            'feedback' => 'required',
+            'status_id' => 'required|exists:renewal_statuses,id',
+            'callback_date' => 'required_if:status_id,' . $callback,
+            'callback_time' => 'required_if:status_id,' . $callback
+        ];
+    }
 
     /**
-     * The model's default update rules.
+     * The model's default rules.
      *
      * @return array
      * @var array
      */
 
-    public static $updateRules = [
-        'feedback' => 'required',
-        'status' => 'required|in:successful,callback,unreachable',
-        'callback_date' => 'sometimes|required_if:status,callback',
-        'callback_time' => 'sometimes|required_if:status,callback'
-    ];
+    public static function updateRules()
+    {
+        $callback = self::getCallbackId();
+        return [
+            'feedback' => 'required',
+            'status_id' => 'required|exists:renewal_statuses,id',
+            'callback_date' => 'required_if:status_id,' . $callback,
+            'callback_time' => 'required_if:status_id,' . $callback
+        ];
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -51,9 +61,22 @@ class RenewalList extends Model
         return $this->belongsTo(Order::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function status()
+    {
+        return $this->hasMany(RenewalStatus::class);
+    }
+
     public function getRenewalData()
     {
         $this['callback'] = $this->callback;
         return $this;
+    }
+
+    private static function getCallbackId()
+    {
+        return RenewalStatus::where('status', 'callback')->first()->id;
     }
 }
