@@ -34,7 +34,7 @@ class RenewalListController extends Controller
         $this->validate(request(), ['branch_id' => 'sometimes|required']);
         $orders = $this->listRepo->generateTwoRepaymentList();
 
-        return response()->json(['data' => $orders, 'message' => 'Successfully Updated'], 200);
+        return response()->json(['data' => $orders, 'message' => 'Action Successful'], 200);
     }
 
     /**
