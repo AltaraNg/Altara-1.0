@@ -28,7 +28,7 @@ class RenewalListRepository extends Repository
         $order = Order::find(request('order_id'));
         $response = $order->renewal()->create($this->getData(['feedback', 'status_id'], $data));
 
-        if ($this->getRequestType()) {
+        if ($this->isCallback()) {
             $response->callback()->create($this->getData(['callback_date', 'callback_time'], $data));
         }
         return $response;
@@ -38,8 +38,10 @@ class RenewalListRepository extends Repository
     {
         parent::update($model, $this->getData(['feedback', 'status_id'], $data));
 
-        if ($this->getRequestType()) {
+        if ($this->isCallback()) {
             parent::updateOrCreate($model->callback(), ['renewal_list_id' => $model->id], $this->getData(['callback_date', 'callback_time'], $data));
+        }else {
+            parent::delete($model->callback());
         }
         return $model;
     }
@@ -52,6 +54,14 @@ class RenewalListRepository extends Repository
             $query->select('order_id')
                 ->from('renewal_lists')
                 ->where('status_id', $status);
+            if ($this->isCallback()){
+                $query->whereIn('id', function ($query) {
+                    $query->select('renewal_list_id')
+                        ->from('callbacks')
+                        ->where('callback_date', Carbon::today());
+                });
+            }
+
         })
             ->dateFilter('order_date', $requestObject)
             ->orderWithOtherTables($requestObject)
@@ -73,12 +83,13 @@ class RenewalListRepository extends Repository
     {
         $requestObject = $this->extractRequestObject(request());
         $requestObject['branchId'] = request(self::BRANCH_ID);
+
         $order = Order::whereIn('id', function ($query) {
-            $this->repaymentQuery($query, 'repayment_formal', '4th_pay', '5th_pay');
-        })
-            ->orWhereIn('id', function ($query) {
-                $this->repaymentQuery($query, 'repayment_informal', '10th_pay', '11th_pay');
-            })
+                $this->repaymentQuery($query, 'repayment_formal', '4th_pay', '5th_pay');
+                })
+                ->orWhereIn('id', function ($query) {
+                    $this->repaymentQuery($query, 'repayment_informal', '10th_pay', '11th_pay');
+                })
             ->dateFilter('order_date', $requestObject)
             ->orderWithOtherTables($requestObject)
             ->getOrPaginate($requestObject);
@@ -90,12 +101,15 @@ class RenewalListRepository extends Repository
     {
         return $query->select('repayment_id')
             ->from($payment_type)
-//            ->where('date_of_next_payment', Carbon::today())
             ->where($from, '>', 0)
             ->where(function ($query) use ($to) {
                 $query->where($to, '=', 0)
                     ->orWhere($to, 'null')
                     ->orWhereNull($to);
+            })
+            ->whereNotIn('repayment_id', function ($query){
+                $query->select('order_id')
+                    ->from('renewal_lists');
             });
     }
 
@@ -109,7 +123,7 @@ class RenewalListRepository extends Repository
         return $response;
     }
 
-    public function getRequestType()
+    public function isCallback()
     {
         return RenewalStatus::find(request('status_id'))->status == 'callback';
     }

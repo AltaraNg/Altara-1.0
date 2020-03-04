@@ -18,7 +18,7 @@ class CreateRenewalListsTable extends Migration
             $table->string('order_id')->index()->unique();
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade')->onUpdate('cascade');
             $table->text('feedback')->nullable(false);
-            $table->unsignedInteger('status_id')->index()->unique();
+            $table->unsignedInteger('status_id')->index();
             $table->foreign('status_id')->references('id')->on('renewal_statuses')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
