@@ -6,6 +6,7 @@ use App\Helper\ExtractRequestObject;
 use App\Helper\OrderObject;
 use App\Order;
 use App\RenewalList;
+use App\RenewalStatus;
 use Carbon\Carbon;
 
 class RenewalListRepository extends Repository
@@ -25,7 +26,7 @@ class RenewalListRepository extends Repository
     public function store(array $data)
     {
         $order = Order::find(request('order_id'));
-        $response = $order->renewal()->create($this->getData(['feedback', 'status'], $data));
+        $response = $order->renewal()->create($this->getData(['feedback', 'status_id'], $data));
 
         if ($this->getRequestType()) {
             $response->callback()->create($this->getData(['callback_date', 'callback_time'], $data));
@@ -35,7 +36,7 @@ class RenewalListRepository extends Repository
 
     public function update($model, $data)
     {
-        parent::update($model, $this->getData(['feedback', 'status'], $data));
+        parent::update($model, $this->getData(['feedback', 'status_id'], $data));
 
         if ($this->getRequestType()) {
             parent::updateOrCreate($model->callback(), ['renewal_list_id' => $model->id], $this->getData(['callback_date', 'callback_time'], $data));
@@ -43,14 +44,14 @@ class RenewalListRepository extends Repository
         return $model;
     }
 
-    public function getListByType(string $status)
+    public function getListByType(int $status)
     {
         $requestObject = $this->extractRequestObject(request());
         $requestObject['branchId'] = request(self::BRANCH_ID);
         $orders = Order::whereIn('id', function ($query) use ($status) {
             $query->select('order_id')
                 ->from('renewal_lists')
-                ->where('status', $status);
+                ->where('status_id', $status);
         })
             ->dateFilter('order_date', $requestObject)
             ->orderWithOtherTables($requestObject)
@@ -110,7 +111,7 @@ class RenewalListRepository extends Repository
 
     public function getRequestType()
     {
-        return request('status') == 'callback';
+        return RenewalStatus::find(request('status_id'))->status == 'callback';
     }
 
 }

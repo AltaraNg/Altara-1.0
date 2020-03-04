@@ -43,7 +43,7 @@ class RenewalListController extends Controller
      */
     public function store()
     {
-        $data = $this->validate(request(), RenewalList::$rules);
+        $data = $this->validate(request(), RenewalList::rules());
         $response = $this->listRepo->store($data);
 
         return response()->json(['data' => $response, 'message' => 'Successfully created'], 201);
@@ -64,14 +64,14 @@ class RenewalListController extends Controller
 
     /**
      * Update Callbacks and Unreachable treated Orders
-     * @param RenewalList $renewal_list
+     * @param RenewalList $list
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(RenewalList $renewal_list)
+    public function update(RenewalList $list)
     {
-        $data = $this->validate(request(), RenewalList::$updateRules);
-        $this->listRepo->update($renewal_list, $data);
+        $data = $this->validate(request(), RenewalList::updateRules());
+        $this->listRepo->update($list, $data);
 
-        return response()->json(['data' => $renewal_list, 'message' => 'Successfully Updated'], 200);
+        return response()->json(['data' => $list, 'message' => 'Successfully Updated'], 200);
     }
 }
