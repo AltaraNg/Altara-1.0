@@ -64,14 +64,14 @@ class RenewalListController extends Controller
 
     /**
      * Update Callbacks and Unreachable treated Orders
-     * @param RenewalList $list
+     * @param RenewalList $renewal_list
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(RenewalList $list)
+    public function update(RenewalList $renewal_list)
     {
         $data = $this->validate(request(), RenewalList::updateRules());
-        $this->listRepo->update($list, $data);
+        $this->listRepo->update($renewal_list, $data);
 
-        return response()->json(['data' => $list, 'message' => 'Successfully Updated'], 200);
+        return response()->json(['data' => $renewal_list, 'message' => 'Successfully Updated'], 200);
     }
 }
