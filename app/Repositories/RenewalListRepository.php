@@ -26,7 +26,7 @@ class RenewalListRepository extends Repository
 
     public function store(array $data)
     {
-        $order = Order::find(request('order_id'));
+        $order = Order::findOrFail(request('order_id'));
         $response = $order->renewal()->create($this->getData(['feedback', 'status_id'], $data));
 
         if ($this->isCallback()) {
@@ -55,7 +55,7 @@ class RenewalListRepository extends Repository
             $query->select('order_id')
                 ->from('renewal_lists')
                 ->where('status_id', $status);
-            if (RenewalStatus::find($status)->status == self::CALLBACK){
+            if (RenewalStatus::findOrFail($status)->status == self::CALLBACK){
                 $query->whereIn('id', function ($query) {
                     $query->select('renewal_list_id')
                         ->from('callbacks')
@@ -126,7 +126,7 @@ class RenewalListRepository extends Repository
 
     public function isCallback()
     {
-        return RenewalStatus::find(request('status_id'))->status == self::CALLBACK;
+        return RenewalStatus::findOrFail(request('status_id'))->status == self::CALLBACK;
     }
 
 }
