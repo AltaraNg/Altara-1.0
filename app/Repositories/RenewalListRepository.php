@@ -13,6 +13,7 @@ class RenewalListRepository extends Repository
 {
     use OrderObject, ExtractRequestObject;
     private const BRANCH_ID = 'branch_id';
+    private const CALLBACK = 'callback';
 
     /**
      * Specify Model class name
@@ -54,7 +55,7 @@ class RenewalListRepository extends Repository
             $query->select('order_id')
                 ->from('renewal_lists')
                 ->where('status_id', $status);
-            if ($this->isCallback()){
+            if (RenewalStatus::find($status)->status == self::CALLBACK){
                 $query->whereIn('id', function ($query) {
                     $query->select('renewal_list_id')
                         ->from('callbacks')
@@ -125,7 +126,7 @@ class RenewalListRepository extends Repository
 
     public function isCallback()
     {
-        return RenewalStatus::find(request('status_id'))->status == 'callback';
+        return RenewalStatus::find(request('status_id'))->status == self::CALLBACK;
     }
 
 }
