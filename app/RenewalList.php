@@ -22,8 +22,8 @@ class RenewalList extends Model
             'order_id' => 'required|exists:orders,id',
             'feedback' => 'required',
             'status_id' => 'required|exists:renewal_statuses,id',
-            'callback_date' => 'required_if:status_id,' . $callback,
-            'callback_time' => 'required_if:status_id,' . $callback
+            'callback_date' => 'date|required_if:status_id,' . $callback,
+            'callback_time' => 'date_format:H:i|required_if:status_id,' . $callback
         ];
     }
 
@@ -40,8 +40,8 @@ class RenewalList extends Model
         return [
             'feedback' => 'required',
             'status_id' => 'required|exists:renewal_statuses,id',
-            'callback_date' => 'required_if:status_id,' . $callback,
-            'callback_time' => 'required_if:status_id,' . $callback
+            'callback_date' => 'date|required_if:status_id,' . $callback,
+            'callback_time' => 'date_format:H:i|required_if:status_id,' . $callback
         ];
     }
 

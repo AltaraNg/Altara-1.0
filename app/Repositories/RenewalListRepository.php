@@ -84,7 +84,8 @@ class RenewalListRepository extends Repository
     {
         $requestObject = $this->extractRequestObject(request());
         $requestObject['branchId'] = request(self::BRANCH_ID);
-
+        $requestObject['dateFrom'] = Carbon::now()->subMonth(request('month', 6));
+        $requestObject['dateTo'] = Carbon::now();
         $order = Order::whereIn('id', function ($query) {
                 $this->repaymentQuery($query, 'repayment_formal', '4th_pay', '5th_pay');
                 })
