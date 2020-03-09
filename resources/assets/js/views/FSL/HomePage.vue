@@ -42,6 +42,9 @@
                     }, {
                         url: 'lookup', title: 'Customer Lookup', url_c: 'Manage customer repayment details',
                         desc: 'Customer Lookup',
+                    },{
+                        url: 'reminder/renewal', title: 'Renewal list', url_c: 'View Renewals',
+                        desc: 'View all renewal!',
                     }
                 ]
             }
