@@ -12,6 +12,9 @@
 */
 
 Route::post('/login', 'AuthController@login');
+Route::post('/password/reset', 'AuthController@sendResetLinkEmail');
+Route::put('/password/reset', 'AuthController@reset');
+Route::get('/password/reset', 'AuthController@showResetData');
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/branches', 'BranchController@allBranches');
     Route::post('/customer/autocomplete', 'CustomerController@autocompleteSearch');
@@ -44,7 +47,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'update_customer_manager' => 'CustomerManagementHistoryController',
         'repayment' => 'RepaymentController',
         'payment_method' => 'PaymentMethodController',
-        'renewal-list' => 'RenewalListController',
+//        'renewal-list' => 'RenewalListController',
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
@@ -59,6 +62,13 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/orders/direct-debit-sales', 'OrderController@directDebitSales');
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
-    Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
-    Route::get('/renewal-list-status', 'RenewalListStatusController@index');
+//    Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
+//    Route::get('/renewal-list-status', 'RenewalListStatusController@index');
 });
+
+Route::get('/renewal-list-status', 'RenewalListStatusController@index');
+Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
+Route::post('/renewal-list', 'RenewalListController@store');
+Route::Resources([
+        'renewal-list' => 'RenewalListController',
+]);
