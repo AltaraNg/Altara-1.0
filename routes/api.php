@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'update_customer_manager' => 'CustomerManagementHistoryController',
         'repayment' => 'RepaymentController',
         'payment_method' => 'PaymentMethodController',
+        'renewal-list' => 'RenewalListController',
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
@@ -58,4 +59,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/orders/direct-debit-sales', 'OrderController@directDebitSales');
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
+    Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
+    Route::get('/renewal-list-status', 'RenewalListStatusController@index');
 });

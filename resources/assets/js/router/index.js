@@ -10,12 +10,12 @@ const Login = () => import( '../views/auth/Login.vue');
 
 const NotFound = () => import( '../views/NotFound.vue');
 
-const DSA = () => import( '../views/DSA/index.vue');
+const DSA = () => import( '../views/DSA/Index.vue');
 const DSAHome = () => import( '../views/DSA/HomePage.vue');
 const DSAReport = () => import( '../views/DSA/report/report.vue');
 const CustomerForm = () => import( '../views/shared/customerForm.vue');
 
-const DVA = () => import( '../views/DVA/index.vue');
+const DVA = () => import( '../views/DVA/Index.vue');
 const DVAHome = () => import( '../views/DVA/HomePage.vue');
 const DVAMessage = () => import( '../views/DVA/messaging/message.vue');
 const DVAVerification = () => import( '../views/DVA/verification/verification.vue');
@@ -61,6 +61,7 @@ const SuppliersForm = () => import('../views/LOG/supplier/form.vue');
 const BrandForm = () => import('../views/LOG/brand/form.vue');
 const CategoryForm = () => import('../views/LOG/category/form.vue');
 const ProductForm = () => import('../views/LOG/product/form.vue');
+const Renewal = () => import( '../views/FSL/renewal/renewal.vue');
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -185,6 +186,8 @@ const router = new VueRouter({
                 {path: 'sales/create', component: POSForm, name: 'post-sales'},
                 {path: 'payment', component: PaymentForm, name: 'down-payment'},
                 {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: {customSMS: true}},
+                {path: 'reminder/renewal', component: Renewal, name: 'renewal', meta: {mode: 'renewal'}},
+
             ]
         },
         {

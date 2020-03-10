@@ -1,7 +1,6 @@
 <template>
     <transition name="fade">
         <div id="reminder">
-
             <div class="mt-5 mb-3 attendance-head">
                 <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
                     <li class="col p-0 nav-item mb-0" v-if="mode('call')">
