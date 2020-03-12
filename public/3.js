@@ -102,7 +102,7 @@ exports.default = {
         index: null,
         startIndex: { default: 1 },
         mode: { default: null, type: String },
-        order: { default: null, type: _Amortization.Order },
+        order: { default: {}, type: _Amortization.Order },
         tab: { default: null },
         options: { default: null },
         OId: { default: null }
@@ -756,7 +756,7 @@ exports.default = {
             activeOrder: null,
             showModalContent: false,
             status: [],
-            responseData: null,
+            responseData: {},
             page: 1,
             OId: 0
         };
@@ -766,11 +766,6 @@ exports.default = {
     computed: _extends({}, (0, _vuex.mapGetters)(['auth', 'getAuthUserDetails'])),
 
     methods: {
-        auth: function auth(role) {
-            return this.$store.getters.auth(role);
-        },
-
-        //FSLLead
         getOrderStatus: function getOrderStatus(activeOrder) {
             return (0, _orderStatusCssClass.getOrderStatus)(activeOrder);
         },
@@ -1459,7 +1454,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.Current[data-v-085f924c]{\r\n  background: #EDEEF2;\n}\n.Successful[data-v-085f924c]{\r\n  background: #00E396;\n}\n.Callback[data-v-085f924c]{\r\n  background: #FFA500;\n}\n.Unreachable[data-v-085f924c]{\r\n  background: #E30000;\n}\n.option2[data-v-085f924c]{\r\n    background-color: #fff;\r\n    color:#575958;\n}\r\n", ""]);
+exports.push([module.i, "\n.Current[data-v-085f924c]{\n  background: #EDEEF2;\n}\n.Successful[data-v-085f924c]{\n  background: #00E396;\n}\n.Callback[data-v-085f924c]{\n  background: #FFA500;\n}\n.Unreachable[data-v-085f924c]{\n  background: #E30000;\n}\n.option2[data-v-085f924c]{\n    background-color: #fff;\n    color:#575958;\n}\n", ""]);
 
 // exports
 
@@ -1612,7 +1607,9 @@ var render = function() {
               _vm.tab === "Successful"
                 ? _c("span", { staticClass: "user mx-auto", class: _vm.tab }, [
                     _vm._v(
-                      "\n                " + _vm._s(_vm.OId) + "\n            "
+                      "\n                " +
+                        _vm._s(_vm.OId + _vm.index) +
+                        "\n            "
                     )
                   ])
                 : _c(
