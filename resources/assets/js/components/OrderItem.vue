@@ -22,7 +22,7 @@
             </span>
             <div v-if="mode === 'renewal'">
                 <span v-if="tab === 'Successful'" class="user mx-auto" :class="tab">
-                    {{OId}}
+                    {{OId+index}}
                 </span>
 
                 <span class="user mx-auto" :class="tab" @click="objCollector" v-else>
@@ -121,7 +121,7 @@
             index: null,
             startIndex: {default: 1},
             mode: {default: null, type: String},
-            order: {default: null, type: Order},
+            order: {default: {}, type: Order},
             tab:{default: null},
             options:{default: null},
             OId:{default: null}

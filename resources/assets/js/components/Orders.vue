@@ -408,9 +408,9 @@
                 activeOrder: null,
                 showModalContent: false,
                 status:[],
-                responseData:null,
+                responseData:{},
                 page: 1,
-                OId:0
+                OId:0,
             }
         },
 
@@ -419,10 +419,6 @@
         },
 
         methods: {
-            auth(role){
-                return this.$store.getters.auth(role);
-            },
-            //FSLLead
             getOrderStatus: activeOrder => getOrderStatus(activeOrder),
 
             getOrderStatusClass: orderStatus => getOrderStatusClass(orderStatus),
