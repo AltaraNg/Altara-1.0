@@ -3454,7 +3454,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
 
 exports.default = {
     components: { Verification: _verification2.default },
@@ -3813,7 +3812,8 @@ var render = function() {
                     }
                   },
                   [
-                    _vm.mode === "register"
+                    _vm.mode === "register" ||
+                    _vm.$store.getters.auth("DVAAccess")
                       ? _c("div", [
                           _c("h5", [_vm._v("Employee Details")]),
                           _vm._v(" "),
@@ -4289,13 +4289,8 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c("div", { staticClass: "spaceAfter" })
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.mode === "register" ||
-                    _vm.$store.getters.auth("DVAAccess")
-                      ? _c("div", [
+                          _c("div", { staticClass: "spaceAfter" }),
+                          _vm._v(" "),
                           _c("h5", [_vm._v("Address")]),
                           _vm._v(" "),
                           _c(
