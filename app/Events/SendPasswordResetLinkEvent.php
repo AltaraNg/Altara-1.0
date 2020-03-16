@@ -23,9 +23,7 @@ class SendPasswordResetLinkEvent
      */
     public function __construct(PasswordResets $passwordResets)
     {
-        //
         $this->passwordResets = $passwordResets;
-//        dd($this->passwordResets);
     }
 
     /**
