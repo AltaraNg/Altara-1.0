@@ -390,7 +390,10 @@ class OrderWithPromiseCall extends Order {
             message = `Hello ${this.customerName}, This is to remind you that your`
                 + ` ${vue.$getColumn(parseInt(this.repaymentLevel) + 1)} repayment of`
                 + ` ${vue.$formatCurrency(vue.$roundDownAmt(repayment_amount))} for ${product_name}`
-                + ` will be due on ${this.dueDates[this.repaymentLevel]}. we will be expecting you.`;
+                + ` will be due on ${this.dueDates[this.repaymentLevel]}. we will be expecting you to either make a transfer to Altara Account or make cash payment at Altara showroom.`
+                + `Please remember not to make payment in any form through any Altara Agent. Also, pay on `
+                + `time to avoid late fees and other penalties.`
+                + `Thank you.`;
         }
         this._nextSMSReminder = message + "Please remember to pay on time to avoid" +
             " late fees and other penalties.%0aThank you.";
