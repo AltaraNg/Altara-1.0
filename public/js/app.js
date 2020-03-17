@@ -86,7 +86,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"106e68be836c82a8ca13","1":"a44dd7f7df6d07842d40","2":"a707228731a81ab43bbe","3":"0e3e5c311fbc3b882c4e","4":"9c21f9378e07b466e29e","5":"cdd43770b8c8d6ec1319","6":"cc05271d0f1d2c5f9e71","7":"312f24721f4241accf13","8":"6bdc30f3177c6999e6b3","9":"d6d43bcb597a1b9f460a","10":"32242ffc5dd330f643e5","11":"ace73c4558e11e9488ac","12":"8d6568f59c22f732fca5","13":"271084a11020833d4626","14":"af6d3f28491bfe55eb54","15":"45bad962e0aff048502b","16":"b5045aedc76906b41041","17":"70ba3101e49927170824","18":"dd08ff9aada3bd1ed18b","19":"e206c9cd76aa3e12a13c","20":"49a6666da074c03900c3","21":"4dfaec7e06441793f2d3","22":"66e5739c8db4170047bd","23":"d017b7a6b8f2c9bd52af","24":"9420a34a4137e9f5d3d4","25":"1e923457ad3456460928","26":"cfb866e85b64f2cc9d16","27":"2a916b4929045a59fad2","28":"39f96213a770c9ccd443","29":"9af66b53b767c2ae975b","30":"c5b13a2585f135c10c39","31":"6b21a442cddc184f8235","32":"0420a7cab1a646d4d0c5","33":"4eb5f0aab1f0d8cd6e8e","34":"ab04934ef03358379bfa","35":"b0f1bfb31d8e68cd3034","36":"51675534d64f3f4902a7","37":"d37cbc4870b4244406a8","38":"dce5ac38bcf8541e91e4","39":"931bfeb6d92016d05673","40":"72ea11c9c53eda480f95","41":"6904176b13dcf1fad7aa","42":"83a9c1e5ec95d1dead35"}[chunkId] + "";
+/******/ 		script.src = __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"527b1ee2dae3959a14db","1":"dd6c911c09c165b8bf44","2":"282779b3dad64190ac9e","3":"a0dcabc67fa9d49696d5","4":"cc8dd9479b655ad715ae","5":"65079a6497214a898031","6":"0c31a2bada136602ce90","7":"a59ab5ceb2a50d7e6a4d","8":"0a5b734f95d939bb1134","9":"d6d43bcb597a1b9f460a","10":"32242ffc5dd330f643e5","11":"ace73c4558e11e9488ac","12":"8d6568f59c22f732fca5","13":"271084a11020833d4626","14":"af6d3f28491bfe55eb54","15":"45bad962e0aff048502b","16":"b5045aedc76906b41041","17":"70ba3101e49927170824","18":"dd08ff9aada3bd1ed18b","19":"e206c9cd76aa3e12a13c","20":"49a6666da074c03900c3","21":"4dfaec7e06441793f2d3","22":"66e5739c8db4170047bd","23":"d017b7a6b8f2c9bd52af","24":"9420a34a4137e9f5d3d4","25":"1e923457ad3456460928","26":"cfb866e85b64f2cc9d16","27":"2a916b4929045a59fad2","28":"39f96213a770c9ccd443","29":"9af66b53b767c2ae975b","30":"c5b13a2585f135c10c39","31":"6b21a442cddc184f8235","32":"0420a7cab1a646d4d0c5","33":"4eb5f0aab1f0d8cd6e8e","34":"ab04934ef03358379bfa","35":"b0f1bfb31d8e68cd3034","36":"51675534d64f3f4902a7","37":"d37cbc4870b4244406a8","38":"dce5ac38bcf8541e91e4","39":"931bfeb6d92016d05673","40":"72ea11c9c53eda480f95","41":"6904176b13dcf1fad7aa","42":"83a9c1e5ec95d1dead35"}[chunkId] + "";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -6834,6 +6834,89 @@ module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime
 
 }));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
 
 
 /***/ }),
@@ -51704,6 +51787,8 @@ var _auth2 = _interopRequireDefault(_auth);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+_axios2.default.defaults.baseURL = "http://staging.altaracredit.com/";
+console.log('dddd122', "http://staging.altaracredit.com/");
 var get = exports.get = function get(url) {
     return (0, _axios2.default)({ method: 'GET', url: url, headers: { 'Authorization': 'Bearer ' + _auth2.default.state.api_token } });
 };
