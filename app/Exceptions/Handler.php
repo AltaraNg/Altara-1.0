@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-//        dd($e);
+        dd($e);
         if ($e instanceof ValidationException) {
             $data = [
                 "errors" => $e->validator->getMessageBag()->getMessages(),
