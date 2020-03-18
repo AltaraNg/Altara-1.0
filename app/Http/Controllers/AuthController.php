@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SendPasswordResetLinkEvent;
+use App\PasswordResets;
+use App\Repositories\AuthRepository;
 use App\User;
 use Hash;
 use Illuminate\Http\Request;
@@ -9,6 +12,21 @@ use Validator;
 
 class AuthController extends Controller
 {
+    /**
+     * @var AuthRepository
+     */
+    private $authRepository;
+
+    /**
+     * AuthController constructor.
+     * @param AuthRepository $authRepository
+     */
+    public function __construct(AuthRepository $authRepository)
+    {
+
+        $this->authRepository = $authRepository;
+    }
+
     public function login(Request $request)
     {
         $message = 'Check your login details and try again!';
@@ -53,6 +71,20 @@ class AuthController extends Controller
         $user->api_token = null;
         $user->save();
         return response()->json(['logged_out' => true]);
+    }
+
+    public function sendResetLinkEmail()
+    {
+        $data = $this->validate(request(), PasswordResets::$rules);
+        $this->authRepository->sendResetLinkEmail($data);
+        return response()->json(['data' => [], 'message' => 'Reset Email Successfully Sent'], 201);
+    }
+
+    public function reset()
+    {
+        $data = $this->validate(request(), PasswordResets::$resetRules);
+        $this->authRepository->resetPassword($data);
+        return response()->json(['data' => [], 'message' => 'Password reset Successful'], 200);
     }
 
     public function resetPassword($id)
