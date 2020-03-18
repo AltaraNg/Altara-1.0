@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		43: 0
+/******/ 		44: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -86,7 +86,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"527b1ee2dae3959a14db","1":"dd6c911c09c165b8bf44","2":"282779b3dad64190ac9e","3":"a0dcabc67fa9d49696d5","4":"cc8dd9479b655ad715ae","5":"65079a6497214a898031","6":"0c31a2bada136602ce90","7":"a59ab5ceb2a50d7e6a4d","8":"0a5b734f95d939bb1134","9":"d6d43bcb597a1b9f460a","10":"32242ffc5dd330f643e5","11":"ace73c4558e11e9488ac","12":"8d6568f59c22f732fca5","13":"271084a11020833d4626","14":"af6d3f28491bfe55eb54","15":"45bad962e0aff048502b","16":"b5045aedc76906b41041","17":"70ba3101e49927170824","18":"dd08ff9aada3bd1ed18b","19":"e206c9cd76aa3e12a13c","20":"49a6666da074c03900c3","21":"4dfaec7e06441793f2d3","22":"66e5739c8db4170047bd","23":"d017b7a6b8f2c9bd52af","24":"9420a34a4137e9f5d3d4","25":"1e923457ad3456460928","26":"cfb866e85b64f2cc9d16","27":"2a916b4929045a59fad2","28":"39f96213a770c9ccd443","29":"9af66b53b767c2ae975b","30":"c5b13a2585f135c10c39","31":"6b21a442cddc184f8235","32":"0420a7cab1a646d4d0c5","33":"4eb5f0aab1f0d8cd6e8e","34":"ab04934ef03358379bfa","35":"b0f1bfb31d8e68cd3034","36":"51675534d64f3f4902a7","37":"d37cbc4870b4244406a8","38":"dce5ac38bcf8541e91e4","39":"931bfeb6d92016d05673","40":"72ea11c9c53eda480f95","41":"6904176b13dcf1fad7aa","42":"83a9c1e5ec95d1dead35"}[chunkId] + "";
+/******/ 		script.src = __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"044115d28bfffc0a6fbf","1":"a44dd7f7df6d07842d40","2":"6443fcfd020d7f3d5f94","3":"f36e48c83e8438e3f199","4":"5898e2fd6d216de1a38a","5":"41c5565aa330eef26966","6":"35dcea922f1deb625804","7":"355abe7a786df6200b0c","8":"fbeb51819130a3148bd7","9":"6bdc30f3177c6999e6b3","10":"d6d43bcb597a1b9f460a","11":"32242ffc5dd330f643e5","12":"ace73c4558e11e9488ac","13":"17fde71b106b082f5b37","14":"271084a11020833d4626","15":"af6d3f28491bfe55eb54","16":"45bad962e0aff048502b","17":"b5045aedc76906b41041","18":"70ba3101e49927170824","19":"dd08ff9aada3bd1ed18b","20":"e206c9cd76aa3e12a13c","21":"49a6666da074c03900c3","22":"4dfaec7e06441793f2d3","23":"66e5739c8db4170047bd","24":"d017b7a6b8f2c9bd52af","25":"9420a34a4137e9f5d3d4","26":"1e923457ad3456460928","27":"cfb866e85b64f2cc9d16","28":"2a916b4929045a59fad2","29":"39f96213a770c9ccd443","30":"9af66b53b767c2ae975b","31":"c5b13a2585f135c10c39","32":"6b21a442cddc184f8235","33":"0420a7cab1a646d4d0c5","34":"4eb5f0aab1f0d8cd6e8e","35":"ab04934ef03358379bfa","36":"b0f1bfb31d8e68cd3034","37":"51675534d64f3f4902a7","38":"d37cbc4870b4244406a8","39":"dce5ac38bcf8541e91e4","40":"931bfeb6d92016d05673","41":"72ea11c9c53eda480f95","42":"6904176b13dcf1fad7aa","43":"83a9c1e5ec95d1dead35"}[chunkId] + "";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -6834,89 +6834,6 @@ module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime
 
 }));
 //# sourceMappingURL=bootstrap.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
 
 
 /***/ }),
@@ -51257,48 +51174,48 @@ var _vueRouterBackButton = __webpack_require__("./node_modules/vue-router-back-b
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
-    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
+    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/HomePage.vue"));
 };
 
 var Login = function Login() {
-    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
+    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/auth/Login.vue"));
 };
 
 var NotFound = function NotFound() {
-    return __webpack_require__.e/* import() */(34).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
+    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/NotFound.vue"));
 };
 
 var DSA = function DSA() {
-    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/Index.vue"));
+    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/Index.vue"));
 };
 var DSAHome = function DSAHome() {
-    return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
+    return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/HomePage.vue"));
 };
 var DSAReport = function DSAReport() {
-    return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
+    return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/DSA/report/report.vue"));
 };
 var CustomerForm = function CustomerForm() {
     return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, "./resources/assets/js/views/shared/customerForm.vue"));
 };
 
 var DVA = function DVA() {
-    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/Index.vue"));
+    return __webpack_require__.e/* import() */(28).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/Index.vue"));
 };
 var DVAHome = function DVAHome() {
-    return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
+    return __webpack_require__.e/* import() */(14).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/HomePage.vue"));
 };
 var DVAMessage = function DVAMessage() {
-    return __webpack_require__.e/* import() */(42).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
+    return __webpack_require__.e/* import() */(43).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/messaging/message.vue"));
 };
 var DVAVerification = function DVAVerification() {
     return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/verification/verification.vue"));
 };
 
 var CAG = function CAG() {
-    return __webpack_require__.e/* import() */(29).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/index.vue"));
+    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/index.vue"));
 };
 var CAGHome = function CAGHome() {
-    return __webpack_require__.e/* import() */(15).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/HomePage.vue"));
+    return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/CAG/HomePage.vue"));
 };
 
 var OrderList = function OrderList() {
@@ -51309,95 +51226,98 @@ var AllOverdue = function AllOverdue() {
 };
 
 var Reminder = function Reminder() {
-    return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/reminder.vue"));
+    return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/views/DVA/reminder/reminder.vue"));
 };
 
 var Profile = function Profile() {
-    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
+    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Index.vue"));
 };
 var ProfileEdit = function ProfileEdit() {
-    return __webpack_require__.e/* import() */(32).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
+    return __webpack_require__.e/* import() */(33).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/Edit.vue"));
 };
 var ProfileHome = function ProfileHome() {
     return __webpack_require__.e/* import() */(3).then(__webpack_require__.bind(null, "./resources/assets/js/views/profile/HomePage.vue"));
 };
 
 var HRM = function HRM() {
-    return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
+    return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/index.vue"));
 };
 var HRMHome = function HRMHome() {
-    return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
+    return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/HomePage.vue"));
 };
 var DataViewer = function DataViewer() {
-    return __webpack_require__.e/* import() */(8).then(__webpack_require__.bind(null, "./resources/assets/js/components/DataViewer.vue"));
+    return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/components/DataViewer.vue"));
 };
 var EmployeeForm = function EmployeeForm() {
-    return __webpack_require__.e/* import() */(9).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/employeeForm.vue"));
+    return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/employee/employeeForm.vue"));
 };
 
 var AltaraPay = function AltaraPay() {
-    return __webpack_require__.e/* import() */(30).then(__webpack_require__.bind(null, "./resources/assets/js/views/AltaraPay/index.vue"));
+    return __webpack_require__.e/* import() */(31).then(__webpack_require__.bind(null, "./resources/assets/js/views/AltaraPay/index.vue"));
 };
 var AltaraPayHome = function AltaraPayHome() {
-    return __webpack_require__.e/* import() */(16).then(__webpack_require__.bind(null, "./resources/assets/js/views/AltaraPay/HomePage.vue"));
+    return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/AltaraPay/HomePage.vue"));
 };
 var DirectDebitSales = function DirectDebitSales() {
     return __webpack_require__.e/* import() */(4).then(__webpack_require__.bind(null, "./resources/assets/js/views/AltaraPay/sales/DirectDebitSales.vue"));
 };
 
 var Caution = function Caution() {
-    return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/index.vue"));
+    return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/index.vue"));
 };
 var CautionForm = function CautionForm() {
-    return __webpack_require__.e/* import() */(22).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/form.vue"));
+    return __webpack_require__.e/* import() */(23).then(__webpack_require__.bind(null, "./resources/assets/js/views/HRM/caution/form.vue"));
 };
 
 var FSL = function FSL() {
-    return __webpack_require__.e/* import() */(26).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
+    return __webpack_require__.e/* import() */(27).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/index.vue"));
 };
 var FSLHome = function FSLHome() {
-    return __webpack_require__.e/* import() */(12).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
+    return __webpack_require__.e/* import() */(13).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/HomePage.vue"));
 };
 var BranchForm = function BranchForm() {
-    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
+    return __webpack_require__.e/* import() */(40).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/branch/form.vue"));
 };
 var POSForm = function POSForm() {
-    return __webpack_require__.e/* import() */(37).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/pos/form.vue"));
+    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/pos/form.vue"));
 };
 var PaymentForm = function PaymentForm() {
-    return __webpack_require__.e/* import() */(38).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/payment/form.vue"));
+    return __webpack_require__.e/* import() */(39).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/payment/form.vue"));
 };
 var CustomerLookup = function CustomerLookup() {
     return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/lookup/lookup.vue"));
 };
 
 var Attendance = function Attendance() {
-    return __webpack_require__.e/* import() */(40).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
+    return __webpack_require__.e/* import() */(41).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/index.vue"));
 };
 var AttendanceForm = function AttendanceForm() {
-    return __webpack_require__.e/* import() */(41).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
+    return __webpack_require__.e/* import() */(42).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/attendance/form.vue"));
 };
 
 var LOG = function LOG() {
-    return __webpack_require__.e/* import() */(24).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/index.vue"));
+    return __webpack_require__.e/* import() */(25).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/index.vue"));
 };
 var LOGHome = function LOGHome() {
-    return __webpack_require__.e/* import() */(10).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/HomePage.vue"));
+    return __webpack_require__.e/* import() */(11).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/HomePage.vue"));
 };
 var Inventory = function Inventory() {
-    return __webpack_require__.e/* import() */(35).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
+    return __webpack_require__.e/* import() */(36).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/inventory/inventory.vue"));
 };
 var SuppliersForm = function SuppliersForm() {
-    return __webpack_require__.e/* import() */(17).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/supplier/form.vue"));
+    return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/supplier/form.vue"));
 };
 var BrandForm = function BrandForm() {
-    return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/brand/form.vue"));
+    return __webpack_require__.e/* import() */(21).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/brand/form.vue"));
 };
 var CategoryForm = function CategoryForm() {
-    return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/category/form.vue"));
+    return __webpack_require__.e/* import() */(20).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/category/form.vue"));
 };
 var ProductForm = function ProductForm() {
-    return __webpack_require__.e/* import() */(18).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/product/form.vue"));
+    return __webpack_require__.e/* import() */(19).then(__webpack_require__.bind(null, "./resources/assets/js/views/LOG/product/form.vue"));
+};
+var Renewal = function Renewal() {
+    return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, "./resources/assets/js/views/FSL/renewal/renewal.vue"));
 };
 
 _vue2.default.use(_vueRouter2.default);
@@ -51459,7 +51379,7 @@ var router = new _vueRouter2.default({
             component: AttendanceForm,
             name: 'attendanceCreateFsl',
             meta: { mode: 'create' }
-        }, { path: 'sales', component: OrderList, name: 'sales-fsl', meta: { customSMS: true } }, { path: 'sales/create', component: POSForm, name: 'post-sales' }, { path: 'payment', component: PaymentForm, name: 'down-payment' }, { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: { customSMS: true } }]
+        }, { path: 'sales', component: OrderList, name: 'sales-fsl', meta: { customSMS: true } }, { path: 'sales/create', component: POSForm, name: 'post-sales' }, { path: 'payment', component: PaymentForm, name: 'down-payment' }, { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: { customSMS: true } }, { path: 'reminder/renewal', component: Renewal, name: 'renewal', meta: { mode: 'renewal' } }]
     }, {
         path: '/log', component: LOG, meta: { LOG: true }, children: [{ path: 'home', component: LOGHome, name: 'LOGHome' }, { path: 'inventory', component: Inventory, name: 'inventory' }, {
             path: 'brands',
@@ -51775,7 +51695,7 @@ var store = exports.store = new _vuex2.default.Store({
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.interceptors = exports.del = exports.postD = exports.byMethod = exports.post = exports.get = undefined;
+exports.interceptors = exports.del = exports.postD = exports.byMethod = exports.put = exports.post = exports.get = undefined;
 
 var _axios = __webpack_require__("./node_modules/axios/index.js");
 
@@ -51795,6 +51715,14 @@ var get = exports.get = function get(url) {
 var post = exports.post = function post(url, data) {
     return (0, _axios2.default)({
         method: 'POST',
+        url: url,
+        data: data,
+        headers: { 'Authorization': 'Bearer ' + _auth2.default.state.api_token }
+    });
+};
+var put = exports.put = function put(url, data) {
+    return (0, _axios2.default)({
+        method: 'PUT',
         url: url,
         data: data,
         headers: { 'Authorization': 'Bearer ' + _auth2.default.state.api_token }
@@ -51851,7 +51779,8 @@ exports.default = {
         api_token: null,
         user_name: null,
         user_id: null,
-        role: null
+        role: null,
+        branch_id: null
     },
     initialize: function initialize() {
         this.state.portal_access = parseInt(localStorage.getItem('portal_access'));
@@ -51859,6 +51788,7 @@ exports.default = {
         this.state.user_name = localStorage.getItem('user_name');
         this.state.api_token = localStorage.getItem('api_token');
         this.state.role = parseInt(localStorage.getItem('role'));
+        this.state.branch_id = parseInt(localStorage.getItem('branch_id'));
     },
     set: function set(data) {
         localStorage.setItem('portal_access', data.portal_access);
@@ -51866,6 +51796,8 @@ exports.default = {
         localStorage.setItem('api_token', data.api_token);
         localStorage.setItem('user_id', data.user_id);
         localStorage.setItem('role', data.role);
+        localStorage.setItem('branch_id', data.branch_id);
+
         this.initialize();
     },
     remove: function remove() {
