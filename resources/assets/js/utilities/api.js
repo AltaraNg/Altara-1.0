@@ -10,6 +10,12 @@ export const post = (url, data) => axios({
     data,
     headers: {'Authorization': `Bearer ${Auth.state.api_token}`}
 });
+export const put = (url, data) => axios({
+    method: 'PUT',
+    url,
+    data,
+    headers: {'Authorization': `Bearer ${Auth.state.api_token}`}
+});
 export const byMethod = (method, url, data) => axios({
     method,
     url,

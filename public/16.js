@@ -43,7 +43,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/AltaraPay/HomePage.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/CAG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64,30 +64,14 @@ exports.default = {
     data: function data() {
         return {
             portals: [{
-                url: 'direct-debit-sales',
-                title: 'Direct Debit Sales List',
-                url_c: 'View Direct Debit Sales List',
-                desc: 'View Direct Debit Sales!'
-            }, {
-                url: 'direct-debit-overdue',
-                title: 'Direct Debit overdue payments list',
-                url_c: 'View Direct Debit Overdue payments',
-                desc: 'View Direct Debit overdue payment!'
-            }, {
-                url: 'lookup',
-                title: 'Customer Lookup',
-                url_c: 'Manage customer repayment details',
-                desc: 'Customer Lookup'
-            }, {
-                url: 'verification',
-                title: 'Document Verification',
-                url_c: 'Verify Registered Customer!',
-                desc: 'For Verification of registered customers'
-            }, {
-                url: '/customer',
-                title: 'Customer List',
-                url_c: 'View Customer List',
+                url: '/customer', title: 'Customer List', url_c: 'View Customer List',
                 desc: 'View all registered customers!'
+            }, {
+                url: 'sales', title: 'Sales List', url_c: 'View Sales List',
+                desc: 'View all Sales!'
+            }, {
+                url: 'all-overdue', title: 'All overdue payments list', url_c: 'View All Overdue payments',
+                desc: 'View all overdue payment!'
             }]
         };
     }
@@ -168,7 +152,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b7a33f22\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/AltaraPay/HomePage.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6268a107\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/CAG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -187,7 +171,8 @@ var render = function() {
                 url: portal.url,
                 title: portal.title,
                 url_c: portal.url_c,
-                desc: portal.desc
+                desc: portal.desc,
+                aces: portal.aces
               }
             })
           ],
@@ -204,7 +189,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b7a33f22", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6268a107", module.exports)
   }
 }
 
@@ -258,15 +243,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/js/views/AltaraPay/HomePage.vue":
+/***/ "./resources/assets/js/views/CAG/HomePage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/AltaraPay/HomePage.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"babel-preset-env\"],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"babel-plugin-syntax-dynamic-import\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/CAG/HomePage.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b7a33f22\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/AltaraPay/HomePage.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6268a107\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/CAG/HomePage.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -283,7 +268,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/views/AltaraPay/HomePage.vue"
+Component.options.__file = "resources/assets/js/views/CAG/HomePage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -292,9 +277,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b7a33f22", Component.options)
+    hotAPI.createRecord("data-v-6268a107", Component.options)
   } else {
-    hotAPI.reload("data-v-b7a33f22", Component.options)
+    hotAPI.reload("data-v-6268a107", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

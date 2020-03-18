@@ -10,16 +10,25 @@
             </span>
             <div v-else-if="order.reminder.canBeSelected && mode === 'sms'" class="d-flex align-items-center">
                 <input class="form-check-input my-0 mx-4 float-left position-relative " type="checkbox"
-                       v-model="order.isSelected" @click="toggleSelect">
+                v-model="order.isSelected" @click="toggleSelect">
             </div>
-            <span class="user mx-auto sent-reminder" v-else><i class="fas fa-check"></i></span>
-            <span class="user mx-auto" :class="getOrderStatusClass(getOrderStatus(order))">
+            <span class="user mx-auto sent-reminder" v-else-if=" mode != 'renewal'" ><i class="fas fa-check"></i></span>
+            <span class="user mx-auto" v-if=" mode != 'renewal'" :class="getOrderStatusClass(getOrderStatus(order))">
                 {{startIndex + index}}
             </span>
 
             <span v-if="$route.meta.customSMS">
                 <CustomSMSButton :order="order" :key="order.order.id"/>
             </span>
+            <div v-if="mode === 'renewal'">
+                <span v-if="tab === 'Successful'" class="user mx-auto" :class="tab">
+                    {{OId+index}}
+                </span>
+
+                <span class="user mx-auto" :class="tab" @click="objCollector" v-else>
+                    {{OId+index}}
+                </span>
+            </div>
         </div>
 
         <div class="col-12 col-xs-2 col-md col-lg user-name d-flex align-items-center justify-content-center">
@@ -41,7 +50,7 @@
             {{order.financialStatus}}
         </div>
 
-        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center" v-if="mode != 'renewal'"
              @click="$emit('display', order, 'reminder_history')" data-hoverable="true">
             {{order.order.reminders.length}} reminder(s) sent
         </div>
@@ -72,8 +81,28 @@
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'call'">
             <input class="form-control" type="date" v-model="order.promiseCall.date"
                    :disabled="!order.reminder.canBeSelected">
+        </div> 
+
+        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'renewal' && tab === 'Successful'">
+            {{order.order.renewal.feedback}}
+        </div> 
+
+        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center " v-if="mode === 'renewal' && tab != 'Successful'">
+            <select v-model="status" class="form-control option2">
+                <option disabled value="">Please select one</option>
+                <option :key="option.id" v-for="option in options" v-bind:value="option.id">
+                    {{ option.status }}
+                </option>
+            </select>
         </div>
 
+        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'renewal' && tab != 'Successful'">
+            <input v-model="dateTime" class="form-control" type="datetime-local">
+        </div>       
+        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'renewal' && tab != 'Successful'">
+            <textarea v-model="feedback" class="form-control" rows="1">
+            </textarea>
+        </div>
     </div>
 </template>
 
@@ -92,12 +121,23 @@
             index: null,
             startIndex: {default: 1},
             mode: {default: null, type: String},
-            order: {default: null, type: Order}
+            order: {default: {}, type: Order},
+            tab:{default: null},
+            options:{default: null},
+            OId:{default: null}
         },
 
         created() {
             //EventBus.$on('selectOrderItem', this.toggleSelect);
             this.order.setReminder(this.mode);
+        },
+
+        data() {
+            return {
+                status: "",
+                dateTime:"",
+                feedback:"",
+            };
         },
 
         methods: {
@@ -132,7 +172,53 @@
                 if (this.order.reminder.canBeSelected) {
                     this.order.isSelected = (val !== null) ? val : !this.order.isSelected;
                 }
+            },
+
+            objCollector() {
+                if(!this.status || !this.dateTime || !this.feedback){
+                    return this.errHandler("Please enter all required values.");
+                }
+                const today = new Date().toLocaleDateString("en-US");
+                const nWeek = new Date().setDate(new Date().getDate()+ 7);
+                const Cdate = this.dateTime.split('T')[0];
+                if (Date.parse(Cdate)-Date.parse(today) < 1 || Date.parse(Cdate) > nWeek){
+                    return this.errHandler("Pease enter a valid date.") 
+                };
+                const renew = this.order.order.renewal ? this.order.order.renewal.id : '';
+                const data = {
+                    order_id: this.order.order.id,
+                    renewalId:renew,
+                    feedback: this.feedback,
+                    status_id: this.status,
+                    callback_date: this.dateTime.split('T')[0],
+                    callback_time: this.dateTime.split('T')[1],
+                }
+                this.$emit('popIt',data);
+            },
+
+            errHandler(param){
+                return Flash.setError(param);
             }
-        }
+
+        },
+
     }
 </script>
+<style scoped>
+.Current{
+  background: #EDEEF2;
+}
+.Successful{
+  background: #00E396;
+}
+.Callback{
+  background: #FFA500;
+}
+.Unreachable{
+  background: #E30000;
+}
+.option2{
+    background-color: #fff;
+    color:#575958;
+}
+</style>

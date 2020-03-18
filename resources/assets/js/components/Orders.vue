@@ -10,7 +10,11 @@
                     :start-index="startIndex"
                     :order="order"
                     :mode="mode"
-                    @done="fetchList(list)"
+                    :tab="list"
+                    :options="status"
+                    :OId="OId"
+                    v-on:popIt="popIt"
+                    @done="fetchRenewalList(list)"
                     @display="displayDetails"/>
             </div>
             <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
@@ -343,15 +347,39 @@
             </div>
         </div>
 
+        <nav v-if="mode === 'renewal'" class="col d-flex justify-content-end align-items-center pr-0">
+            <ul class="pagination pagination-lg mb-0">
+                <!---->
+                <li :class="{'disabled':!responseData.first_page_url}" class="page-item">
+                    <a href="javascript:" @click="prev(1)" class="page-link">First</a>
+                </li>
+                <li :class="{'disabled':!responseData.prev_page_url }" class="page-item">
+                    <a href="javascript:" @click="prev()" class="page-link">prev</a>
+                </li>
+                <!---->
+                <li class="page-item">
+                    <span class="page-link">Current Page: {{responseData.current_page}}</span>
+                </li>
+                <!---->
+                <li :class="{'disabled':!responseData.next_page_url}" class="page-item">
+                    <a href="javascript:" @click="next()" class="page-link">Next</a>
+                </li>
+                <li :class="{'disabled':!responseData.last_page_url}" class="page-item">
+                    <a href="javascript:" @click="next(responseData.last_page)" class="page-link">Last</a>
+                </li>
+                <!---->
+            </ul>
+        </nav>
     </div>
 </template>
 
 <script>
     import Vue from 'vue';
     import {mapGetters} from 'vuex';
+    import queryParam from "../utilities/queryParam";
     import Flash from "../utilities/flash";
     import {Message} from "../utilities/sms";
-    import {get, post} from "../utilities/api";
+    import {get, post,put} from "../utilities/api";
     import OrderItem from '../components/OrderItem';
     import {Order, OrderWithPromiseCall} from "../utilities/Amortization";
     import {getOrderStatus, getOrderStatusClass} from '../components/order/orderStatusCssClass';
@@ -361,11 +389,11 @@
     export default {
         components: {OrderItem},
 
-        props: {list: {default: null}, mode: null, preLoadedOrder: null, startIndex: null},
+        props: {list: {default: null}, mode: null, preLoadedOrder: null, startIndex: null,tab:{default: null}},
 
         watch: {
             list: function (list) {
-                this.fetchList(list);
+               this.mode === 'renewal' ? this.fetchRenewalList(list) : this.fetchList(list);
             },
             preLoadedOrder: function (data) {
                 this.prepareForm(data);
@@ -379,6 +407,10 @@
                 Order: Order,
                 activeOrder: null,
                 showModalContent: false,
+                status:[],
+                responseData:{},
+                page: 1,
+                OId:0,
             }
         },
 
@@ -411,13 +443,12 @@
                 }
                 return orderInstancesArr;
             },
-
-            fetchList(list) {
+             fetchList(list) {
                 this.$LIPS(true);
                 let filterWithBranch = !(this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess'));
                 get(url({query: {list, filterWithBranch}})).then(({data}) => {
                     if (list === 8) data.orders = data.orders.map(promiseCall => promiseCall.order);
-                    this.prepareForm(data);
+                 this.prepareForm(data);
                 });
             },
 
@@ -478,11 +509,107 @@
                         this.$scrollToTop();
                     });
                 } else this.$displayErrorMessage('Error logging sent messages!');
-            }
+            },
+
+            async fetchRenewalList(list) {
+                this.$LIPS(true);
+                await this.fetchStatus();
+            },
+
+            async fetchStatus(){
+               try{
+                    const fetchAllStatus = await get(`/api/renewal-list-status`);
+                    this.status = fetchAllStatus.data.data;
+                    this.$LIPS(false);
+                    await this.fetchRenewal();  
+               }
+               catch(err){
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false)
+               }
+            },
+
+            async fetchRenewal(){
+                this.$LIPS(true);
+                try{
+                    const status = this.list === "Current" ? '': this.list ? this.status.find(option => option.status === this.list.toLowerCase()).id : '';
+                        
+                    const adminAccess = this.auth('FSLLead');
+                    const branch_id = parseInt(localStorage.getItem('branch_id'));
+                    const nonAdmin ={
+                        page: this.page,
+                        branch_id: branch_id
+                    }
+                    
+                    const admin = {
+                        page: this.page
+                    }
+
+                    const base = `/api/renewal-list`;
+                    const url1  = `${base}${adminAccess ? queryParam(admin) : queryParam(nonAdmin)}`;
+                    const url0 = `${base}/status/${status}${adminAccess ? queryParam(admin) : queryParam(nonAdmin)}`;
+
+                    const data = await get( status ? url0 : url1);
+                    this.responseData = data.data.data;
+                    this.OId =this.responseData.from;
+                    await this.prepareForm({orders:data.data.data.data});
+                }
+                catch(err) {
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false)    
+                }
+            },
+             popIt(param){
+             this.list === "Current" ?  this.postRenewal(param) : this.updateRenewal(param);
+            },
+
+            async updateRenewal(param){
+                this.$LIPS(true);
+                const {a, ...b} = param;
+                try{
+                    await put(`/api/renewal-list/${param.renewalId}`,b);
+                    this.orders = this.orders.filter(p => p.order.id != param.order_id);
+                    this.$LIPS(false);
+                }
+                catch(err){
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false)
+                }
+            },
+
+            async postRenewal(param){
+                this.$LIPS(true);
+                try{
+                    await post(`/api/renewal-list`,param);
+                    this.orders = this.orders.filter(p => p.order.id != param.order_id);
+                    this.$LIPS(false);
+                }
+                catch(err){
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false)
+                }
+            },
+
+            next(firstPage = null) {
+                if (this.responseData.next_page_url) {
+                    this.page = firstPage ? firstPage : parseInt(this.page) + 1;
+                    this.fetchRenewal();
+                }
+            },
+
+            prev(lastPage = null) {
+                if (this.responseData.prev_page_url) {
+                    this.page = lastPage ? lastPage : parseInt(this.page) - 1;
+                    this.fetchRenewal();
+                }
+            },
         },
 
         mounted() {
-            this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
+            this.mode === 'renewal' ? this.fetchRenewalList(this.list) : 
+            this.mode != 'normal-list' ? this.fetchList(this.list) : 
+            this.prepareForm(this.preLoadedOrder);
+
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.activeOrder = null;
                 this.showModalContent = false;
