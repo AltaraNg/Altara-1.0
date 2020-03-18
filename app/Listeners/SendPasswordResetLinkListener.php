@@ -26,6 +26,6 @@ class SendPasswordResetLinkListener
      */
     public function handle($event)
     {
-        Mail::to($event->passwordResets->getOriginal()['email'])->send(new SendPasswordResetLink($event->passwordResets->token));
+        Mail::to($event->passwordResets->getOriginal()['email'])->send(new SendPasswordResetLink($event->passwordResets->token, $event->user));
     }
 }

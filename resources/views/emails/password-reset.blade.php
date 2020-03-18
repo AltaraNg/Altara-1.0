@@ -1,4 +1,3 @@
-<p>This is a test mail {{$token}}</p>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
       xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -223,7 +222,7 @@
                                         <div
                                             style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
                                             <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0">
-                                                Dear <span style="font-weight: bold">Beaf</span>,</p>
+                                                Dear <span style="font-weight: bold">{{$user}}</span>,</p>
                                             <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
                                                 &nbsp;</p>
                                             <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
@@ -252,7 +251,7 @@
                                                         <v:textbox inset="0,0,0,0">
                                                             <center
                                                                 style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px">
-                                        <![endif]--><a href="password/reset/{{$token}}" target="_blank"
+                                        <![endif]--><a href="{{config('app.url')}}/password/reset/{{$token}}" target="_blank"
                                                        style="-webkit-text-size-adjust: none; text-decoration: none; display: inline-block; color: #ffffff; background-color: #0068a5; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; width: auto; width: auto; border-top: 1px solid #3AAEE0; border-right: 1px solid #3AAEE0; border-bottom: 1px solid #3AAEE0; border-left: 1px solid #3AAEE0; padding-top: 5px; padding-bottom: 5px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; text-align: center; mso-border-alt: none; word-break: keep-all;"><span
                                                 style="padding-left:5px;padding-right:5px;font-size:16px;display:inline-block;"><span
                                                     style="font-size: 16px; line-height: 1.5; word-break: break-word; mso-line-height-alt: 24px;">Reset Password</span></span></a>

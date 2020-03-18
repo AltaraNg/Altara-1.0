@@ -77,7 +77,7 @@ class AuthController extends Controller
     {
         $data = $this->validate(request(), PasswordResets::$rules);
         $this->authRepository->sendResetLinkEmail($data);
-        return response()->json(['data' => [], 'message' => 'Successfully created'], 201);
+        return response()->json(['data' => [], 'message' => 'Reset Email Successfully Sent'], 201);
     }
 
     public function reset()
@@ -89,14 +89,6 @@ class AuthController extends Controller
         $user->save();
         $reset->delete();
         return response()->json(['data' => [], 'message' => 'Password reset Successful'], 200);
-    }
-
-    public function showResetData()
-    {
-        $data = $this->validate(request(), ['token' => 'required|exists:password_resets,token']);
-        $resetData = PasswordResets::where('token', $data['token'])->first();
-//        dd($resetData);
-        return response()->json(['data' => $resetData, 'message' => 'Successfully created'], 201);
     }
 
     public function resetPassword($id)

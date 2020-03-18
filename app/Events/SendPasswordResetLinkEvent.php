@@ -15,15 +15,21 @@ class SendPasswordResetLinkEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $passwordResets;
+    /**
+     * @var string
+     */
+    public $user;
 
     /**
      * Create a new event instance.
      *
-     * @param $passwordResets
+     * @param PasswordResets $passwordResets
+     * @param string $user
      */
-    public function __construct(PasswordResets $passwordResets)
+    public function __construct(PasswordResets $passwordResets, string $user)
     {
         $this->passwordResets = $passwordResets;
+        $this->user = $user;
     }
 
     /**

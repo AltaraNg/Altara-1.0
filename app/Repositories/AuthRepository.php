@@ -7,10 +7,7 @@ use App\Helper\ExtractRequestObject;
 use App\Helper\OrderObject;
 use App\Order;
 use App\PasswordResets;
-use App\RenewalList;
-use App\RenewalStatus;
 use App\User;
-use Carbon\Carbon;
 
 class AuthRepository extends Repository
 {
@@ -29,7 +26,8 @@ class AuthRepository extends Repository
     {
         $data['token'] = md5($data['email'] . '_' . time() . '_' . mt_rand(1, 1000000));
         $response = PasswordResets::updateOrCreate(['email' => $data['email']], $data);
-        event(new SendPasswordResetLinkEvent($response));
+        $user = User::where('email', $response->email)->first()->full_name;
+        event(new SendPasswordResetLinkEvent($response, $user));
         return $response;
     }
 
