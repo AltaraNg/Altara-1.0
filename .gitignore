@@ -10,3 +10,7 @@ npm-debug.log
 yarn-error.log
 .env
 test.sql
+/public/*.js
+/public/js
+/public/css
+/public/mix-manifest.json
