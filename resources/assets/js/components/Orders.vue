@@ -347,7 +347,7 @@
             </div>
         </div>
 
-        <nav v-if="mode === 'renewal'" class="col d-flex justify-content-end align-items-center pr-0">
+        <nav v-if="mode === 'renewal' && responseData.next_page_url" class="col d-flex justify-content-end align-items-center pr-0">
             <ul class="pagination pagination-lg mb-0">
                 <!---->
                 <li :class="{'disabled':!responseData.first_page_url}" class="page-item">
@@ -517,6 +517,7 @@
             },
 
             async fetchStatus(){
+                this.show = false;
                try{
                     const fetchAllStatus = await get(`/api/renewal-list-status`);
                     this.status = fetchAllStatus.data.data;
@@ -548,7 +549,6 @@
                     const base = `/api/renewal-list`;
                     const url1  = `${base}${adminAccess ? queryParam(admin) : queryParam(nonAdmin)}`;
                     const url0 = `${base}/status/${status}${adminAccess ? queryParam(admin) : queryParam(nonAdmin)}`;
-
                     const data = await get( status ? url0 : url1);
                     this.responseData = data.data.data;
                     this.OId =this.responseData.from;
@@ -565,11 +565,10 @@
 
             async updateRenewal(param){
                 this.$LIPS(true);
-                const {a, ...b} = param;
                 try{
-                    await put(`/api/renewal-list/${param.renewalId}`,b);
-                    this.orders = this.orders.filter(p => p.order.id != param.order_id);
-                    this.$LIPS(false);
+                    await put(`/api/renewal-list/${param.data.renewalId}`,param.data)
+                    .then(()=> this.postFeedback(param.feedback));
+                    this.orders = this.orders.filter(p => p.order.id != param.data.order_id);
                 }
                 catch(err){
                     this.$displayErrorMessage(err);
@@ -580,13 +579,24 @@
             async postRenewal(param){
                 this.$LIPS(true);
                 try{
-                    await post(`/api/renewal-list`,param);
-                    this.orders = this.orders.filter(p => p.order.id != param.order_id);
-                    this.$LIPS(false);
+                    await post(`/api/renewal-list`,param.data)
+                    .then(()=> this.postFeedback(param.feedback));
+                    this.orders = this.orders.filter(p => p.order.id != param.data.order_id);
                 }
                 catch(err){
                     this.$displayErrorMessage(err);
                     this.$LIPS(false)
+                }
+            },
+
+            async postFeedback(param){
+                try{
+                    await post('/api/reminder', {reminders: param});
+                    this.$LIPS(false);
+                }
+                catch(err){
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false);
                 }
             },
 
