@@ -39,7 +39,6 @@
         data() {
             return {
                 listToOrder: 'Current',
-                tabG:String
             }
         },
         methods: {
@@ -54,7 +53,7 @@
                 const headings2 = ['Status','Date-Time'];
                 const headings1 = ['Action','Order Number', 'Order Summary', 'Customer Info Summary','Repayment Summary'];
                 const headings0 = [ ...headings1 , ...headings2];
-                const headings = this.tabG != "Succesful" ? headings0 : headings1;
+                const headings = this.listToOrder != "Successful" ? headings0 : headings1;
                 return {tabs, headings, list};
             },
         }

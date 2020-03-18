@@ -64,8 +64,11 @@
                     <label :for="`present${index}`">yes</label>
                 </span>
                 <span class="radio w-50 pl-3 mb-0 float-left">
-                    <input type="radio" :value="false" :id="`absent${index}`" :name="`isPresent${index}`"
-                           v-model="order.reminder.is_visited">
+                    <input type="radio" 
+                            :value="false" 
+                            :id="`absent${index}`" 
+                            :name="`isPresent${index}`"
+                            v-model="order.reminder.is_visited">
                     <label :for="`absent${index}`">no</label>
                 </span>
             </span>
@@ -83,9 +86,14 @@
                    :disabled="!order.reminder.canBeSelected">
         </div> 
 
-        <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'renewal' && tab === 'Successful'">
+        <!-- <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'renewal' && tab === 'Successful'">
             {{order.order.renewal.feedback}}
-        </div> 
+        </div>  -->
+
+         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center" v-if="mode === 'renewal' && tab === 'Successful'"
+             @click="$emit('display', order, 'reminder_history')" data-hoverable="true">
+          {{order.order.reminders.length === 1 ? '1 History' : order.order.reminders.length > 1 ? order.order.reminders.length+' Histories': 'No History'}}
+        </div>
 
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center " v-if="mode === 'renewal' && tab != 'Successful'">
             <select v-model="status" class="form-control option2">
@@ -97,7 +105,7 @@
         </div>
 
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'renewal' && tab != 'Successful'">
-            <input v-model="dateTime" class="form-control" type="datetime-local">
+            <input v-model="dateTime" :disabled="sChecker(status)" class="form-control" type="datetime-local">
         </div>       
         <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center" v-if="mode === 'renewal' && tab != 'Successful'">
             <textarea v-model="feedback" class="form-control" rows="1">
@@ -134,7 +142,7 @@
 
         data() {
             return {
-                status: "",
+                status: 0,
                 dateTime:"",
                 feedback:"",
             };
@@ -175,7 +183,7 @@
             },
 
             objCollector() {
-                if(!this.status || !this.dateTime || !this.feedback){
+                if(!this.status || this.status !=1 && !this.dateTime || !this.feedback){
                     return this.errHandler("Please enter all required values.");
                 }
                 const today = new Date().toLocaleDateString("en-US");
@@ -185,15 +193,38 @@
                     return this.errHandler("Pease enter a valid date.") 
                 };
                 const renew = this.order.order.renewal ? this.order.order.renewal.id : '';
-                const data = {
+                const data0 = {
+                    order_id: this.order.order.id,
+                    renewalId:renew,
+                    feedback: this.feedback,
+                    status_id: this.status
+                };
+                
+                const data1 = {
                     order_id: this.order.order.id,
                     renewalId:renew,
                     feedback: this.feedback,
                     status_id: this.status,
                     callback_date: this.dateTime.split('T')[0],
                     callback_time: this.dateTime.split('T')[1],
-                }
-                this.$emit('popIt',data);
+                };
+                const feedback = {
+                    customer_id:this.order.reminder.customer_id,
+                    order_id:this.order.reminder.order_id,
+                    repayment_level:this.order.reminder.repayment_level,
+                    feedback:this.feedback,
+                    dva_id:this.order.reminder.dva_id,
+                    type:this.order.reminder.type,
+                    is_visited:this.order.reminder.is_visited,
+                    sms_id:this.order.reminder.sms_id,
+                    date:today
+                };
+                const data = this.sChecker(this.status) ? data0 : data1;
+                this.$emit('popIt',{data,feedback});
+            },
+
+            sChecker(param){
+              return !param ? true : this.options.find(x => x.id === param).status != "callback";  
             },
 
             errHandler(param){
@@ -209,16 +240,20 @@
   background: #EDEEF2;
 }
 .Successful{
-  background: #00E396;
+    background-color: rgba(0,163,104,.09);
+    color: #00a368;
 }
 .Callback{
-  background: #FFA500;
+background-color: rgba(163,163,104,.09);
+  color: #FFA500;
 }
 .Unreachable{
-  background: #E30000;
+   background-color: rgba(163,0,104,.09);
+  color: #E30000;
 }
 .option2{
     background-color: #fff;
     color:#575958;
 }
+
 </style>
