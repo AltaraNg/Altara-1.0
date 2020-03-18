@@ -37,13 +37,7 @@
             <transition name="fade">
                 <div v-if="customer">
                     <customer-profile :view-customer="customer"/>
-                    <div v-if="action !== 'update'"
-
-
-
-                         style="float: left; margin-left: 4rem; margin-right: 4rem;"><!--TODO: cleanup-->
-
-
+                    <div v-if="action !== 'update'" style="float: left; margin-left: 4rem; margin-right: 4rem;">
                         <div class="float-left col-lg-3 col-sm-6 px-0 px-sm-3" v-for="type in cardView">
                             <div :class="DivClass(type)" class="card card-stats">
                                 <div class="card-body ">
