@@ -83,11 +83,7 @@ class AuthController extends Controller
     public function reset()
     {
         $data = $this->validate(request(), PasswordResets::$resetRules);
-        $reset = PasswordResets::where('token', $data['token'])->first();
-        $user = User::where('email', $reset->email)->first();
-        $user->password = bcrypt($data['password']);
-        $user->save();
-        $reset->delete();
+        $this->authRepository->resetPassword($data);
         return response()->json(['data' => [], 'message' => 'Password reset Successful'], 200);
     }
 

@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Events\SendPasswordResetLinkEvent;
 use App\Helper\ExtractRequestObject;
 use App\Helper\OrderObject;
-use App\Order;
 use App\PasswordResets;
 use App\User;
 
@@ -31,27 +30,15 @@ class AuthRepository extends Repository
         return $response;
     }
 
-    public function store(array $data)
+    public function resetPassword($data)
     {
-        $order = Order::findOrFail(request('order_id'));
-        $response = $order->renewal()->create($this->getData(['feedback', 'status_id'], $data));
-
-        if ($this->isCallback()) {
-            $response->callback()->create($this->getData(['callback_date', 'callback_time'], $data));
-        }
-        return $response;
+        $reset = PasswordResets::where('token', $data['token'])->first();
+        $user = User::where('email', $reset->email)->first();
+        $user->password = bcrypt($data['password']);
+        $user->save();
+        $reset->delete();
+        return response()->json(['data' => [], 'message' => 'Password reset Successful'], 200);
     }
 
-    public function update($model, $data)
-    {
-        parent::update($model, $this->getData(['feedback', 'status_id'], $data));
-
-        if ($this->isCallback()) {
-            parent::updateOrCreate($model->callback(), ['renewal_list_id' => $model->id], $this->getData(['callback_date', 'callback_time'], $data));
-        }else {
-            parent::delete($model->callback());
-        }
-        return $model;
-    }
 
 }
