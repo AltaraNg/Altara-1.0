@@ -86,7 +86,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"ac25f27bcb57ae3f864f","1":"dd6c911c09c165b8bf44","2":"041e1292acc427297c61","3":"f10968f4930af6146f3c","4":"2501226a2fbc8503dc38","5":"744d77cb5e42b46d1cd7","6":"ad5028d26588fd9b1bfc","7":"db9ec6988bccd6599414","8":"fa51e3c3e4d07c7aee23","9":"0a5b734f95d939bb1134","10":"d6d43bcb597a1b9f460a","11":"32242ffc5dd330f643e5","12":"ace73c4558e11e9488ac","13":"17fde71b106b082f5b37","14":"271084a11020833d4626","15":"af6d3f28491bfe55eb54","16":"45bad962e0aff048502b","17":"b5045aedc76906b41041","18":"70ba3101e49927170824","19":"dd08ff9aada3bd1ed18b","20":"e206c9cd76aa3e12a13c","21":"49a6666da074c03900c3","22":"4dfaec7e06441793f2d3","23":"66e5739c8db4170047bd","24":"d017b7a6b8f2c9bd52af","25":"9420a34a4137e9f5d3d4","26":"1e923457ad3456460928","27":"cfb866e85b64f2cc9d16","28":"2a916b4929045a59fad2","29":"39f96213a770c9ccd443","30":"9af66b53b767c2ae975b","31":"c5b13a2585f135c10c39","32":"6b21a442cddc184f8235","33":"0420a7cab1a646d4d0c5","34":"4eb5f0aab1f0d8cd6e8e","35":"ab04934ef03358379bfa","36":"b0f1bfb31d8e68cd3034","37":"51675534d64f3f4902a7","38":"d37cbc4870b4244406a8","39":"dce5ac38bcf8541e91e4","40":"931bfeb6d92016d05673","41":"72ea11c9c53eda480f95","42":"6904176b13dcf1fad7aa","43":"83a9c1e5ec95d1dead35"}[chunkId] + "";
+/******/ 		script.src = __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"044115d28bfffc0a6fbf","1":"a44dd7f7df6d07842d40","2":"6443fcfd020d7f3d5f94","3":"f36e48c83e8438e3f199","4":"5898e2fd6d216de1a38a","5":"41c5565aa330eef26966","6":"35dcea922f1deb625804","7":"355abe7a786df6200b0c","8":"fbeb51819130a3148bd7","9":"6bdc30f3177c6999e6b3","10":"d6d43bcb597a1b9f460a","11":"32242ffc5dd330f643e5","12":"ace73c4558e11e9488ac","13":"17fde71b106b082f5b37","14":"271084a11020833d4626","15":"af6d3f28491bfe55eb54","16":"45bad962e0aff048502b","17":"b5045aedc76906b41041","18":"70ba3101e49927170824","19":"dd08ff9aada3bd1ed18b","20":"e206c9cd76aa3e12a13c","21":"49a6666da074c03900c3","22":"4dfaec7e06441793f2d3","23":"66e5739c8db4170047bd","24":"d017b7a6b8f2c9bd52af","25":"9420a34a4137e9f5d3d4","26":"1e923457ad3456460928","27":"cfb866e85b64f2cc9d16","28":"2a916b4929045a59fad2","29":"39f96213a770c9ccd443","30":"9af66b53b767c2ae975b","31":"c5b13a2585f135c10c39","32":"6b21a442cddc184f8235","33":"0420a7cab1a646d4d0c5","34":"4eb5f0aab1f0d8cd6e8e","35":"ab04934ef03358379bfa","36":"b0f1bfb31d8e68cd3034","37":"51675534d64f3f4902a7","38":"d37cbc4870b4244406a8","39":"dce5ac38bcf8541e91e4","40":"931bfeb6d92016d05673","41":"72ea11c9c53eda480f95","42":"6904176b13dcf1fad7aa","43":"83a9c1e5ec95d1dead35"}[chunkId] + "";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -6834,89 +6834,6 @@ module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime
 
 }));
 //# sourceMappingURL=bootstrap.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
 
 
 /***/ }),
@@ -51790,6 +51707,8 @@ var _auth2 = _interopRequireDefault(_auth);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+_axios2.default.defaults.baseURL = "http://staging.altaracredit.com/";
+console.log('dddd122', "http://staging.altaracredit.com/");
 var get = exports.get = function get(url) {
     return (0, _axios2.default)({ method: 'GET', url: url, headers: { 'Authorization': 'Bearer ' + _auth2.default.state.api_token } });
 };
