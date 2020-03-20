@@ -10,7 +10,7 @@
                                 <label class="category">* E-MAIL</label>
                                 <div class="input-group">
                                     <input class="form-control" name="E-mail" type="email"
-                                        placeholder="E-mail" v-model="form.email" v-validate="'required'">
+                                        placeholder="E-mail" v-model="email" v-validate="'required'">
                                     <span class="input-group-addon"><i class="ml-2 fa fa-envelope"></i></span>
                                 </div>
                                 <small class="error-control"
@@ -31,36 +31,42 @@
     </transition>
 </template>
 <script>
+    import Vue from 'vue';
     import Auth from '../../utilities/auth';
     import {post} from '../../utilities/api';
     import Flash from '../../utilities/flash';
+    import VueSweetalert2 from 'vue-sweetalert2';
+
+    Vue.use(VueSweetalert2);
+
 
     export default {
         data() {
             return {
-                form: {email: ''},
+                email: '',
                 cardMT: '',
                 error: {}
             }
         },
         methods: {
             async forgotPasswordCard() {
-                console.log('helo helo',this.form)
-                if (this.$network()) {
-                    this.$LIPS(true);
-                    this.error = {};
-                    await post('/api/password/reset', this.form)
-                        .then(({data}) => {
-                            if (data.auth) {
-                                Flash.setSuccess(data.message);
-                            }
-                        })
-                        .catch(({response: {data}}) => {
-                            this.error = data.errors ? data.errors : data;
-                            Flash.setError(data.message);
-                        });
-                    this.$LIPS(false);
-                } else this.$networkErr()
+                this.$LIPS(true);
+                this.error = {};
+                await post('/api/password/reset', {email:this.email})
+                .then(({data}) => {
+                    if (data.auth) {
+                        Flash.setSuccess(data.message);
+                    }
+                })
+                .catch(({response: {data}}) => {
+                    console.log('err',data);
+                    this.error = data.errors ? data.errors : data;
+                    this.$swal({
+                        icon: 'error',
+                        title: data.error_message,
+                    });
+                    this.$LIPS(false);  
+                });
             }
         },
         mounted() {
