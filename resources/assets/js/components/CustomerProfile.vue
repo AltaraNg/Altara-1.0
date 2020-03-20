@@ -71,9 +71,14 @@
                                     <td>{{customer.telephone}}</td>
                                 </tr>
                                 <tr v-if="auth('DVAAccess')">
-                                    <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Address</th>
-                                    <td>{{$getCustomerAddress(customer) | capitalize }}
-                                    </td>
+                                    <th class="text-muted"><i class="mr-3 fas fa-home"></i>Home Address</th>
+                                    <td v-if="$getCustomerAddress(customer).length > 12">{{$getCustomerAddress(customer) | capitalize }} </td>
+                                    <td v-if="$getCustomerAddress(customer).length < 12">Not Available</td>
+                                </tr>
+                                <tr v-if="auth('DVAAccess')">
+                                    <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Work Address</th>
+                                    <td v-if="$getCustomerOfficeAddress(customer).length > 12">{{$getCustomerOfficeAddress(customer) | capitalize }} </td>
+                                    <td v-if="$getCustomerOfficeAddress(customer).length < 12">Not Available</td>
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 fas fa-gift"></i>Registered On</th>
