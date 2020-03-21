@@ -54,18 +54,20 @@
                 this.error = {};
                 await post('/api/password/reset', {email:this.email})
                 .then(({data}) => {
-                    if (data.auth) {
-                        Flash.setSuccess(data.message);
-                    }
+                    this.$LIPS(false);  
+                   this.$swal({
+                        icon: 'success',
+                        title: 'Please check your mail'
+                    });
+
                 })
                 .catch(({response: {data}}) => {
-                    console.log('err',data);
                     this.error = data.errors ? data.errors : data;
+                    this.$LIPS(false);  
                     this.$swal({
                         icon: 'error',
                         title: data.error_message,
                     });
-                    this.$LIPS(false);  
                 });
             }
         },

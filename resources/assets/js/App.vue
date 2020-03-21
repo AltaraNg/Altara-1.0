@@ -103,10 +103,13 @@
                 this.$router.push("/home");
                 Flash.setSuccess("Welcome Back!");
             }*/
-            if (!localStorage.getItem("api_token")) {
-                Flash.setError("You have to Login!");
-                this.$router.push("/login");
-            }
+              console.log('fghjkjhg',this.$route);
+            //   console.log('fghjkjhg',this.$router.history.current);
+
+            // if (!localStorage.getItem("api_token") && this.$route.meta.mode != 'password') {
+            //     Flash.setError("You have to Login!");
+            //     this.$router.push("/login");
+            // }
         },
         created() {
             interceptors(err => {
