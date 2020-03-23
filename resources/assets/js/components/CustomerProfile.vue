@@ -71,14 +71,25 @@
                                     <td>{{customer.telephone}}</td>
                                 </tr>
                                 <tr v-if="auth('DVAAccess')">
-                                    <th class="text-muted"><i class="mr-3 fas fa-home"></i>Home Address</th>
-                                    <td v-if="$getCustomerAddress(customer).length > 12">{{$getCustomerAddress(customer) | capitalize }} </td>
-                                    <td v-if="$getCustomerAddress(customer).length < 12">Not Available</td>
+                                    <th class="text-muted"><i class="mr-3 fas fa-home"></i>Address</th>
+                                    <td>
+                                    <span class="pad">Home :</span>
+                                    <span v-if="$getCustomerAddress(customer).length > 12">{{$getCustomerAddress(customer) | capitalize }} </span>
+                                    <span v-if="$getCustomerAddress(customer).length < 12">Not Available</span>
+                                    <span class="pad">|</span>
+                                    <span class="pad">Work :</span>
+                                    <span v-if="$getCustomerOfficeAddress(customer).length > 12">{{$getCustomerOfficeAddress(customer) | capitalize }} </span>
+                                    <span v-if="$getCustomerOfficeAddress(customer).length < 12">Not Available</span>
+                                    </td>
                                 </tr>
-                                <tr v-if="auth('DVAAccess')">
+                                <!-- <tr v-if="auth('DVAAccess')">
                                     <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Work Address</th>
                                     <td v-if="$getCustomerOfficeAddress(customer).length > 12">{{$getCustomerOfficeAddress(customer) | capitalize }} </td>
                                     <td v-if="$getCustomerOfficeAddress(customer).length < 12">Not Available</td>
+                                </tr> -->
+                                <tr> 
+                                    <th class="text-muted"><i class="mr-3 fas fa-briefcase"></i>{{customer.employment_status === 'formal' || customer.employment_status === 'salaried' ? 'Occupation' : 'Kind of business' }}</th>
+                                    <td>{{!customer.occupation ? 'Not Available' : customer.occupation }}</td>
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 fas fa-gift"></i>Registered On</th>
@@ -167,3 +178,8 @@
         }
     }
 </script>
+<style>
+.pad{
+    margin: 0 2px;
+}
+</style>
