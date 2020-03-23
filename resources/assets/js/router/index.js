@@ -77,7 +77,7 @@ const router = new VueRouter({
         {path: '/', redirect: {name: 'home'}},
         {path: '/home', component: Home, name: 'home', meta: {role: localStorage.getItem("role_id")}},
         {path: '/login', component: Login, name: 'login'},
-        {path: '/forgotPassword', component: ForgotPassword, name: 'forgotPassword',meta: {auth: true}},
+        {path: '/password/forgot', component: ForgotPassword, name: 'forgotPassword',meta: {auth: true}},
         {path: '/password/reset/:token', component: ResetPassword, name: 'resetPassword',meta: {auth: true}},
         {
             path: '/user', component: Profile, children: [

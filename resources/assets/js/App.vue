@@ -99,17 +99,17 @@
         },
         beforeCreate() {
             Auth.initialize();
-            /*if (localStorage.getItem("api_token")) {
-                this.$router.push("/home");
-                Flash.setSuccess("Welcome Back!");
-            }*/
-              console.log('fghjkjhg',this.$route);
-            //   console.log('fghjkjhg',this.$router.history.current);
 
-            // if (!localStorage.getItem("api_token") && this.$route.meta.mode != 'password') {
-            //     Flash.setError("You have to Login!");
-            //     this.$router.push("/login");
-            // }
+            const reRoute = (path,message) => {
+                Flash.setError(message);
+                this.$router.push(path);
+            };
+
+            const pass = window.location.pathname.split('/')[1];
+
+            pass === 'password' ? reRoute("/home","You cant access this route") : 
+            pass != 'password' ? reRoute("/login","You have to Login!") : '';
+
         },
         created() {
             interceptors(err => {
