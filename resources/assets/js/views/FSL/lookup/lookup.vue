@@ -7,7 +7,7 @@
                     @customer-selected="processForm"
                     :url="'/api/customer/autocomplete'"/>
 
-            <!--<div class="mt-5 attendance-head">
+            <!--<div class="mt-5 attendance-head"> // TODO:: cleanup
                 <div class="card">
                     <ul class="nav nav-tabs bg-default justify-content-center">
                         <h6>Customer Lookup</h6>
@@ -41,7 +41,7 @@
 
 <!--                    <div class="attendance-hea TODO:: cleanup d">-->
                         <customer-profile :view-customer="customer"/>
-<!--                    </div>-->
+<!--             // TODO:: cleanup       </div>-->
 
                     <custom-header :title="'All order(s)'"/>
 
@@ -88,6 +88,7 @@
                                         <i :class="order.count === order.repaymentLevel ? 'fa-check-circle' : 'fa-hourglass-half'"
                                            class="fas ml-3"
                                            style="font-size: 1.4rem"></i>
+<!--                                        // TODO:: cleanup-->
                                     </button>
                                 </div>
                             </div>
@@ -228,7 +229,7 @@
                                     </tbody>
                                 </table>
 
-                                <div v-if="canEditPayment">
+                                <div v-if="canEditPayment && !isReadOnly">
                                     <h5 class="mt-5 mb-0">
                                         {{paymentFormType | capitalize}} a new payment
                                     </h5>
@@ -308,15 +309,15 @@
 
                             </div>
                         </div>
-                        <div :class="{'d-flex justify-content-end' : !canEditPayment}" class="modal-footer">
-                            <button @click="addPaymentForm('add')" class="btn status my-sm-2" v-if="canAddPayment">
+                        <div :class="{'d-flex justify-content-end' : !canEditPayment || isReadOnly}" class="modal-footer">
+                            <button @click="addPaymentForm('add')" class="btn status my-sm-2" v-if="canAddPayment && !isReadOnly">
                                 Add Payment
                             </button>
-                            <button @click="addPaymentForm('edit')" class="btn status my-sm-2" v-if="canEditPayment">
+                            <button @click="addPaymentForm('edit')" class="btn status my-sm-2" v-if="canEditPayment && !isReadOnly">
                                 Edit Payment
                             </button>
                             <button @click="preparePayments()" class="btn status my-sm-2 approved ml-4"
-                                    v-if="canEditPayment">
+                                    v-if="canEditPayment && !isReadOnly">
                                 Click here to Submit Payment(s)!
                             </button>
                             <a class="text-link mt-3" data-dismiss="modal" href="javascript:" style="text-align: right">
@@ -519,6 +520,10 @@
 
             check() {
                 return (!(!(this.$isProcessing) && (!!this.customer_id)));
+            },
+
+            isReadOnly(){
+                return this.$route.meta.readOnly;
             },
 
             canAddPayment() {

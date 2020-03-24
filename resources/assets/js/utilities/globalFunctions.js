@@ -53,7 +53,10 @@ Vue.prototype.$isProcessing = false;
 
 /**sets the loader and isProcessing to what us true or false**/
 Vue.prototype.$LIPS = function (s) {//s is a boolean
-    this.$store.state.loader = this.$isProcessing = s
+    // this.$store.state.loader = this.$isProcessing = s;
+    this.$isProcessing = s;
+    // TODO:: cleanup
+    store.dispatch('toggleLoader', s);
 };
 
 
