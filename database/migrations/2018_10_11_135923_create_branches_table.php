@@ -21,7 +21,7 @@ class CreateBranchesTable extends Migration
             $table->string('employee_id', 30);
             $table->string('name')->unique();
             $table->string('status');
-            $table->string('category')->nullable();
+//            $table->string('category')->nullable();
             $table->string('phone_english');
             $table->string('phone_yoruba');
             $table->string('account_name')->nullable();

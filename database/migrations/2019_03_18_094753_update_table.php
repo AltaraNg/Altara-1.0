@@ -12,7 +12,7 @@ class UpdateTable extends Migration
      */
     public function up()
     {
-        /*Schema::table('users', function ($table) {
+        Schema::table('users', function ($table) {
             $table->string('guarantor_name')->after('next_of_kin_phone_no')->nullable();
             $table->string('guarantor_phone_no')->nullable();
             $table->string('guarantor_address')->nullable();
@@ -42,20 +42,20 @@ class UpdateTable extends Migration
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-        });*/
+        });
 
-        /*Schema::table('branches', function ($table) {
+        Schema::table('branches', function ($table) {
             $table->string('category')->after('status');
-        });*/
+        });
 
-        /*Schema::table('customers', function ($table) {
+        Schema::table('customers', function ($table) {
             $table->string('occupation')->nullable()->after('civil_status');
-        });*/
+        });
 
 
-        /*Schema::table('reminders', function ($table) {
+        Schema::table('reminders', function ($table) {
             $table->boolean('is_visited')->nullable()->after('feedback');
-        });*/
+        });
 
 
         Schema::table('brands', function ($table) {
@@ -66,15 +66,16 @@ class UpdateTable extends Migration
             $table->timestamps();
         });
 
-    }
+        Schema::table('customers', function ($table) {
+            $table->unsignedInteger('managed_by')->index()->nullable()->after('user_id');
+        });
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        //
+        Schema::table('customers', function ($table) {
+            $table->foreign('managed_by')->references('id')->on('users');
+        });
+
+        Schema::table('orders', function ($table) {
+            $table->foreign('status_id')->references('id')->on('status');
+        });
     }
 }

@@ -1,14 +1,21 @@
 <template>
     <div class="clearfix pt-md-3 pt-2" id="customerRegister">
         <verification :action="'update'" @update="updateCustomer" v-if="mode === 'update'"/>
-        <div class="card" v-if="newCustomer.id && mode === 'update' || mode === 'register'">
+        <div class="card" v-if="newCustomer.id && mode === 'update' || mode === 'register'"
+
+
+
+             :style="mode === 'update' ? 'margin-left: 5rem;margin-right: 5rem;width: auto;' : ''">
+            <!--TODO cleanup-->
+
+
             <ul class="nav nav-tabs justify-content-center bg-default">
                 <h6>{{mode | capitalize}} Customer</h6>
             </ul>
             <div class="card-body pl-4 pr-4 clearfix">
                 <form @submit.prevent="register">
                     <!--form section for register starts here-->
-                    <div v-if="mode === 'register'">
+                    <div v-if="mode === 'register' || $store.getters.auth('DVAAccess')">
                         <h5>Employee Details</h5>
 
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
@@ -131,11 +138,10 @@
                             <small v-if="error.telephone">{{error.telephone[0]}}</small>
                         </div>
                         <div class="spaceAfter"></div>
-                    </div>
+                    <!-- </div> -->
                     <!--form section for register stops here-->
 
                     <!--form section for register and update starts here-->
-                    <div v-if="mode === 'register' || $store.getters.auth('DVAAccess')">
                         <h5>Address</h5>
 
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">

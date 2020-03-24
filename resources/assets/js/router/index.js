@@ -10,12 +10,12 @@ const Login = () => import( '../views/auth/Login.vue');
 
 const NotFound = () => import( '../views/NotFound.vue');
 
-const DSA = () => import( '../views/DSA/index.vue');
+const DSA = () => import( '../views/DSA/Index.vue');
 const DSAHome = () => import( '../views/DSA/HomePage.vue');
 const DSAReport = () => import( '../views/DSA/report/report.vue');
 const CustomerForm = () => import( '../views/shared/customerForm.vue');
 
-const DVA = () => import( '../views/DVA/index.vue');
+const DVA = () => import( '../views/DVA/Index.vue');
 const DVAHome = () => import( '../views/DVA/HomePage.vue');
 const DVAMessage = () => import( '../views/DVA/messaging/message.vue');
 const DVAVerification = () => import( '../views/DVA/verification/verification.vue');
@@ -23,8 +23,8 @@ const DVAVerification = () => import( '../views/DVA/verification/verification.vu
 const CAG = () => import( '../views/CAG/index.vue');
 const CAGHome = () => import( '../views/CAG/HomePage.vue');
 
-const OrderList = () => import( '../views/DVA/order/orderList.vue');
-const AllOverdue = () => import( '../views/DVA/allOverdue');
+const OrderList = () => import( '../views/DVA/AllOrderList.vue');
+const AllOverdue = () => import( '../views/DVA/AllOverduePayment');
 
 const Reminder = () => import( '../views/DVA/reminder/reminder.vue');
 
@@ -36,6 +36,10 @@ const HRM = () => import( '../views/HRM/index.vue');
 const HRMHome = () => import( '../views/HRM/HomePage.vue');
 const DataViewer = () => import( '../components/DataViewer.vue');
 const EmployeeForm = () => import( '../views/HRM/employee/employeeForm.vue');
+
+const AltaraPay = () => import( '../views/AltaraPay/index.vue');
+const AltaraPayHome = () => import( '../views/AltaraPay/HomePage.vue');
+const DirectDebitSales = () => import( '../views/AltaraPay/sales/DirectDebitSales.vue');
 
 const Caution = () => import( '../views/HRM/caution/index.vue');
 const CautionForm = () => import( '../views/HRM/caution/form.vue');
@@ -57,6 +61,7 @@ const SuppliersForm = () => import('../views/LOG/supplier/form.vue');
 const BrandForm = () => import('../views/LOG/brand/form.vue');
 const CategoryForm = () => import('../views/LOG/category/form.vue');
 const ProductForm = () => import('../views/LOG/product/form.vue');
+const Renewal = () => import( '../views/FSL/renewal/renewal.vue');
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -84,6 +89,26 @@ const router = new VueRouter({
             ]
         },
         {
+            path: '/altarapay', component: AltaraPay, meta: {ALTARAPAY: true}, children: [
+                {path: '/', redirect: {name: 'AltaraPayHome'}},
+                {path: 'home', component: AltaraPayHome, name: 'AltaraPayHome'},
+                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-altarapay', meta: {customSMS: true}},
+                {
+                    path: 'verification',
+                    component: DVAVerification,
+                    name: 'verification-altarapay',
+                    meta: {mode: 'verification'}
+                },
+                {path: 'direct-debit-sales', component: DirectDebitSales, name: 'direct-debit-sales', meta: {customSMS: true}},
+                {
+                    path: 'direct-debit-overdue',
+                    component: AllOverdue,
+                    name: 'direct-debit-overdue',
+                    meta: {mode: 'direct-debit'}
+                },
+            ]
+        },
+        {
             path: '/dva', component: DVA, meta: {DVA: true}, children: [
                 {path: '/', redirect: {name: 'DVAHome'}},
                 {path: 'home', component: DVAHome, name: 'DVAHome'},
@@ -95,24 +120,28 @@ const router = new VueRouter({
                     alias: '/dsa/customer/update',
                     name: 'customerUpdate'
                 },
-                {path: 'verification', component: DVAVerification, name: 'verification'},
-                {path: 'sales', component: OrderList, name: 'sales-dva'},
+                {path: 'verification', component: DVAVerification, name: 'verification', meta: {mode: 'verification'}},
+                {path: 'sales', component: OrderList, name: 'sales-dva', meta: {customSMS: true}},
 
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
                 {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},
                 {path: 'reminder/recovery', component: Reminder, name: 'recovery', meta: {mode: 'recovery'}},
-                {path: 'reminder/external-recovery', component: Reminder, name: 'external-recovery', meta: {mode: 'external-recovery'}},
-
-                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-dva', meta: {mode: 'all-overdue'}},
+                {
+                    path: 'reminder/external-recovery',
+                    component: Reminder,
+                    name: 'external-recovery',
+                    meta: {mode: 'external-recovery'}
+                },
+                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-dva'},
             ]
         },
         {
             path: '/cag', component: CAG, meta: {CAG: true}, children: [
                 {path: '/', redirect: {name: 'CAGHome'}},
                 {path: 'home', component: CAGHome, name: 'CAGHome'},
-                {path: 'sales', component: OrderList, name: 'sales-cag'},
-                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-cag', meta: {mode: 'all-overdue'}},
+                {path: 'sales', component: OrderList, name: 'sales-cag', meta: {customSMS: false}},
+                {path: 'all-overdue', component: AllOverdue, name: 'all-overdue-cag'},
             ]
         },
         {
@@ -153,10 +182,12 @@ const router = new VueRouter({
                     name: 'attendanceCreateFsl',
                     meta: {mode: 'create'}
                 },
-                {path: 'sales', component: OrderList, name: 'sales-fsl'},
+                {path: 'sales', component: OrderList, name: 'sales-fsl', meta: {customSMS: true}},
                 {path: 'sales/create', component: POSForm, name: 'post-sales'},
                 {path: 'payment', component: PaymentForm, name: 'down-payment'},
-                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva'},
+                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: {customSMS: true}},
+                {path: 'reminder/renewal', component: Renewal, name: 'renewal', meta: {mode: 'renewal'}},
+
             ]
         },
         {

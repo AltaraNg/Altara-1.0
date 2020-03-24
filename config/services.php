@@ -25,6 +25,11 @@ return [
         'region' => env('SES_REGION', 'us-east-1'),
     ],
 
+    'smtp' => [
+        'from' => ['address' => 'example@example.com', 'name' => 'Altara Credit'],
+        'reply_to' => ['address' => 'example@example.com', 'name' => 'Altara Credit']
+    ],
+
     'sparkpost' => [
         'secret' => env('SPARKPOST_SECRET'),
     ],

@@ -73,11 +73,8 @@
                                         Flash.setSuccess(data.message);
                                     }
                                 })
-                                //using destructuring to get the
-                                //received data.response an name it r;
-                                .catch(({response:r}) => {
-                                    let {data, status} = r;
-                                    if (status === 422) this.error = data.errors ? data.errors : data;
+                                .catch(({response: {data}}) => {
+                                    this.error = data.errors ? data.errors : data;
                                     Flash.setError(data.message);
                                 });
                             this.$LIPS(false);

@@ -12,8 +12,11 @@
 */
 
 Route::post('/login', 'AuthController@login');
+Route::post('/password/reset', 'AuthController@sendResetLinkEmail');
+Route::put('/password/reset', 'AuthController@reset');
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/branches', 'BranchController@allBranches');
+    Route::post('/customer/autocomplete', 'CustomerController@autocompleteSearch');
     Route::get('/customer/lookup/{customer}', 'CustomerController@customerLookup');
     Route::post('/customer/{customer}', 'CustomerController@update');
     Route::get('/user/getBranchUsers', 'UserController@getBranchUsers');
@@ -40,21 +43,24 @@ Route::group(['middleware' => ['auth:api']], function () {
         'processing_fee' => 'ProcessingFeeController',
         'personal_guarantor' => 'PersonalGuarantorController',
         'dsa_daily_registration' => 'DsaDailyRegistrationController',
+        'update_customer_manager' => 'CustomerManagementHistoryController',
         'repayment' => 'RepaymentController',
         'payment_method' => 'PaymentMethodController',
+        'renewal-list' => 'RenewalListController',
     ]);
     /*------*/
+    Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
     Route::post('/user/{id}/cv', 'UserController@uploadCV');
-
     Route::post('/logout', 'AuthController@logout');
     Route::get('/create', 'AuthController@create');
     Route::post('/register', 'AuthController@register');
     Route::get('/employee/{id}/edit', 'AuthController@edit');
     Route::post('/employee/{id}/update', 'AuthController@update');
     Route::get('/reset-password/{id}', 'AuthController@resetPassword');
-    /*------*/
     Route::get('/orders/user/{id}', 'OrderController@ordersByUser');
-    /*------*/
+    Route::get('/orders/direct-debit-sales', 'OrderController@directDebitSales');
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
+    Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
+    Route::get('/renewal-list-status', 'RenewalListStatusController@index');
 });

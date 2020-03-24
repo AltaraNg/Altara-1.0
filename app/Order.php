@@ -9,7 +9,6 @@ class Order extends Model
 {
     use Scopes;
 
-    //protected $table = "purchase";
     protected $table = "orders";
 
     protected $primaryKey = 'id';
@@ -82,5 +81,19 @@ class Order extends Model
     public function salesType()
     {
         return $this->belongsTo(SalesType::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    /**
+     * Relationship between Order and RenewalList
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function renewal()
+    {
+        return $this->hasOne(RenewalList::class);
     }
 }

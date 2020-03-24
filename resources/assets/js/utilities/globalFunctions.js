@@ -31,8 +31,10 @@ Date.prototype.addDays = function (days) {
 
 /**NB functions her can be accessed anywhere on the project(vue components)
  * by using this.$functionName the argument c stands for customer
- * i used c just to reduce file size**/
-Vue.prototype.$getCustomerFullName = c => c ? `${c.first_name} ${c.last_name}` : null;
+ * I used c just to reduce file size**/
+Vue.prototype.$getCustomerFullName = (c, withMiddleName = false) =>
+    c ? `${c.first_name + (c.middle_name ? " " + c.middle_name + " " : " ") + c.last_name}` : null;
+
 Vue.prototype.$getCustomerAddress = c =>
     c ? `${c.add_houseno} ${c.add_street} ${c.area_address}, ${c.city}, ${c.state}.` : null;
 
@@ -71,7 +73,7 @@ Vue.prototype.$roundDownAmt = amount => (Math.floor(amount / 100) * 100);
 /**return the network status(true | false) of the system if connected to a
  network not NB: this doesn't work with internet access. it only
  detects the system is connected to a network**/
-Vue.prototype.$network = () => window.navigator.onLine;
+Vue.prototype.$network = () => process.env.NODE_ENV === 'development' ? true : window.navigator.onLine;
 
 
 /**currency formatter**/
@@ -129,6 +131,10 @@ Vue.prototype.$prepareBanks = () => {
         .then(r => store.dispatch('mutateBanks', r.data.banks));
 };
 
+Vue.prototype.$prepareTypeaheadUsersList = () => {
+    !store.getters.getTypeaheadUsersList && get('/api/users/list_type/type_ahead')
+        .then(r => store.dispatch('mutateTypeaheadUsersList', r.data.users));
+};
 
 /**convert a time in 24 hours format to 12 hours format**/
 Vue.prototype.$timeConvert = time => {
