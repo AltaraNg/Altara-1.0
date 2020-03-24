@@ -36,7 +36,7 @@
                                 </button>
                             </div>
                             <span class="text-center float-left w-100 pb-4">Forgot Password? <router-link
-                                    class="text-info" to="/forgotPassword">Click here</router-link></span>
+                                    class="text-info" to="/password/forgot">Click here</router-link></span>
                         </div>
                     </form>
                 </div>
