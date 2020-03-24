@@ -5,11 +5,19 @@ namespace App\Helper;
 
 use DateTime;
 
+/*use Monolog\Handler\StreamHandler;
+use Monolog\Logger;*/
+
 trait OrderObject
 {
 
     public static function getDateForReminder($requestObject)
     {
+        // TODO:: cleanup
+        /*$log = new Logger('dva-reminder');
+        $log->pushHandler(new StreamHandler('dva.log', Logger::WARNING));*/
+//        $log->warning('getDateForReminder-1: '. json_encode($requestObject));
+
         $list = $requestObject['list'];
         $today = date('Y-m-d');
         $count = (date("D") == "Mon" || in_array($list, Self::COLLECTIONS_LIST)) ? 3 : 1;
@@ -66,6 +74,9 @@ trait OrderObject
             default://sms reminder: 1 and promise call 8
                 for ($j = 0; $j < $count; $j++)
                     $informal[$j] = date('Y-m-d', strtotime($today . ' - ' . $j . ' days'));
+
+//                $log->warning('getDateForReminder-informal-2: '. json_encode($informal));
+
                 return $informal;
         }
 
@@ -78,6 +89,9 @@ trait OrderObject
         }
 
         $dateArr = $count == 3 ? call_user_func_array('array_merge', $informal) : $informal[0];
+
+//        $log->warning('getDateForReminder-dateArr-3: '. json_encode($dateArr));
+
         return $dateArr;
     }
 
@@ -162,6 +176,11 @@ trait OrderObject
 
     public static function generateDueDates($startDate, $interval, $count)
     {
+
+        /*$log = new Logger('dva-reminder');
+        $log->pushHandler(new StreamHandler('dva.log', Logger::WARNING));
+        $log->warning('generateDueDatesInput: ' . json_encode($startDate, $interval, $count));*/
+
         $dueDates = [];
         for ($i = 0; $i < $count; $i++) {
             $daysToAdd = ($i + 1) * $interval;
@@ -170,11 +189,18 @@ trait OrderObject
                 ->format('Y-m-d');
             array_push($dueDates, $date);
         }
+
+//        $log->warning('generateDueDatesOutput: ' . json_encode($dueDates));
+
         return $dueDates;
     }
 
     public static function getFirstMissedPaymentDate($order)
     {
+        /*        $log = new Logger('dva-reminder');
+                $log->pushHandler(new StreamHandler('dva.log', Logger::WARNING));
+                $log->warning('getFirstMissedPaymentDateInput: ' . json_encode($order));*/
+
         extract(Self::getCountAndInterval($order));
 
         for ($i = 1; $i < ($count + 1); $i++) {
@@ -182,6 +208,13 @@ trait OrderObject
             $repaymentData = Self::getRepaymentData($order);
             $col = $column . "_pay";
             if ((int)$repaymentData->$col < 1) {
+
+                // $res = Self::generateDueDates($order->order_date, $interval, $count)[$i - 1];
+
+                //$log->warning('getFirstMissedPaymentDateOutput: ' . json_encode($res));
+
+//                return $res;
+
                 return Self::generateDueDates($order->order_date, $interval, $count)[$i - 1];
             }
         }
@@ -190,6 +223,10 @@ trait OrderObject
 
     public static function getPossibleRepaymentDatesForASuppliedDate($requestObject)
     {
+        /*$log = new Logger('dva-reminder');
+        $log->pushHandler(new StreamHandler('dva.log', Logger::WARNING));
+        $log->warning('getPossibleRepaymentDatesForASuppliedDateInput: ' . json_encode($requestObject));*/
+
         $datePool = [];
         $list = $requestObject['list'];
         $mode = Self::REMINDER_TYPES[$list]['mode'];
@@ -209,6 +246,8 @@ trait OrderObject
                 array_push($datePool, $date);
             }
         }
+
+        // $log->warning('getPossibleRepaymentDatesForASuppliedDateOutput: ' . json_encode($datePool));
 
         return $datePool;
     }

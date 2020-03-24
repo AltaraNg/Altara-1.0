@@ -10,17 +10,31 @@ use App\PromiseCall;
 use App\Reminder;
 use Illuminate\Http\Request;
 
+/*use Monolog\Logger;
+use Monolog\Handler\StreamHandler*/;
+
 class ReminderController extends Controller implements OrderConstants
 {
     use OrderObject, ExtractRequestObject;
 
     public function create(Request $request)
     {
+
+        // TODO:: cleanup
+        // create a log channel
+        /*  $log = new Logger('dva-reminder');
+          $log->pushHandler(new StreamHandler('dva.log', Logger::WARNING));*/
+
         $requestObject = $this->extractRequestObject($request);
+
+//        $log->warning('createMethod1'. json_encode($requestObject));
+
 
         $list = $requestObject['list'];
         if (((Boolean)$request['filterWithBranch'] === true) && !isset($request['branchId']))
             $requestObject['branchId'] = auth('api')->user()->branch_id;
+
+//        $log->warning('createMethod2'. json_encode($requestObject));
 
         $reminderList = $list == SELF::PROMISE_CALL_LIST ?
             $this->fetchPromiseCallRemindersList($requestObject) :
@@ -30,9 +44,9 @@ class ReminderController extends Controller implements OrderConstants
             $reminderList = json_decode(json_encode($reminderList, true));
             $reminderList = array_filter($reminderList, function ($order) use ($list, $requestObject) {
                 if (!SELF::isOrderRepaymentDetailValid($order)) return false;
-                $lastMissedRepaymentDate = SELF::getFirstMissedPaymentDate($order);
+                $firstMissedPaymentDate = SELF::getFirstMissedPaymentDate($order);
                 $repaymentDatesArr = SELF::getPossibleRepaymentDatesForASuppliedDate($requestObject);
-                return in_array($lastMissedRepaymentDate, $repaymentDatesArr);
+                return in_array($firstMissedPaymentDate, $repaymentDatesArr);
             });
         }
 
