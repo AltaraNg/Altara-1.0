@@ -7,6 +7,7 @@ import router from './router';
 import {store} from './store/store';
 import VeeValidate from 'vee-validate';
 import './utilities/globalFunctions.js';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 Vue.use(VeeValidate, {
     events: 'input|blur',
@@ -20,3 +21,10 @@ const app = new Vue({
     router,
     store
 });
+
+const options = {
+    confirmButtonColor: '#05314d',
+    cancelButtonColor: '#05314d',
+};
+ 
+Vue.use(VueSweetalert2, options);

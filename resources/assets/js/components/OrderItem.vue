@@ -183,7 +183,7 @@
             },
 
             objCollector() {
-                if(!this.status || this.status !=1 && !this.dateTime || !this.feedback){
+                if(!this.status || !this.sChecker(this.status) && !this.dateTime || !this.feedback){
                     return this.errHandler("Please enter all required values.");
                 }
                 const today = new Date().toLocaleDateString("en-US");

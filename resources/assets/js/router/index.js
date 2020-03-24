@@ -8,6 +8,9 @@ const Home = () => import( '../views/HomePage.vue');
 
 const Login = () => import( '../views/auth/Login.vue');
 
+const ResetPassword = () => import( '../views/auth/ResetPassword.vue');
+const ForgotPassword = () => import( '../views/auth/ForgotPassword.vue');
+
 const NotFound = () => import( '../views/NotFound.vue');
 
 const DSA = () => import( '../views/DSA/Index.vue');
@@ -74,6 +77,8 @@ const router = new VueRouter({
         {path: '/', redirect: {name: 'home'}},
         {path: '/home', component: Home, name: 'home', meta: {role: localStorage.getItem("role_id")}},
         {path: '/login', component: Login, name: 'login'},
+        {path: '/password/forgot', component: ForgotPassword, name: 'forgotPassword',meta: {auth: true}},
+        {path: '/password/reset/:token', component: ResetPassword, name: 'resetPassword',meta: {auth: true}},
         {
             path: '/user', component: Profile, children: [
                 {path: 'profile', component: ProfileHome},
