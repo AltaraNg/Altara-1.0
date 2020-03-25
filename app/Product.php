@@ -9,9 +9,9 @@ class Product extends Model
 {
     use DataViewer;
 
-    protected $fillable = ['name', 'feature', 'user_id', 'brand_id', 'category_id', 'retail_price',  'is_active', 'img_url'];
+    protected $fillable = ['name', 'feature', 'brand_id', 'category_id', 'retail_price',  'is_active', 'img_url'];
 
-    public static $columns = ['id', 'name', 'retail_price in Naira', 'brand', 'category', 'status'];
+    public static $columns = ['id', 'name', 'retail_price in Naira', 'status'];
 
     public static function form(): iterable
     {

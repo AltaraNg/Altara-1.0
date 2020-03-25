@@ -137,6 +137,7 @@
                         if (this.$network()) {
                             this.$LIPS(true);
                             const form = toMulipartedForm(this.form, 'edit');
+                            console.log(form);
                             byMethod(this.method, this.store, form)
                                 .then(({data}) => {
                                     if (data.saved || data.updated) {

@@ -14,12 +14,12 @@ class UpdateTable extends Migration
     public function up()
     {
 
-        Schema::create('products', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
 
 //            $table->unsignedInteger('product_id')->index()->nullable();//FK
 //            $table->unsignedInteger('receiver_id')->index()->nullable();//FK
 //            $table->unsignedInteger('seller_id')->index()->nullable();//FK
-            $table->string('img_url');
+            $table->string('img_url')->nullable();
 //            $table->string('serial_number');
 //            $table->string('market_price');
 
