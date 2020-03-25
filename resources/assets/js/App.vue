@@ -2,6 +2,7 @@
     <transition name="fade">
         <div>
             <loader/>
+            <AutoLogout v-if="auth"/>
             <side-nav v-if="auth"/>
             <div class="main" id="main">
                 <nav class="navbar navbar-expand-lg bg-white" v-if="auth">
@@ -83,13 +84,15 @@
     import {interceptors, post} from "./utilities/api";
     import SMSModal from './components/CustomSMSButton/SMSModal';
     import ChangeCustomerManagerModal from './components/modals/ChangeCustomerManagerModal';
+    import AutoLogout from './views/auth/AutoLogout';
 
     export default {
         components: {
             SideNav,
             Loader,
             SMSModal,
-            ChangeCustomerManagerModal
+            ChangeCustomerManagerModal,
+            AutoLogout
         },
         data() {
             return {
