@@ -2,6 +2,7 @@
     <transition name="fade">
         <div>
             <loader/>
+            <AutoLogout v-if="auth"/>
             <side-nav v-if="auth"/>
             <div class="main" id="main">
                 <nav class="navbar navbar-expand-lg bg-white" v-if="auth">
