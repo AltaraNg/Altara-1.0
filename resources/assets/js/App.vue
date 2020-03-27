@@ -2,6 +2,7 @@
     <transition name="fade">
         <div>
             <loader/>
+            <AutoLogout v-if="auth"/>
             <side-nav v-if="auth"/>
             <div class="main" id="main">
                 <nav class="navbar navbar-expand-lg bg-white" v-if="auth">
@@ -83,13 +84,15 @@
     import {interceptors, post} from "./utilities/api";
     import SMSModal from './components/CustomSMSButton/SMSModal';
     import ChangeCustomerManagerModal from './components/modals/ChangeCustomerManagerModal';
+    import _ from 'lodash';
+    import axios from 'axios';
 
     export default {
         components: {
             SideNav,
             Loader,
             SMSModal,
-            ChangeCustomerManagerModal
+            ChangeCustomerManagerModal,
         },
         data() {
             return {
@@ -110,6 +113,15 @@
             pass === 'password' ? reRoute("/home","You cant access this route") : 
             pass != 'password' ? reRoute("/login","You have to Login!") : '';
 
+        },
+        mounted(){
+            axios.interceptors.request.use((config) => {
+            this.debouncer();
+            return config;
+            },(error)=> {
+                // Do something with request error
+                return Promise.reject(error);
+            })
         },
         created() {
             interceptors(err => {
@@ -154,7 +166,14 @@
             },
             clearFlash() {
                 Flash.removeMsg();
-            }
-        },
+            },
+            bounceUser(){
+                Auth.remove();
+                this.$router.push("/login");
+            },
+            debouncer:_.debounce(function(){
+                this.bounceUser();                
+            }, 30*60*1000)
+        }
     };
 </script>
