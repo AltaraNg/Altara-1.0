@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use App\Services\Logistics\BrandService;
+use App\Services\Logistics\CategoryService;
 use EloquentBuilder;
 use App\Category;
 use App\Product;
@@ -11,13 +13,26 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+
+/**
+ * @property BrandService brandService
+ * @property CategoryService categoryService
+ */
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @param BrandService $brandService
+     * @param CategoryService $categoryService
      */
+
+    public function __construct(BrandService $brandService, CategoryService $categoryService)
+    {
+        $this->brandService = $brandService;
+        $this->categoryService = $categoryService;
+    }
+
     public function index()
     {
         $model = Product::select('id', 'name', 'retail_price', 'is_active')
@@ -73,14 +88,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $brands = DB::table('brands')->where('is_available', '=', true)->get();
-
-        $categories = DB::table('categories')->where('is_available', '=', 1)->get();
-
         return response()->json([
-            'brands' => $brands,
+            'brands' => $this->brandService->getAvailableBrands(),
             'form' => Product::form(),
-            'categories' => $categories
+            'categories' => $this->categoryService->getAvailableCategories()
         ]);
     }
 

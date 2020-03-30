@@ -3,37 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use App\Services\Logistics\BrandService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @property BrandService brandService
+ */
 class BrandController extends Controller
 {
-   /**
-    * Display a listing of the resource.
-    *
-    * @return Response
-    */
-   public function index()
+    /**
+     * Display a listing of the resource.
+     *
+     * @param BrandService $brandService
+     */
+    protected $brandService;
+   public function __construct(BrandService $brandService)
    {
-       $model = Brand::select('id','name', DB::raw('(CASE 
-        WHEN brands.is_available = "0" THEN "Inactive"
-        ELSE "Active"
-        END)
-        '))->searchPaginateAndOrder();
+       $this->brandService = $brandService;
+       $this->middleware('auth:api');
+
+   }
+
+    public function index()
+   {
+
        $columns = Brand::$columns;
+       $model = $this->brandService->getBrands();
+       if($model == null){
+
+       }
        return response()->json([
-           'model' => $model,
+           'model' => $this->brandService->getBrands(),
            'columns' => $columns
        ]);
    }
 
-   public function getBrands(){
-       $brands = DB::table('brands')->where('is_available', '=', true)->get();
-       return response()->json([
-           'brands'=> $brands
-       ]);
-   }
+
 
    /**
     * Show the form for creating a new resource.
@@ -55,21 +62,23 @@ class BrandController extends Controller
     */
    public function store(Request $request)
    {
-       $request->validate(['name' => 'required|unique:brands']);
-       $brand = new Brand($request->all());
-
-       $brand->name = ucwords(strtolower($request->name));
-
-       $brand->save();
-
-
+       if(!empty($request) && $request != null){
+           $this->brandService->storeBrand($request);
+           return response()->json([
+               'saved' => true,
+               'message' => 'Brand Created!',
+               'form' => Brand::form(),
+               'staff_id' => auth('api')->user()->staff_id,
+               'log' => 'BrandCreated'
+           ]);
+       }
        return response()->json([
-           'saved' => true,
-           'message' => 'Brand Created!',
-           'form' => Brand::form(),
-           'staff_id' => auth('api')->user()->staff_id,
-           'log' => 'BrandCreated'
+           'saved' => false,
+           'message' => 'Invalid parameters'
        ]);
+
+
+
    }
 
    /**
