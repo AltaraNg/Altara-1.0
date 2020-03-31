@@ -109,9 +109,11 @@
             };
 
             const pass = window.location.pathname.split('/')[1];
+            const token = localStorage.getItem("api_token");
 
-            pass === 'password' ? reRoute("/home","You cant access this route") : 
-            pass != 'password' ? reRoute("/login","You have to Login!") : '';
+            pass === 'password' && token ? reRoute("/home","You cant access this route") : 
+            pass != 'password' && !token ? reRoute("/login","You have to Login!") : '';
+
 
         },
         mounted(){
