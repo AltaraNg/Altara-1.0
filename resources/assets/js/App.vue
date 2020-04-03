@@ -2,7 +2,6 @@
     <transition name="fade">
         <div>
             <loader/>
-            <AutoLogout v-if="auth"/>
             <side-nav v-if="auth"/>
             <div class="main" id="main">
                 <nav class="navbar navbar-expand-lg bg-white" v-if="auth">
@@ -99,22 +98,6 @@
                 flash: Flash.state,
                 authState: Auth.state,
             };
-        },
-        beforeCreate() {
-            Auth.initialize();
-
-            const reRoute = (path,message) => {
-                Flash.setError(message);
-                this.$router.push(path);
-            };
-
-            const pass = window.location.pathname.split('/')[1];
-            const token = localStorage.getItem("api_token");
-
-            pass === 'password' && token ? reRoute("/home","You cant access this route") : 
-            pass != 'password' && !token ? reRoute("/login","You have to Login!") : '';
-
-
         },
         mounted(){
             axios.interceptors.request.use((config) => {
