@@ -104,7 +104,6 @@ class altaraPayX extends Command
         
         $headers = [
             // 'Authorization: Bearer sk_test_bb1ea0ac61e6899e972d53bd530bed6aa6e325ee',
-          'Authorization: Bearer sk_live_b2b0dc2e326f9d38e9d41ea52ef1517171d72637',
           'Content-Type: application/json',
         ];
         
