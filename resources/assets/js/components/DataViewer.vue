@@ -232,6 +232,7 @@
     import AppNavigation from '../components/AppNavigation';
     import ApprovalStatusButton from '../components/ApprovalStatusButton';
     import BasePagination from '../components/Pagination/BasePagination'
+    import queryParams from '../utilities/queryParam';
 
     export default {
 
@@ -282,13 +283,7 @@
                 $('.modal').modal('hide');
                 get(
                     `${this.$route.meta.source}` +
-                    `?page=${this.query.page}` +
-                    `&column=${this.query.column}` +
-                    `&per_page=${this.perPage}` +
-                    `&direction=${this.query.direction}` +
-                    `&search_input=${this.query.search_input}` +
-                    `&search_column=${this.query.search_column}` +
-                    `&search_operator=${this.query.search_operator}`)
+                    queryParams(this.query))
                     .then(res => {
                         let data = res.data.model.data;
                         /*the state id for the branch fetched from the db is a number
@@ -360,13 +355,7 @@
                 $('.modal').modal('hide');
                 get(
                     `${this.$route.meta.source}` +
-                    `?page=${this.currentPage}` +
-                    `&column=${this.query.column}` +
-                    `&per_page=${this.query.per_page}` +
-                    `&direction=${this.query.direction}` +
-                    `&search_input=${this.query.search_input}` +
-                    `&search_column=${this.query.search_column}` +
-                    `&search_operator=${this.query.search_operator}`)
+                    queryParams(this.query))
                     .then(res => {
                         let data = res.data.model.data;
                         /*the state id for the branch fetched from the db is a number
@@ -446,7 +435,7 @@
         },
         computed: {
             updatedPerPage: function(){
-                return this.perPage
+                return this.query.per_page
             }
         },
 
