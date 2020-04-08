@@ -116,7 +116,7 @@ const router = new VueRouter({
                 },
                 {path: 'verification', component: DVAVerification, name: 'verification', meta: {mode: 'verification'}},
                 {path: 'sales', component: OrderList, name: 'sales-dva', meta: {customSMS: true}},
-
+                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: {customSMS: true}},
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
                 {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},

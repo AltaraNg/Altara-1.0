@@ -108,6 +108,9 @@
                 return Promise.reject(error);
             })
         },
+        beforeCreate() {
+            Auth.initialize();
+        },
         created() {
             interceptors(err => {
                 if (err.response.status === 401) {
