@@ -344,6 +344,7 @@
                 switch (value) {
                     case 'next':
                         this.currentPage += 1
+
                         break
                     case 'previous':
                         this.currentPage -= 1
@@ -351,6 +352,7 @@
                     default:
                         this.currentPage = value
                 }
+                this.query.page = this.currentPage;
                 this.$LIPS(true);
                 $('.modal').modal('hide');
                 get(
