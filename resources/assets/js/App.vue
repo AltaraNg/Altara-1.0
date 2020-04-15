@@ -104,7 +104,14 @@
             this.debouncer();
             return config;
             },(error)=> {
-                // Do something with request error
+                return Promise.reject(error);
+            }), 
+            axios.interceptors.response.use((config) => {
+            return config;
+            },(error)=> {
+                if (error.response.data.error_message === "Unauthenticated.") {
+                this.bounceUser();    
+                }
                 return Promise.reject(error);
             })
         },
