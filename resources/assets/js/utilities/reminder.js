@@ -1,3 +1,4 @@
+import Order from './order';
 import Vue from 'vue';
 let vue = new Vue();
 
