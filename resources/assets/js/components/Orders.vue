@@ -14,7 +14,7 @@
                     :options="status"
                     :OId="OId"
                     v-on:popIt="popIt"
-                    @done="fetchRenewalList(list)"
+                    @done=" mode === 'renewal' ? fetchRenewalList(list) : fetchList(list)"
                     @display="displayDetails"/>
             </div>
             <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
