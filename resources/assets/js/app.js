@@ -8,7 +8,8 @@ import {store} from './store/store';
 import VeeValidate from 'vee-validate';
 import './utilities/globalFunctions.js';
 import VueSweetalert2 from 'vue-sweetalert2';
-
+import VuexRouterSync from 'vuex-router-sync';
+VuexRouterSync.sync(store, router);
 Vue.use(VeeValidate, {
     events: 'input|blur',
     classes: true,
