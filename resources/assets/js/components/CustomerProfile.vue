@@ -92,6 +92,10 @@
                                     <td>{{!customer.occupation ? 'Not Available' : customer.occupation }}</td>
                                 </tr>
                                 <tr>
+                                    <th class="text-muted"><i class="mr-3 fas fa-envelope"></i>Email</th>
+                                    <td>{{!customer.email ? 'Not Available' : customer.email }}</td>
+                                </tr>
+                                <tr>
                                     <th class="text-muted"><i class="mr-3 fas fa-gift"></i>Registered On</th>
                                     <td>{{customer.date_of_registration}}</td>
                                 </tr>

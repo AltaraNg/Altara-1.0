@@ -5,58 +5,43 @@ import {store} from '../store/store';
 import {routerHistory, writeHistory} from 'vue-router-back-button'
 
 const Home = () => import( '../views/HomePage.vue');
-
 const Login = () => import( '../views/auth/Login.vue');
-
 const ResetPassword = () => import( '../views/auth/ResetPassword.vue');
 const ForgotPassword = () => import( '../views/auth/ForgotPassword.vue');
-
 const NotFound = () => import( '../views/NotFound.vue');
-
 const DSA = () => import( '../views/DSA/Index.vue');
 const DSAHome = () => import( '../views/DSA/HomePage.vue');
 const DSAReport = () => import( '../views/DSA/report/report.vue');
 const CustomerForm = () => import( '../views/shared/customerForm.vue');
-
 const DVA = () => import( '../views/DVA/Index.vue');
 const DVAHome = () => import( '../views/DVA/HomePage.vue');
 const DVAMessage = () => import( '../views/DVA/messaging/message.vue');
 const DVAVerification = () => import( '../views/DVA/verification/verification.vue');
-
 const CAG = () => import( '../views/CAG/index.vue');
 const CAGHome = () => import( '../views/CAG/HomePage.vue');
-
 const OrderList = () => import( '../views/DVA/AllOrderList.vue');
 const AllOverdue = () => import( '../views/DVA/AllOverduePayment');
-
 const Reminder = () => import( '../views/DVA/reminder/reminder.vue');
-
 const Profile = () => import( '../views/profile/Index.vue');
 const ProfileEdit = () => import( '../views/profile/Edit.vue');
 const ProfileHome = () => import( '../views/profile/HomePage.vue');
-
 const HRM = () => import( '../views/HRM/index.vue');
 const HRMHome = () => import( '../views/HRM/HomePage.vue');
 const DataViewer = () => import( '../components/DataViewer.vue');
 const EmployeeForm = () => import( '../views/HRM/employee/employeeForm.vue');
-
 const AltaraPay = () => import( '../views/AltaraPay/index.vue');
 const AltaraPayHome = () => import( '../views/AltaraPay/HomePage.vue');
 const DirectDebitSales = () => import( '../views/AltaraPay/sales/DirectDebitSales.vue');
-
 const Caution = () => import( '../views/HRM/caution/index.vue');
 const CautionForm = () => import( '../views/HRM/caution/form.vue');
-
 const FSL = () => import('../views/FSL/index.vue');
 const FSLHome = () => import('../views/FSL/HomePage.vue');
 const BranchForm = () => import('../views/FSL/branch/form.vue');
 const POSForm = () => import('../views/FSL/pos/form.vue');
 const PaymentForm = () => import('../views/FSL/payment/form.vue');
 const CustomerLookup = () => import( '../views/FSL/lookup/lookup.vue');
-
 const Attendance = () => import('../views/FSL/attendance/index.vue');
 const AttendanceForm = () => import('../views/FSL/attendance/form.vue');
-
 const LOG = () => import('../views/LOG/index.vue');
 const LOGHome = () => import('../views/LOG/HomePage.vue');
 const Inventory = () => import('../views/LOG/inventory/inventory.vue');
@@ -75,18 +60,20 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {path: '/', redirect: {name: 'home'}},
-        {path: '/home', component: Home, name: 'home', meta: {role: localStorage.getItem("role_id")}},
+        {path: '/home', component: Home, name: 'home', meta: {requiresAuth: true,role: localStorage.getItem("role_id")}},
         {path: '/login', component: Login, name: 'login'},
-        {path: '/password/forgot', component: ForgotPassword, name: 'forgotPassword',meta: {auth: true}},
-        {path: '/password/reset/:token', component: ResetPassword, name: 'resetPassword',meta: {auth: true}},
+        {path: '/password/forgot', component: ForgotPassword, name: 'forgotPassword',meta: {requiresAuth: false}},
+        {path: '/password/reset/:token', component: ResetPassword, name: 'resetPassword',meta: {requiresAuth: false}},
         {
-            path: '/user', component: Profile, children: [
+            path: '/user', component: Profile,meta:{requiresAuth: true},
+            children: [
                 {path: 'profile', component: ProfileHome},
                 {path: 'profile/edit', component: ProfileEdit},
             ]
         },
         {
-            path: '/dsa', component: DSA, meta: {DSA: true}, children: [
+            path: '/dsa', component: DSA, meta: {requiresAuth: true,DSA: true}, 
+            children: [
                 {path: '/', redirect: {name: 'DSAHome'}},
                 {path: 'home', component: DSAHome, name: 'DSAHome'},
                 {path: 'report', component: DSAReport, name: 'DSAReport'},
@@ -94,7 +81,8 @@ const router = new VueRouter({
             ]
         },
         {
-            path: '/altarapay', component: AltaraPay, meta: {ALTARAPAY: true}, children: [
+            path: '/altarapay', component: AltaraPay, meta: {requiresAuth: true,ALTARAPAY: true}, 
+            children: [
                 {path: '/', redirect: {name: 'AltaraPayHome'}},
                 {path: 'home', component: AltaraPayHome, name: 'AltaraPayHome'},
                 {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-altarapay', meta: {customSMS: true}},
@@ -114,7 +102,8 @@ const router = new VueRouter({
             ]
         },
         {
-            path: '/dva', component: DVA, meta: {DVA: true}, children: [
+            path: '/dva', component: DVA, meta: {requiresAuth: true,DVA: true}, 
+            children: [
                 {path: '/', redirect: {name: 'DVAHome'}},
                 {path: 'home', component: DVAHome, name: 'DVAHome'},
                 {path: 'message', component: DVAMessage, name: 'DVAMessage'},
@@ -127,7 +116,7 @@ const router = new VueRouter({
                 },
                 {path: 'verification', component: DVAVerification, name: 'verification', meta: {mode: 'verification'}},
                 {path: 'sales', component: OrderList, name: 'sales-dva', meta: {customSMS: true}},
-
+                {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: {customSMS: true}},
                 {path: 'reminder/sms', component: Reminder, name: 'sms-reminder', meta: {mode: 'sms'}},
                 {path: 'reminder/call', component: Reminder, name: 'call-reminder', meta: {mode: 'call'}},
                 {path: 'reminder/collection', component: Reminder, name: 'collection', meta: {mode: 'collection'}},
@@ -142,7 +131,8 @@ const router = new VueRouter({
             ]
         },
         {
-            path: '/cag', component: CAG, meta: {CAG: true}, children: [
+            path: '/cag', component: CAG, meta: {requiresAuth: true,CAG: true}, 
+            children: [
                 {path: '/', redirect: {name: 'CAGHome'}},
                 {path: 'home', component: CAGHome, name: 'CAGHome'},
                 {path: 'sales', component: OrderList, name: 'sales-cag', meta: {customSMS: false}},
@@ -150,7 +140,8 @@ const router = new VueRouter({
             ]
         },
         {
-            path: '/hrm', component: HRM, meta: {HRM: true}, children: [
+            path: '/hrm', component: HRM, meta: {requiresAuth: true,HRM: true}, 
+            children: [
                 {path: '/', redirect: {name: 'HRMHome'}},
                 {path: 'home', component: HRMHome, name: 'HRMHome'},
                 {
@@ -172,7 +163,8 @@ const router = new VueRouter({
             ]
         },
         {
-            path: '/fsl', component: FSL, meta: {FSL: true}, children: [
+            path: '/fsl', component: FSL, meta: {requiresAuth: true,FSL: true}, 
+            children: [
                 {path: 'home', component: FSLHome, name: 'FSLHome'},
                 {
                     path: 'branch',
@@ -196,10 +188,10 @@ const router = new VueRouter({
             ]
         },
         {
-            path: '/log', component: LOG, meta: {LOG: true}, children: [
+            path: '/log', component: LOG, meta: {requiresAuth: true,LOG: true}, 
+            children: [
                 {path: 'home', component: LOGHome, name: 'LOGHome'},
                 {path: 'inventory', component: Inventory, name: 'inventory'},
-
                 {
                     path: 'brands',
                     component: DataViewer,
@@ -237,10 +229,10 @@ const router = new VueRouter({
         {
             path: '/customer',
             component: DataViewer,
-            meta: {appModel: 'customer', source: '/api/customer', new: '/dsa/customer'}
+            meta: {requiresAuth: true,appModel: 'customer', source: '/api/customer', new: '/dsa/customer'}
         },
-        {path: '/not-found', component: NotFound},
-        {path: '*', component: NotFound},
+        {path: '/not-found', component: NotFound,meta:{requiresAuth: true}},
+        {path: '*', component: NotFound,meta:{requiresAuth: true}},
     ]
 });
 
@@ -248,21 +240,22 @@ router.mode = 'html5';
 router.afterEach(writeHistory);
 router.afterEach(() => store.state.loader = false);
 router.beforeEach((to, from, next) => {
-    /*route access control*/
-    let home = (((to.path).split("/")).filter(Boolean)[0]).toUpperCase();
-    /* get the base for every route eg.
-    * :route : '/dsa/customer/register'
-    * : home will return 'DSA*/
-    if (to.matched.some(m => m.meta[home])) {
-        if (store.getters.auth(home + 'Access')) return next();
-        /*for home = 'DSA' the store.getters.auth('DSAAccess') will be called
-        * the method in store will return true if a user has access to the portal hence next();
-        * and false is a user don't have access hence error message and redirect to home*/
-        Flash.setError('You do not have access to that page!', 3000);
-        return next({name: 'home'});
+    const home = to.path.split('/').filter(Boolean)[0].toUpperCase();
+    const token = store.getters.getAuthUserDetails.apiToken;
+    const reRoute = (path) => {
+        Flash.setError('You do not have access to that page!');
+        return next({name: path});
+    };
+
+    home === 'PASSWORD' && token ? reRoute('home') : next();
+    
+    if (to.matched.some(route => route.meta.requiresAuth)) {
+        token ? next() : reRoute('login');
     }
-    /*else next will call the route for the all unknown path
-    * : the : 'NotFound'*/
+    
+    if (to.matched.some(m => m.meta[home])) {
+        store.getters.auth(home + 'Access') ? next() : reRoute('home');
+    }
     next();
 });
 export default router

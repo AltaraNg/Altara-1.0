@@ -59,6 +59,7 @@
         },
         methods: {
             login() {
+                const past = this.$store.state.route.from.fullPath;
                 this.$validator.validateAll().then(async result => {
                     if (result) {
                         if (this.$network()) {
@@ -69,7 +70,7 @@
                                     if (data.auth) {
                                         Auth.set(data);
                                         this.$store.dispatch('mutateAuth');
-                                        this.$router.push('/home');
+                                        this.$router.push(past);
                                         Flash.setSuccess(data.message);
                                     }
                                 })
