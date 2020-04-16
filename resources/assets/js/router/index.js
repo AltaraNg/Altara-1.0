@@ -241,7 +241,7 @@ router.afterEach(writeHistory);
 router.afterEach(() => store.state.loader = false);
 router.beforeEach((to, from, next) => {
     const home = to.path.split('/').filter(Boolean)[0].toUpperCase();
-    const token = store.getters.getAuthUserDetails.apiToken;
+    const token = localStorage.getItem('api_token');
     const reRoute = (path) => {
         Flash.setError('You do not have access to that page!');
         return next({name: path});
