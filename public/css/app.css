@@ -1819,6 +1819,11 @@ pre code {
     opacity: 1
 }
 
+.form-control::-moz-placeholder {
+    color: #868e96;
+    opacity: 1
+}
+
 .form-control::-ms-input-placeholder {
     color: #868e96;
     opacity: 1
@@ -4296,9 +4301,11 @@ tbody.collapse.show {
 @media (min-width:576px) {
     .card-columns {
         -webkit-column-count: 3;
-        column-count: 3;
+        -moz-column-count: 3;
+             column-count: 3;
         -webkit-column-gap: 1.25rem;
-        column-gap: 1.25rem
+        -moz-column-gap: 1.25rem;
+             column-gap: 1.25rem
     }
     .card-columns .card {
         display: inline-block;
@@ -16379,7 +16386,7 @@ button, input, optgroup, select, textarea, .form-control::-webkit-input-placehol
   font-size: 1.2rem !important;
 }
 
-button, input, optgroup, select, textarea, .form-control:-ms-input-placeholder {
+button, input, optgroup, select, textarea, .form-control::-moz-placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
   font-size: 1.2rem !important;
