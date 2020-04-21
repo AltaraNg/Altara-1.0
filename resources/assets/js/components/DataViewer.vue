@@ -116,32 +116,22 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <nav aria-label="Page navigation example" class="clearfix pt-5">
-                                <span class="float-left col-md-6 col-12 px-0 mb-5 mb-md-0">
-                                    Displaying: {{model.from}} - {{model.to}} of {{model.total}} {{$route.meta.appModel | capitalize}} (s)
-                                </span>
-                                <span class="justify-content-end float-right col-md-6 col-12 px-0 mb-5 mb-md-0">
-                                    <ul class="pagination m-0 float-right">
-                                        <li class="page-item">
-                                            <a @click="prev()" class="page-link">
-                                                <i class="fas fa-arrow-circle-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="page-item"><span class="page-link">Current Page: {{model.current_page}}</span></li>
-                                        <li class="page-item">
-                                            <a @click="next()" class="page-link">
-                                                <i class="fas fa-arrow-circle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <span class="float-left">
-                                        <span class="py-2 pr-3 float-left">Rows Per Page </span>
-                                        <input @keyup.enter="fetchIndexData()" class="form-control w-25"
-                                               placeholder="search..." type="text" v-model="query.per_page">
-                                    </span>
-                                </span>
-                            </nav>
+
+
+                            <base-pagination
+
+                                :page-count="pageCount"
+                                :current-page="currentPage"
+                                :per-page="updatedPerPage"
+                                @nextPage="pageChangeHandle('next')"
+                                @previousPage="pageChangeHandle('previous')"
+                            >
+
+
+                            </base-pagination>
+
                         </div>
+
                         <!--data viewer ends here-->
 
                         <!--employ portal access update modal starts here-->
@@ -241,16 +231,21 @@
     import {byMethod, get} from '../utilities/api';
     import AppNavigation from '../components/AppNavigation';
     import ApprovalStatusButton from '../components/ApprovalStatusButton';
+    import BasePagination from '../components/Pagination/BasePagination'
+    import queryParams from '../utilities/queryParam';
 
     export default {
 
-        components: {ApprovalStatusButton, AppNavigation},
+        components: {ApprovalStatusButton, AppNavigation, BasePagination},
 
         data() {
             return {
                 /*data generic to data viewer starts here*/
                 model: {},
                 columns: {},
+                perPage: 10,
+                pageCount: 0,
+                currentPage:1,
                 query: {
                     page: 1,
                     column: 'id',
@@ -282,60 +277,13 @@
             }
         },
 
-        created() {
-            this.$prepareStates();
-            this.$prepareBranches();
-            this.fetchIndexData();
-            $(document).on('click', 'tr', function () {
-                $('tr.current').removeClass('current');
-                $(this).addClass('current');
-            });
-            this.addCustomerOptionsModalsToDom();
-        },
-
-        updated() {
-            $('[data-toggle="tooltip"]').tooltip();
-        },
-
-        methods: {
-            /*methods exclusive to data viewer starts here*/
-
-            next() {
-                if (this.model.next_page_url) {
-                    this.query.page++;
-                    this.fetchIndexData();
-                }
-            },
-
-            prev() {
-                if (this.model.prev_page_url) {
-                    this.query.page--;
-                    this.fetchIndexData();
-                }
-            },
-
-            toggleOrder(column) {
-                if (column === this.query.column)
-                    this.query.direction = this.query.direction === 'desc' ? 'asc' : 'desc';
-                else {
-                    this.query.column = column;
-                    this.query.direcntion = 'asc';
-                }
-                this.fetchIndexData();
-            },
-
-            fetchIndexData() {
+        async mounted(){
+            try {
                 this.$LIPS(true);
                 $('.modal').modal('hide');
                 get(
                     `${this.$route.meta.source}` +
-                    `?page=${this.query.page}` +
-                    `&column=${this.query.column}` +
-                    `&per_page=${this.query.per_page}` +
-                    `&direction=${this.query.direction}` +
-                    `&search_input=${this.query.search_input}` +
-                    `&search_column=${this.query.search_column}` +
-                    `&search_operator=${this.query.search_operator}`)
+                    queryParams(this.query))
                     .then(res => {
                         let data = res.data.model.data;
                         /*the state id for the branch fetched from the db is a number
@@ -351,6 +299,81 @@
                                 if (this.isModel('customer')) curr.verification = this.$getCustomerApprovalStatus(curr.verification);
                             });
                         }
+                        this.pageCount = Math.ceil(res.data.model.total/res.data.model.per_page);
+                        Vue.set(this.$data, 'model', res.data.model);
+                        Vue.set(this.$data, 'columns', res.data.columns);
+                        this.$scrollToTop();
+                        this.$LIPS(false);
+                    })
+            }
+            catch (e) {
+                throw e;
+            }
+        },
+
+        created() {
+            this.$prepareStates();
+            this.$prepareBranches();
+            // this.fetchIndexData();
+            $(document).on('click', 'tr', function () {
+                $('tr.current').removeClass('current');
+                $(this).addClass('current');
+            });
+            this.addCustomerOptionsModalsToDom();
+        },
+
+        updated() {
+            $('[data-toggle="tooltip"]').tooltip();
+        },
+
+        methods: {
+            /*methods exclusive to data viewer starts here*/
+
+
+            toggleOrder(column) {
+                if (column === this.query.column)
+                    this.query.direction = this.query.direction === 'desc' ? 'asc' : 'desc';
+                else {
+                    this.query.column = column;
+                    this.query.direcntion = 'asc';
+                }
+                this.fetchIndexData();
+            },
+
+            async pageChangeHandle(value) {
+                switch (value) {
+                    case 'next':
+                        this.currentPage += 1
+
+                        break
+                    case 'previous':
+                        this.currentPage -= 1
+                        break
+                    default:
+                        this.currentPage = value
+                }
+                this.query.page = this.currentPage;
+                this.$LIPS(true);
+                $('.modal').modal('hide');
+                get(
+                    `${this.$route.meta.source}` +
+                    queryParams(this.query))
+                    .then(res => {
+                        let data = res.data.model.data;
+                        /*the state id for the branch fetched from the db is a number
+                        * hence the code below is used to get the state name
+                        * corresponding to the state id and display it
+                        * instead of showing state id as a number*/
+                        if (data.length) {
+                            data.forEach(curr => {
+                                if (data[0].state_id) curr.state_id =
+                                    this.$store.getters.getStates.find(obj => obj.id === curr.state_id).name;
+                                if (data[0].branch_id) curr.branch_id =
+                                    this.$store.getters.getBranches.find(obj => obj.id === curr.branch_id).name;
+                                if (this.isModel('customer')) curr.verification = this.$getCustomerApprovalStatus(curr.verification);
+                            });
+                        }
+                        this.pageCount = Math.ceil(res.data.model.total/res.data.model.per_page);
                         Vue.set(this.$data, 'model', res.data.model);
                         Vue.set(this.$data, 'columns', res.data.columns);
                         this.$scrollToTop();
@@ -411,6 +434,11 @@
                 'addCustomerOptionsModalsToDom',
                 'removeCustomerOptionsModalsFromDom'
             ])
+        },
+        computed: {
+            updatedPerPage: function(){
+                return this.query.per_page
+            }
         },
 
         destroyed() {
