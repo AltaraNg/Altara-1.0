@@ -73,16 +73,13 @@
                                     <tbody>
                                     <tr v-for="model in model.data">
                                         <td v-for="(value,key) in model">
-                                            <span v-if="key !== 'verification'">{{value}}</span>
-
-
-                                            <router-link
-                                                    :class="`status mx-auto status-sm shadow-sm ${value ? 'approved' : 'not-approved'}`"
-                                                    :to="$store.getters.auth('DVAAccess') ? `dva/verification?id=${model.id}` : ''"
-                                                    v-else>
-                                                {{value ? 'APPROVED' : 'NOT APPROVED'}}
-                                                <i :class="`ml-3 fas fa-${value ? 'check' : 'times'}`"></i>
-                                            </router-link>
+                                            <span v-if="!['verification'].includes(key)">{{value}}</span>
+                                            <ApprovalStatusButton
+                                                v-else
+                                                size="small"
+                                                :key="model.id"
+                                                :customer="model"
+                                                :link="`verification?id=${model.id}`"/>
                                         </td>
 
                                         <td v-if="isModel('user')">
@@ -247,17 +244,18 @@
 </template>
 <script>
     import Vue from 'vue';
+    import {mapActions} from 'vuex';
     import {log} from "../utilities/log";
     import Flash from '../utilities/flash';
     import {Message} from '../utilities/sms';
     import {byMethod, get} from '../utilities/api';
-
     import AppNavigation from '../components/AppNavigation';
+    import ApprovalStatusButton from '../components/ApprovalStatusButton';
 
 
     export default {
 
-        components: {AppNavigation, },
+        components: {ApprovalStatusButton, AppNavigation},
 
         data() {
             return {
@@ -304,6 +302,7 @@
                 $('tr.current').removeClass('current');
                 $(this).addClass('current');
             });
+            this.addCustomerOptionsModalsToDom();
         },
 
         updated() {
@@ -382,7 +381,7 @@
                 if (this.$network()) {
                     this.$LIPS(true);
                     get(`/api/reset-password/${this.form.id}`).then(({data}) => {
-                        let {password:psw} = data,//extract password from the data received
+                        let {password: psw} = data,//extract password from the data received
                             {staff_id: id, phone_number: tel} = this.form,
                             body = `Password reset successful! if your did not request for a new password kindly`
                                 + ` report back immediately, your staff ID is ${id}, new password: ${psw}`;
@@ -419,18 +418,15 @@
             isModel(m) {
                 return this.$route.meta.appModel === m;
             },
+
+            ...mapActions('ModalAccess', [
+                'addCustomerOptionsModalsToDom',
+                'removeCustomerOptionsModalsFromDom'
+            ])
         },
-        filters: {
-            status: function (value) {
-                if (value === 0){
-                    return 'No'
-                }else if(value === 1){
-                    return 'Yes'
-                }
-                else {
-                    return value
-                }
-            }
+
+        destroyed() {
+            this.removeCustomerOptionsModalsFromDom();
         }
     }
 </script>

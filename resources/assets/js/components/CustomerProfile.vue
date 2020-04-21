@@ -1,6 +1,12 @@
 <template>
     <transition name="fade">
-        <div :class="full && 'px-md-4 px-2'">
+        <div :class="full && 'px-md-4 px-2'"
+
+
+             style="margin-left: 5rem; margin-right: 5rem;">
+            <!--TODO cleanup-->
+
+
             <app-navigation :forward="{ path: $routerHistory.next().path }"
                             :previous="{ path: $routerHistory.previous().path }"
                             :pageTitle="'Customer Profile'"
@@ -48,12 +54,13 @@
                                 <h4 class="mt-0 pt-md-5 pt-sm-4 pt-0 mb-md-5 mb-sm-4 mb-4 text-muted">
                                     <strong>Customer ID: {{customer.id}}</strong>
                                 </h4>
+                                <span class="mt-0 pt-md-4 pt-sm-3 pt-0 mb-md-5 mb-sm-4 mb-4 px-3"
+                                      v-if="auth('DVAAccess') || auth('ALTARAPAYAccess') || auth('FSLAccess')">
+                                    <CustomSMSButton :customer="customer" :key="customer.id"/>
+                                </span>
                             </div>
                             <div class="float-left p-0 m-0 col-md-4 col-12 d-flex justify-content-center">
-                                <span :class="`status mt-md-5 my-sm-2 mt-0 ${approved ? 'approved' : 'not-approved'}`">
-                                    {{approved ? 'APPROVED' : 'NOT APPROVED'}}
-                                    <i :class="`ml-3 fas fa-${approved ? 'check' : 'times'}`"></i>
-                                </span>
+                                <ApprovalStatusButton size="big" :key="customer.id" :customer="customer"/>
                             </div>
                         </div>
                         <div class="pt-4">
@@ -63,10 +70,30 @@
                                     <th class="text-muted"><i class="mr-3 fas fa-mobile-alt"></i>Phone Number</th>
                                     <td>{{customer.telephone}}</td>
                                 </tr>
-                                <tr v-if="$store.getters.auth('DVAAccess')">
-                                    <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Address</th>
-                                    <td>{{$getCustomerAddress(customer) | capitalize }}
+                                <tr v-if="auth('DVAAccess')">
+                                    <th class="text-muted"><i class="mr-3 fas fa-home"></i>Address</th>
+                                    <td>
+                                    <span class="pad">Home :</span>
+                                    <span v-if="$getCustomerAddress(customer).length > 12">{{$getCustomerAddress(customer) | capitalize }} </span>
+                                    <span v-if="$getCustomerAddress(customer).length < 12">Not Available</span>
+                                    <span class="pad">|</span>
+                                    <span class="pad">Work :</span>
+                                    <span v-if="$getCustomerOfficeAddress(customer).length > 12">{{$getCustomerOfficeAddress(customer) | capitalize }} </span>
+                                    <span v-if="$getCustomerOfficeAddress(customer).length < 12">Not Available</span>
                                     </td>
+                                </tr>
+                                <!-- <tr v-if="auth('DVAAccess')">
+                                    <th class="text-muted"><i class="mr-3 fas fa-map-marker-alt"></i>Work Address</th>
+                                    <td v-if="$getCustomerOfficeAddress(customer).length > 12">{{$getCustomerOfficeAddress(customer) | capitalize }} </td>
+                                    <td v-if="$getCustomerOfficeAddress(customer).length < 12">Not Available</td>
+                                </tr> -->
+                                <tr> 
+                                    <th class="text-muted"><i class="mr-3 fas fa-briefcase"></i>{{customer.employment_status === 'formal' || customer.employment_status === 'salaried' ? 'Occupation' : 'Kind of business' }}</th>
+                                    <td>{{!customer.occupation ? 'Not Available' : customer.occupation }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted"><i class="mr-3 fas fa-envelope"></i>Email</th>
+                                    <td>{{!customer.email ? 'Not Available' : customer.email }}</td>
                                 </tr>
                                 <tr>
                                     <th class="text-muted"><i class="mr-3 fas fa-gift"></i>Registered On</th>
@@ -93,45 +120,70 @@
 </template>
 <script>
     import Vue from 'vue';
-    import {store} from '../store/store';
+    import {mapActions, mapGetters} from 'vuex';
     import {EventBus} from "../utilities/event-bus";
     import AppNavigation from '../components/AppNavigation';
-
-    const DVA = () => store.getters.auth('DVAAccess');
+    import ApprovalStatusButton from '../components/ApprovalStatusButton';
+    import CustomSMSButton from '../components/CustomSMSButton/CustomSMSButton';
 
     export default {
         props: ['viewCustomer'],
-        components: {AppNavigation},
+
+        components: {ApprovalStatusButton, AppNavigation, CustomSMSButton},
+
         data() {
             return {
                 customer: '',
                 show: false
             }
         },
+
         computed: {
-            full(){
+            full() {
                 return this.$route.meta.mode === 'full';
             },
+
             passport() {
                 return `https://s3.eu-west-2.amazonaws.com/altara-one/${this.customer.document.passport_url}`;
             },
+
             branch() {
                 return `${this.customer.branch.description} ${this.customer.branch.name}`;
             },
-            approved(){
+
+            approved() {
                 return this.$getCustomerApprovalStatus(this.customer.verification);
-            }
+            },
+
+            ...mapGetters(['auth'])
         },
+
         created() {
             $('.tooltip').remove();
             if (this.viewCustomer) this.setCustomer(this.viewCustomer);
             EventBus.$on('customer', customer => this.setCustomer(customer));
+            this.addCustomerOptionsModalsToDom();
         },
+
         methods: {
             setCustomer(customer) {
                 Vue.set(this.$data, 'customer', customer);
                 this.show = true;
-            }
+            },
+
+            ...mapActions('ModalAccess', [
+                'addCustomerOptionsModalsToDom',
+                'removeCustomerOptionsModalsFromDom'
+            ])
+        },
+
+        destroyed() {
+            this.removeCustomerOptionsModalsFromDom();
         }
     }
 </script>
+<style>
+.pad{
+    margin: 0 2px;
+}
+</style>

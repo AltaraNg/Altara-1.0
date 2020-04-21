@@ -1,9 +1,16 @@
 import axios from 'axios';
 import Auth from './auth';
 
+axios.defaults.baseURL = process.env.MIX_APP_URL;
 export const get = url => axios({method: 'GET', url, headers: {'Authorization': `Bearer ${Auth.state.api_token}`}});
 export const post = (url, data) => axios({
     method: 'POST',
+    url,
+    data,
+    headers: {'Authorization': `Bearer ${Auth.state.api_token}`}
+});
+export const put = (url, data) => axios({
+    method: 'PUT',
     url,
     data,
     headers: {'Authorization': `Bearer ${Auth.state.api_token}`}

@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->hasMany(Customer::class);
     }
 
+    public function customersManaged()
+    {
+        return $this->hasMany(Customer::class, 'managed_by','id');
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class);
@@ -161,5 +166,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reminder::class, 'id','dva_id');
     }*/
+
+
 
 }

@@ -16116,6 +16116,10 @@ body {
   z-index: 1;
 }
 
+.z-2 {
+  z-index: 2;
+}
+
 .show {
   display: block;
 }
@@ -16580,10 +16584,6 @@ textarea.form-control.is-invalid:focus {
   margin-bottom: 2rem;
 }
 
-.modal table {
-  table-layout: auto;
-}
-
 table button i, table a i {
   font-size: 1.2rem;
 }
@@ -16949,18 +16949,23 @@ table a i {
   max-width: 1140px;
 }
 
-.repayment .paid {
-  background-color: rgba(0, 163, 104, 0.05);
+.ok, .paid {
+  background-color: rgba(0, 163, 104, 0.09);
   color: #00a368;
 }
 
-.repayment .missed {
-  background-color: rgba(200, 22, 24, 0.05);
+.repossessed, .missed {
+  background-color: rgba(200, 22, 24, 0.09);
   color: #c81618;
 }
 
-.repayment .pending {
-  background-color: rgba(8, 74, 115, 0.05);
+.returned {
+  background-color: rgba(238, 178, 0, 0.09);
+  color: #eeb200;
+}
+
+.pending {
+  background-color: rgba(8, 74, 115, 0.09);
   color: #084a73;
 }
 
@@ -17295,6 +17300,7 @@ tr.current {
   border-radius: 3px;
   border: 1px solid #E3E3E3;
   position: relative;
+  z-index: 1;
 }
 
 .typeahead__open {
@@ -17347,7 +17353,6 @@ tr.current {
   left: -1px;
   right: 0;
   border-radius: 0 0 4px 4px;
-  z-index: 3;
 }
 
 .typeahead__item {
@@ -17541,7 +17546,7 @@ tr.current {
 }
 
 .card-radius {
-  border-radius: .8rem;
+  border-radius: .4rem;
 }
 
 .product .card {
@@ -17558,6 +17563,24 @@ tr.current {
   font-size: 9rem;
   opacity: .1;
   margin: 1rem auto;
+}
+
+.CustomSMSButton {
+  height: 4rem;
+  position: relative;
+  line-height: 4rem;
+  width: 4rem;
+  color: darkgray;
+  border-radius: 50%;
+  text-align: center;
+  margin: 1rem auto;
+}
+
+.CustomSMSButton:hover {
+  background-color: whitesmoke;
+  color: darkgray;
+  -webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 9px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 990px) {
@@ -17580,7 +17603,7 @@ tr.current {
     display: table;
   }
   .modal-dialog {
-    max-width: 100rem;
+    max-width: 64rem;
   }
   .attendance .custom-select, .attendance input {
     width: 90%;

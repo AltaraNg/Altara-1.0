@@ -4,14 +4,18 @@
         <div class="tab-content mt-1 attendance-body" v-if="show">
             <div class="tab-pane active text-center" id="reminder-panel" role="tabpanel">
                 <order-item
-                        v-for="(order,index) in orders"
-                        :key="order.order.id"
-                        :index="index"
-                        :start-index="startIndex"
-                        :order="order"
-                        :mode="mode"
-                        @done="fetchList(list)"
-                        @display="displayDetails"/>
+                    v-for="(order,index) in orders"
+                    :key="order.order.id"
+                    :index="index"
+                    :start-index="startIndex"
+                    :order="order"
+                    :mode="mode"
+                    :tab="list"
+                    :options="status"
+                    :OId="OId"
+                    v-on:popIt="popIt"
+                    @done=" mode === 'renewal' ? fetchRenewalList(list) : fetchList(list)"
+                    @display="displayDetails"/>
             </div>
             <div class="w-100 my-5 mx-0 hr" v-if="mode != 'normal-list'"></div>
         </div>
@@ -200,13 +204,18 @@
                                     <td>Order Id</td>
                                     <td>Product</td>
                                     <th>Branch</th>
+                                    <th>Status</th>
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">{{activeOrder.customerName}}
                                     </td>
                                     <th>{{activeOrder.order.id}}</th>
                                     <th>{{activeOrder.order.store_product.product_name}}</th>
-                                    <td class="font-weight-bold">{{activeOrder.branch.name}}</td>
+                                    <td>{{activeOrder.branch.name}}</td>
+                                    <td class="font-weight-bold"
+                                        :class="getOrderStatusClass(getOrderStatus(activeOrder))">
+                                        {{getOrderStatus(activeOrder)}}
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -338,28 +347,53 @@
             </div>
         </div>
 
+        <nav v-if="mode === 'renewal' && responseData.next_page_url" class="col d-flex justify-content-end align-items-center pr-0">
+            <ul class="pagination pagination-lg mb-0">
+                <!---->
+                <li :class="{'disabled':!responseData.first_page_url}" class="page-item">
+                    <a href="javascript:" @click="prev(1)" class="page-link">First</a>
+                </li>
+                <li :class="{'disabled':!responseData.prev_page_url }" class="page-item">
+                    <a href="javascript:" @click="prev()" class="page-link">prev</a>
+                </li>
+                <!---->
+                <li class="page-item">
+                    <span class="page-link">Current Page: {{responseData.current_page}}</span>
+                </li>
+                <!---->
+                <li :class="{'disabled':!responseData.next_page_url}" class="page-item">
+                    <a href="javascript:" @click="next()" class="page-link">Next</a>
+                </li>
+                <li :class="{'disabled':!responseData.last_page_url}" class="page-item">
+                    <a href="javascript:" @click="next(responseData.last_page)" class="page-link">Last</a>
+                </li>
+                <!---->
+            </ul>
+        </nav>
     </div>
 </template>
 
 <script>
     import Vue from 'vue';
     import {mapGetters} from 'vuex';
+    import queryParam from "../utilities/queryParam";
     import Flash from "../utilities/flash";
     import {Message} from "../utilities/sms";
-    import {get, post} from "../utilities/api";
+    import {get, post,put} from "../utilities/api";
     import OrderItem from '../components/OrderItem';
     import {Order, OrderWithPromiseCall} from "../utilities/Amortization";
+    import {getOrderStatus, getOrderStatusClass} from '../components/order/orderStatusCssClass';
 
-    let url = to => `/api/reminder/create?list=${to.query.list}`;
+    let url = to => `/api/reminder/create?list=${to.query.list + (to.query.filterWithBranch ? `&filterWithBranch=` + to.query.filterWithBranch : '')}`;
 
     export default {
         components: {OrderItem},
 
-        props: {list: {default: null}, mode: null, preLoadedOrder: null, startIndex: null},
+        props: {list: {default: null}, mode: null, preLoadedOrder: null, startIndex: null,tab:{default: null}},
 
         watch: {
             list: function (list) {
-                this.fetchList(list);
+               this.mode === 'renewal' ? this.fetchRenewalList(list) : this.fetchList(list);
             },
             preLoadedOrder: function (data) {
                 this.prepareForm(data);
@@ -370,166 +404,51 @@
             return {
                 orders: [],
                 show: false,
-                showModalContent: false,
                 Order: Order,
                 activeOrder: null,
+                showModalContent: false,
+                status:[],
+                responseData:{},
+                page: 1,
+                OId:0,
             }
         },
 
         computed: {
-            ...mapGetters(['auth'])
+            ...mapGetters(['auth', 'getAuthUserDetails'])
         },
 
         methods: {
+            getOrderStatus: activeOrder => getOrderStatus(activeOrder),
 
-            async prepareForm(res) {
+            getOrderStatusClass: orderStatus => getOrderStatusClass(orderStatus),
+
+            async prepareForm({orders}) {
                 this.show = false;
                 this.showModalContent = false;
-                this.orders = [];
-                await res.orders.forEach(order => {
-                    let newOrder = order instanceof Order ? order : new OrderWithPromiseCall(order, res.dva_id);
-
-                    let hasMissedPayment = () => {
-                        /*for the list 1 and 8 return true i.e no need for has
-                        missed payment since it's obvious we are dealing with just one date
-                        * 1st list is for all the customers that picked today
-                        * 8th list is for all the promise calls all the promise call must be shown to */
-                        if ([8, 1].includes(this.list) || this.mode === "normal-list") return true;
-
-                        let payDay,
-                            /*payDay holds the date
-                            of the first vacant repayment*/
-
-                            dayInterval,
-                            /*dayInterval the number of days before or after a certain
-                            repayment date. this varies according to collections app brief*/
-
-                            datePool = [],
-                            /*datePool hold an array of dates of length ranging from 1 to 3 in length
-                            * is the current date is monday the date-pool will include dates for
-                            * monday, sunday and saturday else it just hold the current date*/
-
-                            today = new Date(),
-
-                            isMonday = today.getDay() === 1,
-                            /*isMonday how a boolean value of whether
-                            the current date is monday or not*/
-
-                            collectionsList = [9, 10, 11, 12, 13, 14],
-
-                            accumulatedDays = (isMonday || collectionsList.includes(this.list)) ? 3 : 1;
-                        /*accumulatedDays hold 1 or 3,
-                        1 if the current date is not on a monday and
-                        3 if the current date is on a monday*/
-
-                        if (!(!!newOrder.repaymentData)) return false;
-
-                        /*step 1::
-                        * the count is either 7 or 13,
-                        * the loop runs for 6 or 12 times*/
-                        for (let i = 1; i < newOrder.count + 1; i++) {
-
-                            /*get the resultant column 1st, 2nd, 3rd etc*/
-                            let column = this.$getColumn(i);
-
-                            /*step 2. get the first occurrence of a vacant pay eg. 5th_pay*/
-                            if (!newOrder.repaymentData[column + "_pay"]) {
-
-                                /*step 3. find the corresponding due date for the vacant pay
-                                * The generateDates returns an array of the due
-                                dates for the order under consideration*/
-                                payDay = (OrderWithPromiseCall
-                                    .generateDueDates(newOrder.order.order_date, newOrder.interval, newOrder.count))
-                                    [i - 1];
-
-
-                                /*[i - 1] explained.
-                                * eg if the i = 5,
-                                * column = 5th_pay,
-                                * then the 4th ( [5-1] - this is the 5th element or 4th index, array is 0 indexed)
-                                * index of the resultant array is the pay day we are interested in*/
-                                break;
-                            }
-                        }
-
-                        /*step 4. assign the appropriate intervals
-                        * NB:: This intervals where generated from the days
-                        * stipulated on the collections app brief note that the case
-                        * corresponds to the steps also indicated in the collections app brief*/
-                        switch (this.list) {
-                            case 2:
-                                dayInterval = 7;
-                                break;
-                            case 3:
-                                dayInterval = 3;
-                                break;
-                            case 4:
-                                dayInterval = 0;
-                                break;
-                            case 5:
-                                dayInterval = 1;
-                                break;
-                            case 6:
-                                dayInterval = 5;
-                                break;
-                            case 7:
-                                dayInterval = 31;
-                                break;
-
-                            case 9://collections visit: 1
-                                dayInterval = 38;
-                                break;
-                            case 10://collections visit: 2
-                                dayInterval = 45;
-                                break;
-
-                            case 11://recovery visit: 1
-                                dayInterval = 61;
-                                break;
-                            case 12://recovery visit: 2
-                                dayInterval = 75;
-                                break;
-                            case 13://recovery visit: 2
-                                dayInterval = 90;
-                                break;
-
-                            case 14://external recovery - lawyer visit: 2
-                                dayInterval = 121;
-                                break;
-                        }
-
-                        if (["collection", "recovery", "call", "external-recovery"].includes(this.mode)) {
-                            for (let p = 0; p < accumulatedDays; p++)
-                                datePool.push(this.$getDate(today.addDays(-(p + dayInterval))));
-                        }
-
-                        if (this.mode === 'sms') {
-                            for (let p = 0; p < accumulatedDays; p++)
-                                datePool.push(this.$getDate(today.addDays(p + dayInterval)));
-                        }
-
-                        return datePool.includes(payDay);
-                    };
-
-                    let isMyBranch = () => {
-                        if (this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess')) return true;
-                        //the branch to be used for this filter should be the branch of the
-                        // product being bought not the branch of the customer
-                        return parseInt(newOrder.order.store_product.store_name) === res.branch;
-                    };
-
-                    if (isMyBranch() && hasMissedPayment()) this.orders.push(newOrder)
-                });
-
-                !!this.orders.length && (this.show = true);
+                this.orders = await this.convertRequestOrdersToOrderClassInstance(orders);
+                this.orders.length && (this.show = true);
                 this.$LIPS(false);
             },
 
-            fetchList(list) {
+            convertRequestOrdersToOrderClassInstance(orders) {
+                let orderInstancesArr = [];
+                for (let key in orders) {
+                    let newOrder =
+                        orders[key] instanceof Order ?
+                            orders[key]
+                            :
+                            new OrderWithPromiseCall(orders[key], this.getAuthUserDetails.userId);
+                    orderInstancesArr.push(newOrder)
+                }
+                return orderInstancesArr;
+            },
+             fetchList(list) {
                 this.$LIPS(true);
-                get(url({query: {list}})).then(({data}) => {
+                let filterWithBranch = !(this.auth('DVALead') || this.auth('FSLLead') || this.auth('CAGAccess'));
+                get(url({query: {list, filterWithBranch}})).then(({data}) => {
                     if (list === 8) data.orders = data.orders.map(promiseCall => promiseCall.order);
-                    this.prepareForm(data);
+                 this.prepareForm(data);
                 });
             },
 
@@ -590,11 +509,117 @@
                         this.$scrollToTop();
                     });
                 } else this.$displayErrorMessage('Error logging sent messages!');
-            }
+            },
+
+            async fetchRenewalList(list) {
+                this.$LIPS(true);
+                await this.fetchStatus();
+            },
+
+            async fetchStatus(){
+                this.show = false;
+               try{
+                    const fetchAllStatus = await get(`/api/renewal-list-status`);
+                    this.status = fetchAllStatus.data.data;
+                    this.$LIPS(false);
+                    await this.fetchRenewal();  
+               }
+               catch(err){
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false)
+               }
+            },
+
+            async fetchRenewal(){
+                this.$LIPS(true);
+                try{
+                    const status = this.list === "Current" ? '': this.list ? this.status.find(option => option.status === this.list.toLowerCase()).id : '';
+                        
+                    const adminAccess = this.auth('FSLLead');
+                    const branch_id = parseInt(localStorage.getItem('branch_id'));
+                    const nonAdmin ={
+                        page: this.page,
+                        branch_id: branch_id
+                    }
+                    
+                    const admin = {
+                        page: this.page
+                    }
+
+                    const base = `/api/renewal-list`;
+                    const url1  = `${base}${adminAccess ? queryParam(admin) : queryParam(nonAdmin)}`;
+                    const url0 = `${base}/status/${status}${adminAccess ? queryParam(admin) : queryParam(nonAdmin)}`;
+                    const data = await get( status ? url0 : url1);
+                    this.responseData = data.data.data;
+                    this.OId =this.responseData.from;
+                    await this.prepareForm({orders:data.data.data.data});
+                }
+                catch(err) {
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false)    
+                }
+            },
+             popIt(param){
+             this.list === "Current" ?  this.postRenewal(param) : this.updateRenewal(param);
+            },
+
+            async updateRenewal(param){
+                this.$LIPS(true);
+                try{
+                    await put(`/api/renewal-list/${param.data.renewalId}`,param.data)
+                    .then(()=> this.postFeedback(param.feedback));
+                    this.orders = this.orders.filter(p => p.order.id != param.data.order_id);
+                }
+                catch(err){
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false)
+                }
+            },
+
+            async postRenewal(param){
+                this.$LIPS(true);
+                try{
+                    await post(`/api/renewal-list`,param.data)
+                    .then(()=> this.postFeedback(param.feedback));
+                    this.orders = this.orders.filter(p => p.order.id != param.data.order_id);
+                }
+                catch(err){
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false)
+                }
+            },
+
+            async postFeedback(param){
+                try{
+                    await post('/api/reminder', {reminders: param});
+                    this.$LIPS(false);
+                }
+                catch(err){
+                    this.$displayErrorMessage(err);
+                    this.$LIPS(false);
+                }
+            },
+
+            next(firstPage = null) {
+                if (this.responseData.next_page_url) {
+                    this.page = firstPage ? firstPage : parseInt(this.page) + 1;
+                    this.fetchRenewal();
+                }
+            },
+
+            prev(lastPage = null) {
+                if (this.responseData.prev_page_url) {
+                    this.page = lastPage ? lastPage : parseInt(this.page) - 1;
+                    this.fetchRenewal();
+                }
+            },
         },
 
         mounted() {
-            this.mode != 'normal-list' ? this.fetchList(this.list) : this.prepareForm(this.preLoadedOrder);
+            this.mode === 'renewal' ? this.fetchRenewalList(this.list) : 
+            this.mode != 'normal-list' ? this.fetchList(this.list) : 
+            this.prepareForm(this.preLoadedOrder);
+
             $(document).on("hidden.bs.modal", '.modal', () => {
                 this.activeOrder = null;
                 this.showModalContent = false;

@@ -25,7 +25,7 @@
                                 </li>
                                 <li class="nav-item dropdown" v-if="auth">
                                     <span aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                                     data-toggle="dropdown" id="menu">
+                                          data-toggle="dropdown" id="menu">
                                         <i class="now-ui-icons users_circle-08"></i> {{authState.user_name | capitalize}}
                                     </span>
                                     <div aria-labelledby="menu" class="dropdown-menu">
@@ -69,20 +69,29 @@
                 </transition>
                 <router-view></router-view>
             </div>
+            <SMSModal v-if="showSMSModal"/>
+            <ChangeCustomerManagerModal v-if="showCustomerManagerModal"/>
         </div>
     </transition>
 </template>
 <script>
+    import {mapGetters} from "vuex";
     import Auth from "./utilities/auth";
     import Flash from "./utilities/flash";
     import Loader from "./components/Loader.vue";
     import SideNav from "./components/SideNav.vue";
     import {interceptors, post} from "./utilities/api";
+    import SMSModal from './components/CustomSMSButton/SMSModal';
+    import ChangeCustomerManagerModal from './components/modals/ChangeCustomerManagerModal';
+    import _ from 'lodash';
+    import axios from 'axios';
 
     export default {
         components: {
             SideNav,
-            Loader
+            Loader,
+            SMSModal,
+            ChangeCustomerManagerModal,
         },
         data() {
             return {
@@ -90,16 +99,24 @@
                 authState: Auth.state,
             };
         },
+        mounted(){
+            axios.interceptors.request.use((config) => {
+            this.debouncer();
+            return config;
+            },(error)=> {
+                return Promise.reject(error);
+            }), 
+            axios.interceptors.response.use((config) => {
+            return config;
+            },(error)=> {
+                if (error.response.data.error_message === "Unauthenticated.") {
+                this.bounceUser();    
+                }
+                return Promise.reject(error);
+            })
+        },
         beforeCreate() {
             Auth.initialize();
-            /*if (localStorage.getItem("api_token")) {
-                this.$router.push("/home");
-                Flash.setSuccess("Welcome Back!");
-            }*/
-            if (!localStorage.getItem("api_token")) {
-                Flash.setError("You have to Login!");
-                this.$router.push("/login");
-            }
         },
         created() {
             interceptors(err => {
@@ -108,7 +125,7 @@
                     this.$router.push("/login");
                 }
                 if (err.response.status === 500) Flash.setError(err.response.statusText);
-                if (err.response.status === 404) this.$router.push("/not-found");
+                if (err.response.status === 404 && this.auth) this.$router.push("/not-found");
             });
             window.addEventListener('load', () => {
                 this.showStatus(navigator.onLine);
@@ -117,6 +134,7 @@
             });
         },
         computed: {
+            ...mapGetters('ModalAccess', ['showCustomerManagerModal', 'showSMSModal']),
             auth() {
                 return this.authState.api_token && this.authState.user_id;
             },
@@ -143,7 +161,14 @@
             },
             clearFlash() {
                 Flash.removeMsg();
-            }
-        },
+            },
+            bounceUser(){
+                Auth.remove();
+                this.$router.push("/login");
+            },
+            debouncer:_.debounce(function(){
+                this.bounceUser();                
+            }, 30*60*1000)
+        }
     };
 </script>

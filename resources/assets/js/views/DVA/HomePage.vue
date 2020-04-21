@@ -48,7 +48,10 @@
                     }, {
                         url: 'sales', title: 'Sales List', url_c: 'View Sales List',
                         desc: 'View all Sales!',
-                    }
+                    }, {
+                        url: 'lookup', title: 'Customer Lookup', url_c: 'Manage customer repayment details',
+                        desc: 'Customer Lookup',
+                    }// TODO:: cleanup
                 ]
             }
         }

@@ -89,9 +89,9 @@
                                         <input :disabled="form[index].is_present === '0'"
                                                @click="no_signout(index, form[index].no_signout)"
                                                class="form-check-input mt-3 ml-2"
-                                               id="exampleCheck1"
+                                               :id="`remark-${user.user.staff_id}`"
                                                type="checkbox" v-model="form[index].no_signout" value="true">
-                                        <label class="form-check-label" for="exampleCheck1"></label>
+                                        <label class="form-check-label" :for="`remark-${user.user.staff_id}`"></label>
                                     </div>
                                 </div>
                             </div>

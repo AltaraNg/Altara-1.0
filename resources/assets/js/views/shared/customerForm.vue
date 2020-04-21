@@ -1,14 +1,21 @@
 <template>
     <div class="clearfix pt-md-3 pt-2" id="customerRegister">
         <verification :action="'update'" @update="updateCustomer" v-if="mode === 'update'"/>
-        <div class="card" v-if="newCustomer.id && mode === 'update' || mode === 'register'">
+        <div class="card" v-if="newCustomer.id && mode === 'update' || mode === 'register'"
+
+
+
+             :style="mode === 'update' ? 'margin-left: 5rem;margin-right: 5rem;width: auto;' : ''">
+            <!--TODO cleanup-->
+
+
             <ul class="nav nav-tabs justify-content-center bg-default">
                 <h6>{{mode | capitalize}} Customer</h6>
             </ul>
             <div class="card-body pl-4 pr-4 clearfix">
                 <form @submit.prevent="register">
                     <!--form section for register starts here-->
-                    <div v-if="mode === 'register'">
+                    <div v-if="mode === 'register' || $store.getters.auth('DVAAccess')">
                         <h5>Employee Details</h5>
 
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
@@ -131,11 +138,10 @@
                             <small v-if="error.telephone">{{error.telephone[0]}}</small>
                         </div>
                         <div class="spaceAfter"></div>
-                    </div>
+                    <!-- </div> -->
                     <!--form section for register stops here-->
 
                     <!--form section for register and update starts here-->
-                    <div v-if="mode === 'register' || $store.getters.auth('DVAAccess')">
                         <h5>Address</h5>
 
                         <div class="form-group col-md-4 px-md-3 px-1 float-left">
@@ -600,6 +606,7 @@
                                             name="office_phone"
                                             placeholder="Enter Phone Number here"
                                             type="tel"
+                                            key="office_phone_formal"
                                             v-model="newCustomer.working_individual_Phone_number"
                                             v-validate="'required|numeric|max:11|min:11'"
                                     />
@@ -614,6 +621,7 @@
                                             name="name_of_firm"
                                             placeholder="Enter name of company here"
                                             type="text"
+                                            key="name_of_form_formal"
                                             v-model="newCustomer.name_of_company_or_business"
                                             v-validate="'required|max:100'"
                                     />
@@ -630,6 +638,7 @@
                                             name="current_salary"
                                             placeholder="Current Salary or Monthly income"
                                             type="number"
+                                            key="current_salary_formal"
                                             v-model="newCustomer.current_sal_or_business_income"
                                             v-validate="'required'"
                                     />
@@ -888,6 +897,7 @@
                                             name="office_phone"
                                             placeholder="Enter Phone Number here"
                                             type="tel"
+                                            key="office_phone_informal"
                                             v-model="newCustomer.working_individual_Phone_number"
                                             v-validate="'required|numeric|max:11|min:11'"
                                     />
@@ -902,6 +912,7 @@
                                             name="name_of_firm"
                                             placeholder="Enter name of company here"
                                             type="text"
+                                            key="name_of_form_informal"
                                             v-model="newCustomer.name_of_company_or_business"
                                             v-validate="'required|max:100'"
                                     />
@@ -932,6 +943,7 @@
                                             name="current_salary"
                                             placeholder="Current Salary or Monthly income"
                                             type="number"
+                                            key="current_salary_informal"
                                             v-model="newCustomer.current_sal_or_business_income"
                                             v-validate="'required|numeric'"
                                     />

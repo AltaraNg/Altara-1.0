@@ -1,8 +1,18 @@
 <template>
-    <div class="profile-page sidebar-collapse">
-        <h1>This is the profile page</h1>
-    </div>
+    <transition name="fade">
+        <OrderList :with-branch-filter='false'
+                   :url-to-fetch-orders='`/api/orders/user/${getAuthUserDetails.userId}`'/>
+    </transition>
 </template>
 <script>
-    export default {};
+    import {mapGetters} from 'vuex';
+    import OrderList from '../DVA/AllOrderList';
+
+    export default {
+        components: {OrderList},
+
+        computed: {
+            ...mapGetters(['getAuthUserDetails'])
+        }
+    };
 </script>

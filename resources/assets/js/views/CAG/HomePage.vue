@@ -9,7 +9,7 @@
 </template>
 <script>
     import PortalCard from '../../components/portalCard';
-
+    // TODO:: cleanup
     export default {
         components: {PortalCard},
         data() {

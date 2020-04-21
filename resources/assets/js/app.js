@@ -7,14 +7,14 @@ import router from './router';
 import {store} from './store/store';
 import VeeValidate from 'vee-validate';
 import './utilities/globalFunctions.js';
-import Vue2Filters from 'vue2-filters';
-
+import VueSweetalert2 from 'vue-sweetalert2';
+import VuexRouterSync from 'vuex-router-sync';
+VuexRouterSync.sync(store, router);
 Vue.use(VeeValidate, {
     events: 'input|blur',
     classes: true,
     classNames:{invalid: 'is-invalid'}
 });
-Vue.use(Vue2Filters);
 const app = new Vue({
     el: '#root',
     template: `<app></app>`,
@@ -22,3 +22,10 @@ const app = new Vue({
     router,
     store
 });
+
+const options = {
+    confirmButtonColor: '#05314d',
+    cancelButtonColor: '#05314d',
+};
+
+Vue.use(VueSweetalert2, options);

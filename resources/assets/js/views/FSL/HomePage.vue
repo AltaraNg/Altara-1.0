@@ -32,7 +32,7 @@
                         desc: 'View all registered customers!',
                     }, {
                         url: 'sales', title: 'Sales List', url_c: 'View Sales List',
-                        desc: 'View all Sales!', aces: this.auth('FSLLead')
+                        desc: 'View all Sales!'/*, aces: this.auth('FSLLead')*/
                     }, {
                         url: 'sales/create', title: 'Temp POS', url_c: 'Post Daily Sales',
                         desc: 'Temp POS!', aces: this.auth('supervisor')
@@ -42,10 +42,9 @@
                     }, {
                         url: 'lookup', title: 'Customer Lookup', url_c: 'Manage customer repayment details',
                         desc: 'Customer Lookup',
-                    },
-                    {
-                        url: 'purchase_log', title: 'Purchase Log', url_c: 'Log daily purchases',
-                        desc: 'Purchase Log',
+                    },{
+                        url: 'reminder/renewal', title: 'Renewal list', url_c: 'View Renewals',
+                        desc: 'View all renewal!',
                     }
                 ]
             }

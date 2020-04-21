@@ -31,10 +31,15 @@ Date.prototype.addDays = function (days) {
 
 /**NB functions her can be accessed anywhere on the project(vue components)
  * by using this.$functionName the argument c stands for customer
- * i used c just to reduce file size**/
-Vue.prototype.$getCustomerFullName = c => c ? `${c.first_name} ${c.last_name}` : null;
+ * I used c just to reduce file size**/
+Vue.prototype.$getCustomerFullName = (c, withMiddleName = false) =>
+    c ? `${c.first_name + (c.middle_name ? " " + c.middle_name + " " : " ") + c.last_name}` : null;
+
 Vue.prototype.$getCustomerAddress = c =>
     c ? `${c.add_houseno} ${c.add_street} ${c.area_address}, ${c.city}, ${c.state}.` : null;
+
+Vue.prototype.$getCustomerOfficeAddress = c =>
+    c ? `${c.comp_house_no} ${c.comp_street_name} ${c.comp_area}, ${c.company_city}, ${c.company_state}.` : null;
 
 /**the customer.verification is what is passed as v**/
 Vue.prototype.$getCustomerApprovalStatus = v =>
@@ -48,7 +53,10 @@ Vue.prototype.$isProcessing = false;
 
 /**sets the loader and isProcessing to what us true or false**/
 Vue.prototype.$LIPS = function (s) {//s is a boolean
-    this.$store.state.loader = this.$isProcessing = s
+    // this.$store.state.loader = this.$isProcessing = s;
+    this.$isProcessing = s;
+    // TODO:: cleanup
+    store.dispatch('toggleLoader', s);
 };
 
 
@@ -71,7 +79,7 @@ Vue.prototype.$roundDownAmt = amount => (Math.floor(amount / 100) * 100);
 /**return the network status(true | false) of the system if connected to a
  network not NB: this doesn't work with internet access. it only
  detects the system is connected to a network**/
-Vue.prototype.$network = () => window.navigator.onLine;
+Vue.prototype.$network = () => process.env.NODE_ENV === 'development' ? true : window.navigator.onLine;
 
 
 /**currency formatter**/
@@ -152,6 +160,10 @@ Vue.prototype.$prepareBanks = () => {
         .then(r => store.dispatch('mutateBanks', r.data.banks));
 };
 
+Vue.prototype.$prepareTypeaheadUsersList = () => {
+    !store.getters.getTypeaheadUsersList && get('/api/users/list_type/type_ahead')
+        .then(r => store.dispatch('mutateTypeaheadUsersList', r.data.users));
+};
 
 /**convert a time in 24 hours format to 12 hours format**/
 Vue.prototype.$timeConvert = time => {

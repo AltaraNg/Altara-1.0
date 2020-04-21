@@ -36,7 +36,7 @@
                                 </button>
                             </div>
                             <span class="text-center float-left w-100 pb-4">Forgot Password? <router-link
-                                    class="text-info" to="/forgotPassword">Click here</router-link></span>
+                                    class="text-info" to="/password/forgot">Click here</router-link></span>
                         </div>
                     </form>
                 </div>
@@ -59,6 +59,7 @@
         },
         methods: {
             login() {
+                const past = this.$store.state.route.from.fullPath;
                 this.$validator.validateAll().then(async result => {
                     if (result) {
                         if (this.$network()) {
@@ -69,15 +70,12 @@
                                     if (data.auth) {
                                         Auth.set(data);
                                         this.$store.dispatch('mutateAuth');
-                                        this.$router.push('/home');
+                                        this.$router.push(past);
                                         Flash.setSuccess(data.message);
                                     }
                                 })
-                                //using destructuring to get the
-                                //received data.response an name it r;
-                                .catch(({response:r}) => {
-                                    let {data, status} = r;
-                                    if (status === 422) this.error = data.errors ? data.errors : data;
+                                .catch(({response: {data}}) => {
+                                    this.error = data.errors ? data.errors : data;
                                     Flash.setError(data.message);
                                 });
                             this.$LIPS(false);
