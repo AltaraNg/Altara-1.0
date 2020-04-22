@@ -4,15 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionType extends Model
+class PaymentType extends Model
 {
     protected $guarded = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function transactionLists()
+    public function paymentLists()
     {
-        return $this->hasMany(TransactionList::class);
+        return $this->hasMany(PaymentList::class);
     }
 }

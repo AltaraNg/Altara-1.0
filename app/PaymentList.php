@@ -7,13 +7,10 @@ use App\Http\Filters\QueryFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionList extends Model
+class PaymentList extends Model
 {
     use Filterable;
     protected $guarded = [];
-    protected $primaryKey = 'payment_id';
-
-    public $incrementing = false;
 
     /**
      * The model's default rules.
@@ -23,8 +20,8 @@ class TransactionList extends Model
     public static $rules = [
         'amount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
         'customer_id' => 'required|exists:customers,id',
-        'transaction_type_id' => 'required|exists:transaction_types,id',
-        'transaction_method_id' => 'required|exists:transaction_methods,id'
+        'payment_type_id' => 'required|exists:payment_types,id',
+        'payment_method_id' => 'required|exists:payment_methods,id'
     ];
 
     /**
@@ -35,32 +32,32 @@ class TransactionList extends Model
     public static $updateRules = [
         'amount' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
         'customer_id' => 'sometimes|required|exists:customers,id',
-        'transaction_type_id' => 'sometimes|required|exists:transaction_types,id',
-        'transaction_method_id' => 'sometimes|required|exists:transaction_methods,id'
+        'payment_type_id' => 'sometimes|required|exists:payment_types,id',
+        'payment_method_id' => 'sometimes|required|exists:payment_methods,id'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function transaction()
+    public function payment()
     {
-        return $this->belongsTo(Transaction::class);
+        return $this->belongsTo(Payment::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function transactionType()
+    public function paymentType()
     {
-        return $this->belongsTo(TransactionType::class);
+        return $this->belongsTo(PaymentType::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function transactionMethod()
+    public function paymentMethod()
     {
-        return $this->belongsTo(TransactionMethod::class);
+        return $this->belongsTo(PaymentMethod::class);
     }
 
     /**
@@ -74,9 +71,10 @@ class TransactionList extends Model
     public function toArray()
     {
         return [
-            'id' => $this->payment_id,
-            'type' => $this->transactionType->type,
-            'method' => $this->transactionMethod->method,
+            'id' => $this->id,
+            'payment_tag' => $this->pay_id,
+            'type' => $this->paymentType->type,
+            'method' => $this->paymentMethod->name,
             'amount' => $this->amount,
             'date' => $this->created_at->toDateTimeString(),
             'comment' => $this->comment

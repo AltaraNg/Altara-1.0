@@ -3,11 +3,10 @@
 namespace App\Repositories;
 
 use App\Helper\Helper;
-use App\Transaction;
-use App\TransactionList;
+use App\Payment;
 use Carbon\Carbon;
 
-class TransactionRepository extends Repository
+class PaymentRepository extends Repository
 {
 
     /**
@@ -16,17 +15,17 @@ class TransactionRepository extends Repository
      */
     public function model()
     {
-        return Transaction::class;
+        return Payment::class;
     }
 
     public function storeOrCreate(array $data)
     {
-        $trans = Transaction::firstOrCreate(
+        $trans = Payment::firstOrCreate(
             ['branch_id' => auth()->user()->branch_id, 'date' => Carbon::today()],
-            ['transaction_id' => Helper::generateTansactionNumber('TR')]
+            ['payment_number' => Helper::generateTansactionNumber('TR')]
         );
-        $resp = $trans->transactionList()->create(array_merge($data, [
-            'payment_id' => Helper::generateTansactionNumber('PM'),
+        $resp = $trans->paymentList()->create(array_merge($data, [
+            'pay_id' => Helper::generateTansactionNumber('PM'),
             'user_id' => auth()->user()->id,
             'branch_id' => auth()->user()->branch_id
         ]));
@@ -38,6 +37,6 @@ class TransactionRepository extends Repository
 
     public function getAll($filter)
     {
-        return $this->model::with('transactionList')->filter($filter)->paginate();
+        return $this->model::with('paymentList')->filter($filter)->paginate();
     }
 }

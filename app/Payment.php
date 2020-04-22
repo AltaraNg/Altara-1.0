@@ -5,7 +5,7 @@ namespace App;
 use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class Payment extends Model
 {
     use Filterable;
     protected $guarded = [];
@@ -22,8 +22,8 @@ class Transaction extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function transactionList()
+    public function paymentList()
     {
-        return $this->hasMany(TransactionList::class);
+        return $this->hasMany(PaymentList::class);
     }
 }

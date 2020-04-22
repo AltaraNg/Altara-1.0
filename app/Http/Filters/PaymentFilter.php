@@ -4,7 +4,7 @@ namespace App\Http\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class TransactionFilter extends QueryFilter
+class PaymentFilter extends QueryFilter
 {
     /**
      * @param string $status

@@ -5,7 +5,7 @@ namespace App\Http\Filters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
-class TransactionListFilter extends QueryFilter
+class PaymentListFilter extends QueryFilter
 {
     /**
      * @param int $id

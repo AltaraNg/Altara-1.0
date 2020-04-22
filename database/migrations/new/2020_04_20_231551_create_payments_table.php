@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransactionMethodsTable extends Migration
+class CreatePaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateTransactionMethodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaction_methods', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('method')->unique();
+            $table->string('payment_number')->index()->unique();
+            $table->unsignedInteger('branch_id')->index();
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade')->onUpdate('cascade');
+            $table->date('date');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateTransactionMethodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaction_methods');
+        Schema::dropIfExists('payments');
     }
 }

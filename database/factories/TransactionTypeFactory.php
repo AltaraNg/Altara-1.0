@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\TransactionType;
+use App\PaymentType;
 use Faker\Generator as Faker;
 
-$factory->define(TransactionType::class, function (Faker $faker, $type) {
+$factory->define(PaymentType::class, function (Faker $faker, $type) {
     return [
         'type' => $type,
     ];

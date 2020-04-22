@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\TransactionList;
+use App\PaymentList;
 use Illuminate\Http\Request;
 
-class TransactionListRepository extends Repository
+class PaymentListRepository extends Repository
 {
 
     /**
@@ -14,7 +14,7 @@ class TransactionListRepository extends Repository
      */
     public function model()
     {
-        return TransactionList::class;
+        return PaymentList::class;
     }
 
     public function getAll($filter)

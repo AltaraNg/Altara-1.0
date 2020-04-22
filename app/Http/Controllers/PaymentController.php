@@ -3,16 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
-use App\Http\Filters\TransactionFilter;
-use App\Http\Filters\TransactionListFilter;
+use App\Http\Filters\PaymentListFilter;
 use App\Repositories\RenewalListRepository;
-use App\Repositories\TransactionListRepository;
-use App\Repositories\TransactionRepository;
-use App\TransactionList;
+use App\Repositories\PaymentListRepository;
+use App\Repositories\PaymentRepository;
+use App\PaymentList;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class TransactionController extends Controller
+class PaymentController extends Controller
 {
     /**
      * @var RenewalListRepository
@@ -22,10 +21,10 @@ class TransactionController extends Controller
 
     /**
      * RenewalListController constructor.
-     * @param TransactionListRepository $transactionListRepository
-     * @param TransactionRepository $transactionRepository
+     * @param PaymentListRepository $transactionListRepository
+     * @param PaymentRepository $transactionRepository
      */
-    public function __construct(TransactionListRepository $transactionListRepository, TransactionRepository $transactionRepository)
+    public function __construct(PaymentListRepository $transactionListRepository, PaymentRepository $transactionRepository)
     {
         $this->tranListRepo = $transactionListRepository;
         $this->tranRepo = $transactionRepository;
@@ -34,10 +33,10 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param TransactionListFilter $filter
+     * @param PaymentListFilter $filter
      * @return Response
      */
-    public function index(TransactionListFilter $filter)
+    public function index(PaymentListFilter $filter)
     {
         $result = $this->tranListRepo->getAll($filter);
         return ResponseHelper::createSuccessResponse($result->toArray());
@@ -46,10 +45,10 @@ class TransactionController extends Controller
     /**
      * Show resource in storage.
      *
-     * @param TransactionList $transaction
+     * @param PaymentList $transaction
      * @return Response
      */
-    public function show(TransactionList $transaction)
+    public function show(PaymentList $transaction)
     {
         return ResponseHelper::createSuccessResponse($transaction->toArray());
     }
@@ -62,7 +61,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->validate($request, TransactionList::$rules);
+        $data = $this->validate($request, PaymentList::$rules);
         $result = $this->tranRepo->storeOrCreate($data);
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
@@ -71,13 +70,13 @@ class TransactionController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param TransactionList $transaction
+     * @param PaymentList $payment
      * @return Response
      */
-    public function update(Request $request, TransactionList $transaction)
+    public function update(Request $request, PaymentList $payment)
     {
-        $data = $this->validate($request, TransactionList::$updateRules);
-        $resp = $this->tranListRepo->update($transaction, $data);
+        $data = $this->validate($request, PaymentList::$updateRules);
+        $resp = $this->tranListRepo->update($payment, $data);
         return ResponseHelper::createSuccessResponse($resp->toArray());
     }
 }
