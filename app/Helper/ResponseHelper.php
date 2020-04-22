@@ -21,7 +21,7 @@ class ResponseHelper
     const STATUS_SUCCESS = "success";
     const STATUS_ERROR = "error";
 
-    public static function createSuccessResponse(array $data, string $message = "", array $headers = []): Response
+    public static function createSuccessResponse(array $data, string $message = ResponseMessages::ACTION_SUCCESSFUL, array $headers = []): Response
     {
         return self::createResponse(self::STATUS_SUCCESS, $data, $message, 0, 200, $headers);
     }
