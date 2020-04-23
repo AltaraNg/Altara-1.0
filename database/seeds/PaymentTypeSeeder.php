@@ -11,7 +11,7 @@ class PaymentTypeSeeder extends Seeder
      */
     public function run()
     {
-        $type = ['Downpayment', 'Repayment'];
+        $type = ['Downpayment', 'Repayments', 'Affidavits'];
 
         for ($i=0; $i<count($type); $i++){
             factory(\App\PaymentType::class)->create(['type' => $type[$i]]);

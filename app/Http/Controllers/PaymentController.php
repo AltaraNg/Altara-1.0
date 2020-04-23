@@ -45,12 +45,12 @@ class PaymentController extends Controller
     /**
      * Show resource in storage.
      *
-     * @param PaymentList $transaction
+     * @param PaymentList $payment
      * @return Response
      */
-    public function show(PaymentList $transaction)
+    public function show(PaymentList $payment)
     {
-        return ResponseHelper::createSuccessResponse($transaction->toArray());
+        return ResponseHelper::createSuccessResponse($payment->toArray());
     }
 
     /**

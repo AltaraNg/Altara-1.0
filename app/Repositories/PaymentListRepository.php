@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\PaymentList;
-use Illuminate\Http\Request;
 
 class PaymentListRepository extends Repository
 {
@@ -25,7 +24,7 @@ class PaymentListRepository extends Repository
     public function update($model, $data) {
         $model->update($data);
         if(request()->has('comment')){
-            $model->comment()->updateOrCreate(['comment' => request('comment')]);
+            $model->comment()->updateOrCreate(['commentable_id' => $model->id],['comment' => request('comment')]);
         }
         return $model;
     }
