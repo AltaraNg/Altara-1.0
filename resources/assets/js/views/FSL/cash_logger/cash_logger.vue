@@ -273,6 +273,7 @@
             },
 
             submitForm() {
+                this.paymentForm.customer_id = this.customer.id;
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
@@ -315,12 +316,12 @@
             async pageChangeHandle(value) {
                 switch (value) {
                     case 'next':
-                        this.currentPage += 1
+                        this.currentPage += 1;
 
-                        break
+                        break;
                     case 'previous':
-                        this.currentPage -= 1
-                        break
+                        this.currentPage -= 1;
+                        break;
                     default:
                         this.currentPage = value
                 }
