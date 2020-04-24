@@ -301,8 +301,9 @@
                             this.$LIPS(true);
                             post('/api/payment', this.cashLogForm).then((res) => {
                                 this.$LIPS(false);
+                                console.log(res.data.status);
                                 Flash.setSuccess(res.data.status);
-                                this.logCashLog();
+                                // this.logCashLog();
                                 this.$router.go(0);
                             }).catch(() => {
                                 Flash.setError("Error submitting form")
@@ -354,13 +355,15 @@
                 }
                 this.query.page = this.currentPage;
                 this.$LIPS(true);
-                $('.modal').modal('hide');
-                get(
-                    `${this.$route.meta.source}` +
-                    queryParams(this.query))
-                    .then(res => {
 
-                    })
+                get(
+                    `/api/payment?page=` +
+                    this.currentPage)
+                    .then(res => {
+                        Vue.set(this.$data, 'transactions', res.data['data']);
+                        this.$LIPS(false);
+
+                    });
             },
         },
         created() {
@@ -369,7 +372,7 @@
             this.$preparePaymentMethods();
 
         },
-        mounted(){
+       async mounted(){
             try {
                 if (this.$network()) {
                     this.$LIPS(true);
