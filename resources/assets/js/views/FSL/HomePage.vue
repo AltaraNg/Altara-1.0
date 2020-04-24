@@ -45,6 +45,10 @@
                     },{
                         url: 'reminder/renewal', title: 'Renewal list', url_c: 'View Renewals',
                         desc: 'View all renewal!',
+                    },
+                    {
+                        url: 'cash-logger', title: 'Cash Logger', url_c: 'Log cash by customer',
+                        desc: 'Log all cash',
                     }
                 ]
             }

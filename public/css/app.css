@@ -16276,6 +16276,9 @@ hr.style-two {
 #reminder input,
 #reminder textarea,
 #reminder select,
+#cash-logger input,
+#cash-logger textarea,
+#cash-logger select,
 #employeeEdit input,
 #employeeEdit textarea,
 #employeeEdit select,
@@ -16290,6 +16293,7 @@ hr.style-two {
 
 #index .text-muted,
 #reminder .text-muted,
+#cash-logger .text-muted,
 #employeeEdit .text-muted,
 #customerRegister .text-muted,
 #employeeRegister .text-muted {
@@ -16298,6 +16302,7 @@ hr.style-two {
 
 #index h5,
 #reminder h5,
+#cash-logger h5,
 #employeeEdit h5,
 #customerRegister h5,
 #employeeRegister h5 {
@@ -16315,6 +16320,7 @@ hr.style-two {
 
 #index .h5-custom,
 #reminder .h5-custom,
+#cash-logger .h5-custom,
 #employeeEdit .h5-custom,
 #customerRegister .h5-custom,
 #employeeRegister .h5-custom {
@@ -16325,6 +16331,7 @@ hr.style-two {
 
 #index .btn-sm,
 #reminder .btn-sm,
+#cash-logger .btn-sm,
 #employeeEdit .btn-sm,
 #customerRegister .btn-sm,
 #employeeRegister .btn-sm {
@@ -16899,27 +16906,28 @@ table a i {
 
 #view-caution .modal-body span,
 #reminder .modal-body span,
+#cash-logger .modal-body span,
 #viewAttendance .modal-body span {
   min-width: 10rem;
 }
 
-#reminder .attendance-item {
+#reminder .attendance-item, #cash-logger .attendance-item {
   overflow: hidden;
   min-height: 56px;
 }
 
-#reminder .attendance-item div {
+#reminder .attendance-item div, #cash-logger .attendance-item div {
   min-height: 56px;
 }
 
-#reminder .attendance-item div[data-hoverable="true"]:hover {
+#reminder .attendance-item div[data-hoverable="true"]:hover, #cash-logger .attendance-item div[data-hoverable="true"]:hover {
   background-color: rgba(8, 74, 115, 0.05);
   text-decoration: underline;
   color: #575958;
   font-weight: bold;
 }
 
-#reminder .nav-link {
+#reminder .nav-link, #cash-logger .nav-link {
   font-weight: normal;
   font-size: 1.4rem;
   text-align: center;
@@ -16928,18 +16936,18 @@ table a i {
   border: 0 solid white;
 }
 
-#reminder .nav-link.active, #reminder .nav-link.active:hover {
+#reminder .nav-link.active, #reminder .nav-link.active:hover, #cash-logger .nav-link.active, #cash-logger .nav-link.active:hover {
   background-color: #2975a5;
   font-weight: bold;
   color: white !important;
 }
 
-#reminder .nav-link:hover {
+#reminder .nav-link:hover, #cash-logger .nav-link:hover {
   background-color: #e2e3e7;
   color: #575958;
 }
 
-#reminder [role="tablist"] {
+#reminder [role="tablist"], #cash-logger [role="tablist"] {
   border-bottom: .5px solid #e9ebf3;
 }
 

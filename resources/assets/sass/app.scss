@@ -193,6 +193,7 @@ hr.style-two {
 
 #index,
 #reminder,
+#cash-logger,
 #employeeEdit,
 #customerRegister,
 #employeeRegister {
@@ -783,13 +784,14 @@ table a i {
 
 #view-caution,
 #reminder,
+#cash-logger,
 #viewAttendance {
     .modal-body span {
         min-width: 10rem;
     }
 }
 
-#reminder {
+#reminder, #cash-logger {
     .attendance-item {
         overflow: hidden;
         min-height: 56px;

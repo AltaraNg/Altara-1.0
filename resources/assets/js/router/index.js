@@ -50,6 +50,7 @@ const BrandForm = () => import('../views/LOG/brand/form.vue');
 const CategoryForm = () => import('../views/LOG/category/form.vue');
 const ProductForm = () => import('../views/LOG/product/form.vue');
 const Renewal = () => import( '../views/FSL/renewal/renewal.vue');
+const CashLogger = () => import('../views/FSL/cash_logger/cash_logger.vue');
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -184,6 +185,7 @@ const router = new VueRouter({
                 {path: 'payment', component: PaymentForm, name: 'down-payment'},
                 {path: 'lookup', component: CustomerLookup, name: 'customer-lookup-dva', meta: {customSMS: true}},
                 {path: 'reminder/renewal', component: Renewal, name: 'renewal', meta: {mode: 'renewal'}},
+                {path: 'cash-logger', component: CashLogger, name: 'cash-logger', meta: {mode: 'create'}},
 
             ]
         },
