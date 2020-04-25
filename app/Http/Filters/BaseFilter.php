@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class BaseFilter extends QueryFilter
 {
+    const DATE = 'created_at';
     /**
      * @param int $id
      */
@@ -19,7 +20,7 @@ class BaseFilter extends QueryFilter
      * @param string $date
      * @param string $column
      */
-    public function date(string $date, $column='created_at')
+    public function date(string $date, $column=self::DATE)
     {
         $this->builder->whereDate($column, $date);
     }
@@ -28,7 +29,7 @@ class BaseFilter extends QueryFilter
      * @param string $from
      * @param string $column
      */
-    public function from(string $from, $column='created_at')
+    public function from(string $from, $column=self::DATE)
     {
         $this->builder->whereDate($column, '>=', $from)
             ->whereDate($column, '<=',$this->request->to ?? Carbon::now());

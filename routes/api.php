@@ -50,7 +50,6 @@ Route::group(['middleware' => ['auth:api']], function () {
         'payment' => 'PaymentController',
         'payment-type' => 'PaymentTypeController',
         'payment-reconcile' => 'PaymentReconcileController'
-
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');

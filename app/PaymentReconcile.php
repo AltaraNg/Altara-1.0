@@ -50,10 +50,9 @@ class PaymentReconcile extends Model
     /**
      * Set the Total.
      *
-     * @param  string  $value
      * @return void
      */
-    public function setTotalAttribute($value)
+    public function setTotalAttribute()
     {
         $this->attributes['total'] = $this->payments->sum('amount');
     }

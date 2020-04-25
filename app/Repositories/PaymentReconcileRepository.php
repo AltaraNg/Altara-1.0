@@ -43,7 +43,7 @@ class PaymentReconcileRepository extends Repository
     }
 
     public function update($model, $data) {
-        $model->total = 0;
+        $model->setTotalAttribute();
         $model->update($data);
         if(request()->has('comment')){
             $model->comment()->updateOrCreate(['commentable_id' => $model->id],['comment' => request('comment')]);
