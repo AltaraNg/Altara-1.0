@@ -29,7 +29,7 @@ class PaymentReconcileRepository extends Repository
             'user_id' => auth()->user()->id,
             'branch_id' => auth()->user()->branch_id
         ]));
-        $this->update($trans, []);
+        $this->updateModel($trans, []);
 
         if(request()->has('comment')){
             $resp->comment()->create(['comment' => request('comment')]);
@@ -43,11 +43,19 @@ class PaymentReconcileRepository extends Repository
     }
 
     public function update($model, $data) {
-        $model->setTotalAttribute();
-        $model->update($data);
+        $model = $this->updateModel($model, $data);
         if(request()->has('comment')){
             $model->comment()->updateOrCreate(['commentable_id' => $model->id],['comment' => request('comment')]);
         }
         return $model;
     }
+
+    public function updateModel($model, $data) {
+        $model->setTotalAttribute();
+        $model->update($data);
+
+        return $model;
+    }
+
+
 }
