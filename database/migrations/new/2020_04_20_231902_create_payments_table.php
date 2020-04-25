@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaymentListsTable extends Migration
+class CreatePaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePaymentListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_lists', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('pay_id')->unique()->index();
-            $table->unsignedInteger('payment_id')->index();
-            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('payment_number')->unique()->index();
+            $table->unsignedInteger('payment_reconcile_id')->index();
+            $table->foreign('payment_reconcile_id')->references('id')->on('payments')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedInteger('branch_id')->index();
@@ -40,6 +40,6 @@ class CreatePaymentListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_lists');
+        Schema::dropIfExists('payments');
     }
 }

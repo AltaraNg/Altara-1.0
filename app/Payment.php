@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Http\Filters\Filterable;
+use App\Http\Filters\QueryFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
@@ -11,19 +13,71 @@ class Payment extends Model
     protected $guarded = [];
 
     /**
-     * The attributes that should be mutated to dates.
+     * The model's default rules.
      *
      * @var array
      */
-    protected $dates = [
-        'date',
+    public static $rules = [
+        'amount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+        'customer_id' => 'required|exists:customers,id',
+        'payment_type_id' => 'required|exists:payment_types,id',
+        'payment_method_id' => 'required|exists:payment_methods,id'
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * The model's default rules.
+     *
+     * @var array
      */
-    public function paymentList()
+    public static $updateRules = [
+        'amount' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
+        'customer_id' => 'sometimes|required|exists:customers,id',
+        'payment_type_id' => 'sometimes|required|exists:payment_types,id',
+        'payment_method_id' => 'sometimes|required|exists:payment_methods,id'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paymentReconcile()
     {
-        return $this->hasMany(PaymentList::class);
+        return $this->belongsTo(PaymentReconcile::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function comment()
+    {
+        return $this->morphOne(Comment::class, 'commentable');
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'payment_number' => $this->payment_number,
+            'type' => $this->paymentType->type,
+            'method' => $this->paymentMethod->name,
+            'amount' => $this->amount,
+            'date' => $this->created_at->toDateTimeString(),
+            'comment' => $this->comment
+        ];
     }
 }

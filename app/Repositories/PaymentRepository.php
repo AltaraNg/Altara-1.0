@@ -2,9 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
 use App\Payment;
-use Carbon\Carbon;
 
 class PaymentRepository extends Repository
 {
@@ -18,25 +16,20 @@ class PaymentRepository extends Repository
         return Payment::class;
     }
 
-    public function storeOrCreate(array $data)
-    {
-        $trans = Payment::firstOrCreate(
-            ['branch_id' => auth()->user()->branch_id, 'date' => Carbon::today()],
-            ['payment_number' => Helper::generateTansactionNumber('TR')]
-        );
-        $resp = $trans->paymentList()->create(array_merge($data, [
-            'pay_id' => Helper::generateTansactionNumber('PM'),
-            'user_id' => auth()->user()->id,
-            'branch_id' => auth()->user()->branch_id
-        ]));
-        if(request()->has('comment')){
-            $resp->comment()->create(['comment' => request('comment')]);
-        }
-        return $resp;
-    }
-
     public function getAll($filter)
     {
-        return $this->model::with('paymentList')->filter($filter)->paginate();
+        return $this->model::filter($filter)->paginate();
+    }
+
+    public function update($model, $data) {
+        $model->update($data);
+        $model->paymentReconcile->setTotalAttribute();
+
+        $model->paymentReconcile->update();
+
+        if(request()->has('comment')){
+            $model->comment()->updateOrCreate(['commentable_id' => $model->id],['comment' => request('comment')]);
+        }
+        return $model;
     }
 }
