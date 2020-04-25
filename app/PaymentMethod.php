@@ -11,8 +11,8 @@ class PaymentMethod extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function paymentLists()
+    public function payments()
     {
-        return $this->hasMany(PaymentList::class);
+        return $this->hasMany(Payment::class);
     }
 }

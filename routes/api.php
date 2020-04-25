@@ -48,7 +48,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         'payment_method' => 'PaymentMethodController',
         'renewal-list' => 'RenewalListController',
         'payment' => 'PaymentController',
-        'payment-type' => 'PaymentTypeController'
+        'payment-type' => 'PaymentTypeController',
+        'payment-reconcile' => 'PaymentReconcileController'
+
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
@@ -66,3 +68,4 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
     Route::get('/renewal-list-status', 'RenewalListStatusController@index');
 });
+

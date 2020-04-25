@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
-use App\Http\Filters\PaymentListFilter;
+use App\Http\Filters\PaymentFilter;
 use App\Repositories\RenewalListRepository;
-use App\Repositories\PaymentListRepository;
 use App\Repositories\PaymentRepository;
-use App\PaymentList;
+use App\Repositories\PaymentReconcileRepository;
+use App\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -21,10 +21,10 @@ class PaymentController extends Controller
 
     /**
      * RenewalListController constructor.
-     * @param PaymentListRepository $transactionListRepository
-     * @param PaymentRepository $transactionRepository
+     * @param PaymentRepository $transactionListRepository
+     * @param PaymentReconcileRepository $transactionRepository
      */
-    public function __construct(PaymentListRepository $transactionListRepository, PaymentRepository $transactionRepository)
+    public function __construct(PaymentRepository $transactionListRepository, PaymentReconcileRepository $transactionRepository)
     {
         $this->tranListRepo = $transactionListRepository;
         $this->tranRepo = $transactionRepository;
@@ -33,10 +33,10 @@ class PaymentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param PaymentListFilter $filter
+     * @param PaymentFilter $filter
      * @return Response
      */
-    public function index(PaymentListFilter $filter)
+    public function index(PaymentFilter $filter)
     {
         $result = $this->tranListRepo->getAll($filter);
         return ResponseHelper::createSuccessResponse($result->toArray());
@@ -45,10 +45,10 @@ class PaymentController extends Controller
     /**
      * Show resource in storage.
      *
-     * @param PaymentList $payment
+     * @param Payment $payment
      * @return Response
      */
-    public function show(PaymentList $payment)
+    public function show(Payment $payment)
     {
         return ResponseHelper::createSuccessResponse($payment->toArray());
     }
@@ -61,7 +61,7 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->validate($request, PaymentList::$rules);
+        $data = $this->validate($request, Payment::$rules);
         $result = $this->tranRepo->storeOrCreate($data);
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
@@ -70,12 +70,12 @@ class PaymentController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param PaymentList $payment
+     * @param Payment $payment
      * @return Response
      */
-    public function update(Request $request, PaymentList $payment)
+    public function update(Request $request, Payment $payment)
     {
-        $data = $this->validate($request, PaymentList::$updateRules);
+        $data = $this->validate($request, Payment::$updateRules);
         $resp = $this->tranListRepo->update($payment, $data);
         return ResponseHelper::createSuccessResponse($resp->toArray());
     }
