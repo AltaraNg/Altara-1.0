@@ -189,21 +189,13 @@
                     <div class="d-flex light-heading  row attendance-item py-2 my-2 text-center"
                          v-if="transactions !== null" v-for="(transaction, index) in transactions.data">
                         <div class="col">{{index+1}}</div>
-                        <div class="col">{{transaction.payment_tag}}</div>
+                        <div class="col">{{transaction.payment_number}}</div>
                         <div class="col">{{transaction.date}}</div>
                         <div class="col">{{transaction.type}}</div>
                         <div class="col">{{transaction.method}}</div>
                         <div class="col">{{$formatCurrency(transaction.amount)}}</div>
-                        <div class="col">{{transaction.comment.comment}}</div>
+                        <div class="col">{{transaction.comment ? transaction.comment.comment : "No Comments"}}</div>
                     </div>
-                                        <base-pagination
-                                            :page-count="pageCount"
-                                            :current-page="currentPage"
-                                            :per-page="updatedPerPage"
-                                            @nextPage="pageChangeHandle('next')"
-                                            @previousPage="pageChangeHandle('previous')"
-                                            v-if="transactions !== null"
-                                        ></base-pagination>
                 </div>
             </div>
         </div>
@@ -375,17 +367,18 @@
        async mounted(){
             try {
                 if (this.$network()) {
-                    this.$LIPS(true);
+
                     this.error = {};
                     get('/api/payment-type').then(res => {
                         Vue.set(this.$data, 'paymentType', res.data);
                     }).catch(() => {
                         Flash.setError("Unable to fetch payment type")
                     });
+                    this.$LIPS(true);
                     get('/api/payment').then(res => {
 
                         Vue.set(this.$data, 'transactions', res.data['data']);
-                        console.log(res.data.data);
+
                         this.pageCount = Math.ceil(res.data.data.total/res.data.data.per_page);
                     }).catch(() => {
                         Flash.setError(("Unable to fetch payments"))
