@@ -5,7 +5,7 @@
 
             <div class="mt-5 mb-3 attendance-head">
                 <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
-                    <li class="col p-0 nav-item mb-0">
+                    <li class="col p-0 nav-item mb-0" >
                         <a
                             aria-selected="true"
                             class="nav-link"
@@ -18,19 +18,22 @@
                             Log Payment
                         </a>
                     </li>
-                    <li class="col p-0 nav-item mb-0">
+                    <li class="col p-0 nav-item mb-0" v-for="(tab, index) in details.tabs">
                         <a
                             aria-selected="true"
                             class="nav-link"
-                            :class="{ active: isActive('payments')}"
+                            :class=" (index === 0 ) && 'active'"
                             data-toggle="tab"
                             href="#payment"
-                            @click.prevent="setActive('payments')"
+                            @click="listToOrder = tab"
                             role="tab"
+                            v-html="tab"
                         >
-                            View Payments
+
                         </a>
                     </li>
+
+
                 </ul>
             </div>
             <div class="tab-content py-3">
@@ -126,7 +129,7 @@
                                                         v-model="cashLogForm.payment_type_id" v-validate="'required'"
                                                         id="payment-type">
 
-                                                    <option :value="type.id" v-for="type in paymentType.data">
+                                                    <option :value="type.id" v-for="type in paymentType">
                                                         {{type.type}}
                                                     </option>
                                                 </select>
@@ -180,12 +183,13 @@
                 </div>
 
 
-                <div class="tab-pane container" :class="{ 'active show': isActive('payments') }" id="payment">
+                <div class="tab-pane container"  id="payment" :class="{ 'active show': isActive('payment') }">
                     <div class="row px-4 pt-3 pb-4 text-center">
                         <div class="col light-heading font-weight-bolder" :key="index"
-                             v-for="(header,index) in paymentHeaders">{{header}}
+                             v-for="(header,index) in details.headings">{{header}}
                         </div>
                     </div>
+                    <div v-if="details.headings.length === 7">
                     <div class="d-flex light-heading  row attendance-item py-2 my-2 text-center"
                          v-if="transactions !== null" v-for="(transaction, index) in transactions.data">
                         <div class="col">{{index+1}}</div>
@@ -196,7 +200,82 @@
                         <div class="col">{{$formatCurrency(transaction.amount)}}</div>
                         <div class="col">{{transaction.comment ? transaction.comment.comment : "No Comments"}}</div>
                     </div>
+                    </div>
+
+                    <div v-else>
+                        <div class="d-flex light-heading  row attendance-item py-2 my-2 text-center"
+                             v-if="paymentReconcile !== null" v-for="(item, index) in paymentReconcile.data" @click="updateModal(item)">
+                            <div class="col">{{index+1}}</div>
+                            <div class="col">{{item.reconcile_number}}</div>
+                            <div class="col">{{getBranchName(item.branch_id).name}}</div>
+                            <div class="col">{{$formatCurrency(item.total)}}</div>
+                            <div class="col">{{$formatCurrency(item.cash_at_hand)}}</div>
+                            <div class="col">{{$formatCurrency(item.deposited)}}</div>
+                            <div class="col">{{item.date}}</div>
+                            <div class="col">{{item.comment ? item.comment.comment : "No Comments"}}</div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade repayment" id="updatePayment">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content" v-if="showModalContent">
+                                <div class="modal-header py-2">
+                                    <h6 class="modal-title py-1">
+                                        Update {{currentPayment.reconcile_number}}
+                                    </h6>
+                                    <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                                <span aria-hidden="true" class="modal-close text-danger">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                    </a>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="col-8 container" @submit.prevent="reconcile">
+                                        <div class="row">
+                                            <div class="col-6 form-group">
+                                                <label for="deposit" class="form-control-label">Deposited</label>
+                                                <input name="amount" placeholder="Enter Amount Deposited"
+                                                       v-model="updateCashForm.deposited" v-validate="'required'"
+                                                       class="w-100 form-control" id="deposit" type="number">
+                                                <small v-if="errors.first('deposit')">{{errors.first('deposit')}}</small>
+
+                                            </div>
+                                            <div class="col-6 form-group">
+                                                <label for="cash" class="form-control-label">Cash At Hand</label>
+                                                <input name="cash" placeholder="Enter Cash at hand"
+                                                       v-model="updateCashForm.cash_at_hand" v-validate="'required'"
+                                                       class="w-100 form-control" id="cash" type="number">
+                                                <small v-if="errors.first('amount')">{{errors.first('amount')}}</small>
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <textarea placeholder="Any comments ..." class="form-control"
+                                                      v-model="updateCashForm.comment" name="comment"></textarea>
+                                        </div>
+
+                                        <div class="text-center ">
+                                            <button class="btn bg-default " type="submit"> Submit</button>
+                                        </div>
+
+
+                                    </form>
+                                </div>
+
+                                <div  class="modal-footer">
+                                    This is footer
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
+
             </div>
         </div>
 
@@ -209,17 +288,17 @@
     import AutoCompleteSearch from '../../../components/AutocompleteSearch/AutocompleteSearch'
     import Vue from 'vue';
     import {log} from '../../../utilities/log';
-    import {get, post} from '../../../utilities/api';
+    import {get, post, put} from '../../../utilities/api';
     import Auth from '../../../utilities/auth';
     import Orders from '../../../components/Orders'
     import Flash from "../../../utilities/flash";
+    import axios from 'axios';
     import {OrderWithPromiseCall} from '../../../utilities/Amortization';
     import CustomHeader from '../../../components/customHeader';
     import CustomerProfile from '../../../components/CustomerProfile';
     import CustomSMSButton from '../../../components/CustomSMSButton/CustomSMSButton';
     import {mapGetters} from "vuex";
     import BasePagination from '../../../components/Pagination/BasePagination';
-    import queryParams from '../../../utilities/queryParam';
 
 
     export default {
@@ -240,6 +319,13 @@
                 },
                 error: {},
                 paymentMethod: {},
+                apiUrls: {
+                    payment: `/api/payment`,
+                    payment_reconcile: `api/payment-reconcile`,
+                    payment_type: `/api/payment-type`,
+                    customer_lookup: `/api/customer/lookup`
+                },
+                showModalContent: false,
                 paymentType: {},
                 activeItem: 'home',
                 paymentHeaders: ["Index", "Transaction Id", "Date of Payment", "Payment Purpose", "Payment Type", "Amount Paid", "Comment"],
@@ -256,16 +342,20 @@
                     search_operator: 'greater_than',
                     search_input: 0
                 },
+                paymentReconcile: null,
                 pageCount: 0,
                 listToOrder: 'Current',
                 customer: null,
                 customer_id: '',
                 headers: ['Date', 'Order No.', 'Product Name', 'Total Product Price',
                     'Percentage', 'Down Payment', 'Repayment Plans'],
-                transactions: []
+                transactions: [],
+                currentPayment: null,
+                updateCashForm: {}
 
             }
         },
+
 
         methods: {
             async updateView(data) {
@@ -284,6 +374,37 @@
                 } else Flash.setError("Customer not found.", 5000);
                 this.$LIPS(false);
             },
+            getBranchName(id){
+
+                var branches = this.getBranches;
+                return branches.find((branch) => {
+                    return branch.id === id;
+                });
+            },
+
+            updateModal(data){
+                this.showModalContent = true;
+                this.currentPayment = data;
+                return $(`#updatePayment`).modal('toggle');
+            },
+
+            reconcile(){
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        if (this.$network()) {
+                            this.$LIPS(true);
+                            put(this.apiUrls.payment_reconcile+`/${this.currentPayment.id}`, this.updateCashForm).then((res) => {
+                                this.$LIPS(false);
+                                console.log(res.data.status);
+                                Flash.setSuccess(res.data.status);
+                                this.$router.go(0);
+                            }).catch(() => {
+                                Flash.setError("Error submitting form")
+                            })
+                        } else this.$networkErr();
+                    } else this.$networkErr('form');
+                })
+            },
 
             submitForm() {
                 this.cashLogForm.customer_id = this.customer.id;
@@ -291,11 +412,10 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            post('/api/payment', this.cashLogForm).then((res) => {
+                            post(this.apiUrls.payment, this.cashLogForm).then((res) => {
                                 this.$LIPS(false);
                                 console.log(res.data.status);
                                 Flash.setSuccess(res.data.status);
-                                // this.logCashLog();
                                 this.$router.go(0);
                             }).catch(() => {
                                 Flash.setError("Error submitting form")
@@ -313,7 +433,7 @@
             processForm(id) {
                 this.show = false;
                 this.$LIPS(true);
-                get(`/api/customer/lookup/${id}`)
+                get(this.apiUrls.customer_lookup+`/${id}`)
                     .then(res => {
                         this.updateView(res.data)
                         // console.log(res.data)
@@ -323,9 +443,7 @@
                         Flash.setError('Error Fetching customer detail');
                     });
             },
-            mode(query = null, mode = this.$route.meta.mode.toLowerCase()) {
-                return query ? mode === query : mode
-            },
+
 
             isActive(menuItem) {
                 return this.activeItem === menuItem
@@ -349,7 +467,7 @@
                 this.$LIPS(true);
 
                 get(
-                    `/api/payment?page=` +
+                    this.apiUrls.payment+`?page=` +
                     this.currentPage)
                     .then(res => {
                         Vue.set(this.$data, 'transactions', res.data['data']);
@@ -367,32 +485,39 @@
        async mounted(){
             try {
                 if (this.$network()) {
-
-                    this.error = {};
-                    get('/api/payment-type').then(res => {
-                        Vue.set(this.$data, 'paymentType', res.data);
-                    }).catch(() => {
-                        Flash.setError("Unable to fetch payment type")
-                    });
                     this.$LIPS(true);
-                    get('/api/payment').then(res => {
-
-                        Vue.set(this.$data, 'transactions', res.data['data']);
-
-                        this.pageCount = Math.ceil(res.data.data.total/res.data.data.per_page);
-                    }).catch(() => {
-                        Flash.setError(("Unable to fetch payments"))
+                    this.error = {};
+                    axios.all([
+                        get(this.apiUrls.payment),
+                        get(this.apiUrls.payment_type),
+                        get(this.apiUrls.payment_reconcile)
+                    ]).then(axios.spread((payment, payment_type, payment_reconcile) => {
+                        Vue.set(this.$data, 'transactions', payment.data['data']);
+                        Vue.set(this.$data, 'paymentType', payment_type.data['data']);
+                        Vue.set(this.$data, 'paymentReconcile', payment_reconcile.data['data']);
+                    })).catch(()=>{
+                        Flash.setError('Unable to fetch data')
                     });
+
                     this.$LIPS(false)
                 } else this.$networkErr();
             } catch (e) {
             }
         },
         computed: {
-            ...mapGetters(['getBanks', 'getPaymentMethods', 'auth', 'getAuthUserDetails']),
+            ...mapGetters(['getBanks', 'getPaymentMethods', 'auth', 'getAuthUserDetails', 'getBranches']),
 
             updatedPerPage: function () {
                 return this.query.per_page
+            },
+            details() {
+                let list = 1;
+                const tabs = ["View Payment", "Reconcile"];
+                const headings1 = ['Index', 'Transaction ID', 'Date Of Payment', 'Payment Purpose', 'PaymentType', 'AmountPaid', 'Comment'];
+                const headings2 = ['Index','Reconcile Number', 'Branch', 'Total','Cash at Hand', 'Deposited', 'Date', 'Comment'];
+                const headings0 = [ ...headings1 , ...headings2];
+                const headings = this.listToOrder !== "View Payment" ? headings2 : headings1;
+                return {tabs, headings, list};
             },
 
         }
