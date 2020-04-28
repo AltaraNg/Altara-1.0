@@ -321,7 +321,7 @@
                 paymentMethod: {},
                 apiUrls: {
                     payment: `/api/payment`,
-                    payment_reconcile: `api/payment-reconcile`,
+                    payment_reconcile: `/api/payment-reconcile`,
                     payment_type: `/api/payment-type`,
                     customer_lookup: `/api/customer/lookup`
                 },
