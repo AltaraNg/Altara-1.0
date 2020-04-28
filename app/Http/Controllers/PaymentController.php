@@ -16,18 +16,18 @@ class PaymentController extends Controller
     /**
      * @var RenewalListRepository
      */
-    private $tranListRepo;
-    private $tranRepo;
+    private $payment;
+    private $paymentRec;
 
     /**
      * RenewalListController constructor.
-     * @param PaymentRepository $transactionListRepository
-     * @param PaymentReconcileRepository $transactionRepository
+     * @param PaymentRepository $paymentRepository
+     * @param PaymentReconcileRepository $paymentReconcileRepository
      */
-    public function __construct(PaymentRepository $transactionListRepository, PaymentReconcileRepository $transactionRepository)
+    public function __construct(PaymentRepository $paymentRepository, PaymentReconcileRepository $paymentReconcileRepository)
     {
-        $this->tranListRepo = $transactionListRepository;
-        $this->tranRepo = $transactionRepository;
+        $this->payment = $paymentRepository;
+        $this->paymentRec = $paymentReconcileRepository;
     }
 
     /**
@@ -38,7 +38,7 @@ class PaymentController extends Controller
      */
     public function index(PaymentFilter $filter)
     {
-        $result = $this->tranListRepo->getAll($filter);
+        $result = $this->payment->getAll($filter);
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 
@@ -62,7 +62,7 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $data = $this->validate($request, Payment::$rules);
-        $result = $this->tranRepo->storeOrCreate($data);
+        $result = $this->paymentRec->storeOrCreate($data);
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 
@@ -76,7 +76,7 @@ class PaymentController extends Controller
     public function update(Request $request, Payment $payment)
     {
         $data = $this->validate($request, Payment::$updateRules);
-        $resp = $this->tranListRepo->update($payment, $data);
+        $resp = $this->payment->update($payment, $data);
         return ResponseHelper::createSuccessResponse($resp->toArray());
     }
 }
