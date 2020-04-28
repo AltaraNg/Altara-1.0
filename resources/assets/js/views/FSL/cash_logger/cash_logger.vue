@@ -190,16 +190,16 @@
                         </div>
                     </div>
                     <div v-if="details.headings.length === 7">
-                    <div class="d-flex light-heading  row attendance-item py-2 my-2 text-center"
-                         v-if="transactions !== null" v-for="(transaction, index) in transactions.data">
-                        <div class="col">{{index+1}}</div>
-                        <div class="col">{{transaction.payment_number}}</div>
-                        <div class="col">{{transaction.date}}</div>
-                        <div class="col">{{transaction.type}}</div>
-                        <div class="col">{{transaction.method}}</div>
-                        <div class="col">{{$formatCurrency(transaction.amount)}}</div>
-                        <div class="col">{{transaction.comment ? transaction.comment.comment : "No Comments"}}</div>
-                    </div>
+                        <div class="d-flex light-heading  row attendance-item py-2 my-2 text-center"
+                             v-if="transactions !== null" v-for="(transaction, index) in transactions.data">
+                            <div class="col">{{index+1}}</div>
+                            <div class="col">{{transaction.payment_number}}</div>
+                            <div class="col">{{transaction.date}}</div>
+                            <div class="col">{{transaction.type}}</div>
+                            <div class="col">{{transaction.method}}</div>
+                            <div class="col">{{$formatCurrency(transaction.amount)}}</div>
+                            <div class="col">{{transaction.comment ? transaction.comment.comment : "No Comments"}}</div>
+                        </div>
                     </div>
 
                     <div v-else>
@@ -321,7 +321,7 @@
                 paymentMethod: {},
                 apiUrls: {
                     payment: `/api/payment`,
-                    payment_reconcile: `api/payment-reconcile`,
+                    payment_reconcile: `/api/payment-reconcile`,
                     payment_type: `/api/payment-type`,
                     customer_lookup: `/api/customer/lookup`
                 },
@@ -482,7 +482,7 @@
             this.$preparePaymentMethods();
 
         },
-       async mounted(){
+        async mounted(){
             try {
                 if (this.$network()) {
                     this.$LIPS(true);
