@@ -75,29 +75,18 @@
                 </div>
             </div>
         </div>
-        <nav v-if="tab !== 'Log Payment' && responseData.next_page_url" class="col d-flex justify-content-end align-items-center pr-0">
-            <ul class="pagination pagination-lg mb-0">
-                <!---->
-                <li :class="{'disabled':!responseData.first_page_url}" class="page-item">
-                    <a href="javascript:" @click="prev(1)" class="page-link">First</a>
-                </li>
-                <li :class="{'disabled':!responseData.prev_page_url }" class="page-item">
-                    <a href="javascript:" @click="prev()" class="page-link">prev</a>
-                </li>
-                <!---->
-                <li class="page-item">
-                    <span class="page-link">Current Page: {{responseData.current_page}}</span>
-                </li>
-                <!---->
-                <li :class="{'disabled':!responseData.next_page_url}" class="page-item">
-                    <a href="javascript:" @click="next()" class="page-link">Next</a>
-                </li>
-                <li :class="{'disabled':!responseData.last_page_url}" class="page-item">
-                    <a href="javascript:" @click="next(responseData.last_page)" class="page-link">Last</a>
-                </li>
-                <!---->
-            </ul>
+        <nav v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)" class="col d-flex justify-content-end align-items-center pr-0">
+            <base-pagination
+                :next_page_url="!responseData.next_page_url ? '#' : responseData.next_page_url"
+                :prev_page_url="!responseData.prev_page_url ? '#': responseData.prev_page_url "
+                :first_page_url="responseData.first_page_url"
+                :last_page="responseData.last_page"
+                :current_page="responseData.current_page"
+                @next="next"
+                @prev="prev"
+            ></base-pagination>
         </nav>
+
     </div>
 </template>
 
@@ -107,9 +96,10 @@
     import {get, post,put} from "../utilities/api";
     import Lookup from "../views/FSL/lookup/lookup";
     import Flash from "../utilities/flash";
+    import BasePagination from "../components/Pagination/BasePagination"
 
     export default {
-        components: {Lookup},
+        components: {Lookup, BasePagination},
         props: {list: {default: null},tab:{default: null}},
 
         watch: {
@@ -156,7 +146,8 @@
                 try{
                     const fetchPaymentList = await get(`/api/payment?page=${this.page}`);
                     this.paymentList = fetchPaymentList.data.data.data;
-                    this.responseData = fetchPaymentList.data.data;
+                    this.responseData = fetchPaymentList.data.data
+                    console.log(this.responseData);
                     this.OId = this.responseData.from;
                     this.$LIPS(false);
                 }
