@@ -1,0 +1,12 @@
+current_page: 1
+
+first_page_url: "http://staging.altaracredit.com/api/payment?page=1"
+from: 1
+last_page: 5
+last_page_url: "http://staging.altaracredit.com/api/payment?page=5"
+next_page_url: "http://staging.altaracredit.com/api/payment?page=2"
+path: "http://staging.altaracredit.com/api/payment"
+per_page: 15
+prev_page_url: null
+to: 15
+total: 69
