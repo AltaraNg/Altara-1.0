@@ -147,7 +147,6 @@
                     const fetchPaymentList = await get(`/api/payment?page=${this.page}`);
                     this.paymentList = fetchPaymentList.data.data.data;
                     this.responseData = fetchPaymentList.data.data
-                    console.log(this.responseData);
                     this.OId = this.responseData.from;
                     this.$LIPS(false);
                 }

@@ -10,8 +10,9 @@ import VeeValidate from "vee-validate";
 import "./utilities/globalFunctions.js";
 import VueSweetalert2 from "vue-sweetalert2";
 import VuexRouterSync from "vuex-router-sync";
-
 import _ from 'lodash';
+
+
 Object.defineProperty(Vue.prototype, '$_', { value: _ });
 VuexRouterSync.sync(store, router);
 Vue.use(VeeValidate, {
