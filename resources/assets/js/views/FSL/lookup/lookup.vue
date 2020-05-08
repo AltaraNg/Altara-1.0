@@ -10,7 +10,7 @@
                 <div v-if="customer && show">
 
 <!--                    <div class="attendance-hea TODO:: cleanup d">-->
-                        <customer-profile :view-customer="customer"/>
+                    <customer-profile :view-customer="customer"/>
 <!--             // TODO:: cleanup       </div>-->
 
                     <custom-header :title="'All order(s)'"/>
@@ -58,7 +58,7 @@
                                         <i :class="order.count === order.repaymentLevel ? 'fa-check-circle' : 'fa-hourglass-half'"
                                            class="fas ml-3"
                                            style="font-size: 1.4rem"></i>
-<!--                                        // TODO:: cleanup-->
+<!--                                        // TODO:: cleanup-->                      
                                     </button>
                                 </div>
                             </div>
@@ -72,6 +72,9 @@
                             </div>
                         </div>
                     </div>
+                        
+                    <LogForm :customerId="customer.id" @done="this.done" v-if="logger" />
+                    
                     <div class="mt-5 mb-3 attendance-head">
                         <div class="w-100 my-5 mx-0 hr"></div>
                     </div>
@@ -312,10 +315,12 @@
     import CustomSMSButton from '../../../components/CustomSMSButton/CustomSMSButton';
     import AutocompleteSearch from "../../../components/AutocompleteSearch/AutocompleteSearch";
     import {getOrderStatus, getOrderStatusClass} from '../../../components/order/orderStatusCssClass';
+    import LogForm from "../../../components/LogForm";
 
     export default {
 
-        components: {CustomHeader, CustomerProfile, CustomSMSButton, AutocompleteSearch},
+        components: {CustomHeader, CustomerProfile, CustomSMSButton, AutocompleteSearch,LogForm},
+        props:{logger: null},
 
         data() {
             return {
@@ -353,6 +358,10 @@
                     this.show = true;
                 } else Flash.setError("Customer not found.", 5000);
                 this.$LIPS(false);
+            },
+
+            done(){
+                this.show=false;
             },
 
             processForm(id) {

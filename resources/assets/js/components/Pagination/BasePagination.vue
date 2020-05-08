@@ -1,92 +1,64 @@
 <template>
-    <div  class="container row py-4 px-5">
-        <div class="col-4 text-capitalize" >
-            displaying page <span class="font-weight-bold">{{currentPage}}</span> of <span class="font-weight-bold">{{pageCount}}</span>
-        </div>
 
-    <div class="col-4 text-center w-75 ">
+        <ul class="pagination pagination-lg mb-0">
+            <!---->
+            <li :class="{'disabled':!first_page_url}" class="page-item">
+                <a href="javascript:" @click="prev(1)" class="page-link">First</a>
+            </li>
+            <li :class="{'disabled':!prev_page_url }" class="page-item">
+                <a href="javascript:" @click="prev()" class="page-link">prev</a>
+            </li>
+            <!---->
+            <li class="page-item">
+                <span class="page-link">Current Page: {{current_page}}</span>
+            </li>
+            <!---->
+            <li :class="{'disabled':!next_page_url}" class="page-item">
+                <a href="javascript:" @click="next()" class="page-link">Next</a>
+            </li>
+            <li :class="{'disabled':!last_page}" class="page-item">
+                <a href="javascript:" @click="next(last_page)" class="page-link">Last</a>
+            </li>
+            <!---->
+        </ul>
 
-        <BaseButton
-            :disabled="isPreviousButtonDisabled"
-            @click.native="previousPage"
-            class="my-button"
-        >
-            <i class="fas fa-arrow-circle-left"></i>
-
-        </BaseButton>
-
-
-        <BaseButton
-            :disabled="isNextButtonDisabled"
-            @click.native="nextPage"
-            class="my-button"
-        >
-            <i class="fas fa-arrow-circle-right"></i>
-        </BaseButton>
-    </div>
-        <div class="col-4 text-right">
-        <span class="py-2 pr-3 float-left">Rows Per Page </span>
-        <input @keyup.enter="fetchPerPage" class="form-control w-25"
-               placeholder="search..." type="text" v-model="perPage">
-
-        </div>
-
-            </div>
-        </template>
+    </template>
         <script>
-            import BaseButton from '../../components/Pagination/BaseButton';
-            // import BasePaginationTrigger from '../../components/Pagination/BasePaginationTrigger'
-            export default {
+           export default {
                 components: {
-                    BaseButton,
-                    // BasePaginationTrigger
                 },
                 props: {
-                    currentPage: {
+                    current_page: {
                         type: Number,
                         required: true
                     },
-                    pageCount: {
-                        type: Number,
-                        required: true
-                    },
-                    perPage: {
-                        type: Number,
-                        required: true
-                    }
-                },
-                computed: {
-                    isPreviousButtonDisabled() {
-                        return this.currentPage === 1
-                    },
-                    isNextButtonDisabled() {
-                        return this.currentPage === this.pageCount
-                    }
-                },
-                methods: {
-                    nextPage() {
-                        this.$emit('nextPage')
-                    },
-                    previousPage() {
-                        this.$emit('previousPage')
-                    },
-                    onLoadPage(value) {
-                        this.$emit("loadPage", value)
 
+                    first_page_url: {
+                        type: String,
+                        required: true
+                    },
+                    prev_page_url: {
+                        type: String,
+                        required: true
+                    },
+                    next_page_url: {
+                        type: String,
+                        required: true
+                    },
+                    last_page: {
+                        type: Number,
+                        required: true
+                    },
                 },
-                    fetchPerPage(value){
-                    this.$emit("fetchPerPage", value)}
-                }
+
+                methods: {
+                    next(page) {
+                        this.$emit('next', page)
+                    },
+                    prev(page) {
+                        this.$emit('prev', page)
+                    },
+                                   }
             }
         </script>
-<style>
-    .my-button{
-        font-size: 2rem;
-        border: 1px solid ;
-        margin: 2px 8px;
-        width: 50%;
-
-
-    }
-
-</style>
+<
