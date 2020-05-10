@@ -38,6 +38,14 @@ class PaymentReconcile extends Model
         return $this->hasMany(Payment::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function paymentReconcileDetails()
+    {
+        return $this->hasMany(PaymentReconcileDetail::class);
+    }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
