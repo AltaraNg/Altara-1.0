@@ -17,7 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->increments('id');
             $table->string('payment_number')->unique()->index();
             $table->unsignedInteger('payment_reconcile_id')->index();
-            $table->foreign('payment_reconcile_id')->references('id')->on('payments')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('payment_reconcile_id')->references('id')->on('payment_reconciles')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedInteger('branch_id')->index();

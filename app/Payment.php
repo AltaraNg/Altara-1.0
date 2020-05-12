@@ -63,6 +63,14 @@ class Payment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class);
@@ -82,6 +90,7 @@ class Payment extends Model
             'id' => $this->id,
             'payment_number' => $this->payment_number,
             'type' => $this->paymentType->type,
+            'branch' => $this->branch->name,
             'customer' => $this->customer,
             'method' => $this->paymentMethod->name,
             'amount' => $this->amount,

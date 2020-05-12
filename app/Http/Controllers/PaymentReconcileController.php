@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\FinanceReconcile;
 use App\Helpers\ResponseHelper;
 use App\Http\Filters\PaymentReconcileFilter;
 use App\PaymentReconcile;
-use App\Repositories\RenewalListRepository;
 use App\Repositories\PaymentReconcileRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class PaymentReconcileController extends Controller
 {
-    /**
-     * @var RenewalListRepository
-     */
     private $paymentReconcileRepo;
 
     /**
@@ -46,7 +43,6 @@ class PaymentReconcileController extends Controller
      */
     public function show(PaymentReconcile $payment_reconcile)
     {
-        $payment_reconcile->load('payments');
         return ResponseHelper::createSuccessResponse($payment_reconcile->toArray());
     }
 
@@ -63,5 +59,22 @@ class PaymentReconcileController extends Controller
         $data = $this->validate($request, PaymentReconcile::$updateRules);
         $resp = $this->paymentReconcileRepo->update($payment_reconcile, $data);
         return ResponseHelper::createSuccessResponse($resp->toArray());
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param PaymentReconcile $payment_reconcile
+     * @return Response
+     */
+    public function finance(Request $request, PaymentReconcile $payment_reconcile)
+    {
+        $data = $this->validate($request, FinanceReconcile::$updateRules);
+        $resp = $payment_reconcile->financeReconcile()->updateOrCreate(['payment_reconcile_id' => $payment_reconcile->id], $data);
+        if(request()->has('comment')){
+            $resp->comment()->updateOrCreate(['commentable_id' => $resp->id],['comment' => request('comment'), 'user_id' => auth()->user()->id]);
+        }
+        return ResponseHelper::createSuccessResponse($resp->refresh()->toArray());
     }
 }

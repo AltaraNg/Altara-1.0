@@ -11,4 +11,16 @@ class Comment extends Model
     public function commentable() {
         return $this->morphTo();
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'commentable_id' => $this->commentable_id,
+            'commentable_type' => $this->commentable_type,
+            'comment' => $this->comment
+        ];
+    }
 }

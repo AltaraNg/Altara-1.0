@@ -23,12 +23,12 @@ class PaymentRepository extends Repository
 
     public function update($model, $data) {
         $model->update($data);
-        $model->paymentReconcile->setTotalAttribute();
+        $model->paymentReconcile->total = 0;
 
         $model->paymentReconcile->update();
 
         if(request()->has('comment')){
-            $model->comment()->updateOrCreate(['commentable_id' => $model->id],['comment' => request('comment')]);
+            $model->comment()->updateOrCreate(['commentable_id' => $model->id],['comment' => request('comment'), 'user_id' => auth()->user()->id]);
         }
         return $model;
     }

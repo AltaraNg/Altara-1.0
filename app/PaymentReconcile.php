@@ -9,7 +9,6 @@ class PaymentReconcile extends Model
 {
     use Filterable;
     protected $guarded = [];
-    protected $with = ['comment'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -39,13 +38,28 @@ class PaymentReconcile extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function paymentReconcileDetails()
+    public function paymentMethod()
     {
-        return $this->hasMany(PaymentReconcileDetail::class);
+        return $this->belongsTo(PaymentMethod::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function financeReconcile()
+    {
+        return $this->hasOne(FinanceReconcile::class);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
@@ -63,5 +77,21 @@ class PaymentReconcile extends Model
     public function setTotalAttribute()
     {
         $this->attributes['total'] = $this->payments->sum('amount');
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'reconcile_number' => $this->reconcile_number,
+            'payment_method' => $this->paymentMethod->name,
+            'branch' => $this->branch->name,
+            'total' => $this->total,
+            'cash_at_hand' => $this->cash_at_hand,
+            'deposited' => $this->deposited,
+            'date' => $this->created_at->toDateTimeString(),
+            'comment' => $this->comment,
+            'finance' => $this->financeReconcile
+        ];
     }
 }
