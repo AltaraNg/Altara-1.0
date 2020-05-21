@@ -24,7 +24,7 @@
                     </li>
                 </ul>
             </div>
-            <payment-filter :list-to-order="listToOrder"></payment-filter>
+            <payment-filter :list-to-order="listToOrder" @filter="setFilter" ></payment-filter>
 
 
             <div class="mt-5 mb-3 attendance-head" v-if="details.headings">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <Finance :list="listToOrder" :tab="listToOrder" />
+            <Finance :list="listToOrder" :tab="listToOrder" :filter-by="filterObject"/>
         </div>
     </transition>
 </template>
@@ -48,7 +48,6 @@ import { mapGetters } from "vuex";
 import Finance from "../../../components/Finance";
 import Flash from "../../../utilities/flash";
 import Typeahead from "../../../components/Typeahead";
-import Datepicker from "vuejs-datepicker";
 import PaymentFilter from "../../../components/PaymentFilter"
 
 export default {
@@ -57,7 +56,8 @@ export default {
         return {
             listToOrder: "Showroom Payment",
             title: "Branch",
-            id: ""
+            id: "",
+            filterObject: null
         };
     },
     created() {
@@ -69,8 +69,8 @@ export default {
         mode(query = null, mode = this.$route.met222a.mode.toLowerCase()) {
             return query ? mode === query : mode;
         },
-        filterList(){
-            return;
+        setFilter(value){
+            this.filterObject = value;
         }
 
     },

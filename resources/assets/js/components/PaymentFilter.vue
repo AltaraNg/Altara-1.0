@@ -1,22 +1,22 @@
 <template>
     <div class="row form-group my-5">
         <div class="col-2 w-100">
-            <select name="branch" id="branch" @select="filterList" class="w-75 text-capitalize font-weight-bold h5">
-                <option value="" selected>Branch</option>
+            <select name="branch" id="branch" @change="filterList({'branch': branch})" v-model="branch" class=" text-capitalize font-weight-bold h5" >
+                <option value="" selected="selected" disabled>--branch--</option>
                 <option
-                    :value="branch.id"
+                    :value="branch.name"
                     v-for="branch in getBranches"
                 >{{ branch.name }}</option
                 >
             </select>
         </div>
         <div class=" col-2 date">
-            <datepicker @selected="filterList" class="w-100"></datepicker>
+            <date-picker class="w-100" v-model="date" valueType="format" placeholder="Date" @change="filterList({'date': date})"></date-picker>
         </div>
         <div v-if="listToOrder === 'Reconcile'" class="col-2">
-            <select name="type" id="type" @select="filterList">
+            <select name="type" id="type" @change="filterList({'type': type})" v-model="type" class="w-75 text-capitalize font-weight-bold h5">
                 <option
-                    :value="payment.id"
+                    :value="payment.type"
                     v-for="payment in paymentType"
                 >{{ payment.type }}</option
                 >
@@ -26,16 +26,26 @@
 </template>
 
 <script>
-    import Datepicker from 'vuejs-datepicker';
+    import DatePicker from 'vue2-datepicker';
     import { mapGetters } from "vuex";
+    import 'vue2-datepicker/index.css';
     import { get, post, put } from "../utilities/api";
 export default {
     components: {
-        Datepicker
+        DatePicker
     },
   data() {
     return {
-        paymentType: []
+        paymentType: [
+            {id: 1, type: 'cash'},
+            {id: 2, type: 'transfer'},
+            {id: 3, type: 'pos'},
+            {id: 4, type: 'direct-debit'},
+            {id: 5, type: 'cheque'}
+        ],
+        branch: null,
+        date: null,
+        type: null
     };
   },
   props: {
@@ -47,24 +57,18 @@ export default {
     computed: {
         ...mapGetters(["auth", "getAuthUserDetails", "getBranches"])
     },
-    created() {
-        this.$prepareBranches();
-        get('/api/payment-type').then(
-            (res)=>{
-                this.paymentType = res.data.data
-            }
-        )
 
-    }
-    ,
     methods: {
-        filterList(){
-            return
+        filterList(data){
+            this.$emit('filter', data)
         }
     }
 };
 </script>
 
 <style lang="scss" scoped>
-
+    select{
+        width: 187px;
+        height: 34px;
+    }
 </style>

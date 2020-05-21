@@ -5,7 +5,7 @@
                 <div
                     class="mb-3 row attendance-item"
                     :key="index"
-                    v-for="(payment, index) in paymentList"
+                    v-for="(payment, index) in renderedList"
                 >
                     <div
                         class="col d-flex align-items-center"
@@ -67,7 +67,7 @@
                 <div
                     class="mb-3 row attendance-item"
                     :key="index"
-                    v-for="(payment, index) in paymentReconciliationList"
+                    v-for="(payment, index) in renderedList"
                 >
                     <div
                         class="col d-flex align-items-center"
@@ -127,12 +127,12 @@
                     <div
                         class="col d-flex align-items-center justify-content-center"
                     >
-                        ₦{{ !payment.finance ? "Not Available" :  payment.finance.bank_statement}}
+                        <input v-model="statement"  @keyup="onUpKey" type="number" class="form-control" rows="1"/>
                     </div>
                     <div
                         class="col d-flex align-items-center justify-content-center"
                     >
-                        {{ !payment.finance ? "No Comment" : payment.finance.comment.comment}}
+                        <input v-model="comment" @keyup="onUpKey" type="text" class="form-control" rows="1"/>
                     </div>
 
             </div>
@@ -208,17 +208,43 @@ import BasePagination from "../components/Pagination/BasePagination";
 
 export default {
     components: { BasePagination },
-    props: { list: { default: null }, tab: { default: null } },
+    props: { list: { default: null }, tab: { default: null }, filterBy: {default: null} },
 
     watch: {
         list: function(list) {
             this.fetchList(list);
+        },
+        filterBy: function (filterBy) {
+            this.defaultList = this.tab === 'Showroom Payment'? this.paymentList : this.paymentReconciliationList;
+            let newList = [];
+            let n = Object.keys(filterBy)[0];
+            if (n === 'branch'){
+                newList= this.defaultList.filter(function (item) {
+                    return item.branch === filterBy.branch;
+                });
+
+            }else if(n === 'type'){
+                newList= this.defaultList.filter(function (item) {
+                    return item.payment_method === filterBy.type;
+                });
+            }else{
+                newList= this.defaultList.filter(function (item) {
+                    return item.date.split(" ")[0] === filterBy.date;
+                });
+            }
+            Vue.set(this.$data, 'renderedList', newList);
+
+
+
+
         }
     },
 
     data() {
         return {
+            filter: false,
             OId: 0,
+            defaultList: [],
             page: 1,
             responseData: {},
             paymentItem: {},
@@ -229,7 +255,9 @@ export default {
             variance: "",
             amountInBank: "",
             branchId: "",
-            comment: ""
+            comment: "",
+            statement:"",
+            renderedList: []
         };
     },
 
@@ -263,6 +291,7 @@ export default {
                 this.responseData = fetchPaymentList.data.data;
                 this.OId = this.responseData.from;
                 this.$LIPS(false);
+                this.renderedList = this.paymentList;
             } catch (err) {
                 this.$displayErrorMessage(err);
             }
@@ -277,6 +306,7 @@ export default {
                 this.paymentReconciliationList =
                     fetchPaymentReconciliation.data.data.data;
                 this.responseData = fetchPaymentReconciliation.data.data;
+                this.renderedList = this.paymentReconciliationList;
                 this.OId = this.responseData.from;
                 // this.totalCashAtHand = this.paymentReconciliationList
                 //     .map(item => item.cash_at_hand)
@@ -342,13 +372,18 @@ export default {
 
     mounted() {
         this.fetchList(this.list);
+
     },
 
     created() {
         this.$prepareBanks();
         this.$prepareBranches();
         this.$preparePaymentMethods();
-    }
+
+    },
+
+
+
 };
 </script>
 
