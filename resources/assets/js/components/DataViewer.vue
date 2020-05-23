@@ -118,17 +118,19 @@
                             </div>
 
 
-                            <base-pagination
+<!--                            <base-pagination-->
+<!--                                :next_page_url=""-->
+<!--                                :prev_page_url=""-->
+<!--                                :first_page_url=""-->
+<!--                                :current_page="currentPage"-->
 
-                                :page-count="pageCount"
-                                :current-page="currentPage"
-                                :per-page="updatedPerPage"
-                                @nextPage="pageChangeHandle('next')"
-                                @previousPage="pageChangeHandle('previous')"
-                            >
+<!--                                :last_page="lastPage"-->
+<!--                                @next="next"-->
+<!--                                @prev="prev"-->
+<!--                            >-->
 
 
-                            </base-pagination>
+<!--                            </base-pagination>-->
 
                         </div>
 
