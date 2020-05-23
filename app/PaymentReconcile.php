@@ -54,6 +54,14 @@ class PaymentReconcile extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function financeReconcile()
@@ -85,6 +93,7 @@ class PaymentReconcile extends Model
             'id' => $this->id,
             'reconcile_number' => $this->reconcile_number,
             'payment_method' => $this->paymentMethod->name,
+            'user' => $this->user->full_name ?? null,
             'branch' => $this->branch->name,
             'total' => $this->total,
             'cash_at_hand' => $this->cash_at_hand,

@@ -57,7 +57,8 @@ class PaymentReconcileController extends Controller
     public function update(Request $request, PaymentReconcile $payment_reconcile)
     {
         $data = $this->validate($request, PaymentReconcile::$updateRules);
-        $resp = $this->paymentReconcileRepo->update($payment_reconcile, $data);
+        $updateData = array_merge($data, ['user_id' => auth()->user()->id]);
+        $resp = $this->paymentReconcileRepo->update($payment_reconcile, $updateData);
         return ResponseHelper::createSuccessResponse($resp->toArray());
     }
 
