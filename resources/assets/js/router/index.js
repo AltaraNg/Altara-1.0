@@ -342,7 +342,7 @@ const router = new VueRouter({
                     component: CashLogger,
                     name: "cash-logger",
                     meta: { mode: "create" }
-                }
+                },
             ]
         },
         {

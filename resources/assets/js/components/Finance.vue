@@ -181,7 +181,7 @@ export default {
       let newList = [];
       let n = Object.keys(filterBy)[0];
       if (n === "branch") {
-        if (filterBy.branch === "General") {
+        if (filterBy.branch === "all") {
           newList = this.defaultList;
         } else {
           newList = this.defaultList.filter(function(item) {

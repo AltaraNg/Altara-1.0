@@ -3,6 +3,7 @@
         <div class="col-2 w-100">
             <label for="branch" class="form-control-label">Branch</label>
             <select name="branch" id="branch" @change="filterList({'branch': branch})" v-model="branch" class=" text-capitalize font-weight-bold h5" >
+                <option value="all" selected="selected" >All</option>
                 <option
                     :value="branch.name"
                     v-for="branch in getBranches"
