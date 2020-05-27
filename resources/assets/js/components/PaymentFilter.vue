@@ -1,8 +1,9 @@
 <template>
-    <div class="row form-group my-5">
+    <div class="row form-group my-5 mx-5">
         <div class="col-2 w-100">
+            <label for="branch" class="form-control-label">Branch</label>
             <select name="branch" id="branch" @change="filterList({'branch': branch})" v-model="branch" class=" text-capitalize font-weight-bold h5" >
-                <option value="" selected="selected" disabled>--branch--</option>
+                <option value="all" selected="selected" >All</option>
                 <option
                     :value="branch.name"
                     v-for="branch in getBranches"
@@ -10,11 +11,14 @@
                 >
             </select>
         </div>
-        <div class=" col-2 date">
+        <div class=" col-2 ">
+            <label  class="form-control-label">Date</label>
             <date-picker class="w-100" v-model="date" valueType="format" placeholder="Date" @change="filterList({'date': date})"></date-picker>
         </div>
         <div v-if="listToOrder === 'Reconcile'" class="col-2">
+            <label for="type" class="form-control-label">Payment Type</label>
             <select name="type" id="type" @change="filterList({'type': type})" v-model="type" class="w-75 text-capitalize font-weight-bold h5">
+                <option value="all" selected="selected" >All</option>
                 <option
                     :value="payment.type"
                     v-for="payment in paymentType"

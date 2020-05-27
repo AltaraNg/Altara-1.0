@@ -53,7 +53,9 @@ const CategoryForm = () => import("../views/LOG/category/form.vue");
 const ProductForm = () => import("../views/LOG/product/form.vue");
 const Renewal = () => import("../views/FSL/renewal/renewal.vue");
 const CashLogger = () => import("../views/FSL/cash_logger/cash_logger.vue");
-const Reconcile = () => import("../views/FSL/reconcile/reconcile.vue");
+const ACC = () => import("../views/ACC/index.vue");
+const ACCHome = () => import("../views/ACC/HomePage.vue");
+const Reconcile = () => import("../views/ACC/reconcile/reconcile.vue");
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -341,6 +343,15 @@ const router = new VueRouter({
                     name: "cash-logger",
                     meta: { mode: "create" }
                 },
+            ]
+        },
+        {
+            path: "/acc",
+            component: ACC,
+            meta: { requiresAuth: true, ACC: true },
+            children: [
+                { path: "/", redirect: { name: "ACCHome" } },
+                { path: "home", component: ACCHome, name: "ACCHome" },
                 {
                     path: "reconcile",
                     component: Reconcile,
