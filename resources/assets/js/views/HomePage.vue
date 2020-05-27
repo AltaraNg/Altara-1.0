@@ -41,6 +41,7 @@
                     {name: 'FSL', url: 'fsl/home', icon: 'fa-box'},
                     {name: 'LOG', url: 'log/home', icon: 'fa-truck'},
                     {name: 'CAG', url: 'CAG/home', icon: 'fa-id-card'},
+                    {name: 'ACC', url: 'acc/home', icon: 'fa-coins'},
                     {name: 'ALTARAPAY', url: 'altarapay/home', icon: 'fa-money-bill-alt'}
                 ]
             }

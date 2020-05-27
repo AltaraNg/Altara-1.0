@@ -61,8 +61,14 @@
           <div
             class="col d-flex align-items-center justify-content-center"
           >₦{{ payment.cash_at_hand }}</div>
-          <div class="col d-flex align-items-center justify-content-center">₦{{ varianceCalc(payment.cash_at_hand, payment.deposited) }}</div>
-          <div class="col d-flex align-items-center justify-content-center" @click="updateModal(payment)" data-hoverable="true">
+          <div
+            class="col d-flex align-items-center justify-content-center"
+          >₦{{ varianceCalc(payment.cash_at_hand, payment.deposited) }}</div>
+          <div
+            class="col d-flex align-items-center justify-content-center"
+            @click="updateModal(payment)"
+            data-hoverable="true"
+          >
             <b class="overflow">
               {{
               !payment.comment
@@ -72,10 +78,10 @@
             </b>
           </div>
           <div class="col d-flex align-items-center justify-content-center">
-            <input v-model="statement" type="number" class="form-control" rows="1"  />
+            <input v-model="statement" type="number" class="form-control" rows="1" />
           </div>
           <div class="col d-flex align-items-center justify-content-center">
-            <input v-model="comment"  type="text" class="form-control" rows="1" />
+            <input v-model="comment" type="text" class="form-control" rows="1" />
           </div>
         </div>
       </div>
@@ -104,20 +110,20 @@
                 }}
               </h5>
             </div>
-              <div v-else class="modal-body">
-                  <p>Branch Name: {{ paymentItem.branch }}</p>
-                  <p>
-                     Comment By :
-                      {{ paymentItem.user }}
-                  </p>
-                  <h5>
-                      {{
-                      !paymentItem.comment
-                      ? "Not Available"
-                      : paymentItem.comment.comment
-                      }}
-                  </h5>
-              </div>
+            <div v-else class="modal-body">
+              <p>Branch Name: {{ paymentItem.branch }}</p>
+              <p>
+                Comment By :
+                {{ paymentItem.user }}
+              </p>
+              <h5>
+                {{
+                !paymentItem.comment
+                ? "Not Available"
+                : paymentItem.comment.comment
+                }}
+              </h5>
+            </div>
           </div>
         </div>
       </div>
@@ -275,8 +281,8 @@ export default {
         return this.errHandler("Please enter all required values.");
       }
       let payload = {
-          bank_statement: this.statement,
-          comment: this.comment
+        bank_statement: this.statement,
+        comment: this.comment
       };
 
       this.$LIPS(true);
@@ -297,10 +303,9 @@ export default {
         this.$displayErrorMessage(err);
       }
     },
-      varianceCalc(a, b){
-        if(!isNaN(a-b))
-        return a-b;
-      },
+    varianceCalc(a, b) {
+      if (!isNaN(a - b)) return a - b;
+    },
 
     errHandler(param) {
       return Flash.setError(param);

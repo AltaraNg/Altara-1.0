@@ -84,12 +84,7 @@ export default {
           url_c: "Log cash by customer",
           desc: "Log all cash"
         },
-        {
-          url: "reconcile",
-          title: "ShowRoom Reconcile",
-          url_c: "Show room reconciliation",
-          desc: "View all reconciliations"
-        }
+
       ]
     };
   }
