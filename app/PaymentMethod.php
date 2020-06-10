@@ -15,4 +15,7 @@ class PaymentMethod extends Model
     {
         return $this->hasMany(Payment::class);
     }
+    public function newOrder(){
+        return $this->belongsTo(NewOrder::class);
+    }
 }

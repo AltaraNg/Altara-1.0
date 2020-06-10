@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRepaymentCyclesTable extends Migration
+class CreateBusinessTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateRepaymentCyclesTable extends Migration
      */
     public function up()
     {
-        Schema::create('repayment_cycles', function (Blueprint $table) {
+        Schema::create('business_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('value');
-            $table->enum('status', ['valid', 'invalid'])->default('valid');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateRepaymentCyclesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repayment_cycles');
+        Schema::dropIfExists('business_types');
     }
 }

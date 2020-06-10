@@ -17,7 +17,7 @@ class CreateRepaymentDurationsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('value');
-            $table->enum('status', ['valid', 'invalid'])->default('valid');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

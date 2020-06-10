@@ -14,7 +14,8 @@ class ModifyPaymentMethodsTable extends Migration
     public function up()
     {
         Schema::table('payment_methods', function(Blueprint $table){
-            $table->enum('status', ['valid', 'invalid'])->default('valid');
+            $table->dropColumn('status');
+            $table->boolean('status')->default(1);
         });
         //
     }

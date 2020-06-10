@@ -17,7 +17,7 @@ class CreateDownPaymentRatesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->double('percent');
-            $table->enum('status', ['valid', 'invalid'])->default('valid');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

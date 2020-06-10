@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBusinessTypesTable extends Migration
+class ModifyDiscountTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateBusinessTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('business_types', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->enum('status', ['valid', 'invalid'])->default('valid');
-            $table->timestamps();
+        //
+        Schema::table('discounts', function (Blueprint $table){
+            $table->text('description');
+            $table->boolean('status')->default(1);
         });
     }
 
@@ -28,6 +27,6 @@ class CreateBusinessTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('business_types');
+        //
     }
 }

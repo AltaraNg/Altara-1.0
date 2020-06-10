@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ModifyDiscountTable extends Migration
+class CreateRepaymentCyclesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class ModifyDiscountTable extends Migration
      */
     public function up()
     {
-        //
-        Schema::table('discounts', function (Blueprint $table){
-            $table->text('description');
-            $table->enum('status', ['valid', 'invalid'])->default('valid');
+        Schema::create('repayment_cycles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('value');
+            $table->boolean('status')->default(1);
+            $table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ class ModifyDiscountTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('repayment_cycles');
     }
 }
