@@ -38,5 +38,8 @@ class NewOrder extends Model
     public function orderDiscount(){
         return $this->belongsTo(OrderDiscounts::class);
     }
+    public function product(){
+        return $this->hasMany(StoreProduct::class);
+    }
 }
 
