@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\NewOrderEvent;
 use App\Events\SendPasswordResetLinkEvent;
+use App\Listeners\NewOrderListener;
 use App\Listeners\SendPasswordResetLinkListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,6 +23,10 @@ class EventServiceProvider extends ServiceProvider
         SendPasswordResetLinkEvent::class => [
             SendPasswordResetLinkListener::class,
         ],
+        NewOrderEvent::class => [
+            NewOrderListener::class,
+            SendPasswordResetLinkListener::class,
+        ],
     ];
 
     /**
@@ -33,5 +39,15 @@ class EventServiceProvider extends ServiceProvider
         parent::boot();
 
         //
+    }
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return true;
     }
 }

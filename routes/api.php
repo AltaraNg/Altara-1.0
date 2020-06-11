@@ -69,4 +69,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::patch('/payment-reconcile/{payment_reconcile}/finance', 'PaymentReconcileController@finance');
 });
 
+Route::post('/ammo', 'UserController@test');
+
 

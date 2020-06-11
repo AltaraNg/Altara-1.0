@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Branch;
 use App\Counter;
 use App\EmployeeCategory;
+use App\Events\Event;
+use App\Events\NewOrderEvent;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use DateTime;
 use Hash;
 use Illuminate\Http\Request;
@@ -264,5 +267,12 @@ class UserController extends Controller
             $minAge = (!empty($parameters)) ? (int)$parameters[0] : 18;
             return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
         });
+    }
+
+    public function test(){
+        $order = ['id' => 4, 'rc' => 14, 'rp' => 90];
+        event(new NewOrderEvent($order));
+        dd((int)floor(60/14));
+        return 'klll';
     }
 }
