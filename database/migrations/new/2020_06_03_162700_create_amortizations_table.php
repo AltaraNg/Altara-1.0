@@ -17,10 +17,10 @@ class CreateAmortizationsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('new_order_id')->index();
             $table->foreign('new_order_id')->references('id')->on('new_orders')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('expected_payment_date')->index();
-            $table->string('actual_payment_date')->nullable();
-            $table->float('expected_amount')->index();
-            $table->float('actual_amount')->nullable();
+            $table->date('expected_payment_date')->index();
+            $table->date('actual_payment_date')->nullable();
+            $table->float('expected_amount');
+            $table->float('actual_amount')->nullable(false)->default(0);
             $table->timestamps();
         });
     }

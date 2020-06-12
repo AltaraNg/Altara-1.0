@@ -13,7 +13,7 @@ class RepaymentCycleTableSeeder extends Seeder
     public function run()
     {
         //
-        $name = ['bimonthly', 'monthly', 'custom'];
+        $name = ['bi_monthly', 'monthly', 'custom'];
         $value = [14, 28, 'custom'];
 
         for ($i=0; $i<count($name); $i++){

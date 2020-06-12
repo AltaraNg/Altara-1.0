@@ -70,5 +70,6 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 Route::post('/ammo', 'UserController@test');
+Route::apiResource('amortization', 'AmortizationController');
 
 

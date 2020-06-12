@@ -29,9 +29,9 @@ class NewOrderListener
      */
     public function handle(NewOrderEvent $event)
     {
-//        dd($event);
+//        dd($event->order->repaymentCycle);
         try {
-            $p = app()->make('App\Amortization\\' .Str::studly('bi_monthly'), ['order' => $event])->create();
+            $p = app()->make('App\Amortization\\' .Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
         } catch (\Exception $e) {
 //            dump($e);
             throw new AException($e->getMessage(), $e->getCode());

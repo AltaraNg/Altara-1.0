@@ -28,20 +28,17 @@ abstract class Amortization
 
     public function repaymentDuration(): int
     {
-        // TODO: Implement duration() method.
-        return 180;
+        return $this->order->repaymentDuration->value;
     }
 
     public function repaymentCircle(): int
     {
-        // TODO: Implement circle() method.
-        return 28;
+        return $this->order->repaymentCycle->value;
     }
 
     public function deficit(): float
     {
-        // TODO: Implement circle() method.
-        return 25000;
+        return $this->order->product_price - $this->order->down_payment;
     }
 
     /**
@@ -51,7 +48,12 @@ abstract class Amortization
 
     public function create()
     {
+        $reyAmount = $this->repaymentAmount();
         for ($i = 1; $i <= $this->repaymentCount(); $i++ ){
+            $this->order->amortization()->updateOrCreate([
+                'expected_payment_date' => $this->getRepaymentDate($i),
+                'expected_amount' => $reyAmount
+            ]);
             dump($this->getRepaymentDate($i));
             dump($this->repaymentCount());
             dump($this->repaymentAmount());

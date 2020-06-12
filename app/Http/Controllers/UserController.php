@@ -7,6 +7,7 @@ use App\Counter;
 use App\EmployeeCategory;
 use App\Events\Event;
 use App\Events\NewOrderEvent;
+use App\NewOrder;
 use App\Role;
 use App\User;
 use Carbon\Carbon;
@@ -270,9 +271,10 @@ class UserController extends Controller
     }
 
     public function test(){
-        $order = ['id' => 4, 'rc' => 14, 'rp' => 90];
+        $order = NewOrder::findOrFail(12);
+//        dd($order->amortization);
         event(new NewOrderEvent($order));
-        dd((int)floor(60/14));
+//        dd((int)floor(60/14));
         return 'klll';
     }
 }
