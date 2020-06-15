@@ -162,10 +162,7 @@
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.OId =this.responseData.from;
-                    console.log(this.paymentReconciliationList);
-                    console.log(this.totalCashAtHand);
                     this.totalCashAtHand =this.paymentReconciliationList.map(item=>item.total).reduce((a,b)=>a+b);
-                    console.log(this.totalCashAtHand);
 
                     this.$LIPS(false);
                 }
