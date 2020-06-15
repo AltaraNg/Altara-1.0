@@ -138,9 +138,9 @@
 
             fetchList(list) {
                 this.$LIPS(true);
-                list === 'View Payments' ? this.getPaymentList() : 
+                list === 'View Payments' ? this.getPaymentList() :
                 list === 'Reconcile' ? this.getPaymentReconciliationList() : this.$LIPS(false);
-            },   
+            },
 
             async getPaymentList(){
                 try{
@@ -162,7 +162,11 @@
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.OId =this.responseData.from;
-                    this.totalCashAtHand =this.paymentReconciliationList.map(item=>item.cash_at_hand).reduce((a,b)=>a+b);
+                    console.log(this.paymentReconciliationList);
+                    console.log(this.totalCashAtHand);
+                    this.totalCashAtHand =this.paymentReconciliationList.map(item=>item.total).reduce((a,b)=>a+b);
+                    console.log(this.totalCashAtHand);
+
                     this.$LIPS(false);
                 }
                 catch(err){
@@ -175,8 +179,8 @@
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
-                    "cash_at_hand":this.totalCashAtHand, 
-                    "deposited": this.amountInBank, 
+                    "cash_at_hand":this.totalCashAtHand,
+                    "deposited": this.amountInBank,
                     "comment": this.comment
                 }
                 this.$LIPS(true);
@@ -222,7 +226,7 @@
         },
 
         mounted() {
-            this.fetchList(this.list) 
+            this.fetchList(this.list)
         },
 
         created() {
@@ -238,7 +242,7 @@
         border-top: 2px solid #dee1e4;
     }
     .overflow{
-        width: 80px; 
+        width: 80px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
