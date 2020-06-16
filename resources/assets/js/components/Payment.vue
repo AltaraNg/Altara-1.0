@@ -33,15 +33,18 @@
                 </div>
             </div>
             <div v-if="tab === 'Reconcile'">
-                <div class="mb-3 row attendance-item">
+                <div class="mb-3 row attendance-item" v-for="item in paymentReconciliationList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
                     <span class="user mx-auto blue"  @click="updateReconciledPayment"></span>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        cash
+                        {{item.payment_method}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        ₦{{totalCashAtHand}}
+                        ₦{{item.total}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{item.date.split(" ")[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <input v-model="amountInBank" @keyup="onUpKey" type="number" class="form-control" rows="1"/>
@@ -138,9 +141,9 @@
 
             fetchList(list) {
                 this.$LIPS(true);
-                list === 'View Payments' ? this.getPaymentList() : 
+                list === 'View Payments' ? this.getPaymentList() :
                 list === 'Reconcile' ? this.getPaymentReconciliationList() : this.$LIPS(false);
-            },   
+            },
 
             async getPaymentList(){
                 try{
@@ -162,7 +165,8 @@
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.OId =this.responseData.from;
-                    this.totalCashAtHand =this.paymentReconciliationList.map(item=>item.cash_at_hand).reduce((a,b)=>a+b);
+                    this.totalCashAtHand = this.paymentReconciliationList[0].total;
+
                     this.$LIPS(false);
                 }
                 catch(err){
@@ -175,8 +179,8 @@
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
-                    "cash_at_hand":this.totalCashAtHand, 
-                    "deposited": this.amountInBank, 
+                    "cash_at_hand":this.totalCashAtHand,
+                    "deposited": this.amountInBank,
                     "comment": this.comment
                 }
                 this.$LIPS(true);
@@ -222,7 +226,7 @@
         },
 
         mounted() {
-            this.fetchList(this.list) 
+            this.fetchList(this.list)
         },
 
         created() {
@@ -238,7 +242,7 @@
         border-top: 2px solid #dee1e4;
     }
     .overflow{
-        width: 80px; 
+        width: 80px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
