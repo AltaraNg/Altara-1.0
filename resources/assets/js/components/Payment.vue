@@ -33,15 +33,18 @@
                 </div>
             </div>
             <div v-if="tab === 'Reconcile'">
-                <div class="mb-3 row attendance-item">
+                <div class="mb-3 row attendance-item" v-for="item in paymentReconciliationList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
                     <span class="user mx-auto blue"  @click="updateReconciledPayment"></span>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        cash
+                        {{item.payment_method}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        ₦{{totalCashAtHand}}
+                        ₦{{item.total}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{item.date.split(" ")[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <input v-model="amountInBank" @keyup="onUpKey" type="number" class="form-control" rows="1"/>
