@@ -15,7 +15,7 @@ class CreateCustomRepaymentDatesTable extends Migration
     {
         Schema::create('custom_repayment_dates', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
+            $table->integer('date');
             $table->timestamps();
         });
     }

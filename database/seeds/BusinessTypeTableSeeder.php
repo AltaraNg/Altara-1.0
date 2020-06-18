@@ -14,6 +14,7 @@ class BusinessTypeTableSeeder extends Seeder
     public function run()
     {
         //
+        DB::table('business_types')->delete();
         $types = ['Altara Credit Products', 'Altara Pay Products', 'Altara Pay Cash Loan', 'Altara Credit Cash Loan'];
         DB::table('business_types')->delete();
         foreach ($types as $type) {

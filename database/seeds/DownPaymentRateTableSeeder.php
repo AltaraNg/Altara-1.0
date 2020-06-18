@@ -2,6 +2,7 @@
 
 use App\DownPaymentRate;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DownPaymentRateTableSeeder extends Seeder
 {
@@ -13,6 +14,7 @@ class DownPaymentRateTableSeeder extends Seeder
     public function run()
     {
         //
+        DB::table('down_payment_rates')->delete();
         $name = ['zero', 'twenty', 'forty', 'sixty', 'eighty'];
         $percent = [0, 20, 40, 60, 80];
 

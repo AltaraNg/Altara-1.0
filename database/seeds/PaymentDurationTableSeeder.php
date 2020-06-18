@@ -2,6 +2,7 @@
 
 use App\RepaymentDuration;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PaymentDurationTableSeeder extends Seeder
 {
@@ -13,6 +14,7 @@ class PaymentDurationTableSeeder extends Seeder
     public function run()
     {
         //
+        DB::table('payment_durations')->delete();
 
         $name = ['three_months', 'six_months', 'twelve_months'];
         $value = [3, 6, 12];

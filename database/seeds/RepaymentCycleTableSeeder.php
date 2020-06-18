@@ -2,6 +2,7 @@
 
 use App\RepaymentCycle;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RepaymentCycleTableSeeder extends Seeder
 {
@@ -13,8 +14,9 @@ class RepaymentCycleTableSeeder extends Seeder
     public function run()
     {
         //
+        DB::table('repayment_cycles')->delete();
         $name = ['bimonthly', 'monthly', 'custom'];
-        $value = [14, 28, 'custom'];
+        $value = [14, 30, 'custom'];
 
         for ($i=0; $i<count($name); $i++){
             RepaymentCycle::create([
