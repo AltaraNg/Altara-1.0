@@ -12,8 +12,6 @@ class PaymentDurationTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-
         $name = ['three_months', 'six_months', 'twelve_months'];
         $value = [90, 180, 360];
 

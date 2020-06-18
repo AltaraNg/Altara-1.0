@@ -271,7 +271,7 @@ class UserController extends Controller
     }
 
     public function test(){
-        $order = NewOrder::findOrFail(12);
+        $order = NewOrder::findOrFail(51);
 //        dd($order->amortization);
         event(new NewOrderEvent($order));
 //        dd((int)floor(60/14));

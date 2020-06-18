@@ -22,7 +22,7 @@ class NewOrder extends Model
     }
 
     public function repaymentDuration (){
-        return $this->belongsTo(RepaymentDuration::class, 'repayment_dur_id');
+        return $this->belongsTo(RepaymentDuration::class);
     }
 
     public function repaymentCycle(){
@@ -47,6 +47,10 @@ class NewOrder extends Model
     }
     public function product(){
         return $this->hasMany(StoreProduct::class);
+    }
+
+    public function customDate(){
+        return $this->hasOne(CustomRepaymentDate::class);
     }
 
     public function defaulter(){

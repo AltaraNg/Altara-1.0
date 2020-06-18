@@ -5,7 +5,7 @@ namespace App\Amortization;
 
 abstract class Amortization
 {
-    private $order;
+    public $order;
 
     /**
      * Amortization constructor.

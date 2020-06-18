@@ -12,7 +12,6 @@ class DownPaymentRateTableSeeder extends Seeder
      */
     public function run()
     {
-        //
         $name = ['zero', 'twenty', 'forty', 'sixty', 'eighty'];
         $percent = [0, 20, 40, 60, 80];
 
