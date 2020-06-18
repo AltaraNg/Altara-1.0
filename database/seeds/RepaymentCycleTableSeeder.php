@@ -16,7 +16,7 @@ class RepaymentCycleTableSeeder extends Seeder
         //
         DB::table('repayment_cycles')->delete();
         $name = ['bimonthly', 'monthly', 'custom'];
-        $value = [14, 30, 'custom'];
+        $value = [14, 28, 30];
 
         for ($i=0; $i<count($name); $i++){
             RepaymentCycle::create([
