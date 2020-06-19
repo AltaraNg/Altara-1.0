@@ -14,7 +14,7 @@ class ModifyDiscountTable extends Migration
     public function up()
     {
         Schema::table('discounts', function (Blueprint $table){
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->boolean('status')->default(1);
         });
     }
