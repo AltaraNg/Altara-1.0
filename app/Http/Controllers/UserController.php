@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Branch;
 use App\Counter;
 use App\EmployeeCategory;
+use App\Events\Event;
+use App\Events\NewOrderEvent;
+use App\NewOrder;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use DateTime;
 use Hash;
 use Illuminate\Http\Request;
@@ -264,5 +268,11 @@ class UserController extends Controller
             $minAge = (!empty($parameters)) ? (int)$parameters[0] : 18;
             return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
         });
+    }
+
+    public function test(){
+        $order = NewOrder::findOrFail(51);
+        event(new NewOrderEvent($order));
+        return 'klll';
     }
 }

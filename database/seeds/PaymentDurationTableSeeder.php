@@ -12,10 +12,8 @@ class PaymentDurationTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-
         $name = ['three_months', 'six_months', 'twelve_months'];
-        $value = [3, 6, 12];
+        $value = [90, 180, 360];
 
         for ($i=0; $i<count($name); $i++){
             RepaymentDuration::create([

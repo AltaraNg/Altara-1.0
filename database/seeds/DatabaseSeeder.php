@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
 //            DiscountsTableSeeder::class,
 //            PaymentMethodsTableSeeder::class,
 //            OrdersTableSeeder::class,
+            AmortizationSeeder::class,
             DownPaymentRateTableSeeder::class,
             PaymentDurationTableSeeder::class,
 //            PaymentMethodsTableSeeder::class,

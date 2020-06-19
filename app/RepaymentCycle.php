@@ -8,6 +8,6 @@ class RepaymentCycle extends Model
 {
     //
     public function newOrder(){
-        return $this->belongsTo(NewOrder::class);
+        return $this->hasMany(NewOrder::class);
     }
 }

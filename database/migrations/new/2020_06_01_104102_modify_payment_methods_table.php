@@ -14,10 +14,8 @@ class ModifyPaymentMethodsTable extends Migration
     public function up()
     {
         Schema::table('payment_methods', function(Blueprint $table){
-            $table->dropColumn('status');
             $table->boolean('status')->default(1);
         });
-        //
     }
 
     /**
@@ -27,6 +25,8 @@ class ModifyPaymentMethodsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('payment_methods', function(Blueprint $table){
+            $table->dropColumn('status');
+        });
     }
 }
