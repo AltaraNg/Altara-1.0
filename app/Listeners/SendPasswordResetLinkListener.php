@@ -16,7 +16,6 @@ class SendPasswordResetLinkListener
      */
     public function __construct()
     {
-        dd('lkk');
     }
 
     /**

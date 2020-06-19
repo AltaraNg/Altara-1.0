@@ -23,7 +23,6 @@ class AmortizationFilter extends BaseFilter
      */
     public function rePayment(int $count)
     {
-//        dd(12);
         $this->builder
             ->where('actual_amount', '<', 1)
             ->distinct()->count('new_order_id');

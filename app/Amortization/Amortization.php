@@ -54,10 +54,6 @@ abstract class Amortization
                 'expected_payment_date' => $this->getRepaymentDate($i),
                 'expected_amount' => $reyAmount
             ]);
-            dump($this->getRepaymentDate($i));
-            dump($this->repaymentCount());
-            dump($this->repaymentAmount());
-            dump('...........................................');
         }
     }
 }
