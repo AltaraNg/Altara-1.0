@@ -19,7 +19,7 @@ $factory->define(NewOrder::class, function (Faker $faker) {
         'order_number' => $faker->unique()->text(8),
         'customer_id' => $faker->randomElement($customer),
         'product_id' => $faker->randomElement($product),
-        'product_price' => $faker->numberBetween(1, 20000),
+        'product_price' => $faker->numberBetween(5000, 20000),
         'down_payment' => $faker->numberBetween(1, 5000),
         'repayment' => $faker->numberBetween(5000, 15000),
         'repayment_duration_id' => $faker->randomElement($repaymentDuration),
