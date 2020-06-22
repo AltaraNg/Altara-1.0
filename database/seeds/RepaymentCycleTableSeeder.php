@@ -12,15 +12,17 @@ class RepaymentCycleTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-        $name = ['bi_monthly', 'monthly', 'custom'];
-        $value = [14, 28, 30];
-
-        for ($i=0; $i<count($name); $i++){
-            RepaymentCycle::create([
-                'name' => $name[$i],
-                'value' => $value[$i]
-            ]);
-        }
+        RepaymentCycle::updateOrCreate(
+            ['name' => RepaymentCycle::BIMONTHLY],
+            ['value' => 14]
+        );
+        RepaymentCycle::updateOrCreate(
+            ['name' => RepaymentCycle::MONTHLY],
+            ['value' => 28]
+        );
+        RepaymentCycle::updateOrCreate(
+            ['name' => RepaymentCycle::CUSTOM],
+            ['value' => 30]
+        );
     }
 }

@@ -7,18 +7,18 @@ use Faker\Generator as Faker;
 
 $factory->define(NewOrder::class, function (Faker $faker) {
     $customer = App\Customer::pluck('id')->toArray();
-    $product = App\StoreProduct::pluck('product_id')->toArray();
+    $product = App\StoreProduct::all()->toArray();
     $repaymentDuration = App\RepaymentDuration::pluck('id')->toArray();
     $repaymentCycle = App\RepaymentCycle::pluck('id')->toArray();
     $businessType = App\BusinessType::pluck('id')->toArray();
     $status = App\OrderStatus::pluck('id')->toArray();
-    $user = App\User::pluck('id')->toArray();
+    $user = App\User::all()->toArray();
 
     return [
         'order_date' => $faker->date(),
         'order_number' => $faker->unique()->text(8),
         'customer_id' => $faker->randomElement($customer),
-        'product_id' => $faker->randomElement($product),
+        'product_id' => $faker->randomElement($product)['product_id'],
         'product_price' => $faker->numberBetween(5000, 20000),
         'down_payment' => $faker->numberBetween(1, 5000),
         'repayment' => $faker->numberBetween(5000, 15000),
@@ -26,6 +26,7 @@ $factory->define(NewOrder::class, function (Faker $faker) {
         'repayment_cycle_id' => $faker->randomElement($repaymentCycle),
         'business_type_id' => $faker->randomElement($businessType),
         'status_id' => $faker->randomElement($status),
-        'user_id' => $faker->randomElement($user),
+        'user_id' => $faker->randomElement($user)['id'],
+        'branch_id' => $faker->randomElement($user)['branch_id'],
     ];
 });
