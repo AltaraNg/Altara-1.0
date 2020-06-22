@@ -18,6 +18,7 @@ class AmortizationSeeder extends Seeder
 //            PaymentMethodsTableSeeder::class,
             RepaymentCycleTableSeeder::class,
             BusinessTypeTableSeeder::class,
+            OrderStatusTableSeeder::class,
             NewOrderTableSeeder::class
         ]);
     }
