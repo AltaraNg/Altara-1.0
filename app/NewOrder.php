@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class NewOrder extends Model
 {
+    use Filterable;
     protected $with = ['amortization'];
 
     protected $guarded = [];
