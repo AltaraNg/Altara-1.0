@@ -25,7 +25,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewOrderEvent::class => [
             NewOrderListener::class,
-            SendPasswordResetLinkListener::class,
         ],
     ];
 

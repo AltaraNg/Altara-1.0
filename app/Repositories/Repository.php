@@ -41,8 +41,12 @@ abstract class Repository
 
     public function all() {
         $limit = request('limit', 10);
-        $resp = $this->model::paginate($limit);
-        return $resp;
+        return $this->model::paginate($limit);
+    }
+
+    public function query($filter)
+    {
+        return $this->model::filter($filter)->paginate();
     }
 
     public function store(array $data) {
