@@ -7,7 +7,7 @@
             <div v-if="tab === 'View Payments'">
                 <div class="mb-3 row attendance-item" :key="index" v-for="(payment,index) in paymentList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                    <span class="user mx-auto" :class="tab">{{index+OId}}</span>
+                        <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{payment.customer.id}}
@@ -33,22 +33,19 @@
                 </div>
             </div>
             <div v-if="tab === 'Reconcile'">
-                <div class="mb-3 row attendance-item" v-for="item in paymentReconciliationList">
+                <div class="mb-3 row attendance-item">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                    <span class="user mx-auto blue"  @click="updateReconciledPayment"></span>
+                        <span class="user mx-auto blue"  @click="updateReconciledPayment"></span>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{item.payment_method}}
+                        cash
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        ₦{{item.total}}
-                    </div>
-                    <div class="col d-flex align-items-center justify-content-center">
-                        {{item.date.split(" ")[0]}}
+                        ₦{{totalCashAtHand}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <input v-model="amountInBank" @keyup="onUpKey" type="number" class="form-control" rows="1"/>
-                    <!-- </input> -->
+                        <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[variance === 0 ? 'green' : 'red']">
                         ₦{{variance}}
@@ -142,7 +139,7 @@
             fetchList(list) {
                 this.$LIPS(true);
                 list === 'View Payments' ? this.getPaymentList() :
-                list === 'Reconcile' ? this.getPaymentReconciliationList() : this.$LIPS(false);
+                    list === 'Reconcile' ? this.getPaymentReconciliationList() : this.$LIPS(false);
             },
 
             async getPaymentList(){
@@ -165,7 +162,9 @@
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.OId =this.responseData.from;
-                    this.totalCashAtHand = this.paymentReconciliationList[0].total;
+
+                    this.totalCashAtHand =this.paymentReconciliationList.map(item=>item.total).reduce((a,b)=>a+b);
+
 
                     this.$LIPS(false);
                 }
@@ -175,7 +174,7 @@
             },
 
             async updateReconciledPayment(){
-                 if(!this.amountInBank || this.variance !=0 && !this.comment  ){
+                if(!this.amountInBank || this.variance !=0 && !this.comment  ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
@@ -191,7 +190,7 @@
                         this.comment='';
                         this.variance='';
                     }
-                     Flash.setSuccess(reconcilePayment.data.status);
+                    Flash.setSuccess(reconcilePayment.data.status);
                     this.$LIPS(false);
                 }
                 catch(err){

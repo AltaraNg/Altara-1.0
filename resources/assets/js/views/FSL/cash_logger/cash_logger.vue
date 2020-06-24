@@ -17,9 +17,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="w-25 mt-5 mb-3 attendance-head" v-if="listToOrder === 'Reconcile'">
-                <date-picker class="w-100"  valueType="format" placeholder="Date" v-model="date"></date-picker>
-            </div>
+<!--            <div class="w-25 mt-5 mb-3 attendance-head" v-if="listToOrder === 'Reconcile'">-->
+<!--                <date-picker class="w-100"  valueType="format" placeholder="Date" v-model="date"></date-picker>-->
+<!--            </div>-->
 
             <div class="mt-5 mb-3 attendance-head" v-if="details.headings">
                 <div class="row px-4 pt-3 pb-4 text-center">
@@ -36,12 +36,12 @@
 <script>
     import Lookup from "../lookup/lookup";
     import Payment from "../../../components/Payment";
-    import DatePicker from 'vue2-datepicker';
-    import 'vue2-datepicker/index.css';
+    // import DatePicker from 'vue2-datepicker';
+    // import 'vue2-datepicker/index.css';
     import Flash from '../../../utilities/flash';
 
     export default {
-        components: {Lookup,Payment, DatePicker},
+        components: {Lookup,Payment},
         data() {
             return {
                 listToOrder: 'Log Payment',
@@ -58,7 +58,7 @@
             details() {
                 let list = 1;
                 const tabs = ["Log Payment","View Payments", "Reconcile"];
-                const headings2 = ['index','Type','Total', 'Date', 'Amount Bank','Variance','Comment'];
+                const headings2 = ['index','Type','Total', 'Amount Bank','Variance','Comment'];
                 const headings1 = ['index','Customer ID', 'Date of Payment', 'Time of Payment','Payment Purpose','Payment Type','Amount Paid','Comment'];
                 const headings = this.listToOrder === "View Payments" ? headings1 : this.listToOrder === "Reconcile" ? headings2 : '';
                 return {tabs, headings, list};
