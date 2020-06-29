@@ -5,9 +5,7 @@
         <div class="mb-3 row attendance-item" :key="index" v-for="(payment, index) in renderedList">
           <div class="col d-flex align-items-center" style="max-width: 120px">
             <span class="user mx-auto" :class="tab">
-              {{
-              index + OId
-              }}
+              {{index + OId}}
             </span>
           </div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.branch }}</div>
@@ -42,12 +40,10 @@
         <div class="mb-3 row attendance-item" :key="index" v-for="(payment, index) in renderedList">
           <div class="col d-flex align-items-center" style="max-width: 120px">
             <span class="user mx-auto" :class="tab" @click="updateReconciledPayment(payment)">
-              {{
-              index + OId
-              }}
+              {{index + OId}}
             </span>
           </div>
-          <div class="col d-flex align-items-center justify-content-center">{{ payment.user }}</div>
+          <div class="col d-flex align-items-center justify-content-center">{{ payment.user || 'Not yet Reconciled'}}</div>
 
           <div
             class="col d-flex align-items-center justify-content-center"
@@ -57,10 +53,13 @@
           <div
             class="col d-flex align-items-center justify-content-center"
           >{{ payment.payment_method }}</div>
-          <div class="col d-flex align-items-center justify-content-center">₦{{ payment.deposited }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
-          >₦{{ payment.cash_at_hand }}</div>
+          >₦{{ payment.total}}</div>
+          <div class="col d-flex align-items-center justify-content-center">₦{{ payment.deposited || '0'  }}</div>
+          <div
+            class="col d-flex align-items-center justify-content-center"
+          >₦{{ payment.cash_at_hand || '0' }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
           >₦{{ varianceCalc(payment.cash_at_hand, payment.deposited) }}</div>

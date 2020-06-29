@@ -86,6 +86,7 @@ export default {
         "Date of Reconcilation",
         "Branch",
         "Type",
+        "Total Amount Logged",
         "Amount From Showroom",
         "Amount In Hand",
         "Variance",
