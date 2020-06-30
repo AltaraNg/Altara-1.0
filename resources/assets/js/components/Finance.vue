@@ -67,7 +67,7 @@
             class="col d-flex align-items-center justify-content-center"
             @click="updateModal(payment)"
             data-hoverable="true"
-          >
+          > 
             <b class="overflow">
               {{
               !payment.comment
