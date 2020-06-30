@@ -7,7 +7,7 @@
             <a
               aria-selected="true"
               class="nav-link"
-              :class="index === 0 && 'active'"
+              :class="index === 0 && 'active'" 
               data-toggle="tab"
               href="#renewal-panel"
               @click="listToOrder = tab"
@@ -86,6 +86,7 @@ export default {
         "Date of Reconcilation",
         "Branch",
         "Type",
+        "Total Amount Logged",
         "Amount From Showroom",
         "Amount In Hand",
         "Variance",
