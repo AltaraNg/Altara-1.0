@@ -21,11 +21,7 @@
 
       <div class="mt-5 mb-3 attendance-head" v-if="details.headings">
         <div class="row px-4 pt-3 pb-4 text-center">
-          <div
-            class="col light-heading"
-            :key="index"
-            v-for="(header, index) in details.headings"
-          >{{ header }}</div>
+          <div class="col light-heading" :key="index" v-for="(header, index) in details.headings">{{ header }}</div>
         </div>
       </div>
       <Finance :list="listToOrder" :tab="listToOrder" :filter-by="filterObject" />
