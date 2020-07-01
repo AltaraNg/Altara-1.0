@@ -102,11 +102,7 @@
                 {{ paymentItem.customer.last_name }}
               </p>
               <h5>
-                {{
-                !paymentItem.comment
-                ? "Not Available"
-                : paymentItem.comment.comment
-                }}
+                {{!paymentItem.comment ? "Not Available" : paymentItem.comment.comment }}
               </h5>
             </div>
             <div v-else class="modal-body">
