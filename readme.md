@@ -1,26 +1,43 @@
 # Altara PHP Application
-
 Altara PHP is build with Laravel and uses docker.
 
-## Laravel Official Documentation
+Table of Contents
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+Installation
+Usage
+Documentation
 
-## Setting Up
+# Setup Docker
+$ Ensure you have Docker Installed. If you do not have docker installed got to [Docker Website](https://docs.docker.com/engine/installation/#installation).
 
-1. Ensure you have Docker Installed. If you do not have docker installed got to [Docker Website](https://docs.docker.com/engine/installation/#installation).
-2. Clone repo to preferred directory.
-3. Change directory to the application directory. `cd altara`.
-5. Make sure that the project directory and subfolders are writable
-6. Run `docker build -t altara ./docker`. This will download all dependencies needed to run application. 
-8. Rename .env.example to .env and edit contents accordingly
-9. Import mysql db data
-11. Navigate to http://localhost:{port}/(port is 7070 if you didn't modify web:ports in docker-compose.yml) to access the website
+# clone the repo
+$ git clone https://github.com/AltaraNg/Altara-1.0.git my-project
 
-```
+# go into app's directory
+$ cd my-project
+$ Make sure that the project directory and subfolders are writable
 
-SSH into container. `docker exec -t -i container_id /bin/bash`.
-```
-➜  altara git:(master) ✗ docker exec -t -i 7966b099bd20 /bin/bash
-root@7966b099bd20:/#
-```
+# Build App
+$ Run `docker-compose build -t altara`. This will download all dependencies needed to run application.
+
+# SSH into container.
+$ Run `docker exec -it container_id bash`.
+
+# install app's dependencies
+$ composer install
+
+# install app's dependencies
+$ npm install
+
+# Environment
+$ Copy file ".env.example", and change its name to ".env". Then in file ".env" and edit content accordingly:
+
+Usage
+
+# Usage
+$ Navigate to http://localhost:{port}/(port is 7070 if you didn't modify web:ports in docker-compose.yml) to access the website
+
+Documentation
+
+# Documentation
+$ Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
