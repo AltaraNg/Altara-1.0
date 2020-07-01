@@ -50,12 +50,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'payment' => 'PaymentController',
         'payment-type' => 'PaymentTypeController',
         'payment-reconcile' => 'PaymentReconcileController',
-        'new_order' => 'NewOrderController',
-        'business_type' => 'BusinessTypeController',
-        'down_payment_rate' => 'DownPaymentRateController',
-        'repayment_duration' => 'RepaymentDurationController',
-        'repayment_cycle' => 'RepaymentCycleController',
-        'custom_repayment_date' => 'CustomRepaymentDateController'
+        'new_order' => 'NewOrderController'
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
