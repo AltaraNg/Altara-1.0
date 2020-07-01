@@ -5,7 +5,7 @@
         </div>
         <div class="tab-content mt-1 attendance-body">
             <div v-if="tab === 'View Payments'">
-                <div class="mb-3 row attendance-item" :key="index" v-for="(payment,index) in paymentList">
+                <div class="mb-3 row attendance-item" :key="index" v-for="(payment,index) in renderedList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
                         <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
@@ -33,26 +33,36 @@
                 </div>
             </div>
             <div v-if="tab === 'Reconcile'">
-                <div class="mb-3 row attendance-item">
+                <div class="mb-3 row attendance-item" v-for="(item, index) in renderedList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto blue"  @click="updateReconciledPayment"></span>
+                        <span class="user mx-auto" :class="tab">{{index+OId}}</span>
+                    </div>
+
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{item.payment_method}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        cash
+                        {{item.date.split(' ')[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        ₦{{totalCashAtHand}}
+                        ₦{{item.cash_at_hand}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <input v-model="amountInBank" @keyup="onUpKey" type="number" class="form-control" rows="1"/>
+                        ₦{{item.total}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1"/>
                         <!-- </input> -->
                     </div>
-                    <div class="col d-flex align-items-center justify-content-center" :class="[variance === 0 ? 'green' : 'red']">
-                        ₦{{variance}}
+                    <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
+                        ₦{{item.total - item.deposited}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <textarea v-model="comment" class="form-control" rows="1">
+                        <textarea v-model="item.comment === null ? '' :item.comment.comment" class="form-control" rows="1">
                         </textarea>
+                    </div>
+                    <div class="col d-flex align-items-center" style="max-width: 120px">
+                        <span class="user mx-auto blue"  @click="updateReconciledPayment(item)"></span>
                     </div>
                 </div>
             </div>
@@ -100,11 +110,52 @@
 
     export default {
         components: {Lookup, BasePagination},
-        props: {list: {default: null},tab:{default: null}},
+        props: {list: {default: null},tab:{default: null}, filterBy: { default: null }},
 
         watch: {
             list: function (list) {
                 this.fetchList(list);
+            },
+            filterBy: function(filterBy) {
+                this.defaultList =
+                    this.tab === "View Payments"
+                        ? this.paymentList
+                        : this.paymentReconciliationList;
+                let newList = [];
+                let n = Object.keys(filterBy)[0];
+                if (n === "branch") {
+
+                    if (filterBy.branch === "all") {
+                        newList = this.defaultList;
+                    } else {
+                        newList = this.defaultList.filter(function(item) {
+                            return item.branch === filterBy.branch;
+                        });
+                    }
+                } else if (n === "type") {
+
+                    if (filterBy.type === "all") {
+                        newList = this.defaultList;
+                    } else {
+                        let cond = this.tab === "View Payments";
+                        newList = this.defaultList.filter(function(item) {
+                            if(cond){
+                                return item.method === filterBy.type;
+                            }else {
+                                return item.payment_method === filterBy.type;
+                            }
+
+
+                        });
+                    }
+                } else {
+
+                    newList = this.defaultList.filter(function(item) {
+                        return item.date.split(" ")[0] === filterBy.date;
+                    });
+                }
+
+                Vue.set(this.$data, "renderedList", newList);
             }
         },
 
@@ -121,7 +172,12 @@
                 variance:'',
                 amountInBank:'',
                 branchId:'',
-                comment:''
+                comment:{
+                    comment: ''
+                },
+                renderedList: [],
+                defaultList: [],
+
             }
         },
 
@@ -144,9 +200,11 @@
 
             async getPaymentList(){
                 try{
-                    const fetchPaymentList = await get(`/api/payment?page=${this.page}`);
+                    this.branchId = localStorage.getItem("branch_id");
+                    const fetchPaymentList = await get(`/api/payment?page=${this.page}&branch=${this.branchId}`);
                     this.paymentList = fetchPaymentList.data.data.data;
-                    this.responseData = fetchPaymentList.data.data
+                    this.responseData = fetchPaymentList.data.data;
+                    this.renderedList = this.paymentList;
                     this.OId = this.responseData.from;
                     this.$LIPS(false);
                 }
@@ -161,6 +219,7 @@
                     const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}`);
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
+                    this.renderedList = this.paymentReconciliationList;
                     this.OId =this.responseData.from;
 
                     this.totalCashAtHand =this.paymentReconciliationList.map(item=>item.total).reduce((a,b)=>a+b);
@@ -173,22 +232,21 @@
                 }
             },
 
-            async updateReconciledPayment(){
-                if(!this.amountInBank || this.variance !=0 && !this.comment  ){
+            async updateReconciledPayment(item){
+                if(!item.deposited || this.variance !=0 && !item.comment  ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
-                    "cash_at_hand":this.totalCashAtHand,
-                    "deposited": this.amountInBank,
-                    "comment": this.comment
-                }
+                    "cash_at_hand":item.total,
+                    "deposited": item.deposited,
+                    "comment": item.comment
+                };
                 this.$LIPS(true);
                 try{
                     const reconcilePayment = await put(`/api/payment-reconcile/${this.branchId}`, data);
                     if (reconcilePayment){
-                        this.amountInBank='';
-                        this.comment='';
-                        this.variance='';
+                        this.getPaymentReconciliationList();
+
                     }
                     Flash.setSuccess(reconcilePayment.data.status);
                     this.$LIPS(false);

@@ -1,6 +1,6 @@
 <template>
-    <div class="row form-group my-5 mx-5">
-        <div class="col-2 w-100">
+    <div class="row form-group my-5 mx-5" v-if="listToOrder !== 'Log Payment'">
+        <div class="col-2 w-100" v-if="!disabled">
             <label for="branch" class="form-control-label">Branch</label>
             <select name="branch" id="branch" @change="filterList({'branch': branch})" v-model="branch" class=" text-capitalize font-weight-bold h5" >
                 <option value="all" selected="selected" >All</option>
@@ -15,7 +15,7 @@
             <label  class="form-control-label">Date</label>
             <date-picker class="w-100" v-model="date" valueType="format" placeholder="Date" @change="filterList({'date': date})"></date-picker>
         </div>
-        <div v-if="listToOrder === 'Reconcile'" class="col-2">
+        <div  class="col-2">
             <label for="type" class="form-control-label">Payment Type</label>
             <select name="type" id="type" @change="filterList({'type': type})" v-model="type" class="w-75 text-capitalize font-weight-bold h5">
                 <option value="all" selected="selected" >All</option>
@@ -56,7 +56,11 @@ export default {
     listToOrder: {
         type: String,
         required: true
-    }
+    },
+      disabled: {
+        type: Boolean,
+          required: false     }
+
   },
     computed: {
         ...mapGetters(["auth", "getAuthUserDetails", "getBranches"])
