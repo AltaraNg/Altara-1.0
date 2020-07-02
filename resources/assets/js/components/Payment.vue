@@ -51,18 +51,22 @@
                         ₦{{item.total}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1"/>
+                        <span v-if="item.total === item.deposited">₦{{item.deposited}}</span>
+                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
                         ₦{{item.total - item.deposited}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <textarea v-model="item.comment === null ? '' :item.comment.comment" class="form-control" rows="1">
+                        <span v-if="item.total === item.deposited">{{item.comment === null ? '': item.comment.comment}}</span>
+
+                        <textarea v-model="item.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto blue"  @click="updateReconciledPayment(item)"></span>
+                        <span class="user mx-auto green-back"   v-if="item.total === item.deposited"></span>
+                        <span class="user mx-auto blue"  @click="updateReconciledPayment(item)" v-else></span>
                     </div>
                 </div>
             </div>
@@ -243,12 +247,18 @@
                 };
                 this.$LIPS(true);
                 try{
-                    const reconcilePayment = await put(`/api/payment-reconcile/${this.branchId}`, data);
+                    const reconcilePayment = await put(`/api/payment-reconcile/${item.id}`, data);
                     if (reconcilePayment){
+                        // this.getPaymentReconciliationList();
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Reconciliation done successfully'
+                        });
                         this.getPaymentReconciliationList();
 
+
                     }
-                    Flash.setSuccess(reconcilePayment.data.status);
+
                     this.$LIPS(false);
                 }
                 catch(err){
@@ -309,6 +319,9 @@
     }
     .red{
         color: red;
+    }
+    .green-back{
+        background-color: green;
     }
     .blue{
         background-color: #2975a5;

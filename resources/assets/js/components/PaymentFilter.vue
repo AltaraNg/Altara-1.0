@@ -26,6 +26,9 @@
                 >
             </select>
         </div>
+<!--        <div>-->
+<!--            <button>Apply</button>-->
+<!--        </div>-->
     </div>
 </template>
 

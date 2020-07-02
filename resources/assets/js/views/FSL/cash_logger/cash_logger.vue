@@ -9,7 +9,7 @@
                         class="nav-link"
                         :class=" (index === 0 ) && 'active'"
                         data-toggle="tab"
-                        href="#renewal-panel"
+                        :href="`#${tab}`"
                         @click="listToOrder = tab"
                         role="tab"
                         v-html="tab">
