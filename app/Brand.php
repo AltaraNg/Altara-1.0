@@ -2,25 +2,42 @@
 
 namespace App;
 
-use App\Helper\DataViewer;
 use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    use DataViewer;
 
-    public $timestamps = false;
+    protected $guarded = [];
+    /**
+     * Validation rules
+     *
+     * @return array
+     * @var array
+     */
 
-    protected $fillable = ['name'];
-
-    public static $columns = ['id', 'name'];
-
-    public static function form() : iterable
+    public static function rules()
     {
         return [
-            'name' => ''
+            'name' => 'required|unique:brands,name',
+            'is_active' => 'sometimes|required|boolean'
         ];
     }
+
+    /**
+     * The model's default rules.
+     *
+     * @return array
+     * @var array
+     */
+
+    public static function updateRules($id)
+    {
+        return [
+            'name' => 'sometimes|required|unique:brands,name,' . $id,
+            'is_active' => 'sometimes|required|boolean'
+        ];
+    }
+
 
     public function categories()
     {
@@ -29,7 +46,7 @@ class Brand extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
 
 }
