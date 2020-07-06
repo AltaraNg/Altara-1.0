@@ -83,15 +83,15 @@ export default {
       const headings1 = [
         "index",
         "Reconciler",
-        "Date of Reconcilation",
+        "Date",
         "Branch",
         "Type",
-        "Total Amount Logged",
-        "Amount From Showroom",
-        "Amount In Hand",
+        "Logged",
+        "Showroom",
+        "Banked",
         "Variance",
-        "Comment From Showroom",
-        "Statement From Bank",
+        "Status",
+        "Statement",
         "Comment"
       ];
       const headings =

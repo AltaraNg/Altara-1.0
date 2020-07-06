@@ -4,7 +4,7 @@
       <div v-if="tab === 'Showroom Payment' && paymentList.length !== 0">
         <div class="mb-3 row attendance-item" :key="index" v-for="(payment, index) in renderedList">
           <div class="col d-flex align-items-center" style="max-width: 120px">
-            <span class="user mx-auto" :class="tab">
+            <span class="user mx-auto" :class="!payment.comment ? 'Current' : 'Successful'">
               {{index + OId}}
             </span>
           </div>
@@ -20,26 +20,21 @@
           >{{ payment.date.split(" ")[1] }}</div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.type }}</div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.method }}</div>
-          <div class="col d-flex align-items-center justify-content-center">₦{{ payment.amount }}</div>
+          <div class="col d-flex align-items-center justify-content-center">{{ payment.amount | currency('₦') }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
             @click="updateModal(payment)"
             data-hoverable="true"
           >
-            <b class="overflow">
-              {{
-              !payment.comment
-              ? "Not Available"
-              : payment.comment.comment
-              }}
-            </b>
+            <b class="overflow red" v-if="!payment.comment">Not Comment <i class="fas fa-info-circle"></i></b>
+            <b class="overflow green" v-else>Reconciled <i class="fas fa-info-circle"></i></b>
           </div>
         </div>
       </div>
       <div v-if="tab === 'Reconcile'">
         <div class="mb-3 row attendance-item" :key="index" v-for="(payment, index) in renderedList">
           <div class="col d-flex align-items-center" style="max-width: 120px">
-            <span class="user mx-auto" :class="tab" @click="updateReconciledPayment(payment)">
+            <span class="user mx-auto" @click="updateReconciledPayment(payment)">
               {{index + OId}}
             </span>
           </div>
@@ -55,32 +50,33 @@
           >{{ payment.payment_method }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
-          >₦{{ payment.total}}</div>
-          <div class="col d-flex align-items-center justify-content-center">₦{{ payment.deposited || '0'  }}</div>
+          >{{ payment.total| currency('₦')}}</div>
+          <div class="col d-flex align-items-center justify-content-center">{{ payment.deposited | currency('₦') }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
-          >₦{{ payment.cash_at_hand || '0' }}</div>
+          >{{ payment.cash_at_hand | currency('₦') }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
-          >₦{{ varianceCalc(payment.cash_at_hand, payment.deposited) }}</div>
+          >{{ varianceCalc(payment.cash_at_hand, payment.deposited) | currency('₦') }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
             @click="updateModal(payment)"
             data-hoverable="true"
           >
-            <b class="overflow">
-              {{
-              !payment.comment
-              ? "Not Available"
-              : payment.comment.comment
-              }}
+            <b class="overflow red" v-if="!payment.comment">Not Reconciled <i class="fas fa-info-circle"></i></b>
+            <b class="overflow green" v-else>No Comment <i class="fas fa-info-circle"></i></b>
+          </div>
+          <div class="col d-flex align-items-center justify-content-center">
+            <span v-if="payment.finance">{{payment.finance.bank_statement | currency('₦')}}</span>
+            <input v-else v-model="payment.bankStatement" type="number" class="form-control" rows="1" />
+          </div>
+          <div class="col d-flex align-items-center justify-content-center">    
+            <b v-if="payment.finance"
+              @click="updateModal(payment.finance)"
+              class="overflow green">
+              Reconciled <i class="fas fa-info-circle"></i>
             </b>
-          </div>
-          <div class="col d-flex align-items-center justify-content-center">
-            <input v-model="statement" type="number" class="form-control" rows="1" />
-          </div>
-          <div class="col d-flex align-items-center justify-content-center">
-            <input v-model="comment" type="text" class="form-control" rows="1" />
+            <input v-else v-model="payment.accountantComment" type="text" class="form-control" rows="1" />
           </div>
         </div>
       </div>
@@ -159,6 +155,9 @@ import { get, patch, put } from "../utilities/api";
 
 import Flash from "../utilities/flash";
 import BasePagination from "../components/Pagination/BasePagination";
+import Vue2Filters from 'vue2-filters'
+
+Vue.use(Vue2Filters)
 
 export default {
   components: { BasePagination },
@@ -276,12 +275,13 @@ export default {
     },
 
     async updateReconciledPayment(data) {
-      if (!this.statement && !this.comment) {
+      if (!data.bankStatement || !data.accountantComment) {
+        console.log('opopopo',data)
         return this.errHandler("Please enter all required values.");
       }
       let payload = {
-        bank_statement: this.statement,
-        comment: this.comment
+        bank_statement: data.bankStatement,
+        comment: data.accountantComment
       };
 
       this.$LIPS(true);
@@ -296,6 +296,7 @@ export default {
           this.variance = "";
         }
         Flash.setSuccess(reconcilePayment.data.status);
+        this.getPaymentReconciliationList()
         this.$LIPS(false);
       } catch (err) {
         this.$LIPS(false);
@@ -354,12 +355,19 @@ export default {
   text-overflow: ellipsis;
 }
 .green {
-  color: green;
+  color: #00a368;
 }
 .red {
-  color: red;
+  color: #E30000;
 }
 .blue {
   background-color: #2975a5;
+}
+.Current{
+  background: #EDEEF2;
+}
+.Successful{
+    background-color: rgba(0,163,104,.09);
+    color: #00a368;
 }
 </style>
