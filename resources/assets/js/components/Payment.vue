@@ -51,21 +51,21 @@
                         ₦{{item.total}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.total === item.deposited">₦{{item.deposited}}</span>
-                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
+                        <span v-if="item.deposited !== null">₦{{item.deposited}}</span>
+                        <input @keyup="onUpKey" v-model="item.deposited" type="number" min="0.01" step="0.01" max="100000" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
                         ₦{{item.total - item.deposited}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.total === item.deposited">{{item.comment === null ? '': item.comment.comment}}</span>
+                        <span v-if="item.deposited !== null " @click="updateModal(item)" data-hoverable="true" class="overflow">{{item.comment === null ? '': item.comment.comment}}</span>
 
                         <textarea v-model="item.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto green-back"   v-if="item.total === item.deposited"></span>
+                        <span class="user mx-auto green-back"   v-if="item.deposited !== null"></span>
                         <span class="user mx-auto blue"  @click="updateReconciledPayment(item)" v-else></span>
                     </div>
                 </div>
@@ -81,9 +81,18 @@
                             </a>
                         </div>
                         <div class="modal-body">
-                            <p>Customer ID: {{paymentItem.customer.id}}</p>
-                            <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
-                            <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                            <div v-if="tab === 'Reconcile'">
+
+                                <p>Reconcile Number: {{paymentItem.reconcile_number}}</p>
+                                <p>Total: {{paymentItem.total}}</p>
+                                <p>Cash at hand: {{paymentItem.cash_at_hand}}</p>
+                                <p>Deposited: {{paymentItem.deposited}}</p>
+                                <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                            </div>
+                            <div v-else><p>Customer ID: {{paymentItem.customer.id}}</p>
+                                <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
+                                <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5></div>
+
                         </div>
                     </div>
                 </div>
@@ -181,6 +190,7 @@
                 },
                 renderedList: [],
                 defaultList: [],
+                done: false,
 
             }
         },
@@ -254,6 +264,7 @@
                             icon: 'success',
                             title: 'Reconciliation done successfully'
                         });
+                        this.done = true;
                         this.getPaymentReconciliationList();
 
 
