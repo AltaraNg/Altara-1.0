@@ -38,10 +38,25 @@ class Brand extends Model
         ];
     }
 
+    /**
+     * The model's default rules.
+     *
+     * @return array
+     * @var array
+     */
+
+    public static function catRules()
+    {
+        return [
+            'categories' => 'required|array',
+            'categories.*' => 'required|numeric|exists:categories,id'
+        ];
+    }
+
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'brand_category', 'brand_id', 'category_id');
+        return $this->belongsToMany(Category::class);
     }
 
     public function products()

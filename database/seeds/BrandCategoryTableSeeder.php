@@ -19,8 +19,8 @@ class BrandCategoryTableSeeder extends Seeder
         for ($i = 0; $i < 20; $i++) {
             $brand = Brand::find(rand(1, 10))->first();
             $category = Category::find(rand(1, 10))->first();
-            $brand->categories()->attach(rand(1, 10));
-            $category->brands()->attach(rand(1, 10));
+            $brand->categories()->attach($category);
+//            $category->brands()->attach(rand(1, 10));
         }
     }
 }

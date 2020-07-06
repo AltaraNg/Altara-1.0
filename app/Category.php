@@ -2,43 +2,44 @@
 
 namespace App;
 
-use App\Helper\DataViewer;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use DataViewer;
+    protected $guarded = [];
+    /**
+     * Validation rules
+     *
+     * @return array
+     * @var array
+     */
 
-    public $timestamps = false;
-
-    protected $fillable = ['name'];
-
-    public static $columns = ['id', 'name'];
-
-    public static function form() : iterable
+    public static function rules()
     {
         return [
-            'name' => ''
+            'name' => 'required|unique:categories,name',
+            'is_active' => 'sometimes|required|boolean'
         ];
     }
 
+    /**
+     * The model's default rules.
+     *
+     * @return array
+     * @var array
+     */
+
+    public static function updateRules($id)
+    {
+        return [
+            'name' => 'sometimes|required|unique:categories,name,' . $id,
+            'is_active' => 'sometimes|required|boolean'
+        ];
+    }
+
+
     public function brands()
     {
-        return $this->belongsToMany(Brand::class, 'brand_category', 'category_id', 'brand_id');
+        return $this->belongsToMany(Brand::class);
     }
-
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
-
-    /*public function suppliers()
-    {
-        return $this->hasMany(Supplier::class);
-    }*/
-
-    /*public function suppliers()
-      {
-          return $this->belongsToMany(Supplier::class, 'supplier_category', 'category_id', 'supplier_id');
-      }*/
 }

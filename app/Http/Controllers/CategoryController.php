@@ -3,107 +3,78 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
+use App\Repositories\CategoryRepository;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $catRepo;
+
+    public function __construct(CategoryRepository $categoryRepository)
     {
-        $model = Category::select('id','name')->searchPaginateAndOrder();
-        $columns = Category::$columns;
-        return response()->json([
-            'model' => $model,
-            'columns' => $columns
-        ]);
+        $this->catRepo = $categoryRepository;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function create()
+    public function index()
     {
-        return response()->json([
-            'form' => Category::form(),
-        ]);
+        $cats = $this->catRepo->all();
+
+        return $this->sendSuccess($cats->toArray(), 'Categories retrieved successfully');
     }
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $request->validate(['name' => 'required|unique:categories']);
-        $branch = new Category($request->all());
-        $branch->save();
-        return response()->json([
-            'saved' => true,
-            'message' => 'Category Created!',
-            'form' => Category::form(),
-            'staff_id' => auth('api')->user()->staff_id,
-            'log' => 'CategoryCreated'
-        ]);
+        $cat = $this->catRepo->store($request->validated());
+
+        return $this->sendSuccess($cat->toArray(), 'Category Successfully Created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return Response
      */
     public function show(Category $category)
     {
-        //
+        return $this->sendSuccess($category->toArray(), 'Category retrieved successfully');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @param Category $category
+     * @param CategoryRequest $request
      *
-     * @param $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function edit($id)
+    public function update(Category $category, CategoryRequest $request)
     {
-        $form = Category::findOrFail($id);
-        return response()->json(['form' => $form]);
+        $category = $this->catRepo->update($category, $request->validated());
+
+        return $this->sendSuccess($category->toArray(), 'Category updated successfully');
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate(['name' => 'required|unique:categories,name,' . $id]);
-        Category::whereId($id)->update($request->all());
-        return response()->json([
-            'updated' => true,
-            'message' => 'Category Updated!',
-            'staff_id' => auth('api')->user()->staff_id,
-            'log' => 'CategoryUpdated'
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return Response
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return $this->sendSuccess([],'Category deleted successfully');
     }
 }

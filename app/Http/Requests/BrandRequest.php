@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Branch;
 use App\Brand;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,6 +31,9 @@ class BrandRequest extends FormRequest
             }
             case 'PUT': {
                 return Brand::updateRules($this->brand->id);
+            }
+            case 'PATCH': {
+                return Brand::catRules();
             }
             default:break;
         }
