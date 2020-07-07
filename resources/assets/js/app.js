@@ -10,6 +10,7 @@ import VeeValidate from "vee-validate";
 import "./utilities/globalFunctions.js";
 import VueSweetalert2 from "vue-sweetalert2";
 import VuexRouterSync from "vuex-router-sync";
+import VueCurrencyInput from "vue-currency-input";
 import _ from 'lodash';
 
 
@@ -20,7 +21,12 @@ Vue.use(VeeValidate, {
     classes: true,
     classNames: { invalid: "is-invalid" }
 });
+const pluginOptions = {
+    /* see config reference */
+    globalOptions: { currency: 'NGN'}
+};
 Vue.use(VueTruncate);
+Vue.use(VueCurrencyInput, pluginOptions);
 const app = new Vue({
     el: "#root",
     template: `<app></app>`,

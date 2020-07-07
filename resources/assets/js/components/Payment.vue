@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div v-if="tab === 'Reconcile'">
-                <div class="mb-3 row attendance-item" v-for="(item, index) in renderedList">
+                <div class="mb-3 row attendance-item" v-for="(item, index) in renderedList" @click="updateModal(item)">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
                         <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
@@ -52,17 +52,15 @@
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <span v-if="item.deposited !== null">₦{{item.deposited}}</span>
-                        <input @keyup="onUpKey" v-model="item.deposited" type="number" min="0.01" step="0.01" max="100000" class="form-control" rows="1" v-else/>
-                        <!-- </input> -->
+
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
                         ₦{{item.total - item.deposited}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.deposited !== null " @click="updateModal(item)" data-hoverable="true" class="overflow">{{item.comment === null ? '': item.comment.comment}}</span>
+                        <span   data-hoverable="true" class="overflow">{{item.comment === null ? '': item.comment.comment}}</span>
 
-                        <textarea v-model="item.comment" v-else class="form-control" rows="1">
-                        </textarea>
+
                     </div>
                     <div class="col d-flex align-items-center" style="max-width: 120px">
                         <span class="user mx-auto green-back"   v-if="item.deposited !== null"></span>
@@ -71,9 +69,10 @@
                 </div>
             </div>
             <div class="modal fade repayment" id="updatePayment">
-                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-dialog modal-sm" role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
+                            <h4>{{paymentItem.reconcile_number}}</h4>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                         <span aria-hidden="true" class="modal-close text-danger">
                             <i class="fas fa-times"></i>
@@ -83,15 +82,48 @@
                         <div class="modal-body">
                             <div v-if="tab === 'Reconcile'">
 
-                                <p>Reconcile Number: {{paymentItem.reconcile_number}}</p>
-                                <p>Total: {{paymentItem.total}}</p>
-                                <p>Cash at hand: {{paymentItem.cash_at_hand}}</p>
-                                <p>Deposited: {{paymentItem.deposited}}</p>
-                                <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                                <p><b>Done By: </b>: {{paymentItem.user}}</p>
+                                <p><b>Total</b>: {{paymentItem.total}}</p>
+                                <p><b>Cash at hand</b>: {{paymentItem.cash_at_hand}}</p>
+                                <p><b>Deposited</b>: {{paymentItem.deposited}}</p>
+                                <p><b>Comment</b>: {{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</p>
+                                <div v-if="paymentItem.deposited === null" class="text-center">
+                                    <button @click="reconcileModal(paymentItem)">Reconcile</button>
+                                </div>
                             </div>
                             <div v-else><p>Customer ID: {{paymentItem.customer.id}}</p>
                                 <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
                                 <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade repayment" id="reconcilePayment">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content" v-if="showUpdateModalContent">
+                        <div class="modal-header py-2">
+                            <h2>Reconcile Payment</h2>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                        <span aria-hidden="true" class="modal-close text-danger">
+                            <i class="fas fa-times"></i>
+                        </span>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div v-if="tab === 'Reconcile'">
+
+                                <p><b>Reconcile Number</b>: {{reconcileItem.reconcile_number}}</p>
+                                <p><b>Total</b>: {{reconcileItem.total}}</p>
+                                <p><b>Cash at hand</b>: <currency-input v-model="reconcileItem.cash_at_hand" currency="NGN" locale="en" class="form-control-sm text-black"/></p>
+                                <p><b>Deposited</b>: <currency-input v-model="reconcileItem.deposited" currency="NGN" locale="en" class="form-control-sm text-black" /></p>
+                                <p><b>Comment</b>: <textarea v-model="reconcileItem.comment" class="text-black form-control"></textarea></p>
+                                <div v-if="!done">
+                                    <button @click="updateReconciledPayment(reconcileItem)" class="green">Confirm Reconcile</button>
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
@@ -178,7 +210,9 @@
                 page: 1,
                 responseData:{},
                 paymentItem:{},
+                reconcileItem: {},
                 showModalContent: false,
+                showUpdateModalContent: false,
                 paymentList:[],
                 paymentReconciliationList:[],
                 totalCashAtHand:0,
@@ -269,6 +303,8 @@
 
 
                     }
+                    this.showUpdateModalContent = false;
+                    this.showModalContent= false;
 
                     this.$LIPS(false);
                 }
@@ -286,6 +322,13 @@
                 this.showModalContent = true;
                 this.paymentItem = data;
                 return $(`#updatePayment`).modal('toggle');
+            },
+
+            reconcileModal(data){
+              this.showUpdateModalContent = true;
+              this.reconcileItem = data;
+              console.log('I should show');
+              return $(`#reconcilePayment`).modal('toggle')
             },
 
             next(firstPage = null) {
