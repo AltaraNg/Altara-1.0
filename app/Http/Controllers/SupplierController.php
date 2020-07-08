@@ -3,128 +3,76 @@
 namespace App\Http\Controllers;
 
 use App\Bank;
+use App\Http\Requests\SupplierRequest;
+use App\Repositories\SupplierRepository;
 use App\Supplier;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    private $supplierRepository;
+
     /**
-     * Display a listing of the resource.
-     *
+     * SupplierController constructor.
+     * @param SupplierRepository $supplierRepository
+     */
+    public function __construct(SupplierRepository $supplierRepository)
+    {
+        $this->supplierRepository = $supplierRepository;
+    }
+
+    /**
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $model = Supplier::select('id', 'sku', 'name', 'phone_number', 'email', 'contact_person_name', 'status', 'date_of_reg')
-            ->searchPaginateAndOrder();
-        $columns = Supplier::$columns;
-        return response()->json([
-            'model' => $model,
-            'columns' => $columns
-        ]);
+        $suppliers = $this->supplierRepository->all();
+
+        return $this->sendSuccess($suppliers->toArray(), 'Suppliers retrieved successfully');
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * @param SupplierRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function store(SupplierRequest $request)
     {
-        $banks = Bank::all();
-        $form = Supplier::form();
-        return response()->json([
-            'form' => $form,
-            'banks' => $banks,
-        ]);
+        $supplier = $this->supplierRepository->store($request->validated());
+
+        return $this->sendSuccess($supplier->toArray(), 'Supplier Successfully Created');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
+     * @param Supplier $supplier
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function show(Supplier $supplier)
     {
-        $request->validate([
-            'name' => 'required|unique:suppliers',
-            'email' => 'required|unique:suppliers',
-            'bank_account_no' => 'required|unique:suppliers',
-            'phone_number' => 'required|unique:suppliers',
-        ]);
-        $user = auth('api')->user();
-        $request->user_id = $user->id;
-        $branch = new Supplier($request->all());
-        $branch->save();
-        return response()->json([
-            'saved' => true,
-            'message' => 'Supplier Created!',
-            'form' => Supplier::form(),
-            'staff_id' => $user->staff_id,
-            'log' => 'SupplierCreated'
-        ]);
+        return $this->sendSuccess($supplier->toArray(), 'Brand retrieved successfully');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Supplier $suppliers
+     * @param Supplier $supplier
+     * @param SupplierRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Supplier $suppliers)
+    public function update(Supplier $supplier, SupplierRequest $request)
     {
-        //
+        $supplier = $this->supplierRepository->update($supplier, $request->validated());
+
+        return $this->sendSuccess($supplier->toArray(), 'Supplier updated successfully');
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param $id
+     * @param Supplier $supplier
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function edit($id)
+    public function destroy(Supplier $supplier)
     {
-        $banks = Bank::all();
-        $form = Supplier::findOrFail($id);
-        return response()->json([
-            'form' => $form,
-            'banks' => $banks,
-        ]);
+        $supplier->delete();
+
+        return $this->sendSuccess([],'Supplier deleted successfully');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|unique:suppliers,name,' . $id,
-            'email' => 'required|unique:suppliers,name,' . $id,
-            'bank_account_no' => 'required|unique:suppliers,name,' . $id,
-            'phone_number' => 'required|unique:suppliers,name,' . $id,
-        ]);
-        Supplier::whereId($id)->update($request->all());
-        return response()->json([
-            'updated' => true,
-            'message' => 'Supplier Updated!',
-            'staff_id' => auth('api')->user()->staff_id,
-            'log' => 'SupplierUpdated'
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Supplier $suppliers
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Supplier $suppliers)
-    {
-        //
-    }
 }

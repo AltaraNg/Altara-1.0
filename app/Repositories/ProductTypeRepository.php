@@ -4,19 +4,17 @@
 namespace App\Repositories;
 
 
-use App\RepaymentCycle;
+use App\ProductType;
 
-class RepaymentCycleRepository extends Repository
+class ProductTypeRepository extends Repository
 {
     public function model()
     {
-        return RepaymentCycle::class;
+        return ProductType::class;
     }
 
     public function getAll()
     {
         return $this->model::orderBy('created_at', 'desc')->paginate();
     }
-
-
 }
