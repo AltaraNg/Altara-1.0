@@ -38,9 +38,6 @@ class SupplierRequest extends FormRequest
         }
     }
 
-    public function show(Supplier $supplier)
-    {
-        return $this->sendSuccess($supplier->toArray(), 'Supplier retrieved successfully');
-    }
+
 
 }
