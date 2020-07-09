@@ -45,21 +45,21 @@
                         {{item.date.split(' ')[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        ₦{{item.cash_at_hand}}
+                        {{item.cash_at_hand | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        ₦{{item.total}}
+                        {{item.total | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.total === item.deposited">₦{{item.deposited}}</span>
-                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
+                        <span v-if="item.deposited">{{item.deposited | currency('₦')}}</span>
+                        <input @keyup="onUpKey" v-model="reconcileForm.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
                         ₦{{item.total - item.deposited}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.total === item.deposited">{{item.comment === null ? '': item.comment.comment}}</span>
+                        <span v-if="item.deposited">{{item.comment === null ? 'No Comment': item.comment.comment}}</span>
 
                         <textarea v-model="item.comment" v-else class="form-control" rows="1">
                         </textarea>
@@ -110,7 +110,10 @@
     import {get, post,put} from "../utilities/api";
     import Lookup from "../views/FSL/lookup/lookup";
     import Flash from "../utilities/flash";
+    import Vue2Filters from 'vue2-filters'
     import BasePagination from "../components/Pagination/BasePagination"
+
+    Vue.use(Vue2Filters);
 
     export default {
         components: {Lookup, BasePagination},
@@ -181,6 +184,7 @@
                 },
                 renderedList: [],
                 defaultList: [],
+                reconcileForm: {}
 
             }
         },
@@ -237,7 +241,7 @@
             },
 
             async updateReconciledPayment(item){
-                if(!item.deposited || this.variance !=0 && !item.comment  ){
+                if(!item.deposited || this.variance !==0 && !item.comment  ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
@@ -308,22 +312,26 @@
     .table-separator {
         border-top: 2px solid #dee1e4;
     }
-    .overflow{
+    .overflow {
         width: 80px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .green{
-        color: green;
+    .green {
+        color: #00a368;
     }
-    .red{
-        color: red;
+    .red {
+        color: #E30000;
     }
-    .green-back{
-        background-color: green;
-    }
-    .blue{
+    .blue {
         background-color: #2975a5;
+    }
+    .Current{
+        background: #EDEEF2;
+    }
+    .Successful{
+        background-color: rgba(0,163,104,.09);
+        color: #00a368;
     }
 </style>
