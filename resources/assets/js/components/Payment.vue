@@ -35,7 +35,7 @@
             <div v-if="tab === 'Reconcile'">
                 <div class="mb-3 row attendance-item" v-for="(item, index) in renderedList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto" :class="tab">{{index+OId}}</span>
+                        <span class="user mx-auto" :class="tab" @click="updateReconciledPayment(item)">{{index+OId}}</span>
                     </div>
 
                     <div class="col d-flex align-items-center justify-content-center">
@@ -59,14 +59,14 @@
                         ₦{{item.total - item.deposited}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.deposited">{{item.comment === null ? 'No Comment': item.comment.comment}}</span>
+                        <span class="overflow green" v-if="item.deposited">{{item.comment === null ? 'No Comment': item.comment.comment}}</span>
 
                         <textarea v-model="item.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto green-back"   v-if="item.total === item.deposited"></span>
-                        <span class="user mx-auto blue"  @click="updateReconciledPayment(item)" v-else></span>
+                        <span class="user green"   v-if="item.deposited">reconciled</span>
+                        <span class="user red" v-else>Not reconciled</span>
                     </div>
                 </div>
             </div>

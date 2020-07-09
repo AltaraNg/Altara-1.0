@@ -64,7 +64,7 @@
             details() {
                 let list = 1;
                 const tabs = ["Log Payment","View Payments", "Reconcile"];
-                const headings2 = ['index','Type','Date', 'Cash In Hand', 'Total', 'Amount Bank','Variance','Comment', 'Action'];
+                const headings2 = ['index','Type','Date', 'Cash In Hand', 'Total', 'Amount Bank','Variance','Comment', 'Status'];
                 const headings1 = ['index','Customer ID', 'Date of Payment', 'Time of Payment','Payment Purpose','Payment Type','Amount Paid','Comment'];
                 const headings = this.listToOrder === "View Payments" ? headings1 : this.listToOrder === "Reconcile" ? headings2 : '';
                 return {tabs, headings, list};
