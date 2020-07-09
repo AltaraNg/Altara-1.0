@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Brand;
+use App\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BrandRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
 
     /**
@@ -27,13 +27,10 @@ class BrandRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'POST': {
-                return Brand::rules();
+                return Category::rules();
             }
             case 'PUT': {
-                return Brand::updateRules($this->brand->id);
-            }
-            case 'PATCH': {
-                return Brand::catRules();
+                return Category::updateRules($this->category->id);
             }
             default:break;
         }

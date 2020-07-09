@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
     Route::get('/renewal-list-status', 'RenewalListStatusController@index');
     Route::patch('/payment-reconcile/{payment_reconcile}/finance', 'PaymentReconcileController@finance');
+    Route::patch('/brand/{brand}/categories', 'BrandController@manageCategories');
 });
 
 Route::post('/ammo', 'UserController@test');

@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Brand;
+use App\Category;
 
-class BrandRepository extends Repository
+class CategoryRepository extends Repository
 {
     /**
      * Specify Model class name
@@ -12,6 +12,6 @@ class BrandRepository extends Repository
      */
     public function model()
     {
-        return Brand::class;
+        return Category::class;
     }
 }

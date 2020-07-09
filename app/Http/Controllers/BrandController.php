@@ -77,4 +77,16 @@ class BrandController extends Controller
 
         return $this->sendSuccess([],'Brand deleted successfully');
     }
+
+    /**
+     * @param Brand $brand
+     * @param BrandRequest $request
+     * @return Response
+     */
+    public function manageCategories(Brand $brand, BrandRequest $request)
+    {
+        $brand->categories()->sync($request->validated()['categories']);
+
+        return $this->sendSuccess([],'Brand Categories Updated successfully');
+    }
 }
