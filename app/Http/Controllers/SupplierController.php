@@ -48,7 +48,7 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        return $this->sendSuccess($supplier->toArray(), 'Brand retrieved successfully');
+        return $this->sendSuccess($supplier->toArray(), 'Supplier retrieved successfully');
     }
 
     /**
