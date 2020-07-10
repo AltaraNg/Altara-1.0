@@ -58,15 +58,15 @@
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
                         ₦{{item.total - item.deposited}}
                     </div>
-                    <div class="col d-flex align-items-center justify-content-center">
+                    <div class="col d-flex align-items-center justify-content-center" >
                         <span class="overflow green" v-if="item.deposited">{{item.comment === null ? 'No Comment': item.comment.comment}}</span>
 
-                        <textarea v-model="item.comment" v-else class="form-control" rows="1">
+                        <textarea v-model="reconcileForm.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
-                    <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user green"   v-if="item.deposited">reconciled</span>
-                        <span class="user red" v-else>Not reconciled</span>
+                    <div class="col d-flex align-items-center" style="max-width: 120px" data-hoverable="true" @click="updateModal(item)">
+                        <span class="overflow green"   v-if="item.deposited">Reconciled<i class="fas fa-info-circle"></i></span>
+                        <span class="overflow red" v-else>Not reconciled<i class="fas fa-info-circle"></i></span>
                     </div>
                 </div>
             </div>
@@ -81,9 +81,18 @@
                             </a>
                         </div>
                         <div class="modal-body">
-                            <p>Customer ID: {{paymentItem.customer.id}}</p>
-                            <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
-                            <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                            <div v-if="tab === 'Reconcile'">
+                                <p><b>Payment Type:</b> {{paymentItem.payment_method}}</p>
+                                <p><b>Reconciled by:</b> {{paymentItem.user || 'Not Yet Reconciled'}}</p>
+                                <p><b>Comment:</b> {{!paymentItem.comment ? 'No Comment' : paymentItem.comment.comment}}</p>
+
+                            </div>
+                            <div v-else>
+                                <p>Customer ID: {{paymentItem.customer.id}}</p>
+                                <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
+                                <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -223,8 +232,10 @@
 
             async getPaymentReconciliationList(){
                 this.branchId = localStorage.getItem('branch_id');
+                let yesterday = new Date(Date.now() - 864e5).toISOString();
+                let to = yesterday.slice(0, 10);
                 try{
-                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}`);
+                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}`);
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.renderedList = this.paymentReconciliationList;
@@ -241,13 +252,13 @@
             },
 
             async updateReconciledPayment(item){
-                if(!item.deposited || this.variance !==0 && !item.comment  ){
+               if(!this.reconcileForm.deposited ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
                     "cash_at_hand":item.total,
-                    "deposited": item.deposited,
-                    "comment": item.comment
+                    "deposited": this.reconcileForm.deposited,
+                    "comment": this.reconcileForm.comment
                 };
                 this.$LIPS(true);
                 try{
