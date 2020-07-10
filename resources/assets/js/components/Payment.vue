@@ -59,7 +59,7 @@
                         ₦{{item.total - item.deposited}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" >
-                        <span class="overflow green" v-if="item.deposited">{{item.comment === null ? 'No Comment': item.comment.comment}}</span>
+                        <span class="overflow green" v-if="item.deposited">{{item.comment === null ? 'No Comment': 'Comment'}}</span>
 
                         <textarea v-model="reconcileForm.comment" v-else class="form-control" rows="1">
                         </textarea>
