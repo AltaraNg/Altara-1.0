@@ -48,6 +48,7 @@ const LOG = () => import("../views/LOG/index.vue");
 const LOGHome = () => import("../views/LOG/HomePage.vue");
 const Inventory = () => import("../views/LOG/inventory/inventory.vue");
 const SuppliersForm = () => import("../views/LOG/supplier/form.vue");
+const SupplierList = () => import("../views/LOG/supplier/suppliers.vue");
 const BrandForm = () => import("../views/LOG/brand/form.vue");
 const CategoryForm = () => import("../views/LOG/category/form.vue");
 const ProductForm = () => import("../views/LOG/product/form.vue");
@@ -435,7 +436,7 @@ const router = new VueRouter({
 
                 {
                     path: "suppliers",
-                    component: DataViewer,
+                    component: SupplierList,
                     meta: {
                         appModel: "supplier",
                         source: "/api/supplier",
