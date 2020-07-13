@@ -3,6 +3,7 @@
 namespace App;
 
 
+use App\Helper\Helper;
 use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
@@ -42,6 +43,23 @@ class Supplier extends Model
             'bank_account_no' => 'sometimes|required|string',
             'is_active' => 'sometimes|required|boolean'
         ];
+    }
+
+    /**
+     * Set the Suppliers SKU.
+     *
+     * @param string $value
+     * @return void
+     * @throws \Exception
+     */
+    public function setSkuAttribute()
+    {
+        $this->attributes['sku'] = $this->getSupplierSku($this->name);
+    }
+
+    private function getSupplierSku($name)
+    {
+        return Helper::generatePrefix(config('app.name')) . '/' . Helper::generateSKU(4) . '/' . Helper::generatePrefix($name) . '/' . date("Y");
     }
 
 }
