@@ -2,39 +2,40 @@
     <transition name="fade">
         <div id="reminder" class="attendance">
 
-            <custom-header :title="'Suppliers List'"/>
+            <custom-header :title="'Brands List'"/>
             <div class="mt-2 mt-lg-3 row attendance-head ">
-                <router-link :to="{name: 'suppliersCreate'}">
-            <button class="btn btn-primary bg-default mt-0 myBtn ">New Supplier</button>
+                <router-link :to="{name: 'brandsCreate'}">
+                    <button class="btn btn-primary bg-default mt-0 myBtn ">New Brand</button>
                 </router-link>
             </div>
-            <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
-                <div class="col-4 col-lg" v-for="{name:filter,model} in filters">
-                    <div class="row">
+<!--            <div class="mt-2 mt-lg-3 row attendance-head attendance-view">-->
+<!--                <div class="col-4 col-lg" v-for="{name:filter,model} in filters">-->
+<!--                    <div class="row">-->
 
-                        <div class="light-heading mb-1">
-                            <span class="d-none d-sm-inline">Select </span>
-                            {{filter | capitalize}}
-                        </div>
+<!--                        <div class="light-heading mb-1">-->
+<!--                            <span class="d-none d-sm-inline">Select </span>-->
+<!--                            {{filter | capitalize}}-->
+<!--                        </div>-->
 
-                        <div class="form-group w-100" v-if="filter === 'state'">
-                            <select class="custom-select" v-model="$data[model]"
-                                    @keyup.enter="fetchData()">
-                                <option disabled selected value="">{{filter | capitalize}}</option>
-                                <option :value="id" v-for="{name,id} in getStates">
-                                    {{name | capitalize}}
-                                </option>
-                            </select>
-                        </div>
+<!--                        <div class="form-group w-100" v-if="filter === 'state'">-->
+<!--                            <select class="custom-select" v-model="$data[model]"-->
+<!--                                    @keyup.enter="fetchData()">-->
+<!--                                <option disabled selected value="">{{filter | capitalize}}</option>-->
+<!--                                <option :value="id" v-for="{name,id} in getStates">-->
+<!--                                    {{name | capitalize}}-->
+<!--                                </option>-->
+<!--                            </select>-->
+<!--                        </div>-->
 
 
-                    </div>
-                </div>
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="col-6 col-sm p-0 flex-row-bottom">
-                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
-                </div>
-            </div>
+<!--                <div class="col-6 col-sm p-0 flex-row-bottom">-->
+<!--                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>-->
+<!--                </div>-->
+<!--            </div>-->
+
 
             <div class="mt-5 mb-3 attendance-head">
                 <div class="w-100 my-5 mx-0 hr"></div>
@@ -45,34 +46,26 @@
             </div>
             <div class="tab-content mt-1 attendance-body">
 
-                    <div class="mb-3 row attendance-item" :key="index" v-for="(supplier,index) in suppliers" @click="viewSupplier(supplier)">
+                    <div class="mb-3 row attendance-item" :key="index" v-for="(brand,index) in brands" @click="viewBrand(brand)">
                         <div class="col d-flex align-items-center" style="max-width: 120px">
                             <span class="user mx-auto" >{{index+OId}}</span>
                         </div>
-                        <div class="col d-flex align-items-center justify-content-center ">
-                            {{supplier.name | capitalize}}
+                        <div class="col d-flex align-items-center justify-content-center">
+                            {{brand.name}}
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
-                            {{supplier.sku}}
+                            {{brand.is_active === 1 ? 'Active' : 'Inactive' }}
                         </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{supplier.email}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{supplier.phone_number}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{supplier.contact_person_name| capitalize}}
-                        </div>
+
 
 
                 </div>
             </div>
-            <div class="modal fade repayment" id="viewSupplier">
+            <div class="modal fade repayment" id="viewBrand">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
-                            <h4>{{supplierItem.name}}</h4>
+                            <h4>{{brandItem.name}}</h4>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                         <span aria-hidden="true" class="modal-close text-danger">
 
@@ -81,24 +74,15 @@
                             </a>
                         </div>
                         <div class="modal-body px-5">
-                            <p><b>SKU: </b> <span>{{supplierItem.sku}}</span></p>
-                            <p><b>Address: </b> <span>{{supplierItem.address}}</span></p>
-                            <p><b>City: </b> <span>{{supplierItem.city}}</span></p>
-                            <p><b>State: </b> <span>{{supplierItem.state}}</span></p>
-                            <p><b>Contact: </b> <span>{{supplierItem.contact_person_name}}</span></p>
-                            <p><b>Phone Number: </b> <span>{{supplierItem.phone_number}}</span></p>
-                            <p><b>Email: </b> <span>{{supplierItem.email}}</span></p>
-                            <p><b>Bank Name: </b> <span>{{supplierItem.bank_name}}</span></p>
-                            <p><b>Bank Account Name: </b> <span>{{supplierItem.bank_account_name}}</span></p>
-                            <p><b>Bank Account Number: </b> <span>{{supplierItem.bank_account_no}}</span></p>
-                            <p><b>Date Added: </b> <span>{{supplierItem.created_at.split(' ')[0]}}</span></p>
+                            <p><b>Name: </b> <span>{{brandItem.name}}</span></p>
+                            <p><b>Status: </b> <span>{{brandItem.is_active === 1 ? 'Active' : 'Inactive'}}</span></p>
+
+                            <p><b>Date Added: </b> <span>{{brandItem.created_at.split(' ')[0]}}</span></p>
 
 
                         </div>
                         <div class="modal-footer justify-content-center">
-
-                            <button  class="text-center btn bg-default" @click="edit(supplierItem.id)">Edit</button>
-
+                            <button @click="edit(brandItem.id)" class="text-center btn bg-default">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -141,12 +125,12 @@
         props: {
             //TODO::verify if its necessary to make this a prop
             withBranchFilter: {default: true},
-            urlToFetchOrders: {default: '/api/supplier'}
+            urlToFetchOrders: {default: '/api/brand'}
         },
 
         components: {CustomHeader, BasePagination },
 
-        computed: {...mapGetters(['getStates'])},
+        computed: {...mapGetters(['getBranches'])},
 
         data() {
             return {
@@ -159,14 +143,15 @@
                 date_to: null,
                 page: 1,
                 filters: [
-
+                    {name: 'date from', model: 'date_from'},
+                    {name: 'date to', model: 'date_to'}
                 ],
-                suppliers: null,
-                supplierItem: null,
+                brands: null,
+                brandItem: null,
                 response: {},
                 show: false,
                 headings:
-                    ['Name', 'SKU','Email', 'Phone Number', 'Contact Person']
+                    ['Name', 'Status']
             }
         },
 
@@ -188,7 +173,7 @@
             prepareList(response){
                 let {current_page, first_page_url, from, last_page, last_page_url, data, per_page, next_page_url, to, total, prev_page_url} = response.data;
                 this.pageParams = Object.assign({}, this.pageParams, {current_page, first_page_url, from, last_page, last_page_url, per_page, next_page_url, to, total, prev_page_url});
-                this.suppliers = data;
+                this.brands = data;
                 this.OId = from;
                 this.$LIPS(false);
 
@@ -208,17 +193,17 @@
                 }
             },
 
-            viewSupplier(supplier){
+            viewBrand(brand){
                 this.showModalContent = true;
-                this.supplierItem = supplier;
-                return $(`#viewSupplier`).modal('toggle');
+                this.brandItem = brand;
+                return $(`#viewBrand`).modal('toggle');
             },
             edit(item){
                 this.showModalContent = false;
-                $(`#viewSupplier`).modal('toggle');
+                $(`#viewBrand`).modal('toggle');
 
                 return this.$router.push(
-                    {name: 'suppliersEdit', params: {id: item}}
+                    {name: 'BrandEdit', params: {id: item}}
                 )
             },
 
@@ -231,10 +216,9 @@
         },
 
         created() {
-            this.$props.withBranchFilter && this.filters.unshift({name: 'state', model: 'state_id'}, );
+            this.$props.withBranchFilter && this.filters.unshift({name: 'branch', model: 'branch_id'});
             this.addCustomerOptionsModalsToDom();
-
-            this.$prepareStates();
+            this.$prepareBranches();
             this.fetchData();
         },
 

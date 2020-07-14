@@ -90,15 +90,24 @@
             </div>
         </div>
         <nav v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)" class="col d-flex justify-content-end align-items-center pr-0">
-            <base-pagination
-                :next_page_url="!responseData.next_page_url ? '#' : responseData.next_page_url"
-                :prev_page_url="!responseData.prev_page_url ? '#': responseData.prev_page_url "
-                :first_page_url="responseData.first_page_url"
-                :last_page="responseData.last_page"
-                :current_page="responseData.current_page"
-                @next="next"
-                @prev="prev"
-            ></base-pagination>
+            <!--TODO update component -->
+            <div v-if="pageParams">
+                <base-pagination
+                    :prev_page_url="pageParams.prev_page_url? pageParams.prev_page_url : '' "
+                    :next_page_url="pageParams.next_page_url? pageParams.next_page_url : ''"
+                    :first_page_url="pageParams.first_page_url"
+                    :last_page_url="pageParams.last_page_url"
+                    :last_page="pageParams.last_page"
+                    :current_page="pageParams.current_page"
+                    :from="pageParams.from"
+                    :to="pageParams.to"
+                    :total="pageParams.total"
+                    :page="page"
+                    @fetchData="fetchData()"
+                    :page_size="pageParams.per_page">
+                </base-pagination>
+
+            </div>
         </nav>
 
     </div>
@@ -171,6 +180,7 @@
                 paymentItem:{},
                 showModalContent: false,
                 paymentList:[],
+                pageParams: null,
                 paymentReconciliationList:[],
                 totalCashAtHand:0,
                 variance:'',
@@ -208,6 +218,7 @@
                     const fetchPaymentList = await get(`/api/payment?page=${this.page}&branch=${this.branchId}`);
                     this.paymentList = fetchPaymentList.data.data.data;
                     this.responseData = fetchPaymentList.data.data;
+                    this.pageParams = this.responseData;
                     this.renderedList = this.paymentList;
                     this.OId = this.responseData.from;
                     this.$LIPS(false);

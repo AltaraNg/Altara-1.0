@@ -2,19 +2,19 @@
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
 
-            <custom-header :to="'/log/suppliers'" :title="mode + ' Supplier'" :button-title="'view suppliers!'"/>
+            <custom-header :to="'/log/suppliers'" :title="mode+' Supplier'" :button-title="'view suppliers!'"/>
 
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3" v-if="mode === 'edit'">
                             <label>SKU</label>
                             <input class="form-control" disabled name="sku" placeholder="supplier sku" type="text" v-model="form.sku">
                             <small v-if="errors.first('sku')">{{ errors.first('sku') }}</small>
                             <small v-if="error.sku">{{error.sku[0]}}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Full Name</label>
+                            <label>Supplier Name</label>
                             <input class="form-control" name="name" placeholder="supplier name"
                                    type="text" v-model="form.name" v-validate="'required|max:50'">
                             <small v-if="errors.first('name')">{{ errors.first('name') }}</small>
@@ -40,10 +40,10 @@
                             <small v-if="errors.first('phone')">{{ errors.first('phone') }}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Contact person phone</label>
+                            <label>Contact Person Name</label>
                             <input class="form-control" data-vv-as="contact person phone" name="contact_phone" placeholder="phone"
                                    type="text" v-model="form.contact_person_name" v-validate="'required|max:20'">
-                            <small v-if="errors.first('contact_phone')">{{ errors.first('contact_phone') }}</small>
+                            <small v-if="errors.first('contact_name')">{{ errors.first('contact_name') }}</small>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -68,7 +68,7 @@
                             <label>Bank Name</label>
                             <select class="custom-select w-100" data-vv-as="bank name"
                                     data-vv-validate-on="blur" name="bank_name" v-model="form.bank_name" v-validate="'required'">
-                                <option disabled value="">-- select duration --</option>
+                                <option disabled value="">-- select bank --</option>
                                 <option :value="name" v-for="{name} in banks">{{name}}</option>
                             </select>
                             <small v-if="errors.first('bank_name')">{{ errors.first('bank_name') }}</small>
@@ -100,6 +100,7 @@
             </div>
 
         </div>
+
     </transition>
 </template>
 <script>
@@ -131,20 +132,47 @@
             }
         },
         beforeRouteEnter(to, from, next) {
-            get(initialize(to))
-                .then(({data}) => next(vm => vm.prepareForm(data)))
-                .catch(() => next(() => Flash.setError('Error Preparing form')));
+
+            if (to.meta.mode === 'edit'){
+                get(`/api/supplier/${to.params.id}`).then((data) => {
+
+                    next(vm => {
+
+                        vm.prepareForm(data.data.data)
+                    })
+                })
+                    .catch(() => next(() => Flash.setError('Error Preparing form')));
+            }
+            else{
+                let form = {};
+                next(vm => {
+                    vm.prepareForm(form)
+                })
+            }
+            // get(initialize(to))
+            //     .then(({data}) => next(vm => vm.prepareForm(data)))
+            //     .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
+
         methods: {
-            prepareForm({form,banks}) {
+            prepareForm(data) {
+                this.$LIPS(true);
+
+
+
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                Vue.set(this.$data, 'form', form);
-                Vue.set(this.$data, 'banks', banks);
+                Vue.set(this.$data, 'form', data);
+                // Vue.set(this.$data, 'banks', banks);
+                console.log(this.mode);
                 if (this.mode === 'edit') {
                     this.store = `/api/supplier/${this.$route.params.id}`;
                     this.method = 'PUT';
+
+
                 }
+                this.$LIPS(false);
                 this.show = true;
+
             },
             onSave() {
                 this.$validator.validateAll().then(result => {
@@ -174,6 +202,9 @@
                     } else this.$networkErr('form');
                 })
             }
+        },
+        created() {
+            this.$prepareBanks();
         }
     }
 </script>

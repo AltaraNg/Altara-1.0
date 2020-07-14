@@ -30,11 +30,11 @@
                         <a href="javascript:" @click="prev(1)" class="page-link">First</a>
                     </li>
                     <li :class="{'disabled':!prev_page_url }" class="page-item">
-                        <a href="javascript:" @click="prev()" class="page-link">prev</a>
+                        <a href="javascript:" @click="prev()" class="page-link">Prev</a>
                     </li>
                     <!---->
-                    <li class="page-item">
-                        <span class="page-link">Current Page: {{current_page}}</span>
+                    <li class="page-item ">
+                        <span class="page-link w-100">page:{{current_page}}</span>
                     </li>
                     <!---->
                     <li :class="{'disabled':!next_page_url}" class="page-item">
@@ -61,15 +61,15 @@
                     },
 
                     first_page_url: {
-                        type: [String, null],
+                        type: String,
                         required: true
                     },
                     prev_page_url: {
-                        type: Object,
+                        type: String,
                         required: true
                     },
                     next_page_url: {
-                        type: Object,
+                        type: String,
                         required: true
                     },
                     last_page: {

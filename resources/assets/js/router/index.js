@@ -50,7 +50,9 @@ const Inventory = () => import("../views/LOG/inventory/inventory.vue");
 const SuppliersForm = () => import("../views/LOG/supplier/form.vue");
 const SupplierList = () => import("../views/LOG/supplier/suppliers.vue");
 const BrandForm = () => import("../views/LOG/brand/form.vue");
+const BrandList = () => import("../views/LOG/brand/brands.vue");
 const CategoryForm = () => import("../views/LOG/category/form.vue");
+const CategoryList = () => import("../views/LOG/category/categories.vue");
 const ProductForm = () => import("../views/LOG/product/form.vue");
 const Renewal = () => import("../views/FSL/renewal/renewal.vue");
 const CashLogger = () => import("../views/FSL/cash_logger/cash_logger.vue");
@@ -370,7 +372,7 @@ const router = new VueRouter({
                 { path: "inventory", component: Inventory, name: "inventory" },
                 {
                     path: "brands",
-                    component: DataViewer,
+                    component: BrandList,
                     meta: {
                         appModel: "brand",
                         source: "/api/brand",
@@ -414,7 +416,7 @@ const router = new VueRouter({
 
                 {
                     path: "categories",
-                    component: DataViewer,
+                    component: CategoryList,
                     meta: {
                         appModel: "category",
                         source: "/api/category",
