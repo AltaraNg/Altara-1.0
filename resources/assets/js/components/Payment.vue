@@ -35,7 +35,7 @@
             <div v-if="tab === 'Reconcile'">
                 <div class="mb-3 row attendance-item" v-for="(item, index) in renderedList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto" :class="tab">{{index+OId}}</span>
+                        <span class="user mx-auto" :class="tab" @click="updateReconciledPayment(item)">{{index+OId}}</span>
                     </div>
 
                     <div class="col d-flex align-items-center justify-content-center">
@@ -45,28 +45,28 @@
                         {{item.date.split(' ')[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        ₦{{item.cash_at_hand}}
+                        {{item.cash_at_hand | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        ₦{{item.total}}
+                        {{item.total | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.total === item.deposited">₦{{item.deposited}}</span>
-                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
+                        <span v-if="item.deposited">{{item.deposited | currency('₦')}}</span>
+                        <input @keyup="onUpKey" v-model="reconcileForm.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
                         ₦{{item.total - item.deposited}}
                     </div>
-                    <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.total === item.deposited">{{item.comment === null ? '': item.comment.comment}}</span>
+                    <div class="col d-flex align-items-center justify-content-center" >
+                        <span class="overflow green" v-if="item.deposited">{{item.comment === null ? 'No Comment': 'Comment'}}</span>
 
-                        <textarea v-model="item.comment" v-else class="form-control" rows="1">
+                        <textarea v-model="reconcileForm.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
-                    <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto green-back"   v-if="item.total === item.deposited"></span>
-                        <span class="user mx-auto blue"  @click="updateReconciledPayment(item)" v-else></span>
+                    <div class="col d-flex align-items-center" style="max-width: 120px" data-hoverable="true" @click="updateModal(item)">
+                        <span class="overflow green"   v-if="item.deposited">Reconciled<i class="fas fa-info-circle"></i></span>
+                        <span class="overflow red" v-else>Not reconciled<i class="fas fa-info-circle"></i></span>
                     </div>
                 </div>
             </div>
@@ -81,9 +81,18 @@
                             </a>
                         </div>
                         <div class="modal-body">
-                            <p>Customer ID: {{paymentItem.customer.id}}</p>
-                            <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
-                            <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                            <div v-if="tab === 'Reconcile'">
+                                <p><b>Payment Type:</b> {{paymentItem.payment_method}}</p>
+                                <p><b>Reconciled by:</b> {{paymentItem.user || 'Not Yet Reconciled'}}</p>
+                                <p><b>Comment:</b> {{!paymentItem.comment ? 'No Comment' : paymentItem.comment.comment}}</p>
+
+                            </div>
+                            <div v-else>
+                                <p>Customer ID: {{paymentItem.customer.id}}</p>
+                                <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
+                                <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -110,7 +119,10 @@
     import {get, post,put} from "../utilities/api";
     import Lookup from "../views/FSL/lookup/lookup";
     import Flash from "../utilities/flash";
+    import Vue2Filters from 'vue2-filters'
     import BasePagination from "../components/Pagination/BasePagination"
+
+    Vue.use(Vue2Filters);
 
     export default {
         components: {Lookup, BasePagination},
@@ -181,6 +193,7 @@
                 },
                 renderedList: [],
                 defaultList: [],
+                reconcileForm: {}
 
             }
         },
@@ -219,8 +232,10 @@
 
             async getPaymentReconciliationList(){
                 this.branchId = localStorage.getItem('branch_id');
+                let yesterday = new Date(Date.now() - 864e5).toISOString();
+                let to = yesterday.slice(0, 10);
                 try{
-                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}`);
+                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}`);
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.renderedList = this.paymentReconciliationList;
@@ -237,13 +252,13 @@
             },
 
             async updateReconciledPayment(item){
-                if(!item.deposited || this.variance !=0 && !item.comment  ){
+               if(!this.reconcileForm.deposited ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
                     "cash_at_hand":item.total,
-                    "deposited": item.deposited,
-                    "comment": item.comment
+                    "deposited": this.reconcileForm.deposited,
+                    "comment": this.reconcileForm.comment
                 };
                 this.$LIPS(true);
                 try{
@@ -308,22 +323,26 @@
     .table-separator {
         border-top: 2px solid #dee1e4;
     }
-    .overflow{
+    .overflow {
         width: 80px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .green{
-        color: green;
+    .green {
+        color: #00a368;
     }
-    .red{
-        color: red;
+    .red {
+        color: #E30000;
     }
-    .green-back{
-        background-color: green;
-    }
-    .blue{
+    .blue {
         background-color: #2975a5;
+    }
+    .Current{
+        background: #EDEEF2;
+    }
+    .Successful{
+        background-color: rgba(0,163,104,.09);
+        color: #00a368;
     }
 </style>
