@@ -86,6 +86,7 @@
                             <p><b>City: </b> <span>{{supplierItem.city}}</span></p>
                             <p><b>State: </b> <span>{{supplierItem.state}}</span></p>
                             <p><b>Contact: </b> <span>{{supplierItem.contact_person_name}}</span></p>
+                            <p><b>Status: </b><span v-if="supplierItem.is_active === 1" class="green">Active</span><span v-else class="red"> Inactive</span></p>
                             <p><b>Phone Number: </b> <span>{{supplierItem.phone_number}}</span></p>
                             <p><b>Email: </b> <span>{{supplierItem.email}}</span></p>
                             <p><b>Bank Name: </b> <span>{{supplierItem.bank_name}}</span></p>
@@ -117,6 +118,8 @@
                     :total="pageParams.total"
                     :page="page"
                     @fetchData="fetchData()"
+                    @next="next()"
+                    @prev="prev()"
                     :page_size="pageParams.per_page">
                 </base-pagination>
 
@@ -195,18 +198,19 @@
             },
 
             next(firstPage = null) {
-                if (this.orders.next_page_url) {
+                if (this.pageParams.next_page_url) {
                     this.page = firstPage ? firstPage : parseInt(this.page) + 1;
                     this.fetchData();
                 }
             },
 
             prev(lastPage = null) {
-                if (this.orders.prev_page_url) {
+                if (this.pageParams.prev_page_url) {
                     this.page = lastPage ? lastPage : parseInt(this.page) - 1;
                     this.fetchData();
                 }
             },
+
 
             viewSupplier(supplier){
                 this.showModalContent = true;
@@ -250,5 +254,11 @@
         flex-direction: row;
         align-items: flex-end;
         justify-content: flex-end;
+    }
+    .green{
+        color: green;
+    }
+    .red{
+        color: red;
     }
 </style>

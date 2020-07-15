@@ -77,7 +77,8 @@
                         </div>
                         <div class="modal-body px-5">
                             <p><b>Name: </b> <span>{{categoryItem.name}}</span></p>
-                            <p><b>Status: </b> <span>{{categoryItem.is_active === 1 ? 'Active' : 'Inactive'}}</span></p>
+                            <p><b>Status: </b><span v-if="categoryItem.is_active === 1" class="green">Active</span><span v-else class="red"> Inactive</span></p>
+
                             <p><b>Date Added: </b> <span>{{categoryItem.created_at.split(' ')[0]}}</span></p>
 
 
@@ -102,6 +103,8 @@
                 :total="pageParams.total"
                 :page="page"
                 @fetchData="fetchData()"
+                @next="next()"
+                @prev="prev()"
                 :page_size="pageParams.per_page">
             </base-pagination>
 
@@ -181,14 +184,14 @@
             },
 
             next(firstPage = null) {
-                if (this.orders.next_page_url) {
+                if (this.pageParams.next_page_url) {
                     this.page = firstPage ? firstPage : parseInt(this.page) + 1;
                     this.fetchData();
                 }
             },
 
             prev(lastPage = null) {
-                if (this.orders.prev_page_url) {
+                if (this.pageParams.prev_page_url) {
                     this.page = lastPage ? lastPage : parseInt(this.page) - 1;
                     this.fetchData();
                 }
@@ -204,7 +207,7 @@
                 $(`#viewCategory`).modal('toggle');
 
                 return this.$router.push(
-                    {name: 'BrandEdit', params: {id: item}}
+                    {name: 'categoryEdit', params: {id: item}}
                 )
             },
 
@@ -235,5 +238,12 @@
         flex-direction: row;
         align-items: flex-end;
         justify-content: flex-end;
+    }
+
+    .green{
+        color: green;
+    }
+    .red{
+        color: red;
     }
 </style>

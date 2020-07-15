@@ -4,7 +4,7 @@
 
             <custom-header :title="'Brands List'"/>
             <div class="mt-2 mt-lg-3 row attendance-head ">
-                <router-link :to="{name: 'brandsCreate'}">
+                <router-link :to="{name: 'BrandCreate'}">
                     <button class="btn btn-primary bg-default mt-0 myBtn ">New Brand</button>
                 </router-link>
             </div>
@@ -75,7 +75,8 @@
                         </div>
                         <div class="modal-body px-5">
                             <p><b>Name: </b> <span>{{brandItem.name}}</span></p>
-                            <p><b>Status: </b> <span>{{brandItem.is_active === 1 ? 'Active' : 'Inactive'}}</span></p>
+                            <p><b>Status: </b><span v-if="brandItem.is_active === 1" class="green">Active</span><span v-else class="red"> Inactive</span></p>
+
 
                             <p><b>Date Added: </b> <span>{{brandItem.created_at.split(' ')[0]}}</span></p>
 
@@ -101,6 +102,8 @@
                     :total="pageParams.total"
                     :page="page"
                     @fetchData="fetchData()"
+                    @next="next()"
+                    @prev="prev()"
                     :page_size="pageParams.per_page">
                 </base-pagination>
 
@@ -180,14 +183,14 @@
             },
 
             next(firstPage = null) {
-                if (this.orders.next_page_url) {
+                if (this.pageParams.next_page_url) {
                     this.page = firstPage ? firstPage : parseInt(this.page) + 1;
                     this.fetchData();
                 }
             },
 
             prev(lastPage = null) {
-                if (this.orders.prev_page_url) {
+                if (this.pageParams.prev_page_url) {
                     this.page = lastPage ? lastPage : parseInt(this.page) - 1;
                     this.fetchData();
                 }
@@ -234,5 +237,11 @@
         flex-direction: row;
         align-items: flex-end;
         justify-content: flex-end;
+    }
+    .green{
+        color: green;
+    }
+    .red{
+        color: red;
     }
 </style>
