@@ -38,6 +38,8 @@ class SupplierController extends Controller
     public function store(SupplierRequest $request)
     {
         $supplier = $this->supplierRepository->store($request->validated());
+        $supplier->sku = '';
+        $supplier->update();
 
         return $this->sendSuccess($supplier->toArray(), 'Supplier Successfully Created');
     }

@@ -2,6 +2,8 @@
 
 namespace App\Helper;
 
+use Illuminate\Support\Str;
+
 /**
  * Class Helper
  * @package App\Helpers
@@ -28,35 +30,40 @@ class Helper
 
     /**
      * @param string $prefix
+     * @param int $length
      * @return string
      */
-    public static function generateTansactionNumber(string $prefix)
+    public static function generateTansactionNumber(string $prefix, $length = 12)
     {
-        return strtoupper(substr(uniqid($prefix, true), 0, 12));
+        return strtoupper(substr(uniqid($prefix, true), 0, $length));
     }
 
     /**
-     * @param int $length
-     * @param bool $characterOnly
-     * @param bool $capsOnly
+     * Generates custom SKU for product, can be used for generating other uniques
+     * @param int length,
+     * @param mixed characters of values
      *
-     * @return string
+     * @return string $sku
+     * @throws \Exception
      */
-    public static function generateRandomString($length = 5, $characterOnly = true, $capsOnly = true)
+    public static function generateSKU($length, $keyspace = '0A1B2C3D4E5F6G7H8I9JKLMNOPQRSTUVWXYZ')
     {
-        $upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $numbers = '0123456789';
-        $lowerChars = 'abcdefghijklmnopqrstuvwxyz';
-
-        $characters = $characterOnly ? $upperChars : $upperChars . $numbers;
-        $characters = $capsOnly ? $characters : $characters . $lowerChars;
-
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        //hold pieces of sku characters in array
+        $pieces = [];
+        //get max string length
+        $max = mb_strlen($keyspace, '8bit') - 1;
+        //loop through length
+        for ($i = 0; $i < $length; ++$i) {
+            //add to pieces
+            $pieces [] = $keyspace[random_int(0, $max)];
         }
+        //return generated sku
+        return implode('', $pieces);
 
-        return $randomString;
+    }
+
+    public static function generatePrefix(string $target, int $stop = 3, int $start = 0)
+    {
+        return Str::upper(Str::substr($target, $start, $stop));
     }
 }
