@@ -2,132 +2,83 @@
 
 namespace App\Http\Controllers;
 
-use App\Brand;
-use App\Category;
+use App\Http\Filters\ProductFilter;
+use App\Http\Requests\ProductRequest;
 use App\Product;
-use Illuminate\Http\Request;
+use App\Repositories\ProductRepository;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $productRepo;
+
+    public function __construct(ProductRepository $productRepository)
     {
-        $model = Product::select('id', 'name','retail_price')->searchPaginateAndOrder();
-        $columns = Product::$columns;
-        return response()->json([
-            'model' => $model,
-            'columns' => $columns
-        ]);
+        $this->productRepo = $productRepository;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param ProductFilter $filter
+     * @return Response
      */
-    public function create()
+    public function index(ProductFilter $filter)
     {
-        $brands = Brand::all();
-        $categories = Category::all();
-        return response()->json([
-            'brands' => $brands,
-            'form' => Product::form(),
-            'categories' => $categories
-        ]);
+        $products = $this->productRepo->getAll($filter);
+
+        return $this->sendSuccess($products->toArray(), 'Products retrieved successfully');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ProductRequest $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $request->validate([
-            'name' => 'required|unique:products',
-            'brand_id' => 'required|int',
-            'category_id' => 'required|int',
-            'retail_price' => 'required|int',
-        ]);
-        $user = auth('api')->user();
-        $request->user_id = $user->id;
-        $product = new Product($request->all());
-        $product->save();
-        return response()->json([
-            'saved' => true,
-            'message' => 'Product Created!',
-            'form' => Product::form(),
-            'staff_id' => $user->staff_id,
-            'log' => 'ProductCreated'
-        ]);
+        $data = array_merge($request->validated(), ['user_id' => auth()->user()->id]);
+        $product = $this->productRepo->store($data);
+
+        return $this->sendSuccess($product->toArray(), 'Product Successfully Created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return Response
      */
     public function show(Product $product)
     {
-        //
+        return $this->sendSuccess($product->toArray(), 'Product retrieved successfully');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @param Product $product
+     * @param ProductRequest $request
      *
-     * @param $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function edit($id)
+    public function update(Product $product, ProductRequest $request)
     {
-        $brands = Brand::all();
-        $categories = Category::all();
-        $form = Product::findOrFail($id);
-        return response()->json([
-            'form' => $form,
-            'brands' => $brands,
-            'categories' => $categories,
-        ]);
+        $data = array_merge($request->validated(), ['user_id' => auth()->user()->id]);
+        $product = $this->productRepo->update($product, $data);
+
+        return $this->sendSuccess($product->toArray(), 'Product updated successfully');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|unique:products,name,' . $id,
-            'brand_id' => 'required|int',
-            'category_id' => 'required|int',
-            'retail_price' => 'required|int',
-        ]);
-        Product::whereId($id)->update($request->all());
-        return response()->json([
-            'updated' => true,
-            'message' => 'Product Updated!',
-            'staff_id' => auth('api')->user()->staff_id,
-            'log' => 'ProductUpdated'
-        ]);
-    }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return Response
+     * @throws \Exception
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return $this->sendSuccess([],'Product deleted successfully');
     }
 }
