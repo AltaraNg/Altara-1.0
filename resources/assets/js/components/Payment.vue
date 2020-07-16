@@ -9,7 +9,7 @@
                     <div class="col d-flex align-items-center" style="max-width: 120px">
                         <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
-                    <div class="col d-flex align-items-center justify-content-center">
+                    <div class="col d-flex align-items-center justify-content-center" v-if="payment.customer">
                         {{payment.customer.id}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
@@ -28,7 +28,7 @@
                         ₦{{payment.amount}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" @click="updateModal(payment)" data-hoverable="true">
-                        <b class="overflow">{{!payment.comment ? 'Not Available' : payment.comment.comment}}</b>
+                        <p :class="payment.comment? 'green' : 'red'" class="overflow">{{!payment.comment ? 'No Comment' : 'Comment'}}</p>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,8 @@
                         {{item.date.split(' ')[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{item.cash_at_hand | currency('₦')}}
+                        <span v-if="item.deposited">{{item.cash_at_hand | currency('₦')}}</span>
+                        <input @keyup="onUpKey" v-model="reconcileForm.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{item.total | currency('₦')}}
@@ -234,6 +235,7 @@
                 this.branchId = localStorage.getItem('branch_id');
                 let yesterday = new Date(Date.now() - 864e5).toISOString();
                 let to = yesterday.slice(0, 10);
+
                 try{
                     const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}`);
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
@@ -256,7 +258,7 @@
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
-                    "cash_at_hand":item.total,
+                    "cash_at_hand":this.reconcileForm.cash_at_hand,
                     "deposited": this.reconcileForm.deposited,
                     "comment": this.reconcileForm.comment
                 };
