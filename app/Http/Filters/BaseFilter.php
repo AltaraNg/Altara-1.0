@@ -34,4 +34,12 @@ class BaseFilter extends QueryFilter
         $this->builder->whereDate($column, '>=', $from)
             ->whereDate($column, '<=',$this->request->to ?? Carbon::now());
     }
+
+    /**
+     * @param string $name
+     */
+    public function name(string $name)
+    {
+        $this->builder->where('name', $name);
+    }
 }

@@ -2,41 +2,51 @@
 
 namespace App;
 
-use App\Helper\DataViewer;
+use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use DataViewer;
+    use Filterable;
+    protected $guarded = [];
+    /**
+     * Validation rules
+     *
+     * @return array
+     * @var array
+     */
 
-    protected $fillable = ['name', 'feature', 'user_id', 'brand_id', 'category_id', 'retail_price'];
-
-    public static $columns = ['id', 'name', 'retail_price in Naira'];
-
-    public static function form(): iterable
+    public static function rules()
     {
         return [
-            'name' => 'PID-0001',
-            'brand_id' => '',
-            'category_id' => '',
-            'retail_price' => '',
-            'feature' => '',
+            'name' => 'required|unique:products,name',
+            'brand_id' => 'required|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',
+            'retail_price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'feature' => 'required|string|min:2',
+            'product_type_id' => 'required|exists:product_types,id',
+            'is_active' => 'sometimes|required|boolean'
         ];
     }
 
-    /*public function adder()
-    {
-       return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+    /**
+     * The model's default rules.
+     *
+     * @return array
+     * @var array
+     */
 
-    public function seller()
+    public static function updateRules($id)
     {
-       return $this->belongsTo(User::class, 'sold_by', 'id');
-    }
-
-    public function receiver()
-    {
-       return $this->belongsTo(User::class, 'received_by', 'id');
+        return [
+            'name' => 'sometimes|required|unique:brands,name,' . $id,
+            'brand_id' => 'sometimes|required|exists:brands,id',
+            'category_id' => 'sometimes|required|exists:categories,id',
+            'retail_price' => 'sometimes|required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'feature' => 'sometimes|required|string|min:2',
+            'product_type_id' => 'sometimes|required|exists:product_types,id',
+            'is_active' => 'sometimes|required|boolean'
+        ];
     }
 
     public function brand()
@@ -44,19 +54,13 @@ class Product extends Model
        return $this->belongsTo(Brand::class);
     }
 
-    public function branch()
-    {
-       return $this->belongsTo(Branch::class);
-    }
-
     public function category()
     {
        return $this->belongsTo(Category::class);
     }
 
-    public function supplier()
+    public function productTransfer()
     {
-       return $this->belongsTo(Supplier::class);
-    }*/
-
+       return $this->hasMany(ProductType::class);
+    }
 }

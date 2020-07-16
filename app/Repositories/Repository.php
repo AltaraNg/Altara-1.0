@@ -44,6 +44,11 @@ abstract class Repository
         return $this->model::paginate($limit);
     }
 
+    public function getAll($filter)
+    {
+        return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
+    }
+
     public function query($filter)
     {
         return $this->model::filter($filter)->paginate();
