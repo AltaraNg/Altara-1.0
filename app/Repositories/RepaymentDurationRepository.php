@@ -12,9 +12,4 @@ class RepaymentDurationRepository extends Repository
     {
         return RepaymentDuration::class;
     }
-
-    public function getAll()
-    {
-        return $this->model::orderBy('created_at', 'desc')->paginate();
-    }
 }

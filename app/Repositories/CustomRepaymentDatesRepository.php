@@ -12,9 +12,4 @@ class CustomRepaymentDatesRepository extends Repository
     {
         return CustomRepaymentDate::class;
     }
-
-    public function getAll()
-    {
-        return $this->model::orderBy('created_at', 'desc')->paginate();
-    }
 }

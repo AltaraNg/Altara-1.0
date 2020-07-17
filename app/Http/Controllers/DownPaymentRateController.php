@@ -19,7 +19,7 @@ class DownPaymentRateController extends Controller
 
     public function index()
     {
-        $result = $this->downPaymentRate->getAll();
+        $result = $this->downPaymentRate->all();
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 }

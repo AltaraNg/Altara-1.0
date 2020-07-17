@@ -12,9 +12,4 @@ class BusinessTypeRepository extends Repository
     {
         return BusinessType::class;
     }
-
-    public function getAll()
-    {
-        return $this->model::orderBy('created_at', 'desc')->paginate();
-    }
 }

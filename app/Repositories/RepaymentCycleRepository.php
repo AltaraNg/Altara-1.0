@@ -12,11 +12,4 @@ class RepaymentCycleRepository extends Repository
     {
         return RepaymentCycle::class;
     }
-
-    public function getAll()
-    {
-        return $this->model::orderBy('created_at', 'desc')->paginate();
-    }
-
-
 }

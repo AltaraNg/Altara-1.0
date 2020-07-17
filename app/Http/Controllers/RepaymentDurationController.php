@@ -18,7 +18,7 @@ class RepaymentDurationController extends Controller
 
     public function index()
     {
-        $result = $this->repaymentDuration->getAll();
+        $result = $this->repaymentDuration->all();
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 }

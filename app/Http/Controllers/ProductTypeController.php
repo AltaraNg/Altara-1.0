@@ -18,8 +18,7 @@ class ProductTypeController extends Controller
 
     public function index()
     {
-        $result = $this->productType->getAll();
+        $result = $this->productType->all();
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
-    //
 }
