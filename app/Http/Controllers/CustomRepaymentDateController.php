@@ -18,7 +18,7 @@ class CustomRepaymentDateController extends Controller
 
     public function index()
     {
-        $result = $this->customRepaymentDate->getAll();
+        $result = $this->customRepaymentDate->all();
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 }

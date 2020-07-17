@@ -18,7 +18,7 @@ class BusinessTypeController extends Controller
 
     public function index()
     {
-        $result = $this->businessType->getAll();
+        $result = $this->businessType->all();
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 }

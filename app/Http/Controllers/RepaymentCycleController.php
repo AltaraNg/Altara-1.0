@@ -18,7 +18,7 @@ class RepaymentCycleController extends Controller
 
     public function index()
     {
-        $result = $this->repaymentCycle->getAll();
+        $result = $this->repaymentCycle->all();
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 }
