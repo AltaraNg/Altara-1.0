@@ -59,8 +59,35 @@ class Product extends Model
        return $this->belongsTo(Category::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
+
     public function productTransfer()
     {
-       return $this->hasMany(ProductType::class);
+       return $this->hasMany(ProductTransfer::class);
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'product' => $this->product,
+            'brand' => $this->brand->name,
+            'category' => $this->category->name,
+            'retail_price' => $this->retail_price,
+            'img_url' => $this->img_url,
+            'feature' => $this->feature,
+            'product_type' => $this->productType->name,
+            'is_active' => $this->is_active,
+            'user' => $this->user->full_name,
+            'created_at' => $this->created_at->toDateTimeString()
+        ];
     }
 }
