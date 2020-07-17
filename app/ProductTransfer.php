@@ -62,7 +62,8 @@ class ProductTransfer extends Model
             'id' => $this->id,
             'product' => $this->product,
             'branch' => $this->branch->name,
-            'user' => $this->user->full_name
+            'user' => $this->user->full_name,
+            'created_at' => $this->created_at->toDateTimeString()
         ];
     }
 }
