@@ -53,9 +53,11 @@ const CategoryForm = () => import("../views/LOG/category/form.vue");
 const ProductForm = () => import("../views/LOG/product/form.vue");
 const Renewal = () => import("../views/FSL/renewal/renewal.vue");
 const CashLogger = () => import("../views/FSL/cash_logger/cash_logger.vue");
+const PaymentLogger = () => import("../views/FSL/payment_logger/payment_logger.vue");
 const ACC = () => import("../views/ACC/index.vue");
 const ACCHome = () => import("../views/ACC/HomePage.vue");
 const Reconcile = () => import("../views/ACC/reconcile/reconcile.vue");
+const ShowRoomDashboard = () => import("../views/FSL/dashboard/Dashboard.vue");
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -343,6 +345,19 @@ const router = new VueRouter({
                     name: "cash-logger",
                     meta: { mode: "create" }
                 },
+                {
+                    path: "payment-logger",
+                    component: PaymentLogger,
+                    name: "payment-logger",
+                    meta: { mode: "create" }
+                },
+                {
+                    path: "dashboard",
+                    component: ShowRoomDashboard,
+                    name: "ShowRoom Dashboard",
+                    meta: { mode: "create" }
+                },
+                
             ]
         },
         {

@@ -8,16 +8,9 @@
               {{index + OId}}
             </span>
           </div>
-          <div class="col d-flex align-items-center justify-content-center">{{ payment.branch }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
           >{{ !payment.customer ? "null" : payment.customer.id }}</div>
-          <div
-            class="col d-flex align-items-center justify-content-center"
-          >{{ payment.date.split(" ")[0] }}</div>
-          <div
-            class="col d-flex align-items-center justify-content-center"
-          >{{ payment.date.split(" ")[1] }}</div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.type }}</div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.method }}</div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.amount | currency('₦') }}</div>
@@ -26,8 +19,8 @@
             @click="updateModal(payment)"
             data-hoverable="true"
           >
-            <b class="overflow red" v-if="!payment.comment">Not Comment <i class="fas fa-info-circle"></i></b>
-            <b class="overflow green" v-else>Reconciled <i class="fas fa-info-circle"></i></b>
+            <b class="overflow red text-center" v-if="!payment.comment"><i class="fas fa-info-circle"></i></b>
+            <b class="overflow green text-center" v-else> <i class="fas fa-info-circle"></i></b>
           </div>
         </div>
       </div>
@@ -38,13 +31,6 @@
               {{index + OId}}
             </span>
           </div>
-          <div class="col d-flex align-items-center justify-content-center">{{ payment.user || 'Not yet Reconciled'}}</div>
-
-          <div
-            class="col d-flex align-items-center justify-content-center"
-          >{{ payment.date.split(" ")[0] }}</div>
-
-          <div class="col d-flex align-items-center justify-content-center">{{ payment.branch }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
           >{{ payment.payment_method }}</div>
@@ -63,8 +49,8 @@
             @click="updateModal(payment)"
             data-hoverable="true"
           >
-            <b class="overflow red" v-if="!payment.comment">Not Reconciled <i class="fas fa-info-circle"></i></b>
-            <b class="overflow green" v-else>No Comment <i class="fas fa-info-circle"></i></b>
+            <b class="overflow red text-center" v-if="!payment.comment"><i class="fas fa-info-circle"></i></b>
+            <b class="overflow green text-center" v-else><i class="fas fa-info-circle"></i></b>
           </div>
           <div class="col d-flex align-items-center justify-content-center">
             <span v-if="payment.finance">{{payment.finance.bank_statement | currency('₦')}}</span>
@@ -73,14 +59,69 @@
           <div class="col d-flex align-items-center justify-content-center">    
             <b v-if="payment.finance"
               @click="updateModal(payment.finance)"
-              class="overflow green">
-              Reconciled <i class="fas fa-info-circle"></i>
+              class="overflow green text-center">
+             <i class="fas fa-info-circle"></i>
             </b>
             <input v-else v-model="payment.accountantComment" type="text" class="form-control" rows="1" />
           </div>
         </div>
       </div>
       <div class="modal fade repayment" id="updatePayment">
+       <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <div class="modal-header py-2">
+                        <h6 class="modal-title py-1">
+                            Comment
+                        </h6>
+                        <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                        <span aria-hidden="true" class="modal-close text-danger">
+                            <i class="fas fa-times"></i>
+                        </span>
+                        </a>
+                        </div>
+                            <table class="table table-bordered">
+                                <tbody class="text-center">
+                                <tr class="table-separator">
+                                    <td class="text-left">Branch Name</td>
+                                    <th>{{ paymentItem.branch || "Not Available" }}</th>
+                                </tr>
+                                <tr v-if="paymentItem.customer">
+                                    <td class="text-left">Customer ID</td>
+                                    <th>{{ paymentItem.customer.id || "Not Available" }}</th>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">Comment</td>
+                                    <th>
+                                      {{  !paymentItem.comment
+                                      ? "Not Available"
+                                      : paymentItem.comment.comment
+                                      }}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">Reconciler</td>
+                                    <th>
+                                      {{ paymentItem.user || "Not Available" }}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">Date</td>
+                                    <th>{{paymentItem.date ? paymentItem.date.split(" ")[0] : "Not Available" }}</th>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">Time</td>
+                                    <th>{{paymentItem.date ? paymentItem.date.split(" ")[1] : "Not Available" }}</th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div> 
+      <!-- <div class="modal fade repayment" id="updatePayment">
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content" v-if="showModalContent">
             <div class="modal-header py-2">
@@ -121,7 +162,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <nav
       v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)"
