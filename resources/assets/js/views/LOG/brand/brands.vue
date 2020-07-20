@@ -8,33 +8,7 @@
                     <button class="btn btn-primary bg-default mt-0 myBtn ">New Brand</button>
                 </router-link>
             </div>
-<!--            <div class="mt-2 mt-lg-3 row attendance-head attendance-view">-->
-<!--                <div class="col-4 col-lg" v-for="{name:filter,model} in filters">-->
-<!--                    <div class="row">-->
 
-<!--                        <div class="light-heading mb-1">-->
-<!--                            <span class="d-none d-sm-inline">Select </span>-->
-<!--                            {{filter | capitalize}}-->
-<!--                        </div>-->
-
-<!--                        <div class="form-group w-100" v-if="filter === 'state'">-->
-<!--                            <select class="custom-select" v-model="$data[model]"-->
-<!--                                    @keyup.enter="fetchData()">-->
-<!--                                <option disabled selected value="">{{filter | capitalize}}</option>-->
-<!--                                <option :value="id" v-for="{name,id} in getStates">-->
-<!--                                    {{name | capitalize}}-->
-<!--                                </option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-
-
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="col-6 col-sm p-0 flex-row-bottom">-->
-<!--                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>-->
-<!--                </div>-->
-<!--            </div>-->
 
 
             <div class="mt-5 mb-3 attendance-head">
@@ -97,8 +71,8 @@
                     :last_page_url="pageParams.last_page_url"
                     :last_page="pageParams.last_page"
                     :current_page="pageParams.current_page"
-                    :from="pageParams.from"
-                    :to="pageParams.to"
+                    :from="pageParams.from ? pageParams.from : 0 "
+                    :to="pageParams.to ? pageParams.to : 0 "
                     :total="pageParams.total"
                     :page="page"
                     @fetchData="fetchData()"
@@ -163,9 +137,7 @@
                 this.$scrollToTop();
                 this.$LIPS(true);
                 let {page, page_size} = this.$data;
-                get(this.urlToFetchOrders +
-                    `${!!page ? `?page=${page}` : ''}` +
-                    `${!!page_size ? `&pageSize=${page_size}` : ''}`
+                get(`${this.urlToFetchOrders}${!!page ? `?page=${page}` : ''}${!!page_size ? `&pageSize=${page_size}` : ''}`
                 )
                     .then(({data}) => this.prepareList(data))
                     .catch(() => Flash.setError('Error Preparing form'));

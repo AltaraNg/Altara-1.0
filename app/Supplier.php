@@ -31,7 +31,7 @@ class Supplier extends Model
     public static function updateRules($id)
     {
         return [
-            'name' => 'sometimes|required|string',
+            'name' => 'sometimes|required|string|exists:suppliers,name'.$id,
             'address' => 'sometimes|required|string',
             'city' => 'sometimes|required|string',
             'state' => 'sometimes|required|string',
