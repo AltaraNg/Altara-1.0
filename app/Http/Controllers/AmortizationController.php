@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Amortization;
 use App\Helpers\ResponseHelper;
 use App\Http\Filters\AmortizationFilter;
-use App\NewOrder;
+use App\Http\Requests\NewOrderRequest;
 use App\Repositories\AmortizationRepository;
-use Illuminate\Database\Eloquent\Builder;
+use App\Services\AmmortizationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -55,5 +55,19 @@ class AmortizationController extends Controller
         $data = $this->validate($request, Amortization::$updateRules);
         $resp = $this->amortizationRepository->update($amortization, $data);
         return ResponseHelper::createSuccessResponse($resp->toArray());
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param NewOrderRequest $request
+     * @param AmmortizationService $service
+     * @return Response
+     * @throws \App\Exceptions\AException
+     */
+    public function preview(NewOrderRequest $request, AmmortizationService $service)
+    {
+        $resp = $service->generatePreview($request->validated());
+        return ResponseHelper::createSuccessResponse($resp);
     }
 }

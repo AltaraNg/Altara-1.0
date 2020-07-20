@@ -7,23 +7,31 @@ use Carbon\Carbon;
 
 class Custom extends Amortization
 {
-    protected $date;
+    protected $startMonth;
+    protected const ALLOWANCE = 15;
+
+    public function __construct($order)
+    {
+        parent::__construct($order);
+        Carbon::useMonthsOverflow(false);
+        $this->startMonth = $this->getStartMonth();
+    }
 
     public function getRepaymentDate(int $count)
     {
-        $date = $this->getDate();
-        return $date->addMonth($count);
+        $date = Carbon::createFromDate(null, $this->startMonth, 28);
+        $date->addMonth($count);
+        $date->day(($this->order->custom_date > $date->daysInMonth) ? $date->daysInMonth: $this->order->custom_date);
+        return $date;
     }
 
-    private function getDate(){
-       $selectedDate =  Carbon::createFromDate(null, null, $this->order->customDate->custom_date);
+    private function getStartMonth(){
+        $selectedDate =  Carbon::createFromDate(null, null, $this->order->custom_date);
+
         $diff = now()->diffInDays($selectedDate, false);
-        if(now()->day >= $this->order->customDate->custom_date){
-            return $selectedDate;
+        if ($diff > self::ALLOWANCE){
+            return now()->subMonth(1)->month;
         }
-        if ($diff > 5){
-            return $selectedDate->subMonth(1);
-        }
-        return $selectedDate;
+        return now()->month;
     }
 }
