@@ -12,6 +12,11 @@ class Comment extends Model
         return $this->morphTo();
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     /**
      * @return array
      */
@@ -20,6 +25,7 @@ class Comment extends Model
         return [
             'commentable_id' => $this->commentable_id,
             'commentable_type' => $this->commentable_type,
+            'user' => $this->user->full_name,
             'comment' => $this->comment
         ];
     }
