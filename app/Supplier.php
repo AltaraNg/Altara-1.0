@@ -35,7 +35,7 @@ class Supplier extends Model
             'address' => 'sometimes|required|string',
             'city' => 'sometimes|required|string',
             'state' => 'sometimes|required|string',
-            'phone_number' => 'sometimes|required|string',
+            'phone_number' => 'sometimes|required|exists|string',
             'email' => 'sometimes|required|string',
             'contact_person_name' => 'sometimes|required|string',
             'bank_account_name' => 'sometimes|required|string',
