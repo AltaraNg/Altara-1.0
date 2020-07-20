@@ -66,103 +66,57 @@
           </div>
         </div>
       </div>
-      <div class="modal fade repayment" id="updatePayment">
-       <div class="modal-dialog modal-xl" role="document">
+      <div class="modal fade" id="updatePayment">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <div class="modal-header py-2">
+                        <h6 class="modal-title py-1">Comment</h6>
+                        <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                        </a>
+                    </div>
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <div class="modal-header py-2">
-                        <h6 class="modal-title py-1">
-                            Comment
-                        </h6>
-                        <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                        <span aria-hidden="true" class="modal-close text-danger">
-                            <i class="fas fa-times"></i>
-                        </span>
-                        </a>
-                        </div>
-                            <table class="table table-bordered">
-                                <tbody class="text-center">
-                                <tr class="table-separator">
-                                    <td class="text-left">Branch Name</td>
-                                    <th>{{ paymentItem.branch || "Not Available" }}</th>
+                            <table class="table table-bordered table-striped">
+                                <tbody>
+                                <tr>
+                                    <th>Branch Name</th>
+                                    <td>{{ paymentItem.branch || "Not Available" }}</td>
                                 </tr>
                                 <tr v-if="paymentItem.customer">
-                                    <td class="text-left">Customer ID</td>
-                                    <th>{{ paymentItem.customer.id || "Not Available" }}</th>
+                                    <th>Customer ID</th>
+                                    <td>{{ paymentItem.customer.id || "Not Available" }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-left">Comment</td>
-                                    <th>
-                                      {{  !paymentItem.comment
+                                    <th>Comment</th>
+                                    <td> {{  !paymentItem.comment
                                       ? "Not Available"
                                       : paymentItem.comment.comment
-                                      }}
-                                    </th>
+                                      }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-left">Reconciler</td>
-                                    <th>
-                                      {{ paymentItem.user || "Not Available" }}
-                                    </th>
+                                    <th>Reconciler</th>
+                                    <td>{{ paymentItem.user || "Not Available" }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-left">Date</td>
-                                    <th>{{paymentItem.date ? paymentItem.date.split(" ")[0] : "Not Available" }}</th>
+                                    <th>Date</th>
+                                    <td>{{paymentItem.date ? paymentItem.date.split(" ")[0] : "Not Available" }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-left">Time</td>
-                                    <th>{{paymentItem.date ? paymentItem.date.split(" ")[1] : "Not Available" }}</th>
+                                    <th>Time</th>
+                                    <td>{{paymentItem.date ? paymentItem.date.split(" ")[1] : "Not Available" }}</td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                           style="text-align: right">close dialogue</a>
+                    </div>
                 </div>
             </div>
-      </div> 
-      <!-- <div class="modal fade repayment" id="updatePayment">
-        <div class="modal-dialog modal-xl" role="document">
-          <div class="modal-content" v-if="showModalContent">
-            <div class="modal-header py-2">
-              <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                <span aria-hidden="true" class="modal-close text-danger">
-                  <i class="fas fa-times"></i>
-                </span>
-              </a>
-            </div>
-            <div class="modal-body" v-if="paymentItem.customer">
-              <p>Customer ID: {{ paymentItem.customer.id }}</p>
-              <p>
-                Customer Name :
-                {{ paymentItem.customer.first_name }}
-                {{ paymentItem.customer.last_name }}
-              </p>
-              <h5>
-                {{
-                !paymentItem.comment
-                ? "Not Available"
-                : paymentItem.comment.comment
-                }}
-              </h5>
-            </div>
-            <div v-else class="modal-body">
-              <p>Branch Name: {{ paymentItem.branch }}</p>
-              <p>
-                Comment By :
-                {{ paymentItem.user }}
-              </p>
-              <h5>
-                {{
-                !paymentItem.comment
-                ? "Not Available"
-                : paymentItem.comment.comment
-                }}
-              </h5>
-            </div>
-          </div>
         </div>
-      </div> -->
     </div>
     <nav
       v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)"
