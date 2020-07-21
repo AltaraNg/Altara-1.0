@@ -10,8 +10,8 @@
                     <label for="amount" class="form-control-label">Repayment Cycle</label>
                     <select class="custom-select w-100" v-model="salesLogForm.repayment_cycle_id" v-validate="'required'">
                         <option disabled selected="selected">Repayment Cycle</option>
-                        <option :value="type.id" :key="type.id"  v-for="type in repaymentCycles">
-                            {{type.type}}
+                        <option :value="type.id" :key="type.id"  v-for="type in repaymentCyclesopt">
+                            {{type.name}}
                         </option>
                     </select>
                 </div>
@@ -20,16 +20,16 @@
                     <select class="custom-select w-100" v-model="salesLogForm.repayment_duration_id" v-validate="'required'">
                         <option disabled selected="selected">Repayment Duration</option>
                         <option :value="type.id" :key="type.id"  v-for="type in repaymentDuration">
-                            {{type.type}}
+                            {{type.name}}
                         </option>
                     </select>
                 </div>
                 <div class="col form-group">
-                    <label for="amount" class="form-control-label">Category of Plan</label>
+                    <label for="amount" class="form-control-label">Downpayment Rates</label>
                     <select class="custom-select w-100" v-model="salesLogForm.payment_type_id" v-validate="'required'">
-                        <option disabled selected="selected">Category of Plan</option>
-                        <option :value="type.id" :key="type.id"  v-for="type in paymentType">
-                            {{type.type}}
+                        <option disabled selected="selected">Downpayment Rates</option>
+                        <option :value="type.id" :key="type.id"  v-for="type in downPaymentRates">
+                            {{type.name}}
                         </option>
                     </select>
                 </div>
@@ -45,7 +45,7 @@
                 <div class="col form-group">
                     <label for="amount" class="form-control-label">Down Payment</label>
                     <input class="w-100 custom-select" name="amount" v-model="salesLogForm.down_payment" v-validate="'required'" type="number" placeholder="Enter Amount"/>
-                </div>
+                </div> -->
             </div>
             <br/>
 
@@ -92,7 +92,7 @@ export default {
             error: {},
             salesLogForm: {},
             repaymentDuration:[],
-            repaymentCycles:[],
+            repaymentCyclesopt:[],
             downPaymentRates:[],
             businessTypes:[],
             apiUrls: {
@@ -104,10 +104,10 @@ export default {
         }
     },
     async mounted(){
-        // await this.getRepaymentDuration();
-        // await this.getPaymentCycles();
-        // await this.getDownPaymentRates();
-        // await this.getBusinessTypes();
+        await this.getRepaymentDuration();
+        await this.getRepaymentCycles();
+        await this.getDownPaymentRates();
+        await this.getBusinessTypes();
     },
     computed:{
         ...mapGetters(['getPaymentMethods']),
@@ -135,7 +135,7 @@ export default {
         async getRepaymentDuration(){
             try{
                 const fetchRepaymentDuration = await get(this.apiUrls.repaymentDuration);
-                this.repaymentDuration = fetchRepaymentDuration.data.data;
+                this.repaymentDuration = fetchRepaymentDuration.data.data.data;
             }
             catch(err){
                 this.$displayErrorMessage(err);
@@ -144,7 +144,7 @@ export default {
         async getRepaymentCycles(){
             try{
                 const fetchRepaymentCycles = await get(this.apiUrls.repaymentCycles);
-                this.repaymentCycles = fetchRepaymentCycles.data.data;
+                this.repaymentCyclesopt = fetchRepaymentCycles.data.data.data;
             }
             catch(err){
                 this.$displayErrorMessage(err);
@@ -153,7 +153,7 @@ export default {
         async getDownPaymentRates(){
             try{
                 const fetchDownPaymentRates = await get(this.apiUrls.downPaymentRates);
-                this.downPaymentRates = fetchDownPaymentRates.data.data;
+                this.downPaymentRates = fetchDownPaymentRates.data.data.data;
             }
             catch(err){
                 this.$displayErrorMessage(err);
@@ -162,11 +162,13 @@ export default {
         async getBusinessTypes(){
             try{
                 const fetchBusinessTypes = await get(this.apiUrls.businessTypes);
-                this.businessTypes = fetchBusinessTypes.data.data;
+                this.businessTypes = fetchBusinessTypes.data.data.data;
             }
             catch(err){
                 this.$displayErrorMessage(err);
             }
+                            console.log('fdfdfd',this.repaymentCyclesopt)
+
         },
         
     }

@@ -96,7 +96,7 @@
                                 </tr>
                                 <tr>
                                     <th>Reconciler</th>
-                                    <td>{{ paymentItem.user || "Not Available" }}</td>
+                                    <td>{{ !paymentItem.comment ? "Not Available" : paymentItem.comment.user  }}</td>
                                 </tr>
                                 <tr>
                                     <th>Date</th>
