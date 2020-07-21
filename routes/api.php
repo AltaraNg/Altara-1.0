@@ -57,7 +57,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         'repayment_cycle' => 'RepaymentCycleController',
         'custom_repayment_date' => 'CustomRepaymentDateController',
         'product_type' => 'ProductTypeController',
-        'product_transfer' => 'ProductTransferController'
+        'product_transfer' => 'ProductTransferController',
+        'amortization' => 'AmortizationController'
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
@@ -76,9 +77,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/renewal-list-status', 'RenewalListStatusController@index');
     Route::patch('/payment-reconcile/{payment_reconcile}/finance', 'PaymentReconcileController@finance');
     Route::patch('/brand/{brand}/categories', 'BrandController@manageCategories');
+    Route::post('/amortization/preview', 'AmortizationController@preview');
 });
 
 Route::post('/ammo', 'UserController@test');
-Route::apiResource('amortization', 'AmortizationController');
+//Route::apiResource('amortization', 'AmortizationController');
+//Route::post('/amortization/preview', 'AmortizationController@preview');
 
 
