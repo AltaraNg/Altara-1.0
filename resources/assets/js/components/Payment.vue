@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="tab === 'Log Payment'">
-            <Lookup :logger="'hello'"/>
+            <Lookup :logger="'cash'"/>
         </div>
         <div class="tab-content mt-1 attendance-body">
             <div v-if="tab === 'View Payments'">
