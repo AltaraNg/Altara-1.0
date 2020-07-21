@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'message' => 'MessageController',
         'caution' => 'CautionController',
         'product' => 'ProductController',
+        'inventory' => 'InventoryController',
         'customer' => 'CustomerController',
         'category' => 'CategoryController',
         'document' => 'DocumentController',
