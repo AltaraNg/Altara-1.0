@@ -56,7 +56,7 @@
             <span v-if="payment.finance">{{payment.finance.bank_statement | currency('₦')}}</span>
             <input v-else v-model="payment.bankStatement" type="number" class="form-control" rows="1" />
           </div>
-          <div class="col d-flex align-items-center justify-content-center">    
+          <div class="col d-flex align-items-center justify-content-center">
             <b v-if="payment.finance"
               @click="updateModal(payment.finance)"
               class="overflow green text-center">
@@ -122,23 +122,25 @@
       v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)"
       class="col d-flex justify-content-end align-items-center pr-0"
     >
-      <base-pagination
-        :next_page_url="
-                    !responseData.next_page_url
-                        ? '#'
-                        : responseData.next_page_url
-                "
-        :prev_page_url="
-                    !responseData.prev_page_url
-                        ? '#'
-                        : responseData.prev_page_url
-                "
-        :first_page_url="responseData.first_page_url"
-        :last_page="responseData.last_page"
-        :current_page="responseData.current_page"
-        @next="next"
-        @prev="prev"
-      ></base-pagination>
+        <div v-if="pageParams">
+            <base-pagination
+                :prev_page_url="pageParams.prev_page_url? pageParams.prev_page_url : '' "
+                :next_page_url="pageParams.next_page_url? pageParams.next_page_url : ''"
+                :first_page_url="pageParams.first_page_url"
+                :last_page_url="pageParams.last_page_url"
+                :last_page="pageParams.last_page"
+                :current_page="pageParams.current_page"
+                :from="pageParams.from ? pageParams.from : 0 "
+                :to="pageParams.to ? pageParams.to : 0 "
+                :total="pageParams.total"
+                :page="page"
+                @fetchData="fetchData()"
+                @next="next()"
+                @prev="prev()"
+                :page_size="pageParams.per_page">
+            </base-pagination>
+
+        </div>
     </nav>
   </div>
 </template>
@@ -204,6 +206,7 @@ export default {
       OId: 0,
       defaultList: [],
       page: 1,
+        pageParams: null,
       responseData: {},
       paymentItem: {},
       showModalContent: false,
@@ -243,6 +246,7 @@ export default {
         const fetchPaymentList = await get(`/api/payment?page=${this.page}`);
         this.paymentList = fetchPaymentList.data.data.data;
         this.responseData = fetchPaymentList.data.data;
+        this.pageParams = this.responseData;
         this.OId = this.responseData.from;
         this.$LIPS(false);
         this.renderedList = this.paymentList;

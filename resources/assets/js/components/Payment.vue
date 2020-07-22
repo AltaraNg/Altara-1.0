@@ -28,7 +28,7 @@
                         ₦{{payment.amount}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" @click="updateModal(payment)" data-hoverable="true">
-                        <p :class="payment.comment? 'green' : 'red'" class="overflow">{{!payment.comment ? 'No Comment' : 'Comment'}}</p>
+                        <p :class="payment.comment? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></p>
                     </div>
                 </div>
             </div>
@@ -57,24 +57,24 @@
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
-                        ₦{{item.total - item.deposited}}
+                        {{item.total - item.deposited | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" >
-                        <span class="overflow green" v-if="item.deposited">{{item.comment === null ? 'No Comment': 'Comment'}}</span>
+                        <span class="overflow green justify-content-center" v-if="item.deposited"><i class="fas fa-info-circle"></i></span>
 
                         <textarea v-model="reconcileForm.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
-                    <div class="col d-flex align-items-center" style="max-width: 120px" data-hoverable="true" @click="updateModal(item)">
-                        <span class="overflow green"   v-if="item.deposited">Reconciled<i class="fas fa-info-circle"></i></span>
-                        <span class="overflow red" v-else>Not reconciled<i class="fas fa-info-circle"></i></span>
+                    <div class="col d-flex align-items-center justify-content-center" @click="updateModal(item)" data-hoverable="true">
+                        <p :class="item.deposited? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></p>
                     </div>
                 </div>
             </div>
             <div class="modal fade repayment" id="updatePayment">
-                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
+                            <h6 class="modal-title py-1">Comment</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                         <span aria-hidden="true" class="modal-close text-danger">
                             <i class="fas fa-times"></i>
@@ -83,17 +83,83 @@
                         </div>
                         <div class="modal-body">
                             <div v-if="tab === 'Reconcile'">
-                                <p><b>Payment Type:</b> {{paymentItem.payment_method}}</p>
-                                <p><b>Reconciled by:</b> {{paymentItem.user || 'Not Yet Reconciled'}}</p>
-                                <p><b>Comment:</b> {{!paymentItem.comment ? 'No Comment' : paymentItem.comment.comment}}</p>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <th>Branch Name</th>
+                                            <td>{{ paymentItem.branch || "Not Available" }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Comment</th>
+                                            <td> {{  !paymentItem.comment
+                                                ? "Not Available"
+                                                : paymentItem.comment.comment
+                                                }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Reconciler</th>
+                                            <td>{{ !paymentItem.user ? "Not Available" : paymentItem.user  }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date</th>
+                                            <td>{{paymentItem.date ? paymentItem.date.split(" ")[0] : "Not Available" }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Time</th>
+                                            <td>{{paymentItem.date ? paymentItem.date.split(" ")[1] : "Not Available" }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
                             </div>
                             <div v-else>
-                                <p>Customer ID: {{paymentItem.customer.id}}</p>
-                                <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
-                                <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <th>Branch Name</th>
+                                            <td>{{ paymentItem.branch || "Not Available" }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Customer ID</th>
+                                            <td>{{ paymentItem.customer.id || "Not Available" }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Payment Number</th>
+                                            <td>{{ paymentItem.payment_number || "Not Available" }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Comment</th>
+                                            <td> {{  !paymentItem.comment
+                                                ? "Not Available"
+                                                : paymentItem.comment.comment
+                                                }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Date</th>
+                                            <td>{{paymentItem.date ? paymentItem.date.split(" ")[0] : "Not Available" }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Time</th>
+                                            <td>{{paymentItem.date ? paymentItem.date.split(" ")[1] : "Not Available" }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
 
+                        </div>
+                        <div class="modal-footer">
+                            <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                               style="text-align: right">close dialogue</a>
                         </div>
                     </div>
                 </div>

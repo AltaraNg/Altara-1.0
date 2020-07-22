@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="modal fade repayment" id="viewBrand">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog " role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
                             <h4>{{brandItem.name}}</h4>
@@ -48,11 +48,29 @@
                             </a>
                         </div>
                         <div class="modal-body px-5">
-                            <p><b>Name: </b> <span>{{brandItem.name}}</span></p>
-                            <p><b>Status: </b><span v-if="brandItem.is_active === 1" class="green">Active</span><span v-else class="red"> Inactive</span></p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>{{ brandItem.name || "Not Available" }}</td>
+                                    </tr>
+                                    <tr >
+                                        <th>Status</th>
+                                        <td>{{ brandItem.is_active | status}}</td>
+                                    </tr>
 
-
-                            <p><b>Date Added: </b> <span>{{brandItem.created_at.split(' ')[0]}}</span></p>
+                                    <tr>
+                                        <th>Date</th>
+                                        <td>{{brandItem.created_at ? brandItem.created_at.split(" ")[0] : "Not Available" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Time</th>
+                                        <td>{{brandItem.created_at ? brandItem.created_at.split(" ")[1] : "Not Available" }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
 
                         </div>
@@ -199,7 +217,14 @@
 
         destroyed() {
             this.removeCustomerOptionsModalsFromDom();
+        },
+        filters: {
+        status: function(value){
+            if (value === 1){
+                return 'Active'
+            }else return 'Inactive'
         }
+    },
     }
 </script>
 
