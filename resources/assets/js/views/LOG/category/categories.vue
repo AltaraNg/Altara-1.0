@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="modal fade repayment" id="viewCategory">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
                             <h4>{{categoryItem.name}}</h4>
@@ -46,10 +46,29 @@
                             </a>
                         </div>
                         <div class="modal-body px-5">
-                            <p><b>Name: </b> <span>{{categoryItem.name}}</span></p>
-                            <p><b>Status: </b><span v-if="categoryItem.is_active === 1" class="green">Active</span><span v-else class="red"> Inactive</span></p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>{{ categoryItem.name || "Not Available" }}</td>
+                                    </tr>
+                                    <tr >
+                                        <th>Status</th>
+                                        <td>{{ categoryItem.is_active | status}}</td>
+                                    </tr>
 
-                            <p><b>Date Added: </b> <span>{{categoryItem.created_at.split(' ')[0]}}</span></p>
+                                    <tr>
+                                        <th>Date</th>
+                                        <td>{{categoryItem.created_at ? categoryItem.created_at.split(" ")[0] : "Not Available" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Time</th>
+                                        <td>{{categoryItem.created_at ? categoryItem.created_at.split(" ")[1] : "Not Available" }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
 
 
@@ -196,9 +215,13 @@
             this.fetchData();
         },
 
-        destroyed() {
-            this.removeCustomerOptionsModalsFromDom();
-        }
+       filters: {
+            status: function(value){
+                if (value === 1){
+                    return 'Active'
+                }else return 'Inactive'
+            }
+       },
     }
 </script>
 

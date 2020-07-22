@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="modal fade repayment" id="viewSupplier">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog " role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
                             <h4>{{supplierItem.name}}</h4>
@@ -81,18 +81,66 @@
                             </a>
                         </div>
                         <div class="modal-body px-5">
-                            <p><b>SKU: </b> <span>{{supplierItem.sku}}</span></p>
-                            <p><b>Address: </b> <span>{{supplierItem.address}}</span></p>
-                            <p><b>City: </b> <span>{{supplierItem.city}}</span></p>
-                            <p><b>State: </b> <span>{{supplierItem.state}}</span></p>
-                            <p><b>Contact: </b> <span>{{supplierItem.contact_person_name}}</span></p>
-                            <p><b>Status: </b><span v-if="supplierItem.is_active === 1" class="green">Active</span><span v-else class="red"> Inactive</span></p>
-                            <p><b>Phone Number: </b> <span>{{supplierItem.phone_number}}</span></p>
-                            <p><b>Email: </b> <span>{{supplierItem.email}}</span></p>
-                            <p><b>Bank Name: </b> <span>{{supplierItem.bank_name}}</span></p>
-                            <p><b>Bank Account Name: </b> <span>{{supplierItem.bank_account_name}}</span></p>
-                            <p><b>Bank Account Number: </b> <span>{{supplierItem.bank_account_no}}</span></p>
-                            <p><b>Date Added: </b> <span>{{supplierItem.created_at.split(' ')[0]}}</span></p>
+
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>{{ supplierItem.name || "Not Available" }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>SKU</th>
+                                        <td>{{ supplierItem.sku || "Not Available" }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>City</th>
+                                        <td>{{ supplierItem.city || "Not Available" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>State</th>
+                                        <td>{{ supplierItem.state || "Not Available" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contact</th>
+                                        <td>{{ supplierItem.contact_person_name || "Not Available" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Phone</th>
+                                        <td>{{ supplierItem.phone_number || "Not Available" }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{{ supplierItem.email || "Not Available" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bank Account Name</th>
+                                        <td>{{ supplierItem.bank_account_name || "Not Available" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bank Account Number</th>
+                                        <td>{{ supplierItem.bank_account_no || "Not Available" }}</td>
+                                    </tr>
+                                    <tr >
+                                        <th>Status</th>
+                                        <td>{{ supplierItem.is_active | status}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Date</th>
+                                        <td>{{supplierItem.created_at ? supplierItem.created_at.split(" ")[0] : "Not Available" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Time</th>
+                                        <td>{{supplierItem.created_at ? supplierItem.created_at.split(" ")[1] : "Not Available" }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
 
                         </div>
@@ -242,9 +290,15 @@
             this.fetchData();
         },
 
-        destroyed() {
-            this.removeCustomerOptionsModalsFromDom();
-        }
+
+
+        filters: {
+            status: function(value){
+                if (value === 1){
+                    return 'Active'
+                }else return 'Inactive'
+            }
+        },
     }
 </script>
 
