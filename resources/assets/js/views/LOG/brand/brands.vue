@@ -83,20 +83,12 @@
 
             <div v-if="pageParams">
                 <base-pagination
-                    :prev_page_url="pageParams.prev_page_url? pageParams.prev_page_url : '' "
-                    :next_page_url="pageParams.next_page_url? pageParams.next_page_url : ''"
-                    :first_page_url="pageParams.first_page_url"
-                    :last_page_url="pageParams.last_page_url"
-                    :last_page="pageParams.last_page"
-                    :current_page="pageParams.current_page"
-                    :from="pageParams.from ? pageParams.from : 0 "
-                    :to="pageParams.to ? pageParams.to : 0 "
-                    :total="pageParams.total"
+                    :page-param="pageParams"
                     :page="page"
-                    @fetchData="fetchData()"
+                    @fetchData="fetchData"
                     @next="next()"
                     @prev="prev()"
-                    :page_size="pageParams.per_page">
+                >
                 </base-pagination>
 
             </div>
@@ -152,6 +144,7 @@
 
         methods: {
             fetchData() {
+
                 this.$scrollToTop();
                 this.$LIPS(true);
                 let {page, page_size} = this.$data;

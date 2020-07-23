@@ -6,7 +6,7 @@
 
             <div class="col d-flex justify-content-start align-items-center pl-0">
                 <strong class="light-heading float-left">
-                    Displaying: {{from}} - {{to}} of {{total}}
+                    Displaying: {{pageParam.from}} - {{pageParam.to}} of {{pageParam.total}}
                 </strong>
             </div>
 
@@ -18,30 +18,30 @@
                 </div>
                 <div class="ml-5">
                     <span class="d-inline light-heading mr-2">set page-size</span>
-                    <input class="d-inline form-control" type="number" v-model="page_size"
-                           style="max-width: 50px;" @keyup.enter="fetchData(page_size)">
+                    <input class="d-inline form-control" type="number" v-model="pageParam.page_size"
+                           style="max-width: 50px;" @keyup.enter="fetchData(pageParam.page_size)">
                 </div>
             </div>
 
             <nav class="col d-flex justify-content-end align-items-center pr-0">
                 <ul class="pagination pagination-lg mb-0">
                     <!---->
-                    <li :class="{'disabled':!first_page_url}" class="page-item">
+                    <li :class="{'disabled':!pageParam.first_page_url}" class="page-item">
                         <a href="javascript:" @click="prev(1)" class="page-link">First</a>
                     </li>
-                    <li :class="{'disabled':!prev_page_url }" class="page-item">
+                    <li :class="{'disabled':!pageParam.prev_page_url }" class="page-item">
                         <a href="javascript:" @click="prev()" class="page-link">Prev</a>
                     </li>
                     <!---->
                     <li class="page-item ">
-                        <span class="page-link w-100">page:{{current_page}}</span>
+                        <span class="page-link w-100">page:{{pageParam.current_page}}</span>
                     </li>
                     <!---->
-                    <li :class="{'disabled':!next_page_url}" class="page-item">
+                    <li :class="{'disabled':!pageParam.next_page_url}" class="page-item">
                         <a href="javascript:" @click="next()" class="page-link">Next</a>
                     </li>
-                    <li :class="{'disabled':!last_page_url}" class="page-item">
-                        <a href="javascript:" @click="next(last_page)" class="page-link">Last</a>
+                    <li :class="{'disabled':!pageParam.last_page_url}" class="page-item">
+                        <a href="javascript:" @click="next(pageParam.last_page)" class="page-link">Last</a>
                     </li>
                     <!---->
                 </ul>
@@ -55,46 +55,9 @@
                 components: {
                 },
                 props: {
-                    current_page: {
-                        type: Number,
+                    pageParam: {
+                        type: Object,
                         required: true
-                    },
-
-                    first_page_url: {
-                        type: String,
-                        required: true
-                    },
-                    prev_page_url: {
-                        type: String,
-                        required: true
-                    },
-                    next_page_url: {
-                        type: String,
-                        required: true
-                    },
-                    last_page: {
-                        type: Number,
-                        required: true
-                    },
-                    last_page_url: {
-                        type: String,
-                        required: true
-                    },
-                    from: {
-                        type:Number,
-                        required: true
-                    },
-                    to: {
-                        type:Number,
-                        required: true
-                    },
-                    total: {
-                        type: Number,
-                        required: true
-                    },
-                    page_size: {
-                        type:Number,
-                        required: false
                     },
                     page:{
                         type: Number,
