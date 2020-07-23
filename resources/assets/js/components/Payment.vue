@@ -10,7 +10,7 @@
                         <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" v-if="payment.customer">
-                        {{payment.customer.id}}
+                        {{payment.customer ? payment.customer.id : "Not Available"}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{payment.date.split(' ')[0]}}
@@ -124,7 +124,7 @@
                                             <td>{{ paymentItem.branch || "Not Available" }}</td>
                                         </tr>
 
-                                        <tr>
+                                        <tr v-if="paymentItem.customer">
                                             <th>Customer ID</th>
                                             <td>{{ paymentItem.customer.id || "Not Available" }}</td>
                                         </tr>
@@ -306,10 +306,12 @@
             async getPaymentReconciliationList(){
                 this.branchId = localStorage.getItem('branch_id');
                 let yesterday = new Date(Date.now() - 864e5).toISOString();
+                let previous = new Date('feb 1, 2019').toISOString(); //used an arbitrary date needed by the api
+                let from = previous.slice(0, 10);
                 let to = yesterday.slice(0, 10);
 
                 try{
-                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}`);
+                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}&from=${from}`);
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.renderedList = this.paymentReconciliationList;
