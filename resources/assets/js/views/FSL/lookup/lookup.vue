@@ -31,6 +31,9 @@
                                     <span v-if="$route.meta.customSMS">
                                         <CustomSMSButton :order="order" :customer="customer" :key="order.order.id"/>
                                     </span>
+                                    <span>
+                                        <img src='../../../../svg/download.svg' />
+                                    </span>
                                 </div>
                                 <div class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center">
                                     {{order.order.order_date}}
@@ -73,8 +76,8 @@
                         </div>
                     </div>
                         
-                    <LogForm :customerId="customer.id" @done="this.done" v-if="logger" />
-                    
+                    <LogForm :customerId="customer.id" @done="this.done" v-if="logger === 'cash'" />
+                    <PaymentLog :customerId="customer.id" @done="this.done" v-if="logger === 'payment'" />
                     <div class="mt-5 mb-3 attendance-head">
                         <div class="w-100 my-5 mx-0 hr"></div>
                     </div>
@@ -316,10 +319,12 @@
     import AutocompleteSearch from "../../../components/AutocompleteSearch/AutocompleteSearch";
     import {getOrderStatus, getOrderStatusClass} from '../../../components/order/orderStatusCssClass';
     import LogForm from "../../../components/LogForm";
+    import PaymentLog from "../../../components/PaymentLog";
+    
 
     export default {
 
-        components: {CustomHeader, CustomerProfile, CustomSMSButton, AutocompleteSearch,LogForm},
+        components: {CustomHeader, CustomerProfile, CustomSMSButton, AutocompleteSearch,LogForm,PaymentLog},
         props:{logger: null},
 
         data() {

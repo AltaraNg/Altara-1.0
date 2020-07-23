@@ -2,6 +2,32 @@
   <transition name="fade">
     <div id="reminder">
       <div class="mt-5 mb-3 attendance-head">
+        <div class="mt-5 attendance-head">
+                <div class="mb-5 row align-items-center">
+                    <div class="col-12 ">
+                        <div class="row justify-content-end">
+                      <a @click="toggleGuide" class="text-link mt-3"
+                               href="javascript:">
+                                View icon guide</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="attendance-body" id="table-guide1">
+                <div class="guidePad row bg-white shadow-sm card-radius">
+                   <div class="col-6 text-center green">
+                          <i class="fas fa-info-circle"></i>
+                          <br/>
+                          <b>Comment is Available</b>
+                    </div>
+                   <div class="col-6 text-center red">
+                          <i class="fas fa-info-circle"></i>
+                          <br/>
+                          <b>Comment is not Available</b>
+                    </div>
+                </div>
+          </div>
         <ul class="nav nav-tabs justify-content-center p-0" role="tablist">
           <li class="col p-0 nav-item mb-0" v-for="(tab, index) in details.tabs" :key="index">
             <a
@@ -61,7 +87,11 @@ export default {
     },
     setFilter(value) {
       this.filterObject = value;
-    }
+    },
+    toggleGuide() {
+                $('#table-guide1').slideToggle();
+            },
+
   },
   computed: {
     ...mapGetters(["auth", "getAuthUserDetails", "getBranches"]),
@@ -71,10 +101,7 @@ export default {
       const tabs = ["Showroom Payment", "Reconcile"];
       const headings2 = [
         "index",
-        "Branch",
         "Customer ID",
-        "Date Of Payment",
-        "Time Of Payment",
         "Payment Purpose",
         "Payment Type",
         "Amount Paid",
@@ -82,9 +109,6 @@ export default {
       ];
       const headings1 = [
         "index",
-        "Reconciler",
-        "Date",
-        "Branch",
         "Type",
         "Logged",
         "Showroom",
@@ -102,12 +126,27 @@ export default {
           : "";
       return { tabs, headings, list };
     }
-  }
+  },
+          mounted() {
+            $(document).on("hidden.bs.modal", '.modal', () => this.currAttendance = {});
+            this.toggleGuide();
+        },
 };
 </script>
 
 <style scoped type="scss">
 .attendance-head .light-heading:nth-child(1) {
   max-width: 120px;
+}
+.green {
+  color: #00a368;
+}
+.red {
+  color: #E30000;
+}
+
+.guidePad{
+  padding: 15px;
+  margin: 15px;
 }
 </style>

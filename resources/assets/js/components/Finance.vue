@@ -8,16 +8,9 @@
               {{index + OId}}
             </span>
           </div>
-          <div class="col d-flex align-items-center justify-content-center">{{ payment.branch }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
           >{{ !payment.customer ? "null" : payment.customer.id }}</div>
-          <div
-            class="col d-flex align-items-center justify-content-center"
-          >{{ payment.date.split(" ")[0] }}</div>
-          <div
-            class="col d-flex align-items-center justify-content-center"
-          >{{ payment.date.split(" ")[1] }}</div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.type }}</div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.method }}</div>
           <div class="col d-flex align-items-center justify-content-center">{{ payment.amount | currency('₦') }}</div>
@@ -26,8 +19,8 @@
             @click="updateModal(payment)"
             data-hoverable="true"
           >
-            <b class="overflow red" v-if="!payment.comment">Not Comment <i class="fas fa-info-circle"></i></b>
-            <b class="overflow green" v-else>Reconciled <i class="fas fa-info-circle"></i></b>
+            <b class="overflow red text-center" v-if="!payment.comment"><i class="fas fa-info-circle"></i></b>
+            <b class="overflow green text-center" v-else> <i class="fas fa-info-circle"></i></b>
           </div>
         </div>
       </div>
@@ -38,13 +31,6 @@
               {{index + OId}}
             </span>
           </div>
-          <div class="col d-flex align-items-center justify-content-center">{{ payment.user || 'Not yet Reconciled'}}</div>
-
-          <div
-            class="col d-flex align-items-center justify-content-center"
-          >{{ payment.date.split(" ")[0] }}</div>
-
-          <div class="col d-flex align-items-center justify-content-center">{{ payment.branch }}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
           >{{ payment.payment_method }}</div>
@@ -63,87 +49,98 @@
             @click="updateModal(payment)"
             data-hoverable="true"
           >
-            <b class="overflow red" v-if="!payment.comment">Not Reconciled <i class="fas fa-info-circle"></i></b>
-            <b class="overflow green" v-else>No Comment <i class="fas fa-info-circle"></i></b>
+            <b class="overflow red text-center" v-if="!payment.comment"><i class="fas fa-info-circle"></i></b>
+            <b class="overflow green text-center" v-else><i class="fas fa-info-circle"></i></b>
           </div>
           <div class="col d-flex align-items-center justify-content-center">
             <span v-if="payment.finance">{{payment.finance.bank_statement | currency('₦')}}</span>
             <input v-else v-model="payment.bankStatement" type="number" class="form-control" rows="1" />
           </div>
-          <div class="col d-flex align-items-center justify-content-center">    
+          <div class="col d-flex align-items-center justify-content-center">
             <b v-if="payment.finance"
               @click="updateModal(payment.finance)"
-              class="overflow green">
-              Reconciled <i class="fas fa-info-circle"></i>
+              class="overflow green text-center">
+             <i class="fas fa-info-circle"></i>
             </b>
             <input v-else v-model="payment.accountantComment" type="text" class="form-control" rows="1" />
           </div>
         </div>
       </div>
-      <div class="modal fade repayment" id="updatePayment">
-        <div class="modal-dialog modal-xl" role="document">
-          <div class="modal-content" v-if="showModalContent">
-            <div class="modal-header py-2">
-              <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                <span aria-hidden="true" class="modal-close text-danger">
-                  <i class="fas fa-times"></i>
-                </span>
-              </a>
+      <div class="modal fade" id="updatePayment">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header py-2">
+                        <h6 class="modal-title py-1">Comment</h6>
+                        <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                            <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <tbody>
+                                <tr>
+                                    <th>Branch Name</th>
+                                    <td>{{ paymentItem.branch || "Not Available" }}</td>
+                                </tr>
+                                <tr v-if="paymentItem.customer">
+                                    <th>Customer ID</th>
+                                    <td>{{ paymentItem.customer.id || "Not Available" }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Comment</th>
+                                    <td> {{  !paymentItem.comment
+                                      ? "Not Available"
+                                      : paymentItem.comment.comment
+                                      }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Reconciler</th>
+                                    <td>{{ !paymentItem.comment ? "Not Available" : paymentItem.comment.user  }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <td>{{paymentItem.date ? paymentItem.date.split(" ")[0] : "Not Available" }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Time</th>
+                                    <td>{{paymentItem.date ? paymentItem.date.split(" ")[1] : "Not Available" }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                           style="text-align: right">close dialogue</a>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body" v-if="paymentItem.customer">
-              <p>Customer ID: {{ paymentItem.customer.id }}</p>
-              <p>
-                Customer Name :
-                {{ paymentItem.customer.first_name }}
-                {{ paymentItem.customer.last_name }}
-              </p>
-              <h5>
-                {{
-                !paymentItem.comment
-                ? "Not Available"
-                : paymentItem.comment.comment
-                }}
-              </h5>
-            </div>
-            <div v-else class="modal-body">
-              <p>Branch Name: {{ paymentItem.branch }}</p>
-              <p>
-                Comment By :
-                {{ paymentItem.user }}
-              </p>
-              <h5>
-                {{
-                !paymentItem.comment
-                ? "Not Available"
-                : paymentItem.comment.comment
-                }}
-              </h5>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
     <nav
       v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)"
       class="col d-flex justify-content-end align-items-center pr-0"
     >
-      <base-pagination
-        :next_page_url="
-                    !responseData.next_page_url
-                        ? '#'
-                        : responseData.next_page_url
-                "
-        :prev_page_url="
-                    !responseData.prev_page_url
-                        ? '#'
-                        : responseData.prev_page_url
-                "
-        :first_page_url="responseData.first_page_url"
-        :last_page="responseData.last_page"
-        :current_page="responseData.current_page"
-        @next="next"
-        @prev="prev"
-      ></base-pagination>
+        <div v-if="pageParams">
+            <base-pagination
+                :prev_page_url="pageParams.prev_page_url? pageParams.prev_page_url : '' "
+                :next_page_url="pageParams.next_page_url? pageParams.next_page_url : ''"
+                :first_page_url="pageParams.first_page_url"
+                :last_page_url="pageParams.last_page_url"
+                :last_page="pageParams.last_page"
+                :current_page="pageParams.current_page"
+                :from="pageParams.from ? pageParams.from : 0 "
+                :to="pageParams.to ? pageParams.to : 0 "
+                :total="pageParams.total"
+                :page="page"
+                @fetchData="fetchData()"
+                @next="next()"
+                @prev="prev()"
+                :page_size="pageParams.per_page">
+            </base-pagination>
+
+        </div>
     </nav>
   </div>
 </template>
@@ -209,6 +206,7 @@ export default {
       OId: 0,
       defaultList: [],
       page: 1,
+        pageParams: null,
       responseData: {},
       paymentItem: {},
       showModalContent: false,
@@ -248,6 +246,7 @@ export default {
         const fetchPaymentList = await get(`/api/payment?page=${this.page}`);
         this.paymentList = fetchPaymentList.data.data.data;
         this.responseData = fetchPaymentList.data.data;
+        this.pageParams = this.responseData;
         this.OId = this.responseData.from;
         this.$LIPS(false);
         this.renderedList = this.paymentList;

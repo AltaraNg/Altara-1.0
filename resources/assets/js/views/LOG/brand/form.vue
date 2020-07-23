@@ -2,7 +2,7 @@
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
 
-            <custom-header :to="'/log/brands'" :title="mode + ' brand'" :button-title="'view brands!'"/>
+            <custom-header :to="'/log/brands'" :title="mode + ' Brand'" :button-title="'view brands!'"/>
 
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
@@ -14,6 +14,15 @@
                                    v-validate="'required|max:50'">
                             <small v-if="errors.first('brand name')">{{ errors.first('brand name') }}</small>
                             <small v-if="error.name">{{error.name[0]}}</small>
+                        </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3" v-if="mode === 'edit'">
+                            <label class="w-100 float-left">Status</label>
+                            <div class="radio p-0 col-md-6 col-6 float-left" v-for="{name,value} in statuses">
+                                <input :id="name" :value="value" name="status" type="radio" v-model="form.is_active"
+                                       v-validate="'required'">
+                                <label :for="name">{{name}}</label>
+                            </div>
+                            <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
                         </div>
                     </div>
                     <div class="mb-5 px-0 row align-items-center">
@@ -36,7 +45,7 @@
     import Vue from 'vue';
     import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
-    import {byMethod, get} from '../../../utilities/api';
+    import {get, post,put} from "../../../utilities/api";
     import CustomHeader from '../../../components/customHeader';
 
     function initialize(to) {
@@ -56,21 +65,40 @@
                 show: false,
                 store: '/api/brand',
                 method: 'POST',
+                statuses: [{name: 'active', value: 1}, {name: 'inactive', value: 0}]
             }
         },
         beforeRouteEnter(to, from, next) {
-            get(initialize(to))
-                .then(({data}) => next(vm => vm.prepareForm(data)))
-                .catch(() => next(() => Flash.setError('Error Preparing form')));
+            if (to.meta.mode === 'edit'){
+                get(`/api/brand/${to.params.id}`).then((data) => {
+
+                    next(vm => {
+
+                        vm.prepareForm(data.data.data)
+                    })
+                })
+                    .catch(() => next(() => Flash.setError('Error Preparing form')));
+            }
+            else{
+                let form = {};
+                next(vm => {
+                    vm.prepareForm(form)
+                })
+            }
+            // get(initialize(to))
+            //     .then(({data}) => next(vm => vm.prepareForm(data)))
+            //     .catch(() => next(() => Flash.setError('Error Preparing form')));
         },
         methods: {
-            prepareForm({form}) {
+            prepareForm(data) {
+                this.$LIPS(true);
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                Vue.set(this.$data, 'form', form);
+                Vue.set(this.$data, 'form', data);
                 if (this.mode === 'edit') {
                     this.store = `/api/brand/${this.$route.params.id}`;
                     this.method = 'PUT';
                 }
+                this.$LIPS(false);
                 this.show = true;
             },
             onSave() {
@@ -78,17 +106,21 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            byMethod(this.method, this.store, this.form)
+                            (this.mode === 'edit' ? put(this.store, this.form) : post(this.store, this.form))
                                 .then(({data}) => {
-                                    if (data.saved || data.updated) {
-                                        log(data.log, data.staff_id);
-                                        Vue.set(this.$data, 'form', data.form);
-                                        Flash.setSuccess(data.message, 5000);
-                                        if (data['updated']) this.$router.push('/log/brands');
+                                    if (data.status === 'success') {
+                                        Vue.set(this.$data, 'form',{});
+                                        this.$swal({
+                                            icon: 'success',
+                                            title: this.mode === 'edit' ? 'Brand Updated Successfully' : 'Brand added Successfully'
+
+                                        });
+                                        return this.$router.push(
+                                            {path: '/log/brands'}
+                                        )
                                     }
-                                    this.error = {};
                                 })
-                                .catch(({response: r}) => {
+                                .catch(({response:r}) => {
                                     let {data, status} = r;
                                     if (status === 422) {
                                         this.error = data.errors ? data.errors : data;

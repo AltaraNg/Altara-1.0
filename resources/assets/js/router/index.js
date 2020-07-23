@@ -48,14 +48,19 @@ const LOG = () => import("../views/LOG/index.vue");
 const LOGHome = () => import("../views/LOG/HomePage.vue");
 const Inventory = () => import("../views/LOG/inventory/inventory.vue");
 const SuppliersForm = () => import("../views/LOG/supplier/form.vue");
+const SupplierList = () => import("../views/LOG/supplier/suppliers.vue");
 const BrandForm = () => import("../views/LOG/brand/form.vue");
+const BrandList = () => import("../views/LOG/brand/brands.vue");
 const CategoryForm = () => import("../views/LOG/category/form.vue");
+const CategoryList = () => import("../views/LOG/category/categories.vue");
 const ProductForm = () => import("../views/LOG/product/form.vue");
 const Renewal = () => import("../views/FSL/renewal/renewal.vue");
 const CashLogger = () => import("../views/FSL/cash_logger/cash_logger.vue");
+const PaymentLogger = () => import("../views/FSL/payment_logger/payment_logger.vue");
 const ACC = () => import("../views/ACC/index.vue");
 const ACCHome = () => import("../views/ACC/HomePage.vue");
 const Reconcile = () => import("../views/ACC/reconcile/reconcile.vue");
+const ShowRoomDashboard = () => import("../views/FSL/dashboard/Dashboard.vue");
 
 Vue.use(VueRouter);
 Vue.use(routerHistory);
@@ -343,6 +348,19 @@ const router = new VueRouter({
                     name: "cash-logger",
                     meta: { mode: "create" }
                 },
+                {
+                    path: "payment-logger",
+                    component: PaymentLogger,
+                    name: "payment-logger",
+                    meta: { mode: "create" }
+                },
+                {
+                    path: "dashboard",
+                    component: ShowRoomDashboard,
+                    name: "ShowRoom Dashboard",
+                    meta: { mode: "create" }
+                },
+                
             ]
         },
         {
@@ -369,7 +387,7 @@ const router = new VueRouter({
                 { path: "inventory", component: Inventory, name: "inventory" },
                 {
                     path: "brands",
-                    component: DataViewer,
+                    component: BrandList,
                     meta: {
                         appModel: "brand",
                         source: "/api/brand",
@@ -413,7 +431,7 @@ const router = new VueRouter({
 
                 {
                     path: "categories",
-                    component: DataViewer,
+                    component: CategoryList,
                     meta: {
                         appModel: "category",
                         source: "/api/category",
@@ -435,7 +453,7 @@ const router = new VueRouter({
 
                 {
                     path: "suppliers",
-                    component: DataViewer,
+                    component: SupplierList,
                     meta: {
                         appModel: "supplier",
                         source: "/api/supplier",

@@ -32,12 +32,12 @@ class Supplier extends Model
     public static function updateRules($id)
     {
         return [
-            'name' => 'sometimes|required|unique:suppliers,name',
+            'name' => 'sometimes|required|string|exists:suppliers,name'.$id,
             'address' => 'sometimes|required|string',
             'city' => 'sometimes|required|string',
             'state' => 'sometimes|required|string',
-            'phone_number' => 'sometimes|required|string|unique:suppliers, phone_number',
-            'email' => 'sometimes|required|string|unique:suppliers, email',
+            'phone_number' => 'sometimes|required|exists|string',
+            'email' => 'sometimes|required|string',
             'contact_person_name' => 'sometimes|required|string',
             'bank_account_name' => 'sometimes|required|string',
             'bank_account_no' => 'sometimes|required|string',
