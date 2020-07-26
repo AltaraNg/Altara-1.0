@@ -46,14 +46,14 @@
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <span v-if="item.deposited">{{item.cash_at_hand | currency('₦')}}</span>
-                        <input @keyup="onUpKey" v-model="reconcileForm.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
+                        <input @keyup="onUpKey" v-model="item.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{item.total | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <span v-if="item.deposited">{{item.deposited | currency('₦')}}</span>
-                        <input @keyup="onUpKey" v-model="reconcileForm.deposited" type="number" class="form-control" rows="1" v-else/>
+                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
@@ -328,12 +328,12 @@
             },
 
             async updateReconciledPayment(item){
-               if(!this.reconcileForm.deposited ){
+               if(!item.deposited ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
-                    "cash_at_hand":this.reconcileForm.cash_at_hand,
-                    "deposited": this.reconcileForm.deposited,
+                    "cash_at_hand":item.cash_at_hand,
+                    "deposited": item.deposited,
                     "comment": this.reconcileForm.comment
                 };
                 this.$LIPS(true);
