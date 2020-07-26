@@ -21,12 +21,26 @@
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Brand ID</label>
-                            <typeahead :options="brands" caption="name" v-model="form.brand_id"/>
+                            <label>Brand</label>
+                            <select name="brand" id="brand" v-model="form.brand" class=" text-capitalize font-weight-bold h5" >
+                                <option value="all" selected="selected" >--select--</option>
+                                <option
+                                    :value="brand.id"
+                                    v-for="brand of brands"
+                                >{{ brand.name }}</option
+                                >
+                            </select>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Category ID</label>
-                            <typeahead :options="categories" caption="name" v-model="form.category_id"/>
+                            <label>Category</label>
+                            <select name="category" id="category" v-model="form.category" class=" text-capitalize font-weight-bold h5" >
+                                <option value="all" selected="selected" >--select--</option>
+                                <option
+                                    :value="category.id"
+                                    v-for="category of categories"
+                                >{{ category.name }}</option
+                                >
+                            </select>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -55,7 +69,7 @@
     import Vue from 'vue';
     import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
-    import {byMethod, get} from '../../../utilities/api';
+    import {post, get, put} from '../../../utilities/api';
     import Typeahead from '../../../components/Typeahead';
     import CustomHeader from '../../../components/customHeader';
 
@@ -80,34 +94,60 @@
             }
         },
         beforeRouteEnter(to, from, next) {
-            get(initialize(to))
-                .then(({data}) => next(vm => vm.prepareForm(data)))
-                .catch(() => next(() => Flash.setError('Error Preparing form')));
+            if (to.meta.mode === 'edit'){
+                get(`/api/product/${to.params.id}`).then((data) => {
+
+                    next(vm => {
+
+                        vm.prepareForm(data.data.data)
+                    })
+                })
+                    .catch(() => next(() => Flash.setError('Error Preparing form')));
+            }
+            else{
+                let form = {};
+                next(vm => {
+                    vm.prepareForm(form)
+                })
+            }
         },
         methods: {
             prepareForm(data) {
+                this.$LIPS(true);
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                Vue.set(this.$data, 'form', data.form);
-                Vue.set(this.$data, 'brands', data.brands);
-                Vue.set(this.$data, 'categories', data.categories);
+                get('/api/brand').then((res) => {
+                    Vue.set(this.$data, 'brands', res.data.data.data);
+                }).catch(() => Flash.setError('Error Preparing form'));
+                get('/api/category').then((res) => {
+                    Vue.set(this.$data, 'categories', res.data.data.data);
+                }).catch(() => Flash.setError('Error Preparing form'));
+                Vue.set(this.$data, 'form', data);
+
                 if (this.mode === 'edit') {
                     this.store = `/api/product/${this.$route.params.id}`;
                     this.method = 'PUT';
                 }
+                this.$LIPS(false);
                 this.show = true;
+
             },
             onSave() {
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            byMethod(this.method, this.store, this.form)
+                            (this.mode === 'edit' ? put(this.store, this.form) : post(this.store, this.form))
                                 .then(({data}) => {
-                                    if (data.saved || data.updated) {
-                                        log(data.log, data.staff_id);
-                                        Vue.set(this.$data, 'form', data.form);
-                                        Flash.setSuccess(data.message, 5000);
-                                        if (data['updated']) this.$router.push('/log/products');
+                                    if (data.status === 'success') {
+                                        Vue.set(this.$data, 'form',{});
+                                        this.$swal({
+                                            icon: 'success',
+                                            title: this.mode === 'edit' ? 'Product Updated Successfully' : 'Product added Successfully'
+
+                                        });
+                                        return this.$router.push(
+                                            {path: '/log/products'}
+                                        )
                                     }
                                 })
                                 .catch(({response:r}) => {
@@ -126,14 +166,14 @@
             }
         },
         watch: {
-            form: {
-                handler: function (val) {
-                    const brand = this.brands.find(({id}) => id === val.brand_id);
-                    const category = this.categories.find(({id}) => id === val.category_id);
-                    Vue.set(this.$data.form, 'name', `${val.feature} ${brand ? brand.name : ''} ${category ? category.name : ''}`);
-                },
-                deep: true
-            }
+            // form: {
+            //     handler: function (val) {
+            //         const brand = this.brands.find(({id}) => id === val.brand_id);
+            //         const category = this.categories.find(({id}) => id === val.category_id);
+            //         Vue.set(this.$data.form, 'name', `${val.feature} ${brand ? brand.name : ''} ${category ? category.name : ''}`);
+            //     },
+            //     deep: true
+            // }
         }
     }
 </script>
