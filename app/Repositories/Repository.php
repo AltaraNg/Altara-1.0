@@ -41,12 +41,12 @@ abstract class Repository
 
     public function all() {
         $limit = request('limit', 10);
-        return $this->model::paginate($limit);
+        return $this->model::latest()->paginate($limit);
     }
 
     public function getAll($filter)
     {
-        return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
+        return $this->model::latest()->filter($filter)->paginate();
     }
 
     public function query($filter)

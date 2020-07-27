@@ -4,6 +4,7 @@ namespace App;
 
 use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PaymentReconcile extends Model
 {
@@ -38,7 +39,7 @@ class PaymentReconcile extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function paymentMethod()
     {
@@ -46,7 +47,7 @@ class PaymentReconcile extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function branch()
     {
@@ -54,7 +55,7 @@ class PaymentReconcile extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {

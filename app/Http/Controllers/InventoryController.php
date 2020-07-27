@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\InventoryFilter;
 use App\Http\Requests\InventoryRequest;
 use App\Inventory;
 use App\Repositories\InventoryRepository;
-use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
@@ -18,9 +18,9 @@ class InventoryController extends Controller
         $this->inventoryRepo = $inventoryRepository;
     }
 
-    public function index(InventoryController $filter)
+    public function index(InventoryFilter $filter)
     {
-        $inventories = $this->inventoryRepo->all();
+        $inventories = $this->inventoryRepo->getAll($filter);
 
         return $this->sendSuccess($inventories->toArray(), 'Inventory retrieved successfully');
     }
