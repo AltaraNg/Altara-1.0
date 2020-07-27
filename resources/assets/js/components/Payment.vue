@@ -10,7 +10,7 @@
                         <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" v-if="payment.customer">
-                        {{payment.customer.id}}
+                        {{payment.customer ? payment.customer.id : "Not Available"}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{payment.date.split(' ')[0]}}
@@ -46,14 +46,14 @@
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <span v-if="item.deposited">{{item.cash_at_hand | currency('₦')}}</span>
-                        <input @keyup="onUpKey" v-model="reconcileForm.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
+                        <input @keyup="onUpKey" v-model="item.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{item.total | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <span v-if="item.deposited">{{item.deposited | currency('₦')}}</span>
-                        <input @keyup="onUpKey" v-model="reconcileForm.deposited" type="number" class="form-control" rows="1" v-else/>
+                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
@@ -124,7 +124,7 @@
                                             <td>{{ paymentItem.branch || "Not Available" }}</td>
                                         </tr>
 
-                                        <tr>
+                                        <tr v-if="paymentItem.customer">
                                             <th>Customer ID</th>
                                             <td>{{ paymentItem.customer.id || "Not Available" }}</td>
                                         </tr>
@@ -166,23 +166,16 @@
             </div>
         </div>
         <nav v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)" class="col d-flex justify-content-end align-items-center pr-0">
-            <!--TODO update component -->
+
             <div v-if="pageParams">
                 <base-pagination
-                    :prev_page_url="pageParams.prev_page_url? pageParams.prev_page_url : '' "
-                    :next_page_url="pageParams.next_page_url? pageParams.next_page_url : ''"
-                    :first_page_url="pageParams.first_page_url"
-                    :last_page_url="pageParams.last_page_url"
-                    :last_page="pageParams.last_page"
-                    :current_page="pageParams.current_page"
-                    :from="pageParams.from ? pageParams.from : 0 "
-                    :to="pageParams.to ? pageParams.to : 0 "
-                    :total="pageParams.total"
+
+                    :page-param="pageParams"
                     :page="page"
                     @fetchData="fetchData()"
                     @next="next()"
                     @prev="prev()"
-                    :page_size="pageParams.per_page">
+                >
                 </base-pagination>
 
             </div>
@@ -313,10 +306,12 @@
             async getPaymentReconciliationList(){
                 this.branchId = localStorage.getItem('branch_id');
                 let yesterday = new Date(Date.now() - 864e5).toISOString();
+                let previous = new Date('feb 1, 2019').toISOString(); //used an arbitrary date needed by the api
+                let from = previous.slice(0, 10);
                 let to = yesterday.slice(0, 10);
 
                 try{
-                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}`);
+                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}&from=${from}`);
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.renderedList = this.paymentReconciliationList;
@@ -333,12 +328,12 @@
             },
 
             async updateReconciledPayment(item){
-               if(!this.reconcileForm.deposited ){
+               if(!item.deposited ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
-                    "cash_at_hand":this.reconcileForm.cash_at_hand,
-                    "deposited": this.reconcileForm.deposited,
+                    "cash_at_hand":item.cash_at_hand,
+                    "deposited": item.deposited,
                     "comment": this.reconcileForm.comment
                 };
                 this.$LIPS(true);

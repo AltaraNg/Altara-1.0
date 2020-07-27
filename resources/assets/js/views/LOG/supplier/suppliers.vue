@@ -5,19 +5,19 @@
             <custom-header :title="'Suppliers List'"/>
             <div class="mt-2 mt-lg-3 row attendance-head ">
                 <router-link :to="{name: 'suppliersCreate'}">
-            <button class="btn btn-primary bg-default mt-0 myBtn ">New Supplier</button>
+            <button class="btn btn-primary bg-default  myBtn ">New Supplier</button>
                 </router-link>
             </div>
             <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
                 <div class="col-4 col-lg" v-for="{name:filter,model} in filters">
-                    <div class="row">
+                    <div >
 
                         <div class="light-heading mb-1">
                             <span class="d-none d-sm-inline">Select </span>
                             {{filter | capitalize}}
                         </div>
 
-                        <div class="form-group w-100" v-if="filter === 'state'">
+                        <div class="w-50" v-if="filter === 'state'">
                             <select class="custom-select" v-model="$data[model]"
                                     @keyup.enter="fetchData()">
                                 <option disabled selected value="">{{filter | capitalize}}</option>
@@ -155,20 +155,13 @@
 
             <div v-if="pageParams">
                 <base-pagination
-                    :prev_page_url="pageParams.prev_page_url? pageParams.prev_page_url : '' "
-                    :next_page_url="pageParams.next_page_url? pageParams.next_page_url : ''"
-                    :first_page_url="pageParams.first_page_url"
-                    :last_page_url="pageParams.last_page_url"
-                    :last_page="pageParams.last_page"
-                    :current_page="pageParams.current_page"
-                    :from="pageParams.from ? pageParams.from : 0 "
-                    :to="pageParams.to ? pageParams.to : 0 "
-                    :total="pageParams.total"
+
+                    :page-param="pageParams"
                     :page="page"
                     @fetchData="fetchData()"
                     @next="next()"
                     @prev="prev()"
-                    :page_size="pageParams.per_page">
+                    >
                 </base-pagination>
 
             </div>
