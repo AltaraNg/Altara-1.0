@@ -6,25 +6,25 @@
 
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
-                    <div class="my-4 p-5 bg-white shadow-sm card-radius container-fluid">
-                        <div class="row ">
-                        <div class="form-group col-md-6 col-12  px-0 px-md-3" v-if="mode === 'edit'">
-                            <label>SKU</label>
-                            <input class="form-control" disabled name="sku" placeholder="supplier sku" type="text" v-model="form.sku">
+                    <div class="">
+
+                        <div class="form-group col-md-6 " v-if="mode === 'edit'">
+                            <label for="sku">SKU</label>
+                            <input class="form-control" disabled name="sku" placeholder="supplier sku" id="sku" type="text" v-model="form.sku">
                             <small v-if="errors.first('sku')">{{ errors.first('sku') }}</small>
                             <small v-if="error.sku">{{error.sku[0]}}</small>
                         </div>
-                        <div class="form-group col-md-6 col-12  px-0 px-md-3">
+                        <div class="form-group col-md-6 float-right">
                             <label>Supplier Name</label>
                             <input class="form-control" name="name" placeholder="supplier name"
                                    type="text" v-model="form.name" v-validate="'required|max:50'">
                             <small v-if="errors.first('name')">{{ errors.first('name') }}</small>
                             <small v-if="error.sku">{{error.name[0]}}</small>
                         </div>
-                        </div>
-                        <div class="spaceBetween mb-md-2 mb-0"></div>
-                        <div class="row">
-                        <div class="form-group col-md-6 col-12  px-0 px-md-3">
+
+
+
+                        <div class="form-group col-md-6 ">
                             <label>Email</label>
                             <input class="form-control" name="email" placeholder="email" type="email"
                                    v-model="form.email" v-validate="'required|email|max:100'">
@@ -32,22 +32,22 @@
                         </div>
 
 
-                        <div class="form-group col-md-6 col-12  px-0 px-md-3">
+                        <div class="form-group col-md-6 float-right">
                             <label>Phone</label>
                             <input class="form-control" name="phone" placeholder="phone"
                                    type="text" v-model="form.phone_number" v-validate="'required|max:20'">
                             <small v-if="errors.first('phone')">{{ errors.first('phone') }}</small>
                         </div>
-                        </div>
-                        <div class="spaceBetween mb-md-2 mb-0"></div>
-                        <div class="row">
-                        <div class="form-group col-md-6 col-12  px-0 px-md-3">
+
+
+
+                        <div class="form-group col-md-6">
                             <label>Contact Person Name</label>
                             <input class="form-control" data-vv-as="contact person phone" name="contact_phone" placeholder="phone"
                                    type="text" v-model="form.contact_person_name" v-validate="'required|max:20'">
                             <small v-if="errors.first('contact_name')">{{ errors.first('contact_name') }}</small>
                         </div>
-                        <div class="form-group col-md-6 col-12  px-0 px-md-3" v-if="mode === 'edit'">
+                        <div class="form-group col-md-6 " v-if="mode === 'edit'">
                             <label class="w-100 ">Status</label>
                             <div class="radio p-0 col-md-6 col-6 " v-for="{name,value} in statuses">
                                 <input :id="name" :value="value" name="status" type="radio" v-model="form.is_active"
@@ -56,16 +56,16 @@
                             </div>
                             <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
                         </div>
-                        </div>
-                        <div class="spaceBetween mb-md-2 mb-0"></div>
-                        <div class="row">
-                        <div class="form-group col-md-6 col-12  px-0 px-md-3">
+
+
+
+                        <div class="form-group col-md-6 float-right">
                             <label>Address</label>
                             <textarea class="form-control w-75" placeholder="address" name="address" rows="1" v-validate="'required|max:255'"
                                       v-model="form.address"></textarea>
                             <small v-if="errors.first('address')">{{ errors.first('address') }}</small>
                         </div>
-                        <div class="form-group col-md-6 col-12  px-0 px-md-3">
+                        <div class="form-group col-md-6 ">
                             <label class="w-100">State</label>
                             <select class="custom-select w-75" data-vv-as="state name"
                                     data-vv-validate-on="blur" name="state" v-model="form.state" v-validate="'required'">
@@ -74,9 +74,9 @@
                             </select>
                             <small v-if="errors.first('state')">{{ errors.first('state') }}</small>
                         </div>
-                        </div>
+
                         <div class="row">
-                            <div class="form-group col-md-6 col-12  px-0 px-md-3">
+                            <div class="form-group col-md-6 ">
                                 <label>City</label>
                                 <input class="form-control" data-vv-as="city" name="city" placeholder="City"
                                        v-model="form.city" v-validate="'required|max:50'">
@@ -85,9 +85,9 @@
                         </div>
                         <div class="spaceAfter"></div>
                         <h5 class="m-3">Bank Details</h5>
-                        <div class="spaceAfter"></div>
+
                         <div class="row">
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
+                        <div class="form-group col-md-6 ">
                             <label>Bank account name</label>
                             <input class="form-control" data-vv-as="account name" name="account_name" placeholder="account name"
                                     v-model="form.bank_account_name" v-validate="'required|max:50'">

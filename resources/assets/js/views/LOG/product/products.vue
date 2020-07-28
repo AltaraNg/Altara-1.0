@@ -20,7 +20,7 @@
             </div>
             <div class="tab-content mt-1 attendance-body">
 
-                    <div class="mb-3 row attendance-item" :key="index" v-for="(product,index) in products" @click="viewProduct(brand)">
+                    <div class="mb-3 row attendance-item" :key="index" v-for="(product,index) in products" @click="viewProduct(product)">
                         <div class="col d-flex align-items-center" style="max-width: 120px">
                             <span class="user mx-auto" >{{index+OId}}</span>
                         </div>
@@ -67,6 +67,18 @@
                                     <tr >
                                         <th>Status</th>
                                         <td>{{ productItem.is_active | status}}</td>
+                                    </tr>
+                                    <tr >
+                                        <th>Product Type</th>
+                                        <td>{{ productItem.product_type }}</td>
+                                    </tr>
+                                    <tr >
+                                        <th>Brand</th>
+                                        <td>{{ productItem.brand }}</td>
+                                    </tr>
+                                    <tr >
+                                        <th>Category</th>
+                                        <td>{{ productItem.category}}</td>
                                     </tr>
 
                                     <tr>
@@ -166,7 +178,19 @@
             },
 
             prepareList(response){
-                let {current_page, first_page_url, from, last_page, last_page_url, data, per_page, next_page_url, to, total, prev_page_url} = response.data;
+                let {
+                    current_page,
+                    first_page_url,
+                    from,
+                    last_page,
+                    last_page_url,
+                    data,
+                    per_page,
+                    next_page_url,
+                    to,
+                    total,
+                    prev_page_url
+                } = response.data;
                 this.pageParams = Object.assign({}, this.pageParams, {current_page, first_page_url, from, last_page, last_page_url, per_page, next_page_url, to, total, prev_page_url});
                 this.products = data;
                 this.OId = from;
@@ -191,14 +215,14 @@
             viewProduct(product){
                 this.showModalContent = true;
                 this.productItem = product;
-                return $(`#viewBrand`).modal('toggle');
+                return $(`#viewProduct`).modal('toggle');
             },
             edit(item){
                 this.showModalContent = false;
                 $(`#viewProduct`).modal('toggle');
 
                 return this.$router.push(
-                    {name: 'ProductEdit', params: {id: item}}
+                    {name: 'productEdit', params: {id: item}}
                 )
             },
 

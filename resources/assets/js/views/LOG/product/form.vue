@@ -10,7 +10,7 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label>Product name</label>
                             <input class="form-control" disabled placeholder="product name" type="text"
-                                   v-model="form.name">
+                                   v-model="productName">
                             <small v-if="error.name">{{error.name[0]}}</small>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
@@ -20,9 +20,10 @@
                             <small v-if="errors.first('feature')">{{ errors.first('feature') }}</small>
                         </div>
                         <div class="spaceBetween mb-md-2 mb-0"></div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Brand</label>
-                            <select name="brand" id="brand" v-model="form.brand" class=" text-capitalize font-weight-bold h5" >
+                        <div class="form-group col-md-6 col-12 ">
+                            <label for="brand" class="form-control-label">Brand </label>
+                            <br>
+                            <select name="brand" id="brand" v-model="form.brand_id" class="custom-select" >
                                 <option value="all" selected="selected" >--select--</option>
                                 <option
                                     :value="brand.id"
@@ -32,9 +33,10 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Category</label>
-                            <select name="category" id="category" v-model="form.category" class=" text-capitalize font-weight-bold h5" >
-                                <option value="all" selected="selected" >--select--</option>
+                            <label class="form-control-label" for="category">Category</label>
+                            <br>
+                            <select name="category" id="category" v-model="form.category_id" class="custom-select" >
+                                <option value="all" selected="" class="selected">--select--</option>
                                 <option
                                     :value="category.id"
                                     v-for="category of categories"
@@ -48,8 +50,24 @@
                             <input class="form-control" name="price" placeholder="retail price"
                                    type="number" v-model="form.retail_price" v-validate="'required|max:50'">
                             <small v-if="errors.first('price')">{{ errors.first('price') }}</small>
+
                         </div>
-                    </div>
+
+                            <div class="form-group col-md-6 col-12 ">
+                                <label for="product_type" class="form-control-label">Product Type </label>
+                                <br>
+                                <select name="product_type" id="product_type" v-model="form.product_type_id" class="custom-select" >
+                                    <option value="all" selected="selected" >--select--</option>
+                                    <option
+                                        :value="type.id"
+                                        v-for="type of product_types"
+                                    >{{ type.name }}</option
+                                    >
+                                </select>
+                            </div>
+                            </div>
+
+
                     <div class="mb-5 px-0 row align-items-center">
                         <div class="clearfix d-flex justify-content-end w-100">
                             <router-link to="/log/products" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">
@@ -60,6 +78,7 @@
                             </button>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -85,6 +104,7 @@
             return {
                 form: {},
                 categories: [],
+                product_types: [],
                 brands: [],
                 mode: null,
                 error: {},
@@ -118,9 +138,12 @@
                 get('/api/brand').then((res) => {
                     Vue.set(this.$data, 'brands', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
-                get('/api/category').then((res) => {
-                    Vue.set(this.$data, 'categories', res.data.data.data);
+
+                get('/api/product_type').then((res) => {
+                    Vue.set(this.$data, 'product_types', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
+
+
                 Vue.set(this.$data, 'form', data);
 
                 if (this.mode === 'edit') {
@@ -136,6 +159,7 @@
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
+                            this.form.name = this.productName;
                             (this.mode === 'edit' ? put(this.store, this.form) : post(this.store, this.form))
                                 .then(({data}) => {
                                     if (data.status === 'success') {
@@ -166,14 +190,29 @@
             }
         },
         watch: {
-            // form: {
-            //     handler: function (val) {
-            //         const brand = this.brands.find(({id}) => id === val.brand_id);
-            //         const category = this.categories.find(({id}) => id === val.category_id);
-            //         Vue.set(this.$data.form, 'name', `${val.feature} ${brand ? brand.name : ''} ${category ? category.name : ''}`);
-            //     },
-            //     deep: true
-            // }
+            form: {
+                handler: function (val) {
+
+                    const brand = this.brands.find(el => el.id === val.brand_id);
+
+                    if(brand){
+
+                        Vue.set(this.$data, 'categories', brand.categories);
+                }else return ''},
+                deep: true
+            }
+        },
+        computed: {
+            productName (){
+                let brand, category, feature;
+                if(this.form.brand_id && this.form.category_id) {
+                    brand = this.brands.find(item => item.id === this.form.brand_id).name;
+                    category = this.categories.find(item => item.id === this.form.category_id).name;
+                    feature = this.form.feature;
+                    return `${feature} ${brand} ${category}`;
+                }else return 'Product Name';
+            }
         }
+
     }
 </script>
