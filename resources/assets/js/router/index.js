@@ -54,6 +54,7 @@ const BrandList = () => import("../views/LOG/brand/brands.vue");
 const CategoryForm = () => import("../views/LOG/category/form.vue");
 const CategoryList = () => import("../views/LOG/category/categories.vue");
 const ProductForm = () => import("../views/LOG/product/form.vue");
+const ProductList = () => import("../views/LOG/product/products.vue");
 const Renewal = () => import("../views/FSL/renewal/renewal.vue");
 const CashLogger = () => import("../views/FSL/cash_logger/cash_logger.vue");
 const PaymentLogger = () => import("../views/FSL/payment_logger/payment_logger.vue");
@@ -360,7 +361,7 @@ const router = new VueRouter({
                     name: "ShowRoom Dashboard",
                     meta: { mode: "create" }
                 },
-                
+
             ]
         },
         {
@@ -409,7 +410,7 @@ const router = new VueRouter({
 
                 {
                     path: "products",
-                    component: DataViewer,
+                    component: ProductList,
                     meta: {
                         appModel: "product",
                         source: "/api/product",
