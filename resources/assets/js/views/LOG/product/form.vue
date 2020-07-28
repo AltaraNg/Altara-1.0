@@ -23,8 +23,8 @@
                         <div class="form-group col-md-6 col-12 ">
                             <label for="brand" class="form-control-label">Brand </label>
                             <br>
-                            <select name="brand" id="brand" v-model="form.brand_id" class="custom-select" >
-                                <option value="all" selected="selected" >--select--</option>
+                            <select name="brand" id="brand" v-model="form.brand_id" class="custom-select" data-vv-as="brand id">
+                                <option disabled value="" >--select--</option>
                                 <option
                                     :value="brand.id"
                                     v-for="brand of brands"
@@ -35,8 +35,8 @@
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
                             <label class="form-control-label" for="category">Category</label>
                             <br>
-                            <select name="category" id="category" v-model="form.category_id" class="custom-select" >
-                                <option value="all" selected="" class="selected">--select--</option>
+                            <select name="category" id="category" v-model="form.category_id" class="custom-select" data-vv-as="category id">
+                                <option disabled value="">--select--</option>
                                 <option
                                     :value="category.id"
                                     v-for="category of categories"
@@ -147,6 +147,7 @@
                 Vue.set(this.$data, 'form', data);
 
                 if (this.mode === 'edit') {
+                    //TODO change the edit form
                     this.store = `/api/product/${this.$route.params.id}`;
                     this.method = 'PUT';
                 }
