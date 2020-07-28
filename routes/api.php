@@ -58,7 +58,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         'custom_repayment_date' => 'CustomRepaymentDateController',
         'product_type' => 'ProductTypeController',
         'product_transfer' => 'ProductTransferController',
-        'amortization' => 'AmortizationController'
+        'amortization' => 'AmortizationController',
+        'price_calculator' => 'PriceCalculatorController'
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
