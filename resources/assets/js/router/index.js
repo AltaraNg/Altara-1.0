@@ -47,6 +47,7 @@ const AttendanceForm = () => import("../views/FSL/attendance/form.vue");
 const LOG = () => import("../views/LOG/index.vue");
 const LOGHome = () => import("../views/LOG/HomePage.vue");
 const Inventory = () => import("../views/LOG/inventory/inventory.vue");
+const InventoryCreate = () => import("../views/LOG/inventory/createInventory.vue");
 const SuppliersForm = () => import("../views/LOG/supplier/form.vue");
 const SupplierList = () => import("../views/LOG/supplier/suppliers.vue");
 const BrandForm = () => import("../views/LOG/brand/form.vue");
@@ -386,6 +387,12 @@ const router = new VueRouter({
             children: [
                 { path: "home", component: LOGHome, name: "LOGHome" },
                 { path: "inventory", component: Inventory, name: "inventory" },
+                {
+                    path: "inventory/create",
+                    component: InventoryCreate,
+                    name: "inventoryCreate",
+                    meta: { mode: "create" }
+                },
                 {
                     path: "brands",
                     component: BrandList,
