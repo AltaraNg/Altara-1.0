@@ -45,14 +45,14 @@
                         {{item.date.split(' ')[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.deposited">{{item.cash_at_hand | currency('₦')}}</span>
+                        <span v-if="item.user">{{item.cash_at_hand | currency('₦')}}</span>
                         <input @keyup="onUpKey" v-model="item.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{item.total | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.deposited">{{item.deposited | currency('₦')}}</span>
+                        <span v-if="item.user">{{item.deposited | currency('₦')}}</span>
                         <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
@@ -60,13 +60,13 @@
                         {{item.total - item.deposited | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" >
-                        <span class="overflow green justify-content-center" v-if="item.deposited"><i class="fas fa-info-circle"></i></span>
+                        <span class="overflow green text-center" v-if="item.user"><i class="fas fa-info-circle"></i></span>
 
                         <textarea v-model="reconcileForm.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
-                    <div class="col d-flex align-items-center justify-content-center" @click="updateModal(item)" data-hoverable="true">
-                        <p :class="item.deposited? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></p>
+                    <div class="col d-flex align-items-center justify-content-center text-center" @click="updateModal(item)" data-hoverable="true">
+                        <span :class="item.deposited? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></span>
                     </div>
                 </div>
             </div>
