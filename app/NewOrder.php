@@ -24,7 +24,7 @@ class NewOrder extends Model
         $id = self::getCustomRepaymentCycleId();
         return [
             'customer_id' => 'required|exists:customers,id',
-            'product_id' => 'required|exists:new_products,product_id',
+            'product_id' => 'required|exists:products,id',
             'repayment' => ['required', new Money],
             'repayment_duration_id' => 'required|exists:repayment_durations,id',
             'repayment_cycle_id' => 'required|exists:repayment_cycles,id',

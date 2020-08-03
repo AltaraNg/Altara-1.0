@@ -16,7 +16,6 @@ class AmmortizationService
     public function generatePreview($data)
     {
         $order = new NewOrder($data);
-
         try {
             $plan = app()->make('App\Amortization\\' .Str::studly($order->repaymentCycle->name), ['order' => $order])->preview();
         } catch (\Exception $e) {
