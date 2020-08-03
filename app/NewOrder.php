@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Http\Filters\Filterable;
+use App\Rules\Money;
 use Illuminate\Database\Eloquent\Model;
 
 class NewOrder extends Model
@@ -20,16 +21,16 @@ class NewOrder extends Model
 
     public static function rules()
     {
-        $id = self::getRePayId();
+        $id = self::getCustomRepaymentCycleId();
         return [
             'customer_id' => 'required|exists:customers,id',
             'product_id' => 'required|exists:new_products,product_id',
+            'repayment' => ['required', new Money],
             'repayment_duration_id' => 'required|exists:repayment_durations,id',
             'repayment_cycle_id' => 'required|exists:repayment_cycles,id',
             'business_type_id' => 'required|exists:business_types,id',
-            'status_id' => 'required|exists:order_statuses,id',
-            'branch_id' => 'required|exists:branches,id',
-            'down_payment' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'down_payment' => ['required', new Money],
+            'product_price' => ['required', new Money],
             'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,'. $id
         ];
     }
@@ -48,7 +49,7 @@ class NewOrder extends Model
         ];
     }
 
-    private static function getRePayId()
+    private static function getCustomRepaymentCycleId()
     {
         return RepaymentCycle::where('name', RepaymentCycle::CUSTOM)->first()->id;
     }
