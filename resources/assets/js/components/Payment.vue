@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="tab === 'Log Payment'">
-            <Lookup :logger="'hello'"/>
+            <Lookup :logger="'cash'"/>
         </div>
         <div class="tab-content mt-1 attendance-body">
             <div v-if="tab === 'View Payments'">
@@ -10,7 +10,7 @@
                         <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" v-if="payment.customer">
-                        {{payment.customer.id}}
+                        {{payment.customer ? payment.customer.id : "Not Available"}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{payment.date.split(' ')[0]}}
@@ -28,7 +28,7 @@
                         ₦{{payment.amount}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" @click="updateModal(payment)" data-hoverable="true">
-                        <p :class="payment.comment? 'green' : 'red'" class="overflow">{{!payment.comment ? 'No Comment' : 'Comment'}}</p>
+                        <p :class="payment.comment? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></p>
                     </div>
                 </div>
             </div>
@@ -45,36 +45,36 @@
                         {{item.date.split(' ')[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.deposited">{{item.cash_at_hand | currency('₦')}}</span>
-                        <input @keyup="onUpKey" v-model="reconcileForm.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
+                        <span v-if="item.user">{{item.cash_at_hand | currency('₦')}}</span>
+                        <input @keyup="onUpKey" v-model="item.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{item.total | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.deposited">{{item.deposited | currency('₦')}}</span>
-                        <input @keyup="onUpKey" v-model="reconcileForm.deposited" type="number" class="form-control" rows="1" v-else/>
+                        <span v-if="item.user">{{item.deposited | currency('₦')}}</span>
+                        <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
-                        ₦{{item.total - item.deposited}}
+                        {{item.total - item.deposited | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" >
-                        <span class="overflow green" v-if="item.deposited">{{item.comment === null ? 'No Comment': 'Comment'}}</span>
+                        <span class="overflow green text-center" v-if="item.user"><i class="fas fa-info-circle"></i></span>
 
                         <textarea v-model="reconcileForm.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
-                    <div class="col d-flex align-items-center" style="max-width: 120px" data-hoverable="true" @click="updateModal(item)">
-                        <span class="overflow green"   v-if="item.deposited">Reconciled<i class="fas fa-info-circle"></i></span>
-                        <span class="overflow red" v-else>Not reconciled<i class="fas fa-info-circle"></i></span>
+                    <div class="col d-flex align-items-center justify-content-center text-center" @click="updateModal(item)" data-hoverable="true">
+                        <span :class="item.deposited? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></span>
                     </div>
                 </div>
             </div>
             <div class="modal fade repayment" id="updatePayment">
-                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
+                            <h6 class="modal-title py-1">Comment</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                         <span aria-hidden="true" class="modal-close text-danger">
                             <i class="fas fa-times"></i>
@@ -83,32 +83,102 @@
                         </div>
                         <div class="modal-body">
                             <div v-if="tab === 'Reconcile'">
-                                <p><b>Payment Type:</b> {{paymentItem.payment_method}}</p>
-                                <p><b>Reconciled by:</b> {{paymentItem.user || 'Not Yet Reconciled'}}</p>
-                                <p><b>Comment:</b> {{!paymentItem.comment ? 'No Comment' : paymentItem.comment.comment}}</p>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <th>Branch Name</th>
+                                            <td>{{ paymentItem.branch || "Not Available" }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Comment</th>
+                                            <td> {{  !paymentItem.comment
+                                                ? "Not Available"
+                                                : paymentItem.comment.comment
+                                                }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Reconciler</th>
+                                            <td>{{ !paymentItem.user ? "Not Available" : paymentItem.user  }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date</th>
+                                            <td>{{paymentItem.date ? paymentItem.date.split(" ")[0] : "Not Available" }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Time</th>
+                                            <td>{{paymentItem.date ? paymentItem.date.split(" ")[1] : "Not Available" }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
                             </div>
                             <div v-else>
-                                <p>Customer ID: {{paymentItem.customer.id}}</p>
-                                <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
-                                <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <th>Branch Name</th>
+                                            <td>{{ paymentItem.branch || "Not Available" }}</td>
+                                        </tr>
+
+                                        <tr v-if="paymentItem.customer">
+                                            <th>Customer ID</th>
+                                            <td>{{ paymentItem.customer.id || "Not Available" }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Payment Number</th>
+                                            <td>{{ paymentItem.payment_number || "Not Available" }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Comment</th>
+                                            <td> {{  !paymentItem.comment
+                                                ? "Not Available"
+                                                : paymentItem.comment.comment
+                                                }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Date</th>
+                                            <td>{{paymentItem.date ? paymentItem.date.split(" ")[0] : "Not Available" }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Time</th>
+                                            <td>{{paymentItem.date ? paymentItem.date.split(" ")[1] : "Not Available" }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
 
+                        </div>
+                        <div class="modal-footer">
+                            <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                               style="text-align: right">close dialogue</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <nav v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)" class="col d-flex justify-content-end align-items-center pr-0">
-            <base-pagination
-                :next_page_url="!responseData.next_page_url ? '#' : responseData.next_page_url"
-                :prev_page_url="!responseData.prev_page_url ? '#': responseData.prev_page_url "
-                :first_page_url="responseData.first_page_url"
-                :last_page="responseData.last_page"
-                :current_page="responseData.current_page"
-                @next="next"
-                @prev="prev"
-            ></base-pagination>
+
+            <div v-if="pageParams">
+                <base-pagination
+
+                    :page-param="pageParams"
+                    :page="page"
+                    @fetchData="fetchData()"
+                    @next="next()"
+                    @prev="prev()"
+                >
+                </base-pagination>
+
+            </div>
         </nav>
 
     </div>
@@ -184,6 +254,7 @@
                 paymentItem:{},
                 showModalContent: false,
                 paymentList:[],
+                pageParams: null,
                 paymentReconciliationList:[],
                 totalCashAtHand:0,
                 variance:'',
@@ -222,6 +293,7 @@
                     const fetchPaymentList = await get(`/api/payment?page=${this.page}&branch=${this.branchId}`);
                     this.paymentList = fetchPaymentList.data.data.data;
                     this.responseData = fetchPaymentList.data.data;
+                    this.pageParams = this.responseData;
                     this.renderedList = this.paymentList;
                     this.OId = this.responseData.from;
                     this.$LIPS(false);
@@ -234,10 +306,12 @@
             async getPaymentReconciliationList(){
                 this.branchId = localStorage.getItem('branch_id');
                 let yesterday = new Date(Date.now() - 864e5).toISOString();
+                let previous = new Date('feb 1, 2019').toISOString(); //used an arbitrary date needed by the api
+                let from = previous.slice(0, 10);
                 let to = yesterday.slice(0, 10);
 
                 try{
-                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}`);
+                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}&from=${from}`);
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.renderedList = this.paymentReconciliationList;
@@ -254,12 +328,12 @@
             },
 
             async updateReconciledPayment(item){
-               if(!this.reconcileForm.deposited ){
+               if(!item.deposited ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
-                    "cash_at_hand":this.reconcileForm.cash_at_hand,
-                    "deposited": this.reconcileForm.deposited,
+                    "cash_at_hand":item.cash_at_hand,
+                    "deposited": item.deposited,
                     "comment": this.reconcileForm.comment
                 };
                 this.$LIPS(true);

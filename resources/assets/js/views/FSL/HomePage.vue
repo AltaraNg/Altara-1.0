@@ -80,9 +80,21 @@ export default {
         },
         {
           url: "cash-logger",
-          title: "Cash Logger",
-          url_c: "Log cash by customer",
-          desc: "Log all cash"
+          title: "Payment Logger",
+          url_c: "Log payment by customer",
+          desc: "Log all payments"
+        },
+        {
+          url: "payment-logger",
+          title: "Sales Logger",
+          url_c: "Log sales in showroom",
+          desc: "Log all sales"
+        },
+        {
+          url: "dashboard",
+          title: "Showroom Dashboard",
+          url_c: "View Dashboard for showroom",
+          desc: "View Dashboard"
         },
 
       ]

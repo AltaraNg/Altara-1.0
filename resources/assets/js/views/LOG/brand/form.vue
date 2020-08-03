@@ -2,7 +2,7 @@
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
 
-            <custom-header :to="'/log/brands'" :title="mode + ' brand'" :button-title="'view brands!'"/>
+            <custom-header :to="'/log/brands'" :title="mode + ' Brand'" :button-title="'view brands!'"/>
 
             <div class="attendance-body">
                 <form @submit.prevent="onSave">
@@ -12,9 +12,22 @@
                             <input class="form-control mb-2" placeholder="brand name" name="brand name" type="text"
                                    v-model="form.name"
                                    v-validate="'required|max:50'">
+                            <p @click="addCategory" class="link" v-if="mode === 'edit'">Add categories</p>
                             <small v-if="errors.first('brand name')">{{ errors.first('brand name') }}</small>
                             <small v-if="error.name">{{error.name[0]}}</small>
                         </div>
+                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3" v-if="mode === 'edit'">
+                            <label class="w-100 float-left">Status</label>
+                            <div class="radio p-0 col-md-6 col-6 float-left" v-for="{name,value} in statuses">
+                                <input :id="name" :value="value" name="status" type="radio" v-model="form.is_active"
+                                       v-validate="'required'">
+                                <label :for="name">{{name}}</label>
+                            </div>
+                            <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
+                        </div>
+
+
+
                     </div>
                     <div class="mb-5 px-0 row align-items-center">
                         <div class="clearfix d-flex justify-content-end w-100">
@@ -29,6 +42,40 @@
                 </form>
             </div>
 
+            <div class="modal fade repayment" id="addCategory">
+                <div class="modal-dialog " role="document">
+                    <div class="modal-content" v-if="showModalContent">
+                        <div class="modal-header py-2">
+                            <h4>Add Category</h4>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                        <span aria-hidden="true" class="modal-close text-danger">
+
+                            <i class="fas fa-times"></i>
+                        </span>
+                            </a>
+                        </div>
+                        <div class="modal-body px-5">
+                            <div class="form-group col-md-6 col-12 float-left px-0 px-md-3 " >
+
+                                <div v-for="category in categories" class="checkbox">
+                                    <input :id="category.name" :value="category.id" :name="category.name" type="checkbox" v-model="selectCategories"
+                                           v-validate="'required'">
+                                    <label :for="category.name">{{category.name}}</label>
+
+
+                                </div>
+                                <small v-if="errors.first('status')">{{ errors.first('status') }}</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+
+                            <button  class="text-center btn bg-default" @click="addFinish()">Done</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </transition>
 </template>
@@ -36,7 +83,7 @@
     import Vue from 'vue';
     import {log} from "../../../utilities/log";
     import Flash from "../../../utilities/flash";
-    import {byMethod, get} from '../../../utilities/api';
+    import {get, post,put, patch} from "../../../utilities/api";
     import CustomHeader from '../../../components/customHeader';
 
     function initialize(to) {
@@ -52,43 +99,88 @@
             return {
                 form: {},
                 mode: null,
+                categories: [],
+                selectCategories: [],
+                showModalContent: false,
                 error: {},
                 show: false,
                 store: '/api/brand',
                 method: 'POST',
+                statuses: [{name: 'active', value: 1}, {name: 'inactive', value: 0}]
             }
         },
         beforeRouteEnter(to, from, next) {
-            get(initialize(to))
-                .then(({data}) => next(vm => vm.prepareForm(data)))
-                .catch(() => next(() => Flash.setError('Error Preparing form')));
+            if (to.meta.mode === 'edit'){
+                get(`/api/brand/${to.params.id}`).then((data) => {
+
+                    next(vm => {
+
+                        vm.prepareForm(data.data.data)
+                    })
+                })
+                    .catch(() => next(() => Flash.setError('Error Preparing form')));
+            }
+            else{
+                let form = {};
+                next(vm => {
+                    vm.prepareForm(form)
+                })
+            }
         },
         methods: {
-            prepareForm({form}) {
+            prepareForm(data) {
+                this.$LIPS(true);
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                Vue.set(this.$data, 'form', form);
+                get('/api/category').then((res) => {
+                    Vue.set(this.$data, 'categories', res.data.data.data);
+                }).catch(() => Flash.setError('Error Preparing form'));
+                Vue.set(this.$data, 'form', data);
                 if (this.mode === 'edit') {
                     this.store = `/api/brand/${this.$route.params.id}`;
                     this.method = 'PUT';
                 }
+                this.$LIPS(false);
                 this.show = true;
+            },
+
+            addCategory(){
+                this.showModalContent = true;
+                return $(`#addCategory`).modal('toggle');
+            },
+            addFinish(){
+                this.$LIPS(true);
+                let data = {
+                    categories: this.selectCategories
+                };
+                patch(`/api/brand/${this.$route.params.id}/categories`, data).then((res) => {
+                    this.$swal({
+                        icon: 'success',
+                        title: res.message
+
+                    });
+                }).catch(() => Flash.setError('Error Adding categories'));
+                this.$LIPS(false);
             },
             onSave() {
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            byMethod(this.method, this.store, this.form)
+                            (this.mode === 'edit' ? put(this.store, this.form) : post(this.store, this.form))
                                 .then(({data}) => {
-                                    if (data.saved || data.updated) {
-                                        log(data.log, data.staff_id);
-                                        Vue.set(this.$data, 'form', data.form);
-                                        Flash.setSuccess(data.message, 5000);
-                                        if (data['updated']) this.$router.push('/log/brands');
+                                    if (data.status === 'success') {
+                                        Vue.set(this.$data, 'form',{});
+                                        this.$swal({
+                                            icon: 'success',
+                                            title: this.mode === 'edit' ? 'Brand Updated Successfully' : 'Brand added Successfully'
+
+                                        });
+                                        return this.$router.push(
+                                            {path: '/log/brands'}
+                                        )
                                     }
-                                    this.error = {};
                                 })
-                                .catch(({response: r}) => {
+                                .catch(({response:r}) => {
                                     let {data, status} = r;
                                     if (status === 422) {
                                         this.error = data.errors ? data.errors : data;
