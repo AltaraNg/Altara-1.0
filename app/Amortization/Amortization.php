@@ -23,7 +23,7 @@ abstract class Amortization
 
     public function repaymentAmount(): float
     {
-        return $this->deficit()/$this->repaymentCount();
+        return $this->order->repayment/$this->repaymentCount();
     }
 
     public function repaymentDuration(): int
@@ -34,11 +34,6 @@ abstract class Amortization
     public function repaymentCircle(): int
     {
         return $this->order->repaymentCycle->value;
-    }
-
-    public function deficit(): float
-    {
-        return $this->order->product_price - $this->order->down_payment;
     }
 
     /**

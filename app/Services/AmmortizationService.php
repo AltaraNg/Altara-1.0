@@ -15,12 +15,7 @@ class AmmortizationService
 {
     public function generatePreview($data)
     {
-        $product_price = StoreProduct::where('product_id', $data['product_id'])->first()->pc_pprice;
-        $order = new NewOrder(array_merge($data, [
-            'product_price' => $product_price,
-            'repayment' => $product_price - $data['down_payment']
-        ]));
-
+        $order = new NewOrder($data);
         try {
             $plan = app()->make('App\Amortization\\' .Str::studly($order->repaymentCycle->name), ['order' => $order])->preview();
         } catch (\Exception $e) {
