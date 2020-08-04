@@ -2,84 +2,86 @@
     <transition name="fade">
         <div class="pt-md-3 pt-2 attendance-view" id="index">
 
-            <custom-header :to="'/log/products'" :title="mode + ' product'" :button-title="'view Products!'"/>
+            <custom-header :to="'/log/inventory'" :title="mode + ' inventory'" :button-title="'view Inventory!'"/>
 
             <div class="attendance-body">
-                <form @submit.prevent="onSave">
+                <form @submit.prevent="onGenerate">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Product name</label>
-                            <input class="form-control" disabled placeholder="product name" type="text"
-                                   v-model="productName">
-                            <small v-if="error.name">{{error.name[0]}}</small>
-                        </div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Product feature</label>
-                            <input class="form-control" name="feature" placeholder="product feature"
-                                   type="text" v-model="form.feature" v-validate="'required|max:50'">
-                            <small v-if="errors.first('feature')">{{ errors.first('feature') }}</small>
-                        </div>
-                        <div class="spaceBetween mb-md-2 mb-0"></div>
-                        <div class="form-group col-md-6 col-12 ">
-                            <label for="brand" class="form-control-label">Brand </label>
+                        <div class="form-group col-md-3 col-12 ">
+                            <label for="product" class="form-control-label">Product</label>
                             <br>
-                            <select name="brand" id="brand" v-model="form.brand_id" class="custom-select" data-vv-as="brand id">
+                            <select name="product" id="product" v-model="form.product" class="custom-select" data-vv-as="product id">
                                 <option disabled value="" >--select--</option>
                                 <option
-                                    :value="brand.id"
-                                    v-for="brand of brands"
-                                >{{ brand.name }}</option
-                                >
+                                    :value="product"
+                                    v-for="product of products"
+                                >{{ product.name }}</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label class="form-control-label" for="category">Category</label>
+                        <div class="form-group col-md-3 col-12 ">
+                            <label for="branch" class="form-control-label">Branch</label>
                             <br>
-                            <select name="category" id="category" v-model="form.category_id" class="custom-select" data-vv-as="category id">
-                                <option disabled value="">--select--</option>
+                            <select name="branch" id="branch" v-model="form.branch_id" class="custom-select" data-vv-as="branch id">
+                                <option disabled value="" >--select--</option>
                                 <option
-                                    :value="category.id"
-                                    v-for="category of categories"
-                                >{{ category.name }}</option
-                                >
+                                    :value="branch"
+                                    v-for="branch of getBranches"
+                                >{{ branch.name }}</option>
                             </select>
                         </div>
-                        <div class="spaceBetween mb-md-2 mb-0"></div>
-                        <div class="form-group col-md-6 col-12 float-left px-0 px-md-3">
-                            <label>Retail Price</label>
-                            <input class="form-control" name="price" placeholder="retail price"
-                                   type="number" v-model="form.retail_price" v-validate="'required|max:50'">
-                            <small v-if="errors.first('price')">{{ errors.first('price') }}</small>
-
+                        <div class="form-group col-md-3 col-12 ">
+                            <label for="supplier" class="form-control-label">Supplier</label>
+                            <br>
+                            <select name="branch" id="supplier" v-model="form.supplier_id" class="custom-select" data-vv-as="supplier id">
+                                <option disabled value="" >--select--</option>
+                                <option
+                                    :value="supplier"
+                                    v-for="supplier of suppliers"
+                                >{{ supplier.name }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3 col-12">
+                            <label for="quantity" class="form-control-label">Quantity</label>
+                            <br>
+                            <input id="quantity" name="quantity" type="number" class="number form-control" v-model="form.quantity">
                         </div>
 
-                            <div class="form-group col-md-6 col-12 ">
-                                <label for="product_type" class="form-control-label">Product Type </label>
-                                <br>
-                                <select name="product_type" id="product_type" v-model="form.product_type_id" class="custom-select" >
-                                    <option value="all" selected="selected" >--select--</option>
-                                    <option
-                                        :value="type.id"
-                                        v-for="type of product_types"
-                                    >{{ type.name }}</option
-                                    >
-                                </select>
-                            </div>
-                            </div>
-
-
-                    <div class="mb-5 px-0 row align-items-center">
-                        <div class="clearfix d-flex justify-content-end w-100">
-                            <router-link to="/log/products" class="mx-5 text-link mt-4 pt-2" v-if="mode ==='edit'">
-                                Cancel
-                            </router-link>
-                            <button :disabled="$isProcessing" class="btn bg-default" type="submit">
-                                {{mode | capitalize}} Product <i class="far fa-paper-plane ml-1"></i>
-                            </button>
+                        <div class="text-right w-100">
+                        <input type="submit" value="Generate" class="btn bg-default w-25">
                         </div>
                     </div>
-
                 </form>
+
+                <div class="row px-4 pt-3 pb-4 text-center">
+
+                    <div class="col light-heading" v-for="header in headings">{{header}}</div>
+                </div>
+
+                <div class="mb-3 row attendance-item" v-for="(item, index) in inventoryList">
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{item.name}}
+                    </div>
+
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{item.user}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{item.supplier.name}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{item.branch.name}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <span v-if="item.sku"> {{item.sku}}</span><span v-else>{{item | sku}}</span>
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{item.price}}
+                    </div>
+
+
+
+                </div>
+
             </div>
         </div>
     </transition>
@@ -91,6 +93,7 @@
     import {post, get, put} from '../../../utilities/api';
     import Typeahead from '../../../components/Typeahead';
     import CustomHeader from '../../../components/customHeader';
+    import {mapGetters} from "vuex";
 
     function initialize(to) {
         let urls = {create: `/api/product/create`, edit: `/api/product/${to.params.id}/edit`};
@@ -102,15 +105,18 @@
         props: {},
         data() {
             return {
+                products: [],
                 form: {},
-                categories: [],
-                product_types: [],
+                inventoryList: [],
                 brands: [],
+                suppliers: [],
                 mode: null,
                 error: {},
                 show: false,
+                showForm: false,
                 store: '/api/product',
                 method: 'POST',
+                headings: ['Product Name', 'Received by', 'Supplier', 'Branch', 'SKU', 'Price', 'Status']
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -135,12 +141,12 @@
             prepareForm(data) {
                 this.$LIPS(true);
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                get('/api/brand').then((res) => {
-                    Vue.set(this.$data, 'brands', res.data.data.data);
+                get('/api/product').then((res) => {
+                    Vue.set(this.$data, 'products', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
 
-                get('/api/product_type').then((res) => {
-                    Vue.set(this.$data, 'product_types', res.data.data.data);
+                get('/api/supplier').then((res) => {
+                    Vue.set(this.$data, 'suppliers', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
 
 
@@ -154,6 +160,37 @@
                 this.$LIPS(false);
                 this.show = true;
 
+            },
+            onGenerate() {
+              this.$validator.validateAll().then(result => {
+                  if (result) {
+                      this.$LIPS(true);
+                      this.inventoryList = this.inventoryList.concat(this.createInventoryList(this.form));
+                      this.$LIPS(false);
+                  }
+              })
+            },
+            createInventoryList(object){
+                let inventory = [];
+                let sku = [];
+                for (let i = 0; i <= object.quantity-1; i++){
+                    object.product.branch = object.branch_id;
+                    object.product.supplier = object.supplier_id;
+                    object.product.sku = this.skuGen(object.product);
+                    inventory.push(object.product);
+                }
+                // inventory.forEach((item, index) => {
+                //     item.sku = this.skuGen(item);
+                //     console.log(item.sku);
+                // });
+                return inventory;
+            },
+
+            skuGen({brand, category}){
+                let b = brand.slice(0, 3).toUpperCase();
+                let c = category.slice(0, 3).toUpperCase();
+                let n = Math.round(Math.random() * 10000);
+                return `${b}${c}${n}`;
             },
             onSave() {
                 this.$validator.validateAll().then(result => {
@@ -204,14 +241,27 @@
             }
         },
         computed: {
-            productName (){
-                let brand, category, feature;
-                if(this.form.brand_id && this.form.category_id) {
-                    brand = this.brands.find(item => item.id === this.form.brand_id).name;
-                    category = this.categories.find(item => item.id === this.form.category_id).name;
-                    feature = this.form.feature;
-                    return `${feature} ${brand} ${category}`;
-                }else return 'Product Name';
+
+            ...mapGetters(['auth', 'getAuthUserDetails', "getBranches"])
+        },
+         created() {
+             this.$prepareBranches();
+         }
+         ,
+        filters: {
+            sku(object){
+                if (object){
+                    let {brand, category} = object;
+                    let b = brand.slice(0, 3).toUpperCase();
+                    let c = category.slice(0, 3).toUpperCase();
+                    let n = Math.round(Math.random() * 10000);
+                    return `${b}${c}${n}`;
+
+
+                }
+
+
+
             }
         }
 
