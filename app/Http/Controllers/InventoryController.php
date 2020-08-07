@@ -33,6 +33,9 @@ class InventoryController extends Controller
     public function store(InventoryRequest $request)
     {
         $inv = $this->inventoryRepo->store($request->validated());
+        $inv->sku = '';
+
+        $inv->update();
 
         return $this->sendSuccess($inv->toArray(), 'Inventory Successfully Created');
     }

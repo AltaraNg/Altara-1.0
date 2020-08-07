@@ -31,9 +31,9 @@
                     </div>
                 </div>
 
-                <div class="col-6 col-sm p-0 flex-row-bottom">
-                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
-                </div>
+<!--                <div class="col-6 col-sm p-0 flex-row-bottom">-->
+<!--                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>-->
+<!--                </div>-->
             </div>
 
             <div class="mt-5 mb-3 attendance-head">
@@ -45,27 +45,27 @@
             </div>
             <div class="tab-content mt-1 attendance-body">
 
-                    <div class="mb-3 row attendance-item" :key="index" v-for="(inventory,index) in inventories" @click="viewInventory(inventory)">
+                    <div class="mb-3 row attendance-item" :key="index" v-for="(inventory,index) in inventories" @click="viewInventory(inventory)" v-if="inventories">
                         <div class="col d-flex align-items-center" style="max-width: 120px">
                             <span class="user mx-auto" >{{index+OId}}</span>
                         </div>
                         <div class="col d-flex align-items-center justify-content-center ">
-                            {{inventory.product_name | capitalize}}
+                            {{getParent(inventory.product_id, products).name}}
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
-                            {{inventory.inventory_sku}}
+                            {{inventory.sku}}
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
                             {{inventory.price}}
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
-                            {{inventory.supplier_id}}
+                            {{getParent(inventory.supplier_id, suppliers).name}}
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
-                            {{inventory.received_date}}
+                            {{inventory.created_at.split(' ')[0]}}
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
-                            {{inventory.sold_date}}
+                            {{getParent(inventory.branch_id, getBranches).name}}
                         </div>
 
 
@@ -157,7 +157,7 @@
     import {get} from '../../../utilities/api';
     import Flash from "../../../utilities/flash";
 
-    import {mapGetters, mapActions} from "vuex";
+    import {mapActions, mapGetters} from "vuex";
     import CustomHeader from '../../../components/customHeader';
     import BasePagination from '../../../components/Pagination/BasePagination'
 
@@ -170,7 +170,7 @@
 
         components: {CustomHeader, BasePagination },
 
-        computed: {...mapGetters(['getStates'])},
+        computed: {...mapGetters(['getStates', "getBranches"])},
 
         data() {
             return {
@@ -179,6 +179,8 @@
                 showModalContent: false,
                 pageParams: null,
                 page_size: 10,
+                products: [],
+                suppliers: [],
                 date_from: null,
                 date_to: null,
                 page: 1,
@@ -216,6 +218,12 @@
                 this.OId = from;
                 this.$LIPS(false);
 
+            },
+
+            getParent(id, array){
+                return array.find((item) => {
+                    return item.id === id;
+                });
             },
 
             next(firstPage = null) {
@@ -256,10 +264,15 @@
         },
 
         created() {
-            this.$props.withBranchFilter && this.filters.unshift({name: 'state', model: 'state_id'}, );
-            this.addCustomerOptionsModalsToDom();
+            get('/api/supplier').then((res) => {
+                console.log(res.data);
+                this.suppliers = res.data.data.data;
+            });
+            get('/api/product').then((res) => {
+                this.products = res.data.data.data;
+            });
 
-            this.$prepareStates();
+            this.$prepareBranches();
             this.fetchData();
         },
 

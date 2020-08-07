@@ -21,7 +21,7 @@
                         <div class="form-group col-md-3 col-12 ">
                             <label for="branch" class="form-control-label">Branch</label>
                             <br>
-                            <select name="branch" id="branch" v-model="form.branch_id" class="custom-select" data-vv-as="branch id">
+                            <select name="branch" id="branch" v-model="form.branch" class="custom-select" data-vv-as="branch id">
                                 <option disabled value="" >--select--</option>
                                 <option
                                     :value="branch"
@@ -32,7 +32,7 @@
                         <div class="form-group col-md-3 col-12 ">
                             <label for="supplier" class="form-control-label">Supplier</label>
                             <br>
-                            <select name="branch" id="supplier" v-model="form.supplier_id" class="custom-select" data-vv-as="supplier id">
+                            <select name="supplier" id="supplier" v-model="form.supplier" class="custom-select" data-vv-as="supplier id">
                                 <option disabled value="" >--select--</option>
                                 <option
                                     :value="supplier"
@@ -52,28 +52,32 @@
                     </div>
                 </form>
 
-                <div class="row px-4 pt-3 pb-4 text-center">
+                <div v-if="inventoryList.products.length > 0">
+
+                <div class="row  pt-1 pb-2 text-center">
 
                     <div class="col light-heading" v-for="header in headings">{{header}}</div>
                 </div>
 
-                <div class="mb-3 row attendance-item" v-for="(item, index) in inventoryList">
-                    <div class="col d-flex align-items-center justify-content-center">
-                        {{item.name}}
+                <div class="mb-3 row attendance-item text-center" v-for="(item, index) in inventoryList.products">
+
+                    <div class="col d-flex align-items-center text-center" style="max-width: 120px">
+                        <span class="user mx-auto" >{{index + 1}}</span>
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center text-center">
+                        {{item.product_name}}
                     </div>
 
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{item.user}}
+                        {{item.receiver_name}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{item.supplier.name}}
+                        {{item.supplier_name}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{item.branch.name}}
-                    </div>
-                    <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.sku"> {{item.sku}}</span><span v-else>{{item | sku}}</span>
-                    </div>
+                        {{item.branch_name}}
+                </div>
+
                     <div class="col d-flex align-items-center justify-content-center">
                         {{item.price}}
                     </div>
@@ -81,6 +85,12 @@
 
 
                 </div>
+                    <div class="text-right w-100">
+                        <button class="bg-default btn" @click="onSave">Submit</button>
+                    </div>
+                </div>
+
+
 
             </div>
         </div>
@@ -107,16 +117,16 @@
             return {
                 products: [],
                 form: {},
-                inventoryList: [],
+                inventoryList: {products: []},
                 brands: [],
                 suppliers: [],
                 mode: null,
                 error: {},
                 show: false,
                 showForm: false,
-                store: '/api/product',
+                store: '/api/inventory',
                 method: 'POST',
-                headings: ['Product Name', 'Received by', 'Supplier', 'Branch', 'SKU', 'Price', 'Status']
+                headings: ['S/N','Product Name', 'Received by', 'Supplier', 'Branch', 'Price']
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -165,105 +175,89 @@
               this.$validator.validateAll().then(result => {
                   if (result) {
                       this.$LIPS(true);
-                      this.inventoryList = this.inventoryList.concat(this.createInventoryList(this.form));
+                       const product = this.form.product;
+                      const supplier = this.form.supplier;
+                      const branch = this.form.branch;
+
+
+
+
+                      for(let i =0; i < this.form.quantity; i++){
+                          this.inventoryList.products.push({
+                              product_name: product.name,
+                              product_id: product.id,
+                              supplier_id: supplier.id,
+                              supplier_name: supplier.name,
+                              branch_id: branch.id,
+                              branch_name: branch.name,
+                              price: product.retail_price,
+                              receiver_name: product.user,
+                              receiver_id: this.getAuthUserDetails.userId,
+                              received_date: this.$getDate(),
+
+                          })
+                      }
+
+
+                      this.form = {};
                       this.$LIPS(false);
                   }
               })
             },
-            createInventoryList(object){
-                let inventory = [];
-                let sku = [];
-                for (let i = 0; i <= object.quantity-1; i++){
-                    object.product.branch = object.branch_id;
-                    object.product.supplier = object.supplier_id;
-                    object.product.sku = this.skuGen(object.product);
-                    inventory.push(object.product);
-                }
-                // inventory.forEach((item, index) => {
-                //     item.sku = this.skuGen(item);
-                //     console.log(item.sku);
-                // });
-                return inventory;
-            },
 
-            skuGen({brand, category}){
-                let b = brand.slice(0, 3).toUpperCase();
-                let c = category.slice(0, 3).toUpperCase();
-                let n = Math.round(Math.random() * 10000);
-                return `${b}${c}${n}`;
-            },
+
+
+
             onSave() {
+                let status = '';
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);
-                            this.form.name = this.productName;
-                            (this.mode === 'edit' ? put(this.store, this.form) : post(this.store, this.form))
-                                .then(({data}) => {
-                                    if (data.status === 'success') {
-                                        Vue.set(this.$data, 'form',{});
-                                        this.$swal({
-                                            icon: 'success',
-                                            title: this.mode === 'edit' ? 'Product Updated Successfully' : 'Product added Successfully'
-
-                                        });
-                                        return this.$router.push(
-                                            {path: '/log/products'}
-                                        )
-                                    }
-                                })
-                                .catch(({response:r}) => {
+                            this.inventoryList.products.forEach(e => {
+                                post(this.store, e)
+                                    .then(({data}) => {
+                                        console.log(data);
+                                        status = data.status;
+                                    }).catch(({response:r}) => {
                                     let {data, status} = r;
                                     if (status === 422) {
                                         this.error = data.errors ? data.errors : data;
                                         this.$networkErr('unique');
                                     }
                                 }).finally(() => {
-                                this.$scrollToTop();
-                                this.$LIPS(false);
+                                    this.$scrollToTop();
+                                    this.$LIPS(false);
+                                })
                             });
+
+
+                            this.$swal({
+                                icon: 'success',
+                                title: 'Inventory added Successfully'
+
+                            });
+                                this.$router.push(
+                                    {path: '/log/inventory'}
+                                );
+                                this.$LIPS(false);
+
+
+                            this.$LIPS(false);
                         } else this.$networkErr()
                     } else this.$networkErr('form');
                 })
             }
         },
-        watch: {
-            form: {
-                handler: function (val) {
 
-                    const brand = this.brands.find(el => el.id === val.brand_id);
-
-                    if(brand){
-
-                        Vue.set(this.$data, 'categories', brand.categories);
-                }else return ''},
-                deep: true
-            }
-        },
         computed: {
 
             ...mapGetters(['auth', 'getAuthUserDetails', "getBranches"])
         },
          created() {
              this.$prepareBranches();
+             console.log(this.getAuthUserDetails);
          }
          ,
-        filters: {
-            sku(object){
-                if (object){
-                    let {brand, category} = object;
-                    let b = brand.slice(0, 3).toUpperCase();
-                    let c = category.slice(0, 3).toUpperCase();
-                    let n = Math.round(Math.random() * 10000);
-                    return `${b}${c}${n}`;
-
-
-                }
-
-
-
-            }
-        }
-
-    }
+           }
 </script>
