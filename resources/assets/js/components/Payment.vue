@@ -62,11 +62,11 @@
                     <div class="col d-flex align-items-center justify-content-center" >
                         <span class="overflow green text-center" v-if="item.user"><i class="fas fa-info-circle"></i></span>
 
-                        <textarea v-model="reconcileForm.comment" v-else class="form-control" rows="1">
+                        <textarea v-model="item.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center text-center" @click="updateModal(item)" data-hoverable="true">
-                        <span :class="item.deposited? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></span>
+                        <span :class="item.user? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></span>
                     </div>
                 </div>
             </div>
@@ -334,7 +334,7 @@
                 const data ={
                     "cash_at_hand":item.cash_at_hand,
                     "deposited": item.deposited,
-                    "comment": this.reconcileForm.comment
+                    "comment": item.comment
                 };
                 this.$LIPS(true);
                 try{
