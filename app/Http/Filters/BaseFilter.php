@@ -36,10 +36,19 @@ class BaseFilter extends QueryFilter
     }
 
     /**
+     * @param bool $status
+     */
+    public function isActive($status)
+    {
+        $boolean = $status === 'true' ? true: false;
+        $this->builder->where('is_active', $boolean);
+    }
+
+    /**
      * @param string $name
      */
     public function name(string $name)
     {
-        $this->builder->where('name', $name);
+        $this->builder->where('name', 'like', '%' . $name .'%');
     }
 }

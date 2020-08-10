@@ -7,6 +7,5 @@ Route::get('/{vue?}', function () {
 })->where('vue', '[\/\w\.-]*');
 
 Route::any('/', function (){
-    dd('lkkkk');
     return response().json(["message" => "working"]);
 });

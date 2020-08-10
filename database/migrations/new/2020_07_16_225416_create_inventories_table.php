@@ -15,10 +15,11 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('product_id')->index()->nullable();
-            $table->unsignedInteger('receiver_id')->index()->nullable();
-            $table->unsignedInteger('branch_id')->index()->nullable();
-            $table->unsignedInteger('supplier_id')->index()->nullable();
+            $table->unsignedInteger('product_id')->index();
+            $table->string('product_name')->index();
+            $table->unsignedInteger('receiver_id')->index();
+            $table->unsignedInteger('branch_id')->index();
+            $table->unsignedInteger('supplier_id')->index();
             $table->string('inventory_sku')->unique();
             $table->double('price');
             $table->string('received_date');

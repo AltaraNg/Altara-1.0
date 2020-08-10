@@ -1,5 +1,6 @@
 <?php
 
+use App\OrderStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -12,9 +13,9 @@ class OrderStatusSeeder extends Seeder
      */
     public function run()
     {
-        $status = ["name" => "Approved"];
+        $status = ["name" => OrderStatus::APPROVED];
         DB::table("order_statuses")->updateOrInsert($status);
-        $status = ["name" => "Pending"];
+        $status = ["name" => OrderStatus::PENDING];
         DB::table("order_statuses")->updateOrInsert($status);
     }
 }
