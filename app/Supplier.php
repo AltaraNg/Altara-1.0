@@ -4,10 +4,13 @@ namespace App;
 
 
 use App\Helper\Helper;
+use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
 {
+
+    use Filterable;
     protected $guarded = [];
 
     /**

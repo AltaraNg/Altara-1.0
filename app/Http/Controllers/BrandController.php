@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use App\Http\Filters\BrandFilter;
 use App\Http\Requests\BrandRequest;
 use App\Repositories\BrandRepository;
 use Illuminate\Http\Response;
@@ -19,11 +20,12 @@ class BrandController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param BrandFilter $filter
      * @return Response
      */
-    public function index()
+    public function index(BrandFilter $filter)
     {
-        $orders = $this->brandRepository->all();
+        $orders = $this->brandRepository->getAll($filter);
 
         return $this->sendSuccess($orders->toArray(), 'Brands retrieved successfully');
     }
