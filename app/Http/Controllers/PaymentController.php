@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Filters\PaymentFilter;
+use App\Http\Requests\PaymentRequest;
 use App\Repositories\RenewalListRepository;
 use App\Repositories\PaymentRepository;
 use App\Repositories\PaymentReconcileRepository;
 use App\Payment;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class PaymentController extends Controller
@@ -56,27 +56,25 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param PaymentRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(PaymentRequest $request)
     {
-        $data = $this->validate($request, Payment::$rules);
-        $result = $this->paymentRec->storeOrCreate($data);
+        $result = $this->paymentRec->storeOrCreate($request->validated());
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param PaymentRequest $request
      * @param Payment $payment
      * @return Response
      */
-    public function update(Request $request, Payment $payment)
+    public function update(PaymentRequest $request, Payment $payment)
     {
-        $data = $this->validate($request, Payment::$updateRules);
-        $resp = $this->payment->update($payment, $data);
+        $resp = $this->payment->update($payment, $request->validated());
         return ResponseHelper::createSuccessResponse($resp->toArray());
     }
 }

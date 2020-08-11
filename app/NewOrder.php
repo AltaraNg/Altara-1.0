@@ -29,6 +29,8 @@ class NewOrder extends Model
             'repayment_duration_id' => 'required|exists:repayment_durations,id',
             'repayment_cycle_id' => 'required|exists:repayment_cycles,id',
             'business_type_id' => 'required|exists:business_types,id',
+            'payment_type_id' => 'required|exists:payment_types,id',
+            'payment_method_id' => 'required|exists:payment_methods,id',
             'down_payment' => ['required', new Money],
             'product_price' => ['required', new Money],
             'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,'. $id
@@ -100,6 +102,14 @@ class NewOrder extends Model
         $onTime = $this->amortization()->where('actual_amount','>',1)->count();
         $total = $this->amortization()->count();
         return ($onTime /$total) * 100;
+    }
+
+    /**
+     * Get all of the New Order's payments.
+     */
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'orderable');
     }
 
     public function toArray()

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\NewOrderEvent;
 use App\Events\SendPasswordResetLinkEvent;
+use App\Listeners\LogPaymentListener;
 use App\Listeners\NewOrderListener;
 use App\Listeners\SendPasswordResetLinkListener;
 use App\Listeners\UpdateInventoryListener;
@@ -26,7 +27,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewOrderEvent::class => [
             NewOrderListener::class,
-            UpdateInventoryListener::class
+            UpdateInventoryListener::class,
+            LogPaymentListener::class
         ],
     ];
 

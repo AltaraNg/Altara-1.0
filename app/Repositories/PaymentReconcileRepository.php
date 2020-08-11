@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
 use App\PaymentReconcile;
-use Carbon\Carbon;
+use App\Services\PaymentService;
+use Illuminate\Support\Str;
 
 class PaymentReconcileRepository extends Repository
 {
@@ -20,19 +20,12 @@ class PaymentReconcileRepository extends Repository
 
     public function storeOrCreate(array $data)
     {
-        $trans = PaymentReconcile::firstOrCreate(
-            ['branch_id' => auth()->user()->branch_id, 'payment_method_id' => $data['payment_method_id'], 'date' => Carbon::today()],
-            ['reconcile_number' => Helper::generateTansactionNumber('RE')]
-        );
+        $model = app('App\\' . Str::studly($data['model']))->findOrFail($data['id']);
 
-        $resp = $trans->payments()->create(array_merge($data, [
-            'payment_number' => Helper::generateTansactionNumber('PM'),
-            'user_id' => auth()->user()->id,
-            'branch_id' => auth()->user()->branch_id
-        ]));
+        unset($data['id']);
+        unset($data['model']);
 
-        $trans->total = 0;
-        $trans->update();
+        $resp = PaymentService::logPayment($data, $model);
 
         if(request()->has('comment')){
             $resp->comment()->create(['comment' => request('comment'), 'user_id' => auth()->user()->id]);

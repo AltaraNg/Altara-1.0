@@ -25,6 +25,9 @@ class NewOrderRepository extends Repository
     {
         $validated = $data;
         unset($validated['custom_date']);
+        unset($validated['payment_type_id']);
+        unset($validated['payment_method_id']);
+
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
             'order_date' => Carbon::now(),
@@ -35,7 +38,11 @@ class NewOrderRepository extends Repository
         if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM){
             $order->customDate()->create(['custom_date' => $data['custom_date']]);
         }
+
+        $order->payment_type_id = $data['payment_type_id'];
+        $order->payment_method_id = $data['payment_method_id'];
         event(new NewOrderEvent($order));
+
         return $order->fresh();
     }
 }
