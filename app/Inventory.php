@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inventory extends Model
 {
-
+    use Filterable;
     protected $guarded = [];
     /**
      * Validation rules
