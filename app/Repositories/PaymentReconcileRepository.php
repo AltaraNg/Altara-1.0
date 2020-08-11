@@ -20,9 +20,9 @@ class PaymentReconcileRepository extends Repository
 
     public function storeOrCreate(array $data)
     {
-        $model = app('App\\' . Str::studly($data['model']))->findOrFail($data['id']);
+        $model = app('App\\' . Str::studly($data['model']))->findOrFail($data['model_id']);
 
-        unset($data['id']);
+        unset($data['model_id']);
         unset($data['model']);
 
         $resp = PaymentService::logPayment($data, $model);

@@ -28,7 +28,7 @@ class Payment extends Model
             'customer_id' => 'required|exists:customers,id',
             'payment_type_id' => 'required|exists:payment_types,id',
             'payment_method_id' => 'required|exists:payment_methods,id',
-            'id' => 'required|integer',
+            'model_id' => 'required|integer',
             'model' => 'required|string'
         ];
     }
