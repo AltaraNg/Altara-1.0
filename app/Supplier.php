@@ -62,4 +62,7 @@ class Supplier extends Model
         return Helper::generatePrefix(config('app.name')) . '/' . Helper::generateSKU(4) . '/' . Helper::generatePrefix($name) . '/' . date("Y");
     }
 
+
+
+
 }
