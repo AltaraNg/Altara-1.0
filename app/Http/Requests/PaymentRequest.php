@@ -30,7 +30,7 @@ class PaymentRequest extends FormRequest
                 return Payment::rules();
             }
             case 'PUT': {
-                return Payment::updateRules($this);
+                return Payment::updateRules();
             }
             default:break;
         }
