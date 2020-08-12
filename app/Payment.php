@@ -3,9 +3,11 @@
 namespace App;
 
 use App\Http\Filters\Filterable;
-use App\Http\Filters\QueryFilter;
-use Illuminate\Database\Eloquent\Builder;
+use App\Rules\Money;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Payment extends Model
 {
@@ -15,29 +17,40 @@ class Payment extends Model
     /**
      * The model's default rules.
      *
+     * @return array
      * @var array
      */
-    public static $rules = [
-        'amount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-        'customer_id' => 'required|exists:customers,id',
-        'payment_type_id' => 'required|exists:payment_types,id',
-        'payment_method_id' => 'required|exists:payment_methods,id'
-    ];
+
+    public static function rules()
+    {
+        return [
+            'amount' => ['required', new Money],
+            'customer_id' => 'required|exists:customers,id',
+            'payment_type_id' => 'required|exists:payment_types,id',
+            'payment_method_id' => 'required|exists:payment_methods,id',
+            'model_id' => 'required|integer',
+            'model' => 'required|string'
+        ];
+    }
 
     /**
      * The model's default rules.
      *
+     * @return array
      * @var array
      */
-    public static $updateRules = [
-        'amount' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
-        'customer_id' => 'sometimes|required|exists:customers,id',
-        'payment_type_id' => 'sometimes|required|exists:payment_types,id',
-        'payment_method_id' => 'sometimes|required|exists:payment_methods,id'
-    ];
+    public static function updateRules()
+    {
+        return [
+            'amount' => ['sometimes','required', new Money],
+            'customer_id' => 'sometimes|required|exists:customers,id',
+            'payment_type_id' => 'sometimes|required|exists:payment_types,id',
+            'payment_method_id' => 'sometimes|required|exists:payment_methods,id'
+        ];
+    }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function paymentReconcile()
     {
@@ -45,7 +58,7 @@ class Payment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function paymentType()
     {
@@ -53,7 +66,7 @@ class Payment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function customer()
     {
@@ -61,7 +74,7 @@ class Payment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function branch()
     {
@@ -69,7 +82,7 @@ class Payment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function paymentMethod()
     {
@@ -77,11 +90,19 @@ class Payment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     * @return MorphOne
      */
     public function comment()
     {
         return $this->morphOne(Comment::class, 'commentable');
+    }
+
+    /**
+     * @return MorphTo
+     */
+    public function orderable()
+    {
+        return $this->morphTo();
     }
 
     public function toArray()
