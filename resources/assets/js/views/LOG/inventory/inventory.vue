@@ -3,11 +3,20 @@
         <div id="reminder" class="attendance">
 
             <custom-header :title="'Inventory'"/>
+          
             <div class="mt-2 mt-lg-3 row attendance-head ">
-                <router-link :to="{name: 'inventoryCreate'}">
-            <button class="btn btn-primary bg-default  myBtn ">New Inventory</button>
-                </router-link>
+                <div class="col-md-8">
+                    <InventorySearch v-on:childToParent="searchEvent" :searchColumns="searchColumns" />
+                </div>
+                
+                <div class="col-md-4">
+                    <router-link :to="{name: 'inventoryCreate'}">
+                        <button class="btn btn-primary bg-default  myBtn ">New Inventory</button>
+                    </router-link>
+                </div>
             </div>
+                
+            
             <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
                 <div class="col-4 col-lg" v-for="{name:filter,model} in filters">
                     <div >
@@ -145,11 +154,6 @@
                 </base-pagination>
 
             </div>
-
-
-
-
-
         </div>
     </transition>
 </template>
@@ -160,7 +164,7 @@
     import {mapActions, mapGetters} from "vuex";
     import CustomHeader from '../../../components/customHeader';
     import BasePagination from '../../../components/Pagination/BasePagination'
-
+    import InventorySearch from "../../../components/InventorySearch";
     export default {
         props: {
             //TODO::verify if its necessary to make this a prop
@@ -168,7 +172,7 @@
             urlToFetchOrders: {default: '/api/inventory'}
         },
 
-        components: {CustomHeader, BasePagination },
+        components: {CustomHeader, BasePagination,InventorySearch },
 
         computed: {...mapGetters(['getStates', "getBranches"])},
 
@@ -184,15 +188,21 @@
                 date_from: null,
                 date_to: null,
                 page: 1,
+                searchFilter:{},
                 filters: [
 
                 ],
                 inventories: null,
                 inventoryItem: null,
                 response: {},
+                // searchQ:'',
                 show: false,
                 headings:
-                    ['Product Name', 'SKU','Price', 'Supplier', 'Date Received', 'Branch']
+                    ['Product Name', 'SKU','Price', 'Supplier', 'Date Received', 'Branch'],
+                searchColumns: [
+                    {title: 'Product Name', column: 'productName'},
+                    {title: 'Branch', column: 'branch'},
+                ]
             }
         },
 
@@ -246,6 +256,7 @@
                 this.inventoryItem = inventory;
                 return $(`#viewInventory`).modal('toggle');
             },
+
             edit(item){
                 this.showModalContent = false;
                 $(`#viewInventory`).modal('toggle');
@@ -255,7 +266,11 @@
                 )
             },
 
-
+            searchEvent (data) {
+                get(this.urlToFetchOrders + data)
+                    .then(({data}) => this.prepareList(data))
+                    .catch(() => Flash.setError('Error Preparing form'));
+            },
 
             ...mapActions('ModalAccess', [
                 'addCustomerOptionsModalsToDom',
@@ -285,6 +300,8 @@
                 }else return 'Inactive'
             }
         },
+
+        
     }
 </script>
 
@@ -300,5 +317,16 @@
     }
     .red{
         color: red;
+    }
+    .searchBar{
+        background-color: #fff;
+        border-radius:7px;
+        padding:20px;
+    }
+    .margin_left{
+        margin-left: 20px;
+    }
+    .margin_left1{
+        margin-left: 25px;
     }
 </style>
