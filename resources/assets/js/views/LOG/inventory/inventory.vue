@@ -75,7 +75,7 @@
                 <div class="modal-dialog " role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
-                            <h4>{{inventoryItem.name}}</h4>
+                            <h4>{{inventoryItem.sku}}</h4>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                         <span aria-hidden="true" class="modal-close text-danger">
 
@@ -91,7 +91,7 @@
                                     <tbody>
                                     <tr>
                                         <th>Product Name</th>
-                                        <td>{{ inventoryItem.product_name || "Not Available" }}</td>
+                                        <td>{{ inventoryItem ? getParent(inventoryItem.product_id, products).name : '' || "Not Available" }}</td>
                                     </tr>
 
                                     <tr>
@@ -106,11 +106,11 @@
 
                                     <tr>
                                         <th>Received Date</th>
-                                        <td>{{ inventoryItem.received_date || "Not Available" }}</td>
+                                        <td>{{ inventoryItem.branch || "Not Available" }}</td>
                                     </tr>
                                     <tr>
                                         <th>Sold Date</th>
-                                        <td>{{ inventoryItem.sold_date || "Not Available" }}</td>
+                                        <td>{{ inventoryItem.sold_date || "Not Sold Yet" }}</td>
                                     </tr>
 
                                     <tr >
@@ -170,7 +170,7 @@
 
         components: {CustomHeader, BasePagination },
 
-        computed: {...mapGetters(['getStates', "getBranches"])},
+        computed: {...mapGetters(['getAuthUserDetails', "getBranches"])},
 
         data() {
             return {
@@ -251,7 +251,7 @@
                 $(`#viewInventory`).modal('toggle');
 
                 return this.$router.push(
-                    {name: 'inventoriesEdit', params: {id: item}}
+                    {name: 'inventoryEdit', params: {id: item}}
                 )
             },
 
@@ -265,16 +265,19 @@
 
         created() {
             get('/api/supplier').then((res) => {
-                console.log(res.data);
                 this.suppliers = res.data.data.data;
             });
             get('/api/product').then((res) => {
                 this.products = res.data.data.data;
             });
 
+            console.log(this.$getUserDetails(2));
+
             this.$prepareBranches();
             this.fetchData();
         },
+
+
 
 
 

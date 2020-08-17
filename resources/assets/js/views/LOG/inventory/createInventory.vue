@@ -4,7 +4,7 @@
 
             <custom-header :to="'/log/inventory'" :title="mode + ' inventory'" :button-title="'view Inventory!'"/>
 
-            <div class="attendance-body">
+            <div class="attendance-body" v-if="mode === 'create'">
                 <form @submit.prevent="onGenerate">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
                         <div class="form-group col-md-3 col-12 ">
@@ -93,6 +93,39 @@
 
 
             </div>
+
+            <div class="attendance-body" v-else>
+                <form >
+                    <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
+                        <div class="form-group col-md-2">
+                            <label>Inventory SKU: </label>
+                            <p>{{form.sku || 25}}</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Product Name: </label>
+                            <p>{{form.product_name || 25}}</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="price">Price: </label><br>
+
+                            <input id="price" type="number" v-model="form.price" name="price" class="custom-select w-50">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Supplier Name: </label>
+                            <p>{{form.supplier_name | capitalize}}</p>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label>Branch: </label>
+                            <p>{{form.branch_name || 25}}</p>
+                            <small class="small">transfer product</small>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="submit" value="Submit" class="btn bg-default w-100">
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </transition>
 </template>
@@ -131,7 +164,7 @@
         },
         beforeRouteEnter(to, from, next) {
             if (to.meta.mode === 'edit'){
-                get(`/api/product/${to.params.id}`).then((data) => {
+                get(`/api/inventory/${to.params.id}`).then((data) => {
 
                     next(vm => {
 
@@ -148,14 +181,14 @@
             }
         },
         methods: {
-            prepareForm(data) {
+           async prepareForm(data) {
                 this.$LIPS(true);
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                get('/api/product').then((res) => {
+                await get('/api/product').then((res) => {
                     Vue.set(this.$data, 'products', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
 
-                get('/api/supplier').then((res) => {
+                await get('/api/supplier').then((res) => {
                     Vue.set(this.$data, 'suppliers', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
 
@@ -164,8 +197,19 @@
 
                 if (this.mode === 'edit') {
                     //TODO change the edit form
-                    this.store = `/api/product/${this.$route.params.id}`;
+                    this.store = `/api/inventory/${this.$route.params.id}`;
                     this.method = 'PUT';
+
+                    this.form.product_name = this.products.find(item => {
+                        return item.id === this.form.product_id;
+                    }).name;
+                    this.form.supplier_name = this.suppliers.find(item => {
+                        return item.id === this.form.supplier_id;
+                    }).name;
+                    this.form.branch_name = this.getBranches.find(item => {
+                        return item.id === this.form.branch_id;
+                    }).name;
+
                 }
                 this.$LIPS(false);
                 this.show = true;
