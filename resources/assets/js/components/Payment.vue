@@ -9,13 +9,8 @@
                     <div class="col d-flex align-items-center" style="max-width: 120px">
                         <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
-<<<<<<< HEAD
                     <div class="col d-flex align-items-center justify-content-center" v-if="payment.customer">
                         {{payment.customer ? payment.customer.id : "Not Available"}}
-=======
-                    <div class="col d-flex align-items-center justify-content-center">
-                        {{payment.customer.id}}
->>>>>>> fixed order corrections
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{payment.date.split(' ')[0]}}
@@ -50,47 +45,28 @@
                         {{item.date.split(' ')[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-<<<<<<< HEAD
                         <span v-if="item.user">{{item.cash_at_hand | currency('₦')}}</span>
                         <input @keyup="onUpKey" v-model="item.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
-=======
-                        ₦{{item.cash_at_hand}}
->>>>>>> fixed order corrections
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         ₦{{item.total}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-<<<<<<< HEAD
                         <span v-if="item.user">{{item.deposited | currency('₦')}}</span>
-=======
-                        <span v-if="item.total === item.deposited">₦{{item.deposited}}</span>
->>>>>>> fixed order corrections
                         <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
                         ₦{{item.total - item.deposited}}
                     </div>
-<<<<<<< HEAD
                     <div class="col d-flex align-items-center justify-content-center" >
                         <span class="overflow green text-center" v-if="item.user"><i class="fas fa-info-circle"></i></span>
-=======
-                    <div class="col d-flex align-items-center justify-content-center">
-                        <span v-if="item.total === item.deposited">{{item.comment === null ? '': item.comment.comment}}</span>
->>>>>>> fixed order corrections
 
                         <textarea v-model="item.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
-<<<<<<< HEAD
                     <div class="col d-flex align-items-center justify-content-center text-center" @click="updateModal(item)" data-hoverable="true">
                         <span :class="item.user? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></span>
-=======
-                    <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto green-back"   v-if="item.total === item.deposited"></span>
-                        <span class="user mx-auto blue"  @click="updateReconciledPayment(item)" v-else></span>
->>>>>>> fixed order corrections
                     </div>
                 </div>
             </div>
@@ -105,7 +81,6 @@
                             </a>
                         </div>
                         <div class="modal-body">
-<<<<<<< HEAD
                             <div v-if="tab === 'Reconcile'">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped">
@@ -184,18 +159,12 @@
                         <div class="modal-footer">
                             <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
                                style="text-align: right">close dialogue</a>
-=======
-                            <p>Customer ID: {{paymentItem.customer.id}}</p>
-                            <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
-                            <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
->>>>>>> fixed order corrections
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <nav v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)" class="col d-flex justify-content-end align-items-center pr-0">
-<<<<<<< HEAD
 
             <div v-if="pageParams">
                 <base-pagination
@@ -209,17 +178,6 @@
                 </base-pagination>
 
             </div>
-=======
-            <base-pagination
-                :next_page_url="!responseData.next_page_url ? '#' : responseData.next_page_url"
-                :prev_page_url="!responseData.prev_page_url ? '#': responseData.prev_page_url "
-                :first_page_url="responseData.first_page_url"
-                :last_page="responseData.last_page"
-                :current_page="responseData.current_page"
-                @next="next"
-                @prev="prev"
-            ></base-pagination>
->>>>>>> fixed order corrections
         </nav>
 
     </div>
@@ -340,7 +298,6 @@
 
             async getPaymentReconciliationList(){
                 this.branchId = localStorage.getItem('branch_id');
-<<<<<<< HEAD
                 let yesterday = new Date(Date.now() - 864e5).toISOString();
                 let previous = new Date('feb 1, 2019').toISOString(); //used an arbitrary date needed by the api
                 let from = previous.slice(0, 10);
@@ -348,10 +305,6 @@
 
                 try{
                     const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}&from=${from}`);
-=======
-                try{
-                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}`);
->>>>>>> fixed order corrections
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.renderedList = this.paymentReconciliationList;
@@ -368,19 +321,11 @@
             },
 
             async updateReconciledPayment(item){
-<<<<<<< HEAD
                if(!item.deposited ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
                     "cash_at_hand":item.cash_at_hand,
-=======
-                if(!item.deposited || this.variance !=0 && !item.comment  ){
-                    return this.errHandler("Please enter all required values.");
-                }
-                const data ={
-                    "cash_at_hand":item.total,
->>>>>>> fixed order corrections
                     "deposited": item.deposited,
                     "comment": item.comment
                 };

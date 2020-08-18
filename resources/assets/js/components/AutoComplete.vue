@@ -38,15 +38,6 @@ export default {
         searchEvent () {
             console.log('poploic ',this.apiUrl+this.inputValue);
             this.getproduct();
-            // let filters = {};
-            // Object.keys(this.searchFilter).forEach(key => {
-            //     const filter = this.searchFilter[key];
-            //     if(filter) {
-            //         filters[key] = this.searchQ;
-            //     }                    
-            // });
-            // const filterParam = queryParam(filters);
-            // this.$emit('childToParent', filterParam);
         },
 
         async getproduct(){
@@ -54,12 +45,12 @@ export default {
             try{
                       
 
-                // const fetchProduct = await get(this.apiUrl+this.inputValue);
-                const fetchProduct = await post('/api/customer/autocomplete',{searchableFields:{first_name: this.inputValue,
-last_name: this.inputValue,
-middle_name: this.inputValue}});
-                // this.itemList = fetchProduct.data.data.data;
-                this.itemList = fetchProduct.data.customers;
+                const fetchProduct = await get(this.apiUrl+this.inputValue);
+//                 const fetchProduct = await post('/api/customer/autocomplete',{searchableFields:{first_name: this.inputValue,
+// last_name: this.inputValue,
+// middle_name: this.inputValue}});
+                this.itemList = fetchProduct.data.data.data;
+                // this.itemList = fetchProduct.data.customers;
                 this.apiLoaded = true
                 console.log('poploic LimitList',this.itemList)
             }
