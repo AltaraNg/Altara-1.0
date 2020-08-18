@@ -9,8 +9,13 @@
                     <div class="col d-flex align-items-center" style="max-width: 120px">
                         <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
+<<<<<<< HEAD
                     <div class="col d-flex align-items-center justify-content-center" v-if="payment.customer">
                         {{payment.customer ? payment.customer.id : "Not Available"}}
+=======
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{payment.customer.id}}
+>>>>>>> fixed order corrections
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{payment.date.split(' ')[0]}}
@@ -28,14 +33,14 @@
                         ₦{{payment.amount}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" @click="updateModal(payment)" data-hoverable="true">
-                        <p :class="payment.comment? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></p>
+                        <b class="overflow">{{!payment.comment ? 'Not Available' : payment.comment.comment}}</b>
                     </div>
                 </div>
             </div>
             <div v-if="tab === 'Reconcile'">
                 <div class="mb-3 row attendance-item" v-for="(item, index) in renderedList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto" :class="tab" @click="updateReconciledPayment(item)">{{index+OId}}</span>
+                        <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
 
                     <div class="col d-flex align-items-center justify-content-center">
@@ -45,36 +50,54 @@
                         {{item.date.split(' ')[0]}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
+<<<<<<< HEAD
                         <span v-if="item.user">{{item.cash_at_hand | currency('₦')}}</span>
                         <input @keyup="onUpKey" v-model="item.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
+=======
+                        ₦{{item.cash_at_hand}}
+>>>>>>> fixed order corrections
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{item.total | currency('₦')}}
+                        ₦{{item.total}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
+<<<<<<< HEAD
                         <span v-if="item.user">{{item.deposited | currency('₦')}}</span>
+=======
+                        <span v-if="item.total === item.deposited">₦{{item.deposited}}</span>
+>>>>>>> fixed order corrections
                         <input @keyup="onUpKey" v-model="item.deposited" type="number" class="form-control" rows="1" v-else/>
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
-                        {{item.total - item.deposited | currency('₦')}}
+                        ₦{{item.total - item.deposited}}
                     </div>
+<<<<<<< HEAD
                     <div class="col d-flex align-items-center justify-content-center" >
                         <span class="overflow green text-center" v-if="item.user"><i class="fas fa-info-circle"></i></span>
+=======
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <span v-if="item.total === item.deposited">{{item.comment === null ? '': item.comment.comment}}</span>
+>>>>>>> fixed order corrections
 
                         <textarea v-model="item.comment" v-else class="form-control" rows="1">
                         </textarea>
                     </div>
+<<<<<<< HEAD
                     <div class="col d-flex align-items-center justify-content-center text-center" @click="updateModal(item)" data-hoverable="true">
                         <span :class="item.user? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></span>
+=======
+                    <div class="col d-flex align-items-center" style="max-width: 120px">
+                        <span class="user mx-auto green-back"   v-if="item.total === item.deposited"></span>
+                        <span class="user mx-auto blue"  @click="updateReconciledPayment(item)" v-else></span>
+>>>>>>> fixed order corrections
                     </div>
                 </div>
             </div>
             <div class="modal fade repayment" id="updatePayment">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">Comment</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                         <span aria-hidden="true" class="modal-close text-danger">
                             <i class="fas fa-times"></i>
@@ -82,6 +105,7 @@
                             </a>
                         </div>
                         <div class="modal-body">
+<<<<<<< HEAD
                             <div v-if="tab === 'Reconcile'">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped">
@@ -160,12 +184,18 @@
                         <div class="modal-footer">
                             <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
                                style="text-align: right">close dialogue</a>
+=======
+                            <p>Customer ID: {{paymentItem.customer.id}}</p>
+                            <p>Customer Name : {{paymentItem.customer.first_name}} {{paymentItem.customer.last_name}}</p>
+                            <h5>{{!paymentItem.comment ? 'Not Available' : paymentItem.comment.comment}}</h5>
+>>>>>>> fixed order corrections
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <nav v-if="tab !== 'Log Payment' && !$_.isEmpty(responseData)" class="col d-flex justify-content-end align-items-center pr-0">
+<<<<<<< HEAD
 
             <div v-if="pageParams">
                 <base-pagination
@@ -179,6 +209,17 @@
                 </base-pagination>
 
             </div>
+=======
+            <base-pagination
+                :next_page_url="!responseData.next_page_url ? '#' : responseData.next_page_url"
+                :prev_page_url="!responseData.prev_page_url ? '#': responseData.prev_page_url "
+                :first_page_url="responseData.first_page_url"
+                :last_page="responseData.last_page"
+                :current_page="responseData.current_page"
+                @next="next"
+                @prev="prev"
+            ></base-pagination>
+>>>>>>> fixed order corrections
         </nav>
 
     </div>
@@ -190,10 +231,7 @@
     import {get, post,put} from "../utilities/api";
     import Lookup from "../views/FSL/lookup/lookup";
     import Flash from "../utilities/flash";
-    import Vue2Filters from 'vue2-filters'
     import BasePagination from "../components/Pagination/BasePagination"
-
-    Vue.use(Vue2Filters);
 
     export default {
         components: {Lookup, BasePagination},
@@ -254,7 +292,6 @@
                 paymentItem:{},
                 showModalContent: false,
                 paymentList:[],
-                pageParams: null,
                 paymentReconciliationList:[],
                 totalCashAtHand:0,
                 variance:'',
@@ -265,7 +302,6 @@
                 },
                 renderedList: [],
                 defaultList: [],
-                reconcileForm: {}
 
             }
         },
@@ -293,7 +329,6 @@
                     const fetchPaymentList = await get(`/api/payment?page=${this.page}&branch=${this.branchId}`);
                     this.paymentList = fetchPaymentList.data.data.data;
                     this.responseData = fetchPaymentList.data.data;
-                    this.pageParams = this.responseData;
                     this.renderedList = this.paymentList;
                     this.OId = this.responseData.from;
                     this.$LIPS(false);
@@ -305,6 +340,7 @@
 
             async getPaymentReconciliationList(){
                 this.branchId = localStorage.getItem('branch_id');
+<<<<<<< HEAD
                 let yesterday = new Date(Date.now() - 864e5).toISOString();
                 let previous = new Date('feb 1, 2019').toISOString(); //used an arbitrary date needed by the api
                 let from = previous.slice(0, 10);
@@ -312,6 +348,10 @@
 
                 try{
                     const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}&to=${to}&from=${from}`);
+=======
+                try{
+                    const fetchPaymentReconciliation = await get(`/api/payment-reconcile?branch=${this.branchId}`);
+>>>>>>> fixed order corrections
                     this.paymentReconciliationList = fetchPaymentReconciliation.data.data.data;
                     this.responseData = fetchPaymentReconciliation.data.data;
                     this.renderedList = this.paymentReconciliationList;
@@ -328,11 +368,19 @@
             },
 
             async updateReconciledPayment(item){
+<<<<<<< HEAD
                if(!item.deposited ){
                     return this.errHandler("Please enter all required values.");
                 }
                 const data ={
                     "cash_at_hand":item.cash_at_hand,
+=======
+                if(!item.deposited || this.variance !=0 && !item.comment  ){
+                    return this.errHandler("Please enter all required values.");
+                }
+                const data ={
+                    "cash_at_hand":item.total,
+>>>>>>> fixed order corrections
                     "deposited": item.deposited,
                     "comment": item.comment
                 };
@@ -399,26 +447,22 @@
     .table-separator {
         border-top: 2px solid #dee1e4;
     }
-    .overflow {
+    .overflow{
         width: 80px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .green {
-        color: #00a368;
+    .green{
+        color: green;
     }
-    .red {
-        color: #E30000;
+    .red{
+        color: red;
     }
-    .blue {
+    .green-back{
+        background-color: green;
+    }
+    .blue{
         background-color: #2975a5;
-    }
-    .Current{
-        background: #EDEEF2;
-    }
-    .Successful{
-        background-color: rgba(0,163,104,.09);
-        color: #00a368;
     }
 </style>
