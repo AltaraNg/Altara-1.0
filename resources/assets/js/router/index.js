@@ -394,6 +394,12 @@ const router = new VueRouter({
                     meta: { mode: "create" }
                 },
                 {
+                    path: "inventory/:id/edit",
+                    component: InventoryCreate,
+                    name: "inventoryEdit",
+                    meta: { mode: "edit" }
+                },
+                {
                     path: "brands",
                     component: BrandList,
                     meta: {
