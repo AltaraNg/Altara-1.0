@@ -96,4 +96,12 @@ class Order extends Model
     {
         return $this->hasOne(RenewalList::class);
     }
+
+    /**
+     * Get all of the New Order's payments.
+     */
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'orderable');
+    }
 }
