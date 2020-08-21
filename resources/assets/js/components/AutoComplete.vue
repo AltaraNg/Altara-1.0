@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="dropdown">
-        <input type="text" class="form-control" v-model="inputValue" @input="searchEvent" />        
+        <input type="text" class="form-control w-100 custom-select" v-model="inputValue" @input="searchEvent" />        
         <div v-show="inputValue && apiLoaded" class="dropdown-list">
       <div @click="selectItem(item)" v-for="item in itemList" :key="item.id" class="dropdown-item">
-        {{ item.full_name }}
+        {{ item.product_name }}
       </div>
     </div>
     </div>
@@ -31,7 +31,7 @@ export default {
     methods:{
         selectItem (data) {
             console.log('data data ',data);
-            this.inputValue= data.full_name;
+            this.inputValue= data.product_name;
             this.apiLoaded = false;
             this.$emit('childToParent',data)
         },

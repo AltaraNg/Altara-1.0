@@ -1,7 +1,7 @@
 <template>
     <div style="margin-left: 5rem; margin-right: 5rem;">
     <div class="card">
-        <form class="card-body" @submit.prevent="getCalc">
+        <form class="card-body" @submit.prevent="preview">
             <div class="row">
                 <div class="col form-group align-self-center text-capitalize">
                     <b>Cutomer ID : {{customerId}}</b>
@@ -10,7 +10,7 @@
                     <label for="amount" class="form-control-label">Repayment Cycle</label>
                     <select class="custom-select w-100" v-model="salesLogForm.repayment_cycle_id" v-validate="'required'">
                         <option disabled selected="selected">Repayment Cycle</option>
-                        <option :value="type.id" :key="type.id"  v-for="type in repaymentCyclesopt">
+                        <option :value="type" :key="type.id"  v-for="type in repaymentCyclesopt">
                             {{type.name}}
                         </option>
                     </select>
@@ -19,7 +19,7 @@
                     <label for="amount" class="form-control-label">Repayment Duration</label>
                     <select class="custom-select w-100" v-model="salesLogForm.repayment_duration_id" v-validate="'required'">
                         <option disabled selected="selected">Repayment Duration</option>
-                        <option :value="type.id" :key="type.id"  v-for="type in repaymentDuration">
+                        <option :value="type" :key="type.id"  v-for="type in repaymentDuration">
                             {{type.name}}
                         </option>
                     </select>
@@ -43,9 +43,18 @@
                     </select>
                 </div>
                 <div class="col form-group">
+                    <label for="amount" class="form-control-label">Payment Method</label>
+                    <select class="custom-select w-100" v-model="salesLogForm.payment_method_id" v-validate="'required'">
+                        <option disabled selected="selected">Payment Method</option>
+                        <option :value="type.id" :key="type.id" v-for="type in getPaymentMethods">
+                            {{type.name}}
+                        </option>
+                    </select>
+                </div>
+                <!-- <div class="col form-group">
                     <label for="amount" class="form-control-label">Down Payment</label>
                     <input class="w-100 custom-select" name="amount" v-model="salesLogForm.down_payment" v-validate="'required'" type="number" placeholder="Enter Amount"/>
-                </div> 
+                </div>  -->
             </div>
             <br/>
 
@@ -60,15 +69,15 @@
                     </tr>
                     <tr>
                         <th class="text-muted">Product Price </th>
-                        <td class='product' >{{selectedProduct}}</td>
+                        <td class='product' >{{$formatCurrency(pPrice)}}</td>
                     </tr>
                     <tr>
                         <th class="text-muted">First Payment</th>
-                        <td class='product' ></td>
+                        <td class='product' >{{$formatCurrency(fPayment)}}</td>
                     </tr>
                     <tr>
                         <th class="text-muted">Repayment</th>
-                        <td class='product' ></td>
+                        <td class='product' >{{$formatCurrency(rPayment)}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -77,7 +86,7 @@
             </div>
         </form>
     </div>
-    <div class="modal fade repayment" id="amortizationPreview">
+    <div class="modal fade repayment " id="amortizationPreview">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header py-2">
@@ -99,13 +108,13 @@
                                     <tr class="table-separator">
                                         <td>Customer ID</td>
                                         <td>Product</td>
-                                        <th>Branch</th>
+                                        <!-- <th>Branch</th> -->
                                     </tr>
                                     <tr>
                                         <td class="font-weight-bold">{{this.customerId}}
                                         </td>
-                                        <th>LG Standing Fan</th>
-                                        <td class="font-weight-bold">Ikoyi</td>
+                                        <th>{{this.selectedProduct.product_name}}</th>
+                                        <!-- <td class="font-weight-bold">Ikoyi</td> -->
                                     </tr>
                                     </tbody>
                                 </table>
@@ -115,7 +124,7 @@
                                     <tbody class="text-center">
                                     <tr class="table-separator">
                                         <th>Due Date</th>
-                                        <td v-for="am in amortization">{{am.expected_payment_date.split(' ')[0]}}</td>
+                                        <td v-for="am in amortization">{{am.expected_payment_date}}</td>
                                     </tr>
         
     
@@ -167,10 +176,15 @@ export default {
                 previewAmortization:`/api/amortization/preview`,
                 createOrder:`/api/new_order`,
                 getCalculation: `/api/price_calculator`,
-                getProduct:`/api/product/?productName=`
+                getProduct:`/api/inventory?productName=`
             },
             inputValue: '',
-            selectedProduct:''
+            selectedProduct:{},
+            fPayment:'',
+            pPrice:'',
+            rPayment:'',
+            repaymentCircle:'',
+            rDuration:''
 
         }
     },
@@ -187,19 +201,26 @@ export default {
     methods:{
         async logSale() {
             this.salesLogForm.customer_id = this.customerId;
-            const data ={
-                ...this.salesLogForm,...{
-                    "product_id": "205-0962-FRE-FOU-GA",
-                    "branch_id":localStorage.getItem('branch_id'),
-                    "status_id":1
-                }
+            const data={
+                "customer_id": this.customerId,
+                "product_id": this.selectedProduct.product_id,
+                "repayment_duration_id": this.salesLogForm.repayment_duration_id.id,
+                "repayment_cycle_id": this.salesLogForm.repayment_cycle_id.id,
+                "business_type_id": this.salesLogForm.business_type_id,
+                "branch_id":localStorage.getItem('branch_id'),
+                "down_payment": this.fPayment,
+                // "custom_date": 31,
+                "repayment": this.rPayment,
+                "product_price": this.pPrice,
+                "payment_type_id": this.salesLogForm.payment_type_id.id,
+                "payment_method_id": this.salesLogForm.payment_method_id
             }
             this.$validator.validateAll().then(result => {
                 if (result) {
                     this.$LIPS(true);
                     post(this.apiUrls.createOrder,data).then((res) => {
                         this.$LIPS(false);
-                                                $(`#amortizationPreview`).modal('toggle');
+                        $(`#amortizationPreview`).modal('toggle');
 
                         this.$swal({
                             icon: 'success',
@@ -214,34 +235,8 @@ export default {
             });
         },
         async submitForm() {
-            // this.salesLogForm.customer_id = this.customerId;
-            // const data ={
-            //     ...this.salesLogForm,...{
-            //         "product_id": "205-0962-FRE-FOU-GA",
-            //         "branch_id":localStorage.getItem('branch_id'),
-            //         "status_id":1
-            //     }
-            // }
-            // console.log(`dataaaa ${JSON.stringify(data)}`);
-            // this.$validator.validateAll().then(result => {
-            //     if (result) {
-            //         this.$LIPS(true);
-            //         post(this.apiUrls.previewAmortization,data).then((res) => {
-            //             this.$LIPS(false);
-            //             this.amortization = res.data.data;
-            //             console.log('this.amortizationthis.amortization',this.amortization)
-            //             $(`#amortizationPreview`).modal('toggle');
-            //             // this.$swal({
-            //             //     icon: 'success',
-            //             //     title: 'Payment Successfully Logged'
-            //             // })
-            //             // this.$emit('done');
-            //         }).catch(() => {
-            //             this.$LIPS(false);
-            //             Flash.setError("Error submitting form")
-            //         })
-            //     } else this.$networkErr('form');
-            // });
+            
+            $(`#amortizationPreview`).modal('toggle');
         },
         async getRepaymentDuration(){
             try{
@@ -256,21 +251,19 @@ export default {
             this.salesLogForm.customer_id = this.customerId;
             const data0 ={
                 ...this.salesLogForm,...{
-                    "product_id": "205-0962-FRE-FOU-GA",
                     "branch_id":localStorage.getItem('branch_id'),
                     "status_id":1
                 }
             }
-            console.log(`dataaaa ${JSON.stringify(data0)}`);
-            console.log(`this.calculation ${this.calculation}`);
+            
             const caly= this.calculation;
-            const data = caly.filter((x)=> x.business_type_id === data0.business_type_id && x.down_payment_rate_id === data0.payment_type_id.id)[0];
-            console.log(`dataaaa data0 ${data}`);
-
+            const data = caly.filter((x)=> x.business_type_id === data0.business_type_id &&
+             x.down_payment_rate_id === data0.payment_type_id.id &&
+              x.repayment_duration_id === data0.repayment_duration_id.id)[0];
             const margin = data['margin'];
             const interest = data['interest'];
-            const plan = 20;
-            let mPrice=65000; 
+            const plan = data0.payment_type_id.percent;
+            let mPrice = this.selectedProduct.price; 
             mPrice = mPrice * margin + Number(mPrice);
             const dPrice = mPrice * (plan / 100);
             const rPrice = mPrice - dPrice;
@@ -280,43 +273,66 @@ export default {
             const upFront = aTax * (plan /100);
             const rePay = aTax - upFront;
             const mRepay = rePay / 12;
-
-            
-
+            const downP = Math.floor(upFront / 100) * 100;
+            const period = data.repayment_duration_id
+            const rPay =
+                period == 6
+                ? Math.floor(mRepay / 100) * 100 * 2
+                : Math.floor(mRepay / 100) * 100 * 3;
+            const totalP = rPay * period + downP;
+            this.repaymentCircle = data0.repayment_cycle_id.value;
+            this.rDuration = data0.repayment_duration_id.value;
+            this.fPayment = downP;
+            this.rPayment = rPay;
+            this.pPrice = totalP;
+        },
+        getRepaymentDate(count){
+            const paymentDate = this.repaymentCircle * count;
+            const date = new Date();
+            const newDate = new Date(date.getFullYear(),
+                                    date.getMonth(),
+                                    date.getDate()+paymentDate)
+            .toLocaleDateString("en-US");
+            return newDate;
+        },
+        preview(){ 
+            const plan = [];
+            const repaymentCount = this.rDuration/this.repaymentCircle;
+            for (let i = 1; i <= repaymentCount; i++ ){
+                plan.push({
+                    'expected_payment_date' : this.getRepaymentDate(i),
+                    'expected_amount' : this.rPayment
+                });
+            }
+            this.amortization = plan; 
+            this.submitForm();
         },
         async getCalculation(){
             try{
                 const fetchGetCalclations = await get(this.apiUrls.getCalculation);
                 
-                // const test = fetchGetCalclation.data.data.data.data;
                 const unwrapped = fetchGetCalclations.data.data;
                 this.calculation = unwrapped;
                 const unwrapped0 = JSON.stringify(unwrapped);
 
-                console.log(`test dataooo data ${unwrapped0}`);
-                console.log(`test dataooo data ${unwrapped}`);
-                // console.log(`test calculator data ${JSON.stringify(fetchGetCalclations)["data"]}`);
-                // console.log(`test calculator data ${this.calculation}`);
-                // console.log(`test calculator data ${JSON.stringify(this.calculation)}`);
             }
             catch(err){
                 this.$displayErrorMessage(err);
             }
         },
         selectedItem(value){
-            console.log('poploic fff',value);
-            this.selectedProduct=value;
+            this.selectedProduct = value;
+                        this.getCalc();
+
         },
         async getProduct(){
             try{
                 const fetchProduct = await get(this.apiUrls.getProduct+this.product);
-                console.log(`test product data ${fetchProduct}`);
             }
             catch(err){
                 this.$displayErrorMessage(err);
             }
         },
-
         async getRepaymentCycles(){
             try{
                 const fetchRepaymentCycles = await get(this.apiUrls.repaymentCycles);
@@ -343,7 +359,6 @@ export default {
             catch(err){
                 this.$displayErrorMessage(err);
             }
-                            console.log('fdfdfd',this.repaymentCyclesopt)
 
         },
         
