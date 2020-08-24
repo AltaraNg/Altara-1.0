@@ -175,7 +175,7 @@ class Customer extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function newOrders()
+    public function new_orders()
     {
         return $this->hasMany(NewOrder::class);
     }
