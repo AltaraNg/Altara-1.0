@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProductTransferEvent;
 use App\Http\Filters\ProductTransferFilter;
 use App\Http\Requests\ProductTransferRequest;
 use App\ProductTransfer;
@@ -38,8 +39,9 @@ class ProductTransferController extends Controller
      */
     public function store(ProductTransferRequest $request)
     {
-        $data = array_merge($request->validated(), ['user_id' => auth()->user()->id]);
+        $data = array_merge($request->validated(), ['user_id' => auth()->user()->id, 'from_id' => auth()->user()->branch_id]);
         $productTransfer = $this->productTransferRepo->store($data);
+        event(new ProductTransferEvent($data));
 
         return $this->sendSuccess($productTransfer->toArray(), 'Product Transfer Successfully Created');
     }
@@ -52,9 +54,13 @@ class ProductTransferController extends Controller
      */
     public function update(ProductTransfer $productTransfer, ProductTransferRequest $request)
     {
-        $data = array_merge($request->validated(), ['user_id' => auth()->user()->id]);
+        $validated = $request->validated();
+        unset($validated['current']);
+        $data = array_merge($validated, ['user_id' => auth()->user()->id]);
         $productTransfer = $this->productTransferRepo->update($productTransfer, $data);
-
+        if ($request['current']){
+            event(new ProductTransferEvent($productTransfer));
+        }
         return $this->sendSuccess($productTransfer->toArray(), 'Product Transfer updated successfully');
     }
 }
