@@ -20,7 +20,7 @@ class ProductTransfer extends Model
     public static function rules()
     {
         return [
-            'branch_id' => 'required|exists:branches,id',
+            'to_id' => 'required|exists:branches,id',
             'product_id' => 'required|exists:products,id'
         ];
     }
@@ -35,13 +35,19 @@ class ProductTransfer extends Model
     public static function updateRules()
     {
         return [
-            'branch_id' => 'sometimes|required|exists:branches,id',
-            'product_id' => 'sometimes|required|exists:products,id'
+            'to_id' => 'sometimes|required|exists:branches,id',
+            'product_id' => 'sometimes|required|exists:products,id',
+            'current' => 'sometimes|required|boolean'
         ];
     }
 
 
-    public function branch()
+    public function to()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function from()
     {
         return $this->belongsTo(Branch::class);
     }
@@ -61,7 +67,8 @@ class ProductTransfer extends Model
         return [
             'id' => $this->id,
             'product' => $this->product,
-            'branch' => $this->branch->name,
+            'to' => $this->to->name,
+            'from' => $this->from->name,
             'user' => $this->user->full_name,
             'created_at' => $this->created_at->toDateTimeString()
         ];

@@ -269,10 +269,4 @@ class UserController extends Controller
             return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
         });
     }
-
-    public function test(){
-        $order = NewOrder::findOrFail(51);
-        event(new NewOrderEvent($order));
-        return 'klll';
-    }
 }

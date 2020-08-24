@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Events\NewOrderEvent;
+use App\Events\ProductTransferEvent;
 use App\Events\SendPasswordResetLinkEvent;
 use App\Listeners\LogPaymentListener;
 use App\Listeners\NewOrderListener;
 use App\Listeners\SendPasswordResetLinkListener;
+use App\Listeners\UpdateInventoryBranchListener;
 use App\Listeners\UpdateInventoryListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -29,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
             NewOrderListener::class,
             UpdateInventoryListener::class,
             LogPaymentListener::class
+        ],
+        ProductTransferEvent::class => [
+            UpdateInventoryBranchListener::class
         ],
     ];
 
