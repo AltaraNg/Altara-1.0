@@ -28,14 +28,14 @@
                         ₦{{payment.amount}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" @click="updateModal(payment)" data-hoverable="true">
-                        <p :class="payment.comment? 'green' : 'red'" class="overflow"><i class="fas fa-info-circle"></i></p>
+                        <b class="overflow">{{!payment.comment ? 'Not Available' : payment.comment.comment}}</b>
                     </div>
                 </div>
             </div>
             <div v-if="tab === 'Reconcile'">
                 <div class="mb-3 row attendance-item" v-for="(item, index) in renderedList">
                     <div class="col d-flex align-items-center" style="max-width: 120px">
-                        <span class="user mx-auto" :class="tab" @click="updateReconciledPayment(item)">{{index+OId}}</span>
+                        <span class="user mx-auto" :class="tab">{{index+OId}}</span>
                     </div>
 
                     <div class="col d-flex align-items-center justify-content-center">
@@ -49,7 +49,7 @@
                         <input @keyup="onUpKey" v-model="item.cash_at_hand" type="number" class="form-control" rows="1" v-else/>
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{item.total | currency('₦')}}
+                        ₦{{item.total}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         <span v-if="item.user">{{item.deposited | currency('₦')}}</span>
@@ -57,7 +57,7 @@
                         <!-- </input> -->
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" :class="[item.total-item.deposited === 0 ? 'green' : 'red']">
-                        {{item.total - item.deposited | currency('₦')}}
+                        ₦{{item.total - item.deposited}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center" >
                         <span class="overflow green text-center" v-if="item.user"><i class="fas fa-info-circle"></i></span>
@@ -71,10 +71,9 @@
                 </div>
             </div>
             <div class="modal fade repayment" id="updatePayment">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
-                            <h6 class="modal-title py-1">Comment</h6>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                         <span aria-hidden="true" class="modal-close text-danger">
                             <i class="fas fa-times"></i>
@@ -190,10 +189,7 @@
     import {get, post,put} from "../utilities/api";
     import Lookup from "../views/FSL/lookup/lookup";
     import Flash from "../utilities/flash";
-    import Vue2Filters from 'vue2-filters'
     import BasePagination from "../components/Pagination/BasePagination"
-
-    Vue.use(Vue2Filters);
 
     export default {
         components: {Lookup, BasePagination},
@@ -254,7 +250,6 @@
                 paymentItem:{},
                 showModalContent: false,
                 paymentList:[],
-                pageParams: null,
                 paymentReconciliationList:[],
                 totalCashAtHand:0,
                 variance:'',
@@ -265,7 +260,6 @@
                 },
                 renderedList: [],
                 defaultList: [],
-                reconcileForm: {}
 
             }
         },
@@ -293,7 +287,6 @@
                     const fetchPaymentList = await get(`/api/payment?page=${this.page}&branch=${this.branchId}`);
                     this.paymentList = fetchPaymentList.data.data.data;
                     this.responseData = fetchPaymentList.data.data;
-                    this.pageParams = this.responseData;
                     this.renderedList = this.paymentList;
                     this.OId = this.responseData.from;
                     this.$LIPS(false);
@@ -399,26 +392,22 @@
     .table-separator {
         border-top: 2px solid #dee1e4;
     }
-    .overflow {
+    .overflow{
         width: 80px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .green {
-        color: #00a368;
+    .green{
+        color: green;
     }
-    .red {
-        color: #E30000;
+    .red{
+        color: red;
     }
-    .blue {
+    .green-back{
+        background-color: green;
+    }
+    .blue{
         background-color: #2975a5;
-    }
-    .Current{
-        background: #EDEEF2;
-    }
-    .Successful{
-        background-color: rgba(0,163,104,.09);
-        color: #00a368;
     }
 </style>
