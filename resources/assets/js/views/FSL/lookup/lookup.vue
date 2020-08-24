@@ -61,7 +61,7 @@
                                         <i :class="order.count === order.repaymentLevel ? 'fa-check-circle' : 'fa-hourglass-half'"
                                            class="fas ml-3"
                                            style="font-size: 1.4rem"></i>
-<!--                                        // TODO:: cleanup-->                      
+<!--                                        // TODO:: cleanup-->
                                     </button>
                                 </div>
                             </div>
@@ -75,8 +75,8 @@
                             </div>
                         </div>
                     </div>
-                        
-                    <LogForm :customerId="customer.id" @done="this.done" v-if="logger === 'cash'" />
+
+                    <LogForm :customerId="customer.id" :order-id="customer.orders[0].order.id" @done="this.done" v-if="logger === 'cash'" />
                     <PaymentLog :customerId="customer.id" @done="this.done" v-if="logger === 'payment'" />
                     <div class="mt-5 mb-3 attendance-head">
                         <div class="w-100 my-5 mx-0 hr"></div>
@@ -320,7 +320,7 @@
     import {getOrderStatus, getOrderStatusClass} from '../../../components/order/orderStatusCssClass';
     import LogForm from "../../../components/LogForm";
     import PaymentLog from "../../../components/PaymentLog";
-    
+
 
     export default {
 
