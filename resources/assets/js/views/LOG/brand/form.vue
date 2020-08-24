@@ -9,10 +9,10 @@
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
                         <div class="form-group col-12 float-left px-0 px-md-3">
                             <label>Brand name</label>
-                            <input class="form-control mb-2" placeholder="brand name" name="brand name" type="text"
+                            <input class="form-control w-50" placeholder="brand name" name="brand name" type="text"
                                    v-model="form.name"
                                    v-validate="'required|max:50'">
-                            <p @click="addCategory" class="link" v-if="mode === 'edit'">Add categories</p>
+                            <p @click="addCategory" class='pointer green' v-if="mode === 'edit'">Add categories</p>
                             <small v-if="errors.first('brand name')">{{ errors.first('brand name') }}</small>
                             <small v-if="error.name">{{error.name[0]}}</small>
                         </div>
@@ -197,3 +197,8 @@
         }
     }
 </script>
+<style>
+.green{
+    color: #0b2e13;
+}
+</style>
