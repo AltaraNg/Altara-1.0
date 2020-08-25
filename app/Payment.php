@@ -116,7 +116,9 @@ class Payment extends Model
             'method' => $this->paymentMethod->name,
             'amount' => $this->amount,
             'date' => $this->created_at->toDateTimeString(),
-            'comment' => $this->comment
+            'comment' => $this->comment,
+            'orderable_type' => $this->orderable_type,
+            'orderable_id' => $this->orderable_id
         ];
     }
 }
