@@ -9,8 +9,8 @@ class InventoryFilter extends BaseFilter
     /**
      * @param string $name
      */
-    public function productName(string $name)
+    public function productName(int $name)
     {
-        $this->builder->where('product_name', 'like', '%' . $name .'%');
+        $this->builder->where('product_id', 'like', '%' . $name .'%');
     }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Http\Filters;
 
+use function foo\func;
 use Illuminate\Database\Eloquent\Builder;
 
 class ProductFilter extends BaseFilter
 {
     public function brand(int $brand_id){
         $this->builder->where('brand_id', 'like', '%' . $brand_id .'%');
+
     }
 
     public function category(int $category_id){

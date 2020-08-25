@@ -2,47 +2,21 @@
     <transition name="fade">
         <div id="reminder" class="attendance">
 
-            <custom-header :title="'Suppliers List'"/> 
+            <custom-header :title="'Suppliers List'"/>
 
             <div class="mt-2 mt-lg-3 row attendance-head ">
                 <div class="col-md-8">
                     <InventorySearch v-on:childToParent="searchEvent" :searchColumns="searchColumns" />
                 </div>
-                
+
                 <div class="col-md-4">
                     <router-link :to="{name: 'suppliersCreate'}">
-            <button class="btn btn-primary bg-default  myBtn ">New Supplier</button>
+            <button class="btn btn-primary bg-default  myBtn float-right my-2">New Supplier</button>
                 </router-link>
                 </div>
             </div>
 
-            <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
-                <div class="col-4 col-lg" v-for="{name:filter,model} in filters">
-                    <div >
 
-                        <div class="light-heading mb-1">
-                            <span class="d-none d-sm-inline">Select </span>
-                            {{filter | capitalize}}
-                        </div>
-
-                        <div class="w-50" v-if="filter === 'state'">
-                            <select class="custom-select" v-model="$data[model]"
-                                    @keyup.enter="fetchData()">
-                                <option disabled selected value="">{{filter | capitalize}}</option>
-                                <option :value="id" v-for="{name,id} in getStates">
-                                    {{name | capitalize}}
-                                </option>
-                            </select>
-                        </div>
-
-
-                    </div>
-                </div>
-
-                <div class="col-6 col-sm p-0 flex-row-bottom">
-                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>
-                </div>
-            </div>
 
             <div class="mt-5 mb-3 attendance-head">
                 <div class="w-100 my-5 mx-0 hr"></div>

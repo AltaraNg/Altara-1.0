@@ -3,20 +3,20 @@
         <div id="reminder" class="attendance">
 
             <custom-header :title="'Inventory'"/>
-          
+
             <div class="mt-2 mt-lg-3 row attendance-head ">
                 <div class="col-md-8">
                     <InventorySearch v-on:childToParent="searchEvent" :searchColumns="searchColumns" />
                 </div>
-                
+
                 <div class="col-md-4">
                     <router-link :to="{name: 'inventoryCreate'}">
-                        <button class="btn btn-primary bg-default  myBtn ">New Inventory</button>
+                        <button class="btn btn-primary bg-default  myBtn float-right my-2">New Inventory</button>
                     </router-link>
                 </div>
             </div>
-                
-            
+
+
             <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
                 <div class="col-4 col-lg" v-for="{name:filter,model} in filters">
                     <div >
@@ -304,7 +304,7 @@
             }
         },
 
-        
+
     }
 </script>
 

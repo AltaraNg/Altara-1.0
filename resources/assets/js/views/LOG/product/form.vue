@@ -132,28 +132,47 @@
             }
         },
         methods: {
-            prepareForm(data) {
+            async prepareForm(data) {
                 this.$LIPS(true);
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                get('/api/brand').then((res) => {
+                await get('/api/brand').then((res) => {
                     Vue.set(this.$data, 'brands', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
 
-                get('/api/product_type').then((res) => {
+                await get('/api/product_type').then((res) => {
                     Vue.set(this.$data, 'product_types', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
 
+                await get('/api/category').then((res) => {
+                    Vue.set(this.$data, 'categories', res.data.data.data);
+                }).catch(() => Flash.setError('Error Preparing form'));
 
-                Vue.set(this.$data, 'form', data);
+
+
+
 
                 if (this.mode === 'edit') {
                     //TODO change the edit form
                     this.store = `/api/product/${this.$route.params.id}`;
                     this.method = 'PUT';
+                    let form = {};
+                    form.feature = data.feature;
+                    form.brand_id = this.getParent(data.brand, this.brands).id;
+                    form.category_id = this.getParent(data.category, this.categories).id;
+                    form.product_type_id = this.getParent(data.product_type, this.product_types).id;
+                    form.retail_price = data.retail_price;
+                    Vue.set(this.$data, 'form', form);
+                }else{
+                    Vue.set(this.$data, 'form', data);
                 }
                 this.$LIPS(false);
                 this.show = true;
 
+            },
+            getParent(name, array){
+                return array.find((item) => {
+                    return item.name === name;
+                });
             },
             onSave() {
                 this.$validator.validateAll().then(result => {

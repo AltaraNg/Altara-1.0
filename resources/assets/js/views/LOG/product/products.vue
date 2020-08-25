@@ -8,10 +8,10 @@
                 <div class="col-md-8">
                     <InventorySearch v-on:childToParent="searchEvent" :searchColumns="searchColumns" />
                 </div>
-                
+
                 <div class="col-md-4">
                     <router-link :to="{name: 'productCreate'}">
-                    <button class="btn btn-primary bg-default mt-0 myBtn ">New Product</button>
+                    <button class="btn btn-primary bg-default mt-0 myBtn float-right my-2">New Product</button>
                 </router-link>
                 </div>
             </div>
