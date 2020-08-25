@@ -4,10 +4,13 @@ namespace App;
 
 
 use App\Helper\Helper;
+use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
 {
+
+    use Filterable;
     protected $guarded = [];
 
     /**
@@ -61,5 +64,8 @@ class Supplier extends Model
     {
         return Helper::generatePrefix(config('app.name')) . '/' . Helper::generateSKU(4) . '/' . Helper::generatePrefix($name) . '/' . date("Y");
     }
+
+
+
 
 }

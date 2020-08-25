@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bank;
+use App\Http\Filters\SupplierFilter;
 use App\Http\Requests\SupplierRequest;
 use App\Repositories\SupplierRepository;
 use App\Supplier;
@@ -22,11 +23,12 @@ class SupplierController extends Controller
     }
 
     /**
+     * @param SupplierFilter $filter
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(SupplierFilter $filter)
     {
-        $suppliers = $this->supplierRepository->all();
+        $suppliers = $this->supplierRepository->getAll($filter);
 
         return $this->sendSuccess($suppliers->toArray(), 'Suppliers retrieved successfully');
     }

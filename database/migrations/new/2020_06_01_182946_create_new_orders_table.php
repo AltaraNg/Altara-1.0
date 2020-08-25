@@ -20,7 +20,7 @@ class CreateNewOrdersTable extends Migration
             $table->unsignedInteger('customer_id')->index();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade')->onUpdate('cascade');
             $table->string('product_id');
-            $table->foreign('product_id')->references('product_id')->on('new_products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade')->onUpdate('cascade');
             $table->double('product_price');
             $table->double('down_payment');
             $table->double('repayment');

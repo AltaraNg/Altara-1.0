@@ -47,7 +47,7 @@ import {get, post} from '../utilities/api';
 import {mapGetters} from "vuex";
 
 export default {
-    props:{customerId: null},
+    props:{customerId: null, orderId: null},
     data() {
         return {
             error: {},
@@ -68,6 +68,8 @@ export default {
     methods:{
         async submitForm() {
             this.cashLogForm.customer_id = this.customerId;
+            this.cashLogForm.model_id = parseInt(this.orderId);
+            this.cashLogForm.model = 'new_order'; //Todo: Make dynamic later
             this.$validator.validateAll().then(result => {
                 if (result) {
                     this.$LIPS(true);
@@ -94,7 +96,7 @@ export default {
                 this.$displayErrorMessage(err);
             }
         },
-        
+
     }
 }
 </script>

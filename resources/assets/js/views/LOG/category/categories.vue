@@ -3,10 +3,17 @@
         <div id="reminder" class="attendance">
 
             <custom-header :title="'Categories List'"/>
+
             <div class="mt-2 mt-lg-3 row attendance-head ">
-                <router-link :to="{name: 'categoryCreate'}">
+                <!-- <div class="col-md-8">
+                    <InventorySearch v-on:childToParent="searchEvent" :searchColumns="searchColumns" />
+                </div> -->
+                
+                <div class="col-md-4">
+                    <router-link :to="{name: 'categoryCreate'}">
                     <button class="btn btn-primary bg-default mt-0 myBtn ">New Category</button>
                 </router-link>
+                </div>
             </div>
 
             <div class="mt-5 mb-3 attendance-head">
@@ -106,6 +113,7 @@
     import {mapGetters, mapActions} from "vuex";
     import CustomHeader from '../../../components/customHeader';
     import BasePagination from '../../../components/Pagination/BasePagination'
+    import InventorySearch from "../../../components/InventorySearch";
 
     export default {
         props: {
@@ -114,7 +122,7 @@
             urlToFetchOrders: {default: '/api/category'}
         },
 
-        components: {CustomHeader, BasePagination },
+        components: {CustomHeader, BasePagination,InventorySearch },
 
         computed: {...mapGetters(['getBranches'])},
 
@@ -137,7 +145,10 @@
                 response: {},
                 show: false,
                 headings:
-                    ['Name', 'Status',]
+                    ['Name', 'Status',],
+                searchColumns: [
+                    {title: 'Name', column: 'name'},
+                ]
             }
         },
 
@@ -193,7 +204,11 @@
                 )
             },
 
-
+            searchEvent (data) {
+                get(this.urlToFetchOrders + data)
+                    .then(({data}) => this.prepareList(data))
+                    .catch(() => Flash.setError('Error Preparing form'));
+            },
 
             ...mapActions('ModalAccess', [
                 'addCustomerOptionsModalsToDom',

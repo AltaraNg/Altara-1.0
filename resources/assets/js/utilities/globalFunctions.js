@@ -34,6 +34,18 @@ Date.prototype.addDays = function (days) {
  * I used c just to reduce file size**/
 Vue.prototype.$getCustomerFullName = (c, withMiddleName = false) =>
     c ? `${c.first_name + (c.middle_name ? " " + c.middle_name + " " : " ") + c.last_name}` : null;
+ Vue.prototype.$getUserDetails = async function(userId){
+     try {
+         const dam = await get(`/api/user/${userId}`);
+         return dam.data
+     }catch (err) {
+         this.$displayErrorMessage(err);
+     }
+
+
+};
+
+
 
 Vue.prototype.$getCustomerAddress = c =>
     c ? `${c.add_houseno} ${c.add_street} ${c.area_address}, ${c.city}, ${c.state}.` : null;
