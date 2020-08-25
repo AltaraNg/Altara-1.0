@@ -76,9 +76,8 @@ class Handler extends ExceptionHandler
             return ResponseHelper::createErrorResponse(
                 ResponseMessages::EXCEPTION_THROWN, ResponseCodes::EXCEPTION_THROWN,
                 [
-                    "error_message" => $e->getMessage(),
-                    "error" => in_array(env('APP_ENV'), ['testing', 'staging', 'local']) ? $e->getTrace() : []
-                ]
+                    "error_message" => $e->getMessage()
+                ], 400
             );
         }
     }
