@@ -17,6 +17,16 @@ class BaseFilter extends QueryFilter
     }
 
     /**
+     * @param string $branch
+     */
+    public function branchName(string $branch)
+    {
+        $this->builder->whereHas('brand', function ($query) use ($branch) {
+            $query->where('name', 'like', '%' . $branch .'%');
+        });
+    }
+
+    /**
      * @param string $date
      * @param string $column
      */
@@ -49,6 +59,6 @@ class BaseFilter extends QueryFilter
      */
     public function name(string $name)
     {
-        $this->builder->where('name', 'like', '%' . $name .'%');
+        $this->builder->where('name', 'ilike', '%' . $name .'%');
     }
 }

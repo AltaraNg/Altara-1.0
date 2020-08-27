@@ -6,18 +6,22 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ProductFilter extends BaseFilter
 {
-    public function category(int $category_id){
-        $this->builder->where('category_id', $category_id);
+    /**
+     * @param string $category
+     */
+    public function category(string $category){
+        $this->builder->whereHas('category', function ($query) use ($category) {
+            $query->where('name', 'like', '%' . $category .'%');
+        });
     }
 
-    public function productType(int $product_type_id){
-        $this->builder->where('product_type_id', $product_type_id);
-    }
     /**
-     * @param int $id
+     * @param string $brand
      */
-    public function brand(int $id)
+    public function brand(string $brand)
     {
-        $this->builder->where('brand_id', $id);
+        $this->builder->whereHas('brand', function ($query) use ($brand) {
+            $query->where('name', 'like', '%' . $brand .'%');
+        });
     }
 }
