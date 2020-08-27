@@ -59,6 +59,6 @@ class BaseFilter extends QueryFilter
      */
     public function name(string $name)
     {
-        $this->builder->where('name', 'ilike', '%' . $name .'%');
+        $this->builder->where('name', 'like', '%' . $name .'%');
     }
 }
