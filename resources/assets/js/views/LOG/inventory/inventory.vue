@@ -54,11 +54,11 @@
             </div>
             <div class="tab-content mt-1 attendance-body">
 
-                    <div class="mb-3 row attendance-item" :key="index" v-for="(inventory,index) in inventories" @click="viewInventory(inventory)" v-if="inventories">
-                        <div class="col d-flex align-items-center" style="max-width: 120px">
+                    <div class="mb-3 row attendance-item" :key="index" v-for="(inventory,index) in inventories" v-if="inventories">
+                        <div class="col d-flex align-items-center" style="max-width: 120px"   >
                             <span class="user mx-auto" >{{index+OId}}</span>
                         </div>
-                        <div class="col d-flex align-items-center justify-content-center ">
+                        <div class="col d-flex align-items-center justify-content-center " @click="viewInventory(inventory)">
                             {{getParent(inventory.product_id, products).name}}
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
@@ -75,6 +75,9 @@
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
                             {{getParent(inventory.branch_id, getBranches).name}}
+                        </div>
+                          <div class="col d-flex align-items-center justify-content-center" @click="viewproductTransfer(inventory)" >
+                            <i class="fas fa-exchange-alt"></i>
                         </div>
 
 
@@ -142,6 +145,55 @@
                 </div>
             </div>
 
+
+            <div class="modal fade repayment" id="viewProductTransfer">
+                <div class="modal-dialog " role="document">
+                    <div class="modal-content" v-if="showModalContent">
+                        <div class="modal-header py-2">
+                            <h3>Product Transfer.</h3>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                        <span aria-hidden="true" class="modal-close text-danger">
+
+                            <i class="fas fa-times"></i>
+                        </span>
+                            </a>
+                        </div>
+                        <div class="modal-body px-5" >
+
+
+                         Transfer ({{ inventoryItem ? getParent(inventoryItem.product_id, products).name : '' || "Not Available" }})
+
+                        <div class="mb-3 row attendance-item">
+                        <div class="col d-flex align-items-center" style="max-width: 120px"   >
+                             From: {{ inventoryItem ? getParent(inventoryItem.branch_id, getBranches).name : '' || "Not Available" }}
+                             
+                        </div>
+                        <div class="col d-flex align-items-center justify-content-center ">
+                           <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="col d-flex align-items-center justify-content-center">
+                           To: <select v-model="toId" class="form-control option2">
+                <option disabled value="">Please select a branch</option>
+                <option :key="option.id" v-for="option in getBranches" v-bind:value="option.id">
+                    {{ option.name }}
+                </option>
+            </select>
+                        </div>
+                        </div>
+
+
+                        </div>
+                        <div class="modal-footer justify-content-center">
+
+                            <button  class="text-center btn bg-default" @click="logTransfer(inventoryItem.product_id,toId)">Transfer</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
             <div v-if="pageParams">
                 <base-pagination
 
@@ -158,7 +210,7 @@
     </transition>
 </template>
 <script>
-    import {get} from '../../../utilities/api';
+    import {get,post} from '../../../utilities/api';
     import Flash from "../../../utilities/flash";
 
     import {mapActions, mapGetters} from "vuex";
@@ -195,10 +247,12 @@
                 inventories: null,
                 inventoryItem: null,
                 response: {},
+                transferItem:{},
+                toId:0,
                 // searchQ:'',
                 show: false,
                 headings:
-                    ['Product Name', 'SKU','Price', 'Supplier', 'Date Received', 'Branch'],
+                    ['Product Name', 'SKU','Price', 'Supplier', 'Date Received', 'Branch','Transfer'],
                 searchColumns: [
                     {title: 'Product Name', column: 'productName'},
                     {title: 'Branch', column: 'branch'},
@@ -219,6 +273,23 @@
                     .catch(() => Flash.setError('Error Preparing form'));
 
 
+            },
+
+            logTransfer(id,to) {
+                this.$LIPS(true);
+               
+                post('/api/product_transfer', {'to_id': to,'product_id': id})
+                    .then((res) => {
+                        this.$LIPS(false);
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Transfer Successfully Logged'
+                        })
+                        $(`#viewProductTransfer`).modal('toggle');
+                    }).catch(() => {
+                        this.$LIPS(false);
+                        Flash.setError("Error submitting form")
+                    })
             },
 
             prepareList(response){
@@ -257,6 +328,12 @@
                 return $(`#viewInventory`).modal('toggle');
             },
 
+            viewproductTransfer(data){
+                this.showModalContent = true;
+                this.transferItem = data;
+                return $(`#viewProductTransfer`).modal('toggle');
+            },
+            
             edit(item){
                 this.showModalContent = false;
                 $(`#viewInventory`).modal('toggle');
@@ -285,8 +362,6 @@
             get('/api/product').then((res) => {
                 this.products = res.data.data.data;
             });
-
-            console.log(this.$getUserDetails(2));
 
             this.$prepareBranches();
             this.fetchData();
