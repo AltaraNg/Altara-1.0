@@ -350,16 +350,18 @@
 
             async updateView(data) {
                 let {customer, user} = data;
+                 
                 if (!!customer.length) {
                     customer = customer[0];
                     !customer.document && (customer.document = {id_card_url: "", passport_url: ""});
                     this.user.branch = user.branch_id;
                     this.customer = customer;
-                    this.customer.orders = customer.orders.map(order => {
+                    this.customer.orders =   customer.orders ? customer.orders.map(order => {
                         let orderWithCustomer = order;
                         orderWithCustomer.customer = this.customer;
                         return new OrderWithPromiseCall(orderWithCustomer, this.getAuthUserDetails.userId);
-                    });
+                    }) : [];
+
                     this.show = true;
                 } else Flash.setError("Customer not found.", 5000);
                 this.$LIPS(false);
@@ -374,7 +376,7 @@
                 this.$LIPS(true);
                 get(`/api/customer/lookup/${id}`)
                     .then(res => this.updateView(res.data))
-                    .catch(() => {
+                    .catch((e) => {
                         this.$LIPS(false);
                         Flash.setError('Error Fetching customer detail');
                     });
