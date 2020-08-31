@@ -242,7 +242,6 @@
                 page: 1,
                 searchFilter:{},
                 filters: [
-
                 ],
                 inventories: null,
                 inventoryItem: null,
@@ -259,7 +258,6 @@
                 ]
             }
         },
-
         methods: {
             fetchData() {
                 this.$scrollToTop();
@@ -274,7 +272,6 @@
 
 
             },
-
             logTransfer(id,to) {
                 this.$LIPS(true);
                
@@ -291,7 +288,6 @@
                         Flash.setError("Error submitting form")
                     })
             },
-
             prepareList(response){
                 let {current_page, first_page_url, from, last_page, last_page_url, data, per_page, next_page_url, to, total, prev_page_url} = response.data;
                 this.pageParams = Object.assign({}, this.pageParams, {current_page, first_page_url, from, last_page, last_page_url, per_page, next_page_url, to, total, prev_page_url});
@@ -300,40 +296,33 @@
                 this.$LIPS(false);
 
             },
-
             getParent(id, array){
                 return array.find((item) => {
                     return item.id === id;
                 });
             },
-
             next(firstPage = null) {
                 if (this.pageParams.next_page_url) {
                     this.page = firstPage ? firstPage : parseInt(this.page) + 1;
                     this.fetchData();
                 }
             },
-
             prev(lastPage = null) {
                 if (this.pageParams.prev_page_url) {
                     this.page = lastPage ? lastPage : parseInt(this.page) - 1;
                     this.fetchData();
                 }
             },
-
-
             viewInventory(inventory){
                 this.showModalContent = true;
                 this.inventoryItem = inventory;
                 return $(`#viewInventory`).modal('toggle');
             },
-
             viewproductTransfer(data){
                 this.showModalContent = true;
                 this.transferItem = data;
                 return $(`#viewProductTransfer`).modal('toggle');
             },
-            
             edit(item){
                 this.showModalContent = false;
                 $(`#viewInventory`).modal('toggle');
@@ -342,13 +331,11 @@
                     {name: 'inventoryEdit', params: {id: item}}
                 )
             },
-
             searchEvent (data) {
                 get(this.urlToFetchOrders + data)
                     .then(({data}) => this.prepareList(data))
                     .catch(() => Flash.setError('Error Preparing form'));
             },
-
             ...mapActions('ModalAccess', [
                 'addCustomerOptionsModalsToDom',
                 'removeCustomerOptionsModalsFromDom'
