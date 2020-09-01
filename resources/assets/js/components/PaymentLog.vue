@@ -248,6 +248,7 @@ export default {
             }
         },
         getCalc(){
+            try{
             this.salesLogForm.customer_id = this.customerId;
             const data0 ={
                 ...this.salesLogForm,...{
@@ -285,6 +286,13 @@ export default {
             this.fPayment = downP;
             this.rPayment = rPay;
             this.pPrice = totalP;
+            }
+            catch(e){
+                 this.$swal({
+                            icon: 'failed',
+                            title: 'Plan is not available'
+                        })
+            }
         },
         getRepaymentDate(count){
             const paymentDate = this.repaymentCircle * count;
