@@ -366,11 +366,9 @@
                 } else Flash.setError("Customer not found.", 5000);
                 this.$LIPS(false);
             },
-
             done(){
                 this.show=false;
             },
-
             processForm(id) {
                 this.show = false;
                 this.$LIPS(true);
