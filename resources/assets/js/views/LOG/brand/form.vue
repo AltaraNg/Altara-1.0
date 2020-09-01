@@ -12,10 +12,16 @@
                             <input class="form-control w-50" placeholder="brand name" name="brand name" type="text"
                                    v-model="form.name"
                                    v-validate="'required|max:50'">
-                            <p @click="addCategory" class='pointer green' v-if="mode === 'edit'">Add categories</p>
+
                             <small v-if="errors.first('brand name')">{{ errors.first('brand name') }}</small>
                             <small v-if="error.name">{{error.name[0]}}</small>
                         </div>
+                        <div class="form-group col-md-6 col-12 px-0 px-md-3">
+                            <label class="w-100 float-left">Categories</label>
+                            <div v-for="cat in form.categories" class="cat">{{cat.name}}</div>
+                            <p @click="addCategory(form)" class='pointer green' v-if="mode === 'edit'">Add categories</p>
+                        </div>
+
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3" v-if="mode === 'edit'">
                             <label class="w-100 float-left">Status</label>
                             <div class="radio p-0 col-md-6 col-6 float-left" v-for="{name,value} in statuses">
@@ -58,7 +64,7 @@
                             <div class="form-group col-md-6 col-12 float-left px-0 px-md-3 " >
 
                                 <div v-for="category in categories" class="checkbox">
-                                    <input :id="category.name" :value="category.id" :name="category.name" type="checkbox" v-model="selectCategories"
+                                    <input :id="category.name" :value="category.id" :name="category.name" type="checkbox" v-model="form.categories"
                                            v-validate="'required'">
                                     <label :for="category.name">{{category.name}}</label>
 
@@ -143,14 +149,14 @@
                 this.show = true;
             },
 
-            addCategory(){
+            addCategory(brand){
                 this.showModalContent = true;
                 return $(`#addCategory`).modal('toggle');
             },
             addFinish(){
                 this.$LIPS(true);
                 let data = {
-                    categories: this.selectCategories
+                    categories: this.form.categories
                 };
                 patch(`/api/brand/${this.$route.params.id}/categories`, data).then((res) => {
                     this.$swal({
@@ -201,4 +207,9 @@
 .green{
     color: #0b2e13;
 }
+    .cat{
+        display: inline-block;
+        margin: 2px 8px;
+        outline: #0b2e13;
+    }
 </style>

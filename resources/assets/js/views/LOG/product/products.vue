@@ -8,11 +8,11 @@
                 <div class="col-md-8">
                     <InventorySearch v-on:childToParent="searchEvent" :searchColumns="searchColumns" />
                 </div>
-                
+
                 <div class="col-md-4">
                     <router-link :to="{name: 'productCreate'}">
-                    <button class="btn btn-primary bg-default mt-0 myBtn ">New Product</button>
-                </router-link>
+                        <button class="btn btn-primary bg-default mt-0 myBtn float-right my-2">New Product</button>
+                    </router-link>
                 </div>
             </div>
 
@@ -25,25 +25,25 @@
             </div>
             <div class="tab-content mt-1 attendance-body">
 
-                    <div class="mb-3 row attendance-item" :key="index" v-for="(product,index) in products" @click="viewProduct(product)">
-                        <div class="col d-flex align-items-center" style="max-width: 120px">
-                            <span class="user mx-auto" >{{index+OId}}</span>
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{product.name}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{product.brand}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{product.category}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{product.retail_price}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{product.is_active === 1 ? 'Active' : 'Inactive' }}
-                        </div>
+                <div class="mb-3 row attendance-item" :key="index" v-for="(product,index) in products" @click="viewProduct(product)">
+                    <div class="col d-flex align-items-center" style="max-width: 120px">
+                        <span class="user mx-auto" >{{index+OId}}</span>
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{product.name}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{product.brand}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{product.category}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{product.retail_price}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{product.is_active === 1 ? 'Active' : 'Inactive' }}
+                    </div>
 
 
 
@@ -171,7 +171,7 @@
                     {title: 'Brand', column: 'brand'},
                     {title: 'Category', column: 'category'},
                 ]
-        }
+            }
         },
 
         methods: {
@@ -260,12 +260,12 @@
             this.removeCustomerOptionsModalsFromDom();
         },
         filters: {
-        status: function(value){
-            if (value === 1){
-                return 'Active'
-            }else return 'Inactive'
-        }
-    },
+            status: function(value){
+                if (value === 1){
+                    return 'Active'
+                }else return 'Inactive'
+            }
+        },
     }
 </script>
 

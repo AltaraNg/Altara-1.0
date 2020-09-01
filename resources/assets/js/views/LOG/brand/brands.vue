@@ -4,16 +4,16 @@
 
             <custom-header :title="'Brands List'"/>
 
-           
+
 
             <div class="mt-2 mt-lg-3 row attendance-head ">
                 <div class="col-md-8">
                     <InventorySearch v-on:childToParent="searchEvent" :searchColumns="searchColumns" />
                 </div>
-                
-                <div class="col-md-4">
+
+                <div class="col-md-4 ">
                     <router-link :to="{name: 'BrandCreate'}">
-                        <button class="btn btn-primary bg-default mt-0 myBtn ">New Brand</button>
+                        <button class="btn btn-primary bg-default mt-0 myBtn float-right my-2">New Brand</button>
                     </router-link>
                 </div>
             </div>
@@ -228,12 +228,12 @@
             this.removeCustomerOptionsModalsFromDom();
         },
         filters: {
-        status: function(value){
-            if (value === 1){
-                return 'Active'
-            }else return 'Inactive'
-        }
-    },
+            status: function(value){
+                if (value === 1){
+                    return 'Active'
+                }else return 'Inactive'
+            }
+        },
     }
 </script>
 

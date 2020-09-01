@@ -53,19 +53,19 @@
 
                         </div>
 
-                            <div class="form-group col-md-6 col-12 ">
-                                <label for="product_type" class="form-control-label">Product Type </label>
-                                <br>
-                                <select name="product_type" id="product_type" v-model="form.product_type_id" class="custom-select" >
-                                    <option value="all" selected="selected" >--select--</option>
-                                    <option
-                                        :value="type.id"
-                                        v-for="type of product_types"
-                                    >{{ type.name }}</option
-                                    >
-                                </select>
-                            </div>
-                            </div>
+                        <div class="form-group col-md-6 col-12 ">
+                            <label for="product_type" class="form-control-label">Product Type </label>
+                            <br>
+                            <select name="product_type" id="product_type" v-model="form.product_type_id" class="custom-select" >
+                                <option value="all" selected="selected" >--select--</option>
+                                <option
+                                    :value="type.id"
+                                    v-for="type of product_types"
+                                >{{ type.name }}</option
+                                >
+                            </select>
+                        </div>
+                    </div>
 
 
                     <div class="mb-5 px-0 row align-items-center">
@@ -132,28 +132,47 @@
             }
         },
         methods: {
-            prepareForm(data) {
+            async prepareForm(data) {
                 this.$LIPS(true);
                 Vue.set(this.$data, 'mode', this.$route.meta.mode);
-                get('/api/brand').then((res) => {
+                await get('/api/brand').then((res) => {
                     Vue.set(this.$data, 'brands', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
 
-                get('/api/product_type').then((res) => {
+                await get('/api/product_type').then((res) => {
                     Vue.set(this.$data, 'product_types', res.data.data.data);
                 }).catch(() => Flash.setError('Error Preparing form'));
 
+                await get('/api/category').then((res) => {
+                    Vue.set(this.$data, 'categories', res.data.data.data);
+                }).catch(() => Flash.setError('Error Preparing form'));
 
-                Vue.set(this.$data, 'form', data);
+
+
+
 
                 if (this.mode === 'edit') {
                     //TODO change the edit form
                     this.store = `/api/product/${this.$route.params.id}`;
                     this.method = 'PUT';
+                    let form = {};
+                    form.feature = data.feature;
+                    form.brand_id = this.getParent(data.brand, this.brands).id;
+                    form.category_id = this.getParent(data.category, this.categories).id;
+                    form.product_type_id = this.getParent(data.product_type, this.product_types).id;
+                    form.retail_price = data.retail_price;
+                    Vue.set(this.$data, 'form', form);
+                }else{
+                    Vue.set(this.$data, 'form', data);
                 }
                 this.$LIPS(false);
                 this.show = true;
 
+            },
+            getParent(name, array){
+                return array.find((item) => {
+                    return item.name === name;
+                });
             },
             onSave() {
                 this.$validator.validateAll().then(result => {
@@ -199,7 +218,7 @@
                     if(brand){
 
                         Vue.set(this.$data, 'categories', brand.categories);
-                }else return ''},
+                    }else return ''},
                 deep: true
             }
         },
