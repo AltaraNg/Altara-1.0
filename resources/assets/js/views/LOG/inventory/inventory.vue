@@ -3,20 +3,20 @@
         <div id="reminder" class="attendance">
 
             <custom-header :title="'Inventory'"/>
-          
+
             <div class="mt-2 mt-lg-3 row attendance-head ">
                 <div class="col-md-8">
                     <InventorySearch v-on:childToParent="searchEvent" :searchColumns="searchColumns" />
                 </div>
-                
+
                 <div class="col-md-4">
                     <router-link :to="{name: 'inventoryCreate'}">
-                        <button class="btn btn-primary bg-default  myBtn ">New Inventory</button>
+                        <button class="btn btn-primary bg-default  myBtn float-right my-2">New Inventory</button>
                     </router-link>
                 </div>
             </div>
-                
-            
+
+
             <div class="mt-2 mt-lg-3 row attendance-head attendance-view">
                 <div class="col-4 col-lg" v-for="{name:filter,model} in filters">
                     <div >
@@ -40,9 +40,9 @@
                     </div>
                 </div>
 
-<!--                <div class="col-6 col-sm p-0 flex-row-bottom">-->
-<!--                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>-->
-<!--                </div>-->
+                <!--                <div class="col-6 col-sm p-0 flex-row-bottom">-->
+                <!--                    <button @click="fetchData()" class="btn btn-primary bg-default mt-0 myBtn">Apply Filter</button>-->
+                <!--                </div>-->
             </div>
 
             <div class="mt-5 mb-3 attendance-head">
@@ -54,31 +54,28 @@
             </div>
             <div class="tab-content mt-1 attendance-body">
 
-                    <div class="mb-3 row attendance-item" :key="index" v-for="(inventory,index) in inventories" v-if="inventories">
-                        <div class="col d-flex align-items-center" style="max-width: 120px"   >
-                            <span class="user mx-auto" >{{index+OId}}</span>
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center " @click="viewInventory(inventory)">
-                            {{getParent(inventory.product_id, products).name}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{inventory.sku}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{inventory.price}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{getParent(inventory.supplier_id, suppliers).name}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{inventory.created_at.split(' ')[0]}}
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                            {{getParent(inventory.branch_id, getBranches).name}}
-                        </div>
-                          <div class="col d-flex align-items-center justify-content-center" @click="viewproductTransfer(inventory)" >
-                            <i class="fas fa-exchange-alt"></i>
-                        </div>
+                <div class="mb-3 row attendance-item" :key="index" v-for="(inventory,index) in inventories" @click="viewInventory(inventory)" v-if="inventories">
+                    <div class="col d-flex align-items-center" style="max-width: 120px">
+                        <span class="user mx-auto" >{{index+OId}}</span>
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center ">
+                        {{inventory.product_name}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{inventory.sku}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{inventory.price}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{getParent(inventory.supplier_id, suppliers).name}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{inventory.created_at.split(' ')[0]}}
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        {{getParent(inventory.branch_id, getBranches).name}}
+                    </div>
 
 
                 </div>
@@ -103,7 +100,7 @@
                                     <tbody>
                                     <tr>
                                         <th>Product Name</th>
-                                        <td>{{ inventoryItem ? getParent(inventoryItem.product_id, products).name : '' || "Not Available" }}</td>
+                                        <td>{{ inventoryItem.product_name || "Not Available" }}</td>
                                     </tr>
 
                                     <tr>
@@ -118,11 +115,11 @@
 
                                     <tr>
                                         <th>Received Date</th>
-                                        <td>{{ inventoryItem.branch || "Not Available" }}</td>
+                                        <td>{{ inventoryItem.updated_at.split(" ")[0] || "Not Available" }}</td>
                                     </tr>
                                     <tr>
                                         <th>Sold Date</th>
-                                        <td>{{ inventoryItem.sold_date || "Not Sold Yet" }}</td>
+                                        <td>{{ inventoryItem.sold_date.split(" ")[0] || "Not Sold Yet" }}</td>
                                     </tr>
 
                                     <tr >
@@ -145,55 +142,6 @@
                 </div>
             </div>
 
-
-            <div class="modal fade repayment" id="viewProductTransfer">
-                <div class="modal-dialog " role="document">
-                    <div class="modal-content" v-if="showModalContent">
-                        <div class="modal-header py-2">
-                            <h3>Product Transfer.</h3>
-                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
-                        <span aria-hidden="true" class="modal-close text-danger">
-
-                            <i class="fas fa-times"></i>
-                        </span>
-                            </a>
-                        </div>
-                        <div class="modal-body px-5" >
-
-
-                         Transfer ({{ inventoryItem ? getParent(inventoryItem.product_id, products).name : '' || "Not Available" }})
-
-                        <div class="mb-3 row attendance-item">
-                        <div class="col d-flex align-items-center" style="max-width: 120px"   >
-                             From: {{ inventoryItem ? getParent(inventoryItem.branch_id, getBranches).name : '' || "Not Available" }}
-                             
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center ">
-                           <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="col d-flex align-items-center justify-content-center">
-                           To: <select v-model="toId" class="form-control option2">
-                <option disabled value="">Please select a branch</option>
-                <option :key="option.id" v-for="option in getBranches" v-bind:value="option.id">
-                    {{ option.name }}
-                </option>
-            </select>
-                        </div>
-                        </div>
-
-
-                        </div>
-                        <div class="modal-footer justify-content-center">
-
-                            <button  class="text-center btn bg-default" @click="logTransfer(inventoryItem.product_id,toId)">Transfer</button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            
-
             <div v-if="pageParams">
                 <base-pagination
 
@@ -202,7 +150,7 @@
                     @fetchData="fetchData()"
                     @next="next()"
                     @prev="prev()"
-                    >
+                >
                 </base-pagination>
 
             </div>
@@ -210,7 +158,7 @@
     </transition>
 </template>
 <script>
-    import {get,post} from '../../../utilities/api';
+    import {get} from '../../../utilities/api';
     import Flash from "../../../utilities/flash";
 
     import {mapActions, mapGetters} from "vuex";
@@ -242,22 +190,22 @@
                 page: 1,
                 searchFilter:{},
                 filters: [
+
                 ],
                 inventories: null,
                 inventoryItem: null,
                 response: {},
-                transferItem:{},
-                toId:0,
                 // searchQ:'',
                 show: false,
                 headings:
-                    ['Product Name', 'SKU','Price', 'Supplier', 'Date Received', 'Branch','Transfer'],
+                    ['Product Name', 'SKU','Price', 'Supplier', 'Date Received', 'Branch'],
                 searchColumns: [
                     {title: 'Product Name', column: 'productName'},
                     {title: 'Branch', column: 'branch'},
                 ]
             }
         },
+
         methods: {
             fetchData() {
                 this.$scrollToTop();
@@ -272,22 +220,7 @@
 
 
             },
-            logTransfer(id,to) {
-                this.$LIPS(true);
-               
-                post('/api/product_transfer', {'to_id': to,'product_id': id})
-                    .then((res) => {
-                        this.$LIPS(false);
-                        this.$swal({
-                            icon: 'success',
-                            title: 'Transfer Successfully Logged'
-                        })
-                        $(`#viewProductTransfer`).modal('toggle');
-                    }).catch(() => {
-                        this.$LIPS(false);
-                        Flash.setError("Error submitting form")
-                    })
-            },
+
             prepareList(response){
                 let {current_page, first_page_url, from, last_page, last_page_url, data, per_page, next_page_url, to, total, prev_page_url} = response.data;
                 this.pageParams = Object.assign({}, this.pageParams, {current_page, first_page_url, from, last_page, last_page_url, per_page, next_page_url, to, total, prev_page_url});
@@ -296,33 +229,34 @@
                 this.$LIPS(false);
 
             },
+
             getParent(id, array){
                 return array.find((item) => {
                     return item.id === id;
                 });
             },
+
             next(firstPage = null) {
                 if (this.pageParams.next_page_url) {
                     this.page = firstPage ? firstPage : parseInt(this.page) + 1;
                     this.fetchData();
                 }
             },
+
             prev(lastPage = null) {
                 if (this.pageParams.prev_page_url) {
                     this.page = lastPage ? lastPage : parseInt(this.page) - 1;
                     this.fetchData();
                 }
             },
+
+
             viewInventory(inventory){
                 this.showModalContent = true;
                 this.inventoryItem = inventory;
                 return $(`#viewInventory`).modal('toggle');
             },
-            viewproductTransfer(data){
-                this.showModalContent = true;
-                this.transferItem = data;
-                return $(`#viewProductTransfer`).modal('toggle');
-            },
+
             edit(item){
                 this.showModalContent = false;
                 $(`#viewInventory`).modal('toggle');
@@ -331,11 +265,13 @@
                     {name: 'inventoryEdit', params: {id: item}}
                 )
             },
+
             searchEvent (data) {
                 get(this.urlToFetchOrders + data)
                     .then(({data}) => this.prepareList(data))
                     .catch(() => Flash.setError('Error Preparing form'));
             },
+
             ...mapActions('ModalAccess', [
                 'addCustomerOptionsModalsToDom',
                 'removeCustomerOptionsModalsFromDom'
@@ -349,6 +285,8 @@
             get('/api/product').then((res) => {
                 this.products = res.data.data.data;
             });
+
+            console.log(this.$getUserDetails(2));
 
             this.$prepareBranches();
             this.fetchData();
@@ -366,7 +304,7 @@
             }
         },
 
-        
+
     }
 </script>
 
