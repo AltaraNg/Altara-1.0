@@ -25,7 +25,8 @@ class Inventory extends Model
             'branch_id' => 'required|exists:branches,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'is_active' => 'sometimes|required|boolean'
+            'is_active' => 'sometimes|required|boolean',
+            'product_name' => 'required|exists:products,name',
         ];
     }
 

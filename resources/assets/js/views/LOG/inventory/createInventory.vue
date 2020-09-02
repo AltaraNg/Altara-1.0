@@ -95,7 +95,7 @@
             </div>
 
             <div class="attendance-body" v-else>
-                <form >
+                <form @submit.prevent="update">
                     <div class="my-4 clearfix p-5 row bg-white shadow-sm card-radius">
                         <div class="form-group col-md-2">
                             <label>Inventory SKU: </label>
@@ -249,12 +249,37 @@
               })
             },
 
-
-
-
-            onSave() {
-                let status = '';
+            update(){
                 this.$validator.validateAll().then(result => {
+                    if (result) {
+                        if (this.$network()) {
+                            this.$LIPS(true);
+                            console.log(this.form);
+                            put(this.store, this.form).then(data => {
+                                this.$swal({
+                                    icon: 'success',
+                                    title: 'Inventory Updated Successfully'
+
+                                });
+                                this.$router.push(
+                                    {path: '/log/inventory'}
+                                );
+                            });
+
+
+                            this.$LIPS(false);
+
+
+                            this.$LIPS(false);
+                        } else this.$networkErr()
+                    } else this.$networkErr('form');
+                })
+            },
+
+
+             async onSave() {
+                let status = '';
+                  await this.$validator.validateAll().then(result => {
                     if (result) {
                         if (this.$network()) {
                             this.$LIPS(true);

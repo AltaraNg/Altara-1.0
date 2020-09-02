@@ -39,7 +39,7 @@
                         {{product.category}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{product.retail_price}}
+                        {{product.retail_price | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{product.is_active === 1 ? 'Active' : 'Inactive' }}
@@ -128,13 +128,15 @@
 </template>
 <script>
     import {get} from '../../../utilities/api';
+    import Vue from 'vue';
     import Flash from "../../../utilities/flash";
+    import Vue2Filters from 'vue2-filters'
 
     import {mapGetters, mapActions} from "vuex";
     import CustomHeader from '../../../components/customHeader';
     import BasePagination from '../../../components/Pagination/BasePagination'
     import InventorySearch from "../../../components/InventorySearch";
-
+    Vue.use(Vue2Filters);
     export default {
         props: {
             //TODO::verify if its necessary to make this a prop
