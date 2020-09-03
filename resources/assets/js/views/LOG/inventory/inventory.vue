@@ -65,7 +65,7 @@
                         {{inventory.sku}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
-                        {{inventory.price}}
+                        {{inventory.price | currency('₦')}}
                     </div>
                     <div class="col d-flex align-items-center justify-content-center">
                         {{getParent(inventory.supplier_id, suppliers).name}}
@@ -158,13 +158,16 @@
     </transition>
 </template>
 <script>
+    import Vue from 'vue';
     import {get} from '../../../utilities/api';
     import Flash from "../../../utilities/flash";
 
     import {mapActions, mapGetters} from "vuex";
+    import Vue2Filters from 'vue2-filters'
     import CustomHeader from '../../../components/customHeader';
     import BasePagination from '../../../components/Pagination/BasePagination'
     import InventorySearch from "../../../components/InventorySearch";
+    Vue.use(Vue2Filters);
     export default {
         props: {
             //TODO::verify if its necessary to make this a prop
@@ -201,7 +204,7 @@
                     ['Product Name', 'SKU','Price', 'Supplier', 'Date Received', 'Branch'],
                 searchColumns: [
                     {title: 'Product Name', column: 'productName'},
-                    {title: 'Branch', column: 'branch'},
+                    {title: 'Branch', column: 'branchName'},
                 ]
             }
         },
@@ -286,7 +289,7 @@
                 this.products = res.data.data.data;
             });
 
-            console.log(this.$getUserDetails(2));
+
 
             this.$prepareBranches();
             this.fetchData();
