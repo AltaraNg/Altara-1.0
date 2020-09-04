@@ -207,7 +207,7 @@ class CustomerController extends Controller
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'branch', 'new_orders' => function ($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'branch', 'new_orders', 'orders' => function ($query) {
             return $query->with([
                 'repayment', 'repaymentFormal', 'repaymentInformal', 'status',
                 'storeProduct', 'discount', 'salesCategory', 'salesType',
