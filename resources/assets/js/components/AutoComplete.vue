@@ -6,28 +6,29 @@
       <div @click="selectItem(item)" v-for="item in itemList" :key="item.id" class="dropdown-item">
         {{ item.name }}
       </div>
-    </div>
+        </div>
     </div>
   </div>
 </template>
 
 <script>
 import queryParam from "../utilities/queryParam";
-import {get, post} from '../utilities/api';
+import { get, post } from "../utilities/api";
 
 export default {
-    name:'AutoComplete',
-    props:{
-        apiUrl:'',
-    },
-    data(){
-        return {
-            selectedItem: {},
-            inputValue: '',
-            itemList: [],
-            apiLoaded: false,
-        }
-    },
+  name: "AutoComplete",
+  props: {
+    apiUrl: "",
+  },
+  data() {
+    return {
+      selectedItem: {},
+      inputValue: "",
+      itemList: [],
+      apiLoaded: false,
+    };
+  },
+
     methods:{
         selectItem (data) {
             this.inputValue= data.name;
@@ -56,16 +57,18 @@ export default {
         },
     }
 }
+
 </script>
 
 <style>
-.dropdown{
+.dropdown {
   position: relative;
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
 }
-.dropdown-input, .dropdown-selected{
+.dropdown-input,
+.dropdown-selected {
   width: 100%;
   padding: 10px 16px;
   border: 1px solid transparent;
@@ -74,37 +77,39 @@ export default {
   outline: none;
   border-radius: 8px;
 }
-.dropdown-input:focus, .dropdown-selected:hover{
+.dropdown-input:focus,
+.dropdown-selected:hover {
   background: #fff;
   border-color: #e2e8f0;
 }
-.dropdown-input::placeholder{
+.dropdown-input::placeholder {
   opacity: 0.7;
 }
-.dropdown-selected{
+.dropdown-selected {
   font-weight: bold;
   cursor: pointer;
 }
-.dropdown-list{
+.dropdown-list {
   position: absolute;
   width: 100%;
   max-height: 500px;
   margin-top: 4px;
   overflow-y: auto;
   background: #ffffff;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
 }
-.dropdown-item{
+.dropdown-item {
   display: flex;
   width: 100%;
   padding: 11px 16px;
   cursor: pointer;
 }
-.dropdown-item:hover{
+.dropdown-item:hover {
   background: #edf2f7;
 }
-.dropdown-item-flag{
+.dropdown-item-flag {
   max-width: 24px;
   max-height: 18px;
   margin: auto 12px auto 0px;
