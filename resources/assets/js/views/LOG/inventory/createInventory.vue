@@ -10,13 +10,15 @@
                         <div class="form-group col-md-3 col-12 ">
                             <label for="product" class="form-control-label">Product</label>
                             <br>
-                            <select name="product" id="product" v-model="form.product" class="custom-select" data-vv-as="product id">
+                            <!-- <select name="product" id="product" v-model="form.product" class="custom-select" data-vv-as="product id">
                                 <option disabled value="" >--select--</option>
                                 <option
                                     :value="product"
                                     v-for="product of products"
                                 >{{ product.name }}</option>
-                            </select>
+                            </select> -->
+                            <auto-complete :apiUrl="url" @childToParent="productData"/>
+
                         </div>
                         <div class="form-group col-md-3 col-12 ">
                             <label for="branch" class="form-control-label">Branch</label>
@@ -137,6 +139,7 @@
     import Typeahead from '../../../components/Typeahead';
     import CustomHeader from '../../../components/customHeader';
     import {mapGetters} from "vuex";
+    import AutoComplete from '../../../components/AutoComplete.vue';
 
     function initialize(to) {
         let urls = {create: `/api/product/create`, edit: `/api/product/${to.params.id}/edit`};
@@ -144,7 +147,7 @@
     }
 
     export default {
-        components: {Typeahead, CustomHeader},
+        components: {Typeahead, CustomHeader, AutoComplete},
         props: {},
         data() {
             return {
@@ -154,10 +157,12 @@
                 brands: [],
                 suppliers: [],
                 mode: null,
+                query: '',
                 error: {},
                 show: false,
                 showForm: false,
                 store: '/api/inventory',
+                url: '/api/product',
                 method: 'POST',
                 headings: ['S/N','Product Name', 'Received by', 'Supplier', 'Branch', 'Price']
             }
@@ -274,6 +279,10 @@
                         } else this.$networkErr()
                     } else this.$networkErr('form');
                 })
+            },
+
+            productData(data){
+                    this.form.product = data;
             },
 
 

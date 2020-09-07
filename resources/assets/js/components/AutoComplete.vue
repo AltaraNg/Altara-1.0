@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="dropdown">
-        <input type="text" class="form-control w-100 custom-select" v-model="inputValue" @input="searchEvent" />        
+        <input type="text" class="form-control w-100 custom-select" v-model="inputValue" @input="searchEvent" />
         <div v-show="inputValue && apiLoaded" class="dropdown-list">
       <div @click="selectItem(item)" v-for="item in itemList" :key="item.id" class="dropdown-item">
-        {{ item.product_name }}
+        {{ item.name }}
       </div>
     </div>
     </div>
@@ -30,29 +30,25 @@ export default {
     },
     methods:{
         selectItem (data) {
-            console.log('data data ',data);
-            this.inputValue= data.product_name;
+            this.inputValue= data.name;
             this.apiLoaded = false;
-            this.$emit('childToParent',data)
+            this.$emit('childToParent',data);
         },
         searchEvent () {
-            console.log('poploic ',this.apiUrl+this.inputValue);
             this.getproduct();
         },
 
         async getproduct(){
 
             try{
-                      
 
-                const fetchProduct = await get(this.apiUrl+this.inputValue);
-//                 const fetchProduct = await post('/api/customer/autocomplete',{searchableFields:{first_name: this.inputValue,
-// last_name: this.inputValue,
-// middle_name: this.inputValue}});
+
+                const fetchProduct = await get(this.apiUrl+queryParam({
+                    name: this.inputValue
+                }));
                 this.itemList = fetchProduct.data.data.data;
-                // this.itemList = fetchProduct.data.customers;
-                this.apiLoaded = true
-                console.log('poploic LimitList',this.itemList)
+                this.apiLoaded = true;
+
             }
             catch(err){
                 this.$displayErrorMessage(err);
