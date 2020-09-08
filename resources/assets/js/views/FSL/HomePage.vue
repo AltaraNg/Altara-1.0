@@ -52,20 +52,8 @@ export default {
           url_c: "View Sales List",
           desc: "View all Sales!" /*, aces: this.auth('FSLLead')*/
         },
-        {
-          url: "sales/create",
-          title: "Temp POS",
-          url_c: "Post Daily Sales",
-          desc: "Temp POS!",
-          aces: this.auth("supervisor")
-        },
-        {
-          url: "payment",
-          title: "Online Payment",
-          url_c: "Make Online Payment for Formal Sector",
-          desc: "Online Payment",
-          aces: this.auth("supervisor")
-        },
+
+
         {
           url: "lookup",
           title: "Customer Lookup",
@@ -79,13 +67,13 @@ export default {
           desc: "View all renewal!"
         },
         {
-          url: "cash-logger",
+          url: "payment-logger",
           title: "Payment Logger",
           url_c: "Log payment by customer",
           desc: "Log all payments"
         },
         {
-          url: "payment-logger",
+          url: "sales-logger",
           title: "Sales Logger",
           url_c: "Log sales in showroom",
           desc: "Log all sales"

@@ -164,7 +164,7 @@ export default {
         previewAmortization: `/api/amortization/preview`,
         createOrder: `/api/new_order`,
         getCalculation: `/api/price_calculator`,
-        getProduct: `/api/inventory?productName=`,
+        getProduct: `/api/inventory`,
       },
       inputValue: "",
       selectedProduct: {},
