@@ -2,21 +2,26 @@
   <div style="margin-left: 5rem; margin-right: 5rem;">
     <div class="card">
       <form class="card-body" @submit.prevent="preview">
+        <div class="form-group align-self-left text-capitalize">
+          <label for="amount" class="form-control-label">Product Name</label>
+          <AutoComplete v-on:childToParent="selectedItem" :apiUrl="apiUrls.getProduct" />
+        </div>
         <div class="row">
-          <div class="col form-group align-self-center text-capitalize">
-            <label for="amount" class="form-control-label">Product Name</label>
-            <AutoComplete v-on:childToParent="selectedItem" :apiUrl="apiUrls.getProduct" />
-          </div>
           <div class="col form-group">
             <label for="amount" class="form-control-label">Repayment Cycle</label>
             <select
               class="custom-select w-100"
               v-model="salesLogForm.repayment_cycle_id"
               v-validate="'required'"
+              @change="customDate($event)"
             >
               <option disabled selected="selected">Repayment Cycle</option>
               <option :value="type" :key="type.id" v-for="type in repaymentCyclesopt">{{type.name}}</option>
             </select>
+          </div>
+          <div v-if="customDateToggle" class="col form-group">
+            <label for="amount" class="form-control-label">Custom Date</label>
+            <input class="form-control w-100" v-model="salesLogForm.custom_date" />
           </div>
           <div class="col form-group">
             <label for="amount" class="form-control-label">Repayment Duration</label>
@@ -173,6 +178,7 @@ export default {
       rPayment: "",
       repaymentCircle: "",
       rDuration: "",
+      customDateToggle: false,
     };
   },
   async mounted() {
@@ -186,6 +192,11 @@ export default {
     ...mapGetters(["getPaymentMethods"]),
   },
   methods: {
+    customDate(event) {
+      this.salesLogForm.repayment_cycle_id.name === "custom"
+        ? (this.customDateToggle = true)
+        : (this.customDateToggle = false);
+    },
     async logSale() {
       this.salesLogForm.customer_id = this.customerId;
       const data = {
@@ -376,7 +387,7 @@ export default {
 .dropdown {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  /* max-width: 400px; */
   margin: 0 auto;
 }
 .dropdown-input {
