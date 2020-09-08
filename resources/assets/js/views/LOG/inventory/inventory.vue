@@ -204,7 +204,7 @@
                     ['Product Name', 'SKU','Price', 'Supplier', 'Date Received', 'Branch'],
                 searchColumns: [
                     {title: 'Product Name', column: 'productName'},
-                    {title: 'Branch', column: 'branchName'},
+                    {title: 'Branch', column: 'branch'},
                 ]
             }
         },

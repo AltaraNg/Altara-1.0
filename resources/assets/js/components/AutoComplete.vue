@@ -1,15 +1,12 @@
 <template>
   <div>
     <div class="dropdown">
-      <input type="text" class="form-control w-100" v-model="inputValue" @input="searchEvent" />
-      <div v-show="inputValue && apiLoaded" class="dropdown-list">
-        <div
-          @click="selectItem(item)"
-          v-for="item in itemList"
-          :key="item.id"
-          class="dropdown-item"
-        >{{ item.product_name }}</div>
+        <input type="text" class="form-control w-100 custom-select" v-model="inputValue" @input="searchEvent" />
+        <div v-show="inputValue && apiLoaded" class="dropdown-list">
+      <div @click="selectItem(item)" v-for="item in itemList" :key="item.id" class="dropdown-item">
+        {{ item.name }}
       </div>
+        </div>
     </div>
   </div>
 </template>
@@ -31,31 +28,36 @@ export default {
       apiLoaded: false,
     };
   },
-  methods: {
-    selectItem(data) {
-      this.inputValue = data.product_name;
-      this.apiLoaded = false;
-      this.$emit("childToParent", data);
-    },
-    searchEvent() {
-      this.getproduct();
-    },
 
-    async getproduct() {
-      try {
-        const fetchProduct = await get(this.apiUrl + this.inputValue);
-        //                 const fetchProduct = await post('/api/customer/autocomplete',{searchableFields:{first_name: this.inputValue,
-        // last_name: this.inputValue,
-        // middle_name: this.inputValue}});
-        this.itemList = fetchProduct.data.data.data;
-        // this.itemList = fetchProduct.data.customers;
-        this.apiLoaded = true;
-      } catch (err) {
-        this.$displayErrorMessage(err);
-      }
-    },
-  },
-};
+    methods:{
+        selectItem (data) {
+            this.inputValue= data.name;
+            this.apiLoaded = false;
+            this.$emit('childToParent',data);
+        },
+        searchEvent () {
+            this.getproduct();
+        },
+
+        async getproduct(){
+
+            try{
+
+
+                const fetchProduct = await get(this.apiUrl+queryParam({
+                    name: this.inputValue
+                }));
+                this.itemList = fetchProduct.data.data.data;
+                this.apiLoaded = true;
+
+            }
+            catch(err){
+                this.$displayErrorMessage(err);
+            }
+        },
+    }
+}
+
 </script>
 
 <style>
