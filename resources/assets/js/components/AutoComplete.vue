@@ -4,7 +4,7 @@
         <input type="text" class="form-control w-100 custom-select" v-model="inputValue" @input="searchEvent" />
         <div v-show="inputValue && apiLoaded" class="dropdown-list">
       <div @click="selectItem(item)" v-for="item in itemList" :key="item.id" class="dropdown-item">
-        {{ item.name }}
+        {{ apiUrl === '/api/inventory'? item.product_name : item.name }}
       </div>
         </div>
     </div>
@@ -31,7 +31,10 @@ export default {
 
     methods:{
         selectItem (data) {
-            this.inputValue= data.name;
+             if(this.apiUrl === '/api/inventory'){
+                 this.inputValue = data.product_name
+             }else{ this.inputValue= data.name;}
+
             this.apiLoaded = false;
             this.$emit('childToParent',data);
         },
@@ -40,13 +43,21 @@ export default {
         },
 
         async getproduct(){
+            let query = {};
+            if(this.apiUrl === '/api/inventory'){
+                query = {
+                    productName: this.inputValue
+                }
+            }else{
+                query = {
+                    name: this.inputValue
+                }
+            }
 
             try{
 
 
-                const fetchProduct = await get(this.apiUrl+queryParam({
-                    name: this.inputValue
-                }));
+                const fetchProduct = await get(this.apiUrl+queryParam(query));
                 this.itemList = fetchProduct.data.data.data;
                 this.apiLoaded = true;
 

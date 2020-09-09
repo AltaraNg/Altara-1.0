@@ -22,7 +22,7 @@
           </div>
 
           <div class="tab-content mt-1 attendance-body">
-            <div class="tab-pane active text-center" v-if="show && customer.orders.length > 0">
+            <div class="tab-pane active text-center" v-if="show && customer.orders.length > 0 || customer.new_orders.length > 0">
               <div class="mb-3 row attendance-item" v-for="(order, index) in customer.orders">
                 <div
                   class="col-12 col-xs-2 col-md col-lg d-flex align-items-center"
@@ -71,6 +71,9 @@
                     <!--                                        // TODO:: cleanup-->
                   </button>
                 </div>
+              </div>
+              <div class="mb-3 row attendance-item" v-for="(order, index) in customer.new_orders">
+
               </div>
             </div>
 

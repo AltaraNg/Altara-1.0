@@ -39,8 +39,8 @@ const CautionForm = () => import("../views/HRM/caution/form.vue");
 const FSL = () => import("../views/FSL/index.vue");
 const FSLHome = () => import("../views/FSL/HomePage.vue");
 const BranchForm = () => import("../views/FSL/branch/form.vue");
-const POSForm = () => import("../views/FSL/pos/form.vue");
-const PaymentForm = () => import("../views/FSL/payment/form.vue");
+
+
 const CustomerLookup = () => import("../views/FSL/lookup/lookup.vue");
 const Attendance = () => import("../views/FSL/attendance/index.vue");
 const AttendanceForm = () => import("../views/FSL/attendance/form.vue");
@@ -322,16 +322,8 @@ const router = new VueRouter({
                     name: "sales-fsl",
                     meta: { customSMS: true }
                 },
-                {
-                    path: "sales/create",
-                    component: POSForm,
-                    name: "post-sales"
-                },
-                {
-                    path: "payment",
-                    component: PaymentForm,
-                    name: "down-payment"
-                },
+
+
                 {
                     path: "lookup",
                     component: CustomerLookup,
@@ -345,15 +337,15 @@ const router = new VueRouter({
                     meta: { mode: "renewal" }
                 },
                 {
-                    path: "cash-logger",
+                    path: "payment-logger",
                     component: CashLogger,
-                    name: "cash-logger",
+                    name: "payment-logger",
                     meta: { mode: "create" }
                 },
                 {
-                    path: "payment-logger",
+                    path: "sales-logger",
                     component: PaymentLogger,
-                    name: "payment-logger",
+                    name: "sales-logger",
                     meta: { mode: "create" }
                 },
                 {
