@@ -64,7 +64,6 @@ export default {
 .dropdown {
   position: relative;
   width: 100%;
-  max-width: 400px;
   margin: 0 auto;
 }
 .dropdown-input,
@@ -90,7 +89,6 @@ export default {
   cursor: pointer;
 }
 .dropdown-list {
-  position: absolute;
   width: 100%;
   max-height: 500px;
   margin-top: 4px;
