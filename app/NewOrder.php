@@ -91,7 +91,7 @@ class NewOrder extends Model
     }
 
     public function product(){
-        return $this->hasMany(StoreProduct::class);
+        return $this->belongsTo(Product::class);
     }
 
     public function customDate(){
@@ -117,6 +117,7 @@ class NewOrder extends Model
         return [
             "order_number" => $this->order_number,
             "product_id" => $this->product_id,
+            "product" => $this->product,
             "repayment_duration" => $this->repaymentDuration->name,
             "repayment_cycle" => $this->repaymentCycle->name,
             "business_type" => $this->businessType->name,
