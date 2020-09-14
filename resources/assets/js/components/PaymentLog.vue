@@ -459,6 +459,7 @@ export default {
     selectedItem(value) {
       this.selectedProduct = value;
       this.test0 = false;
+      this.getCalc();
     },
     async getProduct() {
       try {
