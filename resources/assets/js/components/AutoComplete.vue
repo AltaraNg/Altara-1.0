@@ -1,12 +1,20 @@
 <template>
   <div>
     <div class="dropdown">
-        <input type="text" class="form-control w-100 custom-select" v-model="inputValue" @input="searchEvent" />
-        <div v-show="inputValue && apiLoaded" class="dropdown-list">
-      <div @click="selectItem(item)" v-for="item in itemList" :key="item.id" class="dropdown-item">
-        {{ apiUrl === '/api/inventory'? item.product_name : item.name }}
+      <input
+        type="text"
+        class="form-control w-100 custom-select"
+        v-model="inputValue"
+        @input="searchEvent"
+      />
+      <div v-show="inputValue && apiLoaded" class="dropdown-list">
+        <div
+          @click="selectItem(item)"
+          v-for="item in itemList"
+          :key="item.id"
+          class="dropdown-item"
+        >{{ apiUrl === '/api/inventory'? item.product_name : item.name }}</div>
       </div>
-        </div>
     </div>
   </div>
 </template>
@@ -29,46 +37,43 @@ export default {
     };
   },
 
-    methods:{
-        selectItem (data) {
-             if(this.apiUrl === '/api/inventory'){
-                 this.inputValue = data.product_name
-             }else{ this.inputValue= data.name;}
+  methods: {
+    selectItem(data) {
+      if (this.apiUrl === "/api/inventory") {
+        this.inputValue = data.product_name;
+      } else {
+        this.inputValue = data.name;
+      }
 
-            this.apiLoaded = false;
-            this.$emit('childToParent',data);
-        },
-        searchEvent () {
-            this.getproduct();
-        },
+      this.apiLoaded = false;
+      this.$emit("childToParent", data);
+    },
+    searchEvent() {
+      this.getproduct();
+    },
 
-        async getproduct(){
-            let query = {};
-            if(this.apiUrl === '/api/inventory'){
-                query = {
-                    productName: this.inputValue
-                }
-            }else{
-                query = {
-                    name: this.inputValue
-                }
-            }
+    async getproduct() {
+      let query = {};
+      if (this.apiUrl === "/api/inventory") {
+        query = {
+          productName: this.inputValue,
+        };
+      } else {
+        query = {
+          name: this.inputValue,
+        };
+      }
 
-            try{
-
-
-                const fetchProduct = await get(this.apiUrl+queryParam(query));
-                this.itemList = fetchProduct.data.data.data;
-                this.apiLoaded = true;
-
-            }
-            catch(err){
-                this.$displayErrorMessage(err);
-            }
-        },
-    }
-}
-
+      try {
+        const fetchProduct = await get(this.apiUrl + queryParam(query));
+        this.itemList = fetchProduct.data.data.data;
+        this.apiLoaded = true;
+      } catch (err) {
+        this.$displayErrorMessage(err);
+      }
+    },
+  },
+};
 </script>
 
 <style>
