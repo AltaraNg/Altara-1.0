@@ -64,7 +64,6 @@
         "vuex-router-sync": "^5.0.0"
     },
     "engines": {
-        "node": "12.15.0",
-        "npm": "6.13.4"
+        "node": "12.x"
+      }
     }
-}
