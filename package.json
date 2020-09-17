@@ -12,9 +12,7 @@
         "test-js": "mocha-webpack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js --require tests/Vue/setup.js tests/Vue/**/*.spec.js",
         "test": "jest",
         "test:unit": "vue-cli-service test:unit",
-        "postinstall": "npm run prod",
-        "heroku-prebuild": "npm install -f",
-        "heroku-postbuild": "npm run build"
+        "postinstall": "npm run prod"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.8.4",
@@ -60,8 +58,5 @@
         "vue2-filters": "^0.11.0",
         "vuex": "^3.0.1",
         "vuex-router-sync": "^5.0.0"
-    },
-    "engines": {
-        "node": "0.10.x"
     }
 }
