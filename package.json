@@ -11,7 +11,10 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "test-js": "mocha-webpack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js --require tests/Vue/setup.js tests/Vue/**/*.spec.js",
         "test": "jest",
-        "test:unit": "vue-cli-service test:unit"
+        "test:unit": "vue-cli-service test:unit",
+        "postinstall": "npm run prod",
+        "heroku-prebuild": "npm install -f",
+        "heroku-postbuild": "npm run build"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.8.4",
