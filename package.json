@@ -1,4 +1,5 @@
 {
+    "name": "Altara",
     "private": true,
     "scripts": {
         "postinstall": "npm run prod",
