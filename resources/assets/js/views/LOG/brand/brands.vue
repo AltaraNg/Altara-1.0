@@ -28,15 +28,18 @@
             </div>
             <div class="tab-content mt-1 attendance-body">
 
-                    <div class="mb-3 row attendance-item" :key="index" v-for="(brand,index) in brands" @click="viewBrand(brand)">
-                        <div class="col d-flex align-items-center" style="max-width: 120px">
+                    <div class="mb-3 row attendance-item" :key="index" v-for="(brand,index) in brands">
+                        <div class="col d-flex align-items-center" style="max-width: 120px"  >
                             <span class="user mx-auto" >{{index+OId}}</span>
                         </div>
-                        <div class="col d-flex align-items-center justify-content-center">
+                        <div class="col d-flex align-items-center justify-content-center hover" @click="viewBrand(brand)">
                             {{brand.name}}
                         </div>
                         <div class="col d-flex align-items-center justify-content-center">
                             {{brand.is_active === 1 ? 'Active' : 'Inactive' }}
+                        </div>
+                        <div class="col d-flex align-items-center justify-content-center" @click="showCategory(brand)">
+                            <span class="small" >View Categories</span>
                         </div>
 
 
@@ -47,7 +50,7 @@
                 <div class="modal-dialog " role="document">
                     <div class="modal-content" v-if="showModalContent">
                         <div class="modal-header py-2">
-                            <h4>{{brandItem.name}}</h4>
+                            <h4>{{viewCategory ? `${brandItem.name} Categories` : brandItem.name }}</h4>
                             <a aria-label="Close" class="close py-1" data-dismiss="modal">
                         <span aria-hidden="true" class="modal-close text-danger">
 
@@ -56,7 +59,7 @@
                             </a>
                         </div>
                         <div class="modal-body px-5">
-                            <div class="table-responsive">
+                            <div class="table-responsive" v-if="!viewCategory">
                                 <table class="table table-bordered table-striped">
                                     <tbody>
                                     <tr>
@@ -78,6 +81,16 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div v-else>
+                                <div v-for="item in brandItem.categories" class="brand-cat">
+                                    {{ item.name }} <span @click="removeCat(item)"><i class="fas fa-times"></i></span>
+                                </div>
+                                <div class="new-cat"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add</div>
+                                <div>
+                                    <span></span>
+                                </div>
                             </div>
 
 
@@ -132,6 +145,7 @@
             return {
                 branch_id: '',
                 OId: null,
+                viewCategory: false,
                 showModalContent: false,
                 pageParams: null,
                 page_size: 10,
@@ -147,7 +161,7 @@
                 response: {},
                 show: false,
                 headings:
-                    ['Name', 'Status'],
+                    ['Name', 'Status', '  '],
                 searchColumns: [
                     {title: 'Name', column: 'name'},
                 ]
@@ -191,7 +205,16 @@
                 }
             },
 
+            showCategory(item){
+               this.showModalContent = true;
+               this.brandItem = item;
+               this.viewCategory = true;
+               return $(`#viewBrand`).modal('toggle');
+
+            },
+
             viewBrand(brand){
+                this.viewCategory = false;
                 this.showModalContent = true;
                 this.brandItem = brand;
                 return $(`#viewBrand`).modal('toggle');
@@ -203,6 +226,10 @@
                 return this.$router.push(
                     {name: 'BrandEdit', params: {id: item}}
                 )
+            },
+
+            removeCat(){
+
             },
 
             searchEvent (data) {
@@ -249,5 +276,22 @@
     }
     .red{
         color: red;
+    }
+    .brand-cat{
+        display: inline-block;
+        padding: 2px 4px;
+        background: #dddddd;
+        border-radius: 5px;
+    }
+    .brand-cat span{
+        color: red;
+    }
+    .new-cat i{
+        color: #2975a5;
+        font-size: 1.5em;
+    }
+    .new-cat {
+
+        padding: 4px 1px;
     }
 </style>
