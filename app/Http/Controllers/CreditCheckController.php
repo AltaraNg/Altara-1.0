@@ -16,12 +16,11 @@ class CreditCheckController extends Controller
     public function check(Request $request)
     {
         $data = $this->validate($request, [
-            'name' => '',
-            'features' => 'required|array|min:3|max:3',
-            'features.*' => 'required|array|min:4|max:4',
+            'balances' => 'required|array|min:3|max:3',
+            'balances.*' => 'required|array|min:4|max:4',
         ]);
 
-        $resp = $this->creditChSer->getLoans($data['features']);
+        $resp = $this->creditChSer->getLoans($data['balances']);
         return response()->json(['data' => $resp]);
     }
 }
