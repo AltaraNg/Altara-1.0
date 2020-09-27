@@ -1,4 +1,7 @@
 {
+    "name": "Altara",
+    "version": "1.0.0",
+    "description": "Vuejs app for Altara application",
     "private": true,
     "scripts": {
         "postinstall": "npm run prod",
