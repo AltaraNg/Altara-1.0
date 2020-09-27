@@ -64,3 +64,5 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
     Route::get('/renewal-list-status', 'RenewalListStatusController@index');
 });
+
+    Route::post('/credit-check', 'CreditCheckController@check');
