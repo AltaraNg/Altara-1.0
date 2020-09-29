@@ -401,7 +401,13 @@
             </div>
             </div>
              <div v-else>
-          <new-order-amortization :order="order" :customer="customer"></new-order-amortization>
+          <new-order-amortization
+          :order="order"
+          :customer="customer"
+          :paymentForm="paymentForm"
+          :paymentFormType="paymentFormType"
+          @addPayment="addPaymentForm()"
+          ></new-order-amortization>
       </div>
           </div>
 
@@ -468,7 +474,7 @@ export default {
         "Repayment Plans",
       ],
       products: [],
-      paymentForm: null,
+      paymentForm: {payments: []},
       paymentFormType: "add",
     };
   },

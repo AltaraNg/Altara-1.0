@@ -76,32 +76,32 @@
                 </table>
                 </div>
 
-                <!-- <h5 class="mt-5 mb-0">Payment Summary</h5>
+                <h5 class="mt-5 mb-0">Payment Summary</h5>
                 <table class="table table-bordered">
                   <tbody class="text-center">
                     <tr class="table-separator">
                       <td class="text-left">Discount Detail (%)</td>
                       <th>{{order.discount | capitalize}}</th>
                       <td>Total Before Discount</td>
-                      <th>{{$formatCurrency($roundDownAmt(order.order["product_price"]))}}</th>
+                      <th>{{$formatCurrency($roundDownAmt(order.product_price))}}</th>
                       <td>Total Paid (+discount)</td>
                       <th>{{order.amountPaid}}</th>
                     </tr>
                     <tr>
                       <td class="text-left">Discount Amount</td>
-                      <th>{{order.discountAmount}}</th>
+                      <th>{{order.discountAmount || 'null'}}</th>
                       <td>Total After Discount</td>
-                      <th>{{order.discountedTotal}}</th>
+                      <th>{{order.discountedTotal || 'null'}}</th>
                       <td>Total Debt</td>
-                      <th>{{order.outstandingDebt}}</th>
+                      <th>{{order.outstandingDebt || 'null'}}</th>
                     </tr>
                     <tr>
                       <td class="text-left">Down Payment</td>
-                      <th>{{$formatCurrency($roundDownAmt(order.order['down_payment']))}}</th>
+                      <th>{{$formatCurrency($roundDownAmt(order.down_payment))}}</th>
                       <td>Total Plus Default Fee</td>
-                      <th>{{order.totalPlusDefault}}</th>
+                      <th>{{$formatCurrency($roundDownAmt(order.product_price))}}</th>
                       <td>Default Fee</td>
-                      <th>{{order.defaultFee}}</th>
+                      <th>{{order.defaultFee || 'null'}}</th>
                     </tr>
                   </tbody>
                 </table>
@@ -208,7 +208,7 @@
                       </tr>
                     </tbody>
                   </table>
-                </div> -->
+                </div>
               </div>
             </div>
             <div
@@ -248,16 +248,28 @@ export default {
         },
         customer: {
             type: Object
+        },
+        paymentForm: {
+            type: Object
+        },
+        paymentFormType: {
+            type: String,
+            default: 'add'
         }
     },
     data(){
         return {
-            canEditPayment: false,
+            canEditPayment: true,
             isReadOnly: false,
-            paymentFormType: null,
+
             canAddPayment:false
         }
     },
+    methods: {
+        addPaymentForm(data){
+            return this.$emit('addPayment', data);
+        }
+    }
 }
 </script>
 <style scoped>
