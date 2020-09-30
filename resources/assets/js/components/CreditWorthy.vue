@@ -282,14 +282,25 @@ export default {
                     post(this.apiUrls.creditCheck, data)
                         .then(res => {
                             this.$LIPS(false);
-                            const data1 = res.data.data;
-                            const keys = Object.keys(data1);
-                            const last = keys[keys.length - 1];
-                            this.$swal({
-                                icon: "success",
-                                title: "Loan Request Successful.",
-                                text: `You can get up to ‎₦${last}`
-                            });
+                            const resData = res.data.data;
+                            let arr = [];
+                            for (let resD in resData) {
+                                if (resData[resD] === "Approved") {
+                                    arr.push(resD);
+                                }
+                            }
+                            const last = arr[arr.length - 1];
+
+                            last
+                                ? this.$swal({
+                                      icon: "success",
+                                      title: `You can get up to ₦${last}`
+                                  })
+                                : this.$swal({
+                                      icon: "error",
+                                      title: "Loan Request UnSuccessful.",
+                                      text: `You can't get any loan`
+                                  });
                         })
                         .catch(() => {
                             this.$LIPS(false);
