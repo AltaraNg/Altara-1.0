@@ -51,6 +51,7 @@
         "moment": "^2.18.1",
         "net": "^1.0.2",
         "vee-validate": "^2.1.0-beta.7",
+        "vue-form-wizard": "^0.8.4",
         "vue-router": "^3.0.1",
         "vue-select": "^2.5.1",
         "vue-sweetalert2": "^3.0.3",
