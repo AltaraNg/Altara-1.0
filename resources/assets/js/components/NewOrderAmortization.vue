@@ -240,6 +240,8 @@
 </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import Auth from "../utilities/auth";
 export default {
     name: 'NewOrderAmortization',
     props: {
@@ -262,13 +264,33 @@ export default {
             canEditPayment: true,
             isReadOnly: false,
 
-            canAddPayment:false
+            canAddPayment:true,
+             user: {
+        name: Auth.state.user_name,
+        id: Auth.state.user_id,
+      },
         }
     },
     methods: {
         addPaymentForm(data){
-            return this.$emit('addPayment', data);
+
+            this.$emit('addPayment', data);
+        },
+        deletePayment(index){
+            this.$emit('deletePayment', index);
+        },
+        preparePayments(){
+            this.$emit('preparePayments');
         }
+    },
+    computed: {
+        ...mapGetters([
+      "getBanks",
+      "getPaymentMethods",
+      "auth",
+      "getAuthUserDetails",
+    ]),
+
     }
 }
 </script>

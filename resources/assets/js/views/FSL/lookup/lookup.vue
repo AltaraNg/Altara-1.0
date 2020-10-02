@@ -136,12 +136,12 @@
             </div>
           </div>
 
-          <LogForm
+          <!-- <LogForm
             v-if="logger === 'cash' && customer.orders.length > 0"
             :customerId="customer.id"
             :order-id="customer.orders[0].order.id"
             @done="this.done"
-          />
+          /> -->
           <PaymentLog :customerId="customer.id" @done="this.done" v-if="logger === 'payment'" />
           <div class="mt-5 mb-3 attendance-head">
             <div class="w-100 my-5 mx-0 hr"></div>
@@ -406,7 +406,9 @@
           :customer="customer"
           :paymentForm="paymentForm"
           :paymentFormType="paymentFormType"
-          @addPayment="addPaymentForm()"
+          @addPayment="addPaymentForm"
+          @deletePayment="deletePayment"
+          @preparePayments="preparePayments"
           ></new-order-amortization>
       </div>
           </div>
@@ -536,7 +538,48 @@ export default {
 
 
     addPaymentForm(type) {
-      const level = this.activeOrder.repaymentLevel;
+        if (this.newOrder){
+            let initLevel = 0;
+
+            this.order.amortization.every((item, index) => {
+                if(item.actual_payment_date === null){
+                    initLevel = index;
+                    return false;
+                }
+                return true;
+
+            });
+
+            let nextRepayment = parseInt(initLevel + this.paymentForm.payments.length + 1);
+
+             if (type !== this.paymentFormType) this.paymentForm.payments = [];
+
+      if (
+        type === "edit" &&
+        (initLevel < 1 || this.paymentForm.payments.length >= initLevel)
+      )
+        return;
+      if (initLevel === this.order.amortization.length) return;
+      if (nextRepayment > this.order.amortization.length) return;
+
+      this.paymentFormType = type;
+       let newPaymentData = {
+        _pay: this.order.amortization[initLevel].expected_amount,
+        _date: this.$getDate(),
+        _col: "",
+        column: "",
+      };
+
+      if (type === "add") {
+        newPaymentData._payment_bank = "";
+        newPaymentData._payment_method = "";
+      }
+
+      this.paymentForm.payments.push(newPaymentData);
+
+        }else{
+
+            const level = this.activeOrder.repaymentLevel;
       const nextRepayment = parseInt(
         level + this.paymentForm.payments.length + 1
       );
@@ -567,6 +610,11 @@ export default {
       this.paymentForm.payments.push(newPaymentData);
 
       this.reNumber();
+
+        }
+
+
+
     },
 
     deletePayment(index) {
