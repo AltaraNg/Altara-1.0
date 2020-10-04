@@ -16272,7 +16272,9 @@ hr.style-two {
   border-radius: 3rem;
 }
 
-#index input, #index textarea, #index select,
+#index input,
+#index textarea,
+#index select,
 #reminder input,
 #reminder textarea,
 #reminder select,
@@ -16382,36 +16384,58 @@ hr.style-two {
   width: 100%;
 }
 
-button, input, optgroup, select, textarea, .form-control::-webkit-input-placeholder {
+button,
+input,
+optgroup,
+select,
+textarea,
+.form-control::-webkit-input-placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
   font-size: 1.2rem !important;
 }
 
-button, input, optgroup, select, textarea, .form-control::-moz-placeholder {
+button,
+input,
+optgroup,
+select,
+textarea,
+.form-control::-moz-placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
   font-size: 1.2rem !important;
 }
 
-button, input, optgroup, select, textarea, .form-control::-ms-input-placeholder {
+button,
+input,
+optgroup,
+select,
+textarea,
+.form-control::-ms-input-placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
   font-size: 1.2rem !important;
 }
 
-button, input, optgroup, select, textarea, .form-control::placeholder {
+button,
+input,
+optgroup,
+select,
+textarea,
+.form-control::placeholder {
   color: rgba(142, 151, 160, 0.5);
   font-weight: 500;
   font-size: 1.2rem !important;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   -webkit-transition: opacity .5s;
   transition: opacity .5s;
 }
 
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -16444,7 +16468,8 @@ a:hover, a:active, a:visited {
   color: inherit;
 }
 
-small.text-muted, form small:not(.error-control) {
+small.text-muted,
+form small:not(.error-control) {
   font-size: 1.1rem;
   color: #c81618 !important;
   float: left;
@@ -16455,13 +16480,15 @@ small.text-muted, form small:not(.error-control) {
   margin-bottom: .8rem;
 }
 
-.form-group label, .form-group .category {
+.form-group label,
+.form-group .category {
   font-weight: 600;
   color: #084a73;
   margin-bottom: .2rem;
 }
 
-input, select {
+input,
+select {
   max-height: 4rem;
 }
 
@@ -16582,7 +16609,8 @@ textarea.form-control.is-invalid:focus {
   margin-bottom: 2rem;
 }
 
-table button i, table a i {
+table button i,
+table a i {
   font-size: 1.2rem;
 }
 
@@ -16629,12 +16657,14 @@ table a i {
   padding-bottom: 2rem;
 }
 
-.attendance-create td, .attendance-create th {
+.attendance-create td,
+.attendance-create th {
   padding-left: 3rem;
   padding-right: 3rem;
 }
 
-.attendance-create td:nth-child(1), .attendance-create th:nth-child(1) {
+.attendance-create td:nth-child(1),
+.attendance-create th:nth-child(1) {
   padding-left: 5rem !important;
   padding-right: 0;
 }
@@ -16643,7 +16673,8 @@ table a i {
   padding-left: 2rem !important;
 }
 
-.attendance-create td:nth-last-child(1), .attendance-create th:nth-last-child(1) {
+.attendance-create td:nth-last-child(1),
+.attendance-create th:nth-last-child(1) {
   padding-right: 6rem;
 }
 
@@ -16679,11 +16710,15 @@ table a i {
   width: 25%;
 }
 
-.attendance-view .custom-select, .attendance-view .myBtn, .attendance-view .daily-attendance, .attendance-view input {
+.attendance-view .custom-select,
+.attendance-view .myBtn,
+.attendance-view .daily-attendance,
+.attendance-view input {
   width: 75%;
 }
 
-.attendance-view td, .attendance-view th {
+.attendance-view td,
+.attendance-view th {
   height: 6.2rem;
 }
 
@@ -16730,19 +16765,23 @@ table a i {
   z-index: 3;
 }
 
-.attendance-view td.arrEarly::before, .attendance-view td.arrLate::before {
+.attendance-view td.arrEarly::before,
+.attendance-view td.arrLate::before {
   left: 10%;
 }
 
-.attendance-view td.leftEarly::after, .attendance-view td.leftLate::after {
+.attendance-view td.leftEarly::after,
+.attendance-view td.leftLate::after {
   right: 10%;
 }
 
-.attendance-view td.arrEarly::before, .attendance-view td.leftLate::after {
+.attendance-view td.arrEarly::before,
+.attendance-view td.leftLate::after {
   background-color: #6ca669;
 }
 
-.attendance-view td.arrLate::before, .attendance-view td.leftEarly::after {
+.attendance-view td.arrLate::before,
+.attendance-view td.leftEarly::after {
   background-color: #eeb200;
 }
 
@@ -16751,7 +16790,8 @@ table a i {
   right: 10%;
 }
 
-.attendance-view td.arrEarly.leftLate::before, .attendance-view td.arrEarly.leftLate::after {
+.attendance-view td.arrEarly.leftLate::before,
+.attendance-view td.arrEarly.leftLate::after {
   width: 41%;
 }
 
@@ -16947,12 +16987,14 @@ table a i {
   max-width: 1140px;
 }
 
-.ok, .paid {
+.ok,
+.paid {
   background-color: rgba(0, 163, 104, 0.09);
   color: #00a368;
 }
 
-.repossessed, .missed {
+.repossessed,
+.missed {
   background-color: rgba(200, 22, 24, 0.09);
   color: #c81618;
 }
@@ -17013,7 +17055,8 @@ tr.current {
   font-weight: normal;
 }
 
-.customer-profile td, .customer-profile .data {
+.customer-profile td,
+.customer-profile .data {
   font-size: 1.2rem;
   font-weight: 500;
 }
@@ -17029,7 +17072,8 @@ tr.current {
   background: linear-gradient(45deg, #dedede 0%, #ffffff 100%);
 }
 
-.customer-profile .profile-picture, .customer-profile .no-image {
+.customer-profile .profile-picture,
+.customer-profile .no-image {
   height: 16rem;
   width: 16rem;
   -webkit-box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.2);
@@ -17496,7 +17540,8 @@ tr.current {
   background-color: white;
 }
 
-.attendance .checkbox, .attendance .radio {
+.attendance .checkbox,
+.attendance .radio {
   margin-bottom: 0;
 }
 
@@ -17557,7 +17602,8 @@ tr.current {
           transform: scale(1.02);
 }
 
-.product .card i, .product .card svg {
+.product .card i,
+.product .card svg {
   font-size: 9rem;
   opacity: .1;
   margin: 1rem auto;
@@ -17603,7 +17649,8 @@ tr.current {
   .modal-dialog {
     max-width: 64rem;
   }
-  .attendance .custom-select, .attendance input {
+  .attendance .custom-select,
+  .attendance input {
     width: 90%;
   }
   .attendance .myBtn {
@@ -17644,7 +17691,8 @@ tr.current {
     margin-left: 0;
     margin-right: 0;
   }
-  .attendance-create .present, .attendance-create .absent {
+  .attendance-create .present,
+  .attendance-create .absent {
     padding: 0.2rem 0.6rem;
   }
   .title {
@@ -17677,7 +17725,8 @@ tr.current {
   .attendance [type="radio"] + label {
     font-size: 1.2rem;
   }
-  .product i, .product svg {
+  .product i,
+  .product svg {
     font-size: 1.2rem;
   }
 }
@@ -17686,7 +17735,8 @@ tr.current {
   html {
     font-size: 55%;
   }
-  #app-navigation a, #app-navigation [data-title="title"] {
+  #app-navigation a,
+  #app-navigation [data-title="title"] {
     margin-top: -.3rem;
     margin-bottom: .3rem;
   }
@@ -17710,7 +17760,8 @@ tr.current {
   .user-name {
     padding: 0;
   }
-  .attendance-create .present, .attendance-create .absent {
+  .attendance-create .present,
+  .attendance-create .absent {
     padding: 0 0.6rem;
   }
   .attendance .image-and-names {
@@ -17749,7 +17800,8 @@ tr.current {
     font-size: 1.4rem;
     float: right;
   }
-  .product i, .product svg {
+  .product i,
+  .product svg {
     font-size: 1rem;
   }
 }
