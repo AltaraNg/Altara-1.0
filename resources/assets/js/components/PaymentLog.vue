@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-left: 5rem; margin-right: 5rem;">
+    <div style="margin-left: 5rem; margin-right: 5rem">
         <div class="row">
             <div class="col-md">
                 <div class="card">
@@ -34,8 +34,9 @@
                                         :value="type"
                                         :key="type.id"
                                         v-for="type in repaymentCyclesopt"
-                                        >{{ type.name }}</option
                                     >
+                                        {{ type.name }}
+                                    </option>
                                 </select>
                             </div>
                             <div v-if="customDateToggle" class="col form-group">
@@ -63,15 +64,16 @@
                                     v-model="salesLogForm.repayment_duration_id"
                                     v-validate="'required'"
                                 >
-                                    <option disabled selected="selected"
-                                        >Repayment Duration</option
-                                    >
+                                    <option disabled selected="selected">
+                                        Repayment Duration
+                                    </option>
                                     <option
                                         :value="type"
                                         :key="type.id"
                                         v-for="type in repaymentDuration"
-                                        >{{ type.name }}</option
                                     >
+                                        {{ type.name }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col form-group">
@@ -84,15 +86,16 @@
                                     v-validate="'required'"
                                     @change="getCalc()"
                                 >
-                                    <option disabled selected="selected"
-                                        >Downpayment Rates</option
-                                    >
+                                    <option disabled selected="selected">
+                                        Downpayment Rates
+                                    </option>
                                     <option
                                         :value="type"
                                         :key="type.id"
                                         v-for="type in downPaymentRates"
-                                        >{{ type.name }}</option
                                     >
+                                        {{ type.name }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col form-group">
@@ -112,8 +115,9 @@
                                         :value="type.id"
                                         :key="type.id"
                                         v-for="type in businessTypes"
-                                        >{{ type.name }}</option
                                     >
+                                        {{ type.name }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col form-group">
@@ -133,8 +137,9 @@
                                         :value="type.id"
                                         :key="type.id"
                                         v-for="type in getPaymentMethods"
-                                        >{{ type.name }}</option
                                     >
+                                        {{ type.name }}
+                                    </option>
                                 </select>
                             </div>
                             <!-- <div class="col form-group">
@@ -303,7 +308,7 @@ export default {
                 previewAmortization: `/api/amortization/preview`,
                 createOrder: `/api/new_order`,
                 getCalculation: `/api/price_calculator`,
-                getProduct: `/api/inventory?isActive=true`
+                getProduct: `/api/inventory`
             },
             inputValue: "",
             selectedProduct: {},
