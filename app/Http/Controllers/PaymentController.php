@@ -61,7 +61,7 @@ class PaymentController extends Controller
      */
     public function store(PaymentRequest $request)
     {
-        $result = $this->paymentRec->storeOrCreate($request->validated());
+        $result = $this->payment->store($request->validated());
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 

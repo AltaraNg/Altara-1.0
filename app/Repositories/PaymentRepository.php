@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Payment;
+use App\Events\RepaymentEvent;
 
 class PaymentRepository extends Repository
 {
@@ -19,6 +20,14 @@ class PaymentRepository extends Repository
     public function getAll($filter)
     {
         return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
+    }
+
+    public function store(array $data)
+    {
+        // dd($data);
+        if ($data["payment_type_id"] == 2) {
+            event(new RepaymentEvent($data));
+        }
     }
 
     public function update($model, $data) {
