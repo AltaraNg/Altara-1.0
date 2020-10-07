@@ -28,7 +28,7 @@ class MessageController extends Controller
         $data = curl_exec($ch);
         curl_close($ch);
 
-        return response()->json($data);
+        return response()->json(json_decode($data));
     }
 
 
