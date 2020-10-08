@@ -4,6 +4,8 @@ namespace App\Listeners;
 
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Http\Controllers\AmortizationController;
+use App\NewOrder;
 
 class UpdateAmortizationListener
 {
@@ -26,6 +28,8 @@ class UpdateAmortizationListener
     public function handle($event)
     {
         //
-        dd($event);
+        $order = NewOrder::where('id', 1)->get();
+        dd($order);
+
     }
 }
