@@ -8,6 +8,11 @@ class PaymentType extends Model
 {
     protected $guarded = [];
 
+    const DOWNPAYMENT = 'Downpayment';
+    const REPAYMENTS = 'Repayments';
+    const AFFIDAVITS = 'Affidavits';
+    const WALLETS = 'Wallets';
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

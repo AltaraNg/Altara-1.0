@@ -14,7 +14,10 @@ class AddOrderableToPaymentsTable extends Migration
     public function up()
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->morphs('orderable');
+            $table->string('orderable_id');
+            $table->string('orderable_type');
+
+            $table->index(['orderable_id', 'orderable_type']);
         });
     }
 

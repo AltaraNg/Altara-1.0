@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\NewOrderEvent;
+use App\Events\OldRepaymentEvent;
 use App\Events\ProductTransferEvent;
 use App\Events\SendPasswordResetLinkEvent;
 use App\Events\RepaymentEvent;
@@ -32,6 +33,9 @@ class EventServiceProvider extends ServiceProvider
         NewOrderEvent::class => [
             NewOrderListener::class,
             UpdateInventoryListener::class,
+            LogPaymentListener::class
+        ],
+        OldRepaymentEvent::class => [
             LogPaymentListener::class
         ],
         ProductTransferEvent::class => [
