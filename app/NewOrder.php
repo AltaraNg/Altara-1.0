@@ -29,7 +29,6 @@ class NewOrder extends Model
             'repayment_duration_id' => 'required|exists:repayment_durations,id',
             'repayment_cycle_id' => 'required|exists:repayment_cycles,id',
             'business_type_id' => 'required|exists:business_types,id',
-            'payment_type_id' => 'required|exists:payment_types,id',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'down_payment' => ['required', new Money],
             'product_price' => ['required', new Money],

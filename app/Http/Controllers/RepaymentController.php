@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OldRepaymentEvent;
+use App\Order;
+use App\PaymentType;
 use App\Repayment;
 use App\RepaymentFormal;
 use App\RepaymentInformal;
+use App\Rules\Money;
 use Illuminate\Http\Request;
 
 class RepaymentController extends Controller
@@ -37,6 +41,10 @@ class RepaymentController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'order_id' => 'required|exists:orders,id',
+            'amount' => ['required', new Money],
+        ]);
         $amortization = null;
 
         switch ($request->type){
@@ -50,6 +58,12 @@ class RepaymentController extends Controller
         }
 
         $amortization->update($request->payments);
+
+        $paymentType = PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id;
+        $order = Order::findOrFail($request->order_id);
+        $order->amount = $request->amount;
+        $order->payment_type_id = $paymentType;
+        event(new OldRepaymentEvent($order));
 
         return response()->json([
             'saved' => true,
