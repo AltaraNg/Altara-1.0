@@ -59,7 +59,7 @@
                 >
                   <button
                     :class="order.count === order.repaymentLevel ? 'approved' : 'pending'"
-                    @click="displayAmortization(index)"
+                    @click="displayAmortization(order)"
                     class="btn status my-sm-2"
                   >
                     View Plan
@@ -73,6 +73,56 @@
                 </div>
               </div>
               <div class="mb-3 row attendance-item" v-for="(order, index) in customer.new_orders">
+                   <div
+                  class="col-12 col-xs-2 col-md col-lg d-flex align-items-center"
+                  style="max-width: 100px"
+                >
+                  <span class="user mx-auto">{{customer.orders.length + index + 1}}</span>
+                  <span v-if="$route.meta.customSMS">
+                    <CustomSMSButton :order="order" :customer="customer" :key="order.amortization[0].new_order_id" />
+                  </span>
+                  <span>
+                    <img src="../../../../svg/download.svg" />
+                  </span>
+                </div>
+
+                <div
+                  class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                >{{order.amortization[0].created_at.split(' ')[0]}}</div>
+                <div
+                  class="col-12 col-xs-2 col-md col-lg d-flex user-name align-items-center justify-content-center"
+                >{{order.order_number}}</div>
+                <div
+                  class="col-12 col-xs-3 col-md col-lg d-flex align-items-center justify-content-center"
+                >{{order.product.name }}</div>
+                <div
+                  class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                >{{$formatCurrency(order.product_price)}}</div>
+                <div
+                  class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                >{{'  '}}</div>
+                <div
+                  class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                >{{$formatCurrency(order.down_payment)}}</div>
+
+                <div
+                  class="col-12 col-xs-2 col-md col-lg d-flex align-items-center justify-content-center"
+                >
+                  <button
+                    :class="'pending'"
+                    @click="displayAmortization(order)"
+                    class="btn status my-sm-2"
+                  >
+                    View Plan
+                    <i
+                      :class="'fa-hourglass-half'"
+                      class="fas ml-3"
+                      style="font-size: 1.4rem"
+                    ></i>
+                    <!--                                        // TODO:: cleanup-->
+                  </button>
+                </div>
+
 
               </div>
             </div>
@@ -86,12 +136,12 @@
             </div>
           </div>
 
-          <LogForm
+          <!-- <LogForm
             v-if="logger === 'cash' && customer.orders.length > 0"
             :customerId="customer.id"
             :order-id="customer.orders[0].order.id"
             @done="this.done"
-          />
+          /> -->
           <PaymentLog :customerId="customer.id" @done="this.done" v-if="logger === 'payment'" />
           <div class="mt-5 mb-3 attendance-head">
             <div class="w-100 my-5 mx-0 hr"></div>
@@ -102,6 +152,7 @@
       <div class="modal fade repayment" id="amortization">
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content" v-if="showModalContent">
+              <div v-if="!newOrder">
             <div class="modal-header py-2">
               <h6
                 class="modal-title py-1"
@@ -348,9 +399,24 @@
                 style="text-align: right"
               >close dialogue</a>
             </div>
+            </div>
+             <div v-else>
+          <new-order-amortization
+          :order="order"
+          :customer="customer"
+          :paymentForm="paymentForm"
+          :paymentFormType="paymentFormType"
+          @addPayment="addPaymentForm"
+          @deletePayment="deletePayment"
+          @preparePayments="preparePayments"
+          ></new-order-amortization>
+      </div>
           </div>
+
         </div>
       </div>
+
+
     </div>
   </transition>
 </template>
@@ -361,6 +427,7 @@ import Auth from "../../../utilities/auth";
 import Flash from "../../../utilities/flash";
 import { get, post } from "../../../utilities/api";
 import CustomHeader from "../../../components/customHeader";
+import NewOrderAmortization from "../../../components/NewOrderAmortization"
 import CustomerProfile from "../../../components/CustomerProfile";
 import { Order, OrderWithPromiseCall } from "../../../utilities/Amortization";
 import CustomSMSButton from "../../../components/CustomSMSButton/CustomSMSButton";
@@ -380,13 +447,17 @@ export default {
     AutocompleteSearch,
     LogForm,
     PaymentLog,
+    NewOrderAmortization
+
   },
   props: { logger: null },
 
   data() {
     return {
       Order: Order,
+      newOrder: false,
       customer: null,
+      order: {},
       customer_id: "",
       user: {
         name: Auth.state.user_name,
@@ -404,7 +475,8 @@ export default {
         "Down Payment",
         "Repayment Plans",
       ],
-      paymentForm: null,
+      products: [],
+      paymentForm: {payments: []},
       paymentFormType: "add",
     };
   },
@@ -448,15 +520,66 @@ export default {
         });
     },
 
-    displayAmortization(index) {
-      this.activeOrder = this.customer.orders[index];
-      this.paymentForm = { payments: [] };
+
+    displayAmortization(order) {
+        if(order.status){
+            this.newOrder = true;
+            this.order = order;
+        }
+        else{
+            this.newOrder = false;
+            this.activeOrder = order;
+            this.paymentForm = { payments: [] };
+        }
+
       this.showModalContent = true;
       return $(`#amortization`).modal("toggle");
     },
 
+
     addPaymentForm(type) {
-      const level = this.activeOrder.repaymentLevel;
+        if (this.newOrder){
+            let initLevel = 0;
+
+            this.order.amortization.every((item, index) => {
+                if(item.actual_payment_date === null){
+                    initLevel = index;
+                    return false;
+                }
+                return true;
+
+            });
+
+            let nextRepayment = parseInt(initLevel + this.paymentForm.payments.length + 1);
+
+             if (type !== this.paymentFormType) this.paymentForm.payments = [];
+
+      if (
+        type === "edit" &&
+        (initLevel < 1 || this.paymentForm.payments.length >= initLevel)
+      )
+        return;
+      if (initLevel === this.order.amortization.length) return;
+      if (nextRepayment > this.order.amortization.length) return;
+
+      this.paymentFormType = type;
+       let newPaymentData = {
+        _pay: this.order.amortization[initLevel].expected_amount,
+        _date: this.$getDate(),
+        _col: "",
+        column: "",
+      };
+
+      if (type === "add") {
+        newPaymentData._payment_bank = "";
+        newPaymentData._payment_method = "";
+      }
+
+      this.paymentForm.payments.push(newPaymentData);
+
+        }else{
+
+            const level = this.activeOrder.repaymentLevel;
       const nextRepayment = parseInt(
         level + this.paymentForm.payments.length + 1
       );
@@ -487,6 +610,11 @@ export default {
       this.paymentForm.payments.push(newPaymentData);
 
       this.reNumber();
+
+        }
+
+
+
     },
 
     deletePayment(index) {
@@ -623,6 +751,7 @@ export default {
     this.$prepareBranches();
     this.$preparePaymentMethods();
   },
+
 };
 </script>
 
