@@ -6,6 +6,7 @@ use App\Events\NewOrderEvent;
 use App\Helper\Helper;
 use App\NewOrder;
 use App\OrderStatus;
+use App\PaymentType;
 use App\RepaymentCycle;
 use Carbon\Carbon;
 
@@ -25,7 +26,6 @@ class NewOrderRepository extends Repository
     {
         $validated = $data;
         unset($validated['custom_date']);
-        unset($validated['payment_type_id']);
         unset($validated['payment_method_id']);
 
         $order = $this->model::create(array_merge($validated, [
@@ -39,7 +39,9 @@ class NewOrderRepository extends Repository
             $order->customDate()->create(['custom_date' => $data['custom_date']]);
         }
 
-        $order->payment_type_id = $data['payment_type_id'];
+        $paymentType = PaymentType::where('type', PaymentType::DOWNPAYMENT)->first()->id;
+        $order->amount = $data['down_payment'];
+        $order->payment_type_id = $paymentType;
         $order->payment_method_id = $data['payment_method_id'];
         event(new NewOrderEvent($order));
 
