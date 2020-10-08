@@ -10,6 +10,8 @@ class PaymentType extends Model
 
     const DOWNPAYMENT = 'Downpayment';
     const REPAYMENTS = 'Repayments';
+    const AFFIDAVITS = 'Affidavits';
+    const WALLETS = 'Wallets';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
