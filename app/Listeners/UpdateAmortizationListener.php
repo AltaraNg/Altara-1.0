@@ -2,10 +2,15 @@
 
 namespace App\Listeners;
 
+use App\Amortization\Amortization;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Http\Controllers\AmortizationController;
+use Illuminate\Http\Request;
+use App\Exceptions\AException;
+use Carbon\Carbon;
 use App\NewOrder;
+use App\Repositories\AmortizationRepository;
 
 class UpdateAmortizationListener
 {
@@ -14,9 +19,11 @@ class UpdateAmortizationListener
      *
      * @return void
      */
-    public function __construct()
+    private $amortizationRepo;
+    public function __construct(AmortizationRepository $amortizationRepo)
     {
         //
+        $this->amortizationRepo = $amortizationRepo;
     }
 
     /**
@@ -27,9 +34,18 @@ class UpdateAmortizationListener
      */
     public function handle($event)
     {
-        //
-        $order = NewOrder::where('id', 1)->get();
-        dd($order);
+        //update amortization
+        try {
+            $order = NewOrder::where('id', $event->newOrder['model_id'])->first();
+            $amortization = $order->amortization;
+            $this->amortizationRepo->update($amortization, [
+                'actual_payment_date' => Carbon::now(),
+                'actual_payment' => $event->newOrder['amount']
+            ]);
+        } catch (\Exception $e) {
+            throw new AException($e->getMessage(), $e->getCode());
+        }
+
 
     }
 }

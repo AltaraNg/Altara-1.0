@@ -25,9 +25,13 @@ class PaymentRepository extends Repository
     public function store(array $data)
     {
         // dd($data);
+        $result = $this->model::create($data);
+
+        //I haven't figured out another way to fix this
         if ($data["payment_type_id"] == 2) {
             event(new RepaymentEvent($data));
         }
+        return $result;
     }
 
     public function update($model, $data) {
