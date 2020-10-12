@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Amortization\Amortization;
+use App\Amortization;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Http\Controllers\AmortizationController;
@@ -36,8 +36,8 @@ class UpdateAmortizationListener
     {
         //update amortization
         try {
-            $order = NewOrder::where('id', $event->newOrder['model_id'])->first();
-            $amortization = $order->amortization;
+            $amortization = Amortization::where('new_order_id', $event->newOrder['model_id'])
+                ->where('actual_amount', !null)->first();
             $this->amortizationRepo->update($amortization, [
                 'actual_payment_date' => Carbon::now(),
                 'actual_payment' => $event->newOrder['amount']

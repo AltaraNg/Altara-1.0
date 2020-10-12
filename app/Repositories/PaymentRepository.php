@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Payment;
-use App\Events\RepaymentEvent;
+
 
 class PaymentRepository extends Repository
 {
@@ -27,10 +27,7 @@ class PaymentRepository extends Repository
         // dd($data);
         $result = $this->model::create($data);
 
-        //I haven't figured out another way to fix this
-        if ($data["payment_type_id"] == 2) {
-            event(new RepaymentEvent($data));
-        }
+
         return $result;
     }
 
