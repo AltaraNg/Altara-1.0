@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Payment;
 
+
 class PaymentRepository extends Repository
 {
 
@@ -19,6 +20,15 @@ class PaymentRepository extends Repository
     public function getAll($filter)
     {
         return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
+    }
+
+    public function store(array $data)
+    {
+        // dd($data);
+        $result = $this->model::create($data);
+
+
+        return $result;
     }
 
     public function update($model, $data) {

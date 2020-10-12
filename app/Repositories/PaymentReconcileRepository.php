@@ -3,8 +3,11 @@
 namespace App\Repositories;
 
 use App\PaymentReconcile;
+use App\Repayment;
 use App\Services\PaymentService;
 use Illuminate\Support\Str;
+use App\Events\RepaymentEvent;
+use App\PaymentType;
 
 class PaymentReconcileRepository extends Repository
 {
@@ -29,6 +32,11 @@ class PaymentReconcileRepository extends Repository
 
         if(request()->has('comment')){
             $resp->comment()->create(['comment' => request('comment'), 'user_id' => auth()->user()->id]);
+        }
+        $payment_type = PaymentType::where('id', $data["payment_type_id"])->first();
+
+        if ($payment_type->type == PaymentType::REPAYMENTS) {
+            event(new RepaymentEvent($data));
         }
         return $resp;
     }

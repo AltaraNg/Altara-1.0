@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Events\RepaymentEvent;
 use Illuminate\Container\Container as App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -65,7 +66,9 @@ abstract class Repository
     }
 
     public function updateOrCreate($model, $target,$data) {
+
         $model->updateOrCreate($target, $data);
+
         return $model;
     }
 
