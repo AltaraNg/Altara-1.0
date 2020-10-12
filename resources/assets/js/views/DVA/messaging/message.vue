@@ -97,7 +97,7 @@ export default {
             this.$scrollToTop();
             this.$LIPS(false);
             Flash.setSuccess("done!");
-            this.resetData();
+            // this.resetData();
         },
         resetData() {
             this.contacts = "";
