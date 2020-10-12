@@ -370,6 +370,46 @@
                 <!---->
             </ul>
         </nav>
+
+         <div class="modal fade repayment" id="sms_modal">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header py-2">
+                            <h6 class="modal-title py-1">SMS Response</h6>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                                <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                            </a>
+                        </div>
+                        <div class="modal-body" v-if="showModalContent1">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Phone</th>
+                                        <th>Response Type</th>
+                                        <th>Description</th>
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="type in dataMessages">
+                                        
+                                        <td>{{type.to}}</td>
+                                        <td>{{type.status.groupName}}</td>
+                                        <td>{{type.status.description}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                            style="text-align: right">close dialogue</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 </template>
 
@@ -410,7 +450,10 @@
                 status:[],
                 responseData:{},
                 page: 1,
-                OId:0,
+                OId:0,   
+                         showModalContent1:true,
+                         dataMessages:[]
+
             }
         },
 
@@ -473,7 +516,12 @@
                 selectedOrders.forEach((order, index) => {
                     let sms = new Message(order.nextSMSReminder, order.reminder.contacts, false, order.dvaId);
                     sms.send(r => {
-                        if (r.status === 200) {
+                        if (r.status === 200) {        
+                                                
+                            this.dataMessages=r.data.messages;
+
+                            $(`#sms_modal`).modal("toggle");
+
                             delete sms.logToDB;
                             messages.push(sms);
                         }
