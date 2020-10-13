@@ -81,10 +81,14 @@ export default {
                     if (this.$network()) {
                         this.$LIPS(true);
                         new Message(this.message, this.contacts).send(r => {
-                            const data = r.data.messages[0].status;
+                            
                             r.status === 200;
+                            const success = [1,3];
+                            const data = r.data.messages[0].status;
+
+                            const respose = success.includes(data.groupId) ? 'success' : 'error';
                             this.$swal({
-                                icon: "info",
+                                icon: respose,
                                 title: `${data.groupName}`,
                                 text: `${data.description}`
                             }) && this.done();
@@ -96,7 +100,7 @@ export default {
         done() {
             this.$scrollToTop();
             this.$LIPS(false);
-            Flash.setSuccess("done!");
+            // Flash.setSuccess("done!");
             // this.resetData();
         },
         resetData() {
