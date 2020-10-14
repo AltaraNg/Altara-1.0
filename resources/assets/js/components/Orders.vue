@@ -517,13 +517,16 @@
                     let sms = new Message(order.nextSMSReminder, order.reminder.contacts, false, order.dvaId);
                     sms.send(r => {
                         if (r.status === 200) {        
-                                                
+                                                const success = [1,3];
+                            const data = r.data.messages[0].status;
+
+                            const respose = success.includes(data.groupId);
                             this.dataMessages=r.data.messages;
 
                             $(`#sms_modal`).modal("toggle");
-
+                            if (respose){
                             delete sms.logToDB;
-                            messages.push(sms);
+                            messages.push(sms);}
                         }
                         if ((index + 1) === selectedOrders.length) this.logSentMessages(selectedOrders, messages);
                     });
