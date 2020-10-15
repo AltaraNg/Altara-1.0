@@ -64,7 +64,13 @@ export default {
                 query = {
                     productName: this.inputValue
                 };
-            } else {
+            }
+            else if(this.apiUrl === "/api/product"){
+                query = {
+                    name: this.inputValue
+                }
+            }
+            else {
                 query = {
                     isActive: true,
                     branch: parseInt(localStorage.getItem("branch_id")),
