@@ -97,7 +97,7 @@
                     </div>
                     <div class="modal-footer">
                         <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
-                           style="text-align: right">close dialogue</a>
+                           style="text-align: right" >close dialogue</a>
                     </div>
                 </div>
             </div>
@@ -405,7 +405,7 @@
                         </div>
                         <div class="modal-footer">
                             <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
-                            style="text-align: right">close dialogue</a>
+                            style="text-align: right" @click="refresh()">close dialogue</a>
                         </div>
                     </div>
                 </div>
@@ -500,7 +500,9 @@
                 this.showModalContent = true;
                 return $(`#${modal}`).modal('toggle');
             },
-
+            refresh(){
+                this.fetchList(this.list);
+            },
             processSelected() {
                 this.$LIPS(true);
                 let selectedOrders = this.orders.filter(order => order.isSelected);
@@ -564,7 +566,7 @@
                     post('/api/reminder', {reminders: newList}).then(({data}) => {
                         if (data.saved) {
                             Flash.setSuccess('Reminders have been sent successfully!', 50000);
-                            this.fetchList(this.list);
+                            
                         } else this.$displayErrorMessage('Error sending reminders!');
                         this.$scrollToTop();
                     });
