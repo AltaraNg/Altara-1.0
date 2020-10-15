@@ -97,7 +97,7 @@
                     </div>
                     <div class="modal-footer">
                         <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
-                           style="text-align: right">close dialogue</a>
+                           style="text-align: right" >close dialogue</a>
                     </div>
                 </div>
             </div>
@@ -370,6 +370,46 @@
                 <!---->
             </ul>
         </nav>
+
+         <div class="modal fade repayment" id="sms_modal">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header py-2">
+                            <h6 class="modal-title py-1">SMS Response</h6>
+                            <a aria-label="Close" class="close py-1" data-dismiss="modal">
+                                <span aria-hidden="true" class="modal-close text-danger"><i class="fas fa-times"></i></span>
+                            </a>
+                        </div>
+                        <div class="modal-body" v-if="showModalContent1">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Phone</th>
+                                        <th>Response Type</th>
+                                        <th>Description</th>
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="type in dataMessages">
+                                        
+                                        <td>{{type.to}}</td>
+                                        <td>{{type.status.groupName}}</td>
+                                        <td>{{type.status.description}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="text-link mt-3 w-100" data-dismiss="modal" href="javascript:"
+                            style="text-align: right" @click="refresh()">close dialogue</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 </template>
 
@@ -410,7 +450,10 @@
                 status:[],
                 responseData:{},
                 page: 1,
-                OId:0,
+                OId:0,   
+                         showModalContent1:true,
+                         dataMessages:[]
+
             }
         },
 
@@ -457,7 +500,9 @@
                 this.showModalContent = true;
                 return $(`#${modal}`).modal('toggle');
             },
-
+            refresh(){
+                this.fetchList(this.list);
+            },
             processSelected() {
                 this.$LIPS(true);
                 let selectedOrders = this.orders.filter(order => order.isSelected);
@@ -470,16 +515,33 @@
 
             sendSMSReminders(selectedOrders) {
                 let messages = [];
+                let allMessages=[];
+                let successfulOrders =[];
                 selectedOrders.forEach((order, index) => {
+                    console.log('testing');
                     let sms = new Message(order.nextSMSReminder, order.reminder.contacts, false, order.dvaId);
                     sms.send(r => {
-                        if (r.status === 200) {
+                        if (r.status === 200) {        
+                                                const success = [1,3];
+                            const data = r.data.messages[0].status;
+
+                            const respose = success.includes(data.groupId);
+                            allMessages.push(r.data.messages[0]);
+                            if (respose){
                             delete sms.logToDB;
                             messages.push(sms);
+                            successfulOrders.push(order);
+                            }
                         }
-                        if ((index + 1) === selectedOrders.length) this.logSentMessages(selectedOrders, messages);
+                        if ((index + 1) === selectedOrders.length) this.logSentMessages(successfulOrders, messages);
+
                     });
                 });
+                this.dataMessages=allMessages;
+                                $(`#sms_modal`).modal("toggle");
+
+                                    this.$LIPS(false);
+
             },
 
             logSentMessages(selectedOrders, messages) {
@@ -504,7 +566,7 @@
                     post('/api/reminder', {reminders: newList}).then(({data}) => {
                         if (data.saved) {
                             Flash.setSuccess('Reminders have been sent successfully!', 50000);
-                            this.fetchList(this.list);
+                            
                         } else this.$displayErrorMessage('Error sending reminders!');
                         this.$scrollToTop();
                     });
@@ -559,7 +621,8 @@
                     this.$LIPS(false)    
                 }
             },
-             popIt(param){
+            
+            popIt(param){
              this.list === "Current" ?  this.postRenewal(param) : this.updateRenewal(param);
             },
 
