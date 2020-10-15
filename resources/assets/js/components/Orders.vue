@@ -513,7 +513,10 @@
 
             sendSMSReminders(selectedOrders) {
                 let messages = [];
+                let allMessages=[];
+                let successfulOrders =[];
                 selectedOrders.forEach((order, index) => {
+                    console.log('testing');
                     let sms = new Message(order.nextSMSReminder, order.reminder.contacts, false, order.dvaId);
                     sms.send(r => {
                         if (r.status === 200) {        
@@ -521,16 +524,22 @@
                             const data = r.data.messages[0].status;
 
                             const respose = success.includes(data.groupId);
-                            this.dataMessages=r.data.messages;
-
-                            $(`#sms_modal`).modal("toggle");
+                            allMessages.push(r.data.messages[0]);
                             if (respose){
                             delete sms.logToDB;
-                            messages.push(sms);}
+                            messages.push(sms);
+                            successfulOrders.push(order);
+                            }
                         }
-                        if ((index + 1) === selectedOrders.length) this.logSentMessages(selectedOrders, messages);
+                        if ((index + 1) === selectedOrders.length) this.logSentMessages(successfulOrders, messages);
+
                     });
                 });
+                this.dataMessages=allMessages;
+                                $(`#sms_modal`).modal("toggle");
+
+                                    this.$LIPS(false);
+
             },
 
             logSentMessages(selectedOrders, messages) {
@@ -610,7 +619,8 @@
                     this.$LIPS(false)    
                 }
             },
-             popIt(param){
+            
+            popIt(param){
              this.list === "Current" ?  this.postRenewal(param) : this.updateRenewal(param);
             },
 
