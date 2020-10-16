@@ -22,6 +22,6 @@ class Amortization extends Model
 
     public function new_orders()
     {
-        return $this->hasOne(NewOrder::class);
+        return $this->belongsTo(NewOrder::class, 'new_order_id');
     }
 }

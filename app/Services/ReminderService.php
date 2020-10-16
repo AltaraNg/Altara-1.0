@@ -19,13 +19,11 @@ class ReminderService
     public function fetchCustomers($days)
     {
         //get list of customers based on their repayment date
-
-
         try {
-            $customers = $this->amortizationRepo->getAmortizationByDays($days);
+            $amortizations = $this->amortizationRepo->getAmortizationByDays($days);
             $customer_array = array();
-            foreach ($customers as $customer) {
-                $customer_array[] = $this->getCustomer($customer->customer_id);
+            foreach ($amortizations as $amortization) {
+                $customer_array[] = $amortization->new_orders->customer;
             }
         } catch (\Exception $e) {
             throw new AException($e->getMessage(), $e->getCode());
@@ -33,14 +31,5 @@ class ReminderService
         return $customer_array;
     }
 
-    public function getCustomer($id)
-    {
-        try {
-            //code...
-            return $this->customerRepo->getCustomer($id);
-        } catch (\Exception $e) {
-            //throw $th;
-            throw new AException($e->getMessage(), $e->getCode());
-        }
-    }
+
 }
