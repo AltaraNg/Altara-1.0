@@ -19,4 +19,9 @@ class Amortization extends Model
         'actual_payment_date' => 'sometimes|required|date',
         'actual_amount' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/'
     ];
+
+    public function new_orders()
+    {
+        return $this->belongsTo(NewOrder::class, 'new_order_id');
+    }
 }
