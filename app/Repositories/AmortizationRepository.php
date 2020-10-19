@@ -4,7 +4,6 @@
 namespace App\Repositories;
 
 use App\Amortization;
-use Carbon\Carbon;
 
 class AmortizationRepository extends Repository
 {
@@ -21,16 +20,5 @@ class AmortizationRepository extends Repository
     public function getAll($filter)
     {
         return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
-    }
-
-    public function getAmortizationByDays($days)
-    {
-        $today = Carbon::now();
-        $amortizations = $this->model()::where(function ($q) use ($today, $days) {
-                $q->where('expected_payment_date', '<=', $today->addDays($days))
-                    ->where('actual_payment_date', null);
-        })->select('new_order_id')->distinct()->get();
-
-        return $amortizations;
     }
 }

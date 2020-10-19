@@ -26,7 +26,7 @@ class CustomerRepaymentListController extends Controller
             'days' => 'required|integer|gt:0'
         ]);
         $customer_list = $this->reminder_service->fetchCustomers($validated_data['days']);
-        return $this->sendSuccess($customer_list, 'List Successfully Generated');
+        return $this->sendSuccess($customer_list->toArray(), 'List Successfully Generated');
     }
 
     /**
