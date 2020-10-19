@@ -664,8 +664,9 @@ export default {
         payments: this.activeOrder.payments,
         repayment_id: this.activeOrder.order.id,
         type,
-      };
-
+       order_id:this.activeOrder.order.id,
+                amount:this.paymentForm.payments[0]._pay
+            };
       post(`/api/repayment`, data)
         .then(async (res) => {
           if (res.data.saved) {
