@@ -107,7 +107,7 @@
                 </table>
 <LogForm
             :customerId="customer.id"
-            :orderId="order.order_number"
+            :orderId="order.id"
             @done="this.done"
           />
                 <!-- <div v-if="canEditPayment && !isReadOnly">
