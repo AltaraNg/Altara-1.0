@@ -114,6 +114,7 @@ class NewOrder extends Model
     public function toArray()
     {
         return [
+            "id" => $this->id,
             "order_number" => $this->order_number,
             "product_id" => $this->product_id,
             "product" => $this->product,
