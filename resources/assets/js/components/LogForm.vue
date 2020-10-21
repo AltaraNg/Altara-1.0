@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-left: 5rem; margin-right: 5rem;">
+    <div style="margin-top: 5rem;">
     <div class="card">
         <form class="card-body" @submit.prevent="submitForm">
             <div class="row">
@@ -66,9 +66,9 @@ export default {
         ...mapGetters(['getPaymentMethods']),
     },
     methods:{
-        async submitForm() {
+        async submitForm() {console.log('testtt',this.orderId,this.customerId)
             this.cashLogForm.customer_id = this.customerId;
-            this.cashLogForm.model_id = parseInt(this.orderId);
+            this.cashLogForm.model_id = this.orderId;
             this.cashLogForm.model = 'new_order'; //Todo: Make dynamic later
             this.$validator.validateAll().then(result => {
                 if (result) {
