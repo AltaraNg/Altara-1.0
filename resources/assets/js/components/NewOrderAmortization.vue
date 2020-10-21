@@ -105,8 +105,12 @@
                     </tr>
                   </tbody>
                 </table>
-
-                <div v-if="canEditPayment && !isReadOnly">
+<LogForm
+            :customerId="customer.id"
+            :orderId="order.id"
+            @done="this.done"
+          />
+                <!-- <div v-if="canEditPayment && !isReadOnly">
                   <h5 class="mt-5 mb-0">{{paymentFormType | capitalize}} a new payment</h5>
                   <table class="table table-bordered">
                     <tbody class="text-center">
@@ -208,14 +212,14 @@
                       </tr>
                     </tbody>
                   </table>
-                </div>
+                </div> -->
               </div>
             </div>
             <div
               :class="{'d-flex justify-content-end' : !canEditPayment || isReadOnly}"
               class="modal-footer"
             >
-              <button
+              <!-- <button
                 @click="addPaymentForm('add')"
                 class="btn status my-sm-2"
                 v-if="canAddPayment && !isReadOnly"
@@ -229,7 +233,7 @@
                 @click="preparePayments()"
                 class="btn status my-sm-2 approved ml-4"
                 v-if="canEditPayment && !isReadOnly"
-              >Click here to Submit Payment(s)!</button>
+              >Click here to Submit Payment(s)!</button> -->
               <a
                 class="text-link mt-3"
                 data-dismiss="modal"
@@ -242,8 +246,11 @@
 <script>
 import { mapGetters } from "vuex";
 import Auth from "../utilities/auth";
+import LogForm from "./LogForm";
+
 export default {
     name: 'NewOrderAmortization',
+    components:{LogForm},
     props: {
         order: {
             type: Object
@@ -271,7 +278,9 @@ export default {
       },
         }
     },
-    methods: {
+    methods: {  done() {
+      this.show = false;
+    },
         addPaymentForm(data){
 
             this.$emit('addPayment', data);
