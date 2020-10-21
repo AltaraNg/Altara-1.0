@@ -3,7 +3,6 @@
 
 namespace App\Repositories;
 
-use App\Events\RepaymentEvent;
 use Illuminate\Container\Container as App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
