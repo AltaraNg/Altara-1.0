@@ -9,6 +9,14 @@ class ProductTransferFilter extends BaseFilter
     /**
      * @param int $id
      */
+    public function inventoryId(int $id)
+    {
+        $this->builder->where('inventory_id', $id);
+    }
+
+    /**
+     * @param int $id
+     */
     public function toBranch(int $id)
     {
         $this->builder->where('to_id', $id);

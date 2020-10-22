@@ -24,7 +24,7 @@ class PaymentReconcileRepository extends Repository
     public function storeOrCreate(array $data)
     {
         $model = app('App\\' . Str::studly($data['model']))->findOrFail($data['model_id']);
-
+        $new_order = $data;
         unset($data['model_id']);
         unset($data['model']);
 
@@ -36,7 +36,7 @@ class PaymentReconcileRepository extends Repository
         $payment_type = PaymentType::where('id', $data["payment_type_id"])->first();
 
         if ($payment_type->type == PaymentType::REPAYMENTS) {
-            event(new RepaymentEvent($data));
+            event(new RepaymentEvent($new_order));
         }
         return $resp;
     }
