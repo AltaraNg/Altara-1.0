@@ -4,24 +4,11 @@ namespace App\Listeners;
 
 use App\Exceptions\AException;
 use App\Inventory;
-use App\Repositories\InventoryRepository;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UpdateInventoryBranchListener
 {
-    private $inventoryRepo;
-
-    /**
-     * Create the event listener.
-     *
-     * @param InventoryRepository $inventoryRepository
-     */
-    public function __construct(InventoryRepository $inventoryRepository)
-    {
-        $this->inventoryRepo = $inventoryRepository;
-    }
-
     /**
      * Handle the event.
      *
@@ -32,8 +19,8 @@ class UpdateInventoryBranchListener
     public function handle($event)
     {
         try {
-            $product = Inventory::where('product_id', $event->data['product_id'])->first();
-            $this->inventoryRepo->update($product, [
+            $product = Inventory::find($event->data['inventory_id']);
+            $product->update([
                 'branch_id' => $event->data['to_id']
             ]);
         }catch (\Exception $e){
