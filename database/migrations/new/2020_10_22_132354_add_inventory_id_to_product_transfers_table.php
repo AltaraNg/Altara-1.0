@@ -17,7 +17,7 @@ class AddInventoryIdToProductTransfersTable extends Migration
             $table->dropForeign('product_transfers_product_id_foreign');
             $table->dropColumn('product_id');
 
-            $table->unsignedInteger('inventory_id')->index();
+            $table->unsignedInteger('inventory_id')->nullable()->index();
             $table->foreign('inventory_id')->references('id')->on('inventories');
         });
     }
@@ -30,7 +30,10 @@ class AddInventoryIdToProductTransfersTable extends Migration
     public function down()
     {
         Schema::table('product_transfers', function (Blueprint $table) {
-            $table->unsignedInteger('product_id')->index();
+            $table->unsignedInteger('product_id')->nullable()->index();
+            $table->foreign('product_id')->references('id')->on('products');
+
+            $table->dropForeign('product_transfers_inventory_id_foreign');
             $table->dropColumn('inventory_id');
         });
     }
