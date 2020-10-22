@@ -21,7 +21,7 @@ class ProductTransfer extends Model
     {
         return [
             'to_id' => 'required|exists:branches,id',
-            'product_id' => 'required|exists:products,id'
+            'inventory_id' => 'required|exists:inventories,id'
         ];
     }
 
@@ -36,7 +36,7 @@ class ProductTransfer extends Model
     {
         return [
             'to_id' => 'sometimes|required|exists:branches,id',
-            'product_id' => 'sometimes|required|exists:products,id',
+            'inventory_id' => 'sometimes|required|exists:inventories,id',
             'current' => 'sometimes|required|boolean'
         ];
     }
