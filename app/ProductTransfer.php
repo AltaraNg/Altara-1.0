@@ -52,9 +52,9 @@ class ProductTransfer extends Model
         return $this->belongsTo(Branch::class);
     }
 
-    public function product()
+    public function inventory()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Inventory::class);
     }
 
     public function user()
@@ -66,7 +66,7 @@ class ProductTransfer extends Model
     {
         return [
             'id' => $this->id,
-            'product' => $this->product,
+            'product' => $this->inventory,
             'to' => $this->to->name,
             'from' => $this->from->name,
             'user' => $this->user->full_name,
