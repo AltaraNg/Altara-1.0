@@ -252,7 +252,7 @@ export default {
     logTransfer(id, to) {
       this.$LIPS(true);
 
-      post("/api/product_transfer", { to_id: to, product_id: id })
+      post("/api/product_transfer", { to_id: to, inventory_id: id })
         .then((res) => {
           this.$LIPS(false);
           this.$swal({

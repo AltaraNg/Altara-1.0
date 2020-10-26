@@ -15,8 +15,8 @@
                     class="dropdown-item"
                 >
                     {{
-                        apiUrl === "/api/inventory"
-                            ? item.product_name
+                        apiUrl === "/api/inventory?isActive=true"
+                            ? `${item.product_name}   ${item.sku}`
                             : item.name
                     }}
                 </div>
@@ -45,10 +45,10 @@ export default {
 
     methods: {
         selectItem(data) {
-            if (this.apiUrl === "/api/inventory") {
+            if (this.apiUrl === "/api/inventory?isActive=true") {
                 this.inputValue = data.product_name;
             } else {
-                this.inputValue = data.name;
+                this.inputValue = `${data.product_name}   ${data.sku}`;
             }
 
             this.apiLoaded = false;
@@ -60,20 +60,12 @@ export default {
 
         async getproduct() {
             let query = {};
-            if (this.apiUrl === "/api/inventory") {
+            if (this.apiUrl === "/api/inventory?isActive=true") {
                 query = {
                     productName: this.inputValue
                 };
-            }
-            else if(this.apiUrl === "/api/product"){
+            } else {
                 query = {
-                    name: this.inputValue
-                }
-            }
-            else {
-                query = {
-                    isActive: true,
-                    branch: parseInt(localStorage.getItem("branch_id")),
                     name: this.inputValue
                 };
             }
