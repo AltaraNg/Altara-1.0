@@ -6,13 +6,14 @@ use App\Helper\AutoCompleteSearchTrait;
 use App\Helper\DataViewer;
 use App\Helper\Scopes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Customer extends Model
 {
     /** this is a generic trait created to serve as a generic
      * scope for fetching and paginating the
      * model where it is called */
-    use DataViewer, Scopes, AutoCompleteSearchTrait;
+    use DataViewer, Scopes, AutoCompleteSearchTrait, Notifiable;
 
     protected $guarded = [];
 
@@ -201,6 +202,11 @@ class Customer extends Model
     public function payments()
     {
         return $this->morphMany(Payment::class, 'orderable');
+    }
+
+    public function getPhoneAttribute()
+    {
+        return $this->telephone;
     }
 
 }

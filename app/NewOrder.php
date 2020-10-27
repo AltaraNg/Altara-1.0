@@ -5,10 +5,12 @@ namespace App;
 use App\Http\Filters\Filterable;
 use App\Rules\Money;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class NewOrder extends Model
 {
-    use Filterable;
+    use Filterable, Notifiable;
+
     protected $with = ['amortization'];
 
     protected $guarded = [];
