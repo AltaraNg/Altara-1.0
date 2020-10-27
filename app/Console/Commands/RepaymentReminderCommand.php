@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ReminderCommandService;
 use Illuminate\Console\Command;
-use App\Services\ReminderService;
+
 
 class RepaymentReminderCommand extends Command
 {
@@ -15,6 +16,7 @@ class RepaymentReminderCommand extends Command
 
 
     protected $signature = 'remind_customer {days : number of days to next repayment}';
+    private $reminderCommandService;
 
     /**
      * The console command description.
@@ -28,11 +30,11 @@ class RepaymentReminderCommand extends Command
      *
      * @return void
      */
-    public function __construct(ReminderService $reminder_service)
+    public function __construct(ReminderCommandService $reminderCommandService)
     {
 
         parent::__construct();
-        $this->reminder_service = $reminder_service;
+        $this->reminderCommandService = $reminderCommandService;
     }
 
     /**
@@ -45,11 +47,13 @@ class RepaymentReminderCommand extends Command
         //
         try {
             //code...
-            $customers = $this->reminder_service->fetchCustomers(100);
+            $days = $this->argument('days');
+            $ans = $this->reminderCommandService->handle($days);
+
         } catch (\Exception $e) {
             //throw $th;
         }
-        $this->info('customers: successful');
+        $this->info($ans);
         return 0;
     }
 }

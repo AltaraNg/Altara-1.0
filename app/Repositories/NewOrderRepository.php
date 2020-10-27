@@ -33,7 +33,7 @@ class NewOrderRepository extends Repository
             'order_date' => Carbon::now(),
             'user_id' => auth()->user()->id,
             'branch_id' => auth()->user()->branch_id,
-            'status_id' => OrderStatus::where('name', OrderStatus::PENDING)->first()->id
+            'status_id' => 1
         ]));
         if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM){
             $order->customDate()->create(['custom_date' => $data['custom_date']]);

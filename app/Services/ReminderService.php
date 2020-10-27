@@ -21,6 +21,7 @@ class ReminderService
                     ->where('actual_payment_date', NULL);
             });
         });
+
         return $data->get();
     }
 }
