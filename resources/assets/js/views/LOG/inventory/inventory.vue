@@ -136,7 +136,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" v-if="showProductTransfer">
             <div class="modal-header py-2">
-              <h3>Product Transfer.</h3>
+              <h4>Product Transfer.</h4>
               <a aria-label="Close" class="close py-1" data-dismiss="modal">
                 <span aria-hidden="true" class="modal-close text-danger">
                   <i class="fas fa-times"></i>
@@ -165,11 +165,33 @@
                   </select>
                 </div>
               </div>
+              <h4>Transfer History.</h4>
+             <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <tbody>
+                                
+                                <tr>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Date Of Transfer</th>
+                                    <th>Transferor</th>
+                                </tr>
+                                <h4 v-if="transferHistory.length<1" class="text-center">No history available.</h4>
+                                <tr v-for="transfer in transferHistory">
+                                    
+                                    <td> {{ transfer.from || "Not Available" }}</td>
+                                    <td> {{ transfer.to || "Not Available" }}</td>
+                                    <td> {{ transfer.created_at.split(' ')[0] || "Not Available" }}</td>
+                                    <td> {{ transfer.user || "Not Available" }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
             </div>
             <div class="modal-footer justify-content-center">
               <button
                 class="text-center btn bg-default"
-                @click="logTransfer(transferItem.product_id,toId)"
+                @click="logTransfer(transferItem.id,toId)"
               >Transfer</button>
             </div>
           </div>
@@ -245,6 +267,7 @@ export default {
         { title: "Product Name", column: "productName" },
         { title: "Branch", column: "branch" },
       ],
+      transferHistory:[]
     };
   },
 
@@ -260,6 +283,7 @@ export default {
             title: "Transfer Successfully Logged",
           });
           $(`#viewProductTransfer`).modal("toggle");
+          this.fetchData();
         })
         .catch(() => {
           this.$LIPS(false);
@@ -267,10 +291,26 @@ export default {
         });
     },
     viewproductTransfer(data) {
+                this.$LIPS(true);
+
       console.log("viewproductTransfer ", data);
       this.transferItem = data;
       this.showProductTransfer = true;
-      return $(`#viewProductTransfer`).modal("toggle");
+      get(
+       `/api/product_transfer?inventoryId=${data.id}`
+      )
+        .then((res) => {
+          this.transferHistory=res.data.data.data;
+          this.$LIPS(false);
+          console.log('hello world',res);
+                  
+$(`#viewProductTransfer`).modal("toggle");
+        })
+        .catch(() => {  
+          
+          Flash.setError("Error Occured")
+        });
+      
     },
     fetchData() {
       this.$scrollToTop();

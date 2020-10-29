@@ -57,7 +57,7 @@ export default {
         async submitForm() {console.log('testtt',this.orderId,this.customerId)
             this.cashLogForm.customer_id = this.customerId;
             this.cashLogForm.model_id = this.orderId;
-            this.cashLogForm.payment_type_id = 4;
+            this.cashLogForm.payment_type_id = this.paymentType.find((x)=>x.type === "Repayments").id;
             this.cashLogForm.amount = parseFloat(this.cashLogForm.amount);
             this.cashLogForm.model = 'new_order'; //Todo: Make dynamic later
             this.$validator.validateAll().then(result => {
