@@ -663,6 +663,7 @@ export default {
       data = {
         payments: this.activeOrder.payments,
         type,
+        repayment_id: this.activeOrder.order.id,
        order_id:this.activeOrder.order.id,
                 amount:this.paymentForm.payments[0]._pay
             };

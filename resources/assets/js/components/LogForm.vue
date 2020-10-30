@@ -3,18 +3,6 @@
     <div class="card">
         <form class="card-body" @submit.prevent="submitForm">
             <div class="row">
-                <div class="col form-group align-self-center text-capitalize">
-                    <b>Cutomer ID : {{customerId}}</b>
-                </div>
-                <div class="col form-group">
-                    <label for="amount" class="form-control-label">Payment Type</label>
-                    <select class="custom-select w-100" v-model="cashLogForm.payment_type_id" v-validate="'required'">
-                        <option disabled selected="selected">Payment Type</option>
-                        <option :value="type.id" :key="type.id"  v-for="type in paymentType">
-                            {{type.type}}
-                        </option>
-                    </select>
-                </div>
                 <div class="col form-group">
                     <label for="amount" class="form-control-label">Payment Method</label>
                     <select class="custom-select w-100" v-model="cashLogForm.payment_method_id" v-validate="'required'">
@@ -69,6 +57,7 @@ export default {
         async submitForm() {console.log('testtt',this.orderId,this.customerId)
             this.cashLogForm.customer_id = this.customerId;
             this.cashLogForm.model_id = this.orderId;
+            this.cashLogForm.payment_type_id = this.paymentType.find((x)=>x.type === "Repayments").id;
             this.cashLogForm.amount = parseFloat(this.cashLogForm.amount);
             this.cashLogForm.model = 'new_order'; //Todo: Make dynamic later
             this.$validator.validateAll().then(result => {
