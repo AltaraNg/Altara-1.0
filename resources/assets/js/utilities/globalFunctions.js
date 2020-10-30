@@ -174,6 +174,18 @@ Vue.prototype.$dateTimeConvert = function (dateTime) {
     return date + "  " + this.$timeConvert(time);
 };
 
+Vue.prototype.$debounce = (func, delay = 500) => {
+    let timeoutId;
+    return (...args) => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+            func.apply(null, args);
+        }, delay);
+    };
+};
+
 
 Vue.prototype.$getColumn = (i) => {
     let column = null;

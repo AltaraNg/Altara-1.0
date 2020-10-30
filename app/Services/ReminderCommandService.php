@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Notifications\SmsReminder;
+use App\Notifications\SmsReminderSent;
 
 class ReminderCommandService
 {
@@ -15,14 +17,26 @@ class ReminderCommandService
     }
     public function handle($days)
     {
-        $customers = $this->reminderService->fetchCustomers($days);
+        $orders = $this->reminderService->fetchOrders($days);
+        // dd($orders);
         $res = array();
-        if (!empty($customer)) {
-            foreach ($customers as $customer) {
+        if (!empty($orders)) {
+            foreach ($orders as $order) {
                 # code...
-                $res[] = $this->smsService->create($customer->telephone, "I am sent");
+                try {
+                    $res[] = $order->customer->notify(new SmsReminder(['message' => 'Ogbeni go and pay']));
+                    // $res = $order->customer;
+                    $order->notify(new SmsReminderSent(['message' => 'Ogbeni go and pay', 'status' => 'success']));
+                } catch (\Exception $e) {
+                    dump($e->getMessage());
+                }
+
             }
-            return count($customers);
+
+
+
+
+            return $res;
         } else {
             return 'No Customers are available';
         }

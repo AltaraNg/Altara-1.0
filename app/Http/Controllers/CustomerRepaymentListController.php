@@ -22,11 +22,12 @@ class CustomerRepaymentListController extends Controller
     public function index(Request $request)
     {
         //
+
         $validated_data = $request->validate([
             'days' => 'required|integer|gt:0'
         ]);
-        $customer_list = $this->reminder_service->fetchCustomers($validated_data['days']);
-        return $this->sendSuccess($customer_list->toArray(), 'List Successfully Generated');
+        $order_list = $this->reminder_service->fetchOrders($validated_data['days']);
+        return $this->sendSuccess($order_list->toArray(), 'List Successfully Generated');
     }
 
     /**

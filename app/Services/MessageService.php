@@ -14,6 +14,7 @@ class MessageService
     {
         $isInProduction = App::environment() === 'production';
         if (!$isInProduction) {
+
             $num = rand(0, 1);
             if ($num > 0.5 ){
                 return json_decode(json_encode($this->success()));
@@ -31,6 +32,7 @@ class MessageService
     }
 
     private function success() {
+        dump('I passed');
         return [
             'messages' => [
                 0 => [
@@ -47,6 +49,8 @@ class MessageService
     }
 
     private function error() {
+        dump('I failed');
+
         return [
             'messages' => [
                 0 => [

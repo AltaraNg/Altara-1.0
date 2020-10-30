@@ -34,7 +34,7 @@ class SmsChannel
     {
         $message = $notification->toSms($notifiable);
         // Send notification to the $notifiable instance...
-        $resp = $this->messageService->sendMessage($this->appendPrefix($notifiable->phone), $message);
+        $resp = $this->messageService->sendMessage($this->appendPrefix($notifiable->telephone), $message);
         if ($resp->messages[0]->status->groupId == 5) throw new AException($resp->messages[0]->status->description, 422);
     }
 

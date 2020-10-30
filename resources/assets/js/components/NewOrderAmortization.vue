@@ -28,6 +28,7 @@
                       <th>{{order.order_number}}</th>
                       <th>{{order.product.name}}</th>
                       <td class="font-weight-bold">{{order.branch}}</td>
+                      <td class="font-wight-bold td-back">ok</td>
                       <!-- <td
                         :class="getOrderStatusClass(getOrderStatus(order))"
                         class="font-weight-bold"
@@ -55,7 +56,10 @@
                     <tr class="table-separator">
                       <th>Status</th>
                       <td  v-for="armo in order.amortization">
-                        <span><i class="fa fa-check green" v-if="armo.actual_payment_date"></i> </span>
+                        <span>
+                        <i class="fa fa-check green" v-if="armo.actual_payment_date"></i>
+                        <i class="fa fa-times missed" v-else-if="armo.actual_payment_date === null &&  armo.expected_payment_date > "></i>
+                        </span>
                       </td>
                     </tr>
                     <tr class="table-separator">
@@ -290,6 +294,9 @@ export default {
         },
         preparePayments(){
             this.$emit('preparePayments');
+        },
+        today(){
+            console
         }
     },
     computed: {
@@ -310,6 +317,10 @@ export default {
 }
 .green{
     color: green;
+}
+.td-back{
+    color:#00a368;
+    background: rgba(0, 163, 104, 0.09);;
 }
 
 </style>
