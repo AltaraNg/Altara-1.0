@@ -295,10 +295,7 @@ export default {
         preparePayments(){
             this.$emit('preparePayments');
         },
-        today(){
-            console
-        }
-    },
+        },
     computed: {
         ...mapGetters([
       "getBanks",

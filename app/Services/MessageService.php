@@ -32,7 +32,7 @@ class MessageService
     }
 
     private function success() {
-        dump('I passed');
+
         return [
             'messages' => [
                 0 => [
@@ -48,8 +48,8 @@ class MessageService
         ];
     }
 
-    private function error() {
-        dump('I failed');
+    private function error()
+    {
 
         return [
             'messages' => [
