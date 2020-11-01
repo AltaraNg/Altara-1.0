@@ -9,11 +9,11 @@ class ReminderCommandService
 {
 
     private $reminderService;
-    private $smsService;
-    public function __construct(ReminderService $reminderService, SMSService $smsService)
+
+    public function __construct(ReminderService $reminderService)
     {
         $this->reminderService = $reminderService;
-        $this->smsService = $smsService;
+
     }
     public function handle($days)
     {

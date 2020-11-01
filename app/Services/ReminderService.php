@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Customer;
+
 use App\NewOrder;
 use Carbon\Carbon;
 
