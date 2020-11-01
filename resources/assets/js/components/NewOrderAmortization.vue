@@ -43,35 +43,32 @@
                   <tbody class="text-center">
                     <tr>
                       <th>Repayment</th>
-                      <td v-for="(armor, index) in order.amortization" v-html="index+1"></td>
+                      <td v-for="(armor, index) in amortizationData" v-html="index+1"></td>
                     </tr>
                     <tr class="table-separator" >
                       <th>Due Date</th>
-                      <td v-for="armo in order.amortization">{{armo.expected_payment_date}}</td>
+                      <td v-for="armo in amortizationData">{{armo.expected_payment_date}}</td>
                     </tr>
                     <tr>
                       <th>Actual Pay Day</th>
-                      <td v-for="armo in order.amortization">{{armo.actual_payment_date}}</td>
+                      <td v-for="armo in amortizationData">{{armo.actual_payment_date}}</td>
                     </tr>
                     <tr class="table-separator">
                       <th>Status</th>
-                      <td  v-for="armo in order.amortization">
-                        <span>
-                        <i class="fa fa-check green" v-if="armo.actual_payment_date"></i>
-                        <i class="fa fa-times missed" v-else-if="armo.actual_payment_date === null &&  armo.expected_payment_date > "></i>
-                        </span>
+                      <td  v-for="armo in amortizationData">
+                        <span><i class="fa fa-check green" v-if="armo.actual_payment_date"></i> </span>
                       </td>
                     </tr>
                     <tr class="table-separator">
                       <th>Repayment Amount</th>
                       <td
-                        v-for="armo in order.amortization"
+                        v-for="armo in amortizationData"
                       >{{$formatCurrency(armo.expected_amount)}}</td>
                     </tr>
                     <tr>
                       <th>Actual Amount Paid</th>
                       <td
-                        v-for="armo in order.amortization"
+                        v-for="armo in amortizationData"
                       >{{$formatCurrency(armo.actual_amount)}}</td>
                     </tr>
 
@@ -251,6 +248,7 @@
 import { mapGetters } from "vuex";
 import Auth from "../utilities/auth";
 import LogForm from "./LogForm";
+import { get, post } from "../utilities/api";
 
 export default {
     name: 'NewOrderAmortization',
@@ -280,10 +278,25 @@ export default {
         name: Auth.state.user_name,
         id: Auth.state.user_id,
       },
+      amortizationData:this.order.amortization
+
         }
     },
     methods: {  done() {
+      console.log('tester mm');
       this.show = false;
+
+      this.$LIPS(true);
+      get(`/api/customer/lookup/${this.customer.id}`)
+        .then((res) =>{
+                    this.$LIPS(false);
+      this.amortizationData=res.data.customer[0].new_orders.find((x)=>x.order_number === this.order.order_number).amortization;
+
+        })
+        .catch((e) => {
+          this.$LIPS(false);
+          Flash.setError("Error Fetching customer detail");
+        });
     },
         addPaymentForm(data){
 
@@ -295,16 +308,19 @@ export default {
         preparePayments(){
             this.$emit('preparePayments');
         },
-        },
-    computed: {
-        ...mapGetters([
-      "getBanks",
-      "getPaymentMethods",
-      "auth",
-      "getAuthUserDetails",
-    ]),
+        testo(){
+          console.log('testop');
+        }
 
-    }
+    },
+    watch: {
+       order:function () {
+         console.log('poil',this.customer);
+          this.amortizationData=this.order.amortization;
+        }
+    },
+
+
 }
 </script>
 <style scoped>
