@@ -49,6 +49,15 @@ class CustomerRepaymentListController extends Controller
     public function store(Request $request)
     {
         //
+        $validated_data = $request->validate([
+            'feedback' => 'required',
+            'order_id' => 'required|integer'
+        ]);
+        $result = $this->reminder_service->saveCallNotifications($validated_data['order_id'], $validated_data['feedback']);
+
+        return $this->sendSuccess($result, 'Saved Successfully');
+
+
     }
 
     /**

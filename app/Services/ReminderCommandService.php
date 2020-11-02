@@ -18,27 +18,46 @@ class ReminderCommandService
     public function handle($days)
     {
         $orders = $this->reminderService->fetchOrders($days);
-        // dd($orders);
+        $message = "First reminder on your dues";
+
         $res = array();
-        if (!empty($orders)) {
-            foreach ($orders as $order) {
+        if (empty($orders)) {
+            return 'No Customers are available';
+        }
+        foreach ($orders as $order) {
                 # code...
                 try {
-                    $res[] = $order->customer->notify(new SmsReminder(['message' => 'Ogbeni go and pay']));
-                    // $res = $order->customer;
-                    $order->notify(new SmsReminderSent(['message' => 'Ogbeni go and pay', 'status' => 'success']));
+                $messageResult = $order->customer->notify(new SmsReminder(['message' => $message]));
+                $res[] = [
+                    'customer_id' => $order->customer->id,
+                    'customer_name' => $order->customer->name,
+                    'order_id' => $order->id,
+                    'message' => $message,
+                    'status' => 'success',
+                    'statusMessage' => $messageResult
+                ];
+
+                $order->notify(new SmsReminderSent(['message' => $message, 'status' => 'success']));
                 } catch (\Exception $e) {
+                $res[] = [
+                    'customer_id' => $order->customer->id,
+                    'customer_name' => $order->customer->name,
+                    'order_id' => $order->id,
+                    'message' => $message,
+                    'status' => 'failed',
+                    'statusMessage' => $e->getMessage()
+                ];
                     dump($e->getMessage());
+
                 }
 
             }
+            # send report mail
 
 
 
 
             return $res;
-        } else {
-            return 'No Customers are available';
-        }
+
     }
 }

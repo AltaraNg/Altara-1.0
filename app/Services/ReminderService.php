@@ -4,6 +4,8 @@ namespace App\Services;
 
 
 use App\NewOrder;
+use App\Notifications\CallReminder;
+use App\Order;
 use Carbon\Carbon;
 
 class ReminderService
@@ -22,5 +24,15 @@ class ReminderService
         // dd('I am here');
 
         return $data->get();
+    }
+
+    public function saveCallNotifications($order_id, $feedback)
+    {
+        $order = NewOrder::where('id', $order_id)->first();
+        $res = $order->notify(new CallReminder(['feedback' => $feedback, 'status' => 'success']));
+        return [
+            "status" => 'success',
+            "message" => $res
+        ];
     }
 }
