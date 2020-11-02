@@ -28,6 +28,7 @@
                       <th>{{order.order_number}}</th>
                       <th>{{order.product.name}}</th>
                       <td class="font-weight-bold">{{order.branch}}</td>
+                      <td class="font-wight-bold td-back">ok</td>
                       <!-- <td
                         :class="getOrderStatusClass(getOrderStatus(order))"
                         class="font-weight-bold"
@@ -313,12 +314,12 @@ export default {
 
     },
     watch: {
-       order:function () { 
+       order:function () {
          console.log('poil',this.customer);
           this.amortizationData=this.order.amortization;
         }
     },
-    
+
 
 }
 </script>
@@ -329,6 +330,10 @@ export default {
 }
 .green{
     color: green;
+}
+.td-back{
+    color:#00a368;
+    background: rgba(0, 163, 104, 0.09);;
 }
 
 </style>
