@@ -265,9 +265,10 @@ export default {
       ],
       searchColumns: [
         { title: "Product Name", column: "productName" },
-        { title: "Branch", column: "branch" },
       ],
-      transferHistory:[]
+      transferHistory:[],      
+      branchId: "",
+
     };
   },
 
@@ -313,13 +314,14 @@ $(`#viewProductTransfer`).modal("toggle");
       
     },
     fetchData() {
+      this.branchId = localStorage.getItem("branch_id");
       this.$scrollToTop();
       this.$LIPS(true);
       let { page, page_size } = this.$data;
       get(
         this.urlToFetchOrders +
           `${!!page ? `?page=${page}` : ""}` +
-          `${!!page_size ? `&pageSize=${page_size}` : ""}`
+          `${!!page_size ? `&pageSize=${page_size}` : ""}`+`&branch=${this.branchId}`
       )
         .then(({ data }) => this.prepareList(data))
         .catch(() => Flash.setError("Error Preparing form"));

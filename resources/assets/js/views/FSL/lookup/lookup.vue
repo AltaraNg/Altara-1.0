@@ -409,6 +409,7 @@
           @addPayment="addPaymentForm"
           @deletePayment="deletePayment"
           @preparePayments="preparePayments"
+          v-on:childToParent="newOrderItem"
           ></new-order-amortization>
       </div>
           </div>
@@ -712,6 +713,10 @@ export default {
     getOrderStatus: (activeOrder) => getOrderStatus(activeOrder),
 
     getOrderStatusClass: (orderStatus) => getOrderStatusClass(orderStatus),
+     newOrderItem(value) {
+            console.log('testing data ',value);
+            this.updateView(value);
+        },
   },
 
   computed: {
