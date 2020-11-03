@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Models\CallReminderModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,10 +18,9 @@ class CallReminder extends Notification
      * @return void
      */
     private $data;
-    public function __construct($data)
+    public function __construct(CallReminderModel $callReminderModel)
     {
-        //
-        $this->data = $data;
+        $this->data = $callReminderModel->toArray();
     }
 
     /**
@@ -32,20 +32,6 @@ class CallReminder extends Notification
     public function via($notifiable)
     {
         return ['database'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
     }
 
     /**
