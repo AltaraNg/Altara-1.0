@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Channels\SmsChannel;
+use App\Notifications\Models\SmsReminderModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,11 +17,11 @@ class SmsReminder extends Notification
     /**
      * Create a new notification instance.
      *
-     * @param $data
+     * @param SmsReminderModel $smsReminderModel
      */
-    public function __construct($data)
+    public function __construct(SmsReminderModel $smsReminderModel)
     {
-        $this->data = $data;
+        $this->data = $smsReminderModel->toArray();
     }
 
     /**
