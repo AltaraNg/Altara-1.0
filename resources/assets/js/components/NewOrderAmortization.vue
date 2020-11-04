@@ -56,7 +56,11 @@
                     <tr class="table-separator">
                       <th>Status</th>
                       <td  v-for="armo in amortizationData">
-                        <span><i class="fa fa-check green" v-if="armo.actual_payment_date"></i> </span>
+                        <span>
+                            <i class="fa fa-check green" v-if="armo.actual_payment_date"></i>
+                            <i class="fa fa-times red" v-else-if="Date.parse(armo.expected_payment_date) < Date.now()"></i>
+
+                        </span>
                       </td>
                     </tr>
                     <tr class="table-separator">
@@ -330,11 +334,16 @@ this.$emit("childToParent", res.data);
     overflow: scroll;
 }
 .green{
-    color: green;
+    color:#00a368;
+    background: rgba(0, 163, 104, 0.09);
+}
+.red{
+    color: red;
+    background: rgba(163, 0, 104, 0.09);
 }
 .td-back{
     color:#00a368;
-    background: rgba(0, 163, 104, 0.09);;
+    background: rgba(0, 163, 104, 0.09);
 }
 
 </style>
