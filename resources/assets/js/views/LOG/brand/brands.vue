@@ -83,20 +83,21 @@
                                 </table>
                             </div>
 
-                            <div v-else>
+                            <div v-else class="categories">
                                 <div v-for="item in brandItem.categories" class="brand-cat">
-                                    {{ item.name }} <span @click="removeCat(item)"><i class="fas fa-times"></i></span>
+                                    {{ item.name }}
                                 </div>
-                                <div class="new-cat"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add</div>
-                                <div>
-                                    <span></span>
+                                <div class="new-cat" @click="toggleCat"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add</div>
+                                <div v-if="showCat === true" class="categories">
+                                    <span v-for="cat in categories" @click="addCat(brandItem, cat)">{{cat.name}}</span>
                                 </div>
                             </div>
 
 
                         </div>
                         <div class="modal-footer justify-content-center">
-                            <button @click="edit(brandItem.id)" class="text-center btn bg-default">Edit</button>
+                            <button @click="edit(brandItem.id)" class="text-center btn bg-default" v-if="!viewCategory">Edit</button>
+                             <button @click="addFinish" class="text-center btn bg-default" v-else>Save</button>
                         </div>
                     </div>
                 </div>
@@ -122,7 +123,9 @@
     </transition>
 </template>
 <script>
-    import {get} from '../../../utilities/api';
+    import {get, patch} from '../../../utilities/api';
+    import Vue from 'vue';
+
     import Flash from "../../../utilities/flash";
 
     import {mapGetters, mapActions} from "vuex";
@@ -144,6 +147,7 @@
         data() {
             return {
                 branch_id: '',
+                showCat: false,
                 OId: null,
                 viewCategory: false,
                 showModalContent: false,
@@ -157,6 +161,7 @@
                     {name: 'date to', model: 'date_to'}
                 ],
                 brands: null,
+                categories: null,
                 brandItem: null,
                 response: {},
                 show: false,
@@ -190,6 +195,28 @@
                 this.$LIPS(false);
 
             },
+            addFinish(){
+                this.$LIPS(true);
+                let form = [];
+                this.brandItem.categories.forEach(item => {
+                    form.push(item.id);
+                })
+
+                let data = {
+                    categories: form
+                };
+                patch(`/api/brand/${this.brandItem.id}/categories`, data).then((res) => {
+                    this.$swal({
+                        icon: 'success',
+                        title: res.message
+
+                    });
+                     return this.$router.push(
+                                            {path: '/log/brands'}
+                                        )
+                }).catch(() => Flash.setError('Error Adding categories'));
+                this.$LIPS(false);
+            },
 
             next(firstPage = null) {
                 if (this.pageParams.next_page_url) {
@@ -210,6 +237,32 @@
                this.brandItem = item;
                this.viewCategory = true;
                return $(`#viewBrand`).modal('toggle');
+
+            },
+            addCat(brand, category){
+                if(brand.categories.some(cat => cat.id === category.id)){
+                    alert(`${category.name} category already exists`);
+                }
+                else{
+                     brand.categories.push(category);
+                }
+
+
+            },
+            getCategories(){
+                get('/api/category').then(res => {
+                    console.log(res.data.data);
+                    Vue.set(this.$data, 'categories', res.data.data.data)
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+            toggleCat(){
+                if(!this.showCat){
+                Vue.set(this.$data, 'showCat', true )}
+                else{
+                    Vue.set(this.$data, 'showCat', false)
+                }
 
             },
 
@@ -248,6 +301,7 @@
             this.$props.withBranchFilter && this.filters.unshift({name: 'branch', model: 'branch_id'});
             this.addCustomerOptionsModalsToDom();
             this.$prepareBranches();
+            this.getCategories();
             this.fetchData();
         },
 
@@ -280,6 +334,7 @@
     .brand-cat{
         display: inline-block;
         padding: 2px 4px;
+        margin: 1px 4px;
         background: #dddddd;
         border-radius: 5px;
     }
@@ -290,8 +345,18 @@
         color: #2975a5;
         font-size: 1.5em;
     }
-    .new-cat {
+    .new-cat{
 
         padding: 4px 1px;
+        cursor: pointer;
+
+    }
+    .categories{
+        padding: 4px 1px;
+    }
+    .categories span{
+        margin: 1px 4px;
+        font-size: 14px;
+        cursor: pointer;
     }
 </style>

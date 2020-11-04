@@ -16,11 +16,7 @@
                             <small v-if="errors.first('brand name')">{{ errors.first('brand name') }}</small>
                             <small v-if="error.name">{{error.name[0]}}</small>
                         </div>
-                        <div class="form-group col-md-6 col-12 px-0 px-md-3">
-                            <label class="w-100 float-left">Categories</label>
-                            <div v-for="cat in form.categories" class="cat">{{cat.name}}</div>
-                            <p @click="addCategory(form)" class='pointer green' v-if="mode === 'edit'">Add categories</p>
-                        </div>
+
 
                         <div class="form-group col-md-6 col-12 float-left px-0 px-md-3" v-if="mode === 'edit'">
                             <label class="w-100 float-left">Status</label>
