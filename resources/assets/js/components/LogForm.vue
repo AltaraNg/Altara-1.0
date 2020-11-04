@@ -54,7 +54,7 @@ export default {
         ...mapGetters(['getPaymentMethods']),
     },
     methods:{
-        async submitForm() {console.log('testtt',this.orderId,this.customerId)
+        async submitForm() {
             this.cashLogForm.customer_id = this.customerId;
             this.cashLogForm.model_id = this.orderId;
             this.cashLogForm.payment_type_id = this.paymentType.find((x)=>x.type === "Repayments").id;

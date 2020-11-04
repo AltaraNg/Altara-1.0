@@ -221,7 +221,8 @@
                             </table>
 
                             <h5 class="mt-5 mb-0">Amortization Schedule</h5>
-                            <table class="table table-bordered">
+                             <div class="amor-table">
+                                <table class="table table-bordered">
                                 <tbody class="text-center">
                                 <tr>
                                     <th>Repayment</th>
@@ -264,7 +265,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-
+</div>
                             <h5 class="mt-5 mb-0">Payment Summary</h5>
                             <table class="table table-bordered">
                                 <tbody class="text-center">

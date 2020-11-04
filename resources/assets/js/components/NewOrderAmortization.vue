@@ -270,6 +270,7 @@ export default {
     },
     data(){
         return {
+          newOrderItem:{},
             canEditPayment: true,
             isReadOnly: false,
 
@@ -291,7 +292,7 @@ export default {
         .then((res) =>{
                     this.$LIPS(false);
       this.amortizationData=res.data.customer[0].new_orders.find((x)=>x.order_number === this.order.order_number).amortization;
-
+this.$emit("childToParent", res.data);
         })
         .catch((e) => {
           this.$LIPS(false);
