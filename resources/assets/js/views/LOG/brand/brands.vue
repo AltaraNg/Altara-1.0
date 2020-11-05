@@ -85,8 +85,9 @@
 
                             <div v-else class="categories">
                                 <div v-for="item in brandItem.categories" class="brand-cat">
-                                    {{ item.name }}
+                                    <span >{{ item.name }}</span><span class="modal-close text-danger" @click="removeCat(item)"><i class="fas fa-times"></i></span>
                                 </div>
+
                                 <div class="new-cat" @click="toggleCat"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add</div>
                                 <div v-if="showCat === true" class="categories">
                                     <span v-for="cat in categories" @click="addCat(brandItem, cat)">{{cat.name}}</span>
@@ -211,6 +212,7 @@
                         title: res.message
 
                     });
+                    !this.showModalContent;
                      return this.$router.push(
                                             {path: '/log/brands'}
                                         )
@@ -245,12 +247,16 @@
                 }
                 else{
                      brand.categories.push(category);
+                     this.categories = this.categories.filter(function(item, index, arr){
+                    return category.id !== item.id;
+                })
+
                 }
 
 
             },
             getCategories(){
-                get('/api/category').then(res => {
+                get('/api/category?isActive=true').then(res => {
                     console.log(res.data.data);
                     Vue.set(this.$data, 'categories', res.data.data.data)
                 }).catch(err => {
@@ -281,7 +287,13 @@
                 )
             },
 
-            removeCat(){
+            removeCat(cat){
+                this.brandItem.categories = this.brandItem.categories.filter(function(item, index, arr){
+                    return item.id !== cat.id;
+                });
+                if(!this.categories.some(catItem => catItem.id === cat.id)){
+                    this.categories.push(cat);
+                }
 
             },
 
@@ -338,19 +350,18 @@
         background: #dddddd;
         border-radius: 5px;
     }
-    .brand-cat span{
-        color: red;
+    .brand-cat i{
+        font-size: .8em;
+        margin-top: 0;
     }
-    .new-cat i{
-        color: #2975a5;
-        font-size: 1.5em;
-    }
+
     .new-cat{
 
         padding: 4px 1px;
         cursor: pointer;
 
     }
+
     .categories{
         padding: 4px 1px;
     }

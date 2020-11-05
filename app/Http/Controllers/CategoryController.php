@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Filters\CategoryFilter;
 use App\Http\Requests\CategoryRequest;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\Response;
@@ -21,9 +22,9 @@ class CategoryController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(CategoryFilter $filter)
     {
-        $cats = $this->catRepo->all();
+        $cats = $this->catRepo->getAll($filter);
 
         return $this->sendSuccess($cats->toArray(), 'Categories retrieved successfully');
     }

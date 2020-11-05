@@ -55,11 +55,12 @@
                     </tr>
                     <tr class="table-separator">
                       <th>Status</th>
-                      <td  v-for="armo in amortizationData">
-                        <span>
-                            <i class="fa fa-check green" v-if="armo.actual_payment_date"></i>
-                            <i class="fa fa-times red" v-else-if="Date.parse(armo.expected_payment_date) < Date.now()"></i>
-
+                      <td  v-for="armo in amortizationData" >
+                        <span v-if="armo.actual_payment_date" class="green">
+                            <i class="fa fa-check"></i>
+                        </span>
+                        <span v-else-if="Date.parse(armo.expected_payment_date) < Date.now()" class="red">
+                            <i class="fa fa-times red" ></i>
                         </span>
                       </td>
                     </tr>
@@ -335,10 +336,14 @@ this.$emit("childToParent", res.data);
 }
 .green{
     color:#00a368;
+    width: 100%;
+    font-size: 1.3em;
     background: rgba(0, 163, 104, 0.09);
 }
 .red{
     color: red;
+    font-size: 1.3em;
+    width: 100%;
     background: rgba(163, 0, 104, 0.09);
 }
 .td-back{
