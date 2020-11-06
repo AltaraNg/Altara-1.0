@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col form-group">
                     <label for="amount" class="form-control-label">Payment Method</label>
-                    <select class="custom-select w-100" v-model="cashLogForm.payment_method_id" v-validate="'required'">
+                    <select class="custom-select w-100" v-model="paymentId" v-validate="'required'">
                         <option disabled selected="selected">Payment Method</option>
                         <option :value="type.id" :key="type.id" v-for="type in getPaymentMethods">
                             {{type.name}}
@@ -14,7 +14,7 @@
                 </div>
                 <div class="col form-group">
                     <label for="amount" class="form-control-label">Amount</label>
-                    <input class="w-100 custom-select" name="amount" v-model="cashLogForm.amount" v-validate="'required'" type="number" placeholder="Enter Amount"/>
+                    <input class="w-100 custom-select" name="amount" v-model="amountData" v-validate="'required'" type="number" placeholder="Enter Amount"/>
                     <small v-if="errors.first('amount')">{{errors.first('amount')}}</small>
                 </div>
             </div>
@@ -35,11 +35,13 @@ import {get, post} from '../utilities/api';
 import {mapGetters} from "vuex";
 
 export default {
-    props:{customerId: null, orderId: null},
+    props:{customerId: null, orderId: null, amortizationData: null},
     data() {
         return {
             error: {},
             cashLogForm: {},
+            amountData:'',
+            paymentId:'',
             paymentType:[],
             apiUrls: {
                 payment: `/api/payment`,
@@ -48,7 +50,9 @@ export default {
         }
     },
     async mounted(){
-            await this.getPaymentType();
+        await this.getPaymentType();
+        this.amountData = this.amortizationData[0].expected_amount;
+
     },
     computed:{
         ...mapGetters(['getPaymentMethods']),
@@ -56,6 +60,8 @@ export default {
     methods:{
         async submitForm() {
             this.cashLogForm.customer_id = this.customerId;
+            this.cashLogForm.amount =this.amountData;
+            this.cashLogForm.payment_method_id=this.paymentId,
             this.cashLogForm.model_id = this.orderId;
             this.cashLogForm.payment_type_id = this.paymentType.find((x)=>x.type === "Repayments").id;
             this.cashLogForm.amount = parseFloat(this.cashLogForm.amount);
@@ -64,6 +70,7 @@ export default {
                 if (result) {
                     this.$LIPS(true);
                     post(this.apiUrls.payment, this.cashLogForm).then((res) => {
+                        this.paymentId='';
                         this.$LIPS(false);
                         this.$swal({
                             icon: 'success',
@@ -87,7 +94,12 @@ export default {
             }
         },
 
-    }
+    },
+    watch: {
+       orderId:function () {
+         this.amountData = this.amortizationData[0].expected_amount;
+        }
+    },
 }
 </script>
 
