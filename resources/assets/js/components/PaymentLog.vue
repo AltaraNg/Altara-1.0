@@ -311,7 +311,7 @@ export default {
                 previewAmortization: `/api/amortization/preview`,
                 createOrder: `/api/new_order`,
                 getCalculation: `/api/price_calculator`,
-                getProduct: `/api/inventory?isActive=true`
+                getProduct: `/api/inventory`
             },
             inputValue: "",
             selectedProduct: {},
@@ -534,7 +534,6 @@ export default {
             }
         },
         selectedItem(value) {
-            console.log('poplice',value);
             this.selectedProduct = value;
             this.test0 = false;
             this.getCalc();
