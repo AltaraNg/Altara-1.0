@@ -25,8 +25,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('php artisan send:smsReminder --type=first_sms --days=7')
+            ->when(function (){
+                return true;
+            })
+            ->emailOutputTo('naderounmu@altaracredit.com');
+        $schedule->command('php artisan send:smsReminder --type=second_sms --days=14')->dailyAt('9:00');
+        $schedule->command('php artisan send:smsReminder --type=third_sms --days=21')->dailyAt('10:00');
+
     }
 
     /**

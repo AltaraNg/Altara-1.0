@@ -23,7 +23,8 @@ class SmsReminderModel
     public function toArray() {
         return [
             'type' => $this->type,
-            'message' => $this->message
+            'message' => $this->message,
+            'user' => auth()->user()->fullname ?? 'Server'
         ];
     }
 

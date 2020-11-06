@@ -157,6 +157,25 @@ class User extends Authenticatable
         return $this->hasMany(Caution::class, 'issuer_id', 'id');
     }
 
+    public function accesses()
+    {
+        return $this->belongsToMany(Access::class, 'user_accesses');
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->accesses->contains(function(Access $access) {
+            return $access->name == Access::SUPER_ADMIN;
+        });
+    }
+
+    public function isAdmin()
+    {
+        return $this->accesses->contains(function(Access $access) {
+            return $access->name == Access::ADMIN;
+        });
+    }
+
     /*public function counterSales()
     {
         return $this->hasMany(Order::class, 'sales_agent_id', 'staff_id');
