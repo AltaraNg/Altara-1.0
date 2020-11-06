@@ -27,7 +27,7 @@ class ReminderService
     public function saveCallNotifications($data)
     {
         $order = NewOrder::find($data['order_id']);
-        $order->notify(new CallReminder(new CallReminderModel($data['type'], $data['feedback'], $data['status'])));
-        $order->customer->notify(new CallReminder(new CallReminderModel($data['type'], $data['feedback'], $data['status'])));
+        $order->notify(new CallReminder(new CallReminderModel($data['type'], $data['feedback'], $data['status'] , $data['promise_date'])));
+        $order->customer->notify(new CallReminder(new CallReminderModel($data['type'], $data['feedback'], $data['status'], $data['promise_date'])));
     }
 }

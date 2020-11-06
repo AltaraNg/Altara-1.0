@@ -241,37 +241,41 @@
                                         <tr>
                                             <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
                                     <![endif]-->
-                                    <div
-                                        style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                    @if(count($data['reports']))
                                         <div
-                                            style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                            style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div
+                                                style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
 
-                                            <table class="GeneratedTable">
-                                                <thead>
-                                                <tr>
-                                                    <th>Cust. Id</th>
-                                                    <th>Name</th>
-                                                    <th>Order Number</th>
-                                                    <th>Message</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($data['reports'] as $item)
+                                                <table class="GeneratedTable">
+                                                    <thead>
                                                     <tr>
-                                                        <td>{{$item['customer_id']}}</td>
-                                                        <td>{{$item['customer_name']}}</td>
-                                                        <td>{{$item['order_id']}}</td>
-                                                        <td>{{$item['message']}}</td>
-                                                        <td>{{$item['statusMessage']}}</td>
+                                                        <th>Cust. Id</th>
+                                                        <th>Name</th>
+                                                        <th>Order Number</th>
+                                                        <th>Message</th>
+                                                        <th>Status</th>
                                                     </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-
-
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($data['reports'] as $item)
+                                                        <tr>
+                                                            <td>{{$item['customer_id']}}</td>
+                                                            <td>{{$item['customer_name']}}</td>
+                                                            <td>{{$item['order_id']}}</td>
+                                                            <td>{{$item['message']}}</td>
+                                                            <td>{{$item['statusMessage']}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @else
+                                        <div>
+                                            There is no customer Due for reminder
+                                        </div>
+                                    @endif
                                     <!--[if mso]></td></tr></table><![endif]-->
                                     <div class="button-container" align="center"
                                          style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
