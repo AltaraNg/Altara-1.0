@@ -241,6 +241,8 @@
                             </table>
 
                             <h5 class="mt-5 mb-0">Amortization Schedule</h5>
+                                            <div class="payment-table">
+
                             <table class="table table-bordered">
                                 <tbody class="text-center">
                                     <tr class="table-separator">
@@ -262,6 +264,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                     <div class="text-center">
@@ -308,7 +311,7 @@ export default {
                 previewAmortization: `/api/amortization/preview`,
                 createOrder: `/api/new_order`,
                 getCalculation: `/api/price_calculator`,
-                getProduct: `/api/inventory?isActive=true`
+                getProduct: `/api/inventory`
             },
             inputValue: "",
             selectedProduct: {},
@@ -340,7 +343,7 @@ export default {
             this.salesLogForm.customer_id = this.customerId;
             const data = {
                 customer_id: this.customerId,
-                product_id: this.selectedProduct.product_id,
+                inventory_id: this.selectedProduct.id,
                 repayment_duration_id: this.salesLogForm.repayment_duration_id
                     .id,
                 repayment_cycle_id: this.salesLogForm.repayment_cycle_id.id,
@@ -378,7 +381,7 @@ export default {
             this.salesLogForm.customer_id = this.customerId;
             const data = {
                 customer_id: this.customerId,
-                product_id: this.selectedProduct.product_id,
+                inventory_id: this.selectedProduct.id,
                 repayment_duration_id: this.salesLogForm.repayment_duration_id
                     .id,
                 repayment_cycle_id: this.salesLogForm.repayment_cycle_id.id,
@@ -610,5 +613,9 @@ export default {
 }
 .dropdown-input::placeholder {
     opacity: 0.7;
+}
+.payment-table{
+    width: 1092px;
+    overflow: scroll;
 }
 </style>

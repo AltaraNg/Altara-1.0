@@ -36,7 +36,6 @@
                     </tr>
                   </tbody>
                 </table>
-
                 <h5 class="mt-5 mb-0">Amortization Schedule</h5>
                 <div class="amor-table">
                 <table class="table table-bordered ">
@@ -76,12 +75,9 @@
                         v-for="armo in amortizationData"
                       >{{$formatCurrency(armo.actual_amount)}}</td>
                     </tr>
-
-
                   </tbody>
                 </table>
                 </div>
-
                 <h5 class="mt-5 mb-0">Payment Summary</h5>
                 <table class="table table-bordered">
                   <tbody class="text-center">
@@ -111,135 +107,18 @@
                     </tr>
                   </tbody>
                 </table>
-<LogForm
-            :customerId="customer.id"
-            :orderId="order.id"
-            @done="this.done"
-          />
-                <!-- <div v-if="canEditPayment && !isReadOnly">
-                  <h5 class="mt-5 mb-0">{{paymentFormType | capitalize}} a new payment</h5>
-                  <table class="table table-bordered">
-                    <tbody class="text-center">
-                      <tr class="table-separator">
-                        <td class="text-left">S/No.</td>
-                        <th>Repayment</th>
-                        <th>Amount</th>
-                        <th>Payment Method</th>
-                        <th>Bank</th>
-                        <th>Date</th>
-                        <th>Collected By</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr v-for="(payment,index) in paymentForm.payments">
-                        <th>{{index+1}}</th>
-                        <th>
-                          <div class="form-group mb-0" v-if="paymentFormType === 'add'">
-                            <input
-                              class="form-control"
-                              disabled
-                              name="date"
-                              type="text"
-                              v-model="paymentForm.payments[index].column"
-                            />
-                          </div>
-                          <select
-                            class="custom-select w-100"
-                            v-else
-                            v-model="paymentForm.payments[index]._col"
-                          >
-                            <option
-                              :value="i"
-                              v-for="i in order.repaymentLevel"
-                            >{{$getColumn(i) }} Repayment</option>
-                          </select>
-                        </th>
-                        <th>
-                          <div class="form-group mb-0">
-                            <input
-                              class="form-control"
-                              name="date"
-                              type="text"
-                              v-model="paymentForm.payments[index]._pay"
-                            />
-                          </div>
-                        </th>
-                        <th>
-                          <select
-                            :disabled="paymentFormType === 'edit'"
-                            class="custom-select w-100"
-                            v-model="paymentForm.payments[index]._payment_method"
-                          >
-                            <option
-                              :value="id"
-                              v-for="{name, id} in getPaymentMethods"
-                            >{{name | capitalize}}</option>
-                          </select>
-                        </th>
-                        <th>
-                          <select
-                            :disabled="paymentFormType === 'edit'"
-                            class="custom-select w-100"
-                            v-model="paymentForm.payments[index]._payment_bank"
-                          >
-                            <option :value="id" v-for="{name, id} in getBanks">{{name}}</option>
-                          </select>
-                        </th>
-                        <th>
-                          <div class="form-group mb-0">
-                            <input
-                              :disabled="paymentFormType === 'edit'"
-                              class="form-control"
-                              name="date"
-                              type="date"
-                              v-model="paymentForm.payments[index]._date"
-                            />
-                          </div>
-                        </th>
-                        <th>
-                          <div class="form-group mb-0">
-                            <input
-                              :value="user.name"
-                              class="form-control"
-                              data-vv-as="date"
-                              disabled
-                              name="date"
-                              type="text"
-                            />
-                          </div>
-                        </th>
-                        <th>
-                          <button
-                            @click="deletePayment(index)"
-                            class="ml-2 btn status status-sm my-sm-2 not-approved"
-                          >
-                            <i class="fas fa-times"></i>
-                          </button>
-                        </th>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div> -->
+                <LogForm
+                  :amortizationData="amortizationData"
+                  :customerId="customer.id"
+                  :orderId="order.id"
+                  @done="this.done"
+                />
               </div>
             </div>
             <div
               :class="{'d-flex justify-content-end' : !canEditPayment || isReadOnly}"
               class="modal-footer"
             >
-              <!-- <button
-                @click="addPaymentForm('add')"
-                class="btn status my-sm-2"
-                v-if="canAddPayment && !isReadOnly"
-              >Add Payment</button>
-              <button
-                @click="addPaymentForm('edit')"
-                class="btn status my-sm-2"
-                v-if="canEditPayment && !isReadOnly"
-              >Edit Payment</button>
-              <button
-                @click="preparePayments()"
-                class="btn status my-sm-2 approved ml-4"
-                v-if="canEditPayment && !isReadOnly"
-              >Click here to Submit Payment(s)!</button> -->
               <a
                 class="text-link mt-3"
                 data-dismiss="modal"
@@ -275,6 +154,7 @@ export default {
     },
     data(){
         return {
+          newOrderItem:{},
             canEditPayment: true,
             isReadOnly: false,
 
@@ -296,7 +176,7 @@ export default {
         .then((res) =>{
                     this.$LIPS(false);
       this.amortizationData=res.data.customer[0].new_orders.find((x)=>x.order_number === this.order.order_number).amortization;
-
+this.$emit("childToParent", res.data);
         })
         .catch((e) => {
           this.$LIPS(false);

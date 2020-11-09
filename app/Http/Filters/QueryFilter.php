@@ -32,6 +32,11 @@ abstract class QueryFilter
     {
         $this->builder = $builder;
 
+        if (!auth()->user()->isAdmin()){
+            $this->builder->where('branch_id', auth()->user()->branch_id);
+        }
+
+
         foreach ($this->fields() as $field => $value) {
             $method = camel_case($field);
             if (method_exists($this, $method)) {

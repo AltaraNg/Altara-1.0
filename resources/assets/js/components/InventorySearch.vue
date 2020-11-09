@@ -35,7 +35,7 @@
             searchEvent () {
                 let filters = {};
                 filters[this.searchFilter] = this.searchQ;
-                const filterParam = queryParam(filters);
+                const filterParam = queryParam({...filters,branchId:localStorage.getItem("branch_id")});
                 this.$emit('childToParent', filterParam);
             }
         }

@@ -4,18 +4,10 @@ namespace App\Listeners;
 
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
-use App\Inventory;
-use App\Repositories\InventoryRepository;
 use Carbon\Carbon;
 
 class UpdateInventoryListener
 {
-    private $inventoryRepo;
-
-    public function __construct(InventoryRepository $inventoryRepository)
-    {
-        $this->inventoryRepo = $inventoryRepository;
-    }
 
     /**
      * Handle the event.
@@ -27,8 +19,7 @@ class UpdateInventoryListener
     public function handle(NewOrderEvent $event)
     {
         try {
-            $product = Inventory::where('product_id', $event->order->product_id)->first();
-            $this->inventoryRepo->update($product, [
+            $event->order->inventory->update([
                 'sold_date' => Carbon::now(),
                 'is_active' => false
             ]);

@@ -7,26 +7,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendPasswordResetLink extends Mailable
+class SmsReminder extends Mailable
 {
     use Queueable, SerializesModels;
-    public $token;
-    /**
-     * @var string
-     */
-    public $user;
+
+    public $data;
 
     /**
      * Create a new message instance.
      *
-     * @param string $token
-     * @param string $user
+     * @param $data
      */
-    public function __construct(string $token, string $user)
+    public function __construct(array $data)
     {
-        //
-        $this->token = $token;
-        $this->user = $user;
+        $this->data = $data;
     }
 
     /**
@@ -36,6 +30,7 @@ class SendPasswordResetLink extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.password-reset');
+        return $this->subject($this->data['subject'])
+            ->view('emails.sms-reminder-report');
     }
 }
