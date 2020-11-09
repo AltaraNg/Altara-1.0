@@ -32,10 +32,7 @@ abstract class QueryFilter
     {
         $this->builder = $builder;
 
-        if (!auth()->user()->isAdmin()){
-            $this->builder->where('branch_id', auth()->user()->branch_id);
-        }
-
+        $this->filterBranch();
 
         foreach ($this->fields() as $field => $value) {
             $method = camel_case($field);
@@ -54,4 +51,6 @@ abstract class QueryFilter
             array_map('trim', $this->request->all())
         );
     }
+
+    abstract public function filterBranch();
 }
