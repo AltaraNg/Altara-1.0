@@ -60,6 +60,7 @@
 
         methods: {},
         created(){
+
             get('/api/customer_repayment').then(res => {
                 console.log(res.data);
             })
