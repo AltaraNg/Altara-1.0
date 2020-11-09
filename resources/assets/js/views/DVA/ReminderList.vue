@@ -3,6 +3,17 @@
         <div id="reminder" class="attendance">
 
             <custom-header :title="'Reminder List'"/>
+            <div class="mt-5 mb-3 attendance-head">
+                <div class="w-100 my-5 mx-0 hr"></div>
+                <div class="row px-4 pt-3 pb-4 text-center">
+                    <div class="col light-heading" style="max-width: 120px">S/N</div>
+                    <div class="col light-heading" v-for="header in headings">{{header}}</div>
+                </div>
+            </div>
+            <div class="tab-content mt-1 attendance-body">
+
+
+            </div>
 
 
 
@@ -14,7 +25,6 @@
 <script>
     import {get} from '../../utilities/api';
     import Flash from "../../utilities/flash";
-    import Order from "../../components/Orders";
     import {mapGetters, mapActions} from "vuex";
     import CustomHeader from '../../components/customHeader';
 
@@ -25,7 +35,7 @@
             urlToFetchOrders: {default: '/api/reminder/create'}
         },
 
-        components: {CustomHeader, Order},
+        components: {CustomHeader},
 
         computed: {...mapGetters(['getBranches'])},
 
@@ -48,7 +58,12 @@
             }
         },
 
-        methods: {}
+        methods: {},
+        created(){
+            get('/api/customer_repayment').then(res => {
+                console.log(res.data);
+            })
+        }
 
     }
 </script>
