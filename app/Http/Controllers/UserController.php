@@ -15,6 +15,7 @@ use DateTime;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Validator;
 
 class UserController extends Controller
@@ -90,7 +91,7 @@ class UserController extends Controller
                 'cv' => 'mimes:pdf|max:10000'
             ]);
             $image = $request->file('cv');
-            $filename = 'cv' . '/' . str_slug($request->full_name) . '-' . date('d-m-Y');
+            $filename = 'cv' . '/' . Str::slug($request->full_name) . '-' . date('d-m-Y');
             $s3 = Storage::disk('s3');
             $s3->put($filename, file_get_contents($image), 'public');
             $request['cv_url'] = $filename;
@@ -200,7 +201,7 @@ class UserController extends Controller
             'cv' => 'mimes:pdf|max:10000'
         ]);
         $image = $request->file('cv');
-        $filename = 'cv' . '/' . str_slug($user->full_name) . '-' . date('d-m-Y');
+        $filename = 'cv' . '/' . Str::slug($user->full_name) . '-' . date('d-m-Y');
         $s3 = Storage::disk('s3');
         $s3->put($filename, file_get_contents($image), 'public');
         $user->update(['cv_url' => $filename]);
