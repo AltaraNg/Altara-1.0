@@ -3,7 +3,6 @@
 namespace App\Http\Filters;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 
 class BaseFilter extends QueryFilter
 {
@@ -61,4 +60,6 @@ class BaseFilter extends QueryFilter
     {
         $this->builder->where('name', 'like', '%' . $name .'%');
     }
+
+    public function filterBranch() {}
 }
