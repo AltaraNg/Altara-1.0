@@ -29,11 +29,9 @@ class Kernel extends ConsoleKernel
             ->dailyAt('8:00')
             ->emailOutputTo('naderounmu@altaracredit.com');
         $schedule->command('send:smsReminder --type=second_sms --days=14')
-            ->dailyAt('9:00')
-            ->emailOutputTo('naderounmu@altaracredit.com');
+            ->dailyAt('9:00');
         $schedule->command('send:smsReminder --type=third_sms --days=21')
-            ->dailyAt('10:00')
-            ->emailOutputTo('naderounmu@altaracredit.com');
+            ->dailyAt('10:00');
 
     }
 
