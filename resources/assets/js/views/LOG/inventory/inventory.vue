@@ -64,6 +64,9 @@
           >{{inventory.price | currency('₦')}}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
+          >{{inventory.is_active? 'Available' : 'Sold'}}</div>
+          <div
+            class="col d-flex align-items-center justify-content-center"
           >{{getParent(inventory.supplier_id, suppliers).name}}</div>
           <div
             class="col d-flex align-items-center justify-content-center"
@@ -169,7 +172,7 @@
              <div class="table-responsive">
                             <table class="table table-bordered table-striped">
                                 <tbody>
-                                
+
                                 <tr>
                                     <th>From</th>
                                     <th>To</th>
@@ -178,7 +181,7 @@
                                 </tr>
                                 <h4 v-if="transferHistory.length<1" class="text-center">No history available.</h4>
                                 <tr v-for="transfer in transferHistory">
-                                    
+
                                     <td> {{ transfer.from || "Not Available" }}</td>
                                     <td> {{ transfer.to || "Not Available" }}</td>
                                     <td> {{ transfer.created_at.split(' ')[0] || "Not Available" }}</td>
@@ -258,6 +261,7 @@ export default {
         "Product Name",
         "SKU",
         "Price",
+        "Status",
         "Supplier",
         "Date Received",
         "Branch",
@@ -266,7 +270,7 @@ export default {
       searchColumns: [
         { title: "Product Name", column: "productName" },
       ],
-      transferHistory:[],      
+      transferHistory:[],
       branchId: "",
 
     };
@@ -304,14 +308,14 @@ export default {
           this.transferHistory=res.data.data.data;
           this.$LIPS(false);
           console.log('hello world',res);
-                  
+
 $(`#viewProductTransfer`).modal("toggle");
         })
-        .catch(() => {  
-          
+        .catch(() => {
+
           Flash.setError("Error Occured")
         });
-      
+
     },
     fetchData() {
       this.branchId = localStorage.getItem("branch_id");
@@ -321,7 +325,7 @@ $(`#viewProductTransfer`).modal("toggle");
       get(
         this.urlToFetchOrders +
           `${!!page ? `?page=${page}` : ""}` +
-          `${!!page_size ? `&pageSize=${page_size}` : ""}`+`&branch=${this.branchId}`
+          `${!!page_size ? `&pageSize=${page_size}` : ""}`
       )
         .then(({ data }) => this.prepareList(data))
         .catch(() => Flash.setError("Error Preparing form"));

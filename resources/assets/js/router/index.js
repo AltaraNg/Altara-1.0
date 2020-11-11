@@ -22,6 +22,7 @@ const CAG = () => import("../views/CAG/index.vue");
 const CAGHome = () => import("../views/CAG/HomePage.vue");
 const OrderList = () => import("../views/DVA/AllOrderList.vue");
 const AllOverdue = () => import("../views/DVA/AllOverduePayment");
+const ReminderList = () => import("../views/DVA/ReminderList.vue");
 const Reminder = () => import("../views/DVA/reminder/reminder.vue");
 const Profile = () => import("../views/profile/Index.vue");
 const ProfileEdit = () => import("../views/profile/Edit.vue");
@@ -193,6 +194,11 @@ const router = new VueRouter({
                     meta: { mode: "sms" }
                 },
                 {
+                    path: "reminder-list",
+                    component: ReminderList,
+                    name: "reminder-list"
+                },
+                {
                     path: "reminder/call",
                     component: Reminder,
                     name: "call-reminder",
@@ -323,7 +329,6 @@ const router = new VueRouter({
                     meta: { customSMS: true }
                 },
 
-
                 {
                     path: "lookup",
                     component: CustomerLookup,
@@ -353,8 +358,7 @@ const router = new VueRouter({
                     component: ShowRoomDashboard,
                     name: "ShowRoom Dashboard",
                     meta: { mode: "create" }
-                },
-
+                }
             ]
         },
         {

@@ -52,15 +52,15 @@
                       <th>Actual Pay Day</th>
                       <td v-for="armo in amortizationData">{{armo.actual_payment_date}}</td>
                     </tr>
-                    <tr class="table-separator">
+                    <tr class="table-separator status-row">
                       <th>Status</th>
                       <td  v-for="armo in amortizationData" >
-                        <span v-if="armo.actual_payment_date" class="green">
+                        <div v-if="armo.actual_payment_date" class="green">
                             <i class="fa fa-check"></i>
-                        </span>
-                        <span v-else-if="Date.parse(armo.expected_payment_date) < Date.now()" class="red">
-                            <i class="fa fa-times red" ></i>
-                        </span>
+                        </div>
+                        <div v-else-if="Date.parse(armo.expected_payment_date) < Date.now()" class="red">
+                            <i class="fa fa-times" ></i>
+                        </div>
                       </td>
                     </tr>
                     <tr class="table-separator">
@@ -228,6 +228,10 @@ this.$emit("childToParent", res.data);
 .td-back{
     color:#00a368;
     background: rgba(0, 163, 104, 0.09);
+}
+.status-row td{
+    padding: 0;
+    margin:0
 }
 
 </style>
