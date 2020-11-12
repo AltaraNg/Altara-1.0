@@ -23,6 +23,7 @@ const CAGHome = () => import("../views/CAG/HomePage.vue");
 const OrderList = () => import("../views/DVA/AllOrderList.vue");
 const AllOverdue = () => import("../views/DVA/AllOverduePayment");
 const ReminderList = () => import("../views/DVA/ReminderList.vue");
+const CallList = () => import("../views/DVA/CallList.vue");
 const Reminder = () => import("../views/DVA/reminder/reminder.vue");
 const Profile = () => import("../views/profile/Index.vue");
 const ProfileEdit = () => import("../views/profile/Edit.vue");
@@ -197,6 +198,11 @@ const router = new VueRouter({
                     path: "reminder-list",
                     component: ReminderList,
                     name: "reminder-list"
+                },
+                {
+                    path: "call-list",
+                    component: CallList,
+                    name: "call-list"
                 },
                 {
                     path: "reminder/call",
