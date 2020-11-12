@@ -45,10 +45,10 @@ export default {
 
     methods: {
         selectItem(data) {
-         if (this.apiUrl === "/api/inventory") {	        
+         if (this.apiUrl === "/api/inventory") {
                  this.inputValue = `${data.product_name}   ${data.sku}`;
-            } else {	
-                this.inputValue =data.name;	
+            } else {
+                this.inputValue =data.name;
             }
 
             this.apiLoaded = false;
@@ -64,12 +64,12 @@ export default {
                 query = {
                     productName: this.inputValue,
                     isActive:true,
-                    branchId:localStorage.getItem("branch_id"),
+
                 };
             }
-            else {	
-                query = {	
-                    name: this.inputValue	
+            else {
+                query = {
+                    name: this.inputValue
                 };
             }
             try {
