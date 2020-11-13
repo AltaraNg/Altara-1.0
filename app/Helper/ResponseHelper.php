@@ -49,7 +49,7 @@ class ResponseHelper
             'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
             'Access-Control-Allow-Headers'     => 'X-Requested-With, Content-Type, Origin, Authorization'
         ];
-        return Response::create($responseData, $httpResponseCode, array_merge($header, $headers));
+        return \response($responseData, $httpResponseCode)->withHeaders($header);
     }
 
     /**
