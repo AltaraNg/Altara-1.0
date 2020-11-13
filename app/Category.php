@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    use Filterable;
     protected $guarded = [];
     /**
      * Validation rules
