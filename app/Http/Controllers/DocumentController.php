@@ -7,6 +7,7 @@ use App\Verification;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DocumentController extends Controller
 {
@@ -135,7 +136,7 @@ class DocumentController extends Controller
    protected function getFileName($file)
    {
       /** generate a random string and append the file extension to the random string */
-      return str_random(32) . '.' . $file->extension();
+      return Str::random(32) . '.' . $file->extension();
    }
 
    /**

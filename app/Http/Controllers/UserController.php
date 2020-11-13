@@ -99,7 +99,7 @@ class UserController extends Controller
 
         $user = new User;
         $user->fill($request->except(['cv', 'transfer']));
-        $gen_password = str_random(8);
+        $gen_password = Str::random(8);
         /** encrypt the password*/
         $user->password = bcrypt($gen_password);
         /** generate a staff ID for the user*/
