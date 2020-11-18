@@ -14,7 +14,7 @@
 Route::post('/login', 'AuthController@login');
 Route::post('/password/reset', 'AuthController@sendResetLinkEmail');
 Route::put('/password/reset', 'AuthController@reset');
-Route::group(['middleware' => ['auth:api']], function () {
+Route::group(['middleware' => ['auth:api', 'cache.headers:public;max_age=2628000;etag']], function () {
     Route::get('/branches', 'BranchController@allBranches');
     Route::post('/customer/autocomplete', 'CustomerController@autocompleteSearch');
     Route::get('/customer/lookup/{customer}', 'CustomerController@customerLookup');
