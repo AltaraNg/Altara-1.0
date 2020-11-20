@@ -24,6 +24,10 @@ class Constants {
     const UNREACHABLE = 'unreachable';
     const PENDING = 'pending';
 
+    const SUCCESSFUL_ORDER = 'Dear customer_name, this is to notify you that your order order_number was successful';
+    const SUCCESSFUL_REPAYMENT = 'Dear customer_name, this is to notify you that your repayment towards order order_number was successful';
+
+
     static $reminderMessages = [
         self::FIRST_SMS => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
         self::SECOND_SMS => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 14days',
