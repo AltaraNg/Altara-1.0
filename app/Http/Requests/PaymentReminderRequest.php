@@ -30,7 +30,7 @@ class PaymentReminderRequest extends FormRequest
                 return [
                     'feedback' => 'required',
                     'order_id' => 'required|exists:new_orders,id',
-                    'promise_date' => 'required|date|after:' . date('Y-m-d', strtotime("yesterday")),
+                    'promise_date' => 'nullable|required|date|after:' . date('Y-m-d', strtotime("yesterday")),
                     'status' => 'required|in:' . Constants::PENDING . ',' . Constants::UNREACHABLE . ',' . Constants::CALLED,
                     'type' => 'required|in:' . Constants::FIRST_CALL . ',' . Constants::SECOND_CALL . ',' . Constants::THIRD_CALL
                 ];

@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Services\FileMailService;
+use Illuminate\Mail\MailManager;
 
 /**
  * TransportManager extends Laravel's transport manager but adds additional
@@ -11,14 +12,14 @@ use App\Services\FileMailService;
  *
  * @author Adeniyi
  */
-class TransportManager extends \Illuminate\Mail\TransportManager
+class TransportManager extends MailManager
 {
 
     /**
      *
-     * @return \App\Mail\FileTransport
+     * @return FileTransport
      */
-    public function createFileDriver()
+    public function createFileTransport()
     {
         return new FileTransport(app(FileMailService::class));
     }

@@ -4,13 +4,14 @@ namespace App;
 
 use App\Helper\DataViewer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Branch extends Model
 {
     /** this is a generic trait created to serve as a generic
      * scope for fetching and paginating the
      * model where it is called */
-    use DataViewer;
+    use DataViewer, Notifiable;
 
     protected $guarded = [];
 

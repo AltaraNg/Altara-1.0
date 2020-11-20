@@ -108,6 +108,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
     'technology_email' => env('APP_TECHNOLOGY_MAIL', 'naderounmu@altaracredit.com'),
+    'admin_email' => env('APP_ADMIN_MAIL', 'naderounmu@altaracredit.com'),
     'operations_email' => env('APP_OPERATION_MAIL', ['email' => 'naderounmu@altaracredit.com']),
 
     /*

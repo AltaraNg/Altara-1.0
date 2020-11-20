@@ -4,6 +4,8 @@ namespace App\Listeners;
 
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
+use App\Notifications\Models\NewOrderModel;
+use App\Notifications\NewOrderNotification;
 use Illuminate\Support\Str;
 
 class NewOrderListener
@@ -19,6 +21,7 @@ class NewOrderListener
     {
         try {
             $p = app()->make('App\Amortization\\' .Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
+            $event->order->customer->notify(new NewOrderNotification($event->order));
         } catch (\Exception $e) {
             throw new AException($e->getMessage(), $e->getCode());
         }

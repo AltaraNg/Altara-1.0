@@ -9,6 +9,8 @@ use App\Events\SendPasswordResetLinkEvent;
 use App\Events\RepaymentEvent;
 use App\Listeners\LogPaymentListener;
 use App\Listeners\NewOrderListener;
+use App\Listeners\ProductTransferListener;
+use App\Listeners\RepaymentListener;
 use App\Listeners\SendPasswordResetLinkListener;
 use App\Listeners\UpdateInventoryBranchListener;
 use App\Listeners\UpdateInventoryListener;
@@ -39,10 +41,12 @@ class EventServiceProvider extends ServiceProvider
             LogPaymentListener::class
         ],
         ProductTransferEvent::class => [
-            UpdateInventoryBranchListener::class
+            UpdateInventoryBranchListener::class,
+            ProductTransferListener::class
         ],
         RepaymentEvent::class => [
-            UpdateAmortizationListener::class
+            UpdateAmortizationListener::class,
+            RepaymentListener::class
         ]
     ];
 
