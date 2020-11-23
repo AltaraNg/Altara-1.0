@@ -20,7 +20,8 @@ class LogPaymentListener
             "amount" => $event->order->amount,
             "customer_id" => $event->order->customer_id,
             "payment_type_id" => $event->order->payment_type_id,
-            "payment_method_id" => $event->order->payment_method_id
+            "payment_method_id" => $event->order->payment_method_id,
+            "bank_id" => $event->order->bank_id
         ];
 
         PaymentService::logPayment($data, $event->order);

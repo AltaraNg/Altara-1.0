@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use App\RepaymentCycle;
 use Illuminate\Database\Seeder;

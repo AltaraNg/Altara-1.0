@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Filters\InventoryFilter;
 use App\Http\Requests\InventoryRequest;
 use App\Inventory;
+use App\InventoryStatus;
 use App\Repositories\InventoryRepository;
 
 class InventoryController extends Controller
@@ -34,6 +35,7 @@ class InventoryController extends Controller
     {
         $inv = $this->inventoryRepo->store($request->validated());
         $inv->sku = '';
+        $inv->inventory_status_id = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
 
         $inv->update();
 

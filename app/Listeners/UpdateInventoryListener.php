@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
+use App\InventoryStatus;
 use Carbon\Carbon;
 
 class UpdateInventoryListener
@@ -21,7 +22,7 @@ class UpdateInventoryListener
         try {
             $event->order->inventory->update([
                 'sold_date' => Carbon::now(),
-                'is_active' => false
+                'inventory_status_id' => InventoryStatus::where('status', InventoryStatus::SOLD)->first(['id'])
             ]);
         }catch (\Exception $e){
             throw new AException($e->getMessage(), $e->getCode());

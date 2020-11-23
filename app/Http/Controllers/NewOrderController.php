@@ -45,6 +45,20 @@ class NewOrderController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param NewOrder $new_order
+     * @param NewOrderRequest $request
+     * @return Response
+     */
+    public function update(NewOrder $new_order, NewOrderRequest $request)
+    {
+        $order = $this->newOrderRepository->update($new_order, $request->validated());
+
+        return $this->sendSuccess($order->toArray(), 'Order updated successfully');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param NewOrder $new_order
