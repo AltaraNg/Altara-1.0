@@ -26,6 +26,7 @@ class Payment extends Model
         return [
             'amount' => ['required', new Money],
             'customer_id' => 'required|exists:customers,id',
+            'bank_id' => 'required|exists:banks,id',
             'payment_type_id' => 'required|exists:payment_types,id',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'model_id' => 'required|integer',
@@ -84,6 +85,14 @@ class Payment extends Model
     /**
      * @return BelongsTo
      */
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
     public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class);
@@ -112,6 +121,7 @@ class Payment extends Model
             'payment_number' => $this->payment_number,
             'type' => $this->paymentType->type,
             'branch' => $this->branch->name,
+            'bank' => $this->bank->name ?? null,
             'customer' => $this->customer,
             'method' => $this->paymentMethod->name,
             'amount' => $this->amount,

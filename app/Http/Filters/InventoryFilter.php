@@ -3,8 +3,29 @@
 
 namespace App\Http\Filters;
 
+use App\InventoryStatus;
+
 class InventoryFilter extends BaseFilter
 {
+
+    /**
+     * @param bool $status
+     */
+    public function isActive($status)
+    {
+            $this->builder->whereHas('inventoryStatus', function ($q){
+                $q->where('status', InventoryStatus::AVAILABLE);
+            });
+    }
+
+    /**
+     * @param int $status
+     */
+    public function status($status)
+    {
+        $this->builder->where('inventory_status_id', $status);
+    }
+
     /**
      * @param string $name
      */

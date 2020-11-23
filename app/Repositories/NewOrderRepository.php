@@ -30,6 +30,7 @@ class NewOrderRepository extends Repository
         unset($validated['custom_date']);
         unset($validated['payment_method_id']);
         unset($validated['inventory_id']);
+        unset($validated['bank_id']);
 
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
@@ -47,6 +48,7 @@ class NewOrderRepository extends Repository
         $order->amount = $data['down_payment'];
         $order->payment_type_id = $paymentType;
         $order->payment_method_id = $data['payment_method_id'];
+        $order->bank_id = $data['bank_id'];
         $order->inventory = $inventory;
         event(new NewOrderEvent($order));
 

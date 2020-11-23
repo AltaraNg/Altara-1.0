@@ -10,6 +10,7 @@ class Inventory extends Model
 {
     use Filterable;
     protected $guarded = [];
+    protected $with = ['inventoryStatus'];
     /**
      * Validation rules
      *
@@ -25,9 +26,12 @@ class Inventory extends Model
             'branch_id' => 'required|exists:branches,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'is_active' => 'sometimes|required|boolean',
             'product_name' => 'required|exists:products,name',
         ];
+    }
+
+    public function inventoryStatus(){
+        return $this->belongsTo(InventoryStatus::class);
     }
 
     /**
@@ -40,7 +44,7 @@ class Inventory extends Model
     public static function updateRules($id)
     {
         return [
-            'is_active' => 'sometimes|required|boolean',
+            'inventory_status_id' => 'sometimes|required|exists:inventory_statuses,id',
             'product_id' => 'sometimes|required|exists:products,id',
             'product_name' => 'sometimes|required|exists:products,name',
             'receiver_id' => 'sometimes|required|exists:users,id',
@@ -52,7 +56,7 @@ class Inventory extends Model
 
     public function setSkuAttribute()
     {
-        $this->attributes['sku'] = $this->getInventorySku();
+        $this->attributes['inventory_sku'] = $this->getInventorySku();
     }
 
     private function getInventorySku()
