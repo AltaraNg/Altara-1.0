@@ -27,7 +27,7 @@ class NewOrder extends Model
         return [
             'customer_id' => 'required|exists:customers,id',
             'inventory_id' => 'required|exists:inventories,id',
-            'bank_id' => 'required|exists:banks,id',
+            'bank_id' => 'sometimes|required|exists:banks,id',
             'repayment' => ['required', new Money],
             'repayment_duration_id' => 'required|exists:repayment_durations,id',
             'repayment_cycle_id' => 'required|exists:repayment_cycles,id',
