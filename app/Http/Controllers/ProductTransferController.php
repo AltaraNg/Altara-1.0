@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\ProductTransferEvent;
 use App\Http\Filters\ProductTransferFilter;
 use App\Http\Requests\ProductTransferRequest;
+use App\Inventory;
 use App\ProductTransfer;
 use App\Repositories\ProductTransferRepository;
 use Illuminate\Http\Response;
@@ -39,7 +40,8 @@ class ProductTransferController extends Controller
      */
     public function store(ProductTransferRequest $request)
     {
-        $data = array_merge($request->validated(), ['user_id' => auth()->user()->id, 'from_id' => auth()->user()->branch_id]);
+        $inv = Inventory::find($request->validated()['inventory_id']);
+        $data = array_merge($request->validated(), ['user_id' => auth()->user()->id, 'from_id' => $inv->branch_id]);
         $productTransfer = $this->productTransferRepo->store($data);
         event(new ProductTransferEvent($data));
 
