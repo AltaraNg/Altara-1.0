@@ -22,7 +22,7 @@ class UpdateInventoryListener
         try {
             $event->order->inventory->update([
                 'sold_date' => Carbon::now(),
-                'inventory_status_id' => InventoryStatus::where('status', InventoryStatus::SOLD)->first(['id'])
+                'inventory_status_id' => InventoryStatus::where('status', InventoryStatus::SOLD)->first()->id
             ]);
         }catch (\Exception $e){
             throw new AException($e->getMessage(), $e->getCode());

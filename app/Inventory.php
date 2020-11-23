@@ -25,8 +25,7 @@ class Inventory extends Model
             'receiver_id' => 'required|exists:users,id',
             'branch_id' => 'required|exists:branches,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'product_name' => 'required|exists:products,name',
+            'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/'
         ];
     }
 
@@ -56,10 +55,10 @@ class Inventory extends Model
 
     public function setSkuAttribute()
     {
-        $this->attributes['inventory_sku'] = $this->getInventorySku();
+        $this->attributes['inventory_sku'] = self::getInventorySku();
     }
 
-    private function getInventorySku()
+    public static function getInventorySku()
     {
         return 'INV/'.Helper::generatePrefix(config('app.name')) . '/' . Helper::generateSKU(6). '/' . date("Y");
     }

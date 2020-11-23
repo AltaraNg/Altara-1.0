@@ -26,10 +26,10 @@ class CreateInventoriesTable extends Migration
             $table->string('sold_date');
             $table->boolean('is_active')->default(1);
             $table->timestamps();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('receiver_id')->references('id')->on('users');
+            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Amortization;
+use App\Exceptions\AException;
 use App\Helpers\ResponseHelper;
 use App\Http\Filters\AmortizationFilter;
 use App\Http\Requests\NewOrderRequest;
@@ -10,6 +11,7 @@ use App\Repositories\AmortizationRepository;
 use App\Services\AmmortizationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class AmortizationController extends Controller
 {
@@ -49,6 +51,7 @@ class AmortizationController extends Controller
      * @param Request $request
      * @param Amortization $amortization
      * @return Response
+     * @throws ValidationException
      */
     public function update(Request $request, Amortization $amortization)
     {
@@ -63,7 +66,7 @@ class AmortizationController extends Controller
      * @param NewOrderRequest $request
      * @param AmmortizationService $service
      * @return Response
-     * @throws \App\Exceptions\AException
+     * @throws AException
      */
     public function preview(NewOrderRequest $request, AmmortizationService $service)
     {

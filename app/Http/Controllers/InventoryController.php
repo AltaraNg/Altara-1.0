@@ -6,6 +6,7 @@ use App\Http\Filters\InventoryFilter;
 use App\Http\Requests\InventoryRequest;
 use App\Inventory;
 use App\InventoryStatus;
+use App\Product;
 use App\Repositories\InventoryRepository;
 
 class InventoryController extends Controller
@@ -33,11 +34,13 @@ class InventoryController extends Controller
 
     public function store(InventoryRequest $request)
     {
-        $inv = $this->inventoryRepo->store($request->validated());
-        $inv->sku = '';
-        $inv->inventory_status_id = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
-
-        $inv->update();
+        $data = array_merge($request->validated(),
+            [
+                'inventory_sku' => Inventory::getInventorySku(),
+                'inventory_status_id' => InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id,
+                'product_name' => Product::find($request->validated()['product_id'])->name
+            ]);
+        $inv = $this->inventoryRepo->store($data);
 
         return $this->sendSuccess($inv->toArray(), 'Inventory Successfully Created');
     }
