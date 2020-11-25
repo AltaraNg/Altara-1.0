@@ -144,6 +144,7 @@
 </head>
 
 <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;">
+{{--{{dd($data)}}--}}
 <!--[if IE]>
 <div class="ie-browser"><![endif]-->
 <table class="nl-container"
@@ -237,25 +238,25 @@
 
                                     <div class="button-container" align="left"
                                          style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                         <p>Thanks for your order {{$data['customer']['full_name']}}, </p>
+                                         <p>Thanks for your order {{$data['customer_name']}}, </p>
 
                                          <div class="customer">
                                              <h3>Customer Information</h3>
-                                             <p><b>Customer Name:</b> {{$data['customer']['full_name']}}</p>
-                                             <p><b>Phone Number:</b> {{$data['customer']['phone_number']}}</p>
-                                             <p><b>Email Address:</b> {{$data['customer']['email']}}</p>
+                                             <p><b>Customer Name:</b> {{$data['customer_name']}}</p>
+                                             <p><b>Phone Number:</b> {{$data['customer_phone']}}</p>
+                                             <p><b>Email Address:</b> {{$data['customer_email'] ?? 'Test email'}}</p>
 
                                          </div>
 
                                          <div class="customer">
                                             <h3>Order Information</h3>
-                                            <p><b>Order ID:</b> {{$data['customer']['full_name']}}</p>
-                                            <p><b>Product Name:</b> {{$data['customer']['phone_number']}}</p>
-                                            <p><b>Product Price:</b> {{$data['customer']['email']}}</p>
-                                            <p><b>Showroom:</b> {{$data['customer']['email']}}</p>
-                                            <p><b>Downpayment:</b> {{$data['customer']['email']}}</p>
-                                            <p><b>Repayment:</b> {{$data['customer']['email']}}</p>
-                                            <p><b>Payment Method:</b> {{$data['customer']['email']}}</p>
+                                            <p><b>Order ID:</b> {{$data['order_number']}}</p>
+                                            <p><b>Product Name:</b> {{$data['product']['name']}}</p>
+                                            <p><b>Product Price:</b> {{$data['product_price']}}</p>
+                                            <p><b>Showroom:</b> {{$data['branch']}}</p>
+                                            <p><b>Downpayment:</b> {{$data['down_payment']}}</p>
+                                            <p><b>Repayment:</b> {{$data['repayment']}}</p>
+                                            <p><b>Payment Method:</b> Not Captured</p>
 
                                         </div>
                                     </div>
