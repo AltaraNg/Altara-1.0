@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Customer;
+use App\Helper\Constants;
+use App\Helper\LogHelper;
 use App\NewOrder;
 use App\Notifications\RepaymentNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +24,7 @@ class RepaymentListener
         try {
             $customer->notify(new RepaymentNotification(NewOrder::find($event->newOrder['model_id'])));
         }catch (\Exception $e) {
-            //Implement Logger Service to log this Error
+            LogHelper::error(strtr(Constants::REPAYMENT_NOTIFICATION_ERROR, NewOrder::find($event->newOrder['model_id'])->toArray()), $e);
         }
     }
 }

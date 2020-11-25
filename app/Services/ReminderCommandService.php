@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helper\Constants;
+use App\Helper\LogHelper;
 use App\Notifications\Models\SmsReminderModel;
 use App\Notifications\SmsReminder;
 use App\Notifications\SmsReminderSent;
@@ -50,6 +51,7 @@ class ReminderCommandService
 
                     $order->notify(new SmsReminderSent($reminderObject));
                 } catch (\Exception $e) {
+                    LogHelper::error(strtr(Constants::FAILED_SMS, $order->toArray()), $e);
                     $res[] = array_merge($item, [
                         'status' => 'failed',
                         'statusMessage' => $e->getMessage()
