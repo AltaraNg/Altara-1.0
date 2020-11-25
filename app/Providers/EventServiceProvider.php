@@ -33,9 +33,9 @@ class EventServiceProvider extends ServiceProvider
             SendPasswordResetLinkListener::class,
         ],
         NewOrderEvent::class => [
-            NewOrderListener::class,
             UpdateInventoryListener::class,
-            LogPaymentListener::class
+            LogPaymentListener::class,
+            NewOrderListener::class
         ],
         OldRepaymentEvent::class => [
             LogPaymentListener::class

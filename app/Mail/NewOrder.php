@@ -33,6 +33,6 @@ class NewOrder extends Mailable
      */
     public function build()
     {
-        return $this->subject('Successful Order Update')->view('emails.new-order');
+        return $this->subject('Successful Order Notification')->view('emails.new-order');
     }
 }

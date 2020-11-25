@@ -27,7 +27,7 @@ class NewOrder extends Model
         return [
             'customer_id' => 'required|exists:customers,id',
             'inventory_id' => 'required|exists:inventories,id',
-            'bank_id' => 'sometimes|required|exists:banks,id',
+            'bank_id' => 'required|exists:banks,id',
             'repayment' => ['required', new Money],
             'repayment_duration_id' => 'required|exists:repayment_durations,id',
             'repayment_cycle_id' => 'required|exists:repayment_cycles,id',
@@ -115,6 +115,16 @@ class NewOrder extends Model
         return $this->morphMany(Payment::class, 'orderable');
     }
 
+    /**
+     * Get all of the New Order's payments.
+     */
+    public function getOrderPaymentMethodAttribute()
+    {
+        return $this->payments()->whereIn('payment_type_id', function ($query){
+            $query->select('id')->from('payment_types')->where('type', PaymentType::DOWNPAYMENT);
+        })->first()->paymentMethod->name ?? null;
+    }
+
     public function toArray()
     {
         return [
@@ -127,6 +137,7 @@ class NewOrder extends Model
             "customer_id" => $this->customer->id,
             "customer_name" => $this->customer->fullName,
             "customer_phone" => $this->customer->telephone,
+            "customer_email" => $this->customer->email,
             "business_type" => $this->businessType->name,
             "status" => $this->orderStatus->name,
             "branch" => $this->branch->name,
@@ -135,7 +146,8 @@ class NewOrder extends Model
             "repayment" => $this->repayment,
             "custom_date" => $this->customDate->custom_date ?? null,
             "amortization" => $this->amortization,
-            "notifications" => $this->notifications
+            "notifications" => $this->notifications,
+            "order_payment_method" => $this->order_payment_method
         ];
     }
 }
