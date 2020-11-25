@@ -21,7 +21,11 @@ class NewOrderListener
     {
         try {
             $p = app()->make('App\Amortization\\' .Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
-            $event->order->customer->notify(new NewOrderNotification($event->order));
+            try {
+                $event->order->customer->notify(new NewOrderNotification($event->order));
+            }catch (\Exception $e){
+                //Implement a Logger service to log this error
+            }
         } catch (\Exception $e) {
             throw new AException($e->getMessage(), $e->getCode());
         }

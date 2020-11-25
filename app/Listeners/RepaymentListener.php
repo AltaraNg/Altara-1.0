@@ -22,7 +22,7 @@ class RepaymentListener
         try {
             $customer->notify(new RepaymentNotification(NewOrder::find($event->newOrder['model_id'])));
         }catch (\Exception $e) {
-
+            //Implement Logger Service to log this Error
         }
     }
 }

@@ -26,7 +26,7 @@ class Payment extends Model
         return [
             'amount' => ['required', new Money],
             'customer_id' => 'required|exists:customers,id',
-            'bank_id' => 'sometimes|required|exists:banks,id',
+            'bank_id' => 'required|exists:banks,id',
             'payment_type_id' => 'required|exists:payment_types,id',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'model_id' => 'required|integer',
