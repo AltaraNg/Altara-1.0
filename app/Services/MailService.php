@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -24,6 +25,7 @@ class MailService
      * @param string $template
      * @param string $subject
      * @return bool
+     * @throws BindingResolutionException
      */
     public function sendReportAsMail(string $reportDescription, array $reports,
                                      array $recipients, string $reportHeader, string $template, string $subject='')
@@ -44,8 +46,9 @@ class MailService
      * @param $recipients
      * @param array $data
      * @return bool
+     * @throws BindingResolutionException
      */
-    public function send(string $template, $recipients, array $data = [])
+    public static function send(string $template, $recipients, array $data = [])
     {
         $mailTemplate = app()->make('App\Mail\\' . Str::studly($template), ['data' => $data]);
         Mail::to($recipients)
