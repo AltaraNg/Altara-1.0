@@ -119,6 +119,28 @@
             }
         }
     </style>
+
+    <style>
+
+        .customer{
+            border: #0068a5 1px solid;
+            margin-bottom: 12px;
+
+        }
+            .customer h3{
+                width: 100%;
+                background-color: #0068a5;
+                margin-top: 0;
+                color: #ffffff;
+                font-size: 14px;
+                padding: 4px 0;
+
+        }
+        .customer p{
+            padding: 1px 4px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;">
@@ -212,9 +234,30 @@
                                 <div
                                     style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                     <!--<![endif]-->
-                                    <p>Order Created</p>
-                                    <div class="button-container" align="center"
+
+                                    <div class="button-container" align="left"
                                          style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                         <p>Thanks for your order {{$data['customer']['full_name']}}, </p>
+
+                                         <div class="customer">
+                                             <h3>Customer Information</h3>
+                                             <p><b>Customer Name:</b> {{$data['customer']['full_name']}}</p>
+                                             <p><b>Phone Number:</b> {{$data['customer']['phone_number']}}</p>
+                                             <p><b>Email Address:</b> {{$data['customer']['email']}}</p>
+
+                                         </div>
+
+                                         <div class="customer">
+                                            <h3>Order Information</h3>
+                                            <p><b>Order ID:</b> {{$data['customer']['full_name']}}</p>
+                                            <p><b>Product Name:</b> {{$data['customer']['phone_number']}}</p>
+                                            <p><b>Product Price:</b> {{$data['customer']['email']}}</p>
+                                            <p><b>Showroom:</b> {{$data['customer']['email']}}</p>
+                                            <p><b>Downpayment:</b> {{$data['customer']['email']}}</p>
+                                            <p><b>Repayment:</b> {{$data['customer']['email']}}</p>
+                                            <p><b>Payment Method:</b> {{$data['customer']['email']}}</p>
+
+                                        </div>
                                     </div>
                                     <!--[if mso]>
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -222,15 +265,12 @@
                                             <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
                                     <![endif]-->
                                     <div
-                                        style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                        style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:2px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                         <div
                                             style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
                                             <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                Thank you,</p>
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                &nbsp;</p>
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                Management</p>
+                                                If you have any questions, don't hesistate to reach out to us</p>
+
                                         </div>
                                     </div>
                                     <!--[if mso]></td></tr></table><![endif]-->
