@@ -128,7 +128,7 @@
             border-width: 2px;
             border-color: #0068a5;
             border-style: solid;
-            color: #000000;
+            color: #0068a5;
         }
 
         /* table.GeneratedTable td, table.GeneratedTable th {
@@ -141,12 +141,18 @@
         table.GeneratedTable thead tr th{
             border-left: #0068a5 solid 1px;
             padding: 8px;
+            height: 70px;
+            text-align: center;
+
             border-bottom: #0068a5 solid 1px;
 
         }
 
+
         table.GeneratedTable tbody tr td{
             padding: 8px;
+            text-align: center;
+
             border-left: #0068a5 solid 1px;
         }
 
@@ -165,7 +171,7 @@
 <!--[if IE]>
 <div class="ie-browser"><![endif]-->
 <table class="nl-container"
-       style="table-layout: fixed; vertical-align: top; min-width: 320px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;"
+       style="table-layout: fixed; vertical-align: top; min-width: 450px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;"
        cellpadding="0" cellspacing="0" role="presentation" width="100%" bgcolor="#FFFFFF" valign="top">
     <tbody>
     <tr style="vertical-align: top;" valign="top">
@@ -246,7 +252,7 @@
                                     <td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;">
                         <![endif]-->
                         <div class="col num12"
-                             style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+                             style="min-width: 450px; max-width: 800px; display: table-cell; vertical-align: top; width: 700px;">
                             <div style="width:100% !important;">
                                 <!--[if (!mso)&(!IE)]><!-->
                                 <div
@@ -262,7 +268,7 @@
                                             style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                             <div style="padding: 10px 2px;">SMS Reminder Report for {{Carbon\Carbon::now()->toDateString()}}</div>
                                             <div
-                                                style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                style="font-size: 12px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
 
                                                 <table class="GeneratedTable">
                                                     <thead>

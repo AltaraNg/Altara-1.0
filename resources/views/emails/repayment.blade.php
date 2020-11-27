@@ -119,6 +119,27 @@
             }
         }
     </style>
+    <style>
+
+        .customer{
+            border: #0068a5 1px solid;
+            margin-bottom: 12px;
+
+        }
+            .customer h3{
+                width: 100%;
+                background-color: #0068a5;
+                margin-top: 0;
+                color: #ffffff;
+                font-size: 14px;
+                padding: 4px 0;
+
+        }
+        .customer p{
+            padding: 1px 4px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;">
@@ -221,16 +242,28 @@
                                         <tr>
                                             <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
                                     <![endif]-->
-                                    <div
-                                        style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                        <div
-                                            style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                Thank you,</p>
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                &nbsp;</p>
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                Management</p>
+                                    <div class="button-container" align="left"
+                                         style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                         <p>Dear {{$data['customer_name']}}, This is a notification of repayment for your order <b>{{$data['order_number']}}</b>.</p>
+
+                                         <div class="customer">
+                                             <h3>Customer Information</h3>
+                                             <p><b>Customer Name:</b> {{$data['customer_name']}}</p>
+                                             <p><b>Phone Number:</b> {{$data['customer_phone']}}</p>
+                                             <p><b>Email Address:</b> {{$data['customer_email']}}</p>
+
+                                         </div>
+
+                                         <div class="customer">
+                                            <h3>Order Information</h3>
+                                            <p><b>Order ID:</b> {{$data['order_number']}}</p>
+                                            <p><b>Product Name:</b> {{$data['product']['name']}}</p>
+                                            <p><b>Product Price:</b> {{$data['product_price']}}</p>
+                                            <p><b>Showroom:</b> {{$data['branch']}}</p>
+                                            <p><b>Downpayment:</b> {{$data['down_payment']}}</p>
+                                            <p><b>Repayment:</b> {{$data['repayment']}}</p>
+                                            <p><b>Payment Method:</b> {{$data['order_payment_method']}}</p>
+
                                         </div>
                                     </div>
                                     <!--[if mso]></td></tr></table><![endif]-->
