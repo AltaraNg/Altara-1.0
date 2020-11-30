@@ -232,12 +232,12 @@
                                 <!--[if (!mso)&(!IE)]><!-->
                                     <div class="button-container" align="left"
                                     style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                    <p>This is a notification that product <b>{{$data['inventory']['product_name']}}</b> was transferred from <b>{{$data['from_banch']}}</b> showroom to <b>{{$data['to_branch']}}</b> showroom.</p>
+                                    <p>Dear <b>{{$data['to_branch']}}</b>, product <b>{{$data['inventory']['product_name']}}</b> was just transferred to your showroom.</p>
 
                                     <div class="customer">
                                         <h3>Transfer Information</h3>
-                                        <p><b>Product Name:</b> {{$data['inventory']['product_name']}}</p>
-                                        <p><b>Product SKU:</b> {{$data['inventory']['inventory_sku']}}</p>
+                                        <p><b>Inventory Name:</b> {{$data['inventory']['product_name']}}</p>
+                                        <p><b>Inventory SKU:</b> {{$data['inventory']['inventory_sku']}}</p>
                                         <p><b>Transferred From:</b> {{$data['from_branch']}}</p>
                                         <p><b>Transferred To:</b> {{$data['to_branch']}}</p>
                                         <p><b>Initiator:</b> {{$data['initiator']}}</p>
@@ -256,7 +256,7 @@
                                    <div
                                        style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
                                        <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                           If you have any questions, don't hesistate to reach out to us</p>
+                                           If you have any questions, don't hesitate to reach out to us</p>
 
                                    </div>
                                </div>

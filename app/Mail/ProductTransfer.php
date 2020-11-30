@@ -32,6 +32,6 @@ class ProductTransfer extends Mailable
      */
     public function build()
     {
-        return $this->subject('Product Transfer')->view('emails.product-transfer');
+        return $this->subject('Product Transfer Notification')->view('emails.product-transfer');
     }
 }
