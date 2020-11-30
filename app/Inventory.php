@@ -10,7 +10,7 @@ class Inventory extends Model
 {
     use Filterable;
     protected $guarded = [];
-    protected $with = ['inventoryStatus'];
+    protected $with = ['inventoryStatus', 'transfers'];
     /**
      * Validation rules
      *
@@ -53,6 +53,17 @@ class Inventory extends Model
         ];
     }
 
+    public function transfers()
+    {
+        return $this->hasMany(ProductTransfer::class, 'inventory_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+
     public function setSkuAttribute()
     {
         $this->attributes['inventory_sku'] = self::getInventorySku();
@@ -62,8 +73,4 @@ class Inventory extends Model
     {
         return 'INV/'.Helper::generatePrefix(config('app.name')) . '/' . Helper::generateSKU(6). '/' . date("Y");
     }
-
-
-
-
 }

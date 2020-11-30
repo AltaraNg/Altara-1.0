@@ -4,6 +4,7 @@
 namespace App\Http\Filters;
 
 use App\InventoryStatus;
+use Carbon\Carbon;
 
 class InventoryFilter extends BaseFilter
 {
@@ -38,5 +39,16 @@ class InventoryFilter extends BaseFilter
         if (!auth()->user()->isAdmin()){
             $this->builder->where('branch_id', auth()->user()->branch_id);
         }
+        $this->startDate(Carbon::now()->startOfMonth());
+    }
+
+    /**
+     * @param string $from
+     * @param string $column
+     */
+    public function startDate(string $from, $column=self::DATE)
+    {
+        $this->builder->whereDate($column, '>=', $from)
+            ->whereDate($column, '<=',$this->request->endDate ?? Carbon::now());
     }
 }
