@@ -119,6 +119,27 @@
             }
         }
     </style>
+     <style>
+
+        .customer{
+            border: #0068a5 1px solid;
+            margin-bottom: 12px;
+
+        }
+            .customer h3{
+                width: 100%;
+                background-color: #0068a5;
+                margin-top: 0;
+                color: #ffffff;
+                font-size: 14px;
+                padding: 4px 0;
+
+        }
+        .customer p{
+            padding: 1px 4px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;">
@@ -209,36 +230,36 @@
                              style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
                             <div style="width:100% !important;">
                                 <!--[if (!mso)&(!IE)]><!-->
-                                <div
-                                    style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-                                    <p>Transfer happened</p>
-                                    <div class="button-container" align="center"
-                                         style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                    <div class="button-container" align="left"
+                                    style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                    <p>This is a notification that product <b>{{$data['inventory']['product_name']}}</b> was transferred from <b>{{$data['from_banch']}}</b> showroom to <b>{{$data['to_branch']}}</b> showroom.</p>
+
+                                    <div class="customer">
+                                        <h3>Transfer Information</h3>
+                                        <p><b>Product Name:</b> {{$data['inventory']['product_name']}}</p>
+                                        <p><b>Product SKU:</b> {{$data['inventory']['inventory_sku']}}</p>
+                                        <p><b>Transferred From:</b> {{$data['from_branch']}}</p>
+                                        <p><b>Transferred To:</b> {{$data['to_branch']}}</p>
+                                        <p><b>Initiator:</b> {{$data['initiator']}}</p>
+
                                     </div>
-                                    <!--[if mso]>
-                                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                        <tr>
-                                            <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
-                                    <![endif]-->
-                                    <div
-                                        style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                        <div
-                                            style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                Thank you,</p>
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                &nbsp;</p>
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                Management</p>
-                                        </div>
-                                    </div>
-                                    <!--[if mso]></td></tr></table><![endif]-->
-                                    <!--[if (!mso)&(!IE)]><!-->
-                                </div>
-                                <!--<![endif]-->
-                            </div>
-                        </div>
+
+
+                               </div>
+                               <!--[if mso]>
+                               <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                   <tr>
+                                       <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
+                               <![endif]-->
+                               <div
+                                   style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:2px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                   <div
+                                       style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                       <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                           If you have any questions, don't hesistate to reach out to us</p>
+
+                                   </div>
+                               </div>
                         <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
                         <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
                     </div>
