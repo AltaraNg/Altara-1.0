@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 /**
  * LogHelper assists in writing log messages to file and sending emails.
  *
- * @author Oyelaking
+ * @author Adeniyi
  */
 class InventoryHelper
 {
@@ -27,8 +27,7 @@ class InventoryHelper
             'total_worth' => $inventories->sum('price'),
             'total_sold' => $inventories->where('inventory_status_id', InventoryStatus::where('status', InventoryStatus::SOLD)->first()->id)->count(),
             'total_repossessed' => $inventories->where('inventory_status_id', InventoryStatus::where('status', InventoryStatus::REPOSSESSED)->first()->id)->count(),
-            'total_transfer' => $inventories->sum('transfers_count'),
-            'total2' => $inventories->count(),
+            'total_transfer' => $inventories->sum('transfers_count')
         ];
     }
 

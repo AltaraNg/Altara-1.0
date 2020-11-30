@@ -19,6 +19,7 @@ class RepaymentNotification extends Notification
      * @var $data
      */
     private $data;
+    private $amortization;
 
     /**
      * Create a new notification instance.
@@ -27,6 +28,7 @@ class RepaymentNotification extends Notification
      */
     public function __construct(NewOrder $data)
     {
+        $this->amortization = $data->amortization();
         $this->data = $data->toArray();
     }
 
@@ -49,7 +51,7 @@ class RepaymentNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new Mailable($this->data))
+        return (new Mailable($this->data, $this->amortization))
             ->to($notifiable->email)
             ->cc(config('app.admin_email'));
     }

@@ -233,7 +233,6 @@
                                 <div
                                     style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                     <!--<![endif]-->
-                                    <p>Repayment Notification</p>
                                     <div class="button-container" align="center"
                                          style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                     </div>
@@ -244,7 +243,7 @@
                                     <![endif]-->
                                     <div class="button-container" align="left"
                                          style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                         <p>Dear {{$data['customer_name']}}, This is a notification of repayment for your order <b>{{$data['order_number']}}</b>.</p>
+                                         <p>Dear {{$data['customer_name']}}, This is a notification of repayment on your order <b>{{$data['order_number']}}</b>.</p>
 
                                          <div class="customer">
                                              <h3>Customer Information</h3>
@@ -255,14 +254,18 @@
                                          </div>
 
                                          <div class="customer">
-                                            <h3>Order Information</h3>
+                                            <h3>Repayment Information</h3>
                                             <p><b>Order ID:</b> {{$data['order_number']}}</p>
                                             <p><b>Product Name:</b> {{$data['product']['name']}}</p>
-                                            <p><b>Product Price:</b> {{$data['product_price']}}</p>
                                             <p><b>Showroom:</b> {{$data['branch']}}</p>
-                                            <p><b>Downpayment:</b> {{$data['down_payment']}}</p>
-                                            <p><b>Repayment:</b> {{$data['repayment']}}</p>
-                                            <p><b>Payment Method:</b> {{$data['order_payment_method']}}</p>
+                                            <p><b>No of Completed Repayments:</b> {{ $completedRepayment  }}</p>
+                                             @if( $rep = $amortization->where('actual_payment_date', null)->first())
+                                                 <p><b>No of Repayments Left:</b> {{$amortization->where('actual_payment_date', null)->count()}}</p>
+                                                 <p><b>Next Payment Date:</b> {{$rep->expected_payment_date}}</p>
+                                                 <p><b>Next Payment Amount:</b> {{$rep->expected_amount}}</p>
+                                             @else
+                                                 <p>Congratulations, you have completed your payments</p>
+                                             @endif
 
                                         </div>
                                     </div>
