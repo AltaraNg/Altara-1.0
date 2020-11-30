@@ -32,26 +32,27 @@ abstract class Repository
     {
         $this->app = $app;
         $this->filter = $collection;
+        $this->request = $request;
         $this->criteria = $collection;
         $this->makeModel();
 
         $this->page = (int)$request->query->get('page', 1);
-        $this->limit = (int)$request->query->get('limit', 10);
+        $this->limit = (int)$request->query->get('limit', 20);
     }
 
     public function all() {
-        $limit = request('limit', 10);
+        $limit = request('limit', 20);
         return $this->model::latest()->paginate($limit);
     }
 
     public function getAll($filter)
     {
-        return $this->model::latest()->filter($filter)->paginate();
+        return $this->model::latest()->filter($filter)->paginate($this->limit);
     }
 
     public function query($filter)
     {
-        return $this->model::filter($filter)->paginate();
+        return $this->model::filter($filter)->paginate($this->limit);
     }
 
     public function store(array $data) {

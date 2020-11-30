@@ -14,4 +14,8 @@ class InventoryRepository extends Repository
         return Inventory::class;
     }
 
+    public function getSummary($filter)
+    {
+        return $this->model::filter($filter)->withCount('transfers')->get();
+    }
 }

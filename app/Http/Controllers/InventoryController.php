@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\InventoryHelper;
 use App\Http\Filters\InventoryFilter;
 use App\Http\Requests\InventoryRequest;
 use App\Inventory;
 use App\InventoryStatus;
 use App\Product;
 use App\Repositories\InventoryRepository;
+use Illuminate\Http\Response;
 
 class InventoryController extends Controller
 {
-    //
 
     private $inventoryRepo;
 
@@ -57,5 +58,21 @@ class InventoryController extends Controller
         $inventory->delete();
 
         return $this->sendSuccess([],'Inventory deleted successfully');
+    }
+
+    /**
+     * @param InventoryFilter $filter
+     * @param InventoryHelper $inventoryHelper
+     * @return Response
+     */
+    public function summary(InventoryFilter $filter, InventoryHelper $inventoryHelper)
+    {
+
+        $inventories = $this->inventoryRepo->getSummary($filter);
+        $products = $inventoryHelper->transform($inventories);
+
+        $summary = $inventoryHelper->getSummary($inventories);
+
+        return $this->sendSuccess(['products' => $products, 'summary' => $summary],'Action Request Successful');
     }
 }
