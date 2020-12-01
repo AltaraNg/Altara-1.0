@@ -37,9 +37,8 @@ class InventoryFilter extends BaseFilter
 
     public function filterBranch() {
         if (!auth()->user()->isAdmin()){
-            $this->builder->where('branch_id', auth()->user()->branch_id);
+            $this->builder->where('branch_id', request('branch', auth()->user()->branch_id));
         }
-        $this->startDate(Carbon::now()->startOfMonth());
     }
 
     /**
