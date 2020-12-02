@@ -12,18 +12,29 @@ class Repayment extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * @var array
+     * @var
      */
     public $data;
+    /**
+     * @var
+     */
+    public $amortization;
+    /**
+     * @var
+     */
+    public $completedRepayment;
 
     /**
      * Create a new message instance.
      *
-     * @param array $data
+     * @param $data
+     * @param $amortization
      */
-    public function __construct(array $data)
+    public function __construct($data, $amortization)
     {
         $this->data = $data;
+        $this->amortization = clone $amortization;
+        $this->completedRepayment = $amortization->where('actual_payment_date', '!=', null)->count();
     }
 
     /**
@@ -33,6 +44,6 @@ class Repayment extends Mailable
      */
     public function build()
     {
-        return $this->subject('Repayment on Order AT8568ATN14')->view('emails.repayment');
+        return $this->subject('Notification of Repayment on Order ' . $this->data['order_number'])->view('emails.repayment');
     }
 }

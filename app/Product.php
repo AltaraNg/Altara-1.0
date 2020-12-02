@@ -69,11 +69,6 @@ class Product extends Model
         return $this->belongsTo(ProductType::class);
     }
 
-    public function productTransfer()
-    {
-       return $this->hasMany(ProductTransfer::class);
-    }
-
     public function toArray()
     {
         return [
@@ -87,6 +82,9 @@ class Product extends Model
             'product_type' => $this->productType->name,
             'is_active' => $this->is_active,
             'user' => $this->user->full_name,
+            'inventories' => $this->when((bool) strpos(url()->current(), 'inventory-summary'), function () {
+                return $this->invs;
+            }),
             'created_at' => $this->created_at->toDateTimeString()
         ];
     }
