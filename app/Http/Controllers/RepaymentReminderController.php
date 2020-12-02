@@ -29,7 +29,7 @@ class RepaymentReminderController extends Controller
     }
     public function index(NewOrderFilter $filter)
     {
-        $orders = $this->newOrderRepository->query($filter);
+        $orders = $this->reminder_service->fetchOrders();
         return $this->sendSuccess($orders->toArray(), 'Orders retrieved successfully');
     }
 
