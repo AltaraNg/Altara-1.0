@@ -147,7 +147,9 @@ class NewOrder extends Model
             "custom_date" => $this->customDate->custom_date ?? null,
             "amortization" => $this->amortization,
             "notifications" => $this->notifications,
-            "order_payment_method" => $this->order_payment_method
+            "order_payment_method" => $this->order_payment_method,
+            "customer" => $this->customer,
+            "order_date" => $this->order_date
         ];
     }
 }
