@@ -53,7 +53,7 @@ class NewOrderFilter extends BaseFilter
             $selectedDay = Carbon::parse($this->fields()['startDate'] ?? null) ?? Carbon::now();
             $query->select('new_order_id')
                 ->from('amortizations')
-            ->whereDate('expected_payment_date', '>=', $selectedDay->subDays($days)->toDateString())
+            ->whereDate('expected_payment_date', '<=', $selectedDay->subDays($days)->toDateString())
                 ->where('actual_payment_date', NULL);
         });
     }
