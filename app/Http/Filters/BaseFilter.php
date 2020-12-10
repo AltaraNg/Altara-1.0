@@ -38,10 +38,10 @@ class BaseFilter extends QueryFilter
      * @param string $from
      * @param string $column
      */
-    public function from(string $from, $column=self::DATE)
+    public function fromDate(string $fromDate, $column = self::DATE)
     {
-        $this->builder->whereDate($column, '>=', $from)
-            ->whereDate($column, '<=',$this->request->to ?? Carbon::now());
+        $this->builder->whereDate($column, '>=', $fromDate)
+            ->whereDate($column, '<=', $this->request->toDate ?? Carbon::now());
     }
 
     /**
