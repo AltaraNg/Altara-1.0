@@ -38,9 +38,9 @@ class BaseFilter extends QueryFilter
      * @param string $from
      * @param string $column
      */
-    public function fromDate(string $fromDate, $column = self::DATE)
+    public function fromDate(string $date, $column = self::DATE)
     {
-        $this->builder->whereDate($column, '>=', $fromDate)
+        $this->builder->whereDate($column, '>=', $date)
             ->whereDate($column, '<=', $this->request->toDate ?? Carbon::now());
     }
 
