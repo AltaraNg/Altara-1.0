@@ -5,7 +5,8 @@ import modules from './modules';
 import createLogger from 'vuex/dist/logger';
 
 const getYears = () => {
-    let years = [], startYear = new Date().getFullYear();
+    let years = [],
+        startYear = new Date().getFullYear();
     for (let i = 0; i < 6; i++) years.push(startYear--);
     return years;
 };
@@ -15,9 +16,9 @@ const admin = [1, 2, 8, 9];
 Vue.use(Vuex);
 const debug = process.env.NODE_ENV !== 'production';
 export const store = new Vuex.Store({
-    modules,//all modules automatically imported. just follow the store modules naming convention
+    modules, //all modules automatically imported. just follow the store modules naming convention
     plugins: debug ? [createLogger()] : [],
-    strict: debug,//TODO: uncomment this later to be able to structure vuex for scaling
+    strict: debug, //TODO: uncomment this later to be able to structure vuex for scaling
     state: {
         years: getYears(),
         banks: null,
@@ -25,9 +26,10 @@ export const store = new Vuex.Store({
         branches: null,
         paymentMethods: null,
         lifestyleBranches: [8]
-        /*note this is different from other number used in the array
-        below, this one is the id of the lifestyle branches
-        the others below are role id for users*/,
+            /*note this is different from other number used in the array
+            below, this one is the id of the lifestyle branches
+            the others below are role id for users*/
+            ,
         loader: true,
         ProfileAccess: [],
         ProfileEditAccess: [],
@@ -43,7 +45,7 @@ export const store = new Vuex.Store({
         DVALead: [...admin, 13, 16],
         DVAAccess: [...admin, 13, 16, 21, 22, 23],
         HRMAccess: [...admin, 6, 7],
-        peoplesOps: [...admin, 6, 7,],
+        peoplesOps: [...admin, 6, 7, ],
         FSLLead: [...admin, 11],
         supervisor: [...admin, 11, 14],
         FSLAccess: [...admin, 11, 14, 19],
@@ -51,19 +53,20 @@ export const store = new Vuex.Store({
         LOGAccess: [...admin, 11],
         CAGAccess: [...admin, 30],
         ALTARAPAYAccess: [...admin, 33],
+        CASHLOANAccess: [...admin, 42],
         months: [
-            {id: '01', name: "January"},
-            {id: '02', name: "February"},
-            {id: '03', name: "March"},
-            {id: '04', name: "April"},
-            {id: '05', name: "May"},
-            {id: '06', name: "June"},
-            {id: '07', name: "July"},
-            {id: '08', name: "August"},
-            {id: '09', name: "September"},
-            {id: '10', name: "October"},
-            {id: '11', name: "November"},
-            {id: '12', name: "December"},
+            { id: '01', name: "January" },
+            { id: '02', name: "February" },
+            { id: '03', name: "March" },
+            { id: '04', name: "April" },
+            { id: '05', name: "May" },
+            { id: '06', name: "June" },
+            { id: '07', name: "July" },
+            { id: '08', name: "August" },
+            { id: '09', name: "September" },
+            { id: '10', name: "October" },
+            { id: '11', name: "November" },
+            { id: '12', name: "December" },
         ]
     },
     getters: {
@@ -75,7 +78,7 @@ export const store = new Vuex.Store({
         getPaymentMethods: state => state.paymentMethods,
         getTypeaheadUsersList: state => state.typeaheadUsersList,
         auth: state => role => state[role].includes(state.authRole),
-        getAuthUserDetails: state => ({userId: state.user_id, roleId: state.authRole, apiToken: state.api_token})
+        getAuthUserDetails: state => ({ userId: state.user_id, roleId: state.authRole, apiToken: state.api_token })
     },
     mutations: {
         mutateAuth: state => {
@@ -93,16 +96,16 @@ export const store = new Vuex.Store({
         TOGGLE_LOADER: (state, data) => Vue.set(state, 'loader', data)
     },
     actions: {
-        mutateAuth: ({commit}) => commit('mutateAuth'),
-        mutateBanks: ({commit}, banks) => commit('mutateBanks', banks),
-        mutateStates: ({commit}, states) => commit('mutateStates', states),
-        mutateBranches: ({commit}, branches) => commit('mutateBranches', branches),
-        mutateProfileAccess: ({commit}, payload) => commit('mutateProfileAccess', payload),
-        mutatePaymentMethods: ({commit}, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
-        mutateTypeaheadUsersList: ({commit}, typeaheadUsersList) => commit('mutateTypeaheadUsersList', typeaheadUsersList),
+        mutateAuth: ({ commit }) => commit('mutateAuth'),
+        mutateBanks: ({ commit }, banks) => commit('mutateBanks', banks),
+        mutateStates: ({ commit }, states) => commit('mutateStates', states),
+        mutateBranches: ({ commit }, branches) => commit('mutateBranches', branches),
+        mutateProfileAccess: ({ commit }, payload) => commit('mutateProfileAccess', payload),
+        mutatePaymentMethods: ({ commit }, paymentMethods) => commit('mutatePaymentMethods', paymentMethods),
+        mutateTypeaheadUsersList: ({ commit }, typeaheadUsersList) => commit('mutateTypeaheadUsersList', typeaheadUsersList),
 
 
-        toggleLoader: ({commit}, bool) => commit('TOGGLE_LOADER', bool)
-        // TODO:: cleanup
+        toggleLoader: ({ commit }, bool) => commit('TOGGLE_LOADER', bool)
+            // TODO:: cleanup
     }
 });
