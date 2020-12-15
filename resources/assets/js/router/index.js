@@ -98,7 +98,10 @@ const Renewal = () =>
     import ('../views/FSL/renewal/renewal.vue');
 const CreditWorthy = () =>
     import ("../views/FSL/credit_worthy/credit_worthy.vue");
-
+const AltaraLoan = () =>
+    import ('../views/AltaraLoan/index.vue');
+const AltaraLoanHome = () =>
+    import ('../views/AltaraLoan/HomePage.vue');
 Vue.use(VueRouter);
 Vue.use(routerHistory);
 const router = new VueRouter({
@@ -135,7 +138,7 @@ const router = new VueRouter({
         {
             path: '/altarapay',
             component: AltaraPay,
-            meta: { requiresAuth: true, ALTARAPAY: true },
+            meta: { requiresAuth: true, ALTARAPAYy: true },
             children: [
                 { path: '/', redirect: { name: 'AltaraPayHome' } },
                 { path: 'home', component: AltaraPayHome, name: 'AltaraPayHome' },
@@ -152,6 +155,28 @@ const router = new VueRouter({
                     component: AllOverdue,
                     name: 'direct-debit-overdue',
                     meta: { mode: 'direct-debit' }
+                },
+            ]
+        }, {
+            path: '/cashloan',
+            component: AltaraLoan,
+            meta: { requiresAuth: true, CASHLOAN: true },
+            children: [
+                { path: '/', redirect: { name: 'AltaraLoanHome' } },
+                { path: 'home', component: AltaraLoanHome, name: 'AltaraLoanHome' },
+                { path: 'lookup', component: CustomerLookup, name: 'customer-lookup-cashloan', meta: { customSMS: true } },
+                { path: 'direct-debit-sales', component: DirectDebitSales, name: 'direct-debit-sales-cashloan', meta: { customSMS: true } },
+                {
+                    path: 'direct-debit-overdue',
+                    component: AllOverdue,
+                    name: 'direct-debit-overdue-cashloan',
+                    meta: { mode: 'direct-debit' }
+                },
+                {
+                    path: "credit-worthy",
+                    component: CreditWorthy,
+                    name: "credit-worthy",
+                    meta: { mode: "create" }
                 },
             ]
         },
