@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class BusinessType extends Model
 {
     protected $guarded = [];
+        const ALTARA_CREDIT_PRODUCT = 'Altara Credit Products';
+        const ALTARA_PAY_PRODUCT = 'Altara Pay Products';
+        const ALTARA_CREDIT_CASH_LOAN = 'Altara Credit Cash Loan';
+        const ALTARA_PAY_CASH_LOAN = 'Altara Pay Cash Loan';
 
     //
     public function newOrder(){
