@@ -4,23 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 
-use App\Http\Requests\DirectDebitRequest;
-use App\DirectDebit;
-use App\Repositories\DirectDebitRepository;
+use App\Http\Requests\DirectDebitResultRequest;
+use App\Repositories\DirectDebitResultRepository;
 
 class DirectDebitController extends Controller
 {
-    //
-    private $directDebit;
+    private $directDebitResultRepo;
 
-    public function __construct(DirectDebitRepository $directDebitRepo)
+    public function __construct(DirectDebitResultRepository $directDebitResultRepository)
     {
-        $this->directDebit = $directDebitRepo;
+        $this->directDebitResultRepo = $directDebitResultRepository;
     }
 
-    public function store(DirectDebitRequest $request)
+    public function store(DirectDebitResultRequest $request)
     {
-        $result = $this->directDebit->store($request->validated());
+        $result = $this->directDebitResultRepo->store($request->validated());
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 }

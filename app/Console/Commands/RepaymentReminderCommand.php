@@ -65,12 +65,12 @@ class RepaymentReminderCommand extends BaseCommand
             $date = $this->option('date');
 
             $response = $this->reminderCommandService->handle($days, $type, $date);
+            $this->info(count($response) . ' records treated');
 
         } catch (\Exception $e) {
             $this->error($e->getMessage() ?? 'Something went wrong');
         }
 
-        $this->info(count($response) . ' records treated');
         $this->info('Sms Reminders completed.');
         $this->info('Exiting...');
         return 0;

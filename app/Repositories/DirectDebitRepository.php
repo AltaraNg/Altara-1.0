@@ -2,21 +2,17 @@
 
 namespace App\Repositories;
 
-use App\DirectDebit;
+use App\DirectDebitResult;
 
-class DirectDebitRepository extends Repository
+class DirectDebitResultRepository extends Repository
 {
     public function model()
     {
-        return DirectDebit::class;
+        return DirectDebitResult::class;
     }
 
     public function store(array $data)
     {
-        // dd($data);
-        $result = $this->model::create($data);
-
-
-        return $result;
+        return $this->model::create($data);
     }
 }

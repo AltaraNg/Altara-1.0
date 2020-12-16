@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\DirectDebitService;
 use Carbon\Carbon;
 
 class DirectDebitDeduction extends BaseCommand
@@ -13,7 +14,6 @@ class DirectDebitDeduction extends BaseCommand
      */
 
     protected $signature = 'make:debit '
-    . '{--days= : The number of days payment past due e.g 7} '
     . '{--date= : Send Sms Reminder for a specific date in the past e.g 2020-11-06} ';
 
     /**
@@ -22,15 +22,20 @@ class DirectDebitDeduction extends BaseCommand
      * @var string
      */
     protected $description = 'Command description';
+    /**
+     * @var DirectDebitService
+     */
+    private $directDebitService;
 
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @param DirectDebitService $directDebitService
      */
-    public function __construct()
+    public function __construct(DirectDebitService $directDebitService)
     {
         parent::__construct();
+        $this->directDebitService = $directDebitService;
     }
 
     /**
@@ -41,8 +46,6 @@ class DirectDebitDeduction extends BaseCommand
      */
     public function handle()
     {
-        $this->valInput();
-        $this->processInput();
         $this->process();
     }
 
@@ -55,14 +58,15 @@ class DirectDebitDeduction extends BaseCommand
     {
         $this->line('<info>[' . Carbon::now()->format('Y-m-d H:i:s') . ']</info> Calling Direct Debit');
         try {
-            $days = $this->option('days');
-            $date = $this->option('date');
-
-            $response = $this->reminderCommandService->handle($days, $date);
+            $response = $this->directDebitService->handle();
+            $this->info(count($response) . ' records treated');
 
         } catch (\Exception $e) {
             $this->error($e->getMessage() ?? 'Something went wrong');
         }
+
+        $this->info('Direct Debit deduction completed.');
+        $this->info('Exiting...');
         return 0;
     }
 }

@@ -4,13 +4,9 @@
 namespace App\Services;
 
 
+use App\Amortization;
 use App\BusinessType;
-use App\Helper\Constants;
-use App\Helper\LogHelper;
-use App\NewOrder;
-use App\Notifications\Models\SmsReminderModel;
-use App\Notifications\SmsReminder;
-use App\Notifications\SmsReminderSent;
+use App\Events\RepaymentEvent;
 use Carbon\Carbon;
 
 class DirectDebitService
@@ -19,69 +15,73 @@ class DirectDebitService
      * @var MailService
      */
     private $mailService;
+    /**
+     * @var PaystackService
+     */
+    private $paystackService;
 
-    public function __construct(MailService $mailService)
+    /**
+     * DirectDebitService constructor.
+     * @param MailService $mailService
+     * @param PaystackService $paystackService
+     */
+    public function __construct(MailService $mailService, PaystackService $paystackService)
     {
         $this->mailService = $mailService;
+        $this->paystackService = $paystackService;
     }
 
-    public function fetchOrders($days = 7, $date = null)
+    private function fetchOrders()
     {
-        //get list of customers based on their repayment date
-        $data = NewOrder::whereIn('id', function ($query) use ($days, $date) {
-            $today = Carbon::parse($date) ?? Carbon::now();
-            $query->select('new_order_id')
-                ->from('amortizations')
-                ->whereDate('expected_payment_date', $today)
-                ->where('actual_payment_date', NULL);
-        })
-        ->where('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_PRODUCT)->first()->id)
-        ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id);
+        //get list of due payments
+        $data = Amortization::where('actual_payment_date', null)
+            ->whereDate('expected_payment_date', '<=' ,Carbon::now())
+            ->whereHas('new_orders', function ($q){
+                $q->where('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_PRODUCT)->first()->id)
+                ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id);
+            });
 
         return $data->get();
     }
 
-    public function handle($days, $date)
+    public function handle()
     {
-        $orders = $this->fetchOrders($days, $date);
+        $items = $this->fetchOrders();
 
         $res = array();
-        if (empty($orders)) {
+        if (empty($items)) {
             return 'No Customers are available';
         }
-        foreach ($orders as $order) {
+        foreach ($items as $item) {
+            $response = $this->paystackService->charge($item);
+
             # code...
-            $message = strtr(Constants::$reminderMessages[$type], $order->toArray());
             $item = [
-                'customer_id' => $order->customer_id,
-                'customer_name' => $order->customer->full_name,
-                'order_id' => $order->order_number,
-                'message' => $message,
+                'customer_id' => $item->new_orders->customer_id,
+                'customer_name' => $item->new_orders->customer->full_name,
+                'order_id' => $item->new_orders->order_number,
+                'amount' => $item->expected_amount,
             ];
 
-            try {
-                $reminderObject = new SmsReminderModel($message, $type);
-                $order->customer->notify(new SmsReminder($reminderObject));
+            if($response->status) {
+                $item->new_orders['amount'] = $item->expected_amount;
+                event(new RepaymentEvent($item->new_orders));
                 $res[] = array_merge($item, [
                     'status' => 'success',
-                    'statusMessage' => 'Message sent Successfully'
+                    'statusMessage' => 'Approved'
                 ]);
-
-                $order->notify(new SmsReminderSent($reminderObject));
-            } catch (\Exception $e) {
-                LogHelper::error(strtr(Constants::FAILED_SMS, $order->toArray()), $e);
+            }else {
                 $res[] = array_merge($item, [
                     'status' => 'failed',
-                    'statusMessage' => $e->getMessage()
+                    'statusMessage' => $response->message
                 ]);
             }
-
         }
 
         # send report mail
-        $this->mailService->sendReportAsMail($days .'days sms reminder', $res,
-            config('app.operations_email'), 'Sms Reminder Report',
-            'SmsReminder', 'Sms Reminder report for ' . Carbon::parse($date)->toDateString());
+        $this->mailService->sendReportAsMail('Direct Debit Report', $res,
+            config('app.operations_email'), 'Direct Debit Report',
+            'DirectDebit', 'Direct Debit Report ' . Carbon::now()->toDateString());
 
         return $res;
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\DirectDebit;
+use App\DirectDebitResult;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DirectDebitRequest extends FormRequest
+class DirectDebitResultRequest extends FormRequest
 {
 
     /**
@@ -20,6 +20,6 @@ class DirectDebitRequest extends FormRequest
 
     public function rules()
     {
-        return DirectDebit::rules();
+        return DirectDebitResult::rules();
     }
 }

@@ -102,7 +102,7 @@ class NewOrder extends Model
     }
 
     public function authCode(){
-        return $this->hasOne(CustomRepaymentDate::class);
+        return $this->hasOne(PaystackAuthCode::class, 'order_id', 'order_number');
     }
 
     public function defaulter(){

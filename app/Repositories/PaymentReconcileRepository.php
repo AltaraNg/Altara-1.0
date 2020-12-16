@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\PaymentReconcile;
-use App\Repayment;
 use App\Services\PaymentService;
 use Illuminate\Support\Str;
 use App\Events\RepaymentEvent;
@@ -24,7 +23,7 @@ class PaymentReconcileRepository extends Repository
     public function storeOrCreate(array $data)
     {
         $model = app('App\\' . Str::studly($data['model']))->findOrFail($data['model_id']);
-        $new_order = $data;
+        $model['amount'] = $data['amount'];
         unset($data['model_id']);
         unset($data['model']);
 
@@ -36,7 +35,7 @@ class PaymentReconcileRepository extends Repository
         $payment_type = PaymentType::where('id', $data["payment_type_id"])->first();
 
         if ($payment_type->type == PaymentType::REPAYMENTS) {
-            event(new RepaymentEvent($new_order));
+            event(new RepaymentEvent($model));
         }
         return $resp;
     }
