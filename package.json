@@ -44,7 +44,7 @@
         "vue-router-back-button": "^1.1.1"
     },
     "dependencies": {
-        "datatables.net": "^1.10.19",
+        "datatables.net": "^1.10.22",
         "datatables.net-bs4": "^1.10.19",
         "datatables.net-responsive": "^2.2.3",
         "es6-promise": "^4.2.4",
