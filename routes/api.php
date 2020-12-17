@@ -62,9 +62,10 @@ Route::group(['middleware' => ['auth:api']], function () {
         'amortization' => 'AmortizationController',
         'price_calculator' => 'PriceCalculatorController',
         'repayment_reminder' => 'RepaymentReminderController',
+        'collection' => 'CollectionController',
         'pay_stack_auth_code' => 'PaystackAuthCodeController',
         'pay_stack_customers_code' => 'PaystackCustomersCodeController',
-        'dd_result' => 'DirectDebitController'
+        'dd_result' => 'DirectDebitResultController'
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');

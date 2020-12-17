@@ -7,7 +7,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Requests\DirectDebitResultRequest;
 use App\Repositories\DirectDebitResultRepository;
 
-class DirectDebitController extends Controller
+class DirectDebitResultController extends Controller
 {
     private $directDebitResultRepo;
 
