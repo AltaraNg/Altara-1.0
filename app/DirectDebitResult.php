@@ -6,7 +6,7 @@ use App\Rules\Money;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DirectDebit extends Model
+class DirectDebitResult extends Model
 {
     protected $guarded = [];
     protected $table = "dd_result";

@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class CreatePaystackCustomersCodesTable extends Migration
+class CreatePaystackCustomersCodeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreatePaystackCustomersCodesTable extends Migration
      */
     public function up()
     {
-        Schema::table('paystack_customers_code', function (Blueprint $table) {
-            $table->timestamps();
+        Schema::create('paystack_customers_code', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('customer_code')->unique();
         });
     }
 

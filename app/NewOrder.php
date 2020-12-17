@@ -101,6 +101,10 @@ class NewOrder extends Model
         return $this->hasOne(CustomRepaymentDate::class);
     }
 
+    public function authCode(){
+        return $this->hasOne(PaystackAuthCode::class, 'order_id', 'order_number');
+    }
+
     public function defaulter(){
         $onTime = $this->amortization()->where('actual_amount','>',1)->count();
         $total = $this->amortization()->count();

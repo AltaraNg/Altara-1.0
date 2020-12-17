@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDirectDebitsTable extends Migration
+class CreateDDResultTable extends Migration
 {
     /**
      * Run the migrations.
@@ -33,6 +33,6 @@ class CreateDirectDebitsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('direct_debits');
+        Schema::dropIfExists('dd_result');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\NewOrder;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -18,11 +19,10 @@ class RepaymentEvent
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param $newOrder
      */
-    public function __construct($newOrder)
+    public function __construct(NewOrder $newOrder)
     {
-        //
         $this->newOrder = $newOrder;
     }
 
