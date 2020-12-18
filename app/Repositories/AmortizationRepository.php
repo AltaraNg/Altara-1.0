@@ -4,7 +4,6 @@
 namespace App\Repositories;
 
 use App\Amortization;
-use App\Amortization\Amortization as AmortizationAmortization;
 
 class AmortizationRepository extends Repository
 {
