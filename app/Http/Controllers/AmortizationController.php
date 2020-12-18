@@ -75,10 +75,5 @@ class AmortizationController extends Controller
         return ResponseHelper::createSuccessResponse($resp);
     }
 
-    public function updateActualPay(Amortization $amortization, Request $request)
-    {
-        $data = $this->validate($request, Amortization::$updateRules);
-        $resp = $this->amortizationRepository->updateActualPay($amortization, $data);
-        return ResponseHelper::createSuccessResponse($amortization->toArray());
-    }
+
 }

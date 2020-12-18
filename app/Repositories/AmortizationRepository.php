@@ -23,9 +23,5 @@ class AmortizationRepository extends Repository
         return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
     }
 
-    public function updateActualPay($model, array $data)
-    {
-        $model->update($data);
-        return $model;
-    }
+
 }
