@@ -84,6 +84,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::patch('/payment-reconcile/{payment_reconcile}/finance', 'PaymentReconcileController@finance');
     Route::patch('/brand/{brand}/categories', 'BrandController@manageCategories');
     Route::post('/amortization/preview', 'AmortizationController@preview');
+    Route::put('/amortization/{amortization}/update', 'AmortizationController@updateActualPay');
     Route::get('/inventory-summary', 'InventoryController@summary');
 });
 

@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 use App\Amortization;
+use App\Amortization\Amortization as AmortizationAmortization;
 
 class AmortizationRepository extends Repository
 {
@@ -20,5 +21,11 @@ class AmortizationRepository extends Repository
     public function getAll($filter)
     {
         return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
+    }
+
+    public function updateActualPay($model, array $data)
+    {
+        $model->update($data);
+        return $model;
     }
 }

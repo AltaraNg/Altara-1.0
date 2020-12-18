@@ -6,6 +6,7 @@ use App\Amortization;
 use App\Exceptions\AException;
 use App\Helpers\ResponseHelper;
 use App\Http\Filters\AmortizationFilter;
+use App\Http\Requests\AmortizationRequest;
 use App\Http\Requests\NewOrderRequest;
 use App\Repositories\AmortizationRepository;
 use App\Services\AmmortizationService;
@@ -72,5 +73,12 @@ class AmortizationController extends Controller
     {
         $resp = $service->generatePreview($request->validated());
         return ResponseHelper::createSuccessResponse($resp);
+    }
+
+    public function updateActualPay(Amortization $amortization, Request $request)
+    {
+        $data = $this->validate($request, Amortization::$updateRules);
+        $resp = $this->amortizationRepository->updateActualPay($amortization, $data);
+        return ResponseHelper::createSuccessResponse($amortization->toArray());
     }
 }
