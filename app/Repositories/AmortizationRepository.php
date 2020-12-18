@@ -21,4 +21,6 @@ class AmortizationRepository extends Repository
     {
         return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
     }
+
+
 }
