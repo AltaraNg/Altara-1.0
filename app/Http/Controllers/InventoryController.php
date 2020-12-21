@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Helper\InventoryHelper;
 use App\Http\Filters\InventoryFilter;
 use App\Http\Requests\InventoryRequest;
+use App\Imports\InventoriesImport;
 use App\Inventory;
 use App\InventoryStatus;
 use App\Product;
 use App\Repositories\InventoryRepository;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
 {
@@ -74,5 +77,15 @@ class InventoryController extends Controller
         $summary = $inventoryHelper->getSummary($inventories);
 
         return $this->sendSuccess(['products' => $products, 'summary' => $summary],'Action Request Successful');
+    }
+
+    /**
+     * @return Response
+     */
+    public function uploadSheet()
+    {
+        Excel::import(new InventoriesImport(),Request::file('file'));
+
+        return $this->sendSuccess([],'Inventory Updated successfully');
     }
 }

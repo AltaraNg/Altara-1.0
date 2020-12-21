@@ -86,6 +86,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::patch('/brand/{brand}/categories', 'BrandController@manageCategories');
     Route::post('/amortization/preview', 'AmortizationController@preview');
     Route::get('/inventory-summary', 'InventoryController@summary');
+    Route::post('/sheet/product', 'ProductController@uploadSheet');
+    Route::post('/sheet/inventory', 'InventoryController@uploadSheet');
+    Route::post('/sheet/calculator', 'PriceCalculatorController@uploadCalculator');
 });
 
 Route::post('/ammo', 'UserController@test');
