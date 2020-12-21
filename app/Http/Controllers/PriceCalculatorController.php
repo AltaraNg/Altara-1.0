@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\PriceCalculatorRequest;
+use App\Imports\CalculatorImport;
 use App\PriceCalculator;
 use App\Repositories\PriceCalculatorRepository;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PriceCalculatorController extends Controller
 {
@@ -54,5 +57,15 @@ class PriceCalculatorController extends Controller
         $priceCalculator = $this->priceCalRepo->update($priceCalculator, $request->validated());
 
         return $this->sendSuccess($priceCalculator->toArray(), 'Price Calc updated successfully');
+    }
+
+    /**
+     * @return Response
+     */
+    public function uploadCalculator()
+    {
+        Excel::import(new CalculatorImport(),Request::file('file'));
+
+        return $this->sendSuccess([],'Calculator Uploaded successfully');
     }
 }

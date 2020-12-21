@@ -86,9 +86,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @param Product $product
      * @return Response
-     * @throws \Exception
      */
     public function uploadSheet()
     {
