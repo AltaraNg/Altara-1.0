@@ -84,4 +84,9 @@ class Branch extends Model
         return $this->hasMany(Attendance::class);
     }
 
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class);
+    }
+
 }

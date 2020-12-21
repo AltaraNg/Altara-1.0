@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\ProductFilter;
 use App\Http\Requests\ProductRequest;
+use App\Imports\ProductsImport;
 use App\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -80,5 +83,17 @@ class ProductController extends Controller
         $product->delete();
 
         return $this->sendSuccess([],'Product deleted successfully');
+    }
+
+    /**
+     * @param Product $product
+     * @return Response
+     * @throws \Exception
+     */
+    public function uploadSheet()
+    {
+        Excel::import(new ProductsImport(),Request::file('file'));
+
+        return $this->sendSuccess([],'Product Uploaded successfully');
     }
 }
