@@ -56,8 +56,7 @@ abstract class Repository
     }
 
     public function store(array $data) {
-        $result = $this->model::create($data);
-        return $result;
+        return $this->model::create($data);
     }
 
     public function update($model, $data) {
