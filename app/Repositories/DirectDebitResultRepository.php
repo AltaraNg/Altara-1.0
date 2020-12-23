@@ -10,9 +10,4 @@ class DirectDebitResultRepository extends Repository
     {
         return DirectDebitResult::class;
     }
-
-    public function store(array $data)
-    {
-        return $this->model::create($data);
-    }
 }
