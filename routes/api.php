@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'dd_result' => 'DirectDebitResultController',
         'dd_data' => 'DirectDebitDataController',
         'dd_k' => 'DirectDebitKeyController',
+        'reminder_value' => 'ReminderValueController',
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');

@@ -83,4 +83,13 @@ class NewOrderFilter extends BaseFilter
                 ->where('notifiable_type', 'App\NewOrder');
         });
     }
+
+    public function businessType(int $type)
+    {
+        $this->builder->whereHas('businessType', function ($query) use ($type) {
+            $query->select('business_type_id')
+            ->from('business_types')
+            ->where('id', $type);
+        });
+    }
 }
