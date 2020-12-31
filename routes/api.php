@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'pay_stack_customers_code' => 'PaystackCustomersCodeController',
         'dd_result' => 'DirectDebitResultController',
         'dd_data' => 'DirectDebitDataController',
+        'dd_k' => 'DirectDebitKeyController',
         'reminder_value' => 'ReminderValueController',
     ]);
     /*------*/
