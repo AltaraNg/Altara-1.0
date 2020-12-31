@@ -5,15 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaystackCustomersCode extends Model
+class DirectDebitKey extends Model
 {
     protected $guarded = [];
-    protected $table = "paystack_customers_code";
+    protected $table = "dd_k";
     public static function rules()
     {
         return [
-            'id' => 'required|exists:customers,id',
-            'customer_code' => 'required|string',
+            'name' => 'required|string',
+            'key' => 'required|string'
         ];
     }
 }
