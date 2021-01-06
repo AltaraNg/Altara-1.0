@@ -18,5 +18,7 @@ class ReminderValue extends Model
     const FIRST_COLLECTION = 49;
     const SECOND_COLLECTION = 56;
     const THIRD_COLLECTION = 63;
-    const RECOVERY = 70;
+    const FIRST_RECOVERY = 70;
+    const SECOND_RECOVERY = 77;
+    const THIRD_RECOVERY = 84;
 }
