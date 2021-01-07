@@ -111,6 +111,16 @@ class NewOrder extends Model
         return ($onTime /$total) * 100;
     }
 
+    public function discounts()
+    {
+        return $this->belongsToMany(
+            Discount::class,
+            'orders_discounts',
+            'order_id',
+            'discount_id'
+        );
+    }
+
     /**
      * Get all of the New Order's payments.
      */
