@@ -71,8 +71,20 @@ class ReminderValuesSeeder extends Seeder
         );
         ReminderValue::updateOrCreate(
             [
-                'name' => 'recovery',
-                'value' => ReminderValue::RECOVERY
+                'name' => 'first_recovery',
+                'value' => ReminderValue::FIRST_RECOVERY
+            ]
+        );
+        ReminderValue::updateOrCreate(
+            [
+                'name' => 'second_recovery',
+                'value' => ReminderValue::SECOND_RECOVERY
+            ]
+        );
+        ReminderValue::updateOrCreate(
+            [
+                'name' => 'third_recovery',
+                'value' => ReminderValue::THIRD_RECOVERY
             ]
         );
     }

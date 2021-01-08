@@ -31,7 +31,7 @@ class CollectionRequest extends FormRequest
                     'feedback' => 'required',
                     'order_id' => 'required|exists:new_orders,id',
                     'visited' => 'required|boolean',
-                    'type' => 'required|in:' . Collection::FIRST_RECOVERY . ',' . Collection::SECOND_RECOVERY . ',' . Collection::THIRD_RECOVERY . ',' . Collection::FIRST_COLLECTION . ',' .Collection::SECOND_COLLECTION
+                        'type' => 'required|in:' . Collection::FIRST_RECOVERY . ',' . Collection::SECOND_RECOVERY . ',' . Collection::THIRD_RECOVERY . ',' . Collection::FIRST_COLLECTION . ',' . Collection::SECOND_COLLECTION . ',' . Collection::THIRD_COLLECTION
                 ];
             }
             default:break;

@@ -34,6 +34,8 @@ class NewOrder extends Model
             'business_type_id' => 'required|exists:business_types,id',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'down_payment' => ['required', new Money],
+            'discount' => 'sometimes|array',
+            'discount.*' => 'sometimes|numeric|exists:discounts,id',
             'product_price' => ['required', new Money],
             'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,'. $id
         ];
@@ -109,6 +111,16 @@ class NewOrder extends Model
         $onTime = $this->amortization()->where('actual_amount','>',1)->count();
         $total = $this->amortization()->count();
         return ($onTime /$total) * 100;
+    }
+
+    public function discounts()
+    {
+        return $this->belongsToMany(
+            Discount::class,
+            'orders_discounts',
+            'order_id',
+            'discount_id'
+        );
     }
 
     /**
