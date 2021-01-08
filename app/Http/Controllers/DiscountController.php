@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Discount;
+use App\Helpers\ResponseHelper;
+use App\Repositories\DiscountRepository;
 use Illuminate\Http\Request;
 
 class DiscountController extends Controller
@@ -12,10 +14,19 @@ class DiscountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $discount;
+
+    public function __construct(DiscountRepository $discountRepository)
+    {
+        $this->discount = $discountRepository;
+    }
+
     public function index()
     {
-        //
+        $result = $this->discount->all();
+        return ResponseHelper::createSuccessResponse($result->toArray());
     }
+
 
     /**
      * Show the form for creating a new resource.

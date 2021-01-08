@@ -9,6 +9,7 @@ class Discount extends Model
     public $timestamps = false;
 
     protected $fillable = ['name','percentage'];
+    protected $guarded = [];
 
     public function new_orders()
     {
