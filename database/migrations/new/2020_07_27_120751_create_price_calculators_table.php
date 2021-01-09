@@ -25,9 +25,9 @@ class CreatePriceCalculatorsTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
 
-            $table->foreign('business_type_id')->references('id')->on('business_types')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('down_payment_rate_id')->references('id')->on('down_payment_rates')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('repayment_duration_id')->references('id')->on('repayment_durations')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('business_type_id')->references('id')->on('business_types');
+            $table->foreign('down_payment_rate_id')->references('id')->on('down_payment_rates');
+            $table->foreign('repayment_duration_id')->references('id')->on('repayment_durations');
 
             $table->unique(['business_type_id', 'down_payment_rate_id', 'repayment_duration_id'], 'bt_dp_rp_id');
         });
