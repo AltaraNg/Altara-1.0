@@ -16,7 +16,7 @@ class CreateCustomRepaymentDatesTable extends Migration
         Schema::create('custom_repayment_dates', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('new_order_id')->index();
-            $table->foreign('new_order_id')->references('id')->on('new_orders')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('new_order_id')->references('id')->on('new_orders');
             $table->integer('custom_date')->default(1);
             $table->timestamps();
         });
