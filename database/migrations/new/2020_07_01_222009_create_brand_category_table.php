@@ -15,9 +15,9 @@ class CreateBrandCategoryTable extends Migration
     {
        Schema::create('brand_category', function (Blueprint $table) {
            $table->unsignedInteger('brand_id')->index();
-           $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade')->onUpdate('cascade');
+           $table->foreign('brand_id')->references('id')->on('brands');
            $table->unsignedInteger('category_id')->index();
-           $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+           $table->foreign('category_id')->references('id')->on('categories');
        });
     }
 
