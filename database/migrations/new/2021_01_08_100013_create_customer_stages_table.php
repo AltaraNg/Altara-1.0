@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdersDiscountsTable extends Migration
+class CreateCustomerStagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateOrdersDiscountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders_discounts', function (Blueprint $table) {
+        Schema::create('customer_stages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('order_id');
-            $table->foreign('order_id')->references('id')->on('new_orders');
-
-            $table->unsignedInteger('discount_id');
-            $table->foreign('discount_id')->references('id')->on('discounts');
+            $table->string('name');
+            $table->boolean('is_ative')->default(1);
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateOrdersDiscountsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders_discounts');
+        Schema::dropIfExists('customer_stages');
     }
 }
