@@ -70,7 +70,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         'dd_k' => 'DirectDebitKeyController',
         'reminder_value' => 'ReminderValueController',
         'discount' => 'DiscountController',
-        'customer_contact' => 'ContactCustomerController'
+        'customer_contact' => 'ContactCustomerController',
+        'customer_stage' => 'CustomerStageController',
+        'employment_status' => 'EmploymentStatusController'
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
