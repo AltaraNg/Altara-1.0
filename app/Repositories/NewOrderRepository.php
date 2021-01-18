@@ -47,6 +47,9 @@ class NewOrderRepository extends Repository
         $paymentType = PaymentType::where('type', PaymentType::DOWNPAYMENT)->first()->id;
         $order->amount = $data['down_payment'];
         $order->payment_type_id = $paymentType;
+        if ($data['discounts']) {
+            $order->discounts = $data['discounts'];
+        }
         $order->payment_method_id = $data['payment_method_id'];
         $order->bank_id = $data['bank_id'];
         $order->inventory = $inventory;
