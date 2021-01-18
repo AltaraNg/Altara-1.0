@@ -14,12 +14,11 @@ namespace App\Helper;
  */
 class Constants {
 
-    const F_SMS_CREDIT = 'first_sms_credit';
-    const F_SMS_PAY = 'first_sms_pay';
-    const S_SMS_CREDIT = 'second_sms_credit';
-    const S_SMS_PAY = 'second_sms_pay';
-    const T_SMS_CREDIT = 'second_sms_credit';
-    const T_SMS_PAY = 'second_sms_pay';
+    const F_SMS = 'first_sms';
+    const S_SMS = 'second_sms';
+    const T_SMS = 'third_sms';
+    const ALTARACREDIT = 'Altara_Credit';
+    const ALTARAPAY = 'Altara_Pay';
     const FIRST_CALL = 'first_call';
     const SECOND_CALL = 'second_call';
     const THIRD_CALL = 'third_call';
@@ -35,11 +34,17 @@ class Constants {
 
 
     static $reminderMessages = [
-        self::F_SMS_CREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
-        self::F_SMS_PAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
-        self::S_SMS_CREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 14days',
-        self::S_SMS_PAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 14days',
-        self::T_SMS_CREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 21days',
-        self::T_SMS_PAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 21days',
+        self::F_SMS => [
+            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+        ],
+        self::S_SMS => [
+            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+        ],
+        self::T_SMS => [
+            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+        ]
     ];
 }

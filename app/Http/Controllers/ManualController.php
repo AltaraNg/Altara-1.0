@@ -12,7 +12,24 @@ class ManualController extends Controller
 {
     public function jobs()
     {
-        Artisan::call('schedule:run');
+//        Artisan::call('schedule:run');
+        switch (request('type')){
+            case 1:
+                Artisan::call('send:smsReminder --type=first_sms --days=7');;
+            break;
+            case 2:
+                Artisan::call('send:smsReminder --type=second_sms --days=14');;
+                break;
+            case 3:
+                Artisan::call('send:smsReminder --type=third_sms --days=21');;
+                break;
+            case 4:
+                Artisan::call('make:debit');;
+                break;
+            default:
+                return $this->sendError('Type doesnt exist', 401);
+        }
+//        Artisan::call('send:smsReminder --type=first_sms --days=7');
         return $this->sendSuccess([], 'Jobs performed successfully');
     }
 
