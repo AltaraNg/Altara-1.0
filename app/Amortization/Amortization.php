@@ -23,8 +23,14 @@ abstract class Amortization
 
     public function repaymentAmount(): float
     {
+
         return floor($this->order->repayment/$this->repaymentCount() / 100) * 100;
     }
+    public function getDiscount(): array
+    {
+        return [];
+    }
+
 
     public function repaymentDuration(): int
     {

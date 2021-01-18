@@ -14,9 +14,12 @@ namespace App\Helper;
  */
 class Constants {
 
-    const FIRST_SMS = 'first_sms';
-    const SECOND_SMS = 'second_sms';
-    const THIRD_SMS = 'third_sms';
+    const F_SMS_CREDIT = 'first_sms_credit';
+    const F_SMS_PAY = 'first_sms_pay';
+    const S_SMS_CREDIT = 'second_sms_credit';
+    const S_SMS_PAY = 'second_sms_pay';
+    const T_SMS_CREDIT = 'second_sms_credit';
+    const T_SMS_PAY = 'second_sms_pay';
     const FIRST_CALL = 'first_call';
     const SECOND_CALL = 'second_call';
     const THIRD_CALL = 'third_call';
@@ -32,8 +35,11 @@ class Constants {
 
 
     static $reminderMessages = [
-        self::FIRST_SMS => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
-        self::SECOND_SMS => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 14days',
-        self::THIRD_SMS => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 21days',
+        self::F_SMS_CREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+        self::F_SMS_PAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+        self::S_SMS_CREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 14days',
+        self::S_SMS_PAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 14days',
+        self::T_SMS_CREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 21days',
+        self::T_SMS_PAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 21days',
     ];
 }
