@@ -11,6 +11,7 @@ class ContactCustomer extends Model
 {
     use HasFactory, Filterable;
     protected $guarded = [];
+    protected $with = ['users'];
 
     /**
      * Validation rules
@@ -48,4 +49,10 @@ class ContactCustomer extends Model
             'customer_stage_id' => 'sometimes|required|exists:customer_stages,id'
         ];
     }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }
