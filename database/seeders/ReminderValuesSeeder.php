@@ -17,20 +17,20 @@ class ReminderValuesSeeder extends Seeder
         //
         ReminderValue::updateOrCreate(
             [
-                'name' => 'first_message',
-                'value' => ReminderValue::FIRST_MESSAGE
+                'name' => 'first_sms',
+                'value' => ReminderValue::FIRST_SMS
             ]
         );
         ReminderValue::updateOrCreate(
             [
-                'name' => 'second_message',
-                'value' => ReminderValue::SECOND_MESSAGE
+                'name' => 'second_sms',
+                'value' => ReminderValue::SECOND_SMS
             ]
         );
         ReminderValue::updateOrCreate(
             [
-                'name' => 'third_message',
-                'value' => ReminderValue::THIRD_MESSAGE
+                'name' => 'third_sms',
+                'value' => ReminderValue::THIRD_SMS
             ]
         );
         ReminderValue::updateOrCreate(
