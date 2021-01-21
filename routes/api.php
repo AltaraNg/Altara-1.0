@@ -96,6 +96,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/sheet/product', 'ProductController@uploadSheet');
     Route::post('/sheet/inventory', 'InventoryController@uploadSheet');
     Route::post('/sheet/calculator', 'PriceCalculatorController@uploadCalculator');
+    Route::get('/jobs', 'ManualController@jobs');
+    Route::post('/no-auth', 'ManualController@getNoAuth');
 });
 
 Route::post('/ammo', 'UserController@test');

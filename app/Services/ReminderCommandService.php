@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\BusinessType;
 use App\Helper\Constants;
 use App\Helper\LogHelper;
 use App\Notifications\Models\SmsReminderModel;
@@ -32,8 +33,14 @@ class ReminderCommandService
             return 'No Customers are available';
         }
         foreach ($orders as $order) {
+            $businessType = BusinessType::find($order->business_type_id);
+            if (str_contains($businessType->name, 'Altara Credit')) {
+                $getMessage = Constants::$reminderMessages[$type][Constants::ALTARACREDIT];
+            }else {
+                $getMessage = Constants::$reminderMessages[$type][Constants::ALTARAPAY];
+            }
                 # code...
-                $message = strtr(Constants::$reminderMessages[$type], $order->toArray());
+                $message = strtr($getMessage, $order->toArray());
                 $item = [
                     'customer_id' => $order->customer_id,
                     'customer_name' => $order->customer->full_name,
@@ -42,7 +49,7 @@ class ReminderCommandService
                 ];
 
                 try {
-                    $reminderObject = new SmsReminderModel($message, $type);
+                    $reminderObject = new SmsReminderModel($type, $message);
                     $order->customer->notify(new SmsReminder($reminderObject));
                     $res[] = array_merge($item, [
                         'status' => 'success',
