@@ -9,9 +9,9 @@ class ReminderValue extends Model
 {
     protected $guarded = [];
 
-    const FIRST_MESSAGE = 7;
-    const SECOND_MESSAGE = 14;
-    const THIRD_MESSAGE = 21;
+    const FIRST_SMS = 7;
+    const SECOND_SMS = 14;
+    const THIRD_SMS = 21;
     const FIRST_CALL = 28;
     const SECOND_CALL = 35;
     const THIRD_CALL = 42;
