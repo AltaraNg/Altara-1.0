@@ -23,6 +23,23 @@ class ContactCustomerFilter extends BaseFilter
         $this->builder->where('employment_status_id', $status);
     }
 
+
+    /**
+     * @param string $id
+     */
+    public function regId($id)
+    {
+        $this->builder->where('reg_id', $id);
+    }
+
+    /**
+     * @param int $phone
+     */
+    public function phone($phone)
+    {
+        $this->builder->where('phone', $phone);
+    }
+
     /**
      * @param int $status
      */
