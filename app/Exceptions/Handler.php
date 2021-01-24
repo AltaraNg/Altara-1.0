@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use App\Helper\LogHelper;
 use App\Helpers\ResponseCodes;
 use App\Helpers\ResponseHelper;
 use App\Helpers\ResponseMessages;
@@ -46,8 +45,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $e)
     {
-        LogHelper::error($e->getMessage(), $e);
-//        parent::report($e);
+        parent::report($e);
     }
 
     /**
