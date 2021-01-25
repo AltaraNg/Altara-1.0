@@ -42,7 +42,8 @@ class PaymentReconcileRepository extends Repository
 
     public function getAll($filter)
     {
-        return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
+        $limit = request('limit', 20);
+        return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate($limit);
     }
 
     public function update($model, $data) {
