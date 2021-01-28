@@ -84,6 +84,10 @@ class NewOrder extends Model
     public function orderStatus(){
         return $this->belongsTo(OrderStatus::class, 'status_id');
     }
+    public function salesCategory()
+    {
+        return $this->belongsTo(NewOrderSalesCategory::class, 'sales_category_id');
+    }
     public function customer(){
         return $this->belongsTo(Customer::class, 'customer_id');
     }
