@@ -8,7 +8,9 @@ class SalesCategory extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['name'];
+    protected $guarded = [];
+    const GROUP_REFERRAL = 'group_referral';
+    const STAFF_PROGRAM = 'staff_program';
 
     public function roles()
     {

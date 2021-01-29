@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\SalesCategory;
+use App\Repositories\SalesCategoryRepository;
 use Illuminate\Http\Request;
+use App\Helpers\ResponseHelper;
+
 
 class SalesCategoryController extends Controller
 {
@@ -12,10 +15,20 @@ class SalesCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $salesCategory;
+
+    public function __construct(SalesCategoryRepository $salesCategoryRepository)
+    {
+        $this->salesCategory = $salesCategoryRepository;
+    }
+
     public function index()
     {
-        //
+        $result = $this->salesCategory->all();
+        return ResponseHelper::createSuccessResponse($result->toArray());
     }
+
 
     /**
      * Show the form for creating a new resource.

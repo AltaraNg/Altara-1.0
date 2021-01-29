@@ -72,7 +72,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         'discount' => 'DiscountController',
         'customer_contact' => 'ContactCustomerController',
         'customer_stage' => 'CustomerStageController',
-        'employment_status' => 'EmploymentStatusController'
+        'employment_status' => 'EmploymentStatusController',
+        'sales_category' => 'SalesCategoryController'
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
