@@ -13,4 +13,9 @@ class Role extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function salesCategories()
+    {
+        return $this->belongsToMany(SalesCategory::class, 'roles_sales_categories', 'role_id', 'sales_category_id');
+    }
 }
