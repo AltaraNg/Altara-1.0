@@ -6,6 +6,8 @@ use App\Helper\ExtractRequestObject;
 use App\Helper\OrderObject;
 use App\RenewalList;
 use App\Repositories\RenewalListRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class RenewalListController extends Controller
 {
@@ -27,7 +29,8 @@ class RenewalListController extends Controller
 
     /**
      * Generate Orders that has two repayment left
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function index()
     {
@@ -39,7 +42,8 @@ class RenewalListController extends Controller
 
     /**
      * Persist Renewal List Orders that are treated
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function store()
     {
@@ -52,7 +56,8 @@ class RenewalListController extends Controller
     /**
      * Generate treated renewal list orders based on status
      * @param string $status
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function list(string $status)
     {
@@ -65,7 +70,8 @@ class RenewalListController extends Controller
     /**
      * Update Callbacks and Unreachable treated Orders
      * @param RenewalList $renewal_list
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function update(RenewalList $renewal_list)
     {
@@ -73,5 +79,16 @@ class RenewalListController extends Controller
         $this->listRepo->update($renewal_list, $data);
 
         return response()->json(['data' => $renewal_list, 'message' => 'Successfully Updated'], 200);
+    }
+
+
+    /**
+     * Update Callbacks and Unreachable treated Orders
+     * @return JsonResponse
+     */
+    public function newOrderRenewals()
+    {
+        $orders = $this->listRepo->getNewOrdersRenewal();
+        return response()->json(['data' => $orders], 200);
     }
 }
