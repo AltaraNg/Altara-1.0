@@ -93,7 +93,6 @@ class SalesCategoryController extends Controller
 
     public function manageRoles(SalesCategory $salesCat, SalesCategoryRequest $request)
     {
-        // dd('I am here');
         $salesCat->roles()->sync($request->validated()['roles']);
 
         return $this->sendSuccess([], 'Roles Updated successfully');
