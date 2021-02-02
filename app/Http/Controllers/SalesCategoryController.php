@@ -6,7 +6,7 @@ use App\SalesCategory;
 use App\Repositories\SalesCategoryRepository;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
-
+use App\Http\Requests\SalesCategoryRequest;
 
 class SalesCategoryController extends Controller
 {
@@ -83,6 +83,20 @@ class SalesCategoryController extends Controller
     public function update(Request $request, SalesCategory $salesCategory)
     {
         //
+    }
+
+    public function getRoles(SalesCategory $salesCat)
+    {
+        $result = $this->salesCategory->fetchRoles($salesCat);
+        return $this->sendSuccess($result, 'Users sent successfully');
+    }
+
+    public function manageRoles(SalesCategory $salesCat, SalesCategoryRequest $request)
+    {
+        // dd('I am here');
+        $salesCat->roles()->sync($request->validated()['roles']);
+
+        return $this->sendSuccess([], 'Roles Updated successfully');
     }
 
     /**
