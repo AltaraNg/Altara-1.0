@@ -107,6 +107,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 Route::post('/ammo', 'UserController@test');
+Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
 
