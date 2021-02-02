@@ -14,4 +14,11 @@ class SalesCategoryRepository extends Repository
     {
         return SalesCategory::class;
     }
+
+    public function fetchRoles($model)
+    {
+        return $model->roles->toArray();
+    }
+
+
 }
