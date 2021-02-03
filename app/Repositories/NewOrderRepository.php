@@ -31,13 +31,14 @@ class NewOrderRepository extends Repository
         unset($validated['payment_method_id']);
         unset($validated['inventory_id']);
         unset($validated['bank_id']);
+        unset($validated['discount']);
 
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
             'order_date' => Carbon::now(),
             'user_id' => auth()->user()->id,
             'branch_id' => auth()->user()->branch_id,
-            'status_id' => OrderStatus::where('name', OrderStatus::APPROVED)->first()->id,
+            'status_id' => OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id,
             'product_id' => $inventory->product_id
         ]));
         if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM){
@@ -47,8 +48,10 @@ class NewOrderRepository extends Repository
         $paymentType = PaymentType::where('type', PaymentType::DOWNPAYMENT)->first()->id;
         $order->amount = $data['down_payment'];
         $order->payment_type_id = $paymentType;
-        if ($data['discounts']) {
-            $order->discounts = $data['discounts'];
+        if (array_key_exists("discount", $data)) {
+            $order->discount = $data['discount'];
+            $order->discounts()->sync($data['discount']);
+
         }
         $order->payment_method_id = $data['payment_method_id'];
         $order->bank_id = $data['bank_id'];

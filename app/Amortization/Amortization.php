@@ -25,10 +25,11 @@ abstract class Amortization
 
     public function repaymentAmount(): float
     {
-        if ($this->order->discounts) {
+        if (!empty($this->order->discount)) {
             $total = floor($this->order->repayment / $this->repaymentCount() / 100) * 100;
             $totalDiscount = 0;
-            foreach ($this->order->discounts as $discount) {
+
+            foreach ($this->order->discount as $discount) {
                 $dValue = Discount::find($discount)->percentage_discount;
                 $dValue = floor($dValue * $total / 100);
                 $totalDiscount = $totalDiscount + $dValue;
