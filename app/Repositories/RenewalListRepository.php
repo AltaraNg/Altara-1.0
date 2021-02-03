@@ -142,7 +142,7 @@ class RenewalListRepository extends Repository
                     return $query->whereDate('order_date', '>=', request('from'))
                         ->whereDate('order_date', '<=', request('to', Carbon::now()));
                 }
-            )->get();
+            )->paginate(request('limit', 20));
     }
 
 }
