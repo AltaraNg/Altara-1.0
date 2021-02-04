@@ -34,6 +34,10 @@ class InventoryFilter extends BaseFilter
     {
         $this->builder->where('product_name', 'like', '%' . $name .'%');
     }
+    public function sku(string $sku)
+    {
+        $this->builder->where('inventory_sku', 'like', '%' . $sku . '%');
+    }
 
     public function filterBranch() {
         if (!auth()->user()->isAdmin()){
