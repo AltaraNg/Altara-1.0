@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\SalesCategory;
+use App\Repositories\SalesCategoryRepository;
 use Illuminate\Http\Request;
+use App\Helpers\ResponseHelper;
+use App\Http\Requests\SalesCategoryRequest;
 
 class SalesCategoryController extends Controller
 {
@@ -12,10 +15,20 @@ class SalesCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $salesCategory;
+
+    public function __construct(SalesCategoryRepository $salesCategoryRepository)
+    {
+        $this->salesCategory = $salesCategoryRepository;
+    }
+
     public function index()
     {
-        //
+        $result = $this->salesCategory->all();
+        return ResponseHelper::createSuccessResponse($result->toArray());
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -70,6 +83,19 @@ class SalesCategoryController extends Controller
     public function update(Request $request, SalesCategory $salesCategory)
     {
         //
+    }
+
+    public function getRoles(SalesCategory $salesCat)
+    {
+        $result = $this->salesCategory->fetchRoles($salesCat);
+        return $this->sendSuccess($result, 'Users sent successfully');
+    }
+
+    public function manageRoles(SalesCategory $salesCat, SalesCategoryRequest $request)
+    {
+        $salesCat->roles()->sync($request->validated()['roles']);
+
+        return $this->sendSuccess([], 'Roles Updated successfully');
     }
 
     /**

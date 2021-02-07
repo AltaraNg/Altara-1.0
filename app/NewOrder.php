@@ -29,6 +29,9 @@ class NewOrder extends Model
             'inventory_id' => 'required|exists:inventories,id',
             'bank_id' => 'required|exists:banks,id',
             'repayment' => ['required', new Money],
+            'owner_id' => 'required|exists:users,id',
+            'serial_number' => 'sometimes|string',
+            'sales_category_id' => 'required|exists:sales_categories,id',
             'repayment_duration_id' => 'required|exists:repayment_durations,id',
             'repayment_cycle_id' => 'required|exists:repayment_cycles,id',
             'business_type_id' => 'required|exists:business_types,id',
@@ -83,6 +86,10 @@ class NewOrder extends Model
 
     public function orderStatus(){
         return $this->belongsTo(OrderStatus::class, 'status_id');
+    }
+    public function salesCategory()
+    {
+        return $this->belongsTo(SalesCategory::class, 'sales_category_id');
     }
     public function customer(){
         return $this->belongsTo(Customer::class, 'customer_id');
@@ -148,6 +155,7 @@ class NewOrder extends Model
             "order_number" => $this->order_number,
             "product_id" => $this->product_id,
             "product" => $this->product,
+            "serial_number" => $this->serial_number,
             "repayment_duration" => $this->repaymentDuration->name,
             "repayment_cycle" => $this->repaymentCycle->name,
             "customer_id" => $this->customer->id,
@@ -160,6 +168,7 @@ class NewOrder extends Model
             "product_price" => $this->product_price,
             "down_payment" => $this->down_payment,
             "repayment" => $this->repayment,
+            "discount" => $this->discounts,
             "custom_date" => $this->customDate->custom_date ?? null,
             "amortization" => $this->amortization,
             "notifications" => $this->notifications,

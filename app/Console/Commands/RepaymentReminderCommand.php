@@ -18,7 +18,7 @@ class RepaymentReminderCommand extends BaseCommand
     protected $signature = 'send:smsReminder '
     . '{--days= : The number of days payment past due e.g 7} '
     . '{--date= : Send Sms Reminder for a specific date in the past e.g 2020-11-06} '
-    . '{--type= : The type of message e.g first_sms, second_sms} ';
+    . '{--type= : The type of message e.g first_sms, second_sms, third_sms,} ';
     private $reminderCommandService;
 
     /**
@@ -84,7 +84,7 @@ class RepaymentReminderCommand extends BaseCommand
     {
         $data = $this->option();
         $validator = Validator::make($data, [
-            'type' => 'required|in:' . Constants::FIRST_SMS . ',' . Constants::SECOND_SMS . ',' . Constants::THIRD_SMS,
+            'type' => 'required|in:' . Constants::F_SMS . ',' . Constants::S_SMS . ',' . Constants::T_SMS,
             'days' => 'required|integer|min:1'
         ]);
         if ($validator->fails()) {

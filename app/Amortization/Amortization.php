@@ -3,6 +3,8 @@
 
 namespace App\Amortization;
 
+use App\Discount;
+
 abstract class Amortization
 {
     public $order;
@@ -23,8 +25,21 @@ abstract class Amortization
 
     public function repaymentAmount(): float
     {
+        if (!empty($this->order->discount)) {
+            $total = floor($this->order->repayment / $this->repaymentCount() / 100) * 100;
+            $totalDiscount = 0;
+
+            foreach ($this->order->discount as $discount) {
+                $dValue = Discount::find($discount)->percentage_discount;
+                $dValue = floor($dValue * $total / 100);
+                $totalDiscount = $totalDiscount + $dValue;
+            }
+            return $total - $totalDiscount;
+        } else {
         return floor($this->order->repayment/$this->repaymentCount() / 100) * 100;
+        }
     }
+
 
     public function repaymentDuration(): int
     {

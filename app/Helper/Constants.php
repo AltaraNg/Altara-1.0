@@ -14,9 +14,11 @@ namespace App\Helper;
  */
 class Constants {
 
-    const FIRST_SMS = 'first_sms';
-    const SECOND_SMS = 'second_sms';
-    const THIRD_SMS = 'third_sms';
+    const F_SMS = 'first_sms';
+    const S_SMS = 'second_sms';
+    const T_SMS = 'third_sms';
+    const ALTARACREDIT = 'Altara_Credit';
+    const ALTARAPAY = 'Altara_Pay';
     const FIRST_CALL = 'first_call';
     const SECOND_CALL = 'second_call';
     const THIRD_CALL = 'third_call';
@@ -32,8 +34,17 @@ class Constants {
 
 
     static $reminderMessages = [
-        self::FIRST_SMS => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
-        self::SECOND_SMS => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 14days',
-        self::THIRD_SMS => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 21days',
+        self::F_SMS => [
+            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+        ],
+        self::S_SMS => [
+            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+        ],
+        self::T_SMS => [
+            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+        ]
     ];
 }

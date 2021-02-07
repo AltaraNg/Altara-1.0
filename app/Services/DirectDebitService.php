@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Amortization;
 use App\BusinessType;
 use App\Events\RepaymentEvent;
+use App\OrderStatus;
 use Carbon\Carbon;
 
 class DirectDebitService
@@ -37,8 +38,9 @@ class DirectDebitService
         $data = Amortization::where('actual_payment_date', null)
             ->whereDate('expected_payment_date', '<=' ,Carbon::now())
             ->whereHas('new_orders', function ($q){
-                $q->where('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_PRODUCT)->first()->id)
-                ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id);
+                $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
+                    ->where('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_PRODUCT)->first()->id)
+                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id);
             });
 
         return $data->get();

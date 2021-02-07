@@ -2,6 +2,7 @@
 
 namespace App\Http\Filters;
 
+use App\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -52,10 +53,11 @@ class NewOrderFilter extends BaseFilter
         $this->builder->whereHas('amortization', function ($query) use ($days) {
             $selectedDay = Carbon::parse($this->fields()['startDate'] ?? null) ?? Carbon::now();
             $query->select('new_order_id')
-                ->from('amortizations')
+            ->from('amortizations')
             ->whereDate('expected_payment_date', '<=', $selectedDay->subDays($days)->toDateString())
                 ->where('actual_payment_date', NULL);
-        });
+        })
+        ->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id);
     }
 
     /**

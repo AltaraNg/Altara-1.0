@@ -72,7 +72,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         'discount' => 'DiscountController',
         'customer_contact' => 'ContactCustomerController',
         'customer_stage' => 'CustomerStageController',
-        'employment_status' => 'EmploymentStatusController'
+        'employment_status' => 'EmploymentStatusController',
+        'sales_category' => 'SalesCategoryController',
+        'inventory_status' => 'InventoryStatusController',
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
@@ -88,6 +90,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
     Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
+    Route::get('/new-order-renewal-list', 'RenewalListController@newOrderRenewals');
+    Route::get('/sales-category/{salesCat}/roles', 'SalesCategoryController@getRoles');
     Route::get('/renewal-list-status', 'RenewalListStatusController@index');
     Route::patch('/payment-reconcile/{payment_reconcile}/finance', 'PaymentReconcileController@finance');
     Route::patch('/brand/{brand}/categories', 'BrandController@manageCategories');
@@ -98,9 +102,13 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/sheet/calculator', 'PriceCalculatorController@uploadCalculator');
     Route::get('/jobs', 'ManualController@jobs');
     Route::post('/no-auth', 'ManualController@getNoAuth');
+    Route::post('/contact_notification/{customer}', 'CustomerContactNotificationController@store');
+    Route::patch('/sales-category/{salesCat}/roles', 'SalesCategoryController@manageRoles');
+
 });
 
 Route::post('/ammo', 'UserController@test');
+Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
 

@@ -39,6 +39,8 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                     })->count();
 
                     $target = $row[$branchName] - $count;
+;
+                    $all = [];
                     for ($i = 0; $i < $target; $i++) {
                         $inventory = new Inventory();
                         $inventory['price'] = $product->retail_price;
@@ -49,9 +51,10 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                         $inventory['sku'] = '';
                         $inventory['received_date'] = Carbon::today()->toDateString();
                         $inventory['inventory_status_id'] = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
-
-                        $branch->inventories()->create($inventory->toArray());
+                        $inventory['branch_id'] = $branch->id;
+                        $all[] = $inventory->toArray();
                     }
+                    Inventory::insert($all);
                 }
             }
         }

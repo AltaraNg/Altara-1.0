@@ -19,7 +19,6 @@ class CreateContactCustomersTable extends Migration
             $table->string('phone')->unique();
             $table->string('email')->unique()->nullable();
             $table->string('name')->nullable();
-            $table->float('monthly_income');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('employment_status_id');
