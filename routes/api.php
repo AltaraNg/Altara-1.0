@@ -90,7 +90,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
     Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
-    Route::get('/new-order-renewal-list', 'RenewalListController@newOrderRenewals');
+    Route::post('/new-order-renewal', 'RenewalListController@newOrderRenewal');
     Route::get('/sales-category/{salesCat}/roles', 'SalesCategoryController@getRoles');
     Route::get('/renewal-list-status', 'RenewalListStatusController@index');
     Route::patch('/payment-reconcile/{payment_reconcile}/finance', 'PaymentReconcileController@finance');
