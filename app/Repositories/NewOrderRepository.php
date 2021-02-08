@@ -51,7 +51,6 @@ class NewOrderRepository extends Repository
         if (array_key_exists("discount", $data)) {
             $order->discount = $data['discount'];
             $order->discounts()->sync($data['discount']);
-
         }
         $order->payment_method_id = $data['payment_method_id'];
         $order->bank_id = $data['bank_id'];
