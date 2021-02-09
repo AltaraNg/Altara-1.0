@@ -69,12 +69,12 @@ class ReminderCommandService
             }
 
             # send report mail
-        try {
-            $this->mailService->sendReportAsMail($days . 'days sms reminder', $res,
-                config('app.operations_email'), 'Sms Reminder Report',
-                'SmsReminder', 'Sms Reminder report for ' . Carbon::parse($date)->toDateString());
-        } catch (BindingResolutionException $e) {
-        }
+//        try {
+//            $this->mailService->sendReportAsMail($days . 'days sms reminder', $res,
+//                config('app.operations_email'), 'Sms Reminder Report',
+//                'SmsReminder', 'Sms Reminder report for ' . Carbon::parse($date)->toDateString());
+//        } catch (BindingResolutionException $e) {
+//        }
 
         return $res;
 
