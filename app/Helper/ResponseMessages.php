@@ -1,7 +1,7 @@
 <?php
 /**
  * @class: ResponseMessage
- * @namespace: App\Helpers
+ * @namespace: App\Helper
  *
  * @author: Adeniyi
  */

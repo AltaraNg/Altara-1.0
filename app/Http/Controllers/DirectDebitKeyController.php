@@ -4,7 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\DirectDebitKey;
-use App\Helpers\ResponseHelper;
+use App\Helper\ResponseHelper;
 
 class DirectDebitKeyController
 {

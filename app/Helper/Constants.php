@@ -8,7 +8,7 @@ namespace App\Helper;
 
 /**
  * Class Constants
- * @package App\Helpers
+ * @package App\Helper
  *
  * @author: Adeniyi
  */

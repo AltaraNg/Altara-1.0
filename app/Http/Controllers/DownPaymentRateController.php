@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\DownPaymentRate;
-use App\Helpers\ResponseHelper;
+use App\Helper\ResponseHelper;
 use App\Repositories\DownPaymentRateRepository;
-use Illuminate\Http\Request;
 
 class DownPaymentRateController extends Controller
 {

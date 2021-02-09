@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 /**
  * Class Helper
- * @package App\Helpers
+ * @package App\Helper
  *
  * @author: Adeniyi
  */
