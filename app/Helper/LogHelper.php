@@ -60,7 +60,7 @@ class LogHelper
             $html = $handler->getBody($e);
             MailService::send('log_error',  config('app.technology_email'), ['errorMessage' => $errorMessage, 'smDump' => $html]);
         } catch (\Exception $ex) {
-            Log::error($ex->getMessage(), $ex);
+            Log::error($ex->getMessage(), ['error' => $ex]);
         }
     }
 }
