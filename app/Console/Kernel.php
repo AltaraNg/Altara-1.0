@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
                     ->emailOutputTo('naderounmu@altaracredit.com');;
                 break;
             default:
-                throw new AException('Type is invalid', 401);
+//                throw new AException('Type is invalid', 401);
         }
 
     }
