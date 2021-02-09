@@ -38,7 +38,7 @@ class NewOrderNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'mail', SmsChannel::class];
+        return ['database', SmsChannel::class];
     }
 
     /**
