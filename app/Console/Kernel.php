@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param Schedule $schedule
      * @return void
      * @throws AException
      */
@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
                     ->emailOutputTo('naderounmu@altaracredit.com');;
                 break;
             default:
-                ;throw new AException('Type is invalid', 401);
+//                throw new AException('Type is invalid2', 401);
         }
 
     }
