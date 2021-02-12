@@ -96,13 +96,13 @@ class RenewalListController extends Controller
     public function newOrderRenewal(Request $request)
     {
         $newOrder = NewOrder::find($request['order_id']);
-        $renewalReminder = new RenewalModel($request['feedback'], $request['status'], $request['date']);
+        $renewalReminder = new RenewalModel($request['feedback'], $request['status'], $request['date'] ? $request['date'] : '');
         try {
             $newOrder->notify(new RenewalNotification($renewalReminder));
             $newOrder->customer->notify(new RenewalNotification($renewalReminder));
         } catch (\Exception $e) {
             LogHelper::error(strtr(Constants::RENEWAL_NOTIFICATION_ERROR, $newOrder->toArray()), $e);
         }
-        return response()->json(['data' => $newOrder], 200);
+        return response()->json(['data' => $newOrder, 'status' => 'success'], 200);
     }
 }
