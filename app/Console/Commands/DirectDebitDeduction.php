@@ -60,6 +60,10 @@ class DirectDebitDeduction extends BaseCommand
         try {
             $response = $this->directDebitService->handle();
             $this->info(count($response) . ' records treated');
+            $this->table(
+                ['Id', 'Name', 'Order Id', 'Ammount', 'Status', 'Message'],
+                $response
+            );
 
         } catch (\Exception $e) {
             $this->error($e->getMessage() ?? 'Something went wrong');

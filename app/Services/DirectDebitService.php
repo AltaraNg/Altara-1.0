@@ -9,6 +9,7 @@ use App\BusinessType;
 use App\Events\RepaymentEvent;
 use App\OrderStatus;
 use Carbon\Carbon;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class DirectDebitService
 {
@@ -81,9 +82,12 @@ class DirectDebitService
         }
 
         # send report mail
-        $this->mailService->sendReportAsMail('Direct Debit Report', $res,
-            config('app.operations_email'), 'Direct Debit Report',
-            'DirectDebit', 'Direct Debit Report ' . Carbon::now()->toDateString());
+//        try {
+//            $this->mailService->sendReportAsMail('Direct Debit Report', $res,
+//                config('app.operations_email'), 'Direct Debit Report',
+//                'DirectDebit', 'Direct Debit Report ' . Carbon::now()->toDateString());
+//        } catch (BindingResolutionException $e) {
+//        }
 
         return $res;
 

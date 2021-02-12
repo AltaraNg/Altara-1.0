@@ -94,4 +94,11 @@ class NewOrderFilter extends BaseFilter
             ->where('id', $type);
         });
     }
+
+    public function renewalList(string $renew)
+    {
+        $this->builder->whereHas('amortization', function (Builder $query) {
+            $query->where('actual_amount', '<', 1);
+        }, '<=', request('count', 2));
+    }
 }

@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Amortization;
 use App\Exceptions\AException;
-use App\Helpers\ResponseHelper;
+use App\Helper\ResponseHelper;
 use App\Http\Filters\AmortizationFilter;
-use App\Http\Requests\AmortizationRequest;
 use App\Http\Requests\NewOrderRequest;
 use App\Repositories\AmortizationRepository;
 use App\Services\AmmortizationService;

@@ -6,7 +6,7 @@
  * Time: 1:27 PM
  */
 
-namespace App\Helpers;
+namespace App\Helper;
 
 use Illuminate\Http\Response;
 
