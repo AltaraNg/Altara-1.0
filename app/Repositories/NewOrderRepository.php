@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Events\NewOrderEvent;
+use App\Exceptions\AException;
 use App\Helper\Helper;
 use App\Inventory;
 use App\InventoryStatus;
@@ -70,7 +71,7 @@ class NewOrderRepository extends Repository
             $model->save();
             $inventory->save();
             return $model->toArray();
-        } catch (\Throwable $th) {
+        } catch (AException $th) {
             throw $th;
         }
 
