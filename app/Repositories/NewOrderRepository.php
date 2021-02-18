@@ -3,13 +3,16 @@
 namespace App\Repositories;
 
 use App\Events\NewOrderEvent;
+use App\Exceptions\AException;
 use App\Helper\Helper;
 use App\Inventory;
+use App\InventoryStatus;
 use App\NewOrder;
 use App\OrderStatus;
 use App\PaymentType;
 use App\RepaymentCycle;
 use Carbon\Carbon;
+use Exception;
 
 class NewOrderRepository extends Repository
 {
@@ -58,5 +61,20 @@ class NewOrderRepository extends Repository
         event(new NewOrderEvent($order));
 
         return $order->fresh();
+    }
+    public function repossess($model)
+    {
+        try {
+            //code...
+            $model->status_id = OrderStatus::where('name', OrderStatus::REPOSSESSED)->first()->id;
+            $inventory = Inventory::where('product_id', $model->product_id)->first();
+            $inventory->inventory_status_id = InventoryStatus::where('status', InventoryStatus::REPOSSESSED)->first()->id;
+            $model->save();
+            $inventory->save();
+            return $model->toArray();
+        } catch (Exception $e) {
+            throw new AException($e->getMessage(), $e->getCode());
+        }
+
     }
 }
