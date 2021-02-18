@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Events\NewOrderEvent;
 use App\Helper\Helper;
 use App\Inventory;
+use App\InventoryStatus;
 use App\NewOrder;
 use App\OrderStatus;
 use App\PaymentType;
@@ -58,5 +59,20 @@ class NewOrderRepository extends Repository
         event(new NewOrderEvent($order));
 
         return $order->fresh();
+    }
+    public function repossess($model)
+    {
+        try {
+            //code...
+            $model->status_id = OrderStatus::where('name', OrderStatus::REPOSSESSED)->first()->id;
+            $inventory = Inventory::where('product_id', $model->product_id)->first();
+            $inventory->inventory_status_id = InventoryStatus::where('status', InventoryStatus::REPOSSESSED)->first()->id;
+            $model->save();
+            $inventory->save();
+            return $model->toArray();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
     }
 }

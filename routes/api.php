@@ -104,6 +104,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/no-auth', 'ManualController@getNoAuth');
     Route::post('/contact_notification/{customer}', 'CustomerContactNotificationController@store');
     Route::patch('/sales-category/{salesCat}/roles', 'SalesCategoryController@manageRoles');
+    Route::patch('/new-order/{new_order}/repossess', 'NewOrderController@repossess');
 
 });
 
