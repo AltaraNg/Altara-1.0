@@ -12,6 +12,7 @@ use App\OrderStatus;
 use App\PaymentType;
 use App\RepaymentCycle;
 use Carbon\Carbon;
+use Exception;
 
 class NewOrderRepository extends Repository
 {
@@ -71,8 +72,8 @@ class NewOrderRepository extends Repository
             $model->save();
             $inventory->save();
             return $model->toArray();
-        } catch (AException $th) {
-            throw $th;
+        } catch (Exception $e) {
+            throw new AException($e->getMessage(), $e->getCode());
         }
 
     }
