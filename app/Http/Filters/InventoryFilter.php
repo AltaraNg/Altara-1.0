@@ -19,6 +19,14 @@ class InventoryFilter extends BaseFilter
             });
     }
 
+    public function salesLogger($status)
+    {
+        $this->builder->whereHas('inventoryStatus', function ($q) {
+            $q->where('status', InventoryStatus::AVAILABLE)
+                ->orWhere('status', InventoryStatus::REPOSSESSED);
+        });
+    }
+
     /**
      * @param int $status
      */
