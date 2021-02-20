@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
+use App\Helper\ResponseHelper;
 use App\Repositories\RepaymentDurationRepository;
 use Illuminate\Http\Request;
 

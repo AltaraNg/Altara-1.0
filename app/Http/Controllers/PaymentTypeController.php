@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
+use App\Helper\ResponseHelper;
 use App\PaymentType;
 use Illuminate\Http\Response;
 

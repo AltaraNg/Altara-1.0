@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Discount;
-use App\Helpers\ResponseHelper;
+use App\Helper\ResponseHelper;
 use App\Repositories\DiscountRepository;
 use Illuminate\Http\Request;
 

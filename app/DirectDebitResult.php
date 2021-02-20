@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Rules\Money;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DirectDebitResult extends Model

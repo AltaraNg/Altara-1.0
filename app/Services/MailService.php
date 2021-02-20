@@ -15,8 +15,6 @@ use Illuminate\Support\Str;
  */
 class MailService
 {
-
-
     /**
      * @param string $reportDescription
      * @param array $reports

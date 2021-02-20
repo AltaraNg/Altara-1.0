@@ -22,6 +22,8 @@ class MessageService
             return json_decode(json_encode($this->error()));
         }
         $ch = curl_init();
+        $receiver = urlencode($receiver);
+        $message = urlencode($message);
         curl_setopt($ch, CURLOPT_URL, env('SMS_URL') . 'query?username=' . env('SMS_USERNAME') . '&password=' . env('SMS_PASSWORD') . '&to=' . $receiver . '&text=' . $message);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);

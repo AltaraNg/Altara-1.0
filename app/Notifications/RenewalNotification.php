@@ -2,30 +2,27 @@
 
 namespace App\Notifications;
 
-use App\Branch;
-use App\Notifications\Models\ProductTransferModel;
+use App\Notifications\Models\RenewalModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Mail\ProductTransfer as Mailable;
 
-class ProductTransferNotification extends Notification
+class RenewalNotification extends Notification
 {
     use Queueable;
-    /**
-     * @var $data
-     */
-    private $data;
 
     /**
      * Create a new notification instance.
      *
-     * @param ProductTransferModel $data
+     * @return void
      */
-    public function __construct(ProductTransferModel $data)
+    private $data;
+
+    public function __construct(RenewalModel $renewalModel)
     {
-        $this->data = $data->toArray();
+        //
+        $this->data = $renewalModel->toArray();
     }
 
     /**
@@ -39,19 +36,6 @@ class ProductTransferNotification extends Notification
         return ['database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return Mailable
-     */
-    public function toMail($notifiable)
-    {
-        return (new Mailable($this->data))
-            ->to($notifiable->email)
-            ->cc(Branch::find($this->data['from'])->email)
-            ->bcc(config('app.admin_email'));
-    }
 
     /**
      * Get the array representation of the notification.

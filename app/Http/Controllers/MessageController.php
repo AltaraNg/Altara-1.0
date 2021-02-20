@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\Services\MessageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
@@ -13,22 +14,15 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
-        $isInProduction = App::environment() === 'production';
-        if(!$isInProduction) {
-            return response()->json(request('message'), 200);
-        }
-        $ch = curl_init();
-        $receiver = urlencode(request('to'));
-        $message = urlencode(request('message'));
-        curl_setopt($ch, CURLOPT_URL, env('SMS_URL') . 'query?username=' . env('SMS_USERNAME') . '&password=' . env('SMS_PASSWORD') . '&to=' . $receiver . '&text=' . $message);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        $data = curl_exec($ch);
-        curl_close($ch);
+        $message = request('message');
+        $receiver = request('to');
+        $messageService = new MessageService();
+        $result = $messageService->sendMessage($receiver, $message);
 
-        return response()->json(json_decode($data));
+        return response()->json($result);
     }
 
 

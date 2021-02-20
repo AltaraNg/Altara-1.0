@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'customer_stage' => 'CustomerStageController',
         'employment_status' => 'EmploymentStatusController',
         'sales_category' => 'SalesCategoryController',
+        'inventory_status' => 'InventoryStatusController',
     ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
@@ -89,7 +90,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/report', 'ReportController@generateReport');
     Route::post('/report/daily', 'ReportController@getRegistrationReport');
     Route::get('/renewal-list/status/{status}', 'RenewalListController@list');
-    Route::get('/new-order-renewal-list', 'RenewalListController@newOrderRenewals');
+    Route::post('/new-order-renewal', 'RenewalListController@newOrderRenewal');
     Route::get('/sales-category/{salesCat}/roles', 'SalesCategoryController@getRoles');
     Route::get('/renewal-list-status', 'RenewalListStatusController@index');
     Route::patch('/payment-reconcile/{payment_reconcile}/finance', 'PaymentReconcileController@finance');
@@ -103,6 +104,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/no-auth', 'ManualController@getNoAuth');
     Route::post('/contact_notification/{customer}', 'CustomerContactNotificationController@store');
     Route::patch('/sales-category/{salesCat}/roles', 'SalesCategoryController@manageRoles');
+    Route::patch('/new-order/{new_order}/repossess', 'NewOrderController@repossess');
 
 });
 

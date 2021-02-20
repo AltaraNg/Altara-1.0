@@ -3,13 +3,12 @@
 namespace App;
 
 use App\Http\Filters\Filterable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 class ContactCustomer extends Model
 {
-    use HasFactory, Filterable, Notifiable;
+    use Filterable, Notifiable;
     protected $guarded = [];
     protected $with = ['users:id,full_name', 'notifications'];
 

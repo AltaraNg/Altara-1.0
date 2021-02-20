@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
+use App\Helper\ResponseHelper;
 use App\Repositories\ProductTypeRepository;
-use Illuminate\Http\Request;
 
 class ProductTypeController extends Controller
 {

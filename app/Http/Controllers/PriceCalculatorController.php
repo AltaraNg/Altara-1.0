@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
+use App\Helper\ResponseHelper;
 use App\Http\Requests\PriceCalculatorRequest;
 use App\Imports\CalculatorImport;
 use App\PriceCalculator;

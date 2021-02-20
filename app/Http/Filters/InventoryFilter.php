@@ -19,6 +19,14 @@ class InventoryFilter extends BaseFilter
             });
     }
 
+    public function salesLogger($status)
+    {
+        $this->builder->whereHas('inventoryStatus', function ($q) {
+            $q->where('status', InventoryStatus::AVAILABLE)
+                ->orWhere('status', InventoryStatus::REPOSSESSED);
+        });
+    }
+
     /**
      * @param int $status
      */
@@ -33,6 +41,10 @@ class InventoryFilter extends BaseFilter
     public function productName(string $name)
     {
         $this->builder->where('product_name', 'like', '%' . $name .'%');
+    }
+    public function sku(string $sku)
+    {
+        $this->builder->where('inventory_sku', 'like', '%' . $sku . '%');
     }
 
     public function filterBranch() {

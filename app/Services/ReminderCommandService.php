@@ -9,6 +9,7 @@ use App\Notifications\Models\SmsReminderModel;
 use App\Notifications\SmsReminder;
 use App\Notifications\SmsReminderSent;
 use Carbon\Carbon;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class ReminderCommandService
 {
@@ -68,11 +69,14 @@ class ReminderCommandService
             }
 
             # send report mail
-            $this->mailService->sendReportAsMail($days .'days sms reminder', $res,
-                config('app.operations_email'), 'Sms Reminder Report',
-                'SmsReminder', 'Sms Reminder report for ' . Carbon::parse($date)->toDateString());
+//        try {
+//            $this->mailService->sendReportAsMail($days . 'days sms reminder', $res,
+//                config('app.operations_email'), 'Sms Reminder Report',
+//                'SmsReminder', 'Sms Reminder report for ' . Carbon::parse($date)->toDateString());
+//        } catch (BindingResolutionException $e) {
+//        }
 
-            return $res;
+        return $res;
 
     }
 }

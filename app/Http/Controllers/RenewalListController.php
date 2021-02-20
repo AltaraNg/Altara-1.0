@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
+use App\Helper\Constants;
 use App\Helper\ExtractRequestObject;
+use App\Helper\LogHelper;
 use App\Helper\OrderObject;
+use App\NewOrder;
+use App\Notifications\Models\RenewalModel;
+use App\Notifications\RenewalNotification;
 use App\RenewalList;
 use App\Repositories\RenewalListRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class RenewalListController extends Controller
@@ -86,9 +93,16 @@ class RenewalListController extends Controller
      * Update Callbacks and Unreachable treated Orders
      * @return JsonResponse
      */
-    public function newOrderRenewals()
+    public function newOrderRenewal(Request $request)
     {
-        $orders = $this->listRepo->getNewOrdersRenewal();
-        return response()->json(['data' => $orders], 200);
+        $newOrder = NewOrder::find($request['order_id']);
+        $renewalReminder = new RenewalModel($request['feedback'], $request['status'], $request['date'] ? $request['date'] : '');
+        try {
+            $newOrder->notify(new RenewalNotification($renewalReminder));
+            $newOrder->customer->notify(new RenewalNotification($renewalReminder));
+        } catch (\Exception $e) {
+            LogHelper::error(strtr(Constants::RENEWAL_NOTIFICATION_ERROR, $newOrder->toArray()), $e);
+        }
+        return response()->json(['data' => $newOrder, 'status' => 'success'], 200);
     }
 }
