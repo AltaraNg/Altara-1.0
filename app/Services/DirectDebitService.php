@@ -9,7 +9,6 @@ use App\BusinessType;
 use App\Events\RepaymentEvent;
 use App\OrderStatus;
 use Carbon\Carbon;
-use Illuminate\Contracts\Container\BindingResolutionException;
 
 class DirectDebitService
 {
