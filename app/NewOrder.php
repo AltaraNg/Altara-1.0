@@ -179,8 +179,8 @@ class NewOrder extends Model
             "order_payment_method" => $this->order_payment_method,
             "customer" => $this->customer,
             "order_date" => $this->order_date,
-            "owner" => $this->owner->full_name,
-            "sales_type" => $this->salesCategory
+            "owner" => $this->owner->full_name ?? '',
+            "sales_type" => $this->salesCategory ?? ''
         ];
     }
 }
