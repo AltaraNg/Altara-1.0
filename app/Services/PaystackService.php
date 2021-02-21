@@ -47,6 +47,6 @@ class PaystackService implements PaymentGatewayInterface
     }
 
     private function getEmail($amortization) {
-        return $amortization->new_orders->user->email;
+        return $amortization->new_orders->customer->email;
     }
 }

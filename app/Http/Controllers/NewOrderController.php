@@ -68,4 +68,11 @@ class NewOrderController extends Controller
     {
         return $this->sendSuccess($new_order->toArray(), 'Order retrieved successfully');
     }
+
+    public function repossess(NewOrder $new_order)
+    {
+
+        $result = $this->newOrderRepository->repossess($new_order);
+        return $this->sendSuccess($result, 'Order repossessed successfully');
+    }
 }
