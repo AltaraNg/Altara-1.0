@@ -26,6 +26,19 @@ class ReminderService
         return $data->get();
     }
 
+    public function fetchMessagingOrders($days = 7, $date = null)
+    {
+        $data = NewOrder::whereIn('id', function ($query) use ($days, $date) {
+            $today = Carbon::parse($date) ?? Carbon::now();
+            $query->select('new_order_id')
+            ->from('amortizations')
+            ->whereDate('expected_payment_date', '>', $today->addDays($days)->toDateString())
+                ->where('actual_payment_date', NULL);
+        })->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id);
+
+        return $data->get();
+    }
+
     public function saveCallNotifications($data)
     {
         $order = NewOrder::find($data['order_id']);

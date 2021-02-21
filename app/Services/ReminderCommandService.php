@@ -27,7 +27,7 @@ class ReminderCommandService
 
     public function handle($days, $type, $date)
     {
-        $orders = $this->reminderService->fetchOrders($days, $date);
+        $orders = $this->reminderService->fetchMessagingOrders($days, $date);
 
         $res = array();
         if (empty($orders)) {
