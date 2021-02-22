@@ -48,7 +48,7 @@ class Constants {
         ],
         self::S_SMS => [
             self::ALTARACREDIT => 'Hello customer_name,
-            This is the 1st reminder that your nth_repayment of repayment_amount for product_name will be due in 3 days on expected_date.
+            This is the 2nd reminder that your nth_repayment of repayment_amount for product_name will be due in 3 days on expected_date.
             Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards  and to avoid penalties.
             Altara Credit branch_name',
             self::ALTARAPAY =>  'Hello customer_name,
@@ -59,7 +59,7 @@ class Constants {
         ],
         self::T_SMS => [
             self::ALTARACREDIT => 'Hello customer_name,
-            This is the 1st reminder that your nth_repayment of repayment_amount for product_name will be due today, expected_date.
+            This is the 3rd reminder that your nth_repayment of repayment_amount for product_name will be due today, expected_date.
             Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards  and to avoid penalties.
             Altara Credit branch_name',
             self::ALTARAPAY =>
