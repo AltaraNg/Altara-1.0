@@ -38,12 +38,12 @@ class Constants {
         self::F_SMS => [
             self::ALTARACREDIT =>
             'Hello customer_name,
-            This is the 1st reminder that your nth_repayment of repayment_amount for product_name will be due in 7 days.
-            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards  and to avoid penalties.
+            This is the 1st reminder that your expected payment of ₦repayment for product_name will be due in 7 days.
+            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
             Altara Credit branch',
             self::ALTARAPAY =>
             'Hello customer_name,
-            This is the 1st reminder that your nth_repayment of repayment_amount for product_name will be due in 7days.
+            This is the 1st reminder that your expected payment of ₦repayment for product_name will be due in 7days.
             Ensure your account is funded before this date to enable us deduct. Do not pay cash or transfer since you are activated on direct debit. Thank you
             Altara Credit branch',
 
@@ -51,12 +51,12 @@ class Constants {
         self::S_SMS => [
             self::ALTARACREDIT =>
             'Hello customer_name,
-            This is the 2nd reminder that your nth_repayment of repayment_amount for product_name will be due in 3 days.
-            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards  and to avoid penalties.
+            This is the 2nd reminder that your expected payment of ₦repayment for product_name will be due in 3 days.
+            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
             Altara Credit branch',
             self::ALTARAPAY =>
             'Hello customer_name,
-            This is the 2nd reminder that your nth_repayment of repayment_amount for product_name will be due in 3days.
+            This is the 2nd reminder that your expected payment of ₦repayment for product_name will be due in 3days.
             Ensure your account is funded before this date to enable us deduct. Do not pay cash or transfer since you are activated on direct debit. Thank you
             Altara Credit branch',
 
@@ -64,12 +64,12 @@ class Constants {
         self::T_SMS => [
             self::ALTARACREDIT =>
             'Hello customer_name,
-            This is the 3rd reminder that your nth_repayment of repayment_amount for product_name will be due today.
-            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards  and to avoid penalties.
+            This is the 3rd reminder that your expected payment of ₦repayment for product_name will be due today.
+            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
             Altara Credit branch',
             self::ALTARAPAY =>
             'Hello customer_name,
-            This is the 3rd reminder that your nth_repayment of repayment_amount for product_name will be due today.
+            This is the 3rd reminder that your expected payment of ₦repayment for product_name will be due today.
             Ensure your account is funded before this date to enable us deduct. Do not pay cash or transfer since you are activated on direct debit. Thank you
             Altara Credit branch',
 
