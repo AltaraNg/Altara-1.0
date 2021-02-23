@@ -40,7 +40,7 @@ class Inventory extends Model
      * @var array
      */
 
-    public static function updateRules($id)
+    public static function updateRules()
     {
         return [
             'inventory_status_id' => 'sometimes|required|exists:inventory_statuses,id',
@@ -72,5 +72,26 @@ class Inventory extends Model
     public static function getInventorySku()
     {
         return 'INV/'.Helper::generatePrefix(config('app.name')) . '/' . Helper::generateSKU(6). '/' . date("Y");
+    }
+
+    public function toArray()
+    {
+        return [
+            "id" => $this->id,
+            "product_id" => $this->product_id,
+            "product_name" => $this->product_name,
+            "receiver_id" => $this->receiver_id,
+            "branch_id" => $this->branch_id,
+            "supplier_id" => $this->supplier_id,
+            "inventory_sku" => $this->inventory_sku,
+            "price" => $this->product->retail_price,
+            "received_date" => $this->received_date,
+            "sold_date" => $this->sold_date,
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at,
+            "inventory_status" => $this->inventoryStatus,
+            "inventory_status_id" => $this->inventory_status_id,
+            "transfers" => $this->transfers,
+        ];
     }
 }
