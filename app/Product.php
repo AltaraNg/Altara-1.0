@@ -74,8 +74,8 @@ class Product extends Model
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'brand' => $this->brand->name,
-            'category' => $this->category->name,
+            'brand' => $this->brand->name ?? "",
+            'category' => $this->category->name ?? "",
             'retail_price' => $this->retail_price,
             'img_url' => $this->img_url,
             'feature' => $this->feature,
