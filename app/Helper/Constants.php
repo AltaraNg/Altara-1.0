@@ -36,16 +36,45 @@ class Constants {
 
     static $reminderMessages = [
         self::F_SMS => [
-            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
-            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+            self::ALTARACREDIT =>
+            'Hello customer_name,
+            This is the 1st reminder that your expected payment of ₦repayment for product_name will be due in 7 days.
+            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
+            Altara Credit branch',
+            self::ALTARAPAY =>
+            'Hello customer_name,
+            This is the 1st reminder that your expected payment of ₦repayment for product_name will be due in 7days.
+            Ensure your account is funded before this date to enable us deduct. Do not pay cash or transfer since you are activated on direct debit. Thank you
+            Altara Credit branch',
+
         ],
         self::S_SMS => [
-            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
-            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
+            self::ALTARACREDIT =>
+            'Hello customer_name,
+            This is the 2nd reminder that your expected payment of ₦repayment for product_name will be due in 3 days.
+            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
+            Altara Credit branch',
+            self::ALTARAPAY =>
+            'Hello customer_name,
+            This is the 2nd reminder that your expected payment of ₦repayment for product_name will be due in 3days.
+            Ensure your account is funded before this date to enable us deduct. Do not pay cash or transfer since you are activated on direct debit. Thank you
+            Altara Credit branch',
+
         ],
         self::T_SMS => [
-            self::ALTARACREDIT => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
-            self::ALTARAPAY => 'Dear customer_name, this is to remind you that your payment on order order_number is past due for 7days',
-        ]
+            self::ALTARACREDIT =>
+            'Hello customer_name,
+            This is the 3rd reminder that your expected payment of ₦repayment for product_name will be due today.
+            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
+            Altara Credit branch',
+            self::ALTARAPAY =>
+            'Hello customer_name,
+            This is the 3rd reminder that your expected payment of ₦repayment for product_name will be due today.
+            Ensure your account is funded before this date to enable us deduct. Do not pay cash or transfer since you are activated on direct debit. Thank you
+            Altara Credit branch',
+
+        ],
+
+
     ];
 }

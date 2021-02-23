@@ -9,7 +9,6 @@ use App\BusinessType;
 use App\Events\RepaymentEvent;
 use App\OrderStatus;
 use Carbon\Carbon;
-use Illuminate\Contracts\Container\BindingResolutionException;
 
 class DirectDebitService
 {
@@ -41,7 +40,8 @@ class DirectDebitService
             ->whereHas('new_orders', function ($q){
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_PRODUCT)->first()->id)
-                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id);
+                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id)
+                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT)->first()->id);
             });
 
         return $data->get();
@@ -59,7 +59,7 @@ class DirectDebitService
             $response = $this->paystackService->charge($item);
 
             # code...
-            $item = [
+            $data = [
                 'customer_id' => $item->new_orders->customer_id,
                 'customer_name' => $item->new_orders->customer->full_name,
                 'order_id' => $item->new_orders->order_number,
@@ -69,12 +69,12 @@ class DirectDebitService
             if($response->status) {
                 $item->new_orders['amount'] = $item->expected_amount;
                 event(new RepaymentEvent($item->new_orders));
-                $res[] = array_merge($item, [
+                $res[] = array_merge($data, [
                     'status' => 'success',
                     'statusMessage' => 'Approved'
                 ]);
             }else {
-                $res[] = array_merge($item, [
+                $res[] = array_merge($data, [
                     'status' => 'failed',
                     'statusMessage' => $response->message
                 ]);

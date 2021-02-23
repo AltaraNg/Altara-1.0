@@ -67,6 +67,10 @@ class NewOrder extends Model
     public function businessType(){
         return $this->belongsTo(BusinessType::class);
     }
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 
     public function paymentMethod(){
         return $this->hasOne(PaymentMethod::class);
@@ -155,6 +159,7 @@ class NewOrder extends Model
             "order_number" => $this->order_number,
             "product_id" => $this->product_id,
             "product" => $this->product,
+            "product_name" => $this->product->name,
             "serial_number" => $this->serial_number,
             "repayment_duration" => $this->repaymentDuration->name,
             "repayment_cycle" => $this->repaymentCycle->name,
@@ -174,7 +179,9 @@ class NewOrder extends Model
             "notifications" => $this->notifications,
             "order_payment_method" => $this->order_payment_method,
             "customer" => $this->customer,
-            "order_date" => $this->order_date
+            "order_date" => $this->order_date,
+            "owner" => $this->owner->full_name ?? '',
+            "sales_type" => $this->salesCategory ?? ''
         ];
     }
 }
