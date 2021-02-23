@@ -55,6 +55,10 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                         $data = $inventory->toArray();
                         unset($data['inventory_status']);
                         unset($data['transfers']);
+                        unset($data['sold_date']);
+                        unset($data['created_at']);
+                        unset($data['updated_at']);
+                        unset($data['id']);
                         $all[] = $data;
                     }
                     Inventory::insert($all);
