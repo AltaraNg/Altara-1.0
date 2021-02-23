@@ -52,7 +52,10 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                         $inventory['received_date'] = Carbon::today()->toDateString();
                         $inventory['inventory_status_id'] = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
                         $inventory['branch_id'] = $branch->id;
-                        $all[] = $inventory->toArray();
+                        $data = $inventory->toArray();
+                        unset($data['inventory_status']);
+                        unset($data['transfers']);
+                        $all[] = $data;
                     }
                     Inventory::insert($all);
                 }
