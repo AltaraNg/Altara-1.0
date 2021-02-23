@@ -46,6 +46,7 @@ class NewOrderRepository extends Repository
         ]));
         if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM){
             $order->customDate()->create(['custom_date' => $data['custom_date']]);
+            $order->custom_date = $data['custom_date'];
         }
 
         $paymentType = PaymentType::where('type', PaymentType::DOWNPAYMENT)->first()->id;
