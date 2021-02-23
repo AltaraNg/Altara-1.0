@@ -84,7 +84,7 @@ class Inventory extends Model
             "branch_id" => $this->branch_id,
             "supplier_id" => $this->supplier_id,
             "inventory_sku" => $this->inventory_sku,
-            "price" => $this->product->retail_price,
+            "price" => (int)$this->product->retail_price,
             "received_date" => $this->received_date,
             "sold_date" => $this->sold_date,
             "created_at" => $this->created_at,
