@@ -84,7 +84,8 @@ class InventoryController extends Controller
      */
     public function uploadSheet()
     {
-        Excel::import(new InventoriesImport(), 'Inv.xlsx', 's3');
+        // Excel::import(new InventoriesImport(), 'Inv.xlsx', 's3');
+        Excel::import(new InventoriesImport(),Request::file('file'));
 
         return $this->sendSuccess([],'Inventory Updated successfully');
     }
