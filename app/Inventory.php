@@ -71,7 +71,7 @@ class Inventory extends Model
 
     public static function getInventorySku()
     {
-        return 'INV/'.Helper::generatePrefix(config('app.name')) . '/' . Helper::generateSKU(6). '/' . date("Y");
+        return 'INV/'.Helper::generatePrefix(config('app.name')) . '/' . Helper::generateSKU(8). '/' . date("Y");
     }
 
     public function toArray()
