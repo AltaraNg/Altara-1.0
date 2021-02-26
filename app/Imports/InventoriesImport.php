@@ -20,9 +20,11 @@ class InventoriesImport implements ToCollection, WithHeadingRow
      */
     public function collection(Collection $collection)
     {
-        foreach ($collection as $row) {
+        $branches = Branch::all();
+        $supplier_id = Supplier::first()->id;
+        $inventory_id = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
 
-            $branches = Branch::all();
+        foreach ($collection as $row) {        
 
             foreach ($branches as $branch) {
                 $branchName = Str::snake(str_replace('-', " ", $branch->name));
@@ -47,10 +49,10 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                         $inventory['product_id'] = $product->id;
                         $inventory['product_name'] = $product->name;
                         $inventory['receiver_id'] = auth()->user()->id;
-                        $inventory['supplier_id'] = Supplier::first()->id;
+                        $inventory['supplier_id'] = $supplier_id;
                         $inventory['sku'] = '';
                         $inventory['received_date'] = Carbon::today()->toDateString();
-                        $inventory['inventory_status_id'] = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
+                        $inventory['inventory_status_id'] = $inventory_id;
                         $inventory['branch_id'] = $branch->id;
                         $data = $inventory->toArray();
                         unset($data['inventory_status']);
