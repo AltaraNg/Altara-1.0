@@ -69,7 +69,7 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                         $all[] = $data;
                     }
                     if (count($all)) {
-                        Inventory::insert($all);
+                        Inventory::createMany($all);
 
                         $invDic->update(["quantity" => $row[$branchName]]);
                     }
