@@ -37,7 +37,7 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                 $branchName = Str::snake(str_replace('-', " ", $branch->name));
                 if (array_key_exists($branchName, $row->toArray()) && $row[$branchName] > 0){
                     if (!$product = Product::where('name', $row['product_name'])->first()){
-                        return;
+                        continue;
                     }
 
                     $invDic = InventoryDictionary::firstOrCreate(
