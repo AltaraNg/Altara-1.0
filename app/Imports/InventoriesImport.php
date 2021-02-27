@@ -5,16 +5,21 @@ namespace App\Imports;
 use App\Branch;
 use App\Inventory;
 use App\InventoryStatus;
+use App\InventoryDictionary;
 use App\Product;
 use App\Supplier;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 class InventoriesImport implements ToCollection, WithHeadingRow
 {
+
     /**
      * @inheritDoc
      */
@@ -24,7 +29,7 @@ class InventoriesImport implements ToCollection, WithHeadingRow
         $supplier_id = Supplier::first()->id;
         $inventory_id = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
 
-        foreach ($collection as $row) {        
+        foreach ($collection as $row) {
 
             foreach ($branches as $branch) {
                 $branchName = Str::snake(str_replace('-', " ", $branch->name));
@@ -32,16 +37,14 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                     if (!$product = Product::where('name', $row['product_name'])->first()){
                         return;
                     }
-                    $count = $branch->inventories()
-                        ->where('product_name', $product->name)
-                        ->whereIn('inventory_status_id', function ($q){
-                        $q->select('id')
-                            ->from('inventory_statuses')
-                            ->where('status', InventoryStatus::AVAILABLE);
-                    })->count();
 
-                    $target = $row[$branchName] - $count;
-;
+                    $invDic = InventoryDictionary::firstOrCreate(
+                        ['product_id' => $product->id, 'branch_id' => $branch->id],
+                        ['quantity' => 0]
+                    );
+
+                    $target = $row[$branchName] - $invDic->quantity;
+
                     $all = [];
                     for ($i = 0; $i < $target; $i++) {
                         $inventory = new Inventory();
@@ -63,7 +66,11 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                         unset($data['id']);
                         $all[] = $data;
                     }
-                    Inventory::insert($all);
+                    if (count($all)) {
+                        Inventory::insert($all);
+
+                        $invDic->update(["quantity" => $row[$branchName]]);
+                    }
                 }
             }
         }
