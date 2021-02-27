@@ -47,29 +47,43 @@ class InventoriesImport implements ToCollection, WithHeadingRow
 
                     $target = $row[$branchName] - $invDic->quantity;
 
-                    $all = [];
-                    for ($i = 0; $i < $target; $i++) {
-                        $inventory = new Inventory();
-                        $inventory['price'] = $product->retail_price;
-                        $inventory['product_id'] = $product->id;
-                        $inventory['product_name'] = $product->name;
-                        $inventory['receiver_id'] = auth()->user()->id;
-                        $inventory['supplier_id'] = $supplier_id;
-                        $inventory['sku'] = '';
-                        $inventory['received_date'] = Carbon::today()->toDateString();
-                        $inventory['inventory_status_id'] = $inventory_id;
-                        $inventory['branch_id'] = $branch->id;
-                        $data = $inventory->toArray();
-                        unset($data['inventory_status']);
-                        unset($data['transfers']);
-                        unset($data['sold_date']);
-                        unset($data['created_at']);
-                        unset($data['updated_at']);
-                        unset($data['id']);
-                        $all[] = $data;
-                    }
+                    // $all = [];
+                    // for ($i = 0; $i < $target; $i++) {
+                    //     $inventory = new Inventory();
+                    //     $inventory['price'] = $product->retail_price;
+                    //     $inventory['product_id'] = $product->id;
+                    //     $inventory['product_name'] = $product->name;
+                    //     $inventory['receiver_id'] = auth()->user()->id;
+                    //     $inventory['supplier_id'] = $supplier_id;
+                    //     $inventory['sku'] = '';
+                    //     $inventory['received_date'] = Carbon::today()->toDateString();
+                    //     $inventory['inventory_status_id'] = $inventory_id;
+                    //     $inventory['branch_id'] = $branch->id;
+                    //     $data = $inventory->toArray();
+                    //     unset($data['inventory_status']);
+                    //     unset($data['transfers']);
+                    //     unset($data['sold_date']);
+                    //     unset($data['created_at']);
+                    //     unset($data['updated_at']);
+                    //     unset($data['id']);
+                    //     $all[] = $data;
+                    // }
+
+                    $array = [
+                        'price' => $product->retail_price,
+                        'product_id' => $product->id,
+                        'product_name' => $product->name,
+                        'receiver_id' => auth()->user()->id,
+                        'supplier_id' => $supplier_id,
+                        'sku' => '',
+                        'received_date' => Carbon::today()->toDateString(),
+                        'inventory_status_id' => $inventory_id,
+                        'branch_id' => $branch->id,
+                    ];
+
+                    $all = array_fill(0, $target, $array);
                     if (count($all)) {
-                        Inventory::createMany($all);
+                        $product->inventories()->createMany($all);
 
                         $invDic->update(["quantity" => $row[$branchName]]);
                     }
