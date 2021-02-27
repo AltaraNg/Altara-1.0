@@ -28,9 +28,11 @@ class InventoriesImport implements ToCollection, WithHeadingRow
         $branches = Branch::all();
         $supplier_id = Supplier::first()->id;
         $inventory_id = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
+        $t = 0;
 
         foreach ($collection as $row) {
-
+            $t++;
+            var_dump($t);
             foreach ($branches as $branch) {
                 $branchName = Str::snake(str_replace('-', " ", $branch->name));
                 if (array_key_exists($branchName, $row->toArray()) && $row[$branchName] > 0){
