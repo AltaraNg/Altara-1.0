@@ -69,19 +69,35 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                     //     $all[] = $data;
                     // }
 
-                    $array = [
-                        'price' => $product->retail_price,
-                        'product_id' => $product->id,
-                        'product_name' => $product->name,
-                        'receiver_id' => auth()->user()->id,
-                        'supplier_id' => $supplier_id,
-                        'inventory_sku' => Inventory::getInventorySku(),
-                        'received_date' => Carbon::today()->toDateString(),
-                        'inventory_status_id' => $inventory_id,
-                        'branch_id' => $branch->id,
-                    ];
+                    for ($i = 0; $i < $target; $i++) {
+                        $data = [
+                            'price' => $product->retail_price,
+                            'product_id' => $product->id,
+                            'product_name' => $product->name,
+                            'receiver_id' => auth()->user()->id,
+                            'supplier_id' => $supplier_id,
+                            'inventory_sku' => Inventory::getInventorySku(),
+                            'received_date' => Carbon::today()->toDateString(),
+                            'inventory_status_id' => $inventory_id,
+                            'branch_id' => $branch->id,
+                        ];
 
-                    $all = array_fill(0, $target, $array);
+                        $all[] = $data;
+                    }
+
+                    // $array = [
+                    //     'price' => $product->retail_price,
+                    //     'product_id' => $product->id,
+                    //     'product_name' => $product->name,
+                    //     'receiver_id' => auth()->user()->id,
+                    //     'supplier_id' => $supplier_id,
+                    //     'inventory_sku' => Inventory::getInventorySku(),
+                    //     'received_date' => Carbon::today()->toDateString(),
+                    //     'inventory_status_id' => $inventory_id,
+                    //     'branch_id' => $branch->id,
+                    // ];
+
+                    // $all = array_fill(0, $target, $array);
                     if (count($all)) {
                         Inventory::insert($all);
 
