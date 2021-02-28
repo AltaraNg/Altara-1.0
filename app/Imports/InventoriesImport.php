@@ -32,7 +32,7 @@ class InventoriesImport implements ToCollection, WithHeadingRow
 
         foreach ($collection as $row) {
             $t++;
-            var_dump($t);
+            print_r($t);
             foreach ($branches as $branch) {
                 $branchName = Str::snake(str_replace('-', " ", $branch->name));
                 if (array_key_exists($branchName, $row->toArray()) && $row[$branchName] > 0){
@@ -83,7 +83,7 @@ class InventoriesImport implements ToCollection, WithHeadingRow
 
                     $all = array_fill(0, $target, $array);
                     if (count($all)) {
-                        $product->inventories()->createMany($all);
+                        Inventory::insert($all);
 
                         $invDic->update(["quantity" => $row[$branchName]]);
                     }
