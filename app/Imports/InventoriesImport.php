@@ -47,7 +47,7 @@ class InventoriesImport implements ToCollection, WithHeadingRow
 
                     $target = $row[$branchName] - $invDic->quantity;
 
-                    // $all = [];
+                    $all = [];
                     // for ($i = 0; $i < $target; $i++) {
                     //     $inventory = new Inventory();
                     //     $inventory['price'] = $product->retail_price;
