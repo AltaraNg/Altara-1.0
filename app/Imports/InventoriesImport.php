@@ -75,7 +75,7 @@ class InventoriesImport implements ToCollection, WithHeadingRow
                         'product_name' => $product->name,
                         'receiver_id' => auth()->user()->id,
                         'supplier_id' => $supplier_id,
-                        'sku' => '',
+                        'inventory_sku' => Inventory::getInventorySku,
                         'received_date' => Carbon::today()->toDateString(),
                         'inventory_status_id' => $inventory_id,
                         'branch_id' => $branch->id,
