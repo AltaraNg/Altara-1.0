@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Branch;
 use App\Inventory;
 use App\InventoryStatus;
+use App\InventoryDictionary;
 use App\Product;
 use App\Supplier;
 use Carbon\Carbon;
@@ -15,6 +16,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class InventoriesImport implements ToCollection, WithHeadingRow
 {
+
     /**
      * @inheritDoc
      */
@@ -24,46 +26,44 @@ class InventoriesImport implements ToCollection, WithHeadingRow
         $supplier_id = Supplier::first()->id;
         $inventory_id = InventoryStatus::where('status', InventoryStatus::AVAILABLE)->first()->id;
 
-        foreach ($collection as $row) {        
-
+        foreach ($collection as $row) {
             foreach ($branches as $branch) {
                 $branchName = Str::snake(str_replace('-', " ", $branch->name));
                 if (array_key_exists($branchName, $row->toArray()) && $row[$branchName] > 0){
                     if (!$product = Product::where('name', $row['product_name'])->first()){
-                        return;
+                        continue;
                     }
-                    $count = $branch->inventories()
-                        ->where('product_name', $product->name)
-                        ->whereIn('inventory_status_id', function ($q){
-                        $q->select('id')
-                            ->from('inventory_statuses')
-                            ->where('status', InventoryStatus::AVAILABLE);
-                    })->count();
 
-                    $target = $row[$branchName] - $count;
-;
+                    $invDic = InventoryDictionary::firstOrCreate(
+                        ['product_id' => $product->id, 'branch_id' => $branch->id],
+                        ['quantity' => 0]
+                    );
+
+                    $target = $row[$branchName] - $invDic->quantity;
+
                     $all = [];
+
                     for ($i = 0; $i < $target; $i++) {
-                        $inventory = new Inventory();
-                        $inventory['price'] = $product->retail_price;
-                        $inventory['product_id'] = $product->id;
-                        $inventory['product_name'] = $product->name;
-                        $inventory['receiver_id'] = auth()->user()->id;
-                        $inventory['supplier_id'] = $supplier_id;
-                        $inventory['sku'] = '';
-                        $inventory['received_date'] = Carbon::today()->toDateString();
-                        $inventory['inventory_status_id'] = $inventory_id;
-                        $inventory['branch_id'] = $branch->id;
-                        $data = $inventory->toArray();
-                        unset($data['inventory_status']);
-                        unset($data['transfers']);
-                        unset($data['sold_date']);
-                        unset($data['created_at']);
-                        unset($data['updated_at']);
-                        unset($data['id']);
+                        $data = [
+                            'price' => $product->retail_price,
+                            'product_id' => $product->id,
+                            'product_name' => $product->name,
+                            'receiver_id' => auth()->user()->id,
+                            'supplier_id' => $supplier_id,
+                            'inventory_sku' => Inventory::getInventorySku(),
+                            'received_date' => Carbon::today()->toDateString(),
+                            'inventory_status_id' => $inventory_id,
+                            'branch_id' => $branch->id,
+                        ];
+
                         $all[] = $data;
                     }
-                    Inventory::insert($all);
+
+                    if (count($all)) {
+                        Inventory::insert($all);
+
+                        $invDic->update(["quantity" => $row[$branchName]]);
+                    }
                 }
             }
         }
