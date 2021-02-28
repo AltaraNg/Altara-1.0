@@ -69,6 +69,11 @@ class Product extends Model
         return $this->belongsTo(ProductType::class);
     }
 
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class);
+    }
+
     public function toArray()
     {
         return [
