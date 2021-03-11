@@ -14,6 +14,7 @@ use App\Listeners\RepaymentListener;
 use App\Listeners\SendPasswordResetLinkListener;
 use App\Listeners\UpdateInventoryBranchListener;
 use App\Listeners\UpdateInventoryListener;
+use App\Listeners\UpdateInventoryDictListener;
 use App\Listeners\UpdateAmortizationListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -35,7 +36,8 @@ class EventServiceProvider extends ServiceProvider
         NewOrderEvent::class => [
             UpdateInventoryListener::class,
             LogPaymentListener::class,
-            NewOrderListener::class
+            NewOrderListener::class,
+            UpdateInventoryDictListener::class
         ],
         OldRepaymentEvent::class => [
             LogPaymentListener::class
