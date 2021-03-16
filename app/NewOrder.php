@@ -174,6 +174,7 @@ class NewOrder extends Model
             "down_payment" => $this->down_payment,
             "repayment" => $this->repayment,
             "discount" => $this->discounts,
+            "single_repayment" => $this->amortization[0]->expected_amount,
             "custom_date" => $this->customDate->custom_date ?? null,
             "amortization" => $this->amortization,
             "notifications" => $this->notifications,
