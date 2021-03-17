@@ -9,6 +9,15 @@ class FeedBack extends Model
     //
     protected $guarded = [];
 
+    public static function rules()
+    {
+        return [
+            'feedback' => 'required|string',
+            'todo_id' => 'required|exists:todos,id',
+
+        ];
+    }
+
     public function todo()
     {
         return $this->belongsTo(Todo::class);
