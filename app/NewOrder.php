@@ -168,7 +168,7 @@ class NewOrder extends Model
             "customer_phone" => $this->customer->telephone,
             "customer_email" => $this->customer->email,
             "business_type" => $this->businessType->name,
-            "status" => $this->orderStatus->name,
+            "status" => $this->orderStatus->name ?? null,
             "branch" => $this->branch->name,
             "product_price" => $this->product_price,
             "down_payment" => $this->down_payment,
