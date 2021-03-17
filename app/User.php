@@ -175,6 +175,10 @@ class User extends Authenticatable
             return $access->name == Access::ADMIN;
         });
     }
+    public function todo()
+    {
+        return $this->hasMany(Todo::class);
+    }
 
     /*public function counterSales()
     {
