@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     public $timestamps = false;
-    protected $with = ['activeUsers'];
+    protected $with = ['users'];
 
     //a role can be assigned to many user/employee : role->users
     public function users()
