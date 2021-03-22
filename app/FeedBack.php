@@ -18,8 +18,5 @@ class FeedBack extends Model
         ];
     }
 
-    public function todo()
-    {
-        return $this->belongsTo(Todo::class);
-    }
+
 }

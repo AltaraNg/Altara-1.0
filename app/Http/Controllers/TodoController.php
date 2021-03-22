@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\TodoFilter;
+use App\Http\Requests\TodoRequest;
+use App\Repositories\TodosRepository;
 use App\Todo;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
+
+    private $todoRepo;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function __construct(TodosRepository $todoRepository)
     {
-        //
+        $this->todoRepo = $todoRepository;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index(TodoFilter $filter)
     {
         //
+        $todos = $this->todoRepo->getAll($filter);
+        return $this->sendSuccess($todos->toArray(), 'Todos retrieved Successfully');
     }
 
     /**
@@ -33,10 +34,14 @@ class TodoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TodoRequest $request)
     {
-        //
+        $todo = $this->todoRepo->store($request->validated());
+
+
+        return $this->sendSuccess($todo->toArray(), 'Todo Successfully Created');
     }
+
 
     /**
      * Display the specified resource.
@@ -47,18 +52,9 @@ class TodoController extends Controller
     public function show(Todo $todo)
     {
         //
+        return $this->sendSuccess($todo->toArray(), 'Todo retrieved successfully');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Todo $todo)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -67,11 +63,12 @@ class TodoController extends Controller
      * @param  \App\Todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Todo $todo)
+    public function update(Todo $todo, TodoRequest $request)
     {
-        //
-    }
+        $todo = $this->todoRepository->update($todo, $request->validated());
 
+        return $this->sendSuccess($todo->toArray(), 'Todo updated successfully');
+    }
     /**
      * Remove the specified resource from storage.
      *

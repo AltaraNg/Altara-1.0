@@ -7,7 +7,7 @@ namespace App\Repositories;
 
 use App\Todo;
 
-class TodoRepository extends Repository
+class TodosRepository extends Repository
 {
 
     public function model()

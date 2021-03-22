@@ -7,7 +7,7 @@ namespace App\Repositories;
 
 use App\FeedBack;
 
-class TodoRepository extends Repository
+class FeedbackRepository extends Repository
 {
 
     public function model()

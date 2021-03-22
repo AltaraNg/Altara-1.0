@@ -9,6 +9,7 @@ class Todo extends Model
 {
     use Filterable;
     protected $guarded = [];
+    protected $table = 'todos';
 
     public static function rules()
     {
@@ -16,6 +17,7 @@ class Todo extends Model
             'todo' => 'required|string',
             'type' => 'required|string',
             'status' => 'required|string',
+            'due_date' => 'sometimes|string',
             'customer_id' => 'required|exists:contact_customers,id',
             'user_id' => 'required|exists:users,id'
         ];
@@ -27,6 +29,7 @@ class Todo extends Model
             'todo' => 'sometimes|required|string',
             'type' => 'sometimes|required|string',
             'status' => 'sometimes|required|string',
+            'due_date' => 'sometimes|string',
             'customer_id' => 'sometimes|required|exists:contact_customers,id',
             'user_id' => 'sometimes|required|exists:users,id'
         ];
@@ -43,10 +46,7 @@ class Todo extends Model
         return $this->hasOne(ContactCustomer::class, 'customer_id');
     }
 
-    public function feedback()
-    {
-        return $this->hasMany(FeedBack::class);
-    }
+
 
 
     //
