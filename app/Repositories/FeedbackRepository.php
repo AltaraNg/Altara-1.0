@@ -1,17 +1,14 @@
 <?php
 
-
 namespace App\Repositories;
 
-
-
-use App\FeedBack;
+use App\Feedback;
 
 class FeedbackRepository extends Repository
 {
 
     public function model()
     {
-        return FeedBack::class;
+        return Feedback::class;
     }
 }

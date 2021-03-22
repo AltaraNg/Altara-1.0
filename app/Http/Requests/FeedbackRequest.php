@@ -3,10 +3,10 @@
 namespace App\Http\Requests;
 
 
-use App\Todo;
+use App\FeedBack;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TodoRequest extends FormRequest
+class FeedbackRequest extends FormRequest
 {
 
     /**
@@ -28,10 +28,10 @@ class TodoRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'POST': {
-                    return Todo::rules();
+                    return FeedBack::rules();
                 }
             case 'PUT': {
-                    return Todo::updateRules();
+                    return FeedBack::updateRules();
                 }
             default:
                 break;

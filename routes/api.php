@@ -76,6 +76,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         'sales_category' => 'SalesCategoryController',
         'inventory_status' => 'InventoryStatusController',
         'todo' => 'TodoController',
+        'reason' => 'ReasonController',
+        'feedback' => 'FeedBackController'
 
     ]);
     /*------*/

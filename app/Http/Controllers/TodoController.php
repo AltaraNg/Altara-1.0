@@ -65,7 +65,7 @@ class TodoController extends Controller
      */
     public function update(Todo $todo, TodoRequest $request)
     {
-        $todo = $this->todoRepository->update($todo, $request->validated());
+        $todo = $this->todoRepo->update($todo, $request->validated());
 
         return $this->sendSuccess($todo->toArray(), 'Todo updated successfully');
     }
