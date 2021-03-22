@@ -12,38 +12,41 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ProductsImport implements ToCollection, WithHeadingRow
 {
-    private function process($row)
-    {
-        $data = [];
-        $data['brand_id'] = $this->getId(Brand::class, $row['brand']);
-        $data['category_id'] = $this->getId(Category::class, $row['product_type']);
+    // private function process($row)
+    // {
+    //     $data = [];
+    //     $data['brand_id'] = $this->getId(Brand::class, $row['brand']);
+    //     $data['category_id'] = $this->getId(Category::class, $row['product_type']);
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
-    private function getId($model, $value)
-    {
-        if ($brand = $model::where('name', 'like', '%' . $value . '%')->first()){
-            return $brand->id;
-        }
-        $brand = $model::create(['name' => $value]);
-        return $brand->id;
-    }
+    // private function getId($model, $value)
+    // {
+    //     if ($brand = $model::where('name', 'like', '%' . $value . '%')->first()){
+    //         return $brand->id;
+    //     }
+    //     $brand = $model::create(['name' => $value]);
+    //     return $brand->id;
+    // }
 
     /**
      * @inheritDoc
      */
     public function collection(Collection $collection)
     {
-        foreach ($collection as $row) {
+        $brand = Brand::first()->id;
+        $category = Category::first()->id;
+        $type = ProductType::first()->id;
 
-            $data = $this->process($row);
+
+        foreach ($collection as $row) {
             Product::updateOrCreate([
                 'name' => $row['product_name'],
             ], [
-                'brand_id' => $data['brand_id'],
-                'category_id' => $data['category_id'],
-                'product_type_id' => ProductType::first()->id,
+                'brand_id' => $brand,
+                'category_id' => $category,
+                'product_type_id' => $type,
                 'feature' => $row['feature'] ?: '',
                 'retail_price' => $row['supplier_price'] ?: 0,
                 'user_id' => auth()->user()->id

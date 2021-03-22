@@ -50,7 +50,7 @@ class RepaymentReminderCommand extends BaseCommand
     public function handle()
     {
         $this->valInput();
-        $this->processInput();
+        // $this->processInput();
         $this->process();
     }
 
@@ -89,7 +89,7 @@ class RepaymentReminderCommand extends BaseCommand
         $data = $this->option();
         $validator = Validator::make($data, [
             'type' => 'required|in:' . Constants::F_SMS . ',' . Constants::S_SMS . ',' . Constants::T_SMS,
-            'days' => 'required|integer|min:1'
+            'days' => 'required|integer|min:0'
         ]);
         if ($validator->fails()) {
             $this->error('input arguments failed validation Errors: ');
