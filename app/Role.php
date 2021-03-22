@@ -7,18 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     public $timestamps = false;
-    protected $with = ['activeUsers'];
+    protected $with = ['users'];
 
     //a role can be assigned to many user/employee : role->users
     public function users()
     {
-        return $this->hasMany(User::class, 'role_id', 'id');
-    }
-
-    public function activeUsers()
-    {
-        return $this->hasMany(User::class, 'role_id', 'id')->where('portal_access', 1);
-
+        return $this->hasMany(User::class)->where('portal_access', 1);
     }
 
     public function salesCategories()
