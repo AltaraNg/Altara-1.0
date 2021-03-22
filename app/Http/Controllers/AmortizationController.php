@@ -55,7 +55,7 @@ class AmortizationController extends Controller
      */
     public function update(Request $request, Amortization $amortization)
     {
-        $data = $this->validate($request, Amortization::$updateRules);
+        $data = $this->validate($request, Amortization::updateRules());
         $resp = $this->amortizationRepository->update($amortization, $data);
         return ResponseHelper::createSuccessResponse($resp->toArray());
     }
