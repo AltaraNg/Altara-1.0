@@ -22,9 +22,9 @@ class Amortization extends Model
     {
         return [
             'actual_payment_date' => 'sometimes|required|date',
-            'actual_amount' => ['sometimes|required', new Money],
+            'actual_amount' => ['sometimes', 'required', new Money],
             'expected_payment_date' => 'sometimes|required|date',
-            'expected_amount' => ['sometimes|required', new Money],
+            'expected_amount' => ['sometimes', 'required', new Money],
         ];
     }
 

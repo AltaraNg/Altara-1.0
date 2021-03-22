@@ -56,9 +56,9 @@ class NewOrder extends Model
         return [
             'name' => 'sometimes|required|unique:new_orders,name,' . $id,
             'status_id' => 'sometimes|required|exists:order_statuses,id',
-            'repayment' => ['sometimes|required', new Money],
-            'down_payment' => ['sometimes|required', new Money],
-            'product_price' => ['sometimes|required', new Money],
+            'repayment' => ['sometimes', 'required', new Money],
+            'down_payment' => ['sometimes', 'required', new Money],
+            'product_price' => ['sometimes','required', new Money],
             'order_date' => 'sometimes|required|date',
         ];
     }
