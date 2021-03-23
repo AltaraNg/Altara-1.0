@@ -89,4 +89,9 @@ class Branch extends Model
         return $this->hasMany(Inventory::class);
     }
 
+    public function paystackBranches()
+    {
+        return $this->hasOne(PaystackBranch::class);
+    }
+
 }
