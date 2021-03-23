@@ -60,7 +60,11 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         /** 1. validate the customer's phone number */
-        $this->validate($request, ['telephone' => 'unique:customers']);
+        $this->validate($request, [
+            'telephone' => 'required|string|unique:customers,telephone',
+            'email' => 'required|string|unique:customers,email'
+
+        ]);
 
         /** 2. Create a new customer instance */
         $customer = new Customer($request->all());
@@ -141,6 +145,12 @@ class CustomerController extends Controller
     {
         /** 1. Strip all the eager loaded model attached
          * to the $request(customer model) received */
+        $this->validate($request, [
+            'telephone' => 'sometimes|required|string|unique:customers,telephone' . $id,
+            'email' => 'sometimes|required|string|unique:customers,email' . $id
+
+        ]);
+
         unset($request['user']);
         unset($request['branch']);
         unset($request['address']);
