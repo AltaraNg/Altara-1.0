@@ -66,7 +66,7 @@ class DirectDebitService
                 'amount' => $item->expected_amount,
             ];
 
-            if($response->data->status === "success") {
+            if(isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
                 $item->new_orders['amount'] = $item->expected_amount;
                 event(new RepaymentEvent($item->new_orders));
                 $res[] = array_merge($data, [
@@ -76,7 +76,7 @@ class DirectDebitService
             }else {
                 $res[] = array_merge($data, [
                     'status' => 'failed',
-                    'statusMessage' => $response->data->gateway_response
+                    'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : $response->message
                 ]);
             }
         }
