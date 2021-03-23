@@ -62,7 +62,7 @@ class CustomerController extends Controller
         /** 1. validate the customer's phone number */
         $this->validate($request, [
             'telephone' => 'required|string|unique:customers,telephone',
-            'email' => 'required|string|unique:customers,email'
+            'email' => 'required|string|email|unique:customers,email'
 
         ]);
 
@@ -147,7 +147,7 @@ class CustomerController extends Controller
          * to the $request(customer model) received */
         $this->validate($request, [
             'telephone' => 'sometimes|required|string|unique:customers,telephone' . $id,
-            'email' => 'sometimes|required|string|unique:customers,email' . $id
+            'email' => 'sometimes|required|string|email|unique:customers,email' . $id
 
         ]);
 
