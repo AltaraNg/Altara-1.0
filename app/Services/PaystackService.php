@@ -15,7 +15,8 @@ class PaystackService implements PaymentGatewayInterface
             $fields = [
                 'authorization_code' => $this->getAuthCode($amortization),
                 'email' => $this->getEmail($amortization),
-                'amount' => $this->getAmount($amortization)
+                'amount' => $this->getAmount($amortization),
+                'subaccount' => $this->getBankCode($amortization)
             ];
             $fields_string = http_build_query($fields);
 
@@ -40,6 +41,10 @@ class PaystackService implements PaymentGatewayInterface
 
     private function getAuthCode($amortization) {
         return $amortization->new_orders->authCode->auth_code ?? '';
+    }
+
+    private function getBankCode($amortization) {
+        return $amortization->new_orders->branch->paystackBranches->code ?? '';
     }
 
     private function getAmount($amortization) {
