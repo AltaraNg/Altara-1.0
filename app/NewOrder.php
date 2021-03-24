@@ -55,7 +55,11 @@ class NewOrder extends Model
     {
         return [
             'name' => 'sometimes|required|unique:new_orders,name,' . $id,
-            'status_id' => 'sometimes|required|exists:order_statuses,id'
+            'status_id' => 'sometimes|required|exists:order_statuses,id',
+            'repayment' => ['sometimes', 'required', new Money],
+            'down_payment' => ['sometimes', 'required', new Money],
+            'product_price' => ['sometimes','required', new Money],
+            'order_date' => 'sometimes|required|date',
         ];
     }
 
@@ -161,14 +165,14 @@ class NewOrder extends Model
             "product" => $this->product,
             "product_name" => $this->product->name,
             "serial_number" => $this->serial_number,
-            "repayment_duration" => $this->repaymentDuration->name,
-            "repayment_cycle" => $this->repaymentCycle->name,
+            "repayment_duration" => $this->repaymentDuration->name ?? null,
+            "repayment_cycle" => $this->repaymentCycle->name ?? null,
             "customer_id" => $this->customer->id,
             "customer_name" => $this->customer->fullName,
             "customer_phone" => $this->customer->telephone,
             "customer_email" => $this->customer->email,
-            "business_type" => $this->businessType->name,
-            "status" => $this->orderStatus->name,
+            "business_type" => $this->businessType->name ?? null,
+            "status" => $this->orderStatus->name ?? null,
             "branch" => $this->branch->name,
             "product_price" => $this->product_price,
             "down_payment" => $this->down_payment,
