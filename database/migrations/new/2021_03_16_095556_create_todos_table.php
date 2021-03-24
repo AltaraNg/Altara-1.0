@@ -18,9 +18,12 @@ class CreateTodosTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('customer_id');
             $table->text('todo');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('customer_id')->references('id')->on('contact_customers');
             $table->string('type');
             $table->string('status');
+            $table->date('due_date')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +35,9 @@ class CreateTodosTable extends Migration
      */
     public function down()
     {
+        Schema::table('todos', function (Blueprint $table) {
+            $table->dropForeign('todos_customer_id_foreign');
+        });
         Schema::dropIfExists('todos');
     }
 }

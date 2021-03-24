@@ -46,6 +46,11 @@ class Todo extends Model
         return $this->hasOne(ContactCustomer::class, 'customer_id');
     }
 
+    public function feedback()
+    {
+        return $this->hasOne(Feedback::class);
+    }
+
 
 
 

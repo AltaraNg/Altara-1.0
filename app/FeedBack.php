@@ -16,6 +16,7 @@ class Feedback extends Model
     {
         return [
             'reason_id' => 'required|exists:reasons,id',
+            'todo_id' => 'sometimes|exists:todos,id',
             'notes' => 'sometimes|string',
             'user_id' => 'required|exists:users,id',
             'customer_id' => 'required|exists:contact_customers,id'
@@ -26,6 +27,7 @@ class Feedback extends Model
     {
         return [
             'reason_id' => 'sometimes|required|exists:reasons,id',
+            'todo_id' => 'sometimes|exists:todos,id',
             'notes' => 'sometimes|string',
             'user_id' => 'sometimes|required|exists:users,id',
             'customer_id' => 'sometimes|required|exists:contact_customers,id'
@@ -46,6 +48,10 @@ class Feedback extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function todo()
+    {
+        return $this->belongsTo(Todo::class);
     }
 
 

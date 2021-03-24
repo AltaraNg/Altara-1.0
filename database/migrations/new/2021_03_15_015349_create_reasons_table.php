@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateTodosTable extends Migration
+class CreateReasonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class UpdateTodosTable extends Migration
      */
     public function up()
     {
-        Schema::table('todos', function (Blueprint $table) {
-            //
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+        Schema::create('reasons', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('reason')->unique();
+            $table->boolean('is_active');
+            $table->timestamps();
         });
     }
 
@@ -27,9 +28,6 @@ class UpdateTodosTable extends Migration
      */
     public function down()
     {
-        Schema::table('todos', function (Blueprint $table) {
-            //
-            $table->dropForeign('user_id');
-        });
+        Schema::dropIfExists('reasons');
     }
 }

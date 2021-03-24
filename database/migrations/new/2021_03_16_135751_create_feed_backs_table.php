@@ -15,10 +15,15 @@ class CreateFeedBacksTable extends Migration
     {
         Schema::create('feed_backs', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('feedback');
-            $table->integer('todo_id')->unsigned();
-
+            $table->integer('todo_id')->unsigned()->nullable();
+            $table->string('notes')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('reason_id');
+            $table->foreign('reason_id')->references('id')->on('reasons');
             $table->foreign('todo_id')->references('id')->on('todos');
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('contact_customers');
             $table->timestamps();
         });
     }
@@ -30,6 +35,9 @@ class CreateFeedBacksTable extends Migration
      */
     public function down()
     {
+        Schema::table('feed_backs', function (Blueprint $table) {
+            $table->dropForeign('feed_backs_todo_id_foreign');
+        });
         Schema::dropIfExists('feed_backs');
     }
 }
