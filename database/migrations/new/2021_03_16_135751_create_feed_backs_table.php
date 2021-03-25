@@ -35,9 +35,6 @@ class CreateFeedBacksTable extends Migration
      */
     public function down()
     {
-        Schema::table('feed_backs', function (Blueprint $table) {
-            $table->dropForeign('feed_backs_todo_id_foreign');
-        });
         Schema::dropIfExists('feed_backs');
     }
 }

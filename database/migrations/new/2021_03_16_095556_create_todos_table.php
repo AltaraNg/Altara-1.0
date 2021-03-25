@@ -35,9 +35,7 @@ class CreateTodosTable extends Migration
      */
     public function down()
     {
-        Schema::table('todos', function (Blueprint $table) {
-            $table->dropForeign('todos_customer_id_foreign');
-        });
+
         Schema::dropIfExists('todos');
     }
 }
