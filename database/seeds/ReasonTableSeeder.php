@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Seeders;
+
 
 use App\Reason;
 use Illuminate\Database\Seeder;
 
-class ReasonsTableSeeder extends Seeder
+class ReasonTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,31 +15,31 @@ class ReasonsTableSeeder extends Seeder
     public function run()
     {
         //
-        Reason::create([
+        Reason::updateOrCreate([
             'reason' => "Product Unavailable (We don't sell product type/brand)",
             'is_active' => true
         ]);
-        Reason::create([
+        Reason::updateOrCreate([
             'reason' => "Product Out of Stock ",
             'is_active' => true
         ]);
-        Reason::create([
+        Reason::updateOrCreate([
             'reason' => "Approval Criteria Disinterest",
             'is_active' => true
         ]);
-        Reason::create([
+        Reason::updateOrCreate([
             'reason' => "Process too long",
             'is_active' => true
         ]);
-        Reason::create([
+        Reason::updateOrCreate([
             'reason' => "Poor Customer Service",
             'is_active' => true
         ]);
-        Reason::create([
+        Reason::updateOrCreate([
             'reason' => "Already Purchased from somewhere else",
             'is_active' => true
         ]);
-        Reason::create([
+        Reason::updateOrCreate([
             'reason' => "Not Applicable (Customer Purchased)",
             'is_active' => true
         ]);
