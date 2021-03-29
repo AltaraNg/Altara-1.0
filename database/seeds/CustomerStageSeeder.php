@@ -1,6 +1,5 @@
 <?php
 
-namespace Database\Seeders;
 
 use App\CustomerStage;
 use Illuminate\Database\Seeder;
@@ -15,13 +14,41 @@ class CustomerStageSeeder extends Seeder
      */
     public function run()
     {
-        $status = ["name" => CustomerStage::CONTACTED];
-        DB::table("customer_stages")->updateOrInsert($status);
-        $status = ["name" => CustomerStage::REGISTERED];
-        DB::table("customer_stages")->updateOrInsert($status);
-        $status = ["name" => CustomerStage::AFFIDAVIT];
-        DB::table("customer_stages")->updateOrInsert($status);
-        $status = ["name" => CustomerStage::PURCHASED];
-        DB::table("customer_stages")->updateOrInsert($status);
+        CustomerStage::create([
+            "name" => "Registered On Portal",
+            "is_active" => true
+        ]);
+        CustomerStage::create([
+            "name" => "Paid Affidavit",
+            "is_active" => true
+        ]);
+        CustomerStage::create([
+            "name" => "KYC Documents Submitted",
+            "is_active" => true
+        ]);
+        CustomerStage::create([
+            "name" => "Passed Verification",
+            "is_active" => true
+        ]);
+        CustomerStage::create([
+            "name" => "Failed Verification",
+            "is_active" => true
+        ]);
+        CustomerStage::create([
+            "name" => "Ready to pay downpayment (Product Available)",
+            "is_active" => true
+        ]);
+        CustomerStage::create([
+            "name" => "Ready to pay downpayment (Product Unavailable)",
+            "is_active" => true
+        ]);
+        CustomerStage::create([
+            "name" => "Paid Downpayment + Product Picked Up",
+            "is_active" => true
+        ]);
+        CustomerStage::create([
+            "name" => "Paid Downpayment + Product Not Picked Up",
+            "is_active" => true
+        ]);
     }
 }
