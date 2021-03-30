@@ -55,5 +55,9 @@ class ContactCustomer extends Model
     {
         return $this->hasMany(Feedback::class);
     }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
 }

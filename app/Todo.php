@@ -16,7 +16,7 @@ class Todo extends Model
         return [
             'todo' => 'required|string',
             'type' => 'required|string',
-            'status' => 'required|string',
+            'status' => 'sometimes|string',
             'due_date' => 'sometimes|string',
             'customer_id' => 'required|exists:contact_customers,id',
             'user_id' => 'required|exists:users,id'

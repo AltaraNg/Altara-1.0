@@ -93,5 +93,9 @@ class Branch extends Model
     {
         return $this->hasOne(PaystackBranch::class);
     }
+    public function contact_customers()
+    {
+        return $this->hasMany(ContactCustomer::class);
+    }
 
 }
