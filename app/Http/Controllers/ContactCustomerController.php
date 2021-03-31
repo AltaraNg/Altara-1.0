@@ -32,12 +32,20 @@ class ContactCustomerController extends Controller
             [
                 'user_id' => auth()->user()->id,
                 'reg_id' => Helper::generateSKU(6),
-                'customer_stage_id' => CustomerStage::where('name', CustomerStage::CONTACTED)->first()->id
+                'customer_stage_id' => CustomerStage::where('name', CustomerStage::CONTACTED)->first()->id,
+                'branch_id' => auth()->user()->branch_id
             ]);
         $inv = $this->contactRepo->store($data);
 
         return $this->sendSuccess($inv->toArray(), 'Contact Successfully Created');
     }
+
+    public function show(ContactCustomer $contactCustomer)
+    {
+        //
+        return $this->sendSuccess($contactCustomer->toArray(), 'Contact retrieved successfully');
+    }
+
 
     /**
      * Store a newly created resource in storage.
