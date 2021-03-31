@@ -10,6 +10,7 @@ class Todo extends Model
     use Filterable;
     protected $guarded = [];
     protected $table = 'todos';
+    protected $with = ['customer:name'];
 
     public static function rules()
     {
