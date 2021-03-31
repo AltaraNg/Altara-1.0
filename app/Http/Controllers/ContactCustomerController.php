@@ -40,10 +40,10 @@ class ContactCustomerController extends Controller
         return $this->sendSuccess($inv->toArray(), 'Contact Successfully Created');
     }
 
-    public function show(ContactCustomer $contactCustomer)
+    public function show(ContactCustomer $contact_customer)
     {
         //
-        return $this->sendSuccess($contactCustomer->toArray(), 'Contact retrieved successfully');
+        return $this->sendSuccess($contact_customer->toArray(), 'Contact retrieved successfully');
     }
 
 
