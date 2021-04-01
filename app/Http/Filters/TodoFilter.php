@@ -17,7 +17,7 @@ class TodoFilter extends BaseFilter
         $this->builder->where('customer_id', $customer_id);
     }
 
-    public function fromDate(string $date, $column = 'created')
+    public function fromDate(string $date, $column = 'due_date')
     {
         $this->builder->whereDate($column, '>=', $date)
             ->whereDate($column, '<=', $this->request->toDate ?? Carbon::now());
