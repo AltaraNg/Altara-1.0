@@ -43,7 +43,7 @@ class Feedback extends Model
 
     public function customer()
     {
-        return $this->belongsTo(ContactCustomer::class, 'id', 'customer_id');
+        return $this->belongsTo(ContactCustomer::class, 'customer_id', 'id');
     }
 
     public function user()
