@@ -10,7 +10,7 @@ class ContactCustomer extends Model
 {
     use Filterable, Notifiable;
     protected $guarded = [];
-    protected $with = ['users:id,full_name', 'notifications'];
+    protected $with = ['users:id,full_name', 'feedback'];
 
     /**
      * Validation rules
@@ -53,7 +53,7 @@ class ContactCustomer extends Model
     }
     public function feedback()
     {
-        return $this->hasMany(Feedback::class);
+        return $this->hasMany(Feedback::class, 'id');
     }
     public function branch()
     {
