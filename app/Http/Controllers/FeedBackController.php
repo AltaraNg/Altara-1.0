@@ -45,9 +45,8 @@ class FeedBackController extends Controller
     public function store(FeedbackRequest $request)
     {
         $feedback = $this->feedbackRepo->store($request->validated());
-
-
-        return $this->sendSuccess($feedback->toArray(), 'Feedback Successfully Created');
+        $newFeed = Feedback::findOrFail($feedback->id)->toArray();
+        return $this->sendSuccess($newFeed, 'Feedback Successfully Created');
     }
 
     /**
