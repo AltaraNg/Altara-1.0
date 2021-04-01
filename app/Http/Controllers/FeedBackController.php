@@ -53,7 +53,7 @@ class FeedBackController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\FeedBack  $feedBack
+     * @param  \App\Feedback  $feedBack
      * @return \Illuminate\Http\Response
      */
     public function show(Feedback $feedback)
@@ -68,7 +68,7 @@ class FeedBackController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\FeedBack  $feedBack
+     * @param  \App\Feedback  $feedBack
      * @return \Illuminate\Http\Response
      */
     public function update(FeedbackRequest $request, Feedback $feedback)
@@ -82,10 +82,10 @@ class FeedBackController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\FeedBack  $feedBack
+     * @param  \App\Feedback  $feedBack
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FeedBack $feedBack)
+    public function destroy(Feedback $feedBack)
     {
         //
     }

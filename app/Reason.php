@@ -11,6 +11,6 @@ class Reason extends Model
 
     public function feedback()
     {
-        return $this->belongsToMany(FeedBack::class);
+        return $this->belongsToMany(Feedback::class);
     }
 }

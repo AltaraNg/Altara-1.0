@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-use App\FeedBack;
+use App\Feedback;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FeedbackRequest extends FormRequest
@@ -28,10 +28,10 @@ class FeedbackRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'POST': {
-                    return FeedBack::rules();
+                    return Feedback::rules();
                 }
             case 'PUT': {
-                    return FeedBack::updateRules();
+                    return Feedback::updateRules();
                 }
             default:
                 break;
