@@ -38,7 +38,7 @@ class Feedback extends Model
 
     public function reason()
     {
-        return $this->hasOne(Reason::class, 'id');
+        return $this->hasOne(Reason::class);
     }
 
     public function customer()
