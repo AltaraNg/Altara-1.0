@@ -38,7 +38,7 @@ class Feedback extends Model
 
     public function reason()
     {
-        return $this->hasOne(Reason::class);
+        return $this->belongsTo(Reason::class);
     }
 
     public function customer()
