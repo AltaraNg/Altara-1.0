@@ -10,6 +10,7 @@ class Feedback extends Model
     //
     use Filterable;
     protected $guarded = [];
+    protected $with = ['reason'];
     protected $table = 'feed_backs';
 
     public static function rules()
@@ -37,12 +38,12 @@ class Feedback extends Model
 
     public function reason()
     {
-        return $this->hasOne(Reason::class);
+        return $this->hasOne(Reason::class, 'id');
     }
 
     public function customer()
     {
-        return $this->belongsTo(ContactCustomer::class, 'customer_id');
+        return $this->belongsTo(ContactCustomer::class, 'id', 'customer_id');
     }
 
     public function user()
