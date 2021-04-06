@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\UserController;
+
 Route::post('/login', 'AuthController@login');
 Route::post('/password/reset', 'AuthController@sendResetLinkEmail');
 Route::put('/password/reset', 'AuthController@reset');
@@ -109,6 +111,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/contact_notification/{customer}', 'CustomerContactNotificationController@store');
     Route::patch('/sales-category/{salesCat}/roles', 'SalesCategoryController@manageRoles');
     Route::patch('/new-order/{new_order}/repossess', 'NewOrderController@repossess');
+    Route::get('/get-users', 'UserController@getUsers');
 
 });
 
