@@ -3,12 +3,13 @@
 namespace App;
 
 use App\Helper\DataViewer;
+use App\Http\Filters\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Filterable;
 
     /** this is a generic trait created to serve as a generic
      * scope for fetching and paginating the
