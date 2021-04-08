@@ -56,7 +56,7 @@ class ContactCustomerFilter extends BaseFilter
         else if (auth()->user()->isCoordinator()){
             // Todo: filter for coordinator
         }
-        else if (auth()->user()->DSAAgent()){
+        else if (auth()->user()->isDSAAgent()){
             $this->builder->where('user_id', auth()->user()->id);
         }
     }
