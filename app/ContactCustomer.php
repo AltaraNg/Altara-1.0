@@ -43,7 +43,8 @@ class ContactCustomer extends Model
             'email' => 'sometimes|required|email|unique:contact_customers,email,' . $id,
             'name' => 'sometimes|required|string',
             'employment_status_id' => 'sometimes|required|exists:employment_statuses,id',
-            'customer_stage_id' => 'sometimes|required|exists:customer_stages,id'
+            'customer_stage_id' => 'sometimes|required|exists:customer_stages,id',
+            'user_id' => 'sometimes|required|exists:users,id'
         ];
     }
 
