@@ -29,7 +29,7 @@ class User extends Authenticatable
      * view when the user creation
      * form is required */
 
-    public static function Form() : iterable
+    public static function Form(): iterable
     {
         return [
             'role_id' => '',
@@ -75,7 +75,7 @@ class User extends Authenticatable
 
     public function customersManaged()
     {
-        return $this->hasMany(Customer::class, 'managed_by','id');
+        return $this->hasMany(Customer::class, 'managed_by', 'id');
     }
 
     public function branch()
@@ -165,16 +165,34 @@ class User extends Authenticatable
 
     public function isSuperAdmin()
     {
-        return $this->accesses->contains(function(Access $access) {
+        return $this->accesses->contains(function (Access $access) {
             return $access->name == Access::SUPER_ADMIN;
         });
     }
 
     public function isAdmin()
     {
-        return $this->accesses->contains(function(Access $access) {
+        return $this->accesses->contains(function (Access $access) {
             return $access->name == Access::ADMIN;
         });
+    }
+
+    public function isManager()
+    {
+        $managers = array('Software Engineering', 'General Manager', 'Software Engineering Lead');
+        return  in_array($this->role->name, $managers);
+    }
+    public function isDSACaptain()
+    {
+        return  $this->role->name === 'Direct Sales Agent Captain';
+    }
+    public function isCoordinator()
+    {
+        // TODO: create rules for coordinator
+    }
+    public function isDSAAgent()
+    {
+        return  $this->role->name === 'Direct Sales Agent';
     }
     public function todo()
     {
@@ -195,7 +213,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reminder::class, 'id','dva_id');
     }*/
-
-
-
 }

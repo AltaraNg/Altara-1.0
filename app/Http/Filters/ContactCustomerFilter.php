@@ -48,8 +48,15 @@ class ContactCustomerFilter extends BaseFilter
         $this->builder->where('user_id', $status);
     }
 
-    public function filterBranch() {
-        if (!auth()->user()->isAdmin()){
+    public function filterBranch()
+    {
+        if (auth()->user()->isDSACaptain()){
+            $this->builder->where('branch_id', auth()->user()->branch_id);
+        }
+        else if (auth()->user()->isCoordinator()){
+            // Todo: filter for coordinator
+        }
+        else if (auth()->user()->isDSAAgent()){
             $this->builder->where('user_id', auth()->user()->id);
         }
     }
