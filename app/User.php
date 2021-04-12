@@ -189,6 +189,7 @@ class User extends Authenticatable
     public function isCoordinator()
     {
         // TODO: create rules for coordinator
+        return $this->role->name === 'Coordinator';
     }
     public function isDSAAgent()
     {
