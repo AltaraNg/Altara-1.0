@@ -43,9 +43,9 @@ class ContactCustomerFilter extends BaseFilter
     /**
      * @param int $status
      */
-    public function dsa($status)
+    public function dsa(int $id)
     {
-        $this->builder->where('user_id', $status);
+        $this->builder->where('user_id', $id);
     }
 
     public function filterBranch()
