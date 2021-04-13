@@ -24,9 +24,24 @@ class MessageService
         $ch = curl_init();
         $receiver = urlencode($receiver);
         $message = urlencode($message);
-        curl_setopt($ch, CURLOPT_URL, env('SMS_URL') . 'query?username=' . env('SMS_USERNAME') . '&password=' . env('SMS_PASSWORD') . '&to=' . $receiver . '&text=' . $message);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        // curl_setopt($ch, CURLOPT_URL, env('SMS_URL') . 'query?username=' . env('SMS_USERNAME') . '&password=' . env('SMS_PASSWORD') . '&to=' . $receiver . '&text=' . $message);
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => env("INFOBIP_URL"),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{"messages": [{"from": "Altara", "destinations": [{"to": $receiver}], "text":$message}]}',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: env("INFOBIP_KEY")',
+                'Content-Type: application/json',
+                'Accept: application/json'
+            ),
+        ));
+
         $data = curl_exec($ch);
         curl_close($ch);
 
