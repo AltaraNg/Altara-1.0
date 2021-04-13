@@ -12,9 +12,11 @@ class TodoFilter extends BaseFilter
         $this->builder->where('user_id', $user_id);
     }
 
-    public function customer(string $customer_id)
+    public function customer(string $customer)
     {
-        $this->builder->where('customer_id', $customer_id);
+        $this->builder->whereHas('customer', function ($query) use ($customer) {
+            $query->where('name', 'like', '%' . $customer .'%');
+        });
     }
 
     public function fromDate(string $date, $column = 'due_date')
