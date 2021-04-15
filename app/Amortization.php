@@ -21,7 +21,7 @@ class Amortization extends Model
     public static function updateRules()
     {
         return [
-            'actual_payment_date' => 'sometimes|required|date',
+            'actual_payment_date' => 'sometimes|nullable|date',
             'actual_amount' => ['sometimes', 'required', new Money],
             'expected_payment_date' => 'sometimes|required|date',
             'expected_amount' => ['sometimes', 'required', new Money],
