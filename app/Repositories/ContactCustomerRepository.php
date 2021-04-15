@@ -13,4 +13,9 @@ class ContactCustomerRepository extends Repository
     {
         return ContactCustomer::class;
     }
+
+    public function query($filter)
+    {
+        return $this->model::filter($filter);
+    }
 }

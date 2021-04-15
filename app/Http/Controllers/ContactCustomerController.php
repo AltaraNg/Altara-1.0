@@ -21,9 +21,25 @@ class ContactCustomerController extends Controller
 
     public function index(ContactCustomerFilter $filter)
     {
-        $contacts = $this->contactRepo->query($filter);
+        $contactsQuery = $this->contactRepo->query($filter);
+        $contactsQueryClone = clone $contactsQuery;
+        $summary = $contactsQueryClone->selectRaw('count(*) as total');
 
-        return $this->sendSuccess($contacts->toArray(), 'Contact retrieved successfully');
+        $stages = CustomerStage::whereIn('name', ['Registered', 'Purchased', 'Affidavit'])->get();
+        foreach ($stages as $stage)
+        {
+            $summary = $summary->selectRaw('count(case when customer_stage_id = '. $stage->id .' then  1 end) as ' . $stage->name);
+        }
+        $summary = $summary->first();
+
+        $additional = [
+            'contacted' => $summary->total,
+            'registered' => $summary->Registered,
+            'Purchased' => $summary->Purchased,
+            'Affidavit' => $summary->Affidavit,
+        ];
+
+        return $this->sendSuccess([$contactsQuery->paginate((int)request('limit', 20)), "meta" => $additional], 'Contact retrieved successfully');
     }
 
     public function store(ContactCustomerRequest $request)
