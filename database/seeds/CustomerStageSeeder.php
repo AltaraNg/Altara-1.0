@@ -43,11 +43,11 @@ class CustomerStageSeeder extends Seeder
             "is_active" => true
         ]);
         CustomerStage::create([
-            "name" => "Paid Downpayment + Product Picked Up",
+            "name" => "Paid Downpayment and Product Picked Up",
             "is_active" => true
         ]);
         CustomerStage::create([
-            "name" => "Paid Downpayment + Product Not Picked Up",
+            "name" => "Paid Downpayment and Product Not Picked Up",
             "is_active" => true
         ]);
     }
