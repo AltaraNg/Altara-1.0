@@ -25,18 +25,18 @@ class ContactCustomerController extends Controller
         $contactsQueryClone = clone $contactsQuery;
         $summary = $contactsQueryClone->selectRaw('count(*) as total');
 
-        $stages = CustomerStage::whereIn('name', ['Registered', 'Purchased', 'Affidavit'])->get();
+        $stages = CustomerStage::whereIn('name', [CustomerStage::REGISTERED, CustomerStage::PURCHASED, CustomerStage::AFFIDAVIT])->get();
         foreach ($stages as $stage)
         {
-            $summary = $summary->selectRaw('count(case when customer_stage_id = '. $stage->id .' then  1 end) as ' . $stage->name);
+            $stage->name = str_replace(' ', '_', $stage->name);
+            $summary = $summary->selectRaw('count(case when customer_stage_id = '. $stage->id .' then  1 end) as ' . "$stage->name");
         }
         $summary = $summary->first();
-
         $additional = [
             'contacted' => $summary->total,
-            'registered' => $summary->Registered,
-            'Purchased' => $summary->Purchased,
-            'Affidavit' => $summary->Affidavit,
+            'registered' => $summary->Registered_On_Portal,
+            'Purchased' => $summary->Paid_Downpayment_and_Product_Picked_Up,
+            'Affidavit' => $summary->Paid_Affidavit,
         ];
 
         return $this->sendSuccess([$contactsQuery->paginate((int)request('limit', 20)), "meta" => $additional], 'Contact retrieved successfully');
