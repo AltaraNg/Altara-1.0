@@ -10,7 +10,7 @@ class ContactCustomer extends Model
 {
     use Filterable, Notifiable;
     protected $guarded = [];
-    protected $with = ['users:id,full_name', 'feedback'];
+    protected $with = ['users:id,full_name', 'feedback', 'customerStage:id,name', 'employmentStatus:id,name'];
 
     /**
      * Validation rules
@@ -59,6 +59,14 @@ class ContactCustomer extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+    public function customerStage()
+    {
+        return $this->belongsTo(CustomerStage::class);
+    }
+    public function employmentStatus()
+    {
+        return $this->belongsTo(EmploymentStatus::class);
     }
 
 }
