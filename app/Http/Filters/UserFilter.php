@@ -23,6 +23,11 @@ class UserFilter extends BaseFilter
         }
         else if (auth()->user()->isCoordinator()){
             // Todo: filter for coordinator
+            $branches = auth()->user()->branches;
+            $ids = $branches->map(function ($branch) {
+                return $branch->id;
+            });
+            $this->builder->whereIn('branch_id', $ids);
         }
 
 
