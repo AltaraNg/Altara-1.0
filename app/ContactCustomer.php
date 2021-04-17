@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Http\Filters\Filterable;
+use App\Rules\Phone;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -22,7 +23,7 @@ class ContactCustomer extends Model
     public static function rules()
     {
         return [
-            'phone' => 'required|regex:/(0)[0-9]{10}/|unique:contact_customers,phone',
+            'phone' => ['required', new Phone, 'unique:contact_customers,phone'],
             'email' => 'sometimes|required|email|unique:contact_customers,email',
             'name' => 'sometimes|required|string',
             'employment_status_id' => 'required|exists:employment_statuses,id'
