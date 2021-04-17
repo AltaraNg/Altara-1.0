@@ -14,6 +14,7 @@ class CustomerStageSeeder extends Seeder
      */
     public function run()
     {
+        CustomerStage::truncate();
         CustomerStage::create([
             "name" => "Registered On Portal",
             "is_active" => true
