@@ -13,14 +13,14 @@ class MessageService
     public function sendMessage($receiver, $message)
     {
         $isInProduction = App::environment() === 'production';
-        // if (!$isInProduction) {
+        if (!$isInProduction) {
 
-        //     $num = rand(0, 1);
-        //     if ($num > 0.5 ){
-        //         return json_decode(json_encode($this->success()));
-        //     }
-        //     return json_decode(json_encode($this->error()));
-        // }
+            $num = rand(0, 1);
+            if ($num > 0.5 ){
+                return json_decode(json_encode($this->success()));
+            }
+            return json_decode(json_encode($this->error()));
+        }
         $ch = curl_init();
         $receiver = urlencode($receiver);
         $message = urlencode($message);
