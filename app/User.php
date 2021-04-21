@@ -83,6 +83,11 @@ class User extends Authenticatable
         return $this->belongsTo(Branch::class);
     }
 
+    public function contact_customers()
+    {
+        return $this->hasMany(ContactCustomer::class);
+    }
+
     public function logs()
     {
         return $this->hasMany(Log::class, 'staff_id', 'staff_id');

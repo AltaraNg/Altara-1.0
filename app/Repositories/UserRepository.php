@@ -3,8 +3,7 @@
 
 namespace App\Repositories;
 
-
-
+use App\CustomerStage;
 use App\User;
 
 class UserRepository extends Repository
@@ -14,5 +13,25 @@ class UserRepository extends Repository
     public function model()
     {
         return User::class;
+    }
+
+    public function getAll($filter)
+    {
+        $query = $this->model::latest();
+        if (request('stats') == true){
+
+            return $query->withCount(['contact_customers as total',
+            'contact_customers as registered' => function($q){
+                $q->where('customer_stage_id', CustomerStage::where('name', CustomerStage::REGISTERED)->first()->id);
+            },
+            'contact_customers as purchased' => function($q){
+                $q->where('customer_stage_id', CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id);
+            },
+            'contact_customers as affidavit' => function($q){
+                $q->where('customer_stage_id', CustomerStage::where('name', CustomerStage::AFFIDAVIT)->first()->id);
+            },
+            ])->filter($filter)->paginate($this->limit);
+        }
+        return $query->filter($filter)->paginate($this->limit);
     }
 }
