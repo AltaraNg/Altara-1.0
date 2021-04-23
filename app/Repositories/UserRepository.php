@@ -32,6 +32,6 @@ class UserRepository extends Repository
             },
             ])->filter($filter)->paginate($this->limit);
         }
-        return $query->filter($filter)->paginate($this->limit);
+        return $query->filter($filter)->paginate(request('limit', 100));
     }
 }
