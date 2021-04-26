@@ -30,7 +30,7 @@ class UserRepository extends Repository
             'contact_customers as affidavit' => function($q){
                 $q->where('customer_stage_id', CustomerStage::where('name', CustomerStage::AFFIDAVIT)->first()->id);
             },
-            ])->filter($filter)->paginate($this->limit);
+            ])->filter($filter)->paginate(100);
         }
         return $query->filter($filter)->paginate(request('limit', 100));
     }
