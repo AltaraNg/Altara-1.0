@@ -7,7 +7,9 @@ use App\Counter;
 use App\EmployeeCategory;
 use App\Events\Event;
 use App\Events\NewOrderEvent;
+use App\Http\Filters\UserFilter;
 use App\NewOrder;
+use App\Repositories\UserRepository;
 use App\Role;
 use App\User;
 use Carbon\Carbon;
@@ -20,6 +22,13 @@ use Validator;
 
 class UserController extends Controller
 {
+
+    private $userRepo;
+
+    public function __construct(UserRepository $userRepo)
+    {
+        $this->userRepo = $userRepo;
+    }
     public function index()
     {
         /** gets list of users(paginated), searchPaginateAndOrder is a custom
@@ -269,5 +278,11 @@ class UserController extends Controller
             $minAge = (!empty($parameters)) ? (int)$parameters[0] : 18;
             return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
         });
+    }
+
+    public function getUsers(UserFilter $filter)
+    {
+        $users = $this->userRepo->getAll($filter);
+        return $this->sendSuccess($users->toArray(), 'users retrieved successfully');
     }
 }
