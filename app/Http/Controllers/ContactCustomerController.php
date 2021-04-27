@@ -21,7 +21,7 @@ class ContactCustomerController extends Controller
 
     public function index(ContactCustomerFilter $filter)
     {
-        $contactsQuery = $this->contactRepo->query($filter);
+        $contactsQuery = $this->contactRepo->query($filter)->latest();
         $contactsQueryClone = clone $contactsQuery;
         $summary = $contactsQueryClone->selectRaw('count(*) as total');
 
