@@ -17,7 +17,7 @@ class UserRepository extends Repository
 
     public function getAll($filter)
     {
-        $query = $this->model::latest();
+        $query = $this->model::where('portal_access', 1)->latest();
         if (request('stats') == true){
 
             return $query->withCount(['contact_customers as total',
