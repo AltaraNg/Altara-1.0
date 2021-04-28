@@ -146,8 +146,8 @@ class CustomerController extends Controller
         /** 1. Strip all the eager loaded model attached
          * to the $request(customer model) received */
         $this->validate($request, [
-            'telephone' => 'sometimes|required|string|unique:customers,telephone' . $id,
-            'email' => 'sometimes|required|string|email|unique:customers,email' . $id
+            'telephone' => 'sometimes|required|string|unique:customers,telephone,' . $id,
+            'email' => 'sometimes|required|string|email|unique:customers,email,' . $id
 
         ]);
 
