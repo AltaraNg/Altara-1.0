@@ -12,25 +12,34 @@ class MessageService
 {
     public function sendMessage($receiver, $message)
     {
-        $isInProduction = App::environment() === 'production';
-        if (!$isInProduction) {
+        // $isInProduction = App::environment() === 'production';
+        // if (!$isInProduction) {
 
-            $num = rand(0, 1);
-            if ($num > 0.5 ){
-                return json_decode(json_encode($this->success()));
-            }
-            return json_decode(json_encode($this->error()));
-        }
+        //     $num = rand(0, 1);
+        //     if ($num > 0.5 ){
+        //         return json_decode(json_encode($this->success()));
+        //     }
+        //     return json_decode(json_encode($this->error()));
+        // }
         $ch = curl_init();
         $receiver = urlencode($receiver);
         $message = urlencode($message);
+        $recArray = explode(',', $receiver);
+        // $data = [];
+        // dd($recArray);
+        // foreach($recArray as $num){
+        //     curl_setopt($ch, CURLOPT_URL, env('SMS_URL') . 'query?username=' . env('SMS_USERNAME') . '&password=' . env('SMS_PASSWORD') . '&to=' . $num . '&text=' . $message);
+        //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        //     array_push($data, curl_exec($ch));
+        // }
         curl_setopt($ch, CURLOPT_URL, env('SMS_URL') . 'query?username=' . env('SMS_USERNAME') . '&password=' . env('SMS_PASSWORD') . '&to=' . $receiver . '&text=' . $message);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $data = curl_exec($ch);
         curl_close($ch);
 
-        return json_decode($data);
+        return json_encode($data);
     }
 
     private function success() {
