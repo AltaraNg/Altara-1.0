@@ -76,7 +76,7 @@ class DirectDebitService
             }else {
                 $res[] = array_merge($data, [
                     'status' => 'failed',
-                    'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : $response->message
+                    'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
                 ]);
             }
         }

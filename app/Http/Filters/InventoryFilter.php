@@ -14,17 +14,17 @@ class InventoryFilter extends BaseFilter
      */
     public function isActive($status)
     {
-            $this->builder->whereHas('inventoryStatus', function ($q){
-                $q->where('status', InventoryStatus::AVAILABLE);
-            });
+            // $this->builder->whereHas('inventoryStatus', function ($q){
+            //     $q->where('status', InventoryStatus::AVAILABLE);
+            // });
     }
 
     public function salesLogger($status)
     {
-        $this->builder->whereHas('inventoryStatus', function ($q) {
-            $q->where('status', InventoryStatus::AVAILABLE)
-                ->orWhere('status', InventoryStatus::REPOSSESSED);
-        });
+        // $this->builder->whereHas('inventoryStatus', function ($q) {
+        //     $q->where('status', InventoryStatus::AVAILABLE)
+        //         ->orWhere('status', InventoryStatus::REPOSSESSED);
+        // });
     }
 
     /**
@@ -48,9 +48,9 @@ class InventoryFilter extends BaseFilter
     }
 
     public function filterBranch() {
-        if (!auth()->user()->isAdmin()){
-            $this->builder->where('branch_id', request('branch', auth()->user()->branch_id));
-        }
+        // if (!auth()->user()->isAdmin()){
+        //     $this->builder->where('branch_id', request('branch', auth()->user()->branch_id));
+        // }
     }
 
     /**
