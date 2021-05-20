@@ -17,9 +17,9 @@ class MessageService
 
             $num = rand(0, 1);
             if ($num > 0.5 ){
-                return json_decode(json_encode($this->success()));
+                return json_decode(json_encode($this->success($receiver)));
             }
-            return json_decode(json_encode($this->error()));
+            return json_decode(json_encode($this->error($receiver)));
         }
         $ch = curl_init();
         $receiver = urlencode($receiver);
@@ -124,7 +124,7 @@ class MessageService
         }
     }
 
-    private function success() {
+    private function success($receiver) {
 
         return [
             'messages' => [
@@ -134,14 +134,15 @@ class MessageService
                     "groupName" => "PENDING ",
                     "id"=> 7,
                     "name"=> "PENDING_ENROUTE",
-                    "description" => "Message has been processed and sent to the next instance"
+                    "description" => "Message has been processed and sent to the next instance",
+                    "received" => $receiver
                     ]
                 ]
             ]
         ];
     }
 
-    private function error()
+    private function error($receiver)
     {
 
         return [
@@ -152,7 +153,8 @@ class MessageService
                         "groupName" => "REJECTED",
                         "id"=> 52,
                         "name"=> "REJECTED_DESTINATION",
-                        "description" => "Invalid destination address."
+                        "description" => "Invalid destination address.",
+                        "received" => $receiver
                     ]
                 ]
             ]
