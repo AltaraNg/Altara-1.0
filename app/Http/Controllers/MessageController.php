@@ -55,14 +55,13 @@ class MessageController extends Controller
         ]);
     }
 
-    public function sendDsa(Request $request){
+    public function sendStaffMessage(Request $request){
         $roles = $request['roles'];
         $staffIDs = [];
         foreach($roles as $role){
-            $staffs = User::where('role_id', $role)->get()->toArray();
+            $staffs = User::where([['role_id', $role], ['portal_access', 1]])->get()->toArray();
             $staffIDs = array_merge($staffIDs, $staffs);
         }
-        // dd($staffIDs);
         $message = $request['message'];
         $response = [];
 

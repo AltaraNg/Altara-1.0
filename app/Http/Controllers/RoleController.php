@@ -10,7 +10,7 @@ class RoleController extends Controller
     //
     public function index(){
         $roles = Role::all();
-        /** return list of states*/
+
         return response()->json(['roles' => $roles]);
     }
 
