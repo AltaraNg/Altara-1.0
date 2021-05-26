@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\MessageFilter;
 use App\Message;
+use App\Repositories\MessageRepository;
 use App\Services\MessageService;
+use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 class MessageController extends Controller
 {
@@ -14,7 +16,17 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $messageRepo;
+    public function __construct(MessageRepository $messageRepository)
+    {
+        $this->messageRepo = $messageRepository;
+    }
 
+     public function index(MessageFilter $filter){
+        $messages = $this->messageRepo->getAll($filter);
+
+        return $this->sendSuccess($messages->toArray(), 'Messages retrieved successfully');
+     }
     public function create()
     {
         $message = request('message');
@@ -41,5 +53,36 @@ class MessageController extends Controller
             'sentAndLogged' => true,
             'ids' => $ids ?? null
         ]);
+    }
+
+    public function sendStaffMessage(Request $request){
+        $roles = $request['roles'];
+        $staffIDs = [];
+        foreach($roles as $role){
+            $staffs = User::where([['role_id', $role], ['portal_access', 1]])->get()->toArray();
+            $staffIDs = array_merge($staffIDs, $staffs);
+        }
+        $message = $request['message'];
+        $response = [];
+
+        foreach($staffIDs as $staff){
+            //**Send message */
+            $telephone = $staff['phone_number'];
+            $telephone = '234'. substr($telephone, 1);
+            $messageService = new MessageService();
+            $result = $messageService->sendMessage($telephone, $message);
+
+            // ** save to db
+            $model = new Message();
+            $model->user_id = auth('api')->user()->id;
+            $model->message = $message;
+            $model->receiver_id = $staff['id'];
+            $model->type = 'staff';
+            $model->contacts = $telephone;
+            $model->save();
+            array_push($response, $result);
+        }
+        return response()->json($response);
+
     }
 }

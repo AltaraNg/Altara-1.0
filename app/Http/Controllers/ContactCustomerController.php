@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\ContactCustomer;
 use App\CustomerStage;
+use App\Exports\ContactCustomerExport;
 use App\Helper\Helper;
 use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Requests\ContactCustomerRequest;
 use App\Repositories\ContactCustomerRepository;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Excel;
 
 class ContactCustomerController extends Controller
 {
@@ -75,5 +77,12 @@ class ContactCustomerController extends Controller
         $order = $this->contactRepo->update($customer_contact, $request->validated());
 
         return $this->sendSuccess($order->toArray(), 'Contact updated successfully');
+    }
+
+    public function export(Excel $excel, ContactCustomerFilter $filter){
+        $contactsQuery = $this->contactRepo->query($filter);
+        $export = New ContactCustomerExport($contactsQuery);
+
+        return $excel->download($export, 'customer.csv');
     }
 }
