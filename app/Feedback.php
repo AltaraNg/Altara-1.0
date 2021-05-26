@@ -10,7 +10,7 @@ class Feedback extends Model
     //
     use Filterable;
     protected $guarded = [];
-    protected $with = ['reason'];
+    protected $with = ['reason:id,reason'];
     protected $table = 'feed_backs';
 
     public static function rules()
