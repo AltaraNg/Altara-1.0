@@ -191,6 +191,11 @@ class Customer extends Model
         return $this->hasMany(Reminder::class);
     }
 
+    public function dsa_app()
+    {
+        return $this->hasOne(ContactCustomer::class, 'reg_id', 'reg_id');
+    }
+
     public function manager()
     {
         return $this->belongsTo(User::class, 'managed_by', 'id');
