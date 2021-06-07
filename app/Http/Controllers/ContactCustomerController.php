@@ -82,7 +82,6 @@ class ContactCustomerController extends Controller
     public function export(Excel $excel, ContactCustomerFilter $filter){
         $contactsQuery = $this->contactRepo->query($filter);
         $export = New ContactCustomerExport($contactsQuery);
-
         return $excel->download($export, 'customer.csv');
     }
 }
