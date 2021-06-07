@@ -79,7 +79,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'inventory_status' => 'InventoryStatusController',
         'todo' => 'TodoController',
         'reason' => 'ReasonController',
-        'feedback' => 'FeedBackController',
+        'feedback' => 'FeedbackController',
         'role' => 'RoleController'
 
     ]);
