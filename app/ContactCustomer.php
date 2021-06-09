@@ -70,4 +70,9 @@ class ContactCustomer extends Model
         return $this->belongsTo(EmploymentStatus::class);
     }
 
+    public function registered()
+    {
+        return $this->belongsTo(Customer::class, 'reg_id', 'reg_id');
+    }
+
 }
