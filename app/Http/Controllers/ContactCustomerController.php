@@ -89,9 +89,5 @@ class ContactCustomerController extends Controller
         return $excel->download($export, 'customer.csv');
     }
 
-    public function getInactive(ContactCustomerFilter $filter){
 
-        $contactsQuery = $this->contactRepo->getInactive(request('month'), $filter)->latest();
-        return $this->sendSuccess($contactsQuery->paginate((int)request('limit', 20)), 'Contact retrieved successfully');
-    }
 }
