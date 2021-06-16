@@ -115,6 +115,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::patch('/new-order/{new_order}/repossess', 'NewOrderController@repossess');
     Route::get('/get-users', 'UserController@getUsers');
     Route::get('/contact-customer/export', 'ContactCustomerController@export');
+    Route::get('/contact-customer/inactive', 'ContactCustomerController@getInactive');
 
 });
 

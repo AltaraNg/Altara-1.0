@@ -9,16 +9,19 @@ use App\Helper\Helper;
 use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Requests\ContactCustomerRequest;
 use App\Repositories\ContactCustomerRepository;
+use App\Services\OverdueProspectService;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Excel;
 
 class ContactCustomerController extends Controller
 {
     private $contactRepo;
+    private $overdueService;
 
-    public function __construct(ContactCustomerRepository $contactRepository)
+    public function __construct(ContactCustomerRepository $contactRepository, OverdueProspectService $overdueService)
     {
         $this->contactRepo = $contactRepository;
+        $this->overdueService = $overdueService;
     }
 
     public function index(ContactCustomerFilter $filter)
@@ -84,5 +87,11 @@ class ContactCustomerController extends Controller
         $export = New ContactCustomerExport($contactsQuery);
 
         return $excel->download($export, 'customer.csv');
+    }
+
+    public function getInactive(ContactCustomerFilter $filter){
+
+        $contactsQuery = $this->contactRepo->getInactive(request('month'), $filter)->latest();
+        return $this->sendSuccess($contactsQuery->paginate((int)request('limit', 20)), 'Contact retrieved successfully');
     }
 }
