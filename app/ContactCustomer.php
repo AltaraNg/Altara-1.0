@@ -55,7 +55,7 @@ class ContactCustomer extends Model
     }
     public function feedback()
     {
-        return $this->hasMany(Feedback::class, 'customer_id');
+        return $this->hasMany(Feedback::class, 'id', 'customer_id');
     }
     public function branch()
     {
