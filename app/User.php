@@ -189,7 +189,8 @@ class User extends Authenticatable
     }
     public function isDSACaptain()
     {
-        return  $this->role->name === 'Direct Sales Agent Captain';
+        return  $this->role->name === 'Direct Sales Agent Captain'||
+        $this->role->name === 'Freelance Captain';
     }
     public function isCoordinator()
     {
@@ -198,7 +199,9 @@ class User extends Authenticatable
     }
     public function isDSAAgent()
     {
-        return  $this->role->name === 'Direct Sales Agent';
+        return  $this->role->name === 'Direct Sales Agent' ||
+         $this->role->name === 'Direct Sales Agent - Referral' ||
+         $this->role->name === 'Direct Sales Agent - Renewal';
     }
     public function todo()
     {
