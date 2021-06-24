@@ -30,6 +30,8 @@ class ContactCustomerExport implements FromQuery, WithHeadings, WithMapping, Wit
             'Email',
             'Full Name',
             'Date Added',
+            'Customer Stage',
+            'Employment Status',
             'Added By'
 
         ];
@@ -42,6 +44,8 @@ class ContactCustomerExport implements FromQuery, WithHeadings, WithMapping, Wit
             $customer->email,
             $customer->name,
             Date::dateTimeToExcel($customer->created_at),
+            $customer->customerStage->name,
+            $customer->employmentStatus->name,
             $customer->users->full_name
         ];
     }
