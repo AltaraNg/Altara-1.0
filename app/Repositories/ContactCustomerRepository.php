@@ -5,6 +5,8 @@ namespace App\Repositories;
 
 
 use App\ContactCustomer;
+use App\CustomerStage;
+use Carbon\Carbon;
 
 class ContactCustomerRepository extends Repository
 {
@@ -17,5 +19,11 @@ class ContactCustomerRepository extends Repository
     public function query($filter)
     {
         return $this->model::filter($filter);
+    }
+    public function getInactive($month, $filter){
+        $now = Carbon::now();
+
+        return $this->model::where('customer_stage_id','!=', CustomerStage::where('name', '=',CustomerStage::PURCHASED)->first()->id)
+        ->whereMonth('created_at', '<=',  $now->subMonths(intval($month)))->filter($filter);
     }
 }

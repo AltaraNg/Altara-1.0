@@ -79,7 +79,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'inventory_status' => 'InventoryStatusController',
         'todo' => 'TodoController',
         'reason' => 'ReasonController',
-        'feedback' => 'FeedBackController',
+        'feedback' => 'FeedbackController',
         'role' => 'RoleController'
 
     ]);
@@ -115,6 +115,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::patch('/new-order/{new_order}/repossess', 'NewOrderController@repossess');
     Route::get('/get-users', 'UserController@getUsers');
     Route::get('/contact-customer/export', 'ContactCustomerController@export');
+    Route::get('/feedbacks/export', 'FeedbackController@export');
+
 
 });
 

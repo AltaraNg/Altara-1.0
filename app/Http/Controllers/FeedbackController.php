@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FeedbackExport;
 use App\Feedback;
 use App\Http\Filters\FeedBackFilter;
 use App\Http\Requests\FeedbackRequest;
 use App\Repositories\FeedbackRepository;
+use Maatwebsite\Excel\Excel;
 
-class FeedBackController extends Controller
+class FeedbackController extends Controller
 {
 
     private $feedbackRepo;
@@ -87,5 +89,13 @@ class FeedBackController extends Controller
     public function destroy(Feedback $feedBack)
     {
         //
+    }
+
+    public function export(Excel $excel, FeedBackFilter $filter){
+
+        $feedbackQuery = $this->feedbackRepo->query($filter)->latest();
+        $export = New FeedbackExport($feedbackQuery);
+
+        return $excel->download($export, 'feedback.csv');
     }
 }

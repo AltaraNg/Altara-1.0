@@ -3,6 +3,7 @@
 
 namespace App\Http\Filters;
 
+use App\CustomerStage;
 use Carbon\Carbon;
 
 class ContactCustomerFilter extends BaseFilter
@@ -38,6 +39,13 @@ class ContactCustomerFilter extends BaseFilter
     public function phone($phone)
     {
         $this->builder->where('phone', $phone);
+    }
+
+    public function unconverted($months){
+        $now = Carbon::now();
+
+        $this->builder->where('customer_stage_id','!=', CustomerStage::where('name', '=',CustomerStage::PURCHASED)->first()->id)
+        ->whereMonth('created_at', '<=',  $now->subMonths(intval($months)));
     }
 
     /**
