@@ -7,6 +7,7 @@ use App\Events\OldRepaymentEvent;
 use App\Events\ProductTransferEvent;
 use App\Events\SendPasswordResetLinkEvent;
 use App\Events\RepaymentEvent;
+use App\Events\DirectDebitEvent;
 use App\Listeners\LogPaymentListener;
 use App\Listeners\NewOrderListener;
 use App\Listeners\ProductTransferListener;
@@ -49,6 +50,9 @@ class EventServiceProvider extends ServiceProvider
         RepaymentEvent::class => [
             UpdateAmortizationListener::class,
             RepaymentListener::class
+        ],
+        DirectDebitEvent::class => [
+            LogPaymentListener::class
         ]
     ];
 

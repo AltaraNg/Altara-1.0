@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentMethod extends Model
 {
+    const DIRECT_DEBIT = 'direct-debit';
+
     public $timestamps = false;
 
     /**

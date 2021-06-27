@@ -7,8 +7,11 @@ namespace App\Services;
 use App\Amortization;
 use App\BusinessType;
 use App\Events\RepaymentEvent;
+use App\Events\DirectDebitEvent;
 use App\OrderStatus;
 use Carbon\Carbon;
+use App\PaymentType;
+use App\PaymentMethod;
 
 class DirectDebitService
 {
@@ -67,8 +70,14 @@ class DirectDebitService
             ];
 
             if(isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
+                $paymentType = PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id;
+                $paymentMethod = PaymentMethod::where('name', PaymentMethod::DIRECT_DEBIT)->first()->id;
                 $item->new_orders['amount'] = $item->expected_amount;
+                $item->new_orders['payment_type_id'] = $paymentType;
+                $item->new_orders['payment_method_id'] = $paymentMethod;
+
                 event(new RepaymentEvent($item->new_orders));
+                event(new DirectDebitEvent($item->new_orders));
                 $res[] = array_merge($data, [
                     'status' => 'success',
                     'statusMessage' => 'Approved'
