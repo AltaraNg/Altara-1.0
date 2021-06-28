@@ -10,7 +10,13 @@ class UserFilter extends BaseFilter
 {
     public function role(int $role_id)
     {
-        $this->builder->where('role_id', $role_id);
+        if(Role::find($role_id)->name == 'Direct Sales Agent'){
+            $this->builder->whereIn('role_id', [18, 44, 45]);
+        }
+        else{
+            $this->builder->where('role_id', $role_id);
+        }
+
     }
     public function branch(int $branch_id)
     {
