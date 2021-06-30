@@ -11,4 +11,9 @@ class FeedbackRepository extends Repository
     {
         return Feedback::class;
     }
+
+    public function query($filter)
+    {
+        return $this->model::filter($filter);
+    }
 }

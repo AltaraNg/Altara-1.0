@@ -10,7 +10,7 @@ class Feedback extends Model
     //
     use Filterable;
     protected $guarded = [];
-    protected $with = ['reason:id,reason'];
+    protected $with = ['reason:id,reason', 'user:id,full_name', 'customer:id,name'];
     protected $table = 'feed_backs';
 
     public static function rules()
@@ -48,7 +48,7 @@ class Feedback extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
     public function todo()
     {
