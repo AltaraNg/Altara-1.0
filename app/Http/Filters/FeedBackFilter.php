@@ -11,9 +11,11 @@ class FeedBackFilter extends BaseFilter
         $this->builder->where('user_id', $user_id);
     }
 
-    public function customer(string $customer_id)
+    public function customer(string $customer_name)
     {
-        $this->builder->where('customer_id', $customer_id);
+        $this->builder->whereHas('customer', function($query) use ($customer_name){
+            $query->where('name', 'like', '%'.$customer_name.'%');
+        });
     }
 
     public function reason(string $reason_id)
