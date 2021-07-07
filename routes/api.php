@@ -116,6 +116,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/get-users', 'UserController@getUsers');
     Route::get('/contact-customer/export', 'ContactCustomerController@export');
     Route::get('/feedbacks/export', 'FeedbackController@export');
+    Route::post('/recommendation', 'AmortizationController@recommend');
+
 
 
 });
