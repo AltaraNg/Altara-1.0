@@ -26,15 +26,15 @@ class AmmortizationService
     }
 
     public function recommend($data){
-       $salary = (float) $data['salary'];
-       $downpayment = (float) $data['down_payment'];
-       $total_price = (float) $data['total_price'];
+       $salary = (int) $data['salary'];
+       $downpayment = (int) $data['down_payment'];
+       $total_price = (int) $data['total_price'];
 
        $allowance = $this->getAllowance($salary);
        $plan = $downpayment / $total_price * 100;
        $repayment = ($total_price - $downpayment)/6;
        if ($allowance > $repayment){
-           $ans = "Plan is ok";
+           $ans = $plan."% is ok";
        }
        else{
 
@@ -43,7 +43,7 @@ class AmmortizationService
                $ans = "There is no suitable plan";
            }
            else{
-           $ans = "the recommended plan is " + $res;
+           $ans = "the recommended plan is ". $res. "%";
         }
        }
 
@@ -53,13 +53,13 @@ class AmmortizationService
     }
 
     public function getAllowance($salary){
-        return (float) $salary / 4;
+        return (float)$salary / 4;
     }
     public function getSuitablePlan($initial_plan, $total_price, $allowance){
         $ans = '';
-        for($i = $initial_plan ; $i <= 100 ; $i+=20){
-            $downpayment = $i / 100 * $total_price;
-            $repayment = ($total_price - $downpayment)/6;
+        for($i = $initial_plan ; $i < 100 ; $i+=20){
+            $downpayment = ($i / 100) * $total_price;
+            $repayment = ($total_price - $downpayment) / 6;
             if($repayment > $allowance ){
                 $ans = 'none';
                 // $ans = $initial_plan;
