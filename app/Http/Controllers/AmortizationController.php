@@ -73,6 +73,18 @@ class AmortizationController extends Controller
         $resp = $service->generatePreview($request->validated());
         return ResponseHelper::createSuccessResponse($resp);
     }
+    public function recommend(AmmortizationService $service){
+        // dd(request('down_payment'));
+        $data = [
+            'down_payment' => request('down_payment'),
+            'salary' => request('salary'),
+            'total_price' => request('total_price')
+        ];
+        $resp = [
+            'ans' => $service->recommend($data)];
+        return ResponseHelper::createSuccessResponse($resp);
+
+    }
 
 
 }
