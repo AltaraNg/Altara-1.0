@@ -76,7 +76,7 @@ class DocumentController extends Controller
    {
       /** 1. Validate the document(image) */
       $this->validate($request, [
-         $request['document'] => 'image|max:512|dimensions:max_width=1200,max_height=1200|mimes:jpeg,jpg,png'
+         $request['document'] => 'max:512|dimensions:max_width=1200,max_height=1200|mimes:jpeg,jpg,png,svg'
       ]);
 
       /**NB the $request['document'] field is not the document rather the document type - passport or id card.
