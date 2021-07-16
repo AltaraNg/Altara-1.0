@@ -29,10 +29,12 @@ class ContactCustomerExport implements FromQuery, WithHeadings, WithMapping, Wit
             'Phone',
             'Email',
             'Full Name',
+            'Branch',
             'Date Added',
             'Customer Stage',
             'Employment Status',
-            'Added By'
+            'Added By',
+            'Updated At'
 
         ];
     }
@@ -43,10 +45,12 @@ class ContactCustomerExport implements FromQuery, WithHeadings, WithMapping, Wit
             $customer->phone,
             $customer->email,
             $customer->name,
+            $customer->branch->name,
             Date::dateTimeToExcel($customer->created_at),
             $customer->customerStage->name,
             $customer->employmentStatus->name,
-            $customer->users->full_name
+            $customer->users->full_name,
+            Date::dateTimeToExcel($customer->updated_at),
         ];
     }
 
