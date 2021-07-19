@@ -63,7 +63,10 @@ class RepaymentController extends Controller
         $order = Order::findOrFail($request->order_id);
         $order->amount = $request->amount;
         $order->payment_type_id = $paymentType;
-        event(new OldRepaymentEvent($order));
+        if (env('SEND_REORDER_SMS')) {
+             event(new OldRepaymentEvent($order));
+        }
+       
 
         return response()->json([
             'saved' => true,
