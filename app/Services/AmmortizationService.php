@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DownPaymentRate;
 use App\Exceptions\AException;
 use App\NewOrder;
 use App\StoreProduct;
@@ -13,7 +14,6 @@ use Illuminate\Support\Str;
  */
 class AmmortizationService
 {
-    private $plans = [20, 40, 60, 80];
     public function generatePreview($data)
     {
         $order = new NewOrder($data);
@@ -52,24 +52,75 @@ class AmmortizationService
         return $ans;
     }
 
+    public function recommendInformal($data){
+        //* Get all relevant parameters
+        $downpayment = (int) $data['down_payment'];
+       $total_price = (int) $data['total_price'];
+       $months = [$data['month1'], $data['month2'], $data['month3']];
+
+       //* Get current plan
+       $plan = $downpayment / $total_price * 100;
+
+       $downpayments = array_values(DownPaymentRate::$downPayments);
+        $key = array_search($plan, $downpayments);
+        $ans = '';
+
+        //* Do credibility check
+        for($i = $key ; $i < count($downpayments) ; $i++){
+
+            $repayment = ($total_price - ($downpayments[$i] / 100 * $total_price)) / 6;
+            $cred_month = 0;
+            foreach($months as $month){
+                if($this->confirmMonth($month, $repayment) == false){
+                    break;
+                }else{
+                    $cred_month++;
+                }
+            }
+            if($cred_month == 3){
+                $ans = "the recommended plan is ". $downpayments[$i]. "%";
+                return $ans;
+            }
+            else{
+               $ans = "There is no suitable plan";
+            }
+        }
+        return $ans;
+
+    }
+
     public function getAllowance($salary){
         return (float)$salary / 4;
     }
     public function getSuitablePlan($initial_plan, $total_price, $allowance){
         $ans = '';
-        for($i = $initial_plan ; $i < 100 ; $i+=20){
-            $downpayment = ($i / 100) * $total_price;
+        $downpayments = array_values(DownPaymentRate::$downPayments);
+        $key = array_search($initial_plan, $downpayments);
+        for($i = $key ; $i < count($downpayments) ; $i++){
+            $downpayment = ($downpayments[$i] / 100) * $total_price;
+
             $repayment = ($total_price - $downpayment) / 6;
             if($repayment > $allowance ){
                 $ans = 'none';
-                // $ans = $initial_plan;
             }
             else{
-                $ans = $i;
+                $ans = $downpayments[$i];
                 break;
             }
         }
         return $ans;
 
+    }
+    public function confirmMonth($balances, $repayment){
+        $affirm = 0;
+        foreach($balances as $balance){
+            if($balance >= $repayment){
+                $affirm++;
+            }
+        }
+        if($affirm >= 2){
+            return true;
+        }
+        return false;
     }
 }
