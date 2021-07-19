@@ -118,9 +118,6 @@ class AmmortizationService
                 $affirm++;
             }
         }
-        if($affirm >= 2){
-            return true;
-        }
-        return false;
+        return $affirm >= 2;
     }
 }
