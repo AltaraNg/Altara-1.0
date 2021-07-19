@@ -62,7 +62,16 @@ class NewOrderNotification extends Notification
      */
     public function toSms($notifiable)
     {
-        return strtr(Constants::SUCCESSFUL_ORDER, $this->data);
+        //get all array_keys and values of the this->data to be replaced
+        $find       = array_keys($this->data);
+        $replace    = array_values($this->data);
+        //construct a new array to construct regex to search for when replacing
+        $myNewArray =  array_map(function ($value) {
+            return '/\[' . $value . '\]/';
+        }, $find);
+        $new_string = preg_replace($myNewArray, $replace, Constants::SUCCESSFUL_ORDER);
+        return $new_string;
+        // return strtr(Constants::SUCCESSFUL_ORDER, $this->data);
     }
 
     /**

@@ -44,7 +44,7 @@ class NewOrderRepository extends Repository
             'status_id' => OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id,
             'product_id' => $inventory->product_id
         ]));
-        if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM) {
+        if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM){
             $order->customDate()->create(['custom_date' => $data['custom_date']]);
             $order->custom_date = $data['custom_date'];
         }
@@ -59,9 +59,7 @@ class NewOrderRepository extends Repository
         $order->payment_method_id = $data['payment_method_id'];
         $order->bank_id = $data['bank_id'];
         $order->inventory = $inventory;
-        if (env('SEND_ORDER_SMS')) {
-            event(new NewOrderEvent($order));
-        }
+        event(new NewOrderEvent($order));
 
         return $order->fresh();
     }
@@ -78,5 +76,6 @@ class NewOrderRepository extends Repository
         } catch (Exception $e) {
             throw new AException($e->getMessage(), $e->getCode());
         }
+
     }
 }
