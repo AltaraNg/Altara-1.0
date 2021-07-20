@@ -40,12 +40,13 @@ class SmsChannel
     }
 
 
-    private function appendPrefix(string $number){
+    private function appendPrefix(string $number)
+    {
         if (!$number) return '';
         $pre = '234';
-        if($number[0] == 0) {
+        if ($number[0] == 0) {
             return $pre . substr($number, 1);
-        }elseif (substr($number, 0, 3) == $pre){
+        } elseif (substr($number, 0, 3) == $pre) {
             return $number;
         }
         return $pre . $number;

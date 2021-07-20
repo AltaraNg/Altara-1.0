@@ -33,8 +33,8 @@ class Constants
     const RENEWAL_NOTIFICATION_ERROR = 'An Error Occured while trying to send renewal notification to customer customer_name with Order order_number';
 
     const SUCCESSFUL_ORDER = 'Hello [customer_name],
-    thank you for patronizing us and hope you enjoy using your [product_name] for business or leisure. 
-    You have paid [down_payment] and still owe [total_debt_left]. 
+    Thank you for patronizing us and hope you enjoy using your [product_name] for business or leisure. 
+    You have paid [down_payment] and still owe [repayment]. 
     Your next repayment of repayment is due on [next_payment_date]. 
     Visit the showroom or call us when you transfer to confirm payment. 
     Do not ever pay money into any altara agents account and always demand your receipt.';

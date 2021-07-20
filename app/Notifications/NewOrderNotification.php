@@ -27,7 +27,9 @@ class NewOrderNotification extends Notification
      */
     public function __construct(NewOrder $data)
     {
+      
         $this->data = $data->toArray();
+        $this->data["next_payment_date"] = $data->amortization[0]->expected_payment_date;
     }
 
     /**
@@ -69,6 +71,7 @@ class NewOrderNotification extends Notification
         $myNewArray =  array_map(function ($value) {
             return '/\[' . $value . '\]/';
         }, $find);
+        // dd($replace);
         $new_string = preg_replace($myNewArray, $replace, Constants::SUCCESSFUL_ORDER);
         return $new_string;
         // return strtr(Constants::SUCCESSFUL_ORDER, $this->data);

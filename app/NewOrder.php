@@ -202,9 +202,9 @@ class NewOrder extends Model
             "owner" => $this->owner->full_name ?? '',
             "sales_type" => $this->salesCategory ?? '',
             
-            "total_debt_left" => number_format(($this->product_price - $this->down_payment), 2),
-            "repayment_amount" => number_format($this->repayment, 2),
-            "next_payment_date" =>  $this->amortization[0]->expected_payment_date,
+            // "total_debt_left" => number_format(($this->product_price - $this->down_payment), 2),
+            // "repayment_amount" => number_format($this->repayment, 2),
+            // "next_payment_date" =>  $this->amortization[0]->expected_payment_date,
         ];
     }
 }
