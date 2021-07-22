@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Channels\SmsChannel;
 use App\Helper\Constants;
+use App\Helper\Helper;
 use App\NewOrder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -70,7 +71,7 @@ class RepaymentNotification extends Notification
      */
     public function toSms($notifiable)
     {
-        $replacementKeys = $this->generateReplacementKeys(array_keys($this->data));
+        $replacementKeys = Helper::generateReplacementKeys(array_keys($this->data));
         $replacementValues    = array_values($this->data);
         $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_REPAYMENT);
         return $message;
@@ -86,18 +87,5 @@ class RepaymentNotification extends Notification
     public function toArray($notifiable)
     {
         return $this->data;
-    }
-     /**
-     * Get the array regex representation of the keys.
-     *
-     * @param  array  $keys
-     * @return array
-     */
-    public function generateReplacementKeys(array $keys)
-    {
-        //construct a new array to construct regex to search for when replacing
-        return array_map(function ($value) {
-            return '/\[' . $value . '\]/';
-        }, $keys);
     }
 }

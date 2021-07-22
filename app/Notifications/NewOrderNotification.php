@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Mail\NewOrder as Mailable;
+use App\Helper\Helper;
 
 class NewOrderNotification extends Notification
 {
@@ -65,7 +66,7 @@ class NewOrderNotification extends Notification
      */
     public function toSms($notifiable)
     {
-        $replacementKeys = $this->generateReplacementKeys(array_keys($this->data));
+        $replacementKeys = Helper::generateReplacementKeys(array_keys($this->data));
         $replacementValues    = array_values($this->data);
         $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_ORDER);
         return $message;
@@ -80,19 +81,5 @@ class NewOrderNotification extends Notification
     public function toArray($notifiable)
     {
         return $this->data;
-    }
-
-    /**
-     * Get the array regex representation of the keys.
-     *
-     * @param  array  $keys
-     * @return array
-     */
-    public function generateReplacementKeys(array $keys)
-    {
-        //construct a new array to construct regex to search for when replacing
-        return array_map(function ($value) {
-            return '/\[' . $value . '\]/';
-        }, $keys);
     }
 }
