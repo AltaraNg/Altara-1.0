@@ -35,9 +35,7 @@ class PaymentReconcileRepository extends Repository
         $payment_type = PaymentType::where('id', $data["payment_type_id"])->first();
 
         if ($payment_type->type == PaymentType::REPAYMENTS) {
-            if (env('SEND_REORDER_SMS')) {
-                event(new RepaymentEvent($model));
-            }
+            event(new RepaymentEvent($model));
         }
         return $resp;
     }

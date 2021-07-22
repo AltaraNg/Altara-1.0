@@ -75,7 +75,6 @@ class RepaymentNotification extends Notification
         $replacementValues    = array_values($this->data);
         $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_REPAYMENT);
         return $message;
-        // return strtr(Constants::SUCCESSFUL_REPAYMENT, $this->data);
     }
 
     /**
