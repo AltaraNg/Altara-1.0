@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Mail\NewOrder as Mailable;
+use App\Helper\Helper;
 
 class NewOrderNotification extends Notification
 {
@@ -27,7 +28,10 @@ class NewOrderNotification extends Notification
      */
     public function __construct(NewOrder $data)
     {
+
         $this->data = $data->toArray();
+        //Attaching required parameters from amortization to data to send sms to customer
+        $this->data["next_payment_date"] = $data->amortization[0]->expected_payment_date;
     }
 
     /**
@@ -62,7 +66,10 @@ class NewOrderNotification extends Notification
      */
     public function toSms($notifiable)
     {
-        return strtr(Constants::SUCCESSFUL_ORDER, $this->data);
+        $replacementKeys = Helper::generateReplacementKeys(array_keys($this->data));
+        $replacementValues    = array_values($this->data);
+        $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_ORDER);
+        return $message;
     }
 
     /**

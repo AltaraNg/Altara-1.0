@@ -55,15 +55,28 @@ class Helper
         //loop through length
         for ($i = 0; $i < $length; ++$i) {
             //add to pieces
-            $pieces [] = $keyspace[random_int(0, $max)];
+            $pieces[] = $keyspace[random_int(0, $max)];
         }
         //return generated sku
         return implode('', $pieces);
-
     }
 
     public static function generatePrefix(string $target, int $stop = 3, int $start = 0)
     {
         return Str::upper(Str::substr($target, $start, $stop));
+    }
+
+    /**
+     * Get the array regex representation of the keys.
+     *
+     * @param  array  $keys
+     * @return array
+     */
+    public static function generateReplacementKeys(array $keys)
+    {
+        //construct a new array to construct regex to search for when replacing
+        return array_map(function ($value) {
+            return '/\[' . $value . '\]/';
+        }, $keys);
     }
 }

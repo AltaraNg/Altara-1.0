@@ -21,10 +21,12 @@ class NewOrderListener
     public function handle(NewOrderEvent $event)
     {
         try {
-            $p = app()->make('App\Amortization\\' .Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
+            $p = app()->make('App\Amortization\\' . Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
             try {
-                $event->order->customer->notify(new NewOrderNotification($event->order));
-            }catch (\Exception $e){
+                if (env('SEND_ORDER_SMS')) {
+                    $event->order->customer->notify(new NewOrderNotification($event->order));
+                }
+            } catch (\Exception $e) {
                 //Implement a Logger service to log this error
                 LogHelper::error(strtr(Constants::ORDER_NOTIFICATION_ERROR, $event->order->toArray()), $e);
             }
