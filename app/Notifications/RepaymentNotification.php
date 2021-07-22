@@ -30,6 +30,12 @@ class RepaymentNotification extends Notification
     {
         $this->amortization = $data->amortization();
         $this->data = $data->toArray();
+        //Attaching required parameters from amortization to data to send sms to customer
+        $this->data['total_no_of_repayment_expected'] = $data->amortization->count();
+        $totalOfRepaymentMade = $data->amortization->where('actual_payment_date', '!=', null)->sum('actual_amount');
+        $this->data['total_of_repayment_made'] =  $totalOfRepaymentMade;
+        $this->data['total_of_repayment_not_made'] = abs($totalOfRepaymentMade - $data->amortization->sum('expected_amount'));
+        $this->data['no_of_repayment_made'] = $data->amortization->where('actual_payment_date', '!=', null)->count();
     }
 
     /**
@@ -64,7 +70,11 @@ class RepaymentNotification extends Notification
      */
     public function toSms($notifiable)
     {
-        return strtr(Constants::SUCCESSFUL_REPAYMENT, $this->data);
+        $replacementKeys = $this->generateReplacementKeys(array_keys($this->data));
+        $replacementValues    = array_values($this->data);
+        $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_REPAYMENT);
+        return $message;
+        // return strtr(Constants::SUCCESSFUL_REPAYMENT, $this->data);
     }
 
     /**
@@ -76,5 +86,18 @@ class RepaymentNotification extends Notification
     public function toArray($notifiable)
     {
         return $this->data;
+    }
+     /**
+     * Get the array regex representation of the keys.
+     *
+     * @param  array  $keys
+     * @return array
+     */
+    public function generateReplacementKeys(array $keys)
+    {
+        //construct a new array to construct regex to search for when replacing
+        return array_map(function ($value) {
+            return '/\[' . $value . '\]/';
+        }, $keys);
     }
 }

@@ -47,7 +47,7 @@ class RepaymentController extends Controller
         ]);
         $amortization = null;
 
-        switch ($request->type){
+        switch ($request->type) {
             case 'formal':
                 $amortization = RepaymentFormal::where('repayment_id', $request->repayment_id)->first();
                 break;
@@ -63,10 +63,9 @@ class RepaymentController extends Controller
         $order = Order::findOrFail($request->order_id);
         $order->amount = $request->amount;
         $order->payment_type_id = $paymentType;
-        if (env('SEND_REORDER_SMS')) {
-             event(new OldRepaymentEvent($order));
-        }
-       
+        event(new OldRepaymentEvent($order));
+
+
 
         return response()->json([
             'saved' => true,

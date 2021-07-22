@@ -39,7 +39,11 @@ class Constants
     Visit the showroom or call us when you transfer to confirm payment. 
     Do not ever pay money into any altara agents account and always demand your receipt.';
     // const SUCCESSFUL_ORDER = 'Dear customer_name, this is to notify you that your order order_number was successful';
-    const SUCCESSFUL_REPAYMENT = 'Dear customer_name, this is to notify you that your repayment towards order order_number was successful';
+    const SUCCESSFUL_REPAYMENT = 'Hello [customer_name], thank you we have received your repayment. 
+    You have made [no_of_repayment_made]/[total_no_of_repayment_expected] repayment
+    Total paid so far = [total_of_repayment_made]. 
+    Total debit remaining = [total_of_repayment_not_made]
+    ';
 
 
     static $reminderMessages = [

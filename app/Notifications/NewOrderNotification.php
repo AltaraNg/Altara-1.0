@@ -27,8 +27,9 @@ class NewOrderNotification extends Notification
      */
     public function __construct(NewOrder $data)
     {
-      
+
         $this->data = $data->toArray();
+        //Attaching required parameters from amortization to data to send sms to customer
         $this->data["next_payment_date"] = $data->amortization[0]->expected_payment_date;
     }
 
@@ -64,17 +65,10 @@ class NewOrderNotification extends Notification
      */
     public function toSms($notifiable)
     {
-        //get all array_keys and values of the this->data to be replaced
-        $find       = array_keys($this->data);
-        $replace    = array_values($this->data);
-        //construct a new array to construct regex to search for when replacing
-        $myNewArray =  array_map(function ($value) {
-            return '/\[' . $value . '\]/';
-        }, $find);
-        // dd($replace);
-        $new_string = preg_replace($myNewArray, $replace, Constants::SUCCESSFUL_ORDER);
-        return $new_string;
-        // return strtr(Constants::SUCCESSFUL_ORDER, $this->data);
+        $replacementKeys = $this->generateReplacementKeys(array_keys($this->data));
+        $replacementValues    = array_values($this->data);
+        $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_ORDER);
+        return $message;
     }
 
     /**
@@ -86,5 +80,19 @@ class NewOrderNotification extends Notification
     public function toArray($notifiable)
     {
         return $this->data;
+    }
+
+    /**
+     * Get the array regex representation of the keys.
+     *
+     * @param  array  $keys
+     * @return array
+     */
+    public function generateReplacementKeys(array $keys)
+    {
+        //construct a new array to construct regex to search for when replacing
+        return array_map(function ($value) {
+            return '/\[' . $value . '\]/';
+        }, $keys);
     }
 }
