@@ -78,9 +78,12 @@ class AmortizationController extends Controller
         // dd(request('down_payment'));
         if (request('type') == 'formal') {
             $data = [
-                'down_payment' => request('down_payment'),
                 'salary' => request('salary'),
-                'total_price' => request('total_price')
+                'total_price' => request('total_price'),
+                'plan_id' => request('plan_id'),
+                'duration' => request('duration'),
+                'cycle' => request('cycle'),
+                'business_type' => request('business_type')
             ];
             $resp = [
                 'ans' => $service->recommend($data)
@@ -92,7 +95,10 @@ class AmortizationController extends Controller
                 'month2' => request('balances')[1],
                 'month3' => request('balances')[2],
                 'total_price' => request('total_price'),
-                'down_payment' => request('down_payment')
+                'plan_id' => request('plan_id'),
+                'duration' => request('duration'),
+                'cycle' => request('cycle'),
+                'business_type' => request('business_type')
             ];
             $resp = [
                 'ans' => $service->recommendInformal($data)

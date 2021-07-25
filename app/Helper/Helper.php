@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Class Helper
@@ -78,5 +79,45 @@ class Helper
         return array_map(function ($value) {
             return '/\[' . $value . '\]/';
         }, $keys);
+    }
+
+    public static  function calculator(int $productPrice, $data, $params){
+        $count = Helper::repaymentCount($data->repayment_dur, $data->repayment_cycle);
+        $marketPrice = $productPrice * (1 + $params->margin);
+        $upfront = ($data->percent / 100) * $marketPrice;
+
+        $residual = $marketPrice - $upfront;
+        $tempInstallment = $residual / $count;
+        $tempInterest = $residual * ($params->interest / 100);
+
+        $totalPremium = ($tempInstallment * $count) + ($tempInterest * $count) + $upfront;
+        $labelPrice = $totalPremium * (1 + $params->tax / 100);
+        $total = ceil($labelPrice / 100 * 100);
+
+        $initialDownPayment = ($data->percent / 100) * $total;
+        $downpayment = $initialDownPayment + ((($total - $initialDownPayment)/ $count) * $data->plus);
+        $actualDownpayment = floor($downpayment / 100 * 100);
+        $actualRepayment = floor(($total - $actualDownpayment) / 100 * 100);
+
+        return [
+            'total_price' => $total,
+            'downpaymment' => $actualDownpayment,
+            'repayment' => $actualRepayment
+        ];
+
+    }
+
+    public static function repaymentCount($days, $cycle){
+        $result = $days/$cycle;
+
+        if($result >= 24) {
+            return 24;
+        }elseif ($result >= 12){
+            return 12;
+        }
+        if ($result >= 6){
+            return 6;
+        }
+        return 3;
     }
 }

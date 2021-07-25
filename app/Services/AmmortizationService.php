@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\DownPaymentRate;
 use App\Exceptions\AException;
+use App\Helper\Helper;
 use App\NewOrder;
+use App\PriceCalculator;
 use App\StoreProduct;
 use Illuminate\Support\Str;
 
@@ -26,59 +28,95 @@ class AmmortizationService
     }
 
     public function recommend($data){
+        // * Get all necessary parameters
        $salary = (int) $data['salary'];
-       $downpayment = (int) $data['down_payment'];
        $total_price = (int) $data['total_price'];
+       $initial_plan = (int) $data['plan_id'];
+       $duration = (int) $data['duration'];
+       $cycle = (int) $data['cycle'];
+       $business_type = (int) $data['business_type'];
 
-       $allowance = $this->getAllowance($salary);
-       $plan = $downpayment / $total_price * 100;
-       $repayment = ($total_price - $downpayment)/6;
-       if ($allowance > $repayment){
-           $ans = $plan."% is ok";
-       }
-       else{
 
-           $res = $this->getSuitablePlan((int)$plan, $total_price, $allowance);
-           if($res == 'none'){
-               $ans = "There is no suitable plan";
-           }
-           else{
-           $ans = "the recommended plan is ". $res. "%";
+        $downpayments = DownPaymentRate::all()->toArray();
+
+        usort($downpayments, function($a, $b){
+            return strcmp($a['percent'], $b['percent']);
+        }); //* sort by percent value
+
+        $key=array_search($initial_plan, array_column(json_decode(json_encode($downpayments),TRUE), 'id'));  //* get starting point for plan loop
+        $ans = '';
+        for( $i = $key; $i < count($downpayments); $i++){
+            $data = [
+                "repayment_dur" => $duration,
+                "repayment_cycle" => $cycle,
+                "percent" => $downpayments[$i]['percent'],
+                "plus" => $downpayments[$i]['plus']
+            ];
+            $params = PriceCalculator::where([
+                ['repayment_duration_id', '=', $duration],
+                ['down_payment_rate_id', '=', $downpayments[$i]['id']],
+                ['business_type_id', '=', $business_type]
+            ])->first();
+
+            $calculator_data = Helper::calculator($total_price,(object)$data, $params);
+            if($this->getAllowance($salary) >= $calculator_data['repayment'])
+            {
+                $ans = "Suitable plan is ".$downpayments[$i]['name'];
+                return $ans;
+            }
+            else{
+                $ans = "There is no suitable plan";
+            }
+
         }
-       }
-
-
 
         return $ans;
+
     }
 
     public function recommendInformal($data){
         //* Get all relevant parameters
-        $downpayment = (int) $data['down_payment'];
+        $initial_plan = (int) $data['plan_id'];
+        $duration = (int) $data['duration'];
+        $cycle = (int) $data['cycle'];
+        $business_type = (int) $data['business_type'];
        $total_price = (int) $data['total_price'];
        $months = [$data['month1'], $data['month2'], $data['month3']];
 
-       //* Get current plan
-       $plan = $downpayment / $total_price * 100;
+       $downpayments = DownPaymentRate::all()->toArray();
 
-       $downpayments = array_values(DownPaymentRate::$downPayments);
-        $key = array_search($plan, $downpayments);
-        $ans = '';
+       usort($downpayments, function($a, $b){
+           return strcmp($a['percent'], $b['percent']);
+       }); //* sort by percent value
+
+       $key=array_search($initial_plan, array_column(json_decode(json_encode($downpayments),TRUE), 'id'));  //* get starting point for plan loop
+       $ans = '';
 
         //* Do credibility check
         for($i = $key ; $i < count($downpayments) ; $i++){
 
-            $repayment = ($total_price - ($downpayments[$i] / 100 * $total_price)) / 6;
+            $data = [
+                "repayment_dur" => $duration,
+                "repayment_cycle" => $cycle,
+                "percent" => $downpayments[$i]['percent'],
+                "plus" => $downpayments[$i]['plus']
+            ];
+            $params = PriceCalculator::where([
+                ['repayment_duration_id', '=', $duration],
+                ['down_payment_rate_id', '=', $downpayments[$i]['id']],
+                ['business_type_id', '=', $business_type]
+            ])->first();
+            $calculator_data = Helper::calculator($total_price,(object)$data, $params);
             $cred_month = 0;
             foreach($months as $month){
-                if($this->confirmMonth($month, $repayment) == false){
+                if($this->confirmMonth($month, $calculator_data['repayment']) == false){
                     break;
                 }else{
                     $cred_month++;
                 }
             }
             if($cred_month == 3){
-                $ans = "the recommended plan is ". $downpayments[$i]. "%";
+                $ans = "Suitable plan is ".$downpayments[$i]['name'];
                 return $ans;
             }
             else{
@@ -92,25 +130,7 @@ class AmmortizationService
     public function getAllowance($salary){
         return (float)$salary / 4;
     }
-    public function getSuitablePlan($initial_plan, $total_price, $allowance){
-        $ans = '';
-        $downpayments = array_values(DownPaymentRate::$downPayments);
-        $key = array_search($initial_plan, $downpayments);
-        for($i = $key ; $i < count($downpayments) ; $i++){
-            $downpayment = ($downpayments[$i] / 100) * $total_price;
 
-            $repayment = ($total_price - $downpayment) / 6;
-            if($repayment > $allowance ){
-                $ans = 'none';
-            }
-            else{
-                $ans = $downpayments[$i];
-                break;
-            }
-        }
-        return $ans;
-
-    }
     public function confirmMonth($balances, $repayment){
         $affirm = 0;
         foreach($balances as $balance){
