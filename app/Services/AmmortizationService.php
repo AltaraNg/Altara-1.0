@@ -7,6 +7,8 @@ use App\Exceptions\AException;
 use App\Helper\Helper;
 use App\NewOrder;
 use App\PriceCalculator;
+use App\RepaymentCycle;
+use App\RepaymentDuration;
 use App\StoreProduct;
 use Illuminate\Support\Str;
 
@@ -32,8 +34,10 @@ class AmmortizationService
        $salary = (int) $data['salary'];
        $total_price = (int) $data['total_price'];
        $initial_plan = (int) $data['plan_id'];
-       $duration = (int) $data['duration'];
-       $cycle = (int) $data['cycle'];
+       $duration_id = (int) $data['duration'];
+       $duration = RepaymentDuration::where('id', $duration_id)->first();
+       $cycle_id = (int) $data['cycle'];
+       $cycle =RepaymentCycle::where('id', $cycle_id)->first();
        $business_type = (int) $data['business_type'];
 
 
@@ -47,13 +51,13 @@ class AmmortizationService
         $ans = '';
         for( $i = $key; $i < count($downpayments); $i++){
             $data = [
-                "repayment_dur" => $duration,
-                "repayment_cycle" => $cycle,
+                "repayment_dur" => $duration->value,
+                "repayment_cycle" => $cycle->value,
                 "percent" => $downpayments[$i]['percent'],
                 "plus" => $downpayments[$i]['plus']
             ];
             $params = PriceCalculator::where([
-                ['repayment_duration_id', '=', $duration],
+                ['repayment_duration_id', '=', $duration_id],
                 ['down_payment_rate_id', '=', $downpayments[$i]['id']],
                 ['business_type_id', '=', $business_type]
             ])->first();
@@ -77,8 +81,12 @@ class AmmortizationService
     public function recommendInformal($data){
         //* Get all relevant parameters
         $initial_plan = (int) $data['plan_id'];
-        $duration = (int) $data['duration'];
-        $cycle = (int) $data['cycle'];
+        $duration_id = (int) $data['duration'];
+        $duration = RepaymentDuration::where('id', $duration_id)->first();
+        dump($duration);
+        $cycle_id = (int) $data['cycle'];
+        $cycle =RepaymentCycle::where('id', $cycle_id)->first();
+        dump($cycle);
         $business_type = (int) $data['business_type'];
        $total_price = (int) $data['total_price'];
        $months = [$data['month1'], $data['month2'], $data['month3']];
@@ -96,13 +104,13 @@ class AmmortizationService
         for($i = $key ; $i < count($downpayments) ; $i++){
 
             $data = [
-                "repayment_dur" => $duration,
-                "repayment_cycle" => $cycle,
+                "repayment_dur" => $duration->value,
+                "repayment_cycle" => $cycle->value,
                 "percent" => $downpayments[$i]['percent'],
                 "plus" => $downpayments[$i]['plus']
             ];
             $params = PriceCalculator::where([
-                ['repayment_duration_id', '=', $duration],
+                ['repayment_duration_id', '=', $duration_id],
                 ['down_payment_rate_id', '=', $downpayments[$i]['id']],
                 ['business_type_id', '=', $business_type]
             ])->first();
