@@ -83,10 +83,8 @@ class AmmortizationService
         $initial_plan = (int) $data['plan_id'];
         $duration_id = (int) $data['duration'];
         $duration = RepaymentDuration::where('id', $duration_id)->first();
-        dump($duration);
         $cycle_id = (int) $data['cycle'];
         $cycle =RepaymentCycle::where('id', $cycle_id)->first();
-        dump($cycle);
         $business_type = (int) $data['business_type'];
        $total_price = (int) $data['total_price'];
        $months = [$data['month1'], $data['month2'], $data['month3']];
