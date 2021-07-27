@@ -63,7 +63,8 @@ class AmmortizationService
             ])->first();
 
             $calculator_data = Helper::calculator($total_price,(object)$data, $params);
-            if($this->getAllowance($salary) >= $calculator_data['repayment'])
+
+            if($this->getAllowance($salary) >= $calculator_data['onetime'])
             {
                 $ans = "Suitable plan is ".$downpayments[$i]['name'];
                 return $ans;
@@ -115,7 +116,7 @@ class AmmortizationService
             $calculator_data = Helper::calculator($total_price,(object)$data, $params);
             $cred_month = 0;
             foreach($months as $month){
-                if($this->confirmMonth($month, $calculator_data['repayment']) == false){
+                if($this->confirmMonth($month, $calculator_data['onetime']) == false){
                     break;
                 }else{
                     $cred_month++;

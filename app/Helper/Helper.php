@@ -98,11 +98,13 @@ class Helper
         $downpayment = $initialDownPayment + ((($total - $initialDownPayment)/ $count) * $data->plus);
         $actualDownpayment = floor($downpayment / 100 * 100);
         $actualRepayment = floor(($total - $actualDownpayment) / 100 * 100);
+        $onetimepay = ceil($actualRepayment / $count);
 
         return [
             'total_price' => $total,
             'downpaymment' => $actualDownpayment,
-            'repayment' => $actualRepayment
+            'repayment' => $actualRepayment,
+            'onetime' => $onetimepay
         ];
 
     }
