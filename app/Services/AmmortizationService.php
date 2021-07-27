@@ -63,7 +63,8 @@ class AmmortizationService
             ])->first();
 
             $calculator_data = Helper::calculator($total_price,(object)$data, $params);
-            if($this->getAllowance($salary) >= $calculator_data['repayment'])
+
+            if($this->getAllowance($salary) >= $calculator_data['onetime'])
             {
                 $ans = "Suitable plan is ".$downpayments[$i]['name'];
                 return $ans;
