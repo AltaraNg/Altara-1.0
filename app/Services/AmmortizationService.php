@@ -116,7 +116,7 @@ class AmmortizationService
             $calculator_data = Helper::calculator($total_price,(object)$data, $params);
             $cred_month = 0;
             foreach($months as $month){
-                if($this->confirmMonth($month, $calculator_data['repayment']) == false){
+                if($this->confirmMonth($month, $calculator_data['onetime']) == false){
                     break;
                 }else{
                     $cred_month++;
