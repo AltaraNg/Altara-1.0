@@ -56,17 +56,16 @@ class AmmortizationService
                 "percent" => $downpayments[$i]['percent'],
                 "plus" => $downpayments[$i]['plus']
             ];
-            $params = PriceCalculator::where([
-                ['repayment_duration_id', '=', $duration_id],
-                ['down_payment_rate_id', '=', $downpayments[$i]['id']],
-                ['business_type_id', '=', $business_type]
-            ])->first();
 
-            $calculator_data = Helper::calculator($total_price,(object)$data, $params);
+
+            $calculator_data = Helper::calculator($total_price,(object)$data);
 
             if($this->getAllowance($salary) >= $calculator_data['onetime'])
             {
-                $ans = "Suitable plan is ".$downpayments[$i]['name'];
+                $ans = [$downpayments[$i]['percent'],
+                         $downpayments[$i]['plus']
+                        ];
+
                 return $ans;
             }
             else{
@@ -108,12 +107,8 @@ class AmmortizationService
                 "percent" => $downpayments[$i]['percent'],
                 "plus" => $downpayments[$i]['plus']
             ];
-            $params = PriceCalculator::where([
-                ['repayment_duration_id', '=', $duration_id],
-                ['down_payment_rate_id', '=', $downpayments[$i]['id']],
-                ['business_type_id', '=', $business_type]
-            ])->first();
-            $calculator_data = Helper::calculator($total_price,(object)$data, $params);
+
+            $calculator_data = Helper::calculator($total_price,(object)$data);
             $cred_month = 0;
             foreach($months as $month){
                 if($this->confirmMonth($month, $calculator_data['onetime']) == false){
@@ -123,7 +118,9 @@ class AmmortizationService
                 }
             }
             if($cred_month == 3){
-                $ans = "Suitable plan is ".$downpayments[$i]['name'];
+                $ans = [$downpayments[$i]['percent'],
+                $downpayments[$i]['plus']
+               ];
                 return $ans;
             }
             else{

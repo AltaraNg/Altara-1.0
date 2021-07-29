@@ -81,18 +81,19 @@ class Helper
         }, $keys);
     }
 
-    public static  function calculator(int $productPrice, $data, $params){
+    public static  function calculator(int $productPrice, $data){
         $count = Helper::repaymentCount($data->repayment_dur, $data->repayment_cycle);
-        $marketPrice = $productPrice * (1 + $params->margin);
-        $upfront = ($data->percent / 100) * $marketPrice;
+        // $marketPrice = $productPrice * (1 + $params->margin);
+        // $upfront = ($data->percent / 100) * $marketPrice;
 
-        $residual = $marketPrice - $upfront;
-        $tempInstallment = $residual / $count;
-        $tempInterest = $residual * ($params->interest / 100);
+        // $residual = $marketPrice - $upfront;
+        // $tempInstallment = $residual / $count;
+        // $tempInterest = $residual * ($params->interest / 100);
 
-        $totalPremium = ($tempInstallment * $count) + ($tempInterest * $count) + $upfront;
-        $labelPrice = $totalPremium * (1 + $params->tax / 100);
-        $total = ceil($labelPrice / 100 * 100);
+        // $totalPremium = ($tempInstallment * $count) + ($tempInterest * $count) + $upfront;
+        // $labelPrice = $totalPremium * (1 + $params->tax / 100);
+        // $total = ceil($labelPrice / 100 * 100);
+        $total = $productPrice;
 
         $initialDownPayment = ($data->percent / 100) * $total;
         $downpayment = $initialDownPayment + ((($total - $initialDownPayment)/ $count) * $data->plus);
