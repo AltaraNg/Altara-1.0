@@ -57,7 +57,8 @@ class ContactCustomerExport implements FromQuery, WithHeadings, WithMapping, Wit
     public function columnFormats(): array
     {
         return [
-        'E' => NumberFormat::FORMAT_DATE_DDMMYYYY
+        'F' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+        'J' => NumberFormat::FORMAT_DATE_DDMMYYYY
         ];
     }
 }
