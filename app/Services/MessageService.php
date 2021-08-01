@@ -12,25 +12,25 @@ class MessageService
 {
     public function sendMessage($receiver, $message)
     {
+        
         $isInProduction = App::environment() === 'production';
         if (!$isInProduction) {
-
             $num = rand(0, 1);
-            if ($num > 0.5 ){
+            if ($num > 0.5) {
                 return json_decode(json_encode($this->success($receiver)));
             }
             return json_decode(json_encode($this->error($receiver)));
         }
+
         $ch = curl_init();
         $receiver = urlencode($receiver);
         $message = urlencode($message);
-        curl_setopt($ch, CURLOPT_URL, env('SMS_URL') . '?user=' . env('SMS_USERNAME') . '&password=' . env('SMS_PASSWORD') . '&sender=' . env('SENDER') . '&SMSText=' . $message . '&GSM=' . $receiver);
+        curl_setopt($ch, CURLOPT_URL, env('SMS_URL') . '?user=' . env('SMS_USERNAME') . '&password=' . env('SMS_PASSWORD') . '&sender=' . env('SENDER') . '&SMSText=' . $message . '&GSM=' . $receiver . '&type=longSMS');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $data = curl_exec($ch);
         curl_close($ch);
-
-
+        
         $response = (int) preg_replace('/[^0-9]/', '', $data);
         $res_message = '';
         switch ($data) {
@@ -88,54 +88,53 @@ class MessageService
                 break;
         }
 
-        if($data > 0){
+        if ($data > 0) {
             return json_decode(json_encode([
                 'messages' => [
                     0 => [
-                    "status" => [
-                        "groupId" => 1,
-                        "groupName" => "Success",
-                        "id"=> $response,
-                        "name"=> "PENDING_ENROUTE",
-                        "description" => $res_message
-                    ],
-                    "to" => $receiver
+                        "status" => [
+                            "groupId" => 1,
+                            "groupName" => "Success",
+                            "id" => $response,
+                            "name" => "PENDING_ENROUTE",
+                            "description" => $res_message
+                        ],
+                        "to" => $receiver
 
                     ]
                 ]
             ]));
-        }
-
-        else{
+        } else {
             return json_decode(json_encode([
                 'messages' => [
                     0 => [
-                    "status" => [
-                        "groupId" => 1,
-                        "groupName" => "Failed",
-                        "id"=> $response,
-                        "name"=> "PENDING_ENROUTE",
-                        "description" => $res_message
-                    ],
-                    "to" => $receiver
+                        "status" => [
+                            "groupId" => 1,
+                            "groupName" => "Failed",
+                            "id" => $response,
+                            "name" => "PENDING_ENROUTE",
+                            "description" => $res_message
+                        ],
+                        "to" => $receiver
                     ]
                 ]
             ]));
         }
     }
 
-    private function success($receiver) {
+    private function success($receiver)
+    {
 
         return [
             'messages' => [
                 0 => [
-                "status" => [
-                    "groupId" => 1,
-                    "groupName" => "PENDING ",
-                    "id"=> 7,
-                    "name"=> "PENDING_ENROUTE",
-                    "description" => "Message has been processed and sent to the next instance",
-                    "received" => $receiver
+                    "status" => [
+                        "groupId" => 1,
+                        "groupName" => "PENDING ",
+                        "id" => 7,
+                        "name" => "PENDING_ENROUTE",
+                        "description" => "Message has been processed and sent to the next instance",
+                        "received" => $receiver
                     ]
                 ]
             ]
@@ -151,8 +150,8 @@ class MessageService
                     "status" => [
                         "groupId" => 5,
                         "groupName" => "REJECTED",
-                        "id"=> 52,
-                        "name"=> "REJECTED_DESTINATION",
+                        "id" => 52,
+                        "name" => "REJECTED_DESTINATION",
                         "description" => "Invalid destination address.",
                         "received" => $receiver
                     ]

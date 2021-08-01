@@ -199,6 +199,8 @@ class CustomerController extends Controller
             'address' => 0,
             'passport' => 0,
             'work_guarantor' => 0,
+            'guarantor_id' => 0,
+            'proof_of_income' => 0,
             'personal_guarantor' => 0,
             'customer_id' => $customerId
         ]))->save();
@@ -211,6 +213,8 @@ class CustomerController extends Controller
         (new Document([
             'id_card_url' => '',
             'passport_url' => '',
+            'guarantor_id_url' => '',
+            'proof_of_income_url' => '',
             'customer_id' => $customerId
         ]))->save();
     }

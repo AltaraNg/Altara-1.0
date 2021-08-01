@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Class Helper
@@ -55,15 +56,71 @@ class Helper
         //loop through length
         for ($i = 0; $i < $length; ++$i) {
             //add to pieces
-            $pieces [] = $keyspace[random_int(0, $max)];
+            $pieces[] = $keyspace[random_int(0, $max)];
         }
         //return generated sku
         return implode('', $pieces);
-
     }
 
     public static function generatePrefix(string $target, int $stop = 3, int $start = 0)
     {
         return Str::upper(Str::substr($target, $start, $stop));
+    }
+
+    /**
+     * Get the array regex representation of the keys.
+     *
+     * @param  array  $keys
+     * @return array
+     */
+    public static function generateReplacementKeys(array $keys)
+    {
+        //construct a new array to construct regex to search for when replacing
+        return array_map(function ($value) {
+            return '/\[' . $value . '\]/';
+        }, $keys);
+    }
+
+    public static  function calculator(int $productPrice, $data){
+        $count = Helper::repaymentCount($data->repayment_dur, $data->repayment_cycle);
+        // $marketPrice = $productPrice * (1 + $params->margin);
+        // $upfront = ($data->percent / 100) * $marketPrice;
+
+        // $residual = $marketPrice - $upfront;
+        // $tempInstallment = $residual / $count;
+        // $tempInterest = $residual * ($params->interest / 100);
+
+        // $totalPremium = ($tempInstallment * $count) + ($tempInterest * $count) + $upfront;
+        // $labelPrice = $totalPremium * (1 + $params->tax / 100);
+        // $total = ceil($labelPrice / 100 * 100);
+        $total = $productPrice;
+
+        $initialDownPayment = ($data->percent / 100) * $total;
+        $downpayment = $initialDownPayment + ((($total - $initialDownPayment)/ $count) * $data->plus);
+        $actualDownpayment = floor($downpayment / 100 * 100);
+        $actualRepayment = floor(($total - $actualDownpayment) / 100 * 100);
+        $onetimepay = ceil($actualRepayment / $count);
+
+        return [
+            'total_price' => $total,
+            'downpaymment' => $actualDownpayment,
+            'repayment' => $actualRepayment,
+            'onetime' => $onetimepay
+        ];
+
+    }
+
+    public static function repaymentCount($days, $cycle){
+        $result = $days/$cycle;
+
+        if($result >= 24) {
+            return 24;
+        }elseif ($result >= 12){
+            return 12;
+        }
+        if ($result >= 6){
+            return 6;
+        }
+        return 3;
     }
 }

@@ -21,8 +21,10 @@ class RepaymentListener
     {
         $customer = Customer::find($event->newOrder['customer_id']);
         try {
-            $customer->notify(new RepaymentNotification($event->newOrder));
-        }catch (\Exception $e) {
+            if (env('SEND_ORDER_SMS')) {
+                $customer->notify(new RepaymentNotification($event->newOrder->refresh()));
+            }
+        } catch (\Exception $e) {
             LogHelper::error(strtr(Constants::REPAYMENT_NOTIFICATION_ERROR, $event->newOrder->toArray()), $e);
         }
     }

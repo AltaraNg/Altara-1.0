@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\NewOrder;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -20,7 +21,7 @@ class NewOrderEvent
      *
      * @param $order
      */
-    public function __construct($order)
+    public function __construct(NewOrder $order)
     {
         $this->order = $order;
     }

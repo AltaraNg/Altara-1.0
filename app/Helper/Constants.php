@@ -4,6 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 namespace App\Helper;
 
 /**
@@ -12,7 +13,8 @@ namespace App\Helper;
  *
  * @author: Adeniyi
  */
-class Constants {
+class Constants
+{
 
     const F_SMS = 'first_sms';
     const S_SMS = 'second_sms';
@@ -30,8 +32,18 @@ class Constants {
     const ORDER_NOTIFICATION_ERROR = 'An Error Occured while trying to send Order notification to customer customer_name with Order order_number';
     const RENEWAL_NOTIFICATION_ERROR = 'An Error Occured while trying to send renewal notification to customer customer_name with Order order_number';
 
-    const SUCCESSFUL_ORDER = 'Dear customer_name, this is to notify you that your order order_number was successful';
-    const SUCCESSFUL_REPAYMENT = 'Dear customer_name, this is to notify you that your repayment towards order order_number was successful';
+    const SUCCESSFUL_ORDER = 'Hello [customer_name],
+    Thank you for patronizing us and hope you enjoy using your [product_name] for business or leisure. 
+    You have paid [down_payment] and still owe [repayment]. 
+    Your next repayment of repayment is due on [next_payment_date]. 
+    Visit the showroom or call us when you transfer to confirm payment. 
+    Do not ever pay money into any altara agents account and always demand your receipt.';
+    // const SUCCESSFUL_ORDER = 'Dear customer_name, this is to notify you that your order order_number was successful';
+    const SUCCESSFUL_REPAYMENT = 'Hello [customer_name], thank you we have received your repayment. 
+    You have made [no_of_repayment_made]/[total_no_of_repayment_expected] repayment
+    Total paid so far = [total_of_repayment_made]. 
+    Total debit remaining = [total_of_repayment_not_made]
+    ';
 
 
     static $reminderMessages = [

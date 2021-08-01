@@ -29,7 +29,7 @@ class PaymentReconcileRepository extends Repository
 
         $resp = PaymentService::logPayment($data, $model);
 
-        if(request()->has('comment')){
+        if (request()->has('comment')) {
             $resp->comment()->create(['comment' => request('comment'), 'user_id' => auth()->user()->id]);
         }
         $payment_type = PaymentType::where('id', $data["payment_type_id"])->first();
@@ -46,10 +46,11 @@ class PaymentReconcileRepository extends Repository
         return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate($limit);
     }
 
-    public function update($model, $data) {
+    public function update($model, $data)
+    {
         $model->update($data);
-        if(request()->has('comment')){
-            $model->comment()->updateOrCreate(['commentable_id' => $model->id],['comment' => request('comment'), 'user_id' => auth()->user()->id]);
+        if (request()->has('comment')) {
+            $model->comment()->updateOrCreate(['commentable_id' => $model->id], ['comment' => request('comment'), 'user_id' => auth()->user()->id]);
         }
         return $model;
     }

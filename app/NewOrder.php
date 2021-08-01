@@ -40,7 +40,7 @@ class NewOrder extends Model
             'discount' => 'sometimes|array',
             'discount.*' => 'sometimes|numeric|exists:discounts,id',
             'product_price' => ['required', new Money],
-            'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,'. $id
+            'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,' . $id
         ];
     }
 
@@ -59,7 +59,7 @@ class NewOrder extends Model
             'status_id' => 'sometimes|required|exists:order_statuses,id',
             'repayment' => ['sometimes', 'required', new Money],
             'down_payment' => ['sometimes', 'required', new Money],
-            'product_price' => ['sometimes','required', new Money],
+            'product_price' => ['sometimes', 'required', new Money],
             'order_date' => 'sometimes|required|date',
         ];
     }
@@ -69,7 +69,8 @@ class NewOrder extends Model
         return RepaymentCycle::where('name', RepaymentCycle::CUSTOM)->first()->id;
     }
 
-    public function businessType(){
+    public function businessType()
+    {
         return $this->belongsTo(BusinessType::class);
     }
     public function owner()
@@ -77,56 +78,68 @@ class NewOrder extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function paymentMethod(){
+    public function paymentMethod()
+    {
         return $this->hasOne(PaymentMethod::class);
     }
 
-    public function repaymentDuration (){
+    public function repaymentDuration()
+    {
         return $this->belongsTo(RepaymentDuration::class);
     }
 
-    public function repaymentCycle(){
+    public function repaymentCycle()
+    {
         return $this->belongsTo(RepaymentCycle::class);
     }
 
-    public function amortization(){
+    public function amortization()
+    {
         return $this->hasMany(Amortization::class);
     }
 
-    public function orderStatus(){
+    public function orderStatus()
+    {
         return $this->belongsTo(OrderStatus::class, 'status_id');
     }
     public function salesCategory()
     {
         return $this->belongsTo(SalesCategory::class, 'sales_category_id');
     }
-    public function customer(){
+    public function customer()
+    {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function branch(){
+    public function branch()
+    {
         return $this->belongsTo(Branch::class);
     }
 
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 
-    public function customDate(){
+    public function customDate()
+    {
         return $this->hasOne(CustomRepaymentDate::class);
     }
 
-    public function authCode(){
+    public function authCode()
+    {
         return $this->hasOne(PaystackAuthCode::class, 'order_id', 'order_number');
     }
 
-    public function defaulter(){
-        $onTime = $this->amortization()->where('actual_amount','>',1)->count();
+    public function defaulter()
+    {
+        $onTime = $this->amortization()->where('actual_amount', '>', 1)->count();
         $total = $this->amortization()->count();
-        return ($onTime /$total) * 100;
+        return ($onTime / $total) * 100;
     }
 
     public function discounts()
@@ -152,7 +165,7 @@ class NewOrder extends Model
      */
     public function getOrderPaymentMethodAttribute()
     {
-        return $this->payments()->whereIn('payment_type_id', function ($query){
+        return $this->payments()->whereIn('payment_type_id', function ($query) {
             $query->select('id')->from('payment_types')->where('type', PaymentType::DOWNPAYMENT);
         })->first()->paymentMethod->name ?? null;
     }
@@ -187,8 +200,7 @@ class NewOrder extends Model
             "customer" => $this->customer,
             "order_date" => $this->order_date,
             "owner" => $this->owner->full_name ?? '',
-            "sales_type" => $this->salesCategory ?? ''
+            "sales_type" => $this->salesCategory ?? '',
         ];
     }
 }
-
