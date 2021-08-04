@@ -63,6 +63,7 @@ class NewOrderRepository extends Repository
 
         return $order->fresh();
     }
+    
     public function repossess($model)
     {
         try {
