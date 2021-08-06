@@ -121,10 +121,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 
 });
-Route::get('/no-sales-based-on-percent', 'StatisticsController@getNumberOfSalesBasedOnPercent');
-Route::get('/avg-price-of-product-sold-per-showroom', 'StatisticsController@getAveragePriceOfProductSoldPerShowRoom');
-Route::get('/no-of-sales-made-per-day', 'StatisticsController@getNumberOfSalesMadePerDay');
-Route::get('/total-potential-price-of-product-sold-per-showroom', 'StatisticsController@getTotalPotentialRevenueOfProductSoldPerShowRoom');
+Route::get('/test', 'StatisticsController@index');
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');

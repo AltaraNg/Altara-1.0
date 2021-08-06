@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\NewOrderFilter;
+use App\NewOrder;
 use App\Repositories\NewOrderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,20 +17,22 @@ class StatisticsController extends Controller
     {
         $this->newOrderRepository = $newOrderRepository;
     }
-    public function getAveragePriceOfProductSoldPerShowRoom()
+
+    public function index(NewOrderFilter $filter)
     {
-        $data = DB::table('new_orders')->join('branches', 'new_orders.branch_id', '=', 'branches.id')->select(DB::raw('round(AVG(product_price),2) as product_price'), 'branches.name','branch_id')->groupBy('branch_id')->get();
-        return $data;
-    }
-    public function getTotalPotentialRevenueOfProductSoldPerShowRoom()
-    {
-        $data = DB::table('new_orders')->join('branches', 'new_orders.branch_id', '=', 'branches.id')->select(DB::raw('round(AVG(product_price),2) * COUNT(owner_id) as potential_revenue'), 'branches.name','branch_id')->groupBy('branch_id')->get();
-        // $data = DB::table('new_orders')->join('branches', 'new_orders.branch_id', '=', 'branches.id')->select('branches.name','branch_id', DB::raw('COUNT(owner_id) as count'))->groupBy('branch_id')->get();
-        return $data;
-    }
-    public function getNumberOfSalesMadePerDay()
-    {
-        $data = DB::table('new_orders')->select('order_date',DB::raw('COUNT(owner_id) no_of_sales'))->groupBy('order_date')->get();
-        return $data;
+        $newOrdersQuery = $this->newOrderRepository->query($filter)->latest();
+        $newOrders = clone $newOrdersQuery->get();
+        $orders =  $newOrders->groupBy('branch.name');
+        $additional =  $orders->map(function ($item, $key) {
+            return [
+                'branch_name' => $item[0]->branch->name,
+                'avg_price_of_prod_per_show_room' => number_format($item->avg('product_price'), 2),
+                'total_potential_revenue_sold_per_showroom' => number_format($item->avg('product_price') * count($item),2),
+                'number_of_sales' => count($item),
+            ];
+        });
+        $additional = $additional->put('total_no_sales', count($newOrders));
+
+        return $this->sendSuccess([$newOrdersQuery->paginate((int)request('limit', 10)), "meta" => $additional], 'Orders retrieved successfully');
     }
 }

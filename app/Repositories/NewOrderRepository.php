@@ -26,6 +26,12 @@ class NewOrderRepository extends Repository
         return NewOrder::class;
     }
 
+
+    public function query($filter)
+    {
+        return $this->model::filter($filter);
+    }
+
     public function store(array $data)
     {
         $validated = $data;
@@ -44,7 +50,7 @@ class NewOrderRepository extends Repository
             'status_id' => OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id,
             'product_id' => $inventory->product_id
         ]));
-        if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM){
+        if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM) {
             $order->customDate()->create(['custom_date' => $data['custom_date']]);
             $order->custom_date = $data['custom_date'];
         }
@@ -63,7 +69,7 @@ class NewOrderRepository extends Repository
 
         return $order->fresh();
     }
-    
+
     public function repossess($model)
     {
         try {
@@ -77,6 +83,5 @@ class NewOrderRepository extends Repository
         } catch (Exception $e) {
             throw new AException($e->getMessage(), $e->getCode());
         }
-
     }
 }
