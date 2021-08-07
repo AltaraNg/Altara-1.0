@@ -138,24 +138,15 @@ class AmmortizationService
 
     public function confirmMonth($balances, $repayment, $customer_type, $index){
         $affirm = 0;
-        if($index !== 0 && $customer_type == 'new_customer'){
-            foreach($balances as $balance){
-                if($balance >= $repayment){
-                    $affirm++;
-                }
-            }
-
-            return $affirm >= 2;
-        }
-        else{
-            foreach($balances as $balance){
+        foreach($balances as $balance){
             if($balance >= $repayment){
                 $affirm++;
             }
+
         }
-        return $affirm >= 1;
+        return ( $index !== 0 && $customer_type == 'new_customer') ? $affirm >= 2 : $affirm >= 1;
     }
 
 
 }
-}
+
