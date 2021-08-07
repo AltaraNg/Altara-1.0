@@ -83,7 +83,7 @@ class AmortizationController extends Controller
                 'plan_id' => request('plan_id'),
                 'duration' => request('duration'),
                 'cycle' => request('cycle'),
-                'business_type' => request('business_type')
+                'business_type' => request('business_type'),
             ];
             $resp = [
                 'ans' => $service->recommend($data)
@@ -98,7 +98,9 @@ class AmortizationController extends Controller
                 'plan_id' => request('plan_id'),
                 'duration' => request('duration'),
                 'cycle' => request('cycle'),
-                'business_type' => request('business_type')
+                'business_type' => request('business_type'),
+                'customer_type' => request('customer_type')
+
             ];
             $resp = [
                 'ans' => $service->recommendInformal($data)
