@@ -38,7 +38,6 @@ class AmmortizationService
        $duration = RepaymentDuration::where('id', $duration_id)->first();
        $cycle_id = (int) $data['cycle'];
        $cycle =RepaymentCycle::where('id', $cycle_id)->first();
-       $business_type = (int) $data['business_type'];
 
 
         $downpayments = DownPaymentRate::all()->toArray();
