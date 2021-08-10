@@ -13,7 +13,8 @@ class ReportService
         $totalAltaraCash = self::getNoOfAltaraCashProduct(clone $newOrdersForComputation);
         $totalSales = count($newOrdersToBeGrouped);
         $totalRevenue = $newOrdersToBeGrouped->avg('product_price') * $totalSales;
-        $revenuePerSale = $totalRevenue / $totalSales;
+        //to prevent division by zero error
+        $revenuePerSale = $totalRevenue / ($totalSales ?: 1);
         $additional = $additional->put('altaraPayVersusAltaraCash', self::getComparismOfAltaraPayVsAltaraCash($totalAltaraCash, $totalAltaraPay, $totalSales));
         $additional = $additional->put('total_no_sales', $totalSales);
         $additional = $additional->put('total_revenue', number_format($totalRevenue, 2));
@@ -51,11 +52,13 @@ class ReportService
 
     private static function getComparismOfAltaraPayVsAltaraCash($totalAltaraCash, $totalAltaraPay, $totalSales)
     {
+        //prevent zero division
+        $totalSales = $totalSales ?: 1;
         return [
             'no_of_sales_altara_cash' => $totalAltaraCash,
             'no_of_sales_altara_pay' => $totalAltaraPay,
-            'percentage_of_sales_altara_pay' => number_format(($totalAltaraPay / $totalSales) * 100, 2),
-            'percentage_of_sales_altara_cash' => number_format(($totalAltaraCash / $totalSales) * 100, 2)
+            'percentage_of_sales_altara_pay' => number_format(($totalAltaraPay / $totalSales) * 100, 2) ,
+            'percentage_of_sales_altara_cash' => number_format(($totalAltaraCash / $totalSales) * 100, 2) 
         ];
     }
 }

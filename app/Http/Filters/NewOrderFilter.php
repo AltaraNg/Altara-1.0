@@ -121,9 +121,19 @@ class NewOrderFilter extends BaseFilter
         if ($employee_status == "informal") {
             $employee_status = "informal(business)";
         }
-        $this->builder->whereHas('customer', function ($query) use ($employee_status)
-        {
+        $this->builder->whereHas('customer', function ($query) use ($employee_status) {
             $query->where('employment_status', $employee_status);
+        });
+    }
+
+    /**
+     * @param string $employee_status
+     * Filter orders sales 
+     */
+    public function salesCategory(int $salesCategory)
+    {
+        $this->builder->whereHas('salesCategory', function ($query) use ($salesCategory) {
+            $query->where('id', $salesCategory);
         });
     }
 }
