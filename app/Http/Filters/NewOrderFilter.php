@@ -110,8 +110,19 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->whereDate($column, $date);
     }
-    public function sector()
+
+    /**
+     * @param string $employee_status
+     * Filter orders employee status 
+     */
+    public function sector(string $employee_status)
     {
-        // $this->builder->
+        if ($employee_status == "informal") {
+            $employee_status = "informal(business)";
+        }
+        $this->builder->whereHas('customer', function ($query) use ($employee_status)
+        {
+            $query->where('employment_status', $employee_status);
+        });
     }
 }
