@@ -96,7 +96,9 @@ class NewOrderController extends Controller
             $query->where('name', 'like', '%Altara Credit%');
         })->count();
         $totalSales = count($newOrdersToBeGrouped);
+        $totalRevenue = number_format($newOrdersToBeGrouped->avg('product_price') * $totalSales, 2);
         $additional = $additional->put('total_no_sales', $totalSales);
+        $additional = $additional->put('total_revenue', $totalRevenue);
         $additional = $additional->put('altaraPayVersusAltaraCash', [
             'no_of_sales_altara_cash' => $totalAltaraCash,
             'no_of_sales_altara_pay' => $totalAltaraPay,

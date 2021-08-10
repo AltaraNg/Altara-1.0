@@ -105,6 +105,7 @@ class NewOrderFilter extends BaseFilter
     /**
      * @param string $date
      * @param string $column
+     * filter order by the supplied date using the order date column
      */
     public function date(string $date, $column = 'order_date')
     {
