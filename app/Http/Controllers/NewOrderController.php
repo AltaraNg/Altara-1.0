@@ -96,15 +96,17 @@ class NewOrderController extends Controller
             $query->where('name', 'like', '%Altara Credit%');
         })->count();
         $totalSales = count($newOrdersToBeGrouped);
-        $totalRevenue = number_format($newOrdersToBeGrouped->avg('product_price') * $totalSales, 2);
-        $additional = $additional->put('total_no_sales', $totalSales);
-        $additional = $additional->put('total_revenue', $totalRevenue);
+        $totalRevenue = $newOrdersToBeGrouped->avg('product_price') * $totalSales;
+        $revenuePerSale = $totalRevenue / $totalSales;
         $additional = $additional->put('altaraPayVersusAltaraCash', [
             'no_of_sales_altara_cash' => $totalAltaraCash,
             'no_of_sales_altara_pay' => $totalAltaraPay,
             'percentage_of_sales_altara_pay' => number_format(($totalAltaraPay / $totalSales) * 100, 2),
             'percentage_of_sales_altara_cash' => number_format(($totalAltaraCash / $totalSales) * 100, 2)
         ]);
+        $additional = $additional->put('total_no_sales', $totalSales);
+        $additional = $additional->put('total_revenue', number_format($totalRevenue, 2));
+        $additional = $additional->put('revenue_per_Sale', number_format($revenuePerSale, 2));
         return $this->sendSuccess([$newOrdersQuery->paginate((int)request('limit', 10)), "meta" => $additional], 'Orders retrieved successfully');
     }
 }
