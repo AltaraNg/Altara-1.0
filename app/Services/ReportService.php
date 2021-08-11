@@ -8,11 +8,11 @@ class ReportService
     {
         $newOrdersForComputation = clone $newOrdersQuery;
         $newOrdersToBeGrouped = clone $newOrdersQuery->get();
-        $additional = self::groupOrderByBranchName($newOrdersToBeGrouped);
-        $totalAltaraPay = self::getNoOfAltaraPayProduct(clone $newOrdersForComputation);
-        $totalAltaraCash = self::getNoOfAltaraCashProduct(clone $newOrdersForComputation);
         $totalSales = count($newOrdersToBeGrouped);
         $totalRevenue = $newOrdersToBeGrouped->avg('product_price') * $totalSales;
+        $additional = self::groupOrderByBranchName($newOrdersToBeGrouped, $totalRevenue);
+        $totalAltaraPay = self::getNoOfAltaraPayProduct(clone $newOrdersForComputation);
+        $totalAltaraCash = self::getNoOfAltaraCashProduct(clone $newOrdersForComputation);
         //to prevent division by zero error
         $revenuePerSale = $totalRevenue / ($totalSales ?: 1);
         $additional = $additional->put('altaraPayVersusAltaraCash', self::getComparismOfAltaraPayVsAltaraCash($totalAltaraCash, $totalAltaraPay, $totalSales));
@@ -22,15 +22,18 @@ class ReportService
         return $additional;
     }
 
-    private static function groupOrderByBranchName($newOrdersToBeGrouped)
+    private static function groupOrderByBranchName($newOrdersToBeGrouped, $totalRevenue)
     {
         $ordersGroupedByBranch =  $newOrdersToBeGrouped->groupBy('branch.name');
-        return  $ordersGroupedByBranch->map(function ($item, $key) {
+        return  $ordersGroupedByBranch->map(function ($item, $key) use ($totalRevenue) {
+            $totalPotentialRevenuePerShowroom = $item->avg('product_price') * count($item);
+            $percentageOfTotalRevenue = $totalPotentialRevenuePerShowroom / $totalRevenue * 100;
             return [
                 'branch_name' => $item[0]->branch->name,
                 'avg_price_of_prod_per_show_room' => number_format($item->avg('product_price'), 2),
-                'total_potential_revenue_sold_per_showroom' => number_format($item->avg('product_price') * count($item), 2),
-                'number_of_sales' => count($item),
+                'total_potential_revenue_sold_per_showroom' => number_format($totalPotentialRevenuePerShowroom , 2),
+                'number_of_sales' => count($item), 
+                'percentage_of_total_revenues' => number_format($percentageOfTotalRevenue, 3),
             ];
         });
     }
