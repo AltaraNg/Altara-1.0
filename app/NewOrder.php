@@ -201,6 +201,8 @@ class NewOrder extends Model
             "order_date" => $this->order_date,
             "owner" => $this->owner->full_name ?? '',
             "sales_type" => $this->salesCategory ?? '',
+            "branch_id" => $this->branch->id,
+            "owner_id" => $this->owner->id
         ];
     }
 }

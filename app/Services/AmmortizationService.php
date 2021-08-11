@@ -38,7 +38,6 @@ class AmmortizationService
        $duration = RepaymentDuration::where('id', $duration_id)->first();
        $cycle_id = (int) $data['cycle'];
        $cycle =RepaymentCycle::where('id', $cycle_id)->first();
-       $business_type = (int) $data['business_type'];
 
 
         $downpayments = DownPaymentRate::all()->toArray();
@@ -85,9 +84,9 @@ class AmmortizationService
         $duration = RepaymentDuration::where('id', $duration_id)->first();
         $cycle_id = (int) $data['cycle'];
         $cycle =RepaymentCycle::where('id', $cycle_id)->first();
-        $business_type = (int) $data['business_type'];
        $total_price = (int) $data['total_price'];
        $months = [$data['month1'], $data['month2'], $data['month3']];
+       $customer_type = $data['customer_type'];
 
        $downpayments = DownPaymentRate::all()->toArray();
 
@@ -110,12 +109,13 @@ class AmmortizationService
 
             $calculator_data = Helper::calculator($total_price,(object)$data);
             $cred_month = 0;
-            foreach($months as $month){
-                if($this->confirmMonth($month, $calculator_data['onetime']) == false){
+            for( $index = 0; $index < count($months) ; $index++ ){
+                if($this->confirmMonth($months[$index], $calculator_data['onetime'], $customer_type, $index) == false){
                     break;
                 }else{
                     $cred_month++;
                 }
+
             }
             if($cred_month == 3){
                 $ans = [$downpayments[$i]['percent'],
@@ -135,13 +135,17 @@ class AmmortizationService
         return (float)$salary / 4;
     }
 
-    public function confirmMonth($balances, $repayment){
+    public function confirmMonth($balances, $repayment, $customer_type, $index){
         $affirm = 0;
         foreach($balances as $balance){
-            if($balance >= $repayment){
+            if($balance > $repayment){
                 $affirm++;
             }
+
         }
-        return $affirm >= 2;
+        return ( $index !== 0 && $customer_type == 'new_customer') ? $affirm >= 2 : $affirm >= 1;
     }
+
+
 }
+
