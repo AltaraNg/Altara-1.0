@@ -25,7 +25,7 @@ abstract class Amortization
 
     public function repaymentAmount(): float
     {
-        return floor($this->order->repayment/$this->repaymentCount() / 100) * 100;
+        return round($this->order->repayment/$this->repaymentCount() / 100) * 100;
     }
 
     public function repaymentDuration(): int
