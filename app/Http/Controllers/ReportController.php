@@ -27,12 +27,16 @@ class ReportController extends Controller
     {
         return Excel::download(new CustomersExport($request), 'report.xlsx');
     }
-
-    public function getNewOrdersReport(NewOrderRepository $newOrderRepository,NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService)
+    /**
+     * Generates excel export for new orders.
+     * @param NewOrderRepository $newOrderRepository.
+     * @param NewOrderFilter $filter.
+     * @param NewOrdersReportService $newOrdersReportService.
+     */
+    public function getNewOrdersReport(NewOrderRepository $newOrderRepository, NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService)
     {
         $newOrdersQuery = $newOrderRepository->query($filter)->latest();
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
-        // dd(gettype($additional['groupedDataByBranch']));
         return Excel::download(new NewOrdersExport($additional['groupedDataByBranch']), 'OrdersReport.csv');
     }
 }
