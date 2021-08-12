@@ -24,13 +24,13 @@ class ReportService
 
     private static function groupOrderByBranchName($newOrdersToBeGrouped, $totalRevenue)
     {
-        $dummy = clone $newOrdersToBeGrouped;
+        $newOrdersToBeGroupedClone = clone $newOrdersToBeGrouped;
         $ordersGroupedByBranch =   $newOrdersToBeGrouped->get()->groupBy('branch.name');
-        return  $ordersGroupedByBranch->map(function ($item, $key) use ($totalRevenue, $dummy) {
+        return  $ordersGroupedByBranch->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
             $totalPotentialRevenuePerShowroom = $item->avg('product_price') * count($item);
             $percentageOfTotalRevenue = $totalPotentialRevenuePerShowroom / $totalRevenue * 100;
-            $countPay = self::getNoOfAltaraPayProductPerBranch(clone $dummy, $item[0]->branch->id);
-            $countCash = self::getNoOfAltaraCashProductPerBranch(clone $dummy, $item[0]->branch->id);
+            $countPay = self::getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item[0]->branch->id);
+            $countCash = self::getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item[0]->branch->id);
             return [
                 'branch_id' => $item[0]->branch->id,
                 'branch_name' => $item[0]->branch->name,
