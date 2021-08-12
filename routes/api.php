@@ -119,6 +119,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/recommendation', 'AmortizationController@recommend');
 
     Route::get('/order/reports', 'NewOrderController@report');
+    Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');
 
 
 });
