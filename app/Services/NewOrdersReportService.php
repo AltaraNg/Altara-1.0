@@ -39,19 +39,23 @@ class NewOrdersReportService
             $percentageOfTotalRevenue = $totalPotentialRevenuePerShowroom / $totalRevenue * 100;
             $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $branch_id);
             $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $branch_id);
-            $noOfAltaraPayNewSales =   $this->getNoOfAltaraPayNewSale(clone $newOrdersToBeGroupedClone, $branch_id);
-            $noOfAltaraCashRenewalSales =   $this->getNoOfAltaraCashReNewalSale(clone $newOrdersToBeGroupedClone, $branch_id);
+            $noOfAltaraPayRenewal =   $this->getNoOfAltaraPayReNewal(clone $newOrdersToBeGroupedClone, $branch_id);
+            $noOfAltaraCashRenewal =   $this->getNoOfAltaraCashReNewal(clone $newOrdersToBeGroupedClone, $branch_id);
+            $percentageOfAltaraPaySales =   $countPay / (count($item) ?: 1) * 100;
+            $percentageOfAltaraCashSales =   $countCash / (count($item) ?: 1) * 100;
             return [
                 'branch_id' => $branch_id,
                 'branch_name' => $item[0]->branch->name,
                 'avg_price_of_prod_per_showroom' => number_format($item->avg('product_price'), 2),
                 'total_potential_revenue_sold_per_showroom' => number_format($totalPotentialRevenuePerShowroom, 2),
                 'number_of_sales' => count($item),
-                'percentage_of_total_revenues' => number_format($percentageOfTotalRevenue, 3),
+                'no_of_altara_pay_renewal' => $noOfAltaraPayRenewal,
+                'no_of_altara_cash_renewal' => $noOfAltaraCashRenewal,
                 'no_of_altara_pay' => $countPay,
                 'no_of_altara_cash' => $countCash,
-                'no_of_altara_pay_new_sales' => $noOfAltaraPayNewSales,
-                'no_of_altara_cash_renewal_sales' => $noOfAltaraCashRenewalSales,
+                'percentage_of_total_revenues' => number_format($percentageOfTotalRevenue, 3),
+                'percentage_of_altara_pay_sales' => number_format($percentageOfAltaraPaySales, 3),
+                'percentage_of_altara_cash_sales' => number_format($percentageOfAltaraCashSales, 3),
             ];
         });
     }
@@ -91,8 +95,8 @@ class NewOrdersReportService
         return [
             'no_of_sales_altara_cash' => $totalAltaraCash,
             'no_of_sales_altara_pay' => $totalAltaraPay,
-            'percentage_of_sales_altara_pay' => number_format(($totalAltaraPay / $totalSales) * 100, 2),
-            'percentage_of_sales_altara_cash' => number_format(($totalAltaraCash / $totalSales) * 100, 2)
+            'percentage_of_sales_altara_pay' => number_format(($totalAltaraPay / $totalSales) * 100, 3),
+            'percentage_of_sales_altara_cash' => number_format(($totalAltaraCash / $totalSales) * 100, 3)
         ];
     }
 
@@ -108,7 +112,7 @@ class NewOrdersReportService
             })->count();
     }
 
-    private  function getNoOfAltaraCashReNewalSale(Builder $newOrdersForComputation, int $branch_id)
+    private  function getNoOfAltaraCashReNewal(Builder $newOrdersForComputation, int $branch_id)
     {
         return $newOrdersForComputation
             ->where('branch_id', $branch_id)
@@ -117,6 +121,17 @@ class NewOrdersReportService
             })
             ->whereHas('businessType', function ($query) {
                 $query->where('name', 'like', '%Altara Credit%');
+            })->count();
+    }
+    private  function getNoOfAltaraPayReNewal(Builder $newOrdersForComputation, int $branch_id)
+    {
+        return $newOrdersForComputation
+            ->where('branch_id', $branch_id)
+            ->whereHas('salesCategory', function ($query) {
+                $query->whereIn('id', self::RenewalSalesCategoryIDs);
+            })
+            ->whereHas('businessType', function ($query) {
+                $query->where('name', 'like', '%Altara Pay%');
             })->count();
     }
 }
