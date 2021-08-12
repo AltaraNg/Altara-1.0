@@ -45,12 +45,12 @@ class NewOrdersExport implements FromCollection, WithMapping,  WithHeadings, Wit
             $newOrder['number_of_sales'],
             $newOrder['total_potential_revenue_sold_per_showroom'],
             $newOrder['percentage_of_total_revenues'],
-            $newOrder['no_of_altara_pay'] ?: 0,
-            $newOrder['no_of_altara_cash'] ?: 0,
-            $newOrder['percentage_of_altara_pay_sales'] ?: 0,
-            $newOrder['percentage_of_altara_cash_sales'] ?: 0,
-            $newOrder['no_of_altara_pay_renewal'] ?: 0,
-            $newOrder['no_of_altara_cash_renewal'] ?: 0,
+            $newOrder['no_of_altara_pay'] ,
+            $newOrder['no_of_altara_cash'],
+            $newOrder['percentage_of_altara_pay_sales'],
+            $newOrder['percentage_of_altara_cash_sales'],
+            $newOrder['no_of_altara_pay_renewal'],
+            $newOrder['no_of_altara_cash_renewal'],
         ];
     }
 
