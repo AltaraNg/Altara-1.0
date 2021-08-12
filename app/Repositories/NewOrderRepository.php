@@ -26,6 +26,11 @@ class NewOrderRepository extends Repository
         return NewOrder::class;
     }
 
+    public function query($filter)
+    {
+        return $this->model::filter($filter);
+    }
+
     public function store(array $data)
     {
         $validated = $data;
