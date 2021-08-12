@@ -42,15 +42,15 @@ class NewOrdersExport implements FromCollection, WithMapping,  WithHeadings, Wit
         return [
             $newOrder['branch_name'],
             $newOrder['avg_price_of_prod_per_showroom'],
-            $newOrder['number_of_sales'],
+            $newOrder['number_of_sales']  ?: "0",
             $newOrder['total_potential_revenue_sold_per_showroom'],
-            $newOrder['percentage_of_total_revenues'],
-            $newOrder['no_of_altara_pay'] ,
-            $newOrder['no_of_altara_cash'],
-            $newOrder['percentage_of_altara_pay_sales'],
-            $newOrder['percentage_of_altara_cash_sales'],
-            $newOrder['no_of_altara_pay_renewal'],
-            $newOrder['no_of_altara_cash_renewal'],
+            $newOrder['percentage_of_total_revenues'].'%' ?: "0.00%",
+            $newOrder['no_of_altara_pay']  ?: "0",
+            $newOrder['no_of_altara_cash']  ?: "0",
+            $newOrder['percentage_of_altara_pay_sales'] .'%'  ?: "0.00%",
+            $newOrder['percentage_of_altara_cash_sales'] .'%' ?: "0.00%",
+            $newOrder['no_of_altara_pay_renewal'] ?: "0",
+            $newOrder['no_of_altara_cash_renewal']  ?: "0",
         ];
     }
 
@@ -63,7 +63,8 @@ class NewOrdersExport implements FromCollection, WithMapping,  WithHeadings, Wit
     {
         return [
             // 'F' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-            // 'J' => NumberFormat::FORMAT_DATE_DDMMYYYY
+            // 'E' => NumberFormat::FORMAT_PERCENTAGE,
+            'J' => NumberFormat::FORMAT_NUMBER
         ];
     }
 }
