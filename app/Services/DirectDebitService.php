@@ -45,6 +45,8 @@ class DirectDebitService
                     ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id)
                     ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT)->first()->id)
                     ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_STARTER_CASH_LOAN)->first()->id)
+                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN_NO_COLLATERAL_PRODUCT)->first()->id)
+                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_STARTER_NO_COLLATERAL_CASH_LOAN)->first()->id)
                     ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_RENTALS)->first()->id);
             });
 
