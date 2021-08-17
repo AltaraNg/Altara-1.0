@@ -30,23 +30,24 @@ class NewOrdersReportService
         $ordersGroupedByBranch =   $newOrdersToBeGrouped->join('branches', 'new_orders.branch_id', '=', 'branches.id')
             ->join('business_types', 'new_orders.business_type_id', '=', 'business_types.id')
             ->select(
-                'branches.name',
+                'branches.name as branch_name',
                 'branches.id',
-            DB::raw("count(*) as number_of_sales, 
-            round(AVG(product_price), 2) as avg_price_of_prod_per_showroom, 
-            round(AVG(product_price), 2) * count(*)  as total_potential_revenue_sold_per_showroom
-            "))
+                DB::raw("count(*) as count, 
+            AVG(product_price) as avg_price_of_prod_per_showroom, 
+            AVG(product_price) * count(*)  as total_potential_revenue_sold_per_showroom
+            ")
+            )
             ->groupBy('branch_id')->get();
-            // return $ordersGroupedByBranch;
-
-            foreach ($ordersGroupedByBranch as $key => $value) {
-               
-            }
         return  $ordersGroupedByBranch->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
             $percentageOfTotalRevenue = $item->total_potential_revenue_sold_per_showroom / $totalRevenue * 100;
             $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             return [
+                'branch_id' => $item->id,
+                'branch_name' => $item->branch_name,
+                'avg_price_of_prod_per_showroom' => number_format($item->avg_price_of_prod_per_showroom, 2),
+                'total_potential_revenue_sold_per_showroom' => number_format($item->total_potential_revenue_sold_per_showroom, 2),
+                'number_of_sales' => $item->count,
                 'percentage_of_total_revenues' => number_format($percentageOfTotalRevenue, 3),
                 'no_of_altara_pay' => $countPay,
                 'no_of_altara_cash' => $countCash,
