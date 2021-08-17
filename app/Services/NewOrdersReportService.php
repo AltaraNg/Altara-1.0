@@ -34,22 +34,19 @@ class NewOrdersReportService
                 'branches.id',
             DB::raw("count(*) as number_of_sales, 
             round(AVG(product_price), 2) as avg_price_of_prod_per_showroom, 
-            round(AVG(product_price), 2) * count(*)  as total_potential_revenue_sold_per_showroom,
-            "),
-            DB::raw("count(business_types.name like '%Altara Credit%') as no_of_altara_cash"))
-            ->groupBy('branch_id');
-        return $ordersGroupedByBranch->get();
+            round(AVG(product_price), 2) * count(*)  as total_potential_revenue_sold_per_showroom
+            "))
+            ->groupBy('branch_id')->get();
+            // return $ordersGroupedByBranch;
+
+            foreach ($ordersGroupedByBranch as $key => $value) {
+               
+            }
         return  $ordersGroupedByBranch->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
-            $totalPotentialRevenuePerShowroom = $item->avg('product_price') * count($item);
-            $percentageOfTotalRevenue = $totalPotentialRevenuePerShowroom / $totalRevenue * 100;
-            $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item[0]->branch->id);
-            $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item[0]->branch->id);
+            $percentageOfTotalRevenue = $item->total_potential_revenue_sold_per_showroom / $totalRevenue * 100;
+            $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
+            $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             return [
-                'branch_id' => $item[0]->branch->id,
-                'branch_name' => $item[0]->branch->name,
-                'avg_price_of_prod_per_showroom' => number_format($item->avg('product_price'), 2),
-                'total_potential_revenue_sold_per_showroom' => number_format($totalPotentialRevenuePerShowroom, 2),
-                'number_of_sales' => count($item),
                 'percentage_of_total_revenues' => number_format($percentageOfTotalRevenue, 3),
                 'no_of_altara_pay' => $countPay,
                 'no_of_altara_cash' => $countCash,
