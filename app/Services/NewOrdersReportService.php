@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
+
 class NewOrdersReportService
 {
     public  function generateMetaData($newOrdersQuery)
@@ -25,7 +27,18 @@ class NewOrdersReportService
     private  function groupOrderByBranchName($newOrdersToBeGrouped, $totalRevenue)
     {
         $newOrdersToBeGroupedClone = clone $newOrdersToBeGrouped;
-        $ordersGroupedByBranch =   $newOrdersToBeGrouped->get()->groupBy('branch.name');
+        $ordersGroupedByBranch =   $newOrdersToBeGrouped->join('branches', 'new_orders.branch_id', '=', 'branches.id')
+            ->join('business_types', 'new_orders.business_type_id', '=', 'business_types.id')
+            ->select(
+                'branches.name',
+                'branches.id',
+            DB::raw("count(*) as number_of_sales, 
+            round(AVG(product_price), 2) as avg_price_of_prod_per_showroom, 
+            round(AVG(product_price), 2) * count(*)  as total_potential_revenue_sold_per_showroom,
+            "),
+            DB::raw("count(business_types.name like '%Altara Credit%') as no_of_altara_cash"))
+            ->groupBy('branch_id');
+        return $ordersGroupedByBranch->get();
         return  $ordersGroupedByBranch->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
             $totalPotentialRevenuePerShowroom = $item->avg('product_price') * count($item);
             $percentageOfTotalRevenue = $totalPotentialRevenuePerShowroom / $totalRevenue * 100;
@@ -84,3 +97,5 @@ class NewOrdersReportService
         ];
     }
 }
+// SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+// select * from `new_orders` group by `branch_id` order by `created_at` desc;
