@@ -28,7 +28,6 @@ class NewOrdersReportService
     {
         $newOrdersToBeGroupedClone = clone $newOrdersToBeGrouped;
         $ordersGroupedByBranch =   $newOrdersToBeGrouped->join('branches', 'new_orders.branch_id', '=', 'branches.id')
-            ->join('business_types', 'new_orders.business_type_id', '=', 'business_types.id')
             ->select(
                 'branches.name as branch_name',
                 'branches.id',
