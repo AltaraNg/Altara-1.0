@@ -127,7 +127,7 @@ class NewOrderFilter extends BaseFilter
     }
 
     /**
-     * @param string $employee_status
+     * @param string $salesCategory
      * Filter orders sales 
      */
     public function salesCategory(int $salesCategory)
