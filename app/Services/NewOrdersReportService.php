@@ -94,5 +94,3 @@ class NewOrdersReportService
         ];
     }
 }
-// SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
-// select * from `new_orders` group by `branch_id` order by `created_at` desc;
