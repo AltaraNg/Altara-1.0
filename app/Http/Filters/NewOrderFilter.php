@@ -136,4 +136,14 @@ class NewOrderFilter extends BaseFilter
             $query->where('id', $salesCategory);
         });
     }
+
+    /**
+     * @param string $from
+     * @param string $column
+     */
+    public function fromDate(string $date, $column = 'order_date')
+    {
+        $this->builder->whereDate($column, '>=', $date)
+            ->whereDate($column, '<=', $this->request->toDate ?? Carbon::now());
+    }
 }
