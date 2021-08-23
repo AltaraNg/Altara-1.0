@@ -192,7 +192,7 @@ class NewOrder extends Model
             "down_payment" => $this->down_payment,
             "repayment" => $this->repayment,
             "discount" => $this->discounts,
-            "single_repayment" => $this->amortization[0]->expected_amount,
+            "single_repayment" => $this->amortization[0]->expected_amount ?? '',
             "custom_date" => $this->customDate->custom_date ?? null,
             "amortization" => $this->amortization,
             "notifications" => $this->notifications,
@@ -201,6 +201,8 @@ class NewOrder extends Model
             "order_date" => $this->order_date,
             "owner" => $this->owner->full_name ?? '',
             "sales_type" => $this->salesCategory ?? '',
+            "branch_id" => $this->branch->id,
+            "owner_id" => $this->owner->id
         ];
     }
 }

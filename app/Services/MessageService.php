@@ -12,15 +12,16 @@ class MessageService
 {
     public function sendMessage($receiver, $message)
     {
+        
         $isInProduction = App::environment() === 'production';
         if (!$isInProduction) {
-
             $num = rand(0, 1);
             if ($num > 0.5) {
                 return json_decode(json_encode($this->success($receiver)));
             }
             return json_decode(json_encode($this->error($receiver)));
         }
+
         $ch = curl_init();
         $receiver = urlencode($receiver);
         $message = urlencode($message);
@@ -29,8 +30,7 @@ class MessageService
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $data = curl_exec($ch);
         curl_close($ch);
-
-
+        
         $response = (int) preg_replace('/[^0-9]/', '', $data);
         $res_message = '';
         switch ($data) {

@@ -8,6 +8,8 @@ use App\Amortization;
 use App\BusinessType;
 use App\Events\RepaymentEvent;
 use App\OrderStatus;
+use App\PaymentMethod;
+use App\PaymentType;
 use Carbon\Carbon;
 
 class DirectDebitService
@@ -43,8 +45,7 @@ class DirectDebitService
                     ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id)
                     ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT)->first()->id)
                     ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_STARTER_CASH_LOAN)->first()->id)
-                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_RENTALS)->first()->id)
-                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_EMPLOYEE_CASH_LOAN)->first()->id);
+                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_RENTALS)->first()->id);
             });
 
         return $data->get();
@@ -68,9 +69,17 @@ class DirectDebitService
                 'order_id' => $item->new_orders->order_number,
                 'amount' => $item->expected_amount,
             ];
+            $data_for_log = [
+                "amount" => $item->expected_amount,
+                "customer_id" => $item->new_orders->customer_id,
+                "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
+                "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
+                "bank_id" => 6 //hardcoded to fcmb
+            ];
 
             if(isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
                 $item->new_orders['amount'] = $item->expected_amount;
+                $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
                 event(new RepaymentEvent($item->new_orders));
                 $res[] = array_merge($data, [
                     'status' => 'success',

@@ -15,7 +15,7 @@ class NewOrderFilter extends BaseFilter
     {
         $date = Carbon::today()->subDays($day);
 
-        $this->builder->whereHas('amortization', function (Builder $query) use($date) {
+        $this->builder->whereHas('amortization', function (Builder $query) use ($date) {
             $query->where('expected_payment_date', $date)
                 ->where('actual_amount', '<', 1);
         })->get();
@@ -53,11 +53,11 @@ class NewOrderFilter extends BaseFilter
         $this->builder->whereHas('amortization', function ($query) use ($days) {
             $selectedDay = Carbon::parse($this->fields()['startDate'] ?? null) ?? Carbon::now();
             $query->select('new_order_id')
-            ->from('amortizations')
-            ->whereDate('expected_payment_date', '<=', $selectedDay->subDays($days)->toDateString())
+                ->from('amortizations')
+                ->whereDate('expected_payment_date', '<=', $selectedDay->subDays($days)->toDateString())
                 ->where('actual_payment_date', NULL);
         })
-        ->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id);
+            ->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id);
     }
 
     /**
@@ -90,8 +90,8 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->whereHas('businessType', function ($query) use ($type) {
             $query->select('business_type_id')
-            ->from('business_types')
-            ->where('id', $type);
+                ->from('business_types')
+                ->where('id', $type);
         });
     }
 
@@ -100,5 +100,40 @@ class NewOrderFilter extends BaseFilter
         $this->builder->whereHas('amortization', function (Builder $query) {
             $query->where('actual_amount', '<', 1);
         }, '<=', request('count', 2));
+    }
+
+    /**
+     * @param string $date
+     * @param string $column
+     * filter order by the supplied date using the order date column
+     */
+    public function date(string $date, $column = 'order_date')
+    {
+        $this->builder->whereDate($column, $date);
+    }
+
+    /**
+     * @param string $employee_status
+     * Filter orders employee status 
+     */
+    public function sector(string $employee_status)
+    {
+        if ($employee_status == "informal") {
+            $employee_status = "informal(business)";
+        }
+        $this->builder->whereHas('customer', function ($query) use ($employee_status) {
+            $query->where('employment_status', $employee_status);
+        });
+    }
+
+    /**
+     * @param string $salesCategory
+     * Filter orders sales 
+     */
+    public function salesCategory(int $salesCategory)
+    {
+        $this->builder->whereHas('salesCategory', function ($query) use ($salesCategory) {
+            $query->where('id', $salesCategory);
+        });
     }
 }

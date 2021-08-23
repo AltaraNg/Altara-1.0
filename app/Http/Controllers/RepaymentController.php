@@ -63,6 +63,7 @@ class RepaymentController extends Controller
         $order = Order::findOrFail($request->order_id);
         $order->amount = $request->amount;
         $order->payment_type_id = $paymentType;
+        $order->payment_method_id = $request->payment_method_id;
         event(new OldRepaymentEvent($order));
 
 
