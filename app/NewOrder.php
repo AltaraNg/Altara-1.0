@@ -64,6 +64,9 @@ class NewOrder extends Model
             'down_payment' => ['sometimes', 'required', new Money],
             'product_price' => ['sometimes', 'required', new Money],
             'order_date' => 'sometimes|required|date',
+            'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
+            'order_type_id' => 'sometimes|exists:order_types,id',
+            'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
         ];
     }
 
