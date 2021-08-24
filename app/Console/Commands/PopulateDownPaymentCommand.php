@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\AltaraPayDdData;
+use App\Log;
 use App\NewOrder;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log as FacadesLog;
 
 class PopulateDownPaymentCommand extends Command
 {
@@ -38,9 +41,12 @@ class PopulateDownPaymentCommand extends Command
      */
     public function handle()
     {
-        NewOrder::all()->chunk(function ($order)
-        {
-            dd($order);
+        $orders =  NewOrder::whereNotNull(['down_payment', 'product_price'])->get()->take(20);
+
+        $orders->each(function ($order) {
+            $percent = ($order->down_payment / $order->product_price) * 100;
+            
+            $this->info(ceil($percent));
         });
     }
 }
