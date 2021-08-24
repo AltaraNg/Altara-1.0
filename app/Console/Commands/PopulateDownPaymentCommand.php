@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\AltaraPayDdData;
+use App\DownPaymentRate;
 use App\Log;
 use App\NewOrder;
 use Illuminate\Console\Command;
@@ -42,11 +43,11 @@ class PopulateDownPaymentCommand extends Command
     public function handle()
     {
         $orders =  NewOrder::whereNotNull(['down_payment', 'product_price'])->get()->take(20);
-
-        $orders->each(function ($order) {
-            $percent = ($order->down_payment / $order->product_price) * 100;
-            
-            $this->info(ceil($percent));
+        $downpaymentRates = DownPaymentRate::all();
+        $orders->each(function ($order) use ($downpaymentRates) {
+            $percent = ceil(($order->down_payment / $order->product_price) * 100);
+            $downpaymentRate = $downpaymentRates->firstWhere('percent', '=', $percent);
+            $this->info($downpaymentRate->id);
         });
     }
 }
