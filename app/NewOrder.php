@@ -42,8 +42,8 @@ class NewOrder extends Model
             'product_price' => ['required', new Money],
             'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,' . $id,
             'down_payment_rate_id' => 'required|exists:down_payment_rates,id',
-            'order_type_id' => 'required|exists:order_types,id',
-            'payment_gateway_id' => 'required|exists:payment_gateways,id',
+            'order_type_id' => 'sometimes|exists:order_types,id',
+            'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
         ];
     }
 
