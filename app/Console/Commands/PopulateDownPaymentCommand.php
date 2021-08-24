@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\NewOrder;
 use Illuminate\Console\Command;
 
 class PopulateDownPaymentCommand extends Command
@@ -37,6 +38,9 @@ class PopulateDownPaymentCommand extends Command
      */
     public function handle()
     {
-        //
+        NewOrder::all()->chunk(function ($order)
+        {
+            dd($order);
+        });
     }
 }
