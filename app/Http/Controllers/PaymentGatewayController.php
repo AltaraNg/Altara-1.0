@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\PaymentGateway;
-use Illuminate\Http\Request;
+use App\Repositories\PaymentGatewayRepository;
+
 
 class PaymentGatewayController extends Controller
 {
+    private $paymentGatewayRepo;
+
+    public function __construct(PaymentGatewayRepository $paymentGatewayRepository)
+    {
+        $this->paymentGatewayRepo = $paymentGatewayRepository;
+    }
+
     //
-      //
-      public function index()
-      {
-          return response()->json([
-              'paymentgateways' => PaymentGateway::all()
-           ]);
-      }
+    public function index()
+    {
+        return response()->json([
+            'paymentgateways' => $this->paymentGatewayRepo->all()
+        ]);
+    }
 }
