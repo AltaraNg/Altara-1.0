@@ -6,13 +6,14 @@ use App\AltaraPayDdData;
 use App\DownPaymentRate;
 use App\Log;
 use App\NewOrder;
+use App\Repositories\DownPaymentRateRepository;
 use App\Repositories\NewOrderRepository;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log as FacadesLog;
 
 class PopulateDownPaymentCommand extends Command
 {
-    private $downPaymentRates;
+    private $downPaymentRateRepo;
     private $newOrderRepo;
     /**
      * The name and signature of the console command.
@@ -33,10 +34,10 @@ class PopulateDownPaymentCommand extends Command
      *
      * @return void
      */
-    public function __construct(NewOrderRepository $newOrderRepository)
+    public function __construct(NewOrderRepository $newOrderRepository,  DownPaymentRateRepository $downPaymentRateRepository)
     {
         parent::__construct();
-        $this->downPaymentRates = DownPaymentRate::all();
+        $this->downPaymentRateRepo = $downPaymentRateRepository;
         $this->newOrderRepo = $newOrderRepository;
     }
 
@@ -92,7 +93,7 @@ class PopulateDownPaymentCommand extends Command
 
     private  function getDownPaymentID($downPaymentRatePercent)
     {
-        $downPaymentRate = $this->downPaymentRates->firstWhere('percent', '=', $downPaymentRatePercent);
+        $downPaymentRate = $this->downPaymentRateRepo->all()->firstWhere('percent', '=', $downPaymentRatePercent);
         return $downPaymentRate->id;
     }
 
