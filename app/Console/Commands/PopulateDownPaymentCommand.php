@@ -56,33 +56,33 @@ class PopulateDownPaymentCommand extends Command
         foreach ($orders as $order) {
             $percent = ($order->down_payment / $order->product_price) * 100;
             if ($percent < 5) {
-                $this->updateNewOrderDownPaymentOrderID($order, $this->getDownPaymentID(0));
+                $this->updateNewOrderDownPaymentRateOrderID($order, $this->getDownPaymentID(0));
                 $count++;
                 continue;
             }
 
             if ($percent >= 5 && $percent <= 14) {
-                $this->updateNewOrderDownPaymentOrderID($order, $this->getDownPaymentID(10));
+                $this->updateNewOrderDownPaymentRateOrderID($order, $this->getDownPaymentID(10));
                 $count++;
                 continue;
             }
             if ($percent >= 15 && $percent <= 29) {
-                $this->updateNewOrderDownPaymentOrderID($order, $this->getDownPaymentID(20));
+                $this->updateNewOrderDownPaymentRateOrderID($order, $this->getDownPaymentID(20));
                 $count++;
                 continue;
             }
             if ($percent >= 30 && $percent <= 49) {
-                $this->updateNewOrderDownPaymentOrderID($order, $this->getDownPaymentID(40));
+                $this->updateNewOrderDownPaymentRateOrderID($order, $this->getDownPaymentID(40));
                 $count++;
                 continue;
             }
             if ($percent >= 50 && $percent <= 69) {
-                $this->updateNewOrderDownPaymentOrderID($order, $this->getDownPaymentID(60));
+                $this->updateNewOrderDownPaymentRateOrderID($order, $this->getDownPaymentID(60));
                 $count++;
                 continue;
             }
             if ($percent >= 70) {
-                $this->updateNewOrderDownPaymentOrderID($order, $this->getDownPaymentID(80));
+                $this->updateNewOrderDownPaymentRateOrderID($order, $this->getDownPaymentID(80));
                 $count++;
                 continue;
             }
@@ -96,7 +96,7 @@ class PopulateDownPaymentCommand extends Command
         return $downPaymentRate->id;
     }
 
-    private function updateNewOrderDownPaymentOrderID($order, $downPaymentRateID)
+    private function updateNewOrderDownPaymentRateOrderID($order, $downPaymentRateID)
     {
         $this->newOrderRepo->update($order, [
             'down_payment_rate_id' =>  $downPaymentRateID,
