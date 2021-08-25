@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\DisapproveCustomers',
         'App\Console\Commands\RepaymentReminderCommand',
         'App\Console\Commands\PopulateDownPaymentCommand',
-        'App\Console\Commands\SendNewOrderReportCommmand'
+        'App\Console\Commands\SendNewOrderReportCommmand',
+        'App\Console\Commands\UpdateOrderTypeIdCommand'
     ];
 
     /**
