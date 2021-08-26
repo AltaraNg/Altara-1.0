@@ -122,7 +122,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');
 
 });
-Route::get('/order/reports', 'NewOrderController@report');
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
