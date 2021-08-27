@@ -36,8 +36,13 @@ class NewOrdersReportService
         $newOrdersToBeGroupedClone = clone $newOrdersQuery;
         $ordersGroupedByBranch =  $this->groupOrderByBranchId($newOrdersQuery);
         $ordersGroupedByBranchData = $this->generateGroupedBranchesDataThatHasOrders($ordersGroupedByBranch, $totalRevenue, $newOrdersToBeGroupedClone);
+        $ordersUnGroupedByBranch = $this->generateUngroupedBranchesDataWithNoOrders($branches, $ordersGroupedByBranchData)->filter();
+        //if there are no orders group
+        if (!$ordersGroupedByBranchData->count()) {
+            return  $ordersUnGroupedByBranch;
+        }
         //filter is to remove nulls in collection object
-        return $ordersGroupedByBranchData->merge($this->generateUngroupedBranchesDataWithNoOrders($branches, $ordersGroupedByBranchData))->filter();
+        return $ordersGroupedByBranchData->merge($ordersUnGroupedByBranch)->filter();
     }
 
     private  function groupOrderByBranchId($newOrdersToBeGrouped)
