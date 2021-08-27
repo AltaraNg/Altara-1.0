@@ -165,7 +165,10 @@ class NewOrder extends Model
     {
         return $this->morphMany(Payment::class, 'orderable');
     }
-
+    public function downpaymentRate()
+    {
+        return $this->belongsTo(DownPaymentRate::class, 'down_payment_id');
+    }
     /**
      * Get all of the New Order's payments.
      */
