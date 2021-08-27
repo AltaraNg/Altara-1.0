@@ -165,9 +165,17 @@ class NewOrder extends Model
     {
         return $this->morphMany(Payment::class, 'orderable');
     }
-    public function downpaymentRate()
+    public function downPaymentRate()
     {
-        return $this->belongsTo(DownPaymentRate::class, 'down_payment_id');
+        return $this->belongsTo(DownPaymentRate::class, 'down_payment_rate_id');
+    }
+    public function orderType()
+    {
+        return $this->belongsTo(OrderType::class, 'order_type_id');
+    }
+    public function paymentGateway()
+    {
+        return $this->belongsTo(PaymentGateway::class, 'payment_gateway_id');
     }
     /**
      * Get all of the New Order's payments.
@@ -211,7 +219,10 @@ class NewOrder extends Model
             "owner" => $this->owner->full_name ?? '',
             "sales_type" => $this->salesCategory ?? '',
             "branch_id" => $this->branch->id,
-            "owner_id" => $this->owner->id
+            "owner_id" => $this->owner->id,
+            "down_payment_rate" => $this->downPaymentRate->name ?? null,
+            "payment_gateway" => $this->paymentGateway->name ?? null,
+            "order_type" => $this->orderType->name ?? null,
         ];
     }
 }
