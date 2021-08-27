@@ -82,13 +82,13 @@ class NewOrdersReportService
     private function generateGroupedBranchesDataThatHasOrders($groupedBranchesData, $totalRevenue, $newOrdersToBeGroupedClone)
     {
         return $groupedBranchesData->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
-            $percentageOfTotalRevenue = $item->total_potential_revenue_sold_per_showroom / $totalRevenue * 100;
-            $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
-            $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             if ($item->branch_name == "Ikoyi") {
                 //generates a null
                 return;
             }
+            $percentageOfTotalRevenue = $item->total_potential_revenue_sold_per_showroom / $totalRevenue * 100;
+            $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
+            $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             return [
                 'branch_id' => $item->id,
                 'branch_name' => $item->branch_name,
