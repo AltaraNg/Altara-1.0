@@ -84,13 +84,13 @@ class UpdateOrderTypeIdCommand extends Command
     private  function getAltaraPayOrderTypeId()
     {
         $orderType = OrderType::where('name', 'like', '%Altara Pay%')->first();
-        return  $orderType->id;
+        return  $orderType->id ?? null;
     }
 
     private  function getAltaraCreditOrderTypeId()
     {
         $orderType = OrderType::where('name', 'like', '%Altara Credit%')->first();
-        return  $orderType->id;
+        return  $orderType->id ?? null;
     }
 
     private function updateNewOrderOrderTypeID($order, $orderTypeId)

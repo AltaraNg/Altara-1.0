@@ -94,7 +94,7 @@ class PopulateDownPaymentCommand extends Command
     private  function getDownPaymentID($downPaymentRatePercent)
     {
         $downPaymentRate = $this->downPaymentRateRepo->all()->firstWhere('percent', '=', $downPaymentRatePercent);
-        return $downPaymentRate->id;
+        return $downPaymentRate->id ?? null;
     }
 
     private function updateNewOrderDownPaymentRateOrderID($order, $downPaymentRateID)
