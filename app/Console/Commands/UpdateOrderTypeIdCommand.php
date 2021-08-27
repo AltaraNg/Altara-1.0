@@ -44,9 +44,7 @@ class UpdateOrderTypeIdCommand extends Command
      */
     public function handle()
     {
-        $orders =  NewOrder::whereNotNull('down_payment')
-            ->whereNotNull('down_payment')
-            ->whereNull('order_type_id')
+        $orders =  NewOrder::whereNull('order_type_id')
             ->get();
         $altaraPayBusinessTypeIds = $this->getAltaraPayBusinessTypeIds();
         $altaraCreditBusinessTypeIds = $this->getAltaraCreditBusinessTypeIds();

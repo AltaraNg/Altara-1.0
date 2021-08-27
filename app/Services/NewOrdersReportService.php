@@ -2,23 +2,17 @@
 
 namespace App\Services;
 
-use App\Repositories\BranchRepository;
 use Illuminate\Support\Facades\DB;
 
 class NewOrdersReportService
 {
-    private $branchRepo;
-    public function __construct(BranchRepository $branchRepository)
-    {
-        $this->branchRepo = $branchRepository;
-    }
     public  function generateMetaData($newOrdersQuery)
     {
         $newOrdersForComputation = clone $newOrdersQuery;
         $additional = collect([]);
         $totalSales = $newOrdersQuery->count();
         $totalRevenue = $newOrdersQuery->avg('product_price') * $totalSales;
-        $additional = $additional->put('groupedDataByBranch', $this->getBranchesData(clone $newOrdersQuery, $totalRevenue));
+        $additional = $additional->put('groupedDataByBranch', $this->groupOrderByBranchName(clone $newOrdersQuery, $totalRevenue));
         $totalAltaraPay = $this->getNoOfAltaraPayProduct(clone $newOrdersForComputation);
         $totalAltaraCash = $this->getNoOfAltaraCashProduct(clone $newOrdersForComputation);
         //to prevent division by zero error
@@ -30,19 +24,10 @@ class NewOrdersReportService
         return $additional;
     }
 
-    private  function getBranchesData($newOrdersQuery, $totalRevenue)
+    private  function groupOrderByBranchName($newOrdersToBeGrouped, $totalRevenue)
     {
-        $branches = $this->branchRepo->getBranches(['id', 'name']);
-        $newOrdersToBeGroupedClone = clone $newOrdersQuery;
-        $ordersGroupedByBranch =  $this->groupOrderByBranchId($newOrdersQuery);
-        $ordersGroupedByBranchData = $this->generateGroupedBranchesDataThatHasOrders($ordersGroupedByBranch, $totalRevenue, $newOrdersToBeGroupedClone);
-        //filter is to remove nulls in collection object
-        return $ordersGroupedByBranchData->merge($this->generateUngroupedBranchesDataWithNoOrders($branches, $ordersGroupedByBranchData))->filter();
-    }
-
-    private  function groupOrderByBranchId($newOrdersToBeGrouped)
-    {
-        return  $newOrdersToBeGrouped->join('branches', 'new_orders.branch_id', '=', 'branches.id')
+        $newOrdersToBeGroupedClone = clone $newOrdersToBeGrouped;
+        $ordersGroupedByBranch =   $newOrdersToBeGrouped->join('branches', 'new_orders.branch_id', '=', 'branches.id')
             ->select(
                 'branches.name as branch_name',
                 'branches.id',
@@ -52,38 +37,10 @@ class NewOrdersReportService
             ")
             )
             ->groupBy('branch_id')->get();
-    }
-
-
-    private function generateUngroupedBranchesDataWithNoOrders($allBranches, $groupedBranches)
-    {
-        return $allBranches->map(function ($branch) use ($groupedBranches) {
-            if ((!collect($groupedBranches->pluck('branch_id'))->contains($branch->id)) && ($branch->name != 'Ikoyi')) {
-                return [
-                    'branch_id' => $branch->id,
-                    'branch_name' => $branch->name,
-                    'avg_price_of_prod_per_showroom' => 0,
-                    'total_potential_revenue_sold_per_showroom' => 0,
-                    'number_of_sales' => 0,
-                    'percentage_of_total_revenues' => 0,
-                    'no_of_altara_pay' => 0,
-                    'no_of_altara_cash' => 0,
-                ];
-            }
-            //this return generates a null
-            return;
-        });
-    }
-    private function generateGroupedBranchesDataThatHasOrders($groupedBranchesData, $totalRevenue, $newOrdersToBeGroupedClone)
-    {
-        return $groupedBranchesData->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
+        return  $ordersGroupedByBranch->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
             $percentageOfTotalRevenue = $item->total_potential_revenue_sold_per_showroom / $totalRevenue * 100;
             $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
-            if ($item->branch_name == "Ikoyi") {
-                //generates a null
-                return;
-            }
             return [
                 'branch_id' => $item->id,
                 'branch_name' => $item->branch_name,
@@ -96,6 +53,7 @@ class NewOrdersReportService
             ];
         });
     }
+
     private  function getNoOfAltaraPayProduct($newOrdersForComputation)
     {
         return $newOrdersForComputation->whereHas('businessType', function ($query) {

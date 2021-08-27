@@ -49,7 +49,7 @@ class PopulateDownPaymentCommand extends Command
     public function handle()
     {
         $orders =  NewOrder::whereNotNull('down_payment')
-            ->whereNotNull('down_payment')
+            ->whereNotNull('product_price')
             ->whereNull('down_payment_rate_id')
             ->get();
         $this->info('Found ' . $orders->count() . ' new orders');
