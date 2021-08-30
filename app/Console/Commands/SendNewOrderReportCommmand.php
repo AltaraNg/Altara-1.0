@@ -2,7 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Exports\NewOrdersExport;
+use App\Http\Filters\NewOrderFilter;
+use App\Repositories\NewOrderRepository;
+use App\Services\NewOrdersReportService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SendNewOrderReportCommmand extends Command
 {
@@ -25,9 +31,11 @@ class SendNewOrderReportCommmand extends Command
      *
      * @return void
      */
-    public function __construct()
+    private $newOrderRepo;
+    public function __construct(NewOrderRepository $newOrderRepository)
     {
         parent::__construct();
+        $this->newOrderRepo = $newOrderRepository;
     }
 
     /**
@@ -35,8 +43,13 @@ class SendNewOrderReportCommmand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(NewOrderFilter $newOrderFilter,  NewOrdersReportService $newOrdersReportService)
     {
-        //
+        $date = Carbon::now()->subDay()->format('Y-m-d');
+        $date = "2021-07-14";
+        $newOrdersQuery =  $this->newOrderRepo->query($newOrderFilter)->where('order_date', $date);
+        $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
+        $file = Excel::download(new NewOrdersExport($additional['groupedDataByBranch']), 'OrdersReport.csv');
+        
     }
 }
