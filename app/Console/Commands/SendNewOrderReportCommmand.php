@@ -6,6 +6,7 @@ use App\Exports\NewOrdersExport;
 use App\Http\Filters\NewOrderFilter;
 use App\Repositories\NewOrderRepository;
 use App\Services\NewOrdersReportService;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
@@ -50,6 +51,8 @@ class SendNewOrderReportCommmand extends Command
         $newOrdersQuery =  $this->newOrderRepo->query($newOrderFilter)->where('order_date', $date);
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
         $file = Excel::download(new NewOrdersExport($additional['groupedDataByBranch']), 'OrdersReport.csv');
-        
+        $roles_id = env("ROLES");
+       $users = User::whereIn('id', $roles_id)->get();
+       dd($users);
     }
 }
