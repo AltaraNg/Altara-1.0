@@ -49,7 +49,6 @@ class SendNewOrderReportCommmand extends Command
     public function handle(NewOrderFilter $newOrderFilter,  NewOrdersReportService $newOrdersReportService)
     {
         $date = Carbon::now()->subDay()->format('Y-m-d');
-        $date = "2021-07-14";
         $newOrdersQuery =  $this->newOrderRepo->query($newOrderFilter)->where('order_date', $date);
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
         $rolesId  = explode(',',  env('ROLES'));
