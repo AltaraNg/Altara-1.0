@@ -10,15 +10,15 @@ use Illuminate\Notifications\Messages\MailMessage;
 class NewOrderReportNotification extends Notification
 {
     use Queueable;
-
+    private $file;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($file) 
     {
-        //
+        $this->file = $file;
     }
 
     /**
@@ -41,9 +41,10 @@ class NewOrderReportNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->attach($this->file, ['as' => 'report.xlsx'])
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**

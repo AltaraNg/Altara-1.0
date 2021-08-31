@@ -4,11 +4,13 @@ namespace App\Console\Commands;
 
 use App\Exports\NewOrdersExport;
 use App\Http\Filters\NewOrderFilter;
+use App\Notifications\NewOrderReportNotification;
 use App\Repositories\NewOrderRepository;
 use App\Services\NewOrdersReportService;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SendNewOrderReportCommmand extends Command
@@ -50,9 +52,12 @@ class SendNewOrderReportCommmand extends Command
         $date = "2021-07-14";
         $newOrdersQuery =  $this->newOrderRepo->query($newOrderFilter)->where('order_date', $date);
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
-        $file = Excel::download(new NewOrdersExport($additional['groupedDataByBranch']), 'OrdersReport.csv');
-        $roles_id = env("ROLES");
-       $users = User::whereIn('id', $roles_id)->get();
-       dd($users);
+        $rolesId  = explode(',',  env('ROLES'));
+        //get all users with associated with the supplied roles id
+        $users = User::whereIn('id', $rolesId)->get();
+        $file =  Excel::download(new NewOrdersExport($additional['groupedDataByBranch']), 'OrdersReport.csv')->getFile();
+        Notification::send($users, new NewOrderReportNotification($file));
+        $this->info('report sent');
+        return;
     }
 }
