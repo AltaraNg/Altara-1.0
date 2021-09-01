@@ -14,7 +14,10 @@ class NewOrdersReportService
     }
     public  function generateMetaData($newOrdersQuery)
     {
-        $newOrdersForComputation = clone $newOrdersQuery;
+        $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query)
+        {
+            $query->where('name', '!=', 'Ikoyi');
+        });
         $additional = collect([]);
         $totalSales = $newOrdersQuery->count();
         $totalRevenue = $newOrdersQuery->avg('product_price') * $totalSales;
