@@ -179,6 +179,13 @@ class NewOrder extends Model
         })->first()->paymentMethod->name ?? null;
     }
 
+    public function orderType(){
+        return $this->belongsTo(OrderType::class, 'order_type_id');
+    }
+    public function paymentGateway(){
+        return $this->belongsTo(PaymentGateway::class, 'payment_gateway_id');
+    }
+
     public function toArray()
     {
         return [
@@ -211,7 +218,10 @@ class NewOrder extends Model
             "owner" => $this->owner->full_name ?? '',
             "sales_type" => $this->salesCategory ?? '',
             "branch_id" => $this->branch->id,
-            "owner_id" => $this->owner->id
+            "owner_id" => $this->owner->id,
+            "downpayment_rate" => $this->downpaymentRate,
+            "order_type" => $this->orderType,
+            "payment_gateway" => $this->paymentGateway
         ];
     }
 }
