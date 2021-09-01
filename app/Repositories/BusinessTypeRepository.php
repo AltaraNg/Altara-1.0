@@ -12,4 +12,8 @@ class BusinessTypeRepository extends Repository
     {
         return BusinessType::class;
     }
+    public function getBusinessTypesId($businessTypeName = "Altara Pay")
+    {
+      return  $this->model::where('name', 'like', "%$businessTypeName%")->get();
+    }
 }

@@ -3,17 +3,21 @@
 namespace App\Services;
 
 use App\Repositories\BranchRepository;
+use App\Repositories\BusinessTypeRepository;
 use Illuminate\Support\Facades\DB;
 
 class NewOrdersReportService
 {
     private $branchRepo;
-    public function __construct(BranchRepository $branchRepository)
+    private $businessTypeRepo;
+    public function __construct(BranchRepository $branchRepository, BusinessTypeRepository $businessTypeRepository)
     {
         $this->branchRepo = $branchRepository;
+        $this->businessTypeRepo= $businessTypeRepository;
     }
     public  function generateMetaData($newOrdersQuery)
     {
+        return $this->businessTypeRepo->getBusinessTypesId();
         $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query)
         {
             $query->where('name', '!=', 'Ikoyi');
