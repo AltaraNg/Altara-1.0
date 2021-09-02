@@ -14,9 +14,11 @@ class BusinessTypeRepository extends Repository
     }
     /** 
      * @var string $businessTypeName "pay" || "cash"
-     * 
+     * This methods accepts "cash" or "pay", pay is the default string
+     * @return array of type illuminate collection
+     * Use this method if you need to get all business type that has name "Altara Pay" or "Altara Type"
      **/
-    public function getBusinessTypesId(string $businessTypeName = 'pay')
+    public function getBusinessTypes(string $businessTypeName = 'pay')
     {
         //please do not remove the space
         $businessTypeNameInitial = 'Altara ' . ucfirst($businessTypeName);
