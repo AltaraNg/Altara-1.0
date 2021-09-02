@@ -9,11 +9,9 @@ use Illuminate\Support\Facades\DB;
 class NewOrdersReportService
 {
     private $branchRepo;
-    private $businessTypeRepo;
-    public function __construct(BranchRepository $branchRepository, BusinessTypeRepository $businessTypeRepository)
+    public function __construct(BranchRepository $branchRepository)
     {
         $this->branchRepo = $branchRepository;
-        $this->businessTypeRepo= $businessTypeRepository;
     }
     public  function generateMetaData($newOrdersQuery)
     {
