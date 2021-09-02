@@ -12,8 +12,16 @@ class BusinessTypeRepository extends Repository
     {
         return BusinessType::class;
     }
-    public function getBusinessTypesId($businessTypeName = "Altara Pay")
+    /** 
+     * @var string $businessTypeName "pay" || "cash"
+     * 
+     **/
+    public function getBusinessTypesId(string $businessTypeName = 'pay')
     {
-      return  $this->model::where('name', 'like', "%$businessTypeName%")->get();
+        //please do not remove the space
+        $businessTypeNameInitial = 'Altara ' . ucfirst($businessTypeName);
+        //Replacing multiple spaces with a single space
+        $businessTypeNameInitial = preg_replace('!\s+!', ' ', $businessTypeNameInitial);
+        return  $this->model::where('name', 'like', "%$businessTypeNameInitial%")->get();
     }
 }
