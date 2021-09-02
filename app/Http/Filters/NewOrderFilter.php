@@ -146,4 +146,15 @@ class NewOrderFilter extends BaseFilter
         $this->builder->whereDate($column, '>=', $date)
             ->whereDate($column, '<=', $this->request->toDate ?? Carbon::now());
     }
+
+    /**
+     * @param string $salesCategory
+     * Filter orders sales 
+     */
+    public function orderType(int $orderType)
+    {
+        $this->builder->whereHas('orderType', function ($query) use ($orderType) {
+            $query->where('id', $orderType);
+        });
+    }
 }

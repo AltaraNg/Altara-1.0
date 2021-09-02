@@ -17,7 +17,6 @@ class NewOrdersReportService
     }
     public  function generateMetaData($newOrdersQuery)
     {
-        return $this->businessTypeRepo->getBusinessTypesId();
         $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query)
         {
             $query->where('name', '!=', 'Ikoyi');
