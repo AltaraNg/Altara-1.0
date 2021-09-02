@@ -6,6 +6,7 @@ use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
 use App\Repositories\NewOrderRepository;
+use App\Services\NewOrdersReportService;
 use Illuminate\Http\Response;
 
 class NewOrderController extends Controller
@@ -74,5 +75,11 @@ class NewOrderController extends Controller
 
         $result = $this->newOrderRepository->repossess($new_order);
         return $this->sendSuccess($result, 'Order repossessed successfully');
+    }
+    public function report(NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService)
+    {
+        $newOrdersQuery = $this->newOrderRepository->query($filter)->latest('new_orders.created_at');
+        $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
+        return $this->sendSuccess([ "meta" => $additional], 'Orders retrieved successfully');
     }
 }

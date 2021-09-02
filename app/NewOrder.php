@@ -40,7 +40,10 @@ class NewOrder extends Model
             'discount' => 'sometimes|array',
             'discount.*' => 'sometimes|numeric|exists:discounts,id',
             'product_price' => ['required', new Money],
-            'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,' . $id
+            'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,' . $id,
+            'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
+            'order_type_id' => 'sometimes|exists:order_types,id',
+            'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
         ];
     }
 
@@ -61,6 +64,9 @@ class NewOrder extends Model
             'down_payment' => ['sometimes', 'required', new Money],
             'product_price' => ['sometimes', 'required', new Money],
             'order_date' => 'sometimes|required|date',
+            'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
+            'order_type_id' => 'sometimes|exists:order_types,id',
+            'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
         ];
     }
 
@@ -159,7 +165,18 @@ class NewOrder extends Model
     {
         return $this->morphMany(Payment::class, 'orderable');
     }
-
+    public function downPaymentRate()
+    {
+        return $this->belongsTo(DownPaymentRate::class, 'down_payment_rate_id');
+    }
+    public function orderType()
+    {
+        return $this->belongsTo(OrderType::class, 'order_type_id');
+    }
+    public function paymentGateway()
+    {
+        return $this->belongsTo(PaymentGateway::class, 'payment_gateway_id');
+    }
     /**
      * Get all of the New Order's payments.
      */
@@ -192,7 +209,7 @@ class NewOrder extends Model
             "down_payment" => $this->down_payment,
             "repayment" => $this->repayment,
             "discount" => $this->discounts,
-            "single_repayment" => $this->amortization[0]->expected_amount,
+            "single_repayment" => $this->amortization[0]->expected_amount ?? '',
             "custom_date" => $this->customDate->custom_date ?? null,
             "amortization" => $this->amortization,
             "notifications" => $this->notifications,
@@ -202,7 +219,10 @@ class NewOrder extends Model
             "owner" => $this->owner->full_name ?? '',
             "sales_type" => $this->salesCategory ?? '',
             "branch_id" => $this->branch->id,
-            "owner_id" => $this->owner->id
+            "owner_id" => $this->owner->id,
+            "down_payment_rate" => $this->downPaymentRate->name ?? null,
+            "payment_gateway" => $this->paymentGateway->name ?? null,
+            "order_type" => $this->orderType->name ?? null,
         ];
     }
 }
