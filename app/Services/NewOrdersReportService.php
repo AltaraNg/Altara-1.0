@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\BranchRepository;
+use App\Repositories\BusinessTypeRepository;
 use Illuminate\Support\Facades\DB;
 
 class NewOrdersReportService
