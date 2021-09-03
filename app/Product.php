@@ -84,7 +84,7 @@ class Product extends Model
             'retail_price' => $this->retail_price,
             'img_url' => $this->img_url,
             'feature' => $this->feature,
-            'product_type' => $this->productType->name,
+            'product_type' => $this->productType->name ?? null,
             'is_active' => $this->is_active,
             'user' => $this->user->full_name,
             'inventories' => $this->when((bool) strpos(url()->current(), 'inventory-summary'), function () {
