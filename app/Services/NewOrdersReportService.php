@@ -16,7 +16,7 @@ class NewOrdersReportService
     {
         $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query)
         {
-            $query->where('name', '!=', 'Ikoyi');
+            $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
         });
         $additional = collect([]);
         $totalSales = $newOrdersQuery->count();
@@ -66,7 +66,7 @@ class NewOrdersReportService
     private function generateUngroupedBranchesDataWithNoOrders($allBranches, $groupedBranches)
     {
         return $allBranches->map(function ($branch) use ($groupedBranches) {
-            if ((!collect($groupedBranches->pluck('branch_id'))->contains($branch->id)) && ($branch->name != 'Ikoyi')) {
+            if ((!collect($groupedBranches->pluck('branch_id'))->contains($branch->id)) && ($branch->name != 'Ikoyi')  && ($branch->name != 'Challenge Warehouse')  && ($branch->name != 'Micro Alakia')) {
                 return [
                     'branch_id' => $branch->id,
                     'branch_name' => $branch->name,
@@ -86,6 +86,14 @@ class NewOrdersReportService
     {
         return $groupedBranchesData->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
             if ($item->branch_name == "Ikoyi") {
+                //generates a null
+                return;
+            }
+            if ($item->branch_name == "Challenge Warehouse") {
+                //generates a null
+                return;
+            }
+            if ($item->branch_name == "Micro Alakia") {
                 //generates a null
                 return;
             }
