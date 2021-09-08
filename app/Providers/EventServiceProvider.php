@@ -5,13 +5,17 @@ namespace App\Providers;
 use App\Events\NewOrderEvent;
 use App\Events\OldRepaymentEvent;
 use App\Events\ProductTransferEvent;
+use App\Events\ProspectActivityEvent;
 use App\Events\SendPasswordResetLinkEvent;
 use App\Events\RepaymentEvent;
+use App\Listeners\FeedbackListener;
 use App\Listeners\LogPaymentListener;
 use App\Listeners\NewOrderListener;
 use App\Listeners\ProductTransferListener;
+use App\Listeners\ProspectStageListener;
 use App\Listeners\RepaymentListener;
 use App\Listeners\SendPasswordResetLinkListener;
+use App\Listeners\TodoListener;
 use App\Listeners\UpdateInventoryBranchListener;
 use App\Listeners\UpdateInventoryListener;
 use App\Listeners\UpdateInventoryDictListener;
@@ -49,7 +53,12 @@ class EventServiceProvider extends ServiceProvider
         RepaymentEvent::class => [
             UpdateAmortizationListener::class,
             RepaymentListener::class
-        ]
+        ],
+        ProspectActivityEvent::class => [
+            FeedbackListener::class,
+            ProspectStageListener::class,
+            TodoListener::class,
+        ],
     ];
 
     /**
