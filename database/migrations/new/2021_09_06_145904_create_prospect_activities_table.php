@@ -15,12 +15,12 @@ class CreateProspectActivitiesTable extends Migration
     {
         Schema::create('prospect_activities', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('customer_id');
+            $table->unsignedBigInteger('contact_customer_id');
             $table->unsignedInteger('user_id')->nullable();
             $table->string('type');
             $table->timestamps();
             //foreign keys
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('contact_customer_id')->references('id')->on('contact_customers');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

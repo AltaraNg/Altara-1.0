@@ -13,15 +13,17 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class ProspectActivityEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+    public $prospectActivity;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($prospectActivity)
     {
         //
+        $this->prospectActivity = $prospectActivity;
     }
 
     /**
