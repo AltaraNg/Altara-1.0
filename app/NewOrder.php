@@ -194,7 +194,7 @@ class NewOrder extends Model
             "order_number" => $this->order_number,
             "product_id" => $this->product_id,
             "product" => $this->product,
-            "product_name" => $this->product->name,
+            "product_name" => $this->product->name ?? null,
             "serial_number" => $this->serial_number,
             "repayment_duration" => $this->repaymentDuration->name ?? null,
             "repayment_cycle" => $this->repaymentCycle->name ?? null,

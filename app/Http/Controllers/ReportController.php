@@ -30,7 +30,7 @@ class ReportController extends Controller
 
     public function getNewOrdersReport(NewOrderRepository $newOrderRepository,NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService)
     {
-        $newOrdersQuery = $newOrderRepository->query($filter)->latest('new_orders.created_at');
+        $newOrdersQuery = $newOrderRepository->reportQuery($filter)->latest('new_orders.created_at');
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
         // dd(gettype($additional['groupedDataByBranch']));
         return Excel::download(new NewOrdersExport($additional['groupedDataByBranch']), 'OrdersReport.csv');
