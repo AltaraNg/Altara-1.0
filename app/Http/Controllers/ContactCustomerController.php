@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ContactCustomer;
 use App\CustomerStage;
+use App\Events\CustomerStageUpdatedEvent;
 use App\Exports\ContactCustomerExport;
 use App\Helper\Helper;
 use App\Http\Filters\ContactCustomerFilter;
@@ -77,9 +78,12 @@ class ContactCustomerController extends Controller
      */
     public function update(ContactCustomer $customer_contact, ContactCustomerRequest $request)
     {
-        $order = $this->contactRepo->update($customer_contact, $request->validated());
-
-        return $this->sendSuccess($order->toArray(), 'Contact updated successfully');
+    
+        $contact_customer = $this->contactRepo->update($customer_contact, $request->validated());
+        if ($contact_customer->wasChanged('customer_stage_id')) {
+           event(new CustomerStageUpdatedEvent($customer_contact));
+        }
+        return $this->sendSuccess($contact_customer->toArray(), 'Contact updated successfully');
     }
 
     public function export(Excel $excel, ContactCustomerFilter $filter){
