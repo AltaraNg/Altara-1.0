@@ -8,14 +8,14 @@ use App\Events\ProductTransferEvent;
 use App\Events\ProspectActivityEvent;
 use App\Events\SendPasswordResetLinkEvent;
 use App\Events\RepaymentEvent;
-use App\Listeners\FeedbackListener;
 use App\Listeners\LogPaymentListener;
 use App\Listeners\NewOrderListener;
 use App\Listeners\ProductTransferListener;
-use App\Listeners\ProspectStageListener;
+use App\Listeners\ProspectFeedbackListener;
+use App\Listeners\ProspectCustomerStageListener;
+use App\Listeners\ProspectTodoListener;
 use App\Listeners\RepaymentListener;
 use App\Listeners\SendPasswordResetLinkListener;
-use App\Listeners\TodoListener;
 use App\Listeners\UpdateInventoryBranchListener;
 use App\Listeners\UpdateInventoryListener;
 use App\Listeners\UpdateInventoryDictListener;
@@ -55,9 +55,9 @@ class EventServiceProvider extends ServiceProvider
             RepaymentListener::class
         ],
         ProspectActivityEvent::class => [
-            FeedbackListener::class,
-            ProspectStageListener::class,
-            TodoListener::class,
+            ProspectFeedbackListener::class,
+            ProspectCustomerStageListener::class,
+            ProspectTodoListener::class,
         ],
     ];
 

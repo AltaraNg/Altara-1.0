@@ -8,7 +8,7 @@ use App\Repositories\ProspectActivityRepository;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TodoListener
+class ProspectTodoListener
 {
     /**
      * Create the event listener.
