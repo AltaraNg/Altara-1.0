@@ -18,6 +18,7 @@ class CreateProspectActivitiesTable extends Migration
             $table->unsignedBigInteger('contact_customer_id');
             $table->unsignedInteger('user_id')->nullable();
             $table->string('type');
+            $table->string('type_payload');
             $table->timestamps();
             //foreign keys
             $table->foreign('contact_customer_id')->references('id')->on('contact_customers');

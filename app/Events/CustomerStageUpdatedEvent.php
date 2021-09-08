@@ -19,7 +19,7 @@ class CustomerStageUpdatedEvent
      *
      * @return void
      */
-    private $data;
+    public $data;
     public function __construct($data)
     {
         //

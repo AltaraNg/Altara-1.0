@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ProspectActivityEvent;
+use App\Events\TodoCreatedEvent;
 use App\Http\Filters\TodoFilter;
 use App\Http\Requests\TodoRequest;
 use App\ProspectActivity;
@@ -39,7 +40,7 @@ class TodoController extends Controller
     public function store(TodoRequest $request)
     {
         $todo = $this->todoRepo->store($request->validated());
-        event(new ProspectActivityEvent($todo));
+        event(new TodoCreatedEvent($todo));
         return $this->sendSuccess($todo->toArray(), 'Todo Successfully Created');
     }
 

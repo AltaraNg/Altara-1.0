@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\FeedbackCreatedEvent;
 use App\Events\ProspectActivityEvent;
 use App\Exports\FeedbackExport;
 use App\Feedback;
@@ -49,7 +50,7 @@ class FeedbackController extends Controller
     {
         $feedback = $this->feedbackRepo->store($request->validated());
         $newFeed = Feedback::findOrFail($feedback->id)->toArray();
-        event(new ProspectActivityEvent($feedback));
+        event(new FeedbackCreatedEvent($feedback));
         return $this->sendSuccess($newFeed, 'Feedback Successfully Created');
     }
 
