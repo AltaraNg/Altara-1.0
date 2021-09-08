@@ -2,13 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\ProspectActivityEvent;
-use App\ProspectActivity;
-use App\Repositories\ProspectActivityRepository;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Repositories\ProspectActivityRepository;
 
-class ProspectTodoListener
+class ProspectActivityListener
 {
     /**
      * Create the event listener.
@@ -18,6 +16,7 @@ class ProspectTodoListener
     private $prospectActivityRepo;
     public function __construct(ProspectActivityRepository $prospectActivityRepository)
     {
+        //
         $this->prospectActivityRepo = $prospectActivityRepository;
     }
 
@@ -27,13 +26,13 @@ class ProspectTodoListener
      * @param  object  $event
      * @return void
      */
-    public function handle(ProspectActivityEvent $event)
+    public function handle($event)
     {
         $this->prospectActivityRepo->store(
             [
-                'contact_customer_id' => $event->prospectActivity->customer_id,
-                'user_id' => $event->prospectActivity->user_id,
-                'type' => strtolower(class_basename(get_class($event->prospectActivity))),
+                'contact_customer_id' => $event->data->customer_id,
+                'user_id' => $event->data->user_id,
+                'type' => strtolower(class_basename(get_class($event->data))),
             ]
         );
         return true;
