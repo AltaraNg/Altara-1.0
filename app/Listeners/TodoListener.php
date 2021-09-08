@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\ProspectActivityEvent;
 use App\ProspectActivity;
+use App\Repositories\ProspectActivityRepository;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -14,9 +15,10 @@ class TodoListener
      *
      * @return void
      */
-    public function __construct()
+    private $prospectActivityRepo;
+    public function __construct(ProspectActivityRepository $prospectActivityRepository)
     {
-        //
+        $this->prospectActivityRepo = $prospectActivityRepository;
     }
 
     /**
@@ -27,10 +29,13 @@ class TodoListener
      */
     public function handle(ProspectActivityEvent $event)
     {
-        ProspectActivity::create([
-            'contact_customer_id' => $event->prospectActivity->customer_id,
-            'user_id' => $event->prospectActivity->user_id,
-            'type' => strtolower(class_basename(get_class($event->prospectActivity))),
-        ]);
+        $this->prospectActivityRepo->store(
+            [
+                'contact_customer_id' => $event->prospectActivity->customer_id,
+                'user_id' => $event->prospectActivity->user_id,
+                'type' => strtolower(class_basename(get_class($event->prospectActivity))),
+            ]
+        );
+        return true;
     }
 }
