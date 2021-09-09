@@ -75,4 +75,9 @@ class ContactCustomer extends Model
         return $this->belongsTo(Customer::class, 'reg_id', 'reg_id');
     }
 
+    public function prospectActivities()
+    {
+        return $this->hasMany(ProspectActivity::class);
+    }
+
 }

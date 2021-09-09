@@ -8,4 +8,9 @@ class ProspectActivity extends Model
 {
     //
     protected $guarded = [];
+
+    public function contactCustomer()
+    {
+        return $this->belongsTo(ContactCustomer::class);
+    }
 }
