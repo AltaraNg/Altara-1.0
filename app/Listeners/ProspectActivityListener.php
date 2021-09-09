@@ -31,7 +31,7 @@ class ProspectActivityListener
         $this->prospectActivityRepo->store(
             [
                 'contact_customer_id' => $event->data->customer_id ?? $event->data->id,
-                'user_id' => $event->data->user_id,
+                'user_id' => auth()->id(),
                 'type' => strtolower(class_basename(get_class($event->data))),
                 'type_id' => $event->data->id,
             ]

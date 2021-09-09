@@ -80,4 +80,9 @@ class ContactCustomer extends Model
         return $this->hasMany(ProspectActivity::class);
     }
 
+    public function lastProspectActivity()
+    {
+        return $this->hasOne(ProspectActivity::class)->latest();
+    }
+
 }
