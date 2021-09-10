@@ -5,6 +5,7 @@ namespace App\Http\Filters;
 
 use App\CustomerStage;
 use Carbon\Carbon;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class ContactCustomerFilter extends BaseFilter
 {
@@ -41,11 +42,12 @@ class ContactCustomerFilter extends BaseFilter
         $this->builder->where('phone', $phone);
     }
 
-    public function unconverted($months){
+    public function unconverted($months)
+    {
         $now = Carbon::now();
 
-        $this->builder->where('customer_stage_id','!=', CustomerStage::where('name', '=',CustomerStage::PURCHASED)->first()->id)
-        ->whereMonth('created_at', '<=',  $now->subMonths(intval($months)));
+        $this->builder->where('customer_stage_id', '!=', CustomerStage::where('name', '=', CustomerStage::PURCHASED)->first()->id)
+            ->whereMonth('created_at', '<=',  $now->subMonths(intval($months)));
     }
 
     /**
@@ -58,10 +60,9 @@ class ContactCustomerFilter extends BaseFilter
 
     public function filterBranch()
     {
-        if (auth()->user()->isDSACaptain()){
+        if (auth()->user()->isDSACaptain()) {
             $this->builder->where('branch_id', auth()->user()->branch_id);
-        }
-        else if (auth()->user()->isCoordinator()){
+        } else if (auth()->user()->isCoordinator()) {
 
             // ** Might need refactoring
             $branches = auth()->user()->branches;
@@ -69,8 +70,7 @@ class ContactCustomerFilter extends BaseFilter
                 return $branch->id;
             });
             $this->builder->whereIn('branch_id', $ids);
-        }
-        else if (auth()->user()->isDSAAgent()){
+        } else if (auth()->user()->isDSAAgent()) {
             $this->builder->where('user_id', auth()->user()->id);
         }
     }
@@ -79,9 +79,18 @@ class ContactCustomerFilter extends BaseFilter
      * @param string $from
      * @param string $column
      */
-    public function startDate(string $from, $column=self::DATE)
+    public function startDate(string $from, $column = self::DATE)
     {
         $this->builder->whereDate($column, '>=', $from)
-            ->whereDate($column, '<=',$this->request->endDate ?? Carbon::now());
+            ->whereDate($column, '<=', $this->request->endDate ?? Carbon::now());
+    }
+
+    public function lastProspectActivity()
+    {
+        $this->builder->whereHas('lastProspectActivity', function ($query) {
+            $query->orderby('created_at', 'desc')
+                // ->where('created_at', '=<', Carbon::now()->subDays($days));
+                ->where('user_id', auth()->id());
+        })->with('lastProspectActivity');
     }
 }

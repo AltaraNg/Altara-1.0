@@ -21,15 +21,13 @@ class ProspectActivityController extends Controller
 
     public function index(ContactCustomerFilter $contactCustomerFilter)
     {
-        // ->where('created_at', '=<', $date)
-        $prospects = $this->contactCustomerRepo->query($contactCustomerFilter)->whereHas('lastProspectActivity', function ($query) {
-            $query->orderby('created_at', 'desc')
-                // ->where('created_at', '=<', Carbon::now()->subDays(30));
-                ->where('user_id', auth()->id());
-        })->with('lastProspectActivity')->get();
+        $prospects = $this->contactCustomerRepo->query($contactCustomerFilter);
         $additional = [
             'total' => $prospects->count(),
         ];
-        return $this->sendSuccess(['prospects' => $prospects, "meta" => $additional], 'Contact retrieved successfully');
+        if (request('rollUp')) {
+            return $this->sendSuccess(["meta" => $additional], 'Notification count retrieved successfully');
+        }
+        return $this->sendSuccess(['prospects' => $prospects->paginate(10) ?? [], "meta" => $additional], 'Prospect customers and notification count retrieved successfully');
     }
 }
