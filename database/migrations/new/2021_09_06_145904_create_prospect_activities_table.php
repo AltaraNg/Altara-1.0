@@ -17,8 +17,9 @@ class CreateProspectActivitiesTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('contact_customer_id');
             $table->unsignedInteger('user_id')->nullable();
-            $table->string('prospect_activity_type');
-            $table->unsignedBigInteger('prospect_activity_type_id');
+            $table->string('type')->nullable();
+            $table->string('prospect_activity_type')->nullable();
+            $table->unsignedBigInteger('prospect_activity_type_id')->nullable();
             $table->date('date');
             $table->timestamps();
             //foreign keys

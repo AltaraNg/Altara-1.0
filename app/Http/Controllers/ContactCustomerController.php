@@ -81,7 +81,7 @@ class ContactCustomerController extends Controller
     
         $contact_customer = $this->contactRepo->update($customer_contact, $request->validated());
         if ($contact_customer->wasChanged('customer_stage_id')) {
-           event(new CustomerStageUpdatedEvent($customer_contact));
+           event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
         }
         return $this->sendSuccess($contact_customer->toArray(), 'Contact updated successfully');
     }

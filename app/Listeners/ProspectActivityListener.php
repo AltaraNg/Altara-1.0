@@ -33,6 +33,7 @@ class ProspectActivityListener
             [
                 'contact_customer_id' => $event->data->customer_id,
                 'user_id' => auth()->id() ?? null,
+                'type' => strtolower(class_basename(get_class($event->data))),
                 'prospect_activity_type' => get_class($event->data),
                 'prospect_activity_type_id' =>  $event->data->id,
                 'date' => Carbon::now()->format('Y-m-d'),

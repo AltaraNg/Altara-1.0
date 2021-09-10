@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\ContactCustomer;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -20,7 +21,7 @@ class CustomerStageUpdatedEvent
      * @return void
      */
     public $data;
-    public function __construct($data)
+    public function __construct(ContactCustomer $data)
     {
         //
         return $this->data = $data;
