@@ -13,4 +13,9 @@ class ProspectActivity extends Model
     {
         return $this->belongsTo(ContactCustomer::class);
     }
+
+    public function prospectActivityType()
+    {
+        return $this->morphTo();
+    }
 }

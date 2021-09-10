@@ -2,12 +2,12 @@
 
 namespace App\Listeners;
 
+use Carbon\Carbon;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Repositories\ProspectActivityRepository;
-use Carbon\Carbon;
 
-class ProspectActivityListener
+class CustomerStageProspectActivityListener
 {
     /**
      * Create the event listener.
@@ -19,6 +19,7 @@ class ProspectActivityListener
     {
         //
         $this->prospectActivityRepo = $prospectActivityRepository;
+
     }
 
     /**
@@ -31,10 +32,10 @@ class ProspectActivityListener
     {
         $this->prospectActivityRepo->store(
             [
-                'contact_customer_id' => $event->data->customer_id,
+                'contact_customer_id' => $event->data->id ?? '',
                 'user_id' => auth()->id() ?? null,
-                'prospect_activity_type' => get_class($event->data),
-                'prospect_activity_type_id' =>  $event->data->id,
+                'prospect_activity_type' => get_class($event->data->customerStage),
+                'prospect_activity_type_id' =>  $event->data->customerStage->id ?? '',
                 'date' => Carbon::now()->format('Y-m-d'),
             ]
         );

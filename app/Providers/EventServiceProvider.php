@@ -14,6 +14,7 @@ use App\Listeners\LogPaymentListener;
 use Illuminate\Support\Facades\Event;
 use App\Events\CustomerStageUpdatedEvent;
 use App\Events\SendPasswordResetLinkEvent;
+use App\Listeners\CustomerStageProspectActivityListener;
 use App\Listeners\ProductTransferListener;
 use App\Listeners\UpdateInventoryListener;
 use App\Listeners\ProspectActivityListener;
@@ -61,7 +62,7 @@ class EventServiceProvider extends ServiceProvider
             ProspectActivityListener::class
         ],
         CustomerStageUpdatedEvent::class => [
-            ProspectActivityListener::class
+            CustomerStageProspectActivityListener::class
         ],
     ];
 

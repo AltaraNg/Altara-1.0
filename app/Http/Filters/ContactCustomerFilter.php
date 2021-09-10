@@ -85,11 +85,11 @@ class ContactCustomerFilter extends BaseFilter
             ->whereDate($column, '<=', $this->request->endDate ?? Carbon::now());
     }
 
-    public function lastProspectActivity()
+    public function lastProspectActivity(int $days = 30)
     {
-        $this->builder->whereHas('lastProspectActivity', function ($query) {
+        $this->builder->whereHas('lastProspectActivity', function ($query) use ($days) {
             $query->orderby('created_at', 'desc')
-                // ->where('created_at', '=<', Carbon::now()->subDays($days));
+                // ->where('date', '=<', Carbon::now()->subDays($days)->format('Y-m-d'))
                 ->where('user_id', auth()->id());
         })->with('lastProspectActivity');
     }
