@@ -16,6 +16,6 @@ class ProspectActivity extends Model
 
     public function prospectActivityType()
     {
-        return $this->morphTo();
+        return $this->morphTo('prospectActivityType', 'prospect_activity_type', 'prospect_activity_type_id');
     }
 }

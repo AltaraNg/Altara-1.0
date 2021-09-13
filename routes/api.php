@@ -122,7 +122,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');
     Route::get('/order-types', 'OrderTypeController@index');
     Route::get('/paymentgateways', 'PaymentGatewayController@index');
+
     Route::get('/inactive/prospects', 'ProspectActivityController@inActiveProspects');
+    Route::Resource('prospect_activities', 'ProspectActivityController')->only(['index', 'show']);
 });
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');

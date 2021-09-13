@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Filters\ContactCustomerFilter;
+use App\ProspectActivity;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\ProspectActivityRepository;
 use Carbon\Carbon;
@@ -18,7 +19,18 @@ class ProspectActivityController extends Controller
         $this->contactCustomerRepo = $contactCustomerRepository;
         $this->prospectActivityRepo = $prospectActivityRepository;
     }
+    public function index()
+    {
+        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->all() ], 'Prospect customers and notification count retrieved successfully');
+    }
 
+    public function show(ProspectActivity $prospect_activity)
+    {
+         $d =  $prospect_activity->load('prospectActivityType');
+
+        return $d;
+        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->all() ], 'Prospect customers and notification count retrieved successfully');
+    }
     public function inActiveProspects(ContactCustomerFilter $contactCustomerFilter)
     {
         $prospects = $this->contactCustomerRepo->query($contactCustomerFilter);
