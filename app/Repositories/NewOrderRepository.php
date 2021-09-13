@@ -26,7 +26,7 @@ class NewOrderRepository extends Repository
         return NewOrder::class;
     }
 
-    public function query($filter)
+    public function reportQuery($filter)
     {
         return $this->model::filter($filter);
     }

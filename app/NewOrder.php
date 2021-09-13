@@ -41,7 +41,7 @@ class NewOrder extends Model
             'discount.*' => 'sometimes|numeric|exists:discounts,id',
             'product_price' => ['required', new Money],
             'custom_date' => 'integer|min:1|max:31|required_if:repayment_cycle_id,' . $id,
-            'down_payment_rate_id' => 'required|exists:down_payment_rates,id',
+            'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
         ];
@@ -194,7 +194,7 @@ class NewOrder extends Model
             "order_number" => $this->order_number,
             "product_id" => $this->product_id,
             "product" => $this->product,
-            "product_name" => $this->product->name,
+            "product_name" => $this->product->name ?? null,
             "serial_number" => $this->serial_number,
             "repayment_duration" => $this->repaymentDuration->name ?? null,
             "repayment_cycle" => $this->repaymentCycle->name ?? null,

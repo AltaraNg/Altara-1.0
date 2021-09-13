@@ -78,7 +78,7 @@ class NewOrderController extends Controller
     }
     public function report(NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService)
     {
-        $newOrdersQuery = $this->newOrderRepository->query($filter)->latest('new_orders.created_at');
+        $newOrdersQuery = $this->newOrderRepository->reportQuery($filter)->latest('new_orders.created_at');
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
         return $this->sendSuccess([ "meta" => $additional], 'Orders retrieved successfully');
     }
