@@ -21,15 +21,13 @@ class ProspectActivityController extends Controller
     }
     public function index()
     {
-        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->all() ], 'Prospect customers and notification count retrieved successfully');
+        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->all() ], 'Prospect activities retrieved successfully');
     }
 
     public function show(ProspectActivity $prospect_activity)
     {
-         $d =  $prospect_activity->load('prospectActivityType');
-
-        return $d;
-        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->all() ], 'Prospect customers and notification count retrieved successfully');
+         $prospect_activity =  $prospect_activity->load('prospectActivityType');
+        return $this->sendSuccess(['prospect_activity' => $prospect_activity ], 'Prospect Activity fetched successfully');
     }
     public function inActiveProspects(ContactCustomerFilter $contactCustomerFilter)
     {
