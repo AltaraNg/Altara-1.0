@@ -37,9 +37,19 @@ class ProspectActivityListener
                 'prospect_activity_type' => get_class($event->data),
                 'prospect_activity_type_id' =>  $event->data->id,
                 'date' => Carbon::now()->format('Y-m-d'),
+                'text' =>  $this->getTextValue($event)
             ]
         );
        
         return true;
+    }
+    private function getTextValue($event)
+    {
+        if (strtolower(class_basename(get_class($event->data))) === "feedback") {
+            return $event->data->notes;
+        }
+        if (strtolower(class_basename(get_class($event->data))) === "todo") {
+            return $event->data->todo;
+        }
     }
 }

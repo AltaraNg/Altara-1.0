@@ -20,6 +20,7 @@ class CreateProspectActivitiesTable extends Migration
             $table->string('type')->nullable();
             $table->string('prospect_activity_type')->nullable();
             $table->unsignedBigInteger('prospect_activity_type_id')->nullable();
+            $table->string('text')->nullable();
             $table->date('date');
             $table->timestamps();
             //foreign keys

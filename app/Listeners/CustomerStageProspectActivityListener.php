@@ -37,8 +37,9 @@ class CustomerStageProspectActivityListener
                 'prospect_activity_type' => get_class($event->data->customerStage),
                 'prospect_activity_type_id' =>  $event->data->customerStage->id ?? '',
                 'date' => Carbon::now()->format('Y-m-d'),
+                'text' =>  $event->data->customerStage->name,
             ]
-        ); 
+        );
 
         return true;
     }
