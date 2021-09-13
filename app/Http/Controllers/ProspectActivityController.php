@@ -19,7 +19,7 @@ class ProspectActivityController extends Controller
         $this->prospectActivityRepo = $prospectActivityRepository;
     }
 
-    public function index(ContactCustomerFilter $contactCustomerFilter)
+    public function inActiveProspects(ContactCustomerFilter $contactCustomerFilter)
     {
         $prospects = $this->contactCustomerRepo->query($contactCustomerFilter);
         $additional = [
