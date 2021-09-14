@@ -55,5 +55,9 @@ class Feedback extends Model
         return $this->belongsTo(Todo::class);
     }
 
+    public function prospectActivities()
+    {
+        return $this->morphMany(ProspectActivity::class, 'prospectActivityType', 'prospect_activity_type', 'prospect_activity_type_id');
+    }
 
 }
