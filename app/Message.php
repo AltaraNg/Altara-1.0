@@ -14,4 +14,19 @@ class Message extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function rules()
+    {
+        return [
+            'read' => 'sometimes|boolean',
+
+
+        ];
+    }
+    public static function updateRules()
+    {
+        return [
+            'read' => 'sometimes|boolean',
+        ];
+    }
 }
