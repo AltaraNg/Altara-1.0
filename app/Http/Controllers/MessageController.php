@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Filters\MessageFilter;
+use App\Http\Requests\MessageRequest;
 use App\Message;
 use App\Repositories\MessageRepository;
 use App\Services\MessageService;
@@ -85,4 +86,11 @@ class MessageController extends Controller
         return response()->json($response);
 
     }
+
+    public function update(MessageRequest $request, Message $message){
+        $resp = $this->messageRepo->update($message, $request->validated());
+        return $this->sendSuccess($resp->toArray(), "Message Updated Successfully");
+    }
+
+
 }
