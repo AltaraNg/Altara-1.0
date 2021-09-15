@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Repositories\BranchRepository;
 use App\Repositories\BusinessTypeRepository;
-use Illuminate\Support\Facades\DB;
 
 class NewOrdersReportService
 {
@@ -15,10 +16,11 @@ class NewOrdersReportService
     }
     public  function generateMetaData($newOrdersQuery)
     {
-        $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query)
-        {
+        $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query) {
             $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
         });
+        $totalSalesPerDay = $this->getTotalSalesPerDay($newOrdersForComputation);
+        return $totalSalesPerDay;
         $additional = collect([]);
         $totalSales = $newOrdersQuery->count();
         $totalRevenue = $newOrdersQuery->avg('product_price') * $totalSales;
@@ -151,5 +153,32 @@ class NewOrdersReportService
             'percentage_of_sales_altara_pay' => number_format(($totalAltaraPay / $totalSales) * 100, 2),
             'percentage_of_sales_altara_cash' => number_format(($totalAltaraCash / $totalSales) * 100, 2)
         ];
+    }
+    private function getTotalSalesPerDay($newOrdersForComputation)
+    {
+        $toDate = request('toDate') ?? Carbon::now();
+        $fromDate = request('fromDate') ?? Carbon::now()->subDays(30);
+        $toDate = Carbon::parse($toDate);
+        $fromDate = Carbon::parse($fromDate);
+        $differenceInDates = $toDate->diff($fromDate);
+        if (abs($differenceInDates->days) > 30) {
+            $toDate =  Carbon::now();
+            $fromDate = Carbon::now()->subDays(30);
+            // dd($fromDate, $toDate);
+        }else{
+            $from = clone $fromDate;
+            $toDate =  $from->addDays(30);
+        }
+       
+        $orders =  $newOrdersForComputation->where('order_date', '>=', $fromDate->format('Y-m-d'))->where('order_date', '<=', $toDate->format('Y-m-d'))->select(DB::raw("count(*) as no_of_sales"), "order_date")->groupBy('order_date')->get();
+        return $orders->map(function ($order) {
+            $date = $order->order_date;
+            return [
+                'order_date' => $date,
+                'total' =>  $order->no_of_sales,
+                'fullDayName' => Carbon::parse($date)->format('l'),
+                'shortDayName' => Carbon::parse($date)->format('D')
+            ];
+        })->sortBy("order_date");
     }
 }
