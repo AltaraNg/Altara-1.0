@@ -2,13 +2,16 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
+use App\Helper\GenerateDateRange;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\BranchRepository;
 use App\Repositories\BusinessTypeRepository;
 
+use Carbon\Carbon;
+
 class NewOrdersReportService
 {
+    use GenerateDateRange;
     private $branchRepo;
     public function __construct(BranchRepository $branchRepository)
     {
@@ -19,12 +22,13 @@ class NewOrdersReportService
         $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query) {
             $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
         });
-        $totalSalesPerDay = $this->getTotalSalesPerDay($newOrdersForComputation);
+        $totalSalesPerDay = $this->getTotalSalesPerDay(clone $newOrdersForComputation);
         return $totalSalesPerDay;
         $additional = collect([]);
         $totalSales = $newOrdersQuery->count();
         $totalRevenue = $newOrdersQuery->avg('product_price') * $totalSales;
-        $additional = $additional->put('groupedDataByBranch', $this->getBranchesData(clone $newOrdersQuery, $totalRevenue));
+        $totalDownPayment = $newOrdersQuery->sum('down_payment');
+        $additional = $additional->put('groupedDataByBranch', $this->getBranchesData(clone $newOrdersQuery, $totalRevenue, $totalDownPayment));
         $totalAltaraPay = $this->getNoOfAltaraPayProduct(clone $newOrdersForComputation);
         $totalAltaraCash = $this->getNoOfAltaraCashProduct(clone $newOrdersForComputation);
         //to prevent division by zero error
@@ -33,15 +37,16 @@ class NewOrdersReportService
         $additional = $additional->put('total_no_sales', $totalSales);
         $additional = $additional->put('total_revenue', number_format($totalRevenue, 2));
         $additional = $additional->put('revenue_per_sale', number_format($revenuePerSale, 2));
+        $additional = $additional->put('totalSalesPerDay', $totalSalesPerDay);
         return $additional;
     }
 
-    private  function getBranchesData($newOrdersQuery, $totalRevenue)
+    private  function getBranchesData($newOrdersQuery, $totalRevenue, $totalDownPayment)
     {
         $branches = $this->branchRepo->getBranches(['id', 'name']);
         $newOrdersToBeGroupedClone = clone $newOrdersQuery;
         $ordersGroupedByBranch =  $this->groupOrderByBranchId($newOrdersQuery);
-        $ordersGroupedByBranchData = $this->generateGroupedBranchesDataThatHasOrders($ordersGroupedByBranch, $totalRevenue, $newOrdersToBeGroupedClone)->filter();
+        $ordersGroupedByBranchData = $this->generateGroupedBranchesDataThatHasOrders($ordersGroupedByBranch, $totalRevenue, $newOrdersToBeGroupedClone, $totalDownPayment)->filter();
         $ordersUnGroupedByBranch = $this->generateUngroupedBranchesDataWithNoOrders($branches, $ordersGroupedByBranchData)->filter();
         //if there are no orders group
         if (!$ordersGroupedByBranchData->count()) {
@@ -59,7 +64,9 @@ class NewOrdersReportService
                 'branches.id',
                 DB::raw("count(*) as count, 
             AVG(product_price) as avg_price_of_prod_per_showroom, 
-            AVG(product_price) * count(*)  as total_potential_revenue_sold_per_showroom
+            AVG(product_price) * count(*)  as total_potential_revenue_sold_per_showroom,
+            AVG(down_payment) as average_down_payment,
+            SUM(down_payment) as sum_down_payment
             ")
             )
             ->groupBy('branch_id')->get();
@@ -79,27 +86,17 @@ class NewOrdersReportService
                     'percentage_of_total_revenues' => 0,
                     'no_of_altara_pay' => 0,
                     'no_of_altara_cash' => 0,
+                    'percentage_downpayment' => 0,
+                    'avg_downpayment' =>  0,
                 ];
             }
             //this return generates a null
             return;
         });
     }
-    private function generateGroupedBranchesDataThatHasOrders($groupedBranchesData, $totalRevenue, $newOrdersToBeGroupedClone)
+    private function generateGroupedBranchesDataThatHasOrders($groupedBranchesData, $totalRevenue, $newOrdersToBeGroupedClone, $totalDownPayment)
     {
-        return $groupedBranchesData->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone) {
-            if ($item->branch_name == "Ikoyi") {
-                //generates a null
-                return;
-            }
-            if ($item->branch_name == "Challenge Warehouse") {
-                //generates a null
-                return;
-            }
-            if ($item->branch_name == "Micro Alakia") {
-                //generates a null
-                return;
-            }
+        return $groupedBranchesData->map(function ($item, $key) use ($totalRevenue, $newOrdersToBeGroupedClone, $totalDownPayment) {
             $percentageOfTotalRevenue = $item->total_potential_revenue_sold_per_showroom / $totalRevenue * 100;
             $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
@@ -112,6 +109,9 @@ class NewOrdersReportService
                 'percentage_of_total_revenues' => number_format($percentageOfTotalRevenue, 3),
                 'no_of_altara_pay' => $countPay,
                 'no_of_altara_cash' => $countCash,
+                'percentage_downpayment' => ceil(($item->sum_down_payment / $totalDownPayment)  * 100),
+                'avg_downpayment' =>  number_format($item->average_down_payment, 2),
+                // 'forcast' => $item
             ];
         });
     }
@@ -165,20 +165,23 @@ class NewOrdersReportService
             $toDate =  Carbon::now();
             $fromDate = Carbon::now()->subDays(30);
             // dd($fromDate, $toDate);
-        }else{
+        } else if (abs($differenceInDates->days) < 30) {
             $from = clone $fromDate;
             $toDate =  $from->addDays(30);
         }
-       
-        $orders =  $newOrdersForComputation->where('order_date', '>=', $fromDate->format('Y-m-d'))->where('order_date', '<=', $toDate->format('Y-m-d'))->select(DB::raw("count(*) as no_of_sales"), "order_date")->groupBy('order_date')->get();
-        return $orders->map(function ($order) {
-            $date = $order->order_date;
+        $period = collect($this->date_range($fromDate, $toDate, 'Y-m-d'));
+        $groupedOrdersByOrderDate =  $newOrdersForComputation->select(DB::raw("count(*) as no_of_sales"), "order_date")
+            ->whereBetween('order_date', [$fromDate->format('Y-m-d'), $toDate->format('Y-m-d')])
+            ->groupBy('order_date')->get();
+        // $orderDatesFromDB =   $groupedOrdersByOrderDate->pluck('order_date');
+        $totalSalesPerDay =  $period->map(function ($date) use ($groupedOrdersByOrderDate) {
             return [
                 'order_date' => $date,
-                'total' =>  $order->no_of_sales,
+                'total' =>  $groupedOrdersByOrderDate->where('order_date', $date)->first()->no_of_sales ?? 0,
                 'fullDayName' => Carbon::parse($date)->format('l'),
                 'shortDayName' => Carbon::parse($date)->format('D')
             ];
-        })->sortBy("order_date");
+        })->sortBy('order_date');
+        return $totalSalesPerDay;
     }
 }
