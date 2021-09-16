@@ -64,7 +64,7 @@ class NewOrdersReportService
                 DB::raw("count(*) as count, 
             AVG(product_price) as avg_price_of_prod_per_showroom, 
             AVG(product_price) * count(*)  as total_potential_revenue_sold_per_showroom,
-            AVG(down_payment) as average_down_payment,
+            SUM(product_price) as sum_product_price,
             SUM(down_payment) as sum_down_payment
             ")
             )
@@ -108,7 +108,7 @@ class NewOrdersReportService
                 'percentage_of_total_revenues' => number_format($percentageOfTotalRevenue, 3),
                 'no_of_altara_pay' => $countPay,
                 'no_of_altara_cash' => $countCash,
-                'percentage_downpayment' => ceil(($item->sum_down_payment / $totalDownPayment)  * 100),
+                'percentage_downpayment' => ceil(($item->sum_down_payment / $item->sum_product_price)  * 100),
                 'avg_downpayment' =>  number_format($item->average_down_payment, 2),
                 // 'forcast' => $item
             ];
