@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
@@ -76,10 +77,13 @@ class NewOrderController extends Controller
         $result = $this->newOrderRepository->repossess($new_order);
         return $this->sendSuccess($result, 'Order repossessed successfully');
     }
-    public function report(NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService)
+    public function report(NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService, DailySalesNewOrderFilter $dailySalesNewOrderFilter)
     {
+        $dailySalesNewOrdersQuery = $this->newOrderRepository->reportQuery($dailySalesNewOrderFilter);
         $newOrdersQuery = $this->newOrderRepository->reportQuery($filter)->latest('new_orders.created_at');
+        $getTotalSalesPerDay = $newOrdersReportService->getTotalSalesPerDay($dailySalesNewOrdersQuery);
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
-        return $this->sendSuccess([ "meta" => $additional], 'Orders retrieved successfully');
+        $additional = $additional->put('totalSalesPerDay', $getTotalSalesPerDay);
+        return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
     }
 }

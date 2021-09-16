@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helper\GenerateDateRange;
+use App\NewOrder;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\BranchRepository;
 use App\Repositories\BusinessTypeRepository;
@@ -22,8 +23,7 @@ class NewOrdersReportService
         $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query) {
             $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
         });
-        $totalSalesPerDay = $this->getTotalSalesPerDay(clone $newOrdersForComputation);
-        return $totalSalesPerDay;
+        
         $additional = collect([]);
         $totalSales = $newOrdersQuery->count();
         $totalRevenue = $newOrdersQuery->avg('product_price') * $totalSales;
@@ -37,7 +37,6 @@ class NewOrdersReportService
         $additional = $additional->put('total_no_sales', $totalSales);
         $additional = $additional->put('total_revenue', number_format($totalRevenue, 2));
         $additional = $additional->put('revenue_per_sale', number_format($revenuePerSale, 2));
-        $additional = $additional->put('totalSalesPerDay', $totalSalesPerDay);
         return $additional;
     }
 
@@ -154,26 +153,24 @@ class NewOrdersReportService
             'percentage_of_sales_altara_cash' => number_format(($totalAltaraCash / $totalSales) * 100, 2)
         ];
     }
-    private function getTotalSalesPerDay($newOrdersForComputation)
+    public function getTotalSalesPerDay($dailySalesNewOrdersQuery)
     {
         $toDate = request('toDate') ?? Carbon::now();
         $fromDate = request('fromDate') ?? Carbon::now()->subDays(30);
         $toDate = Carbon::parse($toDate);
         $fromDate = Carbon::parse($fromDate);
         $differenceInDates = $toDate->diff($fromDate);
-        if (abs($differenceInDates->days) > 30) {
-            $toDate =  Carbon::now();
-            $fromDate = Carbon::now()->subDays(30);
-            // dd($fromDate, $toDate);
-        } else if (abs($differenceInDates->days) < 30) {
-            $from = clone $fromDate;
-            $toDate =  $from->addDays(30);
+        $differenceInDays = abs($differenceInDates->days);
+        $from = clone $fromDate;
+        if ($differenceInDays > 30  || $differenceInDays < 30) {
+            $toDate = $from->addDays(30);
         }
+
         $period = collect($this->date_range($fromDate, $toDate, 'Y-m-d'));
-        $groupedOrdersByOrderDate =  $newOrdersForComputation->select(DB::raw("count(*) as no_of_sales"), "order_date")
-            ->whereBetween('order_date', [$fromDate->format('Y-m-d'), $toDate->format('Y-m-d')])
+        $groupedOrdersByOrderDate =  $dailySalesNewOrdersQuery->whereHas('branch', function ($query) {
+            $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
+        })->select(DB::raw("count(*) as no_of_sales"), "order_date")
             ->groupBy('order_date')->get();
-        // $orderDatesFromDB =   $groupedOrdersByOrderDate->pluck('order_date');
         $totalSalesPerDay =  $period->map(function ($date) use ($groupedOrdersByOrderDate) {
             return [
                 'order_date' => $date,
