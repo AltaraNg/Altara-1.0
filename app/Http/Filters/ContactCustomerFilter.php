@@ -92,6 +92,9 @@ class ContactCustomerFilter extends BaseFilter
             $query->orderby('date', 'desc')
                 ->where('date', '<=', Carbon::now()->subDays($days)->format('Y-m-d'))
                 ->where('user_id', auth()->id());
+        })->orWhereHas('customerStage',  function ($query)
+        {
+            $query->where('name', 'not like', '%Paid Downpayment%');
         })->with('lastProspectActivity');
     }
 }
