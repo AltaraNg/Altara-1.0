@@ -35,6 +35,7 @@ class NewOrdersReportService
         $revenuePerSale = $totalRevenue / ($totalSales ?: 1);
         $additional = $additional->put('altaraPayVersusAltaraCash', $this->getComparismOfAltaraPayVsAltaraCash($totalAltaraCash, $totalAltaraPay, $totalSales));
         $additional = $additional->put('noOfSalesEachDownPaymentRate', $this->getNoOfSalesEachDownPaymentRate(clone $newOrdersForComputation, $totalSales));
+        $additional = $additional->put('noOfSalesMadeOnEachProduct', $this->getNoOfSalesMadeOnEachProduct(clone $newOrdersForComputation, $totalSales));
         $additional = $additional->put('total_no_sales', $totalSales);
         $additional = $additional->put('total_revenue', number_format($totalRevenue, 2));
         $additional = $additional->put('revenue_per_sale', number_format($revenuePerSale, 2));
@@ -144,8 +145,11 @@ class NewOrdersReportService
 
     private  function getNoOfSalesEachDownPaymentRate($newOrdersForComputation, $totalSales)
     {
+        //prevent zero division
+        $totalSales = $totalSales ?: 1;
         return $newOrdersForComputation->join('down_payment_rates', 'new_orders.down_payment_rate_id', '=', 'down_payment_rates.id')
             ->select(
+                'down_payment_rate_id',
                 'down_payment_rates.name as rate_name',
                 'down_payment_rates.id',
                 'down_payment_rates.percent as rate_percent',
@@ -159,6 +163,27 @@ class NewOrdersReportService
                     'rate_percentage' => number_format(($downpaymentRate->count / $totalSales) * 100, 2)
                 ];
             });
+    }
+
+    private  function getNoOfSalesMadeOnEachProduct($newOrdersForComputation, $totalSales)
+    {
+        //prevent zero division
+        $totalSales = $totalSales ?: 1;
+        return $newOrdersForComputation->join('products', 'new_orders.product_id', '=', 'products.id')
+            ->select(
+                'product_id',
+                'products.name as product_name',
+                'products.retail_price as retail_price',
+                DB::raw("count(*) as count")
+            )
+            ->groupBy('product_id')->get()->map(function ($product) use ($totalSales) {
+                return [
+                    'product_name' => ucwords($product->product_name) ?? 0,
+                    'product_retail_price' => $product->retail_price ?? 0,
+                    'product_count' => $product->count ?? 0,
+                    'percentage' => number_format(($product->count / $totalSales) * 100, 2) ?? 0,
+                ];
+            })->sortByDesc('product_count')->take(10)->values();
     }
 
 
