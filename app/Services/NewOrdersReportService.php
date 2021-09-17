@@ -23,7 +23,7 @@ class NewOrdersReportService
         $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query) {
             $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
         });
-        
+
         $additional = collect([]);
         $totalSales = $newOrdersQuery->count();
         $totalRevenue = $newOrdersQuery->avg('product_price') * $totalSales;
@@ -34,6 +34,7 @@ class NewOrdersReportService
         //to prevent division by zero error
         $revenuePerSale = $totalRevenue / ($totalSales ?: 1);
         $additional = $additional->put('altaraPayVersusAltaraCash', $this->getComparismOfAltaraPayVsAltaraCash($totalAltaraCash, $totalAltaraPay, $totalSales));
+        $additional = $additional->put('noOfSalesEachDownPaymentRate', $this->getNoOfSalesEachDownPaymentRate(clone $newOrdersForComputation, $totalSales));
         $additional = $additional->put('total_no_sales', $totalSales);
         $additional = $additional->put('total_revenue', number_format($totalRevenue, 2));
         $additional = $additional->put('revenue_per_sale', number_format($revenuePerSale, 2));
@@ -139,6 +140,25 @@ class NewOrdersReportService
         return $newOrdersForComputation->whereHas('businessType', function ($query) {
             $query->where('name', 'like', '%Altara Credit%');
         })->count();
+    }
+
+    private  function getNoOfSalesEachDownPaymentRate($newOrdersForComputation, $totalSales)
+    {
+        return $newOrdersForComputation->join('down_payment_rates', 'new_orders.down_payment_rate_id', '=', 'down_payment_rates.id')
+            ->select(
+                'down_payment_rates.name as rate_name',
+                'down_payment_rates.id',
+                'down_payment_rates.percent as rate_percent',
+                DB::raw("count(*) as count")
+            )
+            ->groupBy('down_payment_rate_id')->get()->map(function ($downpaymentRate) use ($totalSales) {
+                return [
+                    'rate_name' => ucwords($downpaymentRate->rate_name),
+                    'rate_percent' => $downpaymentRate->rate_percent,
+                    'rate_count' => $downpaymentRate->count,
+                    'rate_percentage' => number_format(($downpaymentRate->count / $totalSales) * 100, 2)
+                ];
+            });
     }
 
 
