@@ -88,13 +88,12 @@ class ContactCustomerFilter extends BaseFilter
     public function inActiveDays(int $days = 30)
     {
         // dd( Carbon::now()->subDays($days)->format('Y-m-d'));
-        $this->builder->whereHas('lastProspectActivity', function ($query) use ($days) {
+        $this->builder->WhereHas('customerStage',  function ($query) {
+            $query->where('name', 'not like', '%Paid Downpayment%');
+        })->whereHas('lastProspectActivity', function ($query) use ($days) {
             $query->orderby('date', 'desc')
                 ->where('date', '<=', Carbon::now()->subDays($days)->format('Y-m-d'))
                 ->where('user_id', auth()->id());
-        })->orWhereHas('customerStage',  function ($query)
-        {
-            $query->where('name', 'not like', '%Paid Downpayment%');
         })->with('lastProspectActivity');
     }
 }
