@@ -3,8 +3,10 @@
 
 namespace App\Http\Filters;
 
-use App\CustomerStage;
 use Carbon\Carbon;
+use App\CustomerStage;
+use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class ContactCustomerFilter extends BaseFilter
 {
@@ -41,11 +43,12 @@ class ContactCustomerFilter extends BaseFilter
         $this->builder->where('phone', $phone);
     }
 
-    public function unconverted($months){
+    public function unconverted($months)
+    {
         $now = Carbon::now();
 
-        $this->builder->where('customer_stage_id','!=', CustomerStage::where('name', '=',CustomerStage::PURCHASED)->first()->id)
-        ->whereMonth('created_at', '<=',  $now->subMonths(intval($months)));
+        $this->builder->where('customer_stage_id', '!=', CustomerStage::where('name', '=', CustomerStage::PURCHASED)->first()->id)
+            ->whereMonth('created_at', '<=',  $now->subMonths(intval($months)));
     }
 
     /**
@@ -58,10 +61,9 @@ class ContactCustomerFilter extends BaseFilter
 
     public function filterBranch()
     {
-        if (auth()->user()->isDSACaptain()){
+        if (auth()->user()->isDSACaptain()) {
             $this->builder->where('branch_id', auth()->user()->branch_id);
-        }
-        else if (auth()->user()->isCoordinator()){
+        } else if (auth()->user()->isCoordinator()) {
 
             // ** Might need refactoring
             $branches = auth()->user()->branches;
@@ -69,8 +71,7 @@ class ContactCustomerFilter extends BaseFilter
                 return $branch->id;
             });
             $this->builder->whereIn('branch_id', $ids);
-        }
-        else if (auth()->user()->isDSAAgent()){
+        } else if (auth()->user()->isDSAAgent()) {
             $this->builder->where('user_id', auth()->user()->id);
         }
     }
@@ -79,9 +80,47 @@ class ContactCustomerFilter extends BaseFilter
      * @param string $from
      * @param string $column
      */
-    public function startDate(string $from, $column=self::DATE)
+    public function startDate(string $from, $column = self::DATE)
     {
         $this->builder->whereDate($column, '>=', $from)
-            ->whereDate($column, '<=',$this->request->endDate ?? Carbon::now());
+            ->whereDate($column, '<=', $this->request->endDate ?? Carbon::now());
+    }
+
+    public function inActiveDays(int $days = 30)
+    {
+        // dd( Carbon::now()->subDays($days)->format('Y-m-d'));
+        // $this->builder->whereHas('lastProspectActivity', function ($query) use ($days) {
+        // $query->orderby('date', 'desc')
+        //     ->where('date', '<=', Carbon::now()->subDays($days)->format('Y-m-d'))
+        //     ->where('user_id', auth()->id());
+        // })->orWhereHas('customerStage',  function ($query)
+        // {
+        //     $query->where('name', 'not like', '%Paid Downpayment%');
+        // })->with('lastProspectActivity');
+        $date = Carbon::now()->subDays($days)->format('Y-m-d');
+
+        // $this->builder->whereHas('customerStage',  function ($query) {
+        //     $query->where('name', 'not like', '%Paid Downpayment%');
+        // })->whereNotIn('contact_customers.id', function ($query) use ($date) {
+        //     $query->orderBy('prospect_activities.date', 'DESC')
+        //         ->where('prospect_activities.date', '<=', "$date")
+        //         ->where('user_id', auth()->id());
+        // })->with('lastProspectActivity');
+        //  $this->builder->whereHas('customerStage',  function ($query) {
+        //     $query->where('name', 'not like', '%Paid Downpayment%');
+        // })->whereNotIn('contact_customers.id', function ($query) use ($date) {
+        //     $query->orderBy('prospect_activities.date', 'DESC')
+        //         ->where('prospect_activities.date', '<=', "$date")
+        //         ->where('user_id', auth()->id());
+        // })->with('lastProspectActivity');
+        // $this->builder->whereHas('customerStage',  function ($query) {
+        //     $query->where('name', 'not like', '%Paid Downpayment%');
+        // })
+        // ->whereNotIn('id', function ($query) use ($date) {
+        //     $query->select('contact_customer_id')
+        //         ->from('prospect_activities')
+        //         ->where('date', '<=', $date);
+        // });
+        
     }
 }
