@@ -96,6 +96,6 @@ class ContactCustomerFilter extends BaseFilter
                 ->from('prospect_activities')
                 ->orderBy('date', 'DESC')
                 ->whereDate('date', '>=', $date);
-        })->with('lastProspectActivity')->get();
+        })->with('lastProspectActivity');
     }
 }

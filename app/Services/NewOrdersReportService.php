@@ -88,7 +88,7 @@ class NewOrdersReportService
                     'no_of_altara_pay' => 0,
                     'no_of_altara_cash' => 0,
                     'percentage_downpayment' => 0,
-                    'avg_downpayment' =>  0,
+                    'forcast' =>  0,
                 ];
             }
             //this return generates a null
@@ -101,6 +101,9 @@ class NewOrdersReportService
             $percentageOfTotalRevenue = $item->total_potential_revenue_sold_per_showroom / $totalRevenue * 100;
             $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
+            $toDate = request('toDate') ?? Carbon::now();
+            $fromDate = request('fromDate') ?? Carbon::now()->subDays(30);
+            $noOfDaysInBetweenFromDateToDate =  abs(Carbon::parse($toDate)->diff(Carbon::parse($fromDate))->days);
             return [
                 'branch_id' => $item->id,
                 'branch_name' => $item->branch_name,
@@ -111,8 +114,7 @@ class NewOrdersReportService
                 'no_of_altara_pay' => $countPay,
                 'no_of_altara_cash' => $countCash,
                 'percentage_downpayment' => ceil(($item->sum_down_payment / $item->sum_product_price)  * 100),
-                'avg_downpayment' =>  number_format($item->average_down_payment, 2),
-                // 'forcast' => $item
+                'forcast' =>( $item->count  / $noOfDaysInBetweenFromDateToDate) * $toDate->day,
             ];
         });
     }
