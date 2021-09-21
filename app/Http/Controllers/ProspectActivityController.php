@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\ProspectActivity;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Filters\ProspectActivityFilter;
-use App\ProspectActivity;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\ProspectActivityRepository;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class ProspectActivityController extends Controller
 {
@@ -22,7 +23,7 @@ class ProspectActivityController extends Controller
     }
     public function index(ProspectActivityFilter $filter)
     {
-        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->getAll($filter) ], 'Prospect activities retrieved successfully');
+        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->getAll($filter)], 'Prospect activities retrieved successfully');
     }
 
     public function show(ProspectActivity $prospect_activity)
@@ -32,13 +33,27 @@ class ProspectActivityController extends Controller
     }
     public function inActiveProspects(ContactCustomerFilter $contactCustomerFilter)
     {
-        $prospects = $this->contactCustomerRepo->query($contactCustomerFilter);
+        $prospectsQuery =  $this->contactCustomerRepo->query($contactCustomerFilter);
+        $prospectsQueryClone = clone  $this->contactCustomerRepo->query($contactCustomerFilter);
+        $statsForStages = $prospectsQueryClone->join('customer_stages', 'contact_customers.customer_stage_id', '=', 'customer_stages.id')
+            ->select(
+                'customer_stages.id as stage_id',
+                'customer_stages.name as stage',
+                DB::raw("count(*) as count")
+            )->groupBy('contact_customers.customer_stage_id')->get()->map(function ($data) {
+                return [
+                    'stage_name' => $data->stage,
+                    'count' => $data->count,
+                ];
+            });
+    
         $additional = [
-            'total' => $prospects->count(),
+            'total' => $prospectsQuery->count(),
+            'statsForStages' => $statsForStages,
         ];
         if (request('rollUp')) {
             return $this->sendSuccess(["meta" => $additional], 'Notification count retrieved successfully');
         }
-        return $this->sendSuccess(['prospects' => $prospects->paginate(10) ?? [], "meta" => $additional], 'Prospect customers and notification count retrieved successfully');
+        return $this->sendSuccess(['prospects' => $prospectsQuery->paginate(10) ?? [], "meta" => $additional], 'Prospect customers and notification count retrieved successfully');
     }
 }
