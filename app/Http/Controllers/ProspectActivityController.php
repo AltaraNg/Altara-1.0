@@ -6,11 +6,12 @@ use Carbon\Carbon;
 use App\ProspectActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\ProspectActivityService;
 use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Filters\ProspectActivityFilter;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\ProspectActivityRepository;
-use ProspectActivityService;
+
 
 class ProspectActivityController extends Controller
 {
@@ -42,8 +43,8 @@ class ProspectActivityController extends Controller
             'statsForStages' => $statsForStages,
         ];
         if (request('rollUp')) {
-            return $this->sendSuccess(["meta" => $additional], 'Notification count retrieved successfully');
+            return $this->sendSuccess(["meta" => $additional], 'Notification stats count retrieved successfully');
         }
-        return $this->sendSuccess(['prospects' => $prospectsQuery->paginate(10) ?? [], "meta" => $additional], 'Prospect customers and notification count retrieved successfully');
+        return $this->sendSuccess(['prospects' => $prospectsQuery->paginate(10) ?? [], "meta" => $additional], 'Prospect customers and notification stats count retrieved successfully');
     }
 }
