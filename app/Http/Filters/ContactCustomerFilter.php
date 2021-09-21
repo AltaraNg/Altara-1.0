@@ -3,8 +3,9 @@
 
 namespace App\Http\Filters;
 
-use App\CustomerStage;
 use Carbon\Carbon;
+use App\CustomerStage;
+use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class ContactCustomerFilter extends BaseFilter
@@ -87,14 +88,14 @@ class ContactCustomerFilter extends BaseFilter
 
     public function inActiveDays(int $days = 30)
     {
-        // dd( Carbon::now()->subDays($days)->format('Y-m-d'));
-        $this->builder->whereHas('lastProspectActivity', function ($query) use ($days) {
-            $query->orderby('date', 'desc')
-                ->where('date', '<=', Carbon::now()->subDays($days)->format('Y-m-d'))
-                ->where('user_id', auth()->id());
-        })->orWhereHas('customerStage',  function ($query)
-        {
+        $date = Carbon::now()->subDays($days)->format('Y-m-d');
+        $this->builder->whereHas('customerStage',  function ($query) {
             $query->where('name', 'not like', '%Paid Downpayment%');
+        })->whereNotIn('id', function ($query) use ($date) {
+            $query->select('contact_customer_id')
+                ->from('prospect_activities')
+                ->orderBy('date', 'DESC')
+                ->whereDate('date', '>=', $date);
         })->with('lastProspectActivity');
     }
 }

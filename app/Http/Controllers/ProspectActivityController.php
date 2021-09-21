@@ -27,8 +27,8 @@ class ProspectActivityController extends Controller
 
     public function show(ProspectActivity $prospect_activity)
     {
-         $prospect_activity =  $prospect_activity->load('prospectActivityType');
-        return $this->sendSuccess(['prospect_activity' => $prospect_activity ], 'Prospect Activity fetched successfully');
+        $prospect_activity =  $prospect_activity->load('prospectActivityType');
+        return $this->sendSuccess(['prospect_activity' => $prospect_activity], 'Prospect Activity fetched successfully');
     }
     public function inActiveProspects(ContactCustomerFilter $contactCustomerFilter)
     {
