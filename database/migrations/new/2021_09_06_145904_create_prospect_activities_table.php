@@ -21,7 +21,7 @@ class CreateProspectActivitiesTable extends Migration
             $table->timestamps();
             //foreign keys
             $table->foreign('customer_id')->references('id')->on('customers');
-            $table->foreign('user_id')->references('id')->on('users');
+        $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
