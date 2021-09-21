@@ -13,4 +13,8 @@ class MessageFilter extends BaseFilter
         $this->builder->where('receiver_id', $id);
     }
 
+    public function unread(string $status){
+        $this->builder->where('read', '!=', true);
+    }
+
 }
