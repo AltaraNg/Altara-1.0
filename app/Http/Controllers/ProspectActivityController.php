@@ -10,6 +10,7 @@ use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Filters\ProspectActivityFilter;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\ProspectActivityRepository;
+use ProspectActivityService;
 
 class ProspectActivityController extends Controller
 {
@@ -31,22 +32,11 @@ class ProspectActivityController extends Controller
         $prospect_activity =  $prospect_activity->load('prospectActivityType');
         return $this->sendSuccess(['prospect_activity' => $prospect_activity], 'Prospect Activity fetched successfully');
     }
-    public function inActiveProspects(ContactCustomerFilter $contactCustomerFilter)
+    public function inActiveProspects(ContactCustomerFilter $contactCustomerFilter, ProspectActivityService $prospectActivityService)
     {
         $prospectsQuery =  $this->contactCustomerRepo->query($contactCustomerFilter);
         $prospectsQueryClone = clone  $this->contactCustomerRepo->query($contactCustomerFilter);
-        $statsForStages = $prospectsQueryClone->join('customer_stages', 'contact_customers.customer_stage_id', '=', 'customer_stages.id')
-            ->select(
-                'customer_stages.id as stage_id',
-                'customer_stages.name as stage',
-                DB::raw("count(*) as count")
-            )->groupBy('contact_customers.customer_stage_id')->get()->map(function ($data) {
-                return [
-                    'stage_name' => $data->stage,
-                    'count' => $data->count,
-                ];
-            });
-    
+        $statsForStages = $prospectActivityService->generateStageStats($prospectsQueryClone);
         $additional = [
             'total' => $prospectsQuery->count(),
             'statsForStages' => $statsForStages,
