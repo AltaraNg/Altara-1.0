@@ -40,7 +40,7 @@ class ContactCustomerFilter extends BaseFilter
      */
     public function phone($phone)
     {
-        $this->builder->where('phone', $phone);
+        $this->builder->where('phone', 'like', '%' . $phone .'%');
     }
 
     public function unconverted($months)

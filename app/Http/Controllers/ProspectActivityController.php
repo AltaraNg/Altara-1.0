@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Filters\ContactCustomerFilter;
+use App\Http\Filters\ProspectActivityFilter;
 use App\ProspectActivity;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\ProspectActivityRepository;
@@ -19,9 +20,9 @@ class ProspectActivityController extends Controller
         $this->contactCustomerRepo = $contactCustomerRepository;
         $this->prospectActivityRepo = $prospectActivityRepository;
     }
-    public function index()
+    public function index(ProspectActivityFilter $filter)
     {
-        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->all()], 'Prospect activities retrieved successfully');
+        return $this->sendSuccess(['prospect_activities' => $this->prospectActivityRepo->getAll($filter) ], 'Prospect activities retrieved successfully');
     }
 
     public function show(ProspectActivity $prospect_activity)
