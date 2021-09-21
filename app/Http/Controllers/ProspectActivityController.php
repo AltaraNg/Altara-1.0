@@ -31,17 +31,6 @@ class ProspectActivityController extends Controller
     }
     public function inActiveProspects(ContactCustomerFilter $contactCustomerFilter)
     {
-        $date = Carbon::now()->subDays(30)->format('Y-m-d');
-        return ProspectActivity::rightJoin('contact_customers', 'prospect_activities.contact_customer_id', '=', 'contact_customers.id')
-            ->whereDate('date', '<=', '2021-08-21')
-            ->get();
-        return \App\ContactCustomer::whereHas('customerStage',  function ($query) {
-            $query->where('name', 'not like', '%Paid Downpayment%');
-        })->whereNotIn('id', function ($query) use ($date) {
-            $query->select('contact_customer_id')
-                ->from('prospect_activities')
-                ->whereDate('date', '<=', '2021-08-21');
-        })->with('lastProspectActivity')->get();
         $prospects = $this->contactCustomerRepo->query($contactCustomerFilter);
         $additional = [
             'total' => $prospects->count(),

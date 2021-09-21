@@ -88,39 +88,14 @@ class ContactCustomerFilter extends BaseFilter
 
     public function inActiveDays(int $days = 30)
     {
-        // dd( Carbon::now()->subDays($days)->format('Y-m-d'));
-        // $this->builder->whereHas('lastProspectActivity', function ($query) use ($days) {
-        // $query->orderby('date', 'desc')
-        //     ->where('date', '<=', Carbon::now()->subDays($days)->format('Y-m-d'))
-        //     ->where('user_id', auth()->id());
-        // })->orWhereHas('customerStage',  function ($query)
-        // {
-        //     $query->where('name', 'not like', '%Paid Downpayment%');
-        // })->with('lastProspectActivity');
         $date = Carbon::now()->subDays($days)->format('Y-m-d');
-
-        // $this->builder->whereHas('customerStage',  function ($query) {
-        //     $query->where('name', 'not like', '%Paid Downpayment%');
-        // })->whereNotIn('contact_customers.id', function ($query) use ($date) {
-        //     $query->orderBy('prospect_activities.date', 'DESC')
-        //         ->where('prospect_activities.date', '<=', "$date")
-        //         ->where('user_id', auth()->id());
-        // })->with('lastProspectActivity');
-        //  $this->builder->whereHas('customerStage',  function ($query) {
-        //     $query->where('name', 'not like', '%Paid Downpayment%');
-        // })->whereNotIn('contact_customers.id', function ($query) use ($date) {
-        //     $query->orderBy('prospect_activities.date', 'DESC')
-        //         ->where('prospect_activities.date', '<=', "$date")
-        //         ->where('user_id', auth()->id());
-        // })->with('lastProspectActivity');
-        // $this->builder->whereHas('customerStage',  function ($query) {
-        //     $query->where('name', 'not like', '%Paid Downpayment%');
-        // })
-        // ->whereNotIn('id', function ($query) use ($date) {
-        //     $query->select('contact_customer_id')
-        //         ->from('prospect_activities')
-        //         ->where('date', '<=', $date);
-        // });
-        
+        $this->builder->whereHas('customerStage',  function ($query) {
+            $query->where('name', 'not like', '%Paid Downpayment%');
+        })->whereNotIn('id', function ($query) use ($date) {
+            $query->select('contact_customer_id')
+                ->from('prospect_activities')
+                ->orderBy('date', 'DESC')
+                ->whereDate('date', '>=', $date);
+        })->with('lastProspectActivity')->get();
     }
 }

@@ -67,7 +67,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/inactive/prospects', 'ProspectActivityController@inActiveProspects');
     Route::Resource('prospect_activities', 'ProspectActivityController')->only(['index', 'show']);
 });
-Route::get('/order/reports', 'NewOrderController@report');
 Route::middleware('auth:api')->group(function () {
     Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
     Route::resource('inventory', 'InventoryController', ['except' => ['index', 'show']]);
