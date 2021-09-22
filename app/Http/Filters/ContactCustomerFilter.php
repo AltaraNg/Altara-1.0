@@ -91,7 +91,7 @@ class ContactCustomerFilter extends BaseFilter
         $date = Carbon::now()->subDays($days)->format('Y-m-d');
         $this->builder->whereHas('customerStage',  function ($query) {
             $query->where('name', 'not like', '%Paid Downpayment%');
-        })->whereNotIn('id', function ($query) use ($date) {
+        })->whereNotIn('contact_customers.id', function ($query) use ($date) {
             $query->select('contact_customer_id')
                 ->from('prospect_activities')
                 ->orderBy('date', 'DESC')
