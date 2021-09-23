@@ -88,7 +88,7 @@ class NewOrdersReportService
                     'no_of_altara_pay' => 0,
                     'no_of_altara_cash' => 0,
                     'percentage_downpayment' => 0,
-                    'forcast' =>  0,
+                    'forecast' =>  0,
                 ];
             }
             //this return generates a null
@@ -114,7 +114,7 @@ class NewOrdersReportService
                 'no_of_altara_pay' => $countPay,
                 'no_of_altara_cash' => $countCash,
                 'percentage_downpayment' => ceil(($item->sum_down_payment / $item->sum_product_price)  * 100),
-                'forcast' =>( $item->count  / $noOfDaysInBetweenFromDateToDate) * $toDate->day,
+                'forecast' =>( $item->count  / $noOfDaysInBetweenFromDateToDate) * $toDate->day,
             ];
         });
     }
