@@ -102,8 +102,13 @@ class NewOrdersReportService
             $countPay = $this->getNoOfAltaraPayProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             $countCash = $this->getNoOfAltaraCashProductPerBranch(clone $newOrdersToBeGroupedClone, $item->id);
             $toDate = request('toDate') ?? Carbon::now();
-            $fromDate = request('fromDate') ?? Carbon::now()->subDays(30);
-            $noOfDaysInBetweenFromDateToDate =  abs(Carbon::parse($toDate)->diff(Carbon::parse($fromDate))->days);
+            $fromDate = request('fromDate') ?? Carbon::now()->endOfMonth();
+            $totalNoDays = Carbon::now()->endOfMonth()->modify('0 month')->day;
+            $noOfDaysInBetweenFromDateToDate =  abs((Carbon::parse($toDate)->diff(Carbon::parse($fromDate)))->days);
+            if (request('toDate')) {
+                $toDate = Carbon::parse($toDate);
+                $totalNoDays = $noOfDaysInBetweenFromDateToDate;
+            }
             return [
                 'branch_id' => $item->id,
                 'branch_name' => $item->branch_name,
@@ -114,7 +119,7 @@ class NewOrdersReportService
                 'no_of_altara_pay' => $countPay,
                 'no_of_altara_cash' => $countCash,
                 'percentage_downpayment' => ceil(($item->sum_down_payment / $item->sum_product_price)  * 100),
-                'forecast' =>( $item->count  / $noOfDaysInBetweenFromDateToDate) * $toDate->day,
+                'forecast' => ceil(($item->count  / $toDate->day) * $totalNoDays),
             ];
         });
     }
