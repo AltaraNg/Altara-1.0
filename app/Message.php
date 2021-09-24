@@ -29,4 +29,19 @@ class Message extends Model
             'read' => 'sometimes|boolean',
         ];
     }
+
+    public function toArray()
+    {
+        return [
+            "contact_count" =>  $this->contact_count,
+            'contacts' => $this->contacts,
+            'created_at' => $this->created_at,
+            'id' => $this->id,
+            'message' => $this->message,
+            'read' => $this->read,
+            'receiver_id' => $this->receiver_id,
+            'type' => $this->type,
+            'sender' => $this->user->full_name
+        ];
+    }
 }
