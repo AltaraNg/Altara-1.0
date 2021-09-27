@@ -73,6 +73,8 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('price_calculator', 'PriceCalculatorController', ['except' => ['index', 'show']]);
     Route::resource('down_payment_rate', 'DownPaymentRateController', ['except' => ['index', 'show']]);
     Route::resource('business_type', 'BusinessTypeController', ['except' => ['index', 'show']]);
+    Route::resource('repayment_duration', 'RepaymentDurationController', ['except' => ['index', 'show']]);
+
 
     Route::Resources([
         'log' => 'LogController',
@@ -104,7 +106,6 @@ Route::middleware('auth:api')->group(function () {
         'payment-type' => 'PaymentTypeController',
         'payment-reconcile' => 'PaymentReconcileController',
         'new_order' => 'NewOrderController',
-        'repayment_duration' => 'RepaymentDurationController',
         'repayment_cycle' => 'RepaymentCycleController',
         'custom_repayment_date' => 'CustomRepaymentDateController',
         'product_type' => 'ProductTypeController',
@@ -136,6 +137,8 @@ Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']
 Route::resource('price_calculator', 'PriceCalculatorController', ['only' => ['index', 'show']]);
 Route::resource('down_payment_rate', 'DownPaymentRateController', ['only' => ['index', 'show']]);
 Route::resource('business_type', 'BusinessTypeController', ['only' => ['index', 'show']]);
+Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => ['index', 'show']]);
+
 
 
 Route::post('/ammo', 'UserController@test');
