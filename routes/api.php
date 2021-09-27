@@ -73,6 +73,8 @@ Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
 Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']]);
 Route::resource('price_calculator', 'PriceCalculatorController', ['only' => ['index', 'show']]);
 Route::resource('down_payment_rate', 'DownPaymentRateController', ['only' => ['index', 'show']]);
+Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => ['index', 'show']]);
+
 
 
 
@@ -81,6 +83,8 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('inventory', 'InventoryController', ['except' => ['index', 'show']]);
     Route::resource('price_calculator', 'PriceCalculatorController', ['except' => ['index', 'show']]);
     Route::resource('down_payment_rate', 'DownPaymentRateController', ['except' => ['index', 'show']]);
+    Route::resource('repayment_duration', 'RepaymentDurationController', ['except' => ['index', 'show']]);
+
     Route::Resources([
         'log' => 'LogController',
         'user' => 'UserController',
@@ -112,7 +116,6 @@ Route::middleware('auth:api')->group(function () {
         'payment-reconcile' => 'PaymentReconcileController',
         'new_order' => 'NewOrderController',
         'business_type' => 'BusinessTypeController',
-        'repayment_duration' => 'RepaymentDurationController',
         'repayment_cycle' => 'RepaymentCycleController',
         'custom_repayment_date' => 'CustomRepaymentDateController',
         'product_type' => 'ProductTypeController',
