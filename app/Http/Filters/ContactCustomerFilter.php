@@ -40,7 +40,7 @@ class ContactCustomerFilter extends BaseFilter
      */
     public function phone($phone)
     {
-        $this->builder->where('phone', 'like', '%' . $phone .'%');
+        $this->builder->where('phone', 'like', '%' . $phone . '%');
     }
 
     public function unconverted($months)
@@ -89,13 +89,14 @@ class ContactCustomerFilter extends BaseFilter
     public function inActiveDays(int $days = 30)
     {
         $date = Carbon::now()->subDays($days)->format('Y-m-d');
-        $this->builder->whereHas('customerStage',  function ($query) {
-            $query->where('name', 'not like', '%Paid Downpayment%');
-        })->whereNotIn('contact_customers.id', function ($query) use ($date) {
-            $query->select('contact_customer_id')
-                ->from('prospect_activities')
-                ->orderBy('date', 'DESC')
-                ->whereDate('date', '>=', $date);
-        })->with('lastProspectActivity');
+        $this->builder->whereDate('contact_customers.created_at', '>=', $days)
+            ->whereHas('customerStage',  function ($query) {
+                $query->where('name', 'not like', '%Paid Downpayment%');
+            })->whereNotIn('contact_customers.id', function ($query) use ($date) {
+                $query->select('contact_customer_id')
+                    ->from('prospect_activities')
+                    ->orderBy('date', 'DESC')
+                    ->whereDate('date', '>=', $date);
+            })->with('lastProspectActivity');
     }
 }
