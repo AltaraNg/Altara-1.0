@@ -89,7 +89,7 @@ class ContactCustomerFilter extends BaseFilter
     public function inActiveDays(int $days = 30)
     {
         $date = Carbon::now()->subDays($days)->format('Y-m-d');
-        $this->builder->whereDate('contact_customers.created_at', '>=', Carbon::now()->addDays(30))
+        $this->builder->whereDate('contact_customers.created_at', '>=', Carbon::now()->addDays($days))
             ->whereHas('customerStage',  function ($query) {
                 $query->where('name', 'not like', '%Paid Downpayment%');
             })->whereNotIn('contact_customers.id', function ($query) use ($date) {
