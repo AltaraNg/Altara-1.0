@@ -81,7 +81,29 @@ class Helper
         }, $keys);
     }
 
-    public static  function calculator(int $productPrice, $data){
+    /**
+     * Append an ordinal indicator to a numeric value.
+     *
+     * @param  string|int  $value
+     * @param  bool  $superscript
+     * @return string
+     */
+    public static function str_ordinal($value, $superscript = false)
+    {
+        $number = abs($value);
+
+        $indicators = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
+
+        $suffix = $superscript ? '<sup>' . $indicators[$number % 10] . '</sup>' : $indicators[$number % 10];
+        if ($number % 100 >= 11 && $number % 100 <= 13) {
+            $suffix = $superscript ? '<sup>th</sup>' : 'th';
+        }
+
+        return number_format($number) . $suffix;
+    }
+
+    public static  function calculator(int $productPrice, $data)
+    {
         $count = Helper::repaymentCount($data->repayment_dur, $data->repayment_cycle);
         // $marketPrice = $productPrice * (1 + $params->margin);
         // $upfront = ($data->percent / 100) * $marketPrice;
@@ -96,7 +118,7 @@ class Helper
         $total = $productPrice;
 
         $initialDownPayment = ($data->percent / 100) * $total;
-        $downpayment = $initialDownPayment + ((($total - $initialDownPayment)/ $count) * $data->plus);
+        $downpayment = $initialDownPayment + ((($total - $initialDownPayment) / $count) * $data->plus);
         $actualDownpayment = floor($downpayment / 100 * 100);
         $actualRepayment = floor(($total - $actualDownpayment) / 100 * 100);
         $onetimepay = ceil($actualRepayment / $count);
@@ -107,18 +129,18 @@ class Helper
             'repayment' => $actualRepayment,
             'onetime' => $onetimepay
         ];
-
     }
 
-    public static function repaymentCount($days, $cycle){
-        $result = $days/$cycle;
+    public static function repaymentCount($days, $cycle)
+    {
+        $result = $days / $cycle;
 
-        if($result >= 24) {
+        if ($result >= 24) {
             return 24;
-        }elseif ($result >= 12){
+        } elseif ($result >= 12) {
             return 12;
         }
-        if ($result >= 6){
+        if ($result >= 6) {
             return 6;
         }
         return 3;

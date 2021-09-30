@@ -32,6 +32,7 @@ class NewOrderNotification extends Notification
         $this->data = $data->toArray();
         //Attaching required parameters from amortization to data to send sms to customer
         $this->data["next_payment_date"] = $data->amortization[0]->expected_payment_date;
+        $this->data['expected_amount'] = $data->amortization[0]->expected_amount;
     }
 
     /**
