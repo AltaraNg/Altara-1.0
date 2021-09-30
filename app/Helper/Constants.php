@@ -74,16 +74,18 @@ class Constants
 
         ],
         self::T_SMS => [
-            self::ALTARACREDIT =>
-            'Hello customer_name,
-            This is the 3rd reminder that your expected payment of ₦single_repayment for product_name will be due today.
-            Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
-            Altara Credit branch',
-            self::ALTARAPAY =>
-            'Hello customer_name,
-            This is the 3rd reminder that your expected payment of ₦single_repayment for product_name will be due today.
-            Ensure your account is funded before this date to enable us deduct. Do not pay cash or transfer since you are activated on direct debit. Thank you
-            Altara Credit branch',
+            self::ALTARACREDIT =>'Dear [customer_name], Your [count] repayment of ₦[single_repayment] is due TODAY . We’ll be expecting you in the showroom or a call that you’ve transferred to.',
+            // self::ALTARACREDIT =>
+            // 'Hello customer_name,
+            // This is the 3rd reminder that your expected payment of ₦single_repayment for product_name will be due today.
+            // Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
+            // Altara Credit branch',
+            self::ALTARAPAY =>'Dear [customer_name],Your [count] repayment of ₦[single_repayment] is due TODAY ensure your account is funded to avoid any penalties.',
+            // self::ALTARAPAY =>
+            // 'Hello customer_name,
+            // This is the 3rd reminder that your expected payment of ₦single_repayment for product_name will be due today.
+            // Ensure your account is funded before this date to enable us deduct. Do not pay cash or transfer since you are activated on direct debit. Thank you
+            // Altara Credit branch',
 
         ],
 
