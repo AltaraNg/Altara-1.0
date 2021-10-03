@@ -31,6 +31,8 @@ class NewOrdersExport implements FromCollection, WithMapping,  WithHeadings, Wit
             '% of Total Revenue',
             'Number of AltaraPay Product',
             'Number of AltaraCash Product',
+            'Average Down Payment',
+            'Forecast' 
         ];
     }
     public function map($newOrder): array
@@ -43,6 +45,10 @@ class NewOrdersExport implements FromCollection, WithMapping,  WithHeadings, Wit
             $newOrder['percentage_of_total_revenues'] ?: "0.00",
             $newOrder['no_of_altara_pay'] ?: "0",
             $newOrder['no_of_altara_cash'] ?: "0",
+            $newOrder['percentage_downpayment'] ?: "0",
+            $newOrder['forecast'] ?: "0",
+
+
         ];
     }
 

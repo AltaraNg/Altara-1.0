@@ -3,8 +3,10 @@
 
 namespace App\Http\Filters;
 
-use App\CustomerStage;
 use Carbon\Carbon;
+use App\CustomerStage;
+use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class ContactCustomerFilter extends BaseFilter
 {
@@ -38,14 +40,15 @@ class ContactCustomerFilter extends BaseFilter
      */
     public function phone($phone)
     {
-        $this->builder->where('phone', $phone);
+        $this->builder->where('phone', 'like', '%' . $phone . '%');
     }
 
-    public function unconverted($months){
+    public function unconverted($months)
+    {
         $now = Carbon::now();
 
-        $this->builder->where('customer_stage_id','!=', CustomerStage::where('name', '=',CustomerStage::PURCHASED)->first()->id)
-        ->whereMonth('created_at', '<=',  $now->subMonths(intval($months)));
+        $this->builder->where('customer_stage_id', '!=', CustomerStage::where('name', '=', CustomerStage::PURCHASED)->first()->id)
+            ->whereMonth('created_at', '<=',  $now->subMonths(intval($months)));
     }
 
     /**
@@ -58,10 +61,9 @@ class ContactCustomerFilter extends BaseFilter
 
     public function filterBranch()
     {
-        if (auth()->user()->isDSACaptain()){
+        if (auth()->user()->isDSACaptain()) {
             $this->builder->where('branch_id', auth()->user()->branch_id);
-        }
-        else if (auth()->user()->isCoordinator()){
+        } else if (auth()->user()->isCoordinator()) {
 
             // ** Might need refactoring
             $branches = auth()->user()->branches;
@@ -69,8 +71,7 @@ class ContactCustomerFilter extends BaseFilter
                 return $branch->id;
             });
             $this->builder->whereIn('branch_id', $ids);
-        }
-        else if (auth()->user()->isDSAAgent()){
+        } else if (auth()->user()->isDSAAgent()) {
             $this->builder->where('user_id', auth()->user()->id);
         }
     }
@@ -79,9 +80,24 @@ class ContactCustomerFilter extends BaseFilter
      * @param string $from
      * @param string $column
      */
-    public function startDate(string $from, $column=self::DATE)
+    public function startDate(string $from, $column = self::DATE)
     {
         $this->builder->whereDate($column, '>=', $from)
-            ->whereDate($column, '<=',$this->request->endDate ?? Carbon::now());
+            ->whereDate($column, '<=', $this->request->endDate ?? Carbon::now());
+    }
+
+    public function inActiveDays(int $days = 30)
+    {
+        $date = Carbon::now()->subDays($days)->format('Y-m-d');
+        $this->builder
+            ->where('contact_customers.created_at', '<', Carbon::now()->subDays($days))
+            ->whereHas('customerStage',  function ($query) {
+                $query->where('name', 'not like', '%Paid Downpayment%');
+            })->whereNotIn('contact_customers.id', function ($query) use ($date) {
+                $query->select('contact_customer_id')
+                    ->from('prospect_activities')
+                    ->orderBy('date', 'DESC')
+                    ->whereDate('date', '>=', $date);
+            })->with('lastProspectActivity');
     }
 }

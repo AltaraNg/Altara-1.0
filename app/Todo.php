@@ -52,7 +52,10 @@ class Todo extends Model
         return $this->hasOne(Feedback::class);
     }
 
-
+    public function prospectActivities()
+    {
+        return $this->morphMany(ProspectActivity::class, 'prospectActivityType', 'prospect_activity_type', 'prospect_activity_type_id');
+    }
 
 
     //

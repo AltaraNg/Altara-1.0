@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 
 Route::post('/login', 'AuthController@login');
@@ -22,67 +23,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/customer/lookup/{customer}', 'CustomerController@customerLookup');
     Route::post('/customer/{customer}', 'CustomerController@update');
     Route::get('/user/getBranchUsers', 'UserController@getBranchUsers');
-    Route::Resources([
-        'log' => 'LogController',
-        'user' => 'UserController',
-        'bank' => 'BankController',
-        'state' => 'StateController',
-        'brand' => 'BrandController',
-        'branch' => 'BranchController',
-        'address' => 'AddressController',
-        'message' => 'MessageController',
-        'caution' => 'CautionController',
-        'product' => 'ProductController',
-        'inventory' => 'InventoryController',
-        'customer' => 'CustomerController',
-        'category' => 'CategoryController',
-        'document' => 'DocumentController',
-        'supplier' => 'SupplierController',
-        'reminder' => 'ReminderController',
-        'attendance' => 'AttendanceController',
-        'promise_call' => 'PromiseCallController',
-        'verification' => 'VerificationController',
-        'work_guarantor' => 'WorkGuarantorController',
-        'processing_fee' => 'ProcessingFeeController',
-        'personal_guarantor' => 'PersonalGuarantorController',
-        'dsa_daily_registration' => 'DsaDailyRegistrationController',
-        'update_customer_manager' => 'CustomerManagementHistoryController',
-        'repayment' => 'RepaymentController',
-        'payment_method' => 'PaymentMethodController',
-        'renewal-list' => 'RenewalListController',
-        'payment' => 'PaymentController',
-        'payment-type' => 'PaymentTypeController',
-        'payment-reconcile' => 'PaymentReconcileController',
-        'new_order' => 'NewOrderController',
-        'business_type' => 'BusinessTypeController',
-        'down_payment_rate' => 'DownPaymentRateController',
-        'repayment_duration' => 'RepaymentDurationController',
-        'repayment_cycle' => 'RepaymentCycleController',
-        'custom_repayment_date' => 'CustomRepaymentDateController',
-        'product_type' => 'ProductTypeController',
-        'product_transfer' => 'ProductTransferController',
-        'amortization' => 'AmortizationController',
-        'price_calculator' => 'PriceCalculatorController',
-        'repayment_reminder' => 'RepaymentReminderController',
-        'collection' => 'CollectionController',
-        'pay_stack_auth_code' => 'PaystackAuthCodeController',
-        'pay_stack_customers_code' => 'PaystackCustomersCodeController',
-        'dd_result' => 'DirectDebitResultController',
-        'dd_data' => 'DirectDebitDataController',
-        'dd_k' => 'DirectDebitKeyController',
-        'reminder_value' => 'ReminderValueController',
-        'discount' => 'DiscountController',
-        'customer_contact' => 'ContactCustomerController',
-        'customer_stage' => 'CustomerStageController',
-        'employment_status' => 'EmploymentStatusController',
-        'sales_category' => 'SalesCategoryController',
-        'inventory_status' => 'InventoryStatusController',
-        'todo' => 'TodoController',
-        'reason' => 'ReasonController',
-        'feedback' => 'FeedbackController',
-        'role' => 'RoleController'
 
-    ]);
     /*------*/
     Route::get('/users/list_type/{type}', 'UserController@getListForTypeahead');
     Route::post('/user/{id}/cv', 'UserController@uploadCV');
@@ -122,10 +63,85 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');
     Route::get('/order-types', 'OrderTypeController@index');
     Route::get('/paymentgateways', 'PaymentGatewayController@index');
+
+    Route::get('/inactive/prospects', 'ProspectActivityController@inActiveProspects');
+    Route::Resource('prospect_activities', 'ProspectActivityController')->only(['index', 'show']);
 });
+Route::middleware('auth:api')->group(function () {
+    Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
+    Route::resource('inventory', 'InventoryController', ['except' => ['index', 'show']]);
+    Route::resource('price_calculator', 'PriceCalculatorController', ['except' => ['index', 'show']]);
+    Route::resource('down_payment_rate', 'DownPaymentRateController', ['except' => ['index', 'show']]);
+    Route::resource('business_type', 'BusinessTypeController', ['except' => ['index', 'show']]);
+    Route::resource('repayment_duration', 'RepaymentDurationController', ['except' => ['index', 'show']]);
+
+
+    Route::Resources([
+        'log' => 'LogController',
+        'user' => 'UserController',
+        'bank' => 'BankController',
+        'state' => 'StateController',
+        'branch' => 'BranchController',
+        'address' => 'AddressController',
+        'message' => 'MessageController',
+        'caution' => 'CautionController',
+        'product' => 'ProductController',
+        'customer' => 'CustomerController',
+        'category' => 'CategoryController',
+        'document' => 'DocumentController',
+        'supplier' => 'SupplierController',
+        'reminder' => 'ReminderController',
+        'attendance' => 'AttendanceController',
+        'promise_call' => 'PromiseCallController',
+        'verification' => 'VerificationController',
+        'work_guarantor' => 'WorkGuarantorController',
+        'processing_fee' => 'ProcessingFeeController',
+        'personal_guarantor' => 'PersonalGuarantorController',
+        'dsa_daily_registration' => 'DsaDailyRegistrationController',
+        'update_customer_manager' => 'CustomerManagementHistoryController',
+        'repayment' => 'RepaymentController',
+        'payment_method' => 'PaymentMethodController',
+        'renewal-list' => 'RenewalListController',
+        'payment' => 'PaymentController',
+        'payment-type' => 'PaymentTypeController',
+        'payment-reconcile' => 'PaymentReconcileController',
+        'new_order' => 'NewOrderController',
+        'repayment_cycle' => 'RepaymentCycleController',
+        'custom_repayment_date' => 'CustomRepaymentDateController',
+        'product_type' => 'ProductTypeController',
+        'product_transfer' => 'ProductTransferController',
+        'amortization' => 'AmortizationController',
+        'repayment_reminder' => 'RepaymentReminderController',
+        'collection' => 'CollectionController',
+        'pay_stack_auth_code' => 'PaystackAuthCodeController',
+        'pay_stack_customers_code' => 'PaystackCustomersCodeController',
+        'dd_result' => 'DirectDebitResultController',
+        'dd_data' => 'DirectDebitDataController',
+        'dd_k' => 'DirectDebitKeyController',
+        'reminder_value' => 'ReminderValueController',
+        'discount' => 'DiscountController',
+        'customer_contact' => 'ContactCustomerController',
+        'customer_stage' => 'CustomerStageController',
+        'employment_status' => 'EmploymentStatusController',
+        'sales_category' => 'SalesCategoryController',
+        'inventory_status' => 'InventoryStatusController',
+        'todo' => 'TodoController',
+        'reason' => 'ReasonController',
+        'feedback' => 'FeedbackController',
+        'role' => 'RoleController'
+
+    ]);
+});
+Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
+Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']]);
+Route::resource('price_calculator', 'PriceCalculatorController', ['only' => ['index', 'show']]);
+Route::resource('down_payment_rate', 'DownPaymentRateController', ['only' => ['index', 'show']]);
+Route::resource('business_type', 'BusinessTypeController', ['only' => ['index', 'show']]);
+Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => ['index', 'show']]);
+
+
+
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
-
-
