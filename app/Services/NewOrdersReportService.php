@@ -107,7 +107,7 @@ class NewOrdersReportService
             $noOfDaysInBetweenFromDateToDate =  abs((Carbon::parse($toDate)->diff(Carbon::parse($fromDate)))->days);
             if (request('toDate')) {
                 $toDate = Carbon::parse($toDate);
-                $totalNoDays = $noOfDaysInBetweenFromDateToDate;
+                $totalNoDays = $noOfDaysInBetweenFromDateToDate + 1;
             }
             return [
                 'branch_id' => $item->id,
