@@ -33,13 +33,13 @@ class Constants
     const RENEWAL_NOTIFICATION_ERROR = 'An Error Occurred while trying to send renewal notification to customer customer_name with Order order_number';
 
     const SUCCESSFUL_ORDER = 'Dear [customer_name], Welcome to Altara. 
-    You have paid: ₦[down_payment]  
-    Remaining Debt: ₦[repayment]
-    Your next repayment of ₦[expected_amount] is due on [next_payment_date].';
+    You have paid: N[down_payment]  
+    Remaining Debt: N[repayment]
+    Your next repayment of N[expected_amount] is due on [next_payment_date].';
     const SUCCESSFUL_REPAYMENT = 'Dear [customer_name], 
     Thank you for your repayment. You have made [no_of_repayment_made]/[total_no_of_repayment_expected] repayment. 
-    Total paid so far: ₦[total_of_repayment_made]
-    Total debt remaining: ₦[total_of_repayment_not_made].';
+    Total paid so far: N[total_of_repayment_made]
+    Total debt remaining: N[total_of_repayment_not_made].';
 
 
     static $reminderMessages = [
@@ -59,13 +59,13 @@ class Constants
         self::S_SMS => [
 
             self::ALTARACREDIT =>
-            'Dear [customer_name], Your [count] repayment of ₦[single_repayment] is due on [due_date]. Visit your showroom to pay or transfer to Altara’s official bank account.',
+            'Dear [customer_name], Your [count] repayment of N[single_repayment] is due on [due_date]. Visit your showroom to pay or transfer to Altara’s official bank account.',
             // self::ALTARACREDIT =>
             // 'Hello customer_name,
             // This is the 2nd reminder that your expected payment of ₦single_repayment for product_name will be due in 3 days.
             // Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
             // Altara Credit branch',
-            self::ALTARAPAY => 'Dear [customer_name],Your [count] repayment of ₦[single_repayment] is due on  [due_date] and you will be debited so no need to visit the showroom or transfer.'
+            self::ALTARAPAY => 'Dear [customer_name],Your [count] repayment of N[single_repayment] is due on  [due_date] and you will be debited so no need to visit the showroom or transfer.'
             // self::ALTARAPAY =>
             // 'Hello customer_name,
             // This is the 2nd reminder that your expected payment of ₦single_repayment for product_name will be due in 3days.
@@ -74,13 +74,13 @@ class Constants
 
         ],
         self::T_SMS => [
-            self::ALTARACREDIT =>'Dear [customer_name], Your [count] repayment of ₦[single_repayment] is due TODAY . We’ll be expecting you in the showroom or a call that you’ve transferred to.',
+            self::ALTARACREDIT =>'Dear [customer_name], Your [count] repayment of N[single_repayment] is due TODAY . We’ll be expecting you in the showroom or a call that you’ve transferred to.',
             // self::ALTARACREDIT =>
             // 'Hello customer_name,
             // This is the 3rd reminder that your expected payment of ₦single_repayment for product_name will be due today.
             // Visit the showroom to pay or call us to confirm payment if you prefer to transfer. Pay on time for future rewards and to not incur penalties.
             // Altara Credit branch',
-            self::ALTARAPAY =>'Dear [customer_name],Your [count] repayment of ₦[single_repayment] is due TODAY ensure your account is funded to avoid any penalties.',
+            self::ALTARAPAY =>'Dear [customer_name],Your [count] repayment of N[single_repayment] is due TODAY ensure your account is funded to avoid any penalties.',
             // self::ALTARAPAY =>
             // 'Hello customer_name,
             // This is the 3rd reminder that your expected payment of ₦single_repayment for product_name will be due today.
