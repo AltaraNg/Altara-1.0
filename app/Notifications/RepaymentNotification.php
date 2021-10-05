@@ -76,7 +76,6 @@ class RepaymentNotification extends Notification
         $replacementKeys = Helper::generateReplacementKeys(array_keys($this->data));
         $replacementValues    = array_values($this->data);
         $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_REPAYMENT);
-        dd($message);
         return $message;
     }
 
