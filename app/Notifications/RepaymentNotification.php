@@ -37,7 +37,7 @@ class RepaymentNotification extends Notification
         $this->data['total_no_of_repayment_expected'] = $data->amortization->count();
         $totalOfRepaymentMade = $data->amortization->where('actual_payment_date', '!=', null)->sum('actual_amount')  + $downPayment;
         $this->data['total_of_repayment_made'] =  $totalOfRepaymentMade;
-        $this->data['total_of_repayment_not_made'] = abs($totalOfRepaymentMade - $data->amortization->sum('expected_amount'));
+        $this->data['total_of_repayment_not_made'] = abs($data->amortization->where('actual_payment_date', '!=', null)->sum('actual_amount')  - $data->amortization->sum('expected_amount'));
         $this->data['no_of_repayment_made'] = $data->amortization->where('actual_payment_date', '!=', null)->count();
     }
 
