@@ -140,7 +140,6 @@ Route::resource('business_type', 'BusinessTypeController', ['only' => ['index', 
 Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => ['index', 'show']]);
 
 
-
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
