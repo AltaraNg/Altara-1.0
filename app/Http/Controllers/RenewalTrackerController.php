@@ -19,10 +19,10 @@ class RenewalTrackerController extends Controller
     //
     public function index(NewOrderFilter $filter)
     {
-        $newOrderQuery = $this->newOrderRepository->reportQuery($filter);
-        return $newOrderQuery->whereHas('amortization', function ( $query)
-        {
-            $query->where('actual_payment_date', '!=', null);
-        })->paginate(10);
+      //TODO
+      //1. Create table  for renewal_status 
+      //2. Create relationship between renewal status and orders
+      //3. fetch all orders with
+      //4. get count of all status update 
     }
 }
