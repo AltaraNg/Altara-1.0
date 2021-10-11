@@ -22,7 +22,7 @@ class RenewalTrackerController extends Controller
       //TODO
       //1. Create table  for renewal_status 
       //2. Create relationship between renewal status and orders
-      //3. fetch all orders with
+      //3. fetch all orders 
       //4. get count of all status update 
     }
 }
