@@ -15,4 +15,9 @@ class RenewalPrompterStatus extends Model
     {
         return $this->hasMany(Customer::class);
     }
+
+    public function renewalPrompter()
+    {
+      return  $this->hasMany(RenewalPrompter::class);
+    }
 }
