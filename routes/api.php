@@ -146,5 +146,6 @@ Route::post('/credit-check', 'CreditCheckController@check');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
 
 
-Route::get('/renewal/prompter', 'RenewalPrompterController@index');
-Route::post('/renewal/prompter', 'RenewalPrompterController@store');
+Route::get('/renewal/prompters', 'RenewalPrompterController@index');
+Route::post('/renewal/prompters', 'RenewalPrompterController@store');
+Route::get('/completed/orders', 'RenewalPrompterController@completedOrders');
