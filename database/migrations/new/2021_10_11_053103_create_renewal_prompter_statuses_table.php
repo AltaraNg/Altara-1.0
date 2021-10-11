@@ -1,5 +1,6 @@
 <?php
 
+use App\RenewalPrompterStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -19,6 +20,13 @@ class CreateRenewalPrompterStatusesTable extends Migration
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
+        RenewalPrompterStatus::truncate();
+        $statuses = ['contacted', 'interested', 'purchased/renewed'];
+        foreach ($statuses as $status) {
+            RenewalPrompterStatus::create([
+                'name' => $status
+            ]);
+        }
     }
 
     /**

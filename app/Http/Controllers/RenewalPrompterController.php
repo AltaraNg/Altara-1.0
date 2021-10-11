@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\NewOrder;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Filters\NewOrderFilter;
 use App\Repositories\NewOrderRepository;
-use Illuminate\Database\Eloquent\Builder;
 
-class RenewalTrackerController extends Controller
+class RenewalPrompterController extends Controller
 {
+    //
     private $newOrderRepository;
   
     public function __construct(NewOrderRepository $newOrderRepository)
