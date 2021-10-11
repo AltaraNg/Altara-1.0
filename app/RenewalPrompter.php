@@ -8,5 +8,5 @@ class RenewalPrompter extends Model
 {
     //
 
-    
+    protected $guarded = [];
 }
