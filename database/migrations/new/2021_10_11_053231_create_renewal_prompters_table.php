@@ -17,8 +17,8 @@ class CreateRenewalPromptersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('renewal_prompter_status_id');
             $table->foreign('renewal_prompter_status_id')->references('id')->on('renewal_prompter_statuses')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedInteger('order_id');
+            $table->foreign('order_id')->references('id')->on('new_orders')->onDelete('cascade')->onUpdate('cascade');
             $table->string('feedback')->nullable();
             $table->timestamps();
         });

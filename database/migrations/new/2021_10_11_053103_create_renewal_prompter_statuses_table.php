@@ -21,7 +21,7 @@ class CreateRenewalPrompterStatusesTable extends Migration
             $table->timestamps();
         });
         RenewalPrompterStatus::truncate();
-        $statuses = ['contacted', 'interested', 'purchased/renewed'];
+        $statuses = ['contacted', 'interested', 'renewed', 'not contacted'];
         foreach ($statuses as $status) {
             RenewalPrompterStatus::create([
                 'name' => $status
