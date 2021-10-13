@@ -29,10 +29,10 @@ class RenewalPrompterController extends Controller
   //
   public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
   {
-    $newOrderQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
-    $renewalPrompterQuery =     $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
-    $additional = $renewalPrompterService->generateMetaData($renewalPrompterQuery);
-    return $this->sendSuccess(['renewal_prompters' => $newOrderQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
+    $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
+    $renewalPrompterStatQuery =     $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
+    $additional = $renewalPrompterService->generateMetaData($renewalPrompterStatQuery);
+    return $this->sendSuccess(['renewal_prompters' => $renewalPromptersQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
   }
 
   public function store(RenewalPrompterRequest $request)

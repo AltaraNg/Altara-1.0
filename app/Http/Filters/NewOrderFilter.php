@@ -172,9 +172,9 @@ class NewOrderFilter extends BaseFilter
 
     public function renewalPrompterStatus(string $renewalPrompterStatus)
     {
-        $this->builder->whereHas('renewalPrompters',function ($query) use ($renewalPrompterStatus)
-        {
-            $query->where('renewal_prompter_status_id', RenewalPrompterStatus::where('name', 'like', '%' . $renewalPrompterStatus .'%')->first()->name);
-        }); 
+        $renewalPrompterStatusId =  RenewalPrompterStatus::where('name', 'like', '%' . $renewalPrompterStatus . '%')->first()->id ?? '';
+        $this->builder->whereHas('renewalPrompters', function ($query) use ($renewalPrompterStatusId) {
+            $query->where('renewal_prompter_status_id', $renewalPrompterStatusId);
+        });
     }
 }

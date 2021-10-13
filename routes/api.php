@@ -66,6 +66,12 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::get('/inactive/prospects', 'ProspectActivityController@inActiveProspects');
     Route::Resource('prospect_activities', 'ProspectActivityController')->only(['index', 'show']);
+
+
+    Route::get('/renewal/prompters', 'RenewalPrompterController@index');
+    Route::post('/renewal/prompters', 'RenewalPrompterController@store');
+
+    Route::get('/renewal/prompters/statuses', 'RenewalPrompterController@prompterStatuses');
 });
 Route::middleware('auth:api')->group(function () {
     Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
@@ -144,11 +150,3 @@ Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
-
-
-Route::get('/renewal/prompters', 'RenewalPrompterController@index');
-Route::post('/renewal/prompters', 'RenewalPrompterController@store');
-Route::get('/completed/orders', 'RenewalPrompterController@completedOrders');
-
-
-Route::get('/renewal/prompters/statuses', 'RenewalPrompterController@prompterStatuses');
