@@ -177,6 +177,10 @@ class NewOrder extends Model
     {
         return $this->belongsTo(PaymentGateway::class, 'payment_gateway_id');
     }
+    public function renewalPrompters()
+    {
+        return $this->hasMany(RenewalPrompter::class, 'order_id');
+    }
     /**
      * Get all of the New Order's payments.
      */

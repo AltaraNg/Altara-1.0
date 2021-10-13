@@ -50,7 +50,7 @@ class RenewalPrompterController extends Controller
 
   public function completedOrders(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
   {
-    $newOrderQuery = $this->newOrderRepository->reportQuery($newOrderFilter)->where('status_id', OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id);
+    $newOrderQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
     $renewalPrompterQuery =     $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
     $additional = $renewalPrompterService->generateMetaData($renewalPrompterQuery);
     return $this->sendSuccess(['completed_orders' => $newOrderQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
@@ -59,12 +59,4 @@ class RenewalPrompterController extends Controller
   {
     return $this->sendSuccess(['prompter_statuses' => RenewalPrompterStatus::all()], 'renewal prompter status retrieved successfully');
   }
-  // public function update(Request $request, RenewalNotification $renewal_prompter)
-  // {
-  //   $renewal_prompter = $this->renewalPrompterRepository->update($renewal_prompter, [
-  //     'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
-  //     'feedback' => $request->feedback,
-  //   ]);
-  //   return $this->sendSuccess(['renewal_prompter' => $renewal_prompter], 'Renewal Prompter  updated successfully');
-  // }
 }

@@ -148,13 +148,24 @@ class NewOrderFilter extends BaseFilter
     }
 
     /**
-     * @param string $salesCategory
-     * Filter orders sales 
+     * @param string $orderType
+     * Filter orders by order type 
      */
     public function orderType(int $orderType)
     {
         $this->builder->whereHas('orderType', function ($query) use ($orderType) {
             $query->where('id', $orderType);
         });
+    }
+
+    /**
+     * @param string $orderType
+     * Filter orders by order type 
+     */
+    public function isCompletedOrder(bool $isCompletedOrder = true)
+    {
+        if ($isCompletedOrder) {
+            $this->builder->where('status_id', OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id);
+        }
     }
 }
