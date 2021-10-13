@@ -149,3 +149,6 @@ Route::post('/credit-check', 'CreditCheckController@check');
 Route::get('/renewal/prompters', 'RenewalPrompterController@index');
 Route::post('/renewal/prompters', 'RenewalPrompterController@store');
 Route::get('/completed/orders', 'RenewalPrompterController@completedOrders');
+
+
+Route::get('/renewal/prompters/statuses', 'RenewalPrompterController@prompterStatuses');
