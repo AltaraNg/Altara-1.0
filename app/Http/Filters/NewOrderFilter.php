@@ -2,8 +2,9 @@
 
 namespace App\Http\Filters;
 
-use App\OrderStatus;
 use Carbon\Carbon;
+use App\OrderStatus;
+use App\RenewalPrompterStatus;
 use Illuminate\Database\Eloquent\Builder;
 
 class NewOrderFilter extends BaseFilter
@@ -167,5 +168,13 @@ class NewOrderFilter extends BaseFilter
         if ($isCompletedOrder) {
             $this->builder->where('status_id', OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id);
         }
+    }
+
+    public function renewalPrompterStatus(string $renewalPrompterStatus)
+    {
+        $this->builder->whereHas('renewalPrompters',function ($query) use ($renewalPrompterStatus)
+        {
+            $query->where('renewal_prompter_status_id', RenewalPrompterStatus::where('name', 'like', '%' . $renewalPrompterStatus .'%')->first()->name);
+        }); 
     }
 }

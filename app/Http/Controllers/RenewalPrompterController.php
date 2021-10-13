@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\BaseFilter;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Filters\RenewalPrompterFilter;
+use App\Http\Requests\RenewalPrompterRequest;
 use App\Notifications\RenewalNotification;
 use App\OrderStatus;
 use App\RenewalPrompterStatus;
@@ -26,35 +27,26 @@ class RenewalPrompterController extends Controller
     $this->renewalPrompterRepository = $renewalPrompterRepository;
   }
   //
-  public function index(RenewalPrompterFilter $renewalPrompterFilter)
+  public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
   {
-    return $this->sendSuccess(['renewal_prompters' => $this->renewalPrompterRepository->getAll($renewalPrompterFilter)], 'Renewal prompters retrieved successfully');
+    $newOrderQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
+    $renewalPrompterQuery =     $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
+    $additional = $renewalPrompterService->generateMetaData($renewalPrompterQuery);
+    return $this->sendSuccess(['renewal_prompters' => $newOrderQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
   }
 
-  public function store(Request $request)
+  public function store(RenewalPrompterRequest $request)
   {
-    //TODO
-    //create a request class for this validation
-    $this->validate($request, [
-      'order_id' => ['required', 'exists:new_orders,id'],
-      'renewal_prompter_status_id' => ['required', 'exists:renewal_prompter_statuses,id'],
-      'feedback' => ['required', 'string'],
-    ]);
     $renewal_prompter = $this->renewalPrompterRepository->store([
       'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
+      'user_id' => auth('api')->id(),
       'order_id' => $request->order_id,
       'feedback' => $request->feedback,
     ]);
     return $this->sendSuccess(['renewal_prompter' => $renewal_prompter], 'Renewal Prompter created successfully');
   }
 
-  public function completedOrders(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
-  {
-    $newOrderQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
-    $renewalPrompterQuery =     $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
-    $additional = $renewalPrompterService->generateMetaData($renewalPrompterQuery);
-    return $this->sendSuccess(['completed_orders' => $newOrderQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
-  }
+
   public function prompterStatuses()
   {
     return $this->sendSuccess(['prompter_statuses' => RenewalPrompterStatus::all()], 'renewal prompter status retrieved successfully');

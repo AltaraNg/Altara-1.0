@@ -2,15 +2,11 @@
 
 namespace App\Http\Filters;
 
+use App\RenewalPrompterStatus;
+
 class RenewalPrompterFilter extends BaseFilter
 {
 
-    public function renewalPrompterStatus(string $renewalPrompterStatus)
-    {
-        $this->builder->whereHas('renewalPrompters',function ($query)
-        {
-            
-        }); 
-    }
+    
     
 }

@@ -16,11 +16,14 @@ class CreateRenewalPromptersTable extends Migration
         Schema::create('renewal_prompters', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('renewal_prompter_status_id');
-            $table->foreign('renewal_prompter_status_id')->references('id')->on('renewal_prompter_statuses')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedInteger('order_id');
-            $table->foreign('order_id')->references('id')->on('new_orders')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedInteger('user_id');
             $table->string('feedback')->nullable();
             $table->timestamps();
+
+            $table->foreign('renewal_prompter_status_id')->references('id')->on('renewal_prompter_statuses')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('order_id')->references('id')->on('new_orders')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
