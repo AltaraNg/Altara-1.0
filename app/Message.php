@@ -41,7 +41,7 @@ class Message extends Model
             'read' => $this->read,
             'receiver_id' => $this->receiver_id,
             'type' => $this->type,
-            'sender' => $this->user->full_name
+            'sender' => $this->user->full_name ?? '',
         ];
     }
 }
