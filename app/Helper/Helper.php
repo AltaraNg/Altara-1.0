@@ -145,4 +145,9 @@ class Helper
         }
         return 3;
     }
+
+    public static function PaymentCompleted($order): bool
+    {
+        return  $order->amortization->where('actual_payment_date', '=', null)->count() == 0 ? true : false;
+    }
 }

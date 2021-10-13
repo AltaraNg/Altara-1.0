@@ -4,14 +4,26 @@ namespace App\Listeners;
 
 use App\Customer;
 use App\Helper\Constants;
+use App\Helper\Helper;
 use App\Helper\LogHelper;
 use App\Notifications\RepaymentNotification;
+use App\OrderStatus;
+use App\Repositories\NewOrderRepository;
+use App\Repositories\RenewalPrompterRepository;
 use App\Services\PaymentService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class RepaymentListener
 {
+
+    private $newOrderRepository;
+    private $renewalPrompterRepository;
+    public function __construct(NewOrderRepository $newOrderRepository, RenewalPrompterRepository $renewalPrompterRepository)
+    {
+        $this->newOrderRepository = $newOrderRepository;
+        $this->renewalPrompterRepository = $renewalPrompterRepository;
+    }
     /**
      * Handle the event.
      *
@@ -22,9 +34,13 @@ class RepaymentListener
     {
         $customer = Customer::find($event->newOrder['customer_id']);
         try {
-            if (env('SEND_ORDER_SMS')) {
-                $customer->notify(new RepaymentNotification($event->newOrder->refresh()));
 
+            if (env('SEND_ORDER_SMS')) {
+                $order = $event->newOrder->refresh();
+                $customer->notify(new RepaymentNotification($order));
+            }
+            if (Helper::PaymentCompleted($order)) {
+                $this->newOrderRepository->updateOrderStatus($order->id);
             }
         } catch (\Exception $e) {
             LogHelper::error(strtr(Constants::REPAYMENT_NOTIFICATION_ERROR, $event->newOrder->toArray()), $e);
