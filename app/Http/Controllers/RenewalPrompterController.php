@@ -37,12 +37,7 @@ class RenewalPrompterController extends Controller
 
   public function store(RenewalPrompterRequest $request)
   {
-    $renewal_prompter = $this->renewalPrompterRepository->store([
-      'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
-      'user_id' => auth('api')->id(),
-      'order_id' => $request->order_id,
-      'feedback' => $request->feedback,
-    ]);
+    $renewal_prompter = $this->renewalPrompterRepository->store($request->validated());
     return $this->sendSuccess(['renewal_prompter' => $renewal_prompter], 'Renewal Prompter created successfully');
   }
 

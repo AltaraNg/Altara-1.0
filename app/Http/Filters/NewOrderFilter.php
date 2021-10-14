@@ -177,4 +177,5 @@ class NewOrderFilter extends BaseFilter
             $query->where('renewal_prompter_status_id', $renewalPrompterStatusId);
         });
     }
+    
 }
