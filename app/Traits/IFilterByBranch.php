@@ -5,7 +5,7 @@ namespace App\Traits;
 /**
  *
  */
-trait IFilterByBranchName
+trait IFilterByBranch
 {
     /**
      * @var Builder
