@@ -32,6 +32,7 @@ class RenewalPrompterController extends Controller
     $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
     $renewalPrompterStatQuery =     $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
     $additional = $renewalPrompterService->generateMetaData($renewalPrompterStatQuery);
+    $additional['total'] = $renewalPromptersQuery->count();
     return $this->sendSuccess(['renewal_prompters' => $renewalPromptersQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
   }
 
