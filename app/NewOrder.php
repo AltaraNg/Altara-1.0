@@ -67,6 +67,7 @@ class NewOrder extends Model
             'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
+            'owner_id' => 'sometimes|required|exists:users,id',
         ];
     }
 
@@ -177,6 +178,10 @@ class NewOrder extends Model
     {
         return $this->belongsTo(PaymentGateway::class, 'payment_gateway_id');
     }
+    public function lastRenewalPrompter()
+    {
+        return $this->hasOne(RenewalPrompter::class, 'order_id')->latest('renewal_prompters.created_at');
+    }
     public function renewalPrompters()
     {
         return $this->hasMany(RenewalPrompter::class, 'order_id');
@@ -228,6 +233,7 @@ class NewOrder extends Model
             "payment_gateway" => $this->paymentGateway->name ?? null,
             "order_type" => $this->orderType->name ?? null,
             'renewal_prompters' => $this->renewalPrompters,
+            'last_renewal_prompter_activity' => $this->lastRenewalPrompter,
         ];
     }
 }
