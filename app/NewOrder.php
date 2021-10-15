@@ -179,7 +179,7 @@ class NewOrder extends Model
     }
     public function lastRenewalPrompter()
     {
-        return $this->hasOne(RenewalPrompter::class)->latest('renewal_prompters.date');
+        return $this->hasOne(RenewalPrompter::class)->latest('renewal_prompters.created_at');
     }
     public function renewalPrompters()
     {
@@ -232,6 +232,7 @@ class NewOrder extends Model
             "payment_gateway" => $this->paymentGateway->name ?? null,
             "order_type" => $this->orderType->name ?? null,
             'renewal_prompters' => $this->renewalPrompters,
+            'last_renewal_prompter' => $this->lastRenewalPrompter,
         ];
     }
 }
