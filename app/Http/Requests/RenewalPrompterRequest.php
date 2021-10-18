@@ -34,8 +34,6 @@ class RenewalPrompterRequest extends FormRequest
                 //this checks if the supplied renewal_prompter_status_id supplied is same as renewal prompter status id of the name intrested on the renewal prompters status table
                 return  request()->renewal_prompter_status_id == RenewalPrompterStatus::where('name', 'like', '%interested%')->first()->id ?? '';
             }), 'date', 'after_or_equal:now', 'date_format:Y-m-d'],
-            'branch_id' => ['required', 'exists:branches,id'],
-            'user_id' =>  ['required', 'exists:users,id'],
         ];
     }
 }
