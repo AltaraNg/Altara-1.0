@@ -49,6 +49,7 @@ class RenewalPrompterController extends Controller
       'promised_date' => $request->promised_date,
       'branch_id' => $user->branch_id,
       'user_id' => $user->id,
+      'feedback' => $request->feedback,
     ]);
     return $this->sendSuccess(['renewal_prompter' => $renewal_prompter], 'Renewal Prompter created successfully');
   }
