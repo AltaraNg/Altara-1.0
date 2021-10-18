@@ -30,15 +30,26 @@ class RenewalPrompterController extends Controller
   public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
   {
     $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
+
     $renewalPrompterStatQuery =     $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
     $additional = $renewalPrompterService->generateMetaData($renewalPrompterStatQuery);
     $additional['total'] = $renewalPromptersQuery->count();
-    return $this->sendSuccess(['renewal_prompters' => $renewalPromptersQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
+    if (request('rollUp')) {
+      return $this->sendSuccess(['renewal_prompters' => $renewalPromptersQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
+    }
+    return $this->sendSuccess(['renewal_prompters' => $renewalPromptersQuery->paginate(10) ?? []], 'Completed orders and renewal prompter stats retrieved successfully');
   }
 
   public function store(RenewalPrompterRequest $request)
   {
-    $renewal_prompter = $this->renewalPrompterRepository->store($request->validated());
+    $user = auth('api')->user();
+    $renewal_prompter = $this->renewalPrompterRepository->store([
+      'order_id' => $request->order_id,
+      'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
+      'promised_date' => $request->promised_date,
+      'branch_id' => $user->branch_id,
+      'user_id' => $user->id,
+    ]);
     return $this->sendSuccess(['renewal_prompter' => $renewal_prompter], 'Renewal Prompter created successfully');
   }
 
