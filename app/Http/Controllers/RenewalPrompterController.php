@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\JSONApiCollection;
+use App\Http\Resources\JSONApiResource;
 use App\Http\Resources\RenewalPrompterCollection;
 use App\Http\Resources\RenewalPrompterResource;
 use App\OrderStatus;
@@ -58,13 +60,13 @@ class RenewalPrompterController extends Controller
             'feedback' => $request->feedback,
         ]);
 
-        return $this->sendSuccess(['renewal_prompter' =>   new RenewalPrompterResource($renewal_prompter)], 'Renewal Prompter created successfully');
+        return $this->sendSuccess(['renewal_prompter' =>   new JSONApiResource($renewal_prompter)], 'Renewal Prompter created successfully');
     }
 
     public function show(RenewalPrompterFilter $renewalPrompterFilter): Response
     {
         $renewalPromptersQuery = $this->renewalPrompterRepository->getAll($renewalPrompterFilter);
-        return $this->sendSuccess(['renewal_prompter_history' => RenewalPrompterResource::collection($renewalPromptersQuery)], 'renewal prompter history retrieved successfully');
+        return $this->sendSuccess(['renewal_prompter_history' => new JSONApiCollection($renewalPromptersQuery)], 'renewal prompter history retrieved successfully');
     }
 
     public function prompterStatuses(): Response

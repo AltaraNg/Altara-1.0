@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Http\Filters\Filterable;
+use App\Http\Resources\JSONApiCollection;
+use App\Http\Resources\JSONApiResource;
 use App\Rules\Money;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -232,8 +234,8 @@ class NewOrder extends Model
             "down_payment_rate" => $this->downPaymentRate->name ?? null,
             "payment_gateway" => $this->paymentGateway->name ?? null,
             "order_type" => $this->orderType->name ?? null,
-            'renewal_prompters' => $this->renewalPrompters,
-            'last_renewal_prompter_activity' => $this->lastRenewalPrompter,
+            'renewal_prompters' => $this->renewalPrompters ? new JSONApiCollection($this->renewalPrompters ) : [],
+            'last_renewal_prompter_activity' => $this->lastRenewalPrompter ? new JSONApiResource($this->lastRenewalPrompter) : null,
         ];
     }
 }
