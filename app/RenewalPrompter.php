@@ -15,5 +15,10 @@ class RenewalPrompter extends Model
     {
       return  $this->belongsTo(RenewalPrompterStatus::class);
     }
-    
+
+    public function order()
+    {
+        return $this->belongsTo(NewOrder::class, 'order_id');
+    }
+
 }
