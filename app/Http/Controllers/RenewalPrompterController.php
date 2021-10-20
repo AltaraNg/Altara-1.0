@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\OrderStatus;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\RenewalPrompterStatus;
 use App\Http\Filters\BaseFilter;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\Http\Filters\NewOrderFilter;
+use App\Repositories\NewOrderRepository;
+use App\Services\RenewalPrompterService;
+use App\Notifications\RenewalNotification;
 use App\Http\Filters\RenewalPrompterFilter;
 use App\Http\Requests\RenewalPrompterRequest;
-use App\Notifications\RenewalNotification;
-use App\OrderStatus;
-use App\RenewalPrompterStatus;
-use App\Repositories\NewOrderRepository;
 use App\Repositories\RenewalPrompterRepository;
-use App\Services\RenewalPrompterService;
 
 class RenewalPrompterController extends Controller
 {
@@ -32,7 +33,7 @@ class RenewalPrompterController extends Controller
     $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
 
     $renewalPrompterStatQuery =     $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
-    $additional = $renewalPrompterService->generateMetaData($renewalPrompterStatQuery);
+    $additional = $renewalPrompterService->generateMetaData($renewalPrompterStatQuery, clone $renewalPromptersQuery);
     $additional['total'] = $renewalPromptersQuery->count();
     if (request('rollUp')) {
       return $this->sendSuccess(['renewal_prompters' => $renewalPromptersQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
@@ -46,7 +47,7 @@ class RenewalPrompterController extends Controller
     $renewal_prompter = $this->renewalPrompterRepository->store([
       'order_id' => $request->order_id,
       'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
-      'promised_date' => $request->promised_date,
+      'promise_date' => $request->promised_date,
       'branch_id' => $user->branch_id,
       'user_id' => $user->id,
       'feedback' => $request->feedback,
@@ -58,5 +59,11 @@ class RenewalPrompterController extends Controller
   public function prompterStatuses()
   {
     return $this->sendSuccess(['prompter_statuses' => RenewalPrompterStatus::all()], 'renewal prompter status retrieved successfully');
+  }
+
+  public function statistics(RenewalPrompterFilter $renewalPrompterFilter)
+  {
+    $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter)->get();
+    return $this->sendSuccess(['renewal_prompter_agents_stat' => $renewalPrompterStatQuery], 'renewal prompter agents statistics retrieved successfully');
   }
 }

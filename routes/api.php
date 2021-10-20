@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/renewal/prompters', 'RenewalPrompterController@store');
 
     Route::get('/renewal/prompters/statuses', 'RenewalPrompterController@prompterStatuses');
+    Route::get('/renewal/prompters/stats', 'RenewalPrompterController@statistics');
 });
 Route::middleware('auth:api')->group(function () {
     Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
