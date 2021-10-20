@@ -52,7 +52,7 @@ class RenewalPrompterController extends Controller
         $renewal_prompter = $this->renewalPrompterRepository->store([
             'order_id' => $request->order_id,
             'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
-            'promise_date' => $request->promised_date,
+            'promise_date' =>  $request->promised_date,
             'branch_id' => $user->branch_id,
             'user_id' => $user->id,
             'feedback' => $request->feedback,

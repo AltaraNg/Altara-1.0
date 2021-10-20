@@ -20,7 +20,8 @@ class RenewalPrompterResource extends JsonResource
             'renewal_prompter_status' => $this->renewalPrompterStatus->name ?? '',
             'owner' => $this->order->owner->full_name ?? '',
             'creator' =>  $this->order->user->full_name ?? '',
-            'branch' => $this->order->branch->name ?? ''
+            'branch' => $this->order->branch->name ?? '',
+            'feedback' => $this->feedback,
         ];
     }
 }
