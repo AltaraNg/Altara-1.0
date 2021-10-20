@@ -67,12 +67,14 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/inactive/prospects', 'ProspectActivityController@inActiveProspects');
     Route::Resource('prospect_activities', 'ProspectActivityController')->only(['index', 'show']);
 
+    Route::prefix('renewal/prompters')->group(function () {
+        Route::get('/', 'RenewalPrompterController@index');
+        Route::post('/', 'RenewalPrompterController@store');
+        Route::get('/statuses', 'RenewalPrompterController@prompterStatuses');
+        Route::get('/stats', 'RenewalPrompterController@statistics');
+        Route::get('/history', 'RenewalPrompterController@show');
+    });
 
-    Route::get('/renewal/prompters', 'RenewalPrompterController@index');
-    Route::post('/renewal/prompters', 'RenewalPrompterController@store');
-
-    Route::get('/renewal/prompters/statuses', 'RenewalPrompterController@prompterStatuses');
-    Route::get('/renewal/prompters/stats', 'RenewalPrompterController@statistics');
 });
 Route::middleware('auth:api')->group(function () {
     Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
