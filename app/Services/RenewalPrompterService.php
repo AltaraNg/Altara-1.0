@@ -11,7 +11,6 @@ class RenewalPrompterService
         $interested =  $this->getNumberOfInterested(clone $renewalPrompterQuery);
         $purchased_renewed = $this->getNumberOfRenewed(clone $renewalPrompterQuery);
         $additional  = [
-            'total' => $renewalPrompterQuery->count(),
             'contacted' => $contacted,
             'interested' => $interested,
             'purchased_renewed' => $purchased_renewed
@@ -34,7 +33,7 @@ class RenewalPrompterService
     private  function getNumberOfRenewed($renewalPrompterQuery)
     {
         return  $renewalPrompterQuery->whereHas('renewalPrompterStatus', function ($query) {
-            $query->where('name', 'purchased/renewed');
+            $query->where('name', 'renewed');
         })->count();
     }
 }
