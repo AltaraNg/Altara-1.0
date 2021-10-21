@@ -177,5 +177,10 @@ class NewOrderFilter extends BaseFilter
             $query->where('renewal_prompter_status_id', $renewalPrompterStatusId);
         });
     }
-    
+    public function uncontactedRenewalPrompters($getNotcontacted = true)
+    {
+        if ($getNotcontacted) {
+            $this->builder->doesntHave('renewalPrompters');
+        }
+    }
 }
