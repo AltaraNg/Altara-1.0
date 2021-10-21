@@ -35,8 +35,13 @@ class RenewalPrompterController extends Controller
     }
 
     //
-    public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter): \Illuminate\Http\Response
+    public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
     {
+//        $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter)->orWhereHas('amortization', function ($query) {
+//                $query->select(DB::RAW("COUNT(*) as same_order_count from amortizations where new_orders.id = amortizations.new_order_id group by amortizations.new_order_id HAVING SUM(same_order_count/same_order_count) * 100 >= 80");
+//        });
+//        return $renewalPromptersQuery->toSql();
+
         $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
 
         $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
@@ -54,13 +59,13 @@ class RenewalPrompterController extends Controller
         $renewal_prompter = $this->renewalPrompterRepository->store([
             'order_id' => $request->order_id,
             'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
-            'promise_date' =>  $request->promised_date,
+            'promise_date' => $request->promised_date,
             'branch_id' => $user->branch_id,
             'user_id' => $user->id,
             'feedback' => $request->feedback,
         ]);
 
-        return $this->sendSuccess(['renewal_prompter' =>   new JSONApiResource($renewal_prompter)], 'Renewal Prompter created successfully');
+        return $this->sendSuccess(['renewal_prompter' => new JSONApiResource($renewal_prompter)], 'Renewal Prompter created successfully');
     }
 
     public function show(RenewalPrompterFilter $renewalPrompterFilter): Response
