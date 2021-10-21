@@ -29,6 +29,8 @@ class RenewalPrompter extends Model
             'creator' =>  $this->order->user->full_name ?? '',
             'branch' => $this->order->branch->name ?? '',
             'feedback' => $this->feedback ?? '',
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
     }
 
