@@ -234,7 +234,7 @@ class NewOrder extends Model
             "down_payment_rate" => $this->downPaymentRate->name ?? null,
             "payment_gateway" => $this->paymentGateway->name ?? null,
             "order_type" => $this->orderType->name ?? null,
-            'renewal_prompters' => $this->when((request()->loadRenewalprompter == true && $this->renewalPrompters->count() > 1), function (){
+            'renewal_prompters' => $this->when((request()->loadRenewalprompter == true && $this->renewalPrompters->count() > 0), function (){
                 return new JSONApiCollection($this->renewalPrompters );
              }),
              'last_renewal_prompter_activity' => $this->when((request()->loadRenewalprompter == true && $this->lastRenewalPrompter), function (){
