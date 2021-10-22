@@ -2,6 +2,7 @@
 
 namespace App\Http\Filters;
 
+use App\Traits\IFilterByBranch;
 use Carbon\Carbon;
 use App\OrderStatus;
 use App\RenewalPrompterStatus;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class NewOrderFilter extends BaseFilter
 {
+//    use IFilterByBranch;
     /**
      * @param int $day
      */
@@ -115,7 +117,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $employee_status
-     * Filter orders employee status 
+     * Filter orders employee status
      */
     public function sector(string $employee_status)
     {
@@ -129,7 +131,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $salesCategory
-     * Filter orders sales 
+     * Filter orders sales
      */
     public function salesCategory(int $salesCategory)
     {
@@ -150,7 +152,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $orderType
-     * Filter orders by order type 
+     * Filter orders by order type
      */
     public function orderType(int $orderType)
     {
@@ -161,7 +163,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $orderType
-     * Filter orders by order type 
+     * Filter orders by order type
      */
     public function isCompletedOrder(bool $isCompletedOrder = true)
     {
@@ -181,6 +183,24 @@ class NewOrderFilter extends BaseFilter
     {
         if ($getNotcontacted) {
             $this->builder->doesntHave('renewalPrompters');
+        }
+    }
+    public function filterOrderByBranch($filterOrderByBranch=true)
+    {
+        if ($filterOrderByBranch){
+            if (auth()->user()->isDSACaptain()) {
+                $this->builder->where('branch_id', auth()->user()->branch_id);
+            } else if (auth()->user()->isCoordinator()) {
+
+                // ** Might need refactoring
+                $branches = auth()->user()->branches;
+                $ids = $branches->map(function ($branch) {
+                    return $branch->id;
+                });
+                $this->builder->whereIn('branch_id', $ids);
+            } else if (auth()->user()->isDSAAgent()) {
+                $this->builder->where('user_id', auth()->user()->id);
+            }
         }
     }
 }
