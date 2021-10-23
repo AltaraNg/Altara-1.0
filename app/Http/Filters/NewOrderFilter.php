@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\OrderStatus;
 use App\RenewalPrompterStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class NewOrderFilter extends BaseFilter
 {
@@ -168,7 +169,8 @@ class NewOrderFilter extends BaseFilter
     public function isCompletedOrder(bool $isCompletedOrder = true)
     {
         if ($isCompletedOrder) {
-            $this->builder->where('status_id', OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id);
+            $rawQuery = DB::raw("EXISTS(SELECT COUNT(*) AS totalRepayment, SUM(IF(amortizations.actual_payment_date IS NOT NULL, 1 , 0)) as noOfRePaymentMade from amortizations WHERE new_orders.id = amortizations.new_order_id GROUP BY amortizations.new_order_id HAVING(totalRepayment-noOfRePaymentMade) <= 2)");
+            $this->builder->where('status_id', OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id)->orWhereRaw($rawQuery);
         }
     }
 
@@ -179,9 +181,9 @@ class NewOrderFilter extends BaseFilter
             $query->where('renewal_prompter_status_id', $renewalPrompterStatusId);
         });
     }
-    public function uncontactedRenewalPrompters($getNotcontacted = true)
+    public function unContactedRenewalPrompters($getNotContacted = true)
     {
-        if ($getNotcontacted) {
+        if ($getNotContacted) {
             $this->builder->doesntHave('renewalPrompters');
         }
     }

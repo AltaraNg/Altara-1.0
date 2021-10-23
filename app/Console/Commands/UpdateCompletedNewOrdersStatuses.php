@@ -24,6 +24,7 @@ class UpdateCompletedNewOrdersStatuses extends Command
      */
     protected $description = 'Updates orders that have been completed and are already in the system';
     private $newOrderRepository;
+
     /**
      * Create a new command instance.
      *
@@ -44,17 +45,23 @@ class UpdateCompletedNewOrdersStatuses extends Command
     {
         $this->info("Starting to update new orders table status");
         $this->info('');
-        $newOrdersWithComplete =  $this->newOrderRepository->reportQuery($newOrderFilter)
-        ->whereHas('amortization', function ($query)
-        {
-            $query->where('actual_payment_date', '!=', null);
-        })->pluck('new_orders.id');
+        $newOrders = $this->newOrderRepository->reportQuery($newOrderFilter)
+            ->has('amortization')->with('amortization')->get()->filter(function ($order) {
+                $noORepaymentMade = $order->amortization->where('actual_payment_date', '!=', null)->count();
+                $expectedNoOFPayment = $order->amortization->count();
+                return $noORepaymentMade == $expectedNoOFPayment;
+            });
         $idOfForCompleted = OrderStatus::where('name', 'like', 'Completed')->first()->id;
         try {
-            NewOrder::whereIn('id', $newOrdersWithComplete)->update(['status_id' => $idOfForCompleted]);
+            $count = 0;
+            foreach ($newOrders as $order){
+                $order->update(['status_id' => $idOfForCompleted]);
+                $count++;
+            }
+            $this->info($count . " orders updated");
         } catch (\Throwable $th) {
-           $this->error($th->getMessage());
+            $this->error($th->getMessage());
         }
-        
+
     }
 }
