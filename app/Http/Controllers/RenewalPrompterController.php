@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RenewalPrompterCustomerList;
 use App\Http\Resources\JSONApiCollection;
 use App\Http\Resources\JSONApiResource;
 use App\Http\Resources\RenewalPrompterCollection;
@@ -21,6 +22,7 @@ use App\Notifications\RenewalNotification;
 use App\Http\Filters\RenewalPrompterFilter;
 use App\Http\Requests\RenewalPrompterRequest;
 use App\Repositories\RenewalPrompterRepository;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RenewalPrompterController extends Controller
 {
@@ -83,6 +85,6 @@ class RenewalPrompterController extends Controller
     public function customerList(NewOrderFilter $newOrderFilter, RenewalPrompterService $renewalPrompterService)
     {
         $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
-        return $renewalPrompterService->generateRenewalPrompterCustomerListMetaData($renewalPromptersQuery);
+        return Excel::download(new RenewalPrompterCustomerList($renewalPrompterService->generateRenewalPrompterCustomerListMetaData($renewalPromptersQuery)), 'RenewalPrompterCustomerList.csv');
     }
 }

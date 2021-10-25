@@ -13,32 +13,34 @@ class RenewalPrompterCustomerList implements FromCollection, WithMapping, WithHe
 {
     use Exportable;
 
-    public function __construct($newOrders)
+    private $renewalPrompterCustomers;
+
+    public function __construct($renewalPrompterCustomers)
     {
-        $this->newOrders = $newOrders;
+        $this->renewalPrompterCustomers = $renewalPrompterCustomers;
     }
 
     public function headings(): array
     {
         return [
-            'Fullname',
+            'Full Name',
             'Email',
             'Phone Number',
         ];
     }
 
-    public function map($newOrder): array
+    public function map($renewalPrompterCustomer): array
     {
         return [
-            $newOrder['full_name'] ?: "",
-            $newOrder['email'] ?: "",
-            $newOrder['phone_number'] ?: "",
+            $renewalPrompterCustomer['full_name'] ?: "",
+            $renewalPrompterCustomer['email'] ?: "",
+            $renewalPrompterCustomer['phone_number'] ?: "",
         ];
     }
 
     public function collection()
     {
-        return $this->newOrders;
+        return $this->renewalPrompterCustomers;
     }
 
     public function columnFormats(): array
