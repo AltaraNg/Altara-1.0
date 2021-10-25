@@ -54,13 +54,13 @@ class RenewalPrompterController extends Controller
         $renewal_prompter = $this->renewalPrompterRepository->store([
             'order_id' => $request->order_id,
             'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
-            'promise_date' =>  $request->promised_date,
+            'promise_date' => $request->promised_date,
             'branch_id' => $user->branch_id,
             'user_id' => $user->id,
             'feedback' => $request->feedback,
         ]);
 
-        return $this->sendSuccess(['renewal_prompter' =>   new JSONApiResource($renewal_prompter)], 'Renewal Prompter created successfully');
+        return $this->sendSuccess(['renewal_prompter' => new JSONApiResource($renewal_prompter)], 'Renewal Prompter created successfully');
     }
 
     public function show(RenewalPrompterFilter $renewalPrompterFilter): Response
@@ -78,5 +78,11 @@ class RenewalPrompterController extends Controller
     {
         $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter)->get();
         return $this->sendSuccess(['renewal_prompter_agents_stat' => $renewalPrompterStatQuery], 'renewal prompter agents statistics retrieved successfully');
+    }
+
+    public function customerList(NewOrderFilter $newOrderFilter, RenewalPrompterService $renewalPrompterService)
+    {
+        $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
+        return $renewalPrompterService->generateRenewalPrompterCustomerListMetaData($renewalPromptersQuery);
     }
 }
