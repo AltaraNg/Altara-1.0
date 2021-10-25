@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -29,16 +30,16 @@ class RenewalPrompterCustomerList implements FromCollection, WithMapping, WithHe
         ];
     }
 
-    public function map($renewalPrompterCustomer): array
+    public function map($row): array
     {
         return [
-            $renewalPrompterCustomer['full_name'] ?: "",
-            $renewalPrompterCustomer['email'] ?: "",
-            $renewalPrompterCustomer['phone_number'] ?: "",
+            $row['full_name'] ?: "",
+            $row['email'] ?: "not available",
+            $row['phone_number'] ?: "not available",
         ];
     }
 
-    public function collection()
+    public function collection(): Collection
     {
         return $this->renewalPrompterCustomers;
     }
@@ -46,8 +47,7 @@ class RenewalPrompterCustomerList implements FromCollection, WithMapping, WithHe
     public function columnFormats(): array
     {
         return [
-            // 'F' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-            // 'J' => NumberFormat::FORMAT_DATE_DDMMYYYY
+
         ];
     }
 }
