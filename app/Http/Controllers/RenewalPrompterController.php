@@ -76,9 +76,9 @@ class RenewalPrompterController extends Controller
         return $this->sendSuccess(['prompter_statuses' => RenewalPrompterStatus::all()], 'renewal prompter status retrieved successfully');
     }
 
-    public function statistics(RenewalPrompterFilter $renewalPrompterFilter): Response
+    public function statistics(RenewalPrompterFilter $renewalPrompterFilter)
     {
-        $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter)->get();
+      return  $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter)->toSql();
         return $this->sendSuccess(['renewal_prompter_agents_stat' => $renewalPrompterStatQuery], 'renewal prompter agents statistics retrieved successfully');
     }
 
