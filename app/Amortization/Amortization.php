@@ -20,19 +20,23 @@ abstract class Amortization
 
     public function repaymentCount(): int
     {
-        return (int)floor($this->repaymentDuration()/$this->repaymentCircle());
+        $result = $this->repaymentDuration() / $this->repaymentCircle();
+        if ($result >= 24) {
+            return 24;
+        } else if ($result >= 18) {
+            return 18;
+        } else if ($result >= 12) {
+            return 12;
+        } else if ($result >= 6) {
+            return 6;
+        }
+        return 3;
     }
+
 
     public function repaymentAmount(): float
     {
-        if($this->order->businessType->name == 'Altara Credit Products' || $this->order->businessType->name == 'Altara Credit Cash Loan'){
-            return floor($this->order->repayment/$this->repaymentCount() / 100) * 100;
-        }
-
-
-        return round($this->order->repayment/$this->repaymentCount() / 100) * 100;
-
-
+        return round($this->order->repayment / $this->repaymentCount() / 100) * 100;
     }
 
     public function repaymentDuration(): int
@@ -53,7 +57,7 @@ abstract class Amortization
     public function create()
     {
         $reyAmount = $this->repaymentAmount();
-        for ($i = 1; $i <= $this->repaymentCount(); $i++ ){
+        for ($i = 1; $i <= $this->repaymentCount(); $i++) {
             $this->order->amortization()->create([
                 'expected_payment_date' => $this->getRepaymentDate($i),
                 'expected_amount' => $reyAmount
@@ -65,7 +69,7 @@ abstract class Amortization
     {
         $plan = [];
         $reyAmount = $this->repaymentAmount();
-        for ($i = 1; $i <= $this->repaymentCount(); $i++ ){
+        for ($i = 1; $i <= $this->repaymentCount(); $i++) {
             $plan[] = [
                 'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
                 'expected_amount' => $reyAmount
