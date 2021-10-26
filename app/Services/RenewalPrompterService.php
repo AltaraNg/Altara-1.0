@@ -11,17 +11,16 @@ use Illuminate\Support\Facades\DB;
 class RenewalPrompterService
 {
 
-    public function generateMetaData($renewalPrompterStatQuery, $renewalPrompterQuery)
+    public function generateMetaData($renewalPrompterStatQuery, $renewalPrompterQuery): array
     {
         $contacted = $this->getNumberOfContacted(clone $renewalPrompterQuery);
         $interested = $this->getNumberOfInterested(clone $renewalPrompterQuery);
         $purchased_renewed = $this->getNumberOfRenewed(clone $renewalPrompterQuery);
-        $additional = [
+        return [
             'contacted' => $contacted,
             'interested' => $interested,
             'purchased_renewed' => $purchased_renewed
         ];
-        return $additional;
     }
 
     public function generateRenewalPrompterCustomerListMetaData($renewalPrompterQuery)
