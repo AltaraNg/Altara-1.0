@@ -7,6 +7,7 @@ use App\Http\Resources\JSONApiCollection;
 use App\Http\Resources\JSONApiResource;
 use App\Http\Resources\RenewalPrompterCollection;
 use App\Http\Resources\RenewalPrompterResource;
+use App\NewOrder;
 use App\OrderStatus;
 use App\RenewalPrompter;
 use Illuminate\Http\Request;
@@ -76,9 +77,11 @@ class RenewalPrompterController extends Controller
         return $this->sendSuccess(['prompter_statuses' => RenewalPrompterStatus::all()], 'renewal prompter status retrieved successfully');
     }
 
-    public function statistics(RenewalPrompterFilter $renewalPrompterFilter)
+    public function statistics(NewOrderFilter $newOrderFilter, RenewalPrompterService  $renewalPrompterService)
     {
-      return  $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter)->toSql();
+        $renewalPrompterStatQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
+
+        return  $renewalPrompterService->getAgentsStats($renewalPrompterStatQuery);
         return $this->sendSuccess(['renewal_prompter_agents_stat' => $renewalPrompterStatQuery], 'renewal prompter agents statistics retrieved successfully');
     }
 

@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Helper\LogHelper;
+use App\NewOrder;
+use App\RenewalPrompter;
 use App\RenewalPrompterStatus;
 use Illuminate\Support\Facades\DB;
 
@@ -59,6 +62,28 @@ class RenewalPrompterService
     {
         return $renewalPrompterQuery->whereHas('renewalPrompters', function ($query) {
             $query->where('renewal_prompter_status_id', RenewalPrompterStatus::where('name', 'renewed')->first()->id);
+        })->count();
+    }
+
+    public function getAgentsStats($renewalPrompterQuery)
+    {
+        $renewalPrompterQueryClone = clone $renewalPrompterQuery;
+        return $renewalPrompterQuery->join('users', 'new_orders.owner_id', '=', 'users.id')
+            ->select(DB::raw("count(*) as count"), "users.full_name", "new_orders.owner_id as owner_id", "new_orders.id as order_id")
+            ->groupBy('owner_id')->get()->map(function ($agent) use ($renewalPrompterQueryClone) {
+                return [
+                    "owner_id" => $agent->owner_id,
+                    'agent_name' => $agent->full_name,
+                    'number_sales' => $agent->count,
+                    "total_renewals" => $this->getTotalRenewal(clone $renewalPrompterQueryClone, $agent->owner_id)
+                ];
+            })->sortByDesc('total_renewals')->take(10)->values();
+    }
+
+    public function getTotalRenewal($query, $owner_id)
+    {
+        return $query->where('owner_id', $owner_id)->whereHas('renewalPrompters', function ($query) {
+            $query->where('renewal_prompter_status_id', RenewalPrompterStatus::where('name', 'renewed')->first()->id ?? '');
         })->count();
     }
 }
