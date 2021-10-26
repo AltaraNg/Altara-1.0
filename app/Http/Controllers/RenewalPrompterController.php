@@ -38,7 +38,7 @@ class RenewalPrompterController extends Controller
     }
 
     //
-    public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter): \Illuminate\Http\Response
+    public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
     {
         $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
 
