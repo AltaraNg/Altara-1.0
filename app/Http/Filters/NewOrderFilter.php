@@ -2,13 +2,16 @@
 
 namespace App\Http\Filters;
 
+use App\Traits\IFilterByBranch;
 use Carbon\Carbon;
 use App\OrderStatus;
 use App\RenewalPrompterStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class NewOrderFilter extends BaseFilter
 {
+//    use IFilterByBranch;
     /**
      * @param int $day
      */
@@ -115,7 +118,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $employee_status
-     * Filter orders employee status 
+     * Filter orders employee status
      */
     public function sector(string $employee_status)
     {
@@ -129,7 +132,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $salesCategory
-     * Filter orders sales 
+     * Filter orders sales
      */
     public function salesCategory(int $salesCategory)
     {
@@ -150,7 +153,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $orderType
-     * Filter orders by order type 
+     * Filter orders by order type
      */
     public function orderType(int $orderType)
     {
@@ -161,12 +164,20 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $orderType
-     * Filter orders by order type 
+     * Filter orders by order type
      */
     public function isCompletedOrder(bool $isCompletedOrder = true)
     {
         if ($isCompletedOrder) {
             $this->builder->where('status_id', OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id);
+        }
+    }
+
+    public function orderHasAtMostTwoPaymentsLeft(bool $orderHasTwoPaymentsLeft = true)
+    {
+        if ($orderHasTwoPaymentsLeft) {
+            $rawQuery = DB::raw("EXISTS(SELECT COUNT(*) AS totalRepayment, SUM(IF(amortizations.actual_payment_date IS NOT NULL, 1 , 0)) as noOfRePaymentMade from amortizations WHERE new_orders.id = amortizations.new_order_id GROUP BY amortizations.new_order_id HAVING(totalRepayment-noOfRePaymentMade) <= 2)");
+            $this->builder->orWhereRaw($rawQuery);
         }
     }
 
@@ -177,10 +188,28 @@ class NewOrderFilter extends BaseFilter
             $query->where('renewal_prompter_status_id', $renewalPrompterStatusId);
         });
     }
-    public function uncontactedRenewalPrompters($getNotcontacted = true)
+    public function unContactedRenewalPrompters($getNotContacted = true)
     {
-        if ($getNotcontacted) {
+        if ($getNotContacted) {
             $this->builder->doesntHave('renewalPrompters');
+        }
+    }
+    public function filterOrderByBranch($filterOrderByBranch=true)
+    {
+        if ($filterOrderByBranch){
+            if (auth()->user()->isDSACaptain()) {
+                $this->builder->where('branch_id', auth()->user()->branch_id);
+            } else if (auth()->user()->isCoordinator()) {
+
+                // ** Might need refactoring
+                $branches = auth()->user()->branches;
+                $ids = $branches->map(function ($branch) {
+                    return $branch->id;
+                });
+                $this->builder->whereIn('branch_id', $ids);
+            } else if (auth()->user()->isDSAAgent()) {
+                $this->builder->where('user_id', auth()->user()->id);
+            }
         }
     }
 }

@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/statuses', 'RenewalPrompterController@prompterStatuses');
         Route::get('/stats', 'RenewalPrompterController@statistics');
         Route::get('/history', 'RenewalPrompterController@show');
+        Route::get('/customer-list', 'RenewalPrompterController@customerList');
     });
 
 });
