@@ -80,9 +80,7 @@ class RenewalPrompterController extends Controller
     public function statistics(NewOrderFilter $newOrderFilter, RenewalPrompterService  $renewalPrompterService)
     {
         $renewalPrompterStatQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
-
-        return  $renewalPrompterService->getAgentsStats($renewalPrompterStatQuery);
-        return $this->sendSuccess(['renewal_prompter_agents_stat' => $renewalPrompterStatQuery], 'renewal prompter agents statistics retrieved successfully');
+        return $this->sendSuccess(['renewal_prompter_agents_stat' =>   $renewalPrompterService->getAgentsStats($renewalPrompterStatQuery)], 'renewal prompter agents statistics retrieved successfully');
     }
 
     public function customerList(NewOrderFilter $newOrderFilter, RenewalPrompterService $renewalPrompterService)

@@ -72,7 +72,7 @@ class RenewalPrompterService
             ->select(DB::raw("count(*) as count"), "users.full_name", "new_orders.owner_id as owner_id", "new_orders.id as order_id")
             ->groupBy('owner_id')->get()->map(function ($agent) use ($renewalPrompterQueryClone) {
                 return [
-                    "owner_id" => $agent->owner_id,
+                    "agent_id" => $agent->owner_id,
                     'agent_name' => $agent->full_name,
                     'number_sales' => $agent->count,
                     "total_renewals" => $this->getTotalRenewal(clone $renewalPrompterQueryClone, $agent->owner_id)
