@@ -16,10 +16,12 @@ class RenewalPrompterService
         $contacted = $this->getNumberOfContacted(clone $renewalPrompterQuery);
         $interested = $this->getNumberOfInterested(clone $renewalPrompterQuery);
         $purchased_renewed = $this->getNumberOfRenewed(clone $renewalPrompterQuery);
+        $un_contacted = $this->getNumberOfUnContacted(clone $renewalPrompterQuery);
         return [
             'contacted' => $contacted,
             'interested' => $interested,
-            'purchased_renewed' => $purchased_renewed
+            'purchased_renewed' => $purchased_renewed,
+            'un_contacted' => $un_contacted
         ];
     }
 
@@ -48,6 +50,11 @@ class RenewalPrompterService
         return $renewalPrompterQuery->whereHas('renewalPrompters', function ($query) {
             $query->where('renewal_prompter_status_id', RenewalPrompterStatus::where('name', 'contacted')->first()->id);
         })->count();
+    }
+
+    private function getNumberOfUnContacted($renewalPrompterQuery)
+    {
+        return $renewalPrompterQuery->doesnthave('renewalPrompters')->count();
     }
 
     private function getNumberOfInterested($renewalPrompterQuery)
