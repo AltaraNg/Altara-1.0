@@ -199,9 +199,13 @@ class User extends Authenticatable
     }
     public function isDSAAgent()
     {
-        return  $this->role->name === Role::DSA ||
+        return  $this->role->name === Role::CLA ||
          $this->role->name === Role::DSA_REFERRAL ||
          $this->role->name === Role::DSA_RENEWAL;
+    }
+    public function isCashLoanAgent()
+    {
+        return  $this->role->name === Role::CLA;
     }
     public function todo()
     {
