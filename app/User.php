@@ -199,7 +199,7 @@ class User extends Authenticatable
     }
     public function isDSAAgent()
     {
-        return  $this->role->name === Role::CLA ||
+        return  $this->role->name === Role::DSA ||
          $this->role->name === Role::DSA_REFERRAL ||
          $this->role->name === Role::DSA_RENEWAL;
     }
