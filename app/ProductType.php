@@ -11,5 +11,5 @@ class ProductType extends Model
     const APPLIANCE = 'appliance';
     const LIFESTYLE = 'lifestyle';
     const RESCUE = 'rescue';
-    const CASH_LOAN = 'cash_loan';
+    const CASH_LOAN = 'Cash Loans';
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Filters;
 
+use App\ProductType;
 use App\Traits\IFilterByBranch;
 use Carbon\Carbon;
 use App\OrderStatus;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class NewOrderFilter extends BaseFilter
 {
-//    use IFilterByBranch;
+    //    use IFilterByBranch;
     /**
      * @param int $day
      */
@@ -194,21 +195,26 @@ class NewOrderFilter extends BaseFilter
             $this->builder->doesntHave('renewalPrompters');
         }
     }
-    public function filterOrderByBranch($filterOrderByBranch=true)
+    public function filterOrderByBranch($filterOrderByBranch = true)
     {
 
-        if ($filterOrderByBranch){
+        if ($filterOrderByBranch) {
             if (auth()->user()->isDSACaptain()) {
-                $this->builder->where('branch_id', auth()->user()->branch_id);
+                $this->builder->where('new_orders.branch_id', auth()->user()->branch_id);
             } else if (auth()->user()->isCoordinator()) {
                 // ** Might need refactoring
                 $branches = auth()->user()->branches;
                 $ids = $branches->map(function ($branch) {
                     return $branch->id;
                 });
-                $this->builder->whereIn('branch_id', $ids);
+                $this->builder->whereIn('new_orders.branch_id', $ids);
             } else if (auth()->user()->isDSAAgent()) {
+
                 $this->builder->where('owner_id', auth()->user()->id);
+            } else if (auth()->user()->isCashLoanAgent()) {
+                $this->builder->where('owner_id', auth()->user()->id)->whereHas('product.productType', function ($query) {
+                    $query->where('name', ProductType::CASH_LOAN);
+                });
             }
         }
     }
