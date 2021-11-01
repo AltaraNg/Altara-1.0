@@ -27,7 +27,7 @@ class AddDiscountIdToNewOrdersTable extends Migration
     public function down()
     {
         Schema::table('new_orders', function (Blueprint $table) {
-            //
+            $table->dropColumn('discount_id');
         });
     }
 }

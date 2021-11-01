@@ -46,6 +46,7 @@ class NewOrder extends Model
             'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
+            'discount_id' => 'sometimes|exists:discounts,id',
         ];
     }
 
@@ -70,6 +71,7 @@ class NewOrder extends Model
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
             'owner_id' => 'sometimes|required|exists:users,id',
+            'discount_id' => 'sometimes|exists:discounts,id',
         ];
     }
 
