@@ -163,6 +163,11 @@ class NewOrder extends Model
         );
     }
 
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
+    }
+
     /**
      * Get all of the New Order's payments.
      */
@@ -238,6 +243,7 @@ class NewOrder extends Model
             "order_type" => $this->orderType->name ?? null,
             'renewal_prompters' => ($this->renewalPrompters->count() > 0) ? new JSONApiCollection($this->renewalPrompters) : null,
             'last_renewal_prompter_activity' => ($this->lastRenewalPrompter) ? new JSONApiResource($this->lastRenewalPrompter) : null,
+            'order_discount' => $this->discount,
         ];
     }
 }
