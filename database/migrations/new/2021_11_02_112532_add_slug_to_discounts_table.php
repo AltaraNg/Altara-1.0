@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSlugToBusinessTypesTable extends Migration
+class AddSlugToDiscountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddSlugToBusinessTypesTable extends Migration
      */
     public function up()
     {
-        Schema::table('business_types', function (Blueprint $table) {
+        Schema::table('discounts', function (Blueprint $table) {
             $table->string('slug')->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddSlugToBusinessTypesTable extends Migration
      */
     public function down()
     {
-        Schema::table('business_types', function (Blueprint $table) {
+        Schema::table('discounts', function (Blueprint $table) {
             $table->dropColumn('slug');
         });
     }
