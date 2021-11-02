@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RenewalPrompterCustomerList;
 use App\Http\Resources\JSONApiCollection;
 use App\Http\Resources\JSONApiResource;
 use App\Http\Resources\RenewalPrompterCollection;
 use App\Http\Resources\RenewalPrompterResource;
+use App\NewOrder;
 use App\OrderStatus;
 use App\RenewalPrompter;
 use Illuminate\Http\Request;
@@ -21,6 +23,7 @@ use App\Notifications\RenewalNotification;
 use App\Http\Filters\RenewalPrompterFilter;
 use App\Http\Requests\RenewalPrompterRequest;
 use App\Repositories\RenewalPrompterRepository;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RenewalPrompterController extends Controller
 {
@@ -35,12 +38,12 @@ class RenewalPrompterController extends Controller
     }
 
     //
-    public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter): \Illuminate\Http\Response
+    public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
     {
         $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
 
         $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
-        $additional = $renewalPrompterService->generateMetaData($renewalPrompterStatQuery, clone $renewalPromptersQuery);
+        $additional = $renewalPrompterService->generateMetaData($renewalPrompterStatQuery, $renewalPromptersQuery);
         $additional['total'] = $renewalPromptersQuery->count();
         if (request('rollUp')) {
             return $this->sendSuccess(['renewal_prompters' => $renewalPromptersQuery->paginate(10) ?? [], "meta" => $additional], 'Completed orders and renewal prompter stats retrieved successfully');
@@ -54,13 +57,13 @@ class RenewalPrompterController extends Controller
         $renewal_prompter = $this->renewalPrompterRepository->store([
             'order_id' => $request->order_id,
             'renewal_prompter_status_id' => $request->renewal_prompter_status_id,
-            'promise_date' =>  $request->promised_date,
+            'promise_date' => $request->promised_date,
             'branch_id' => $user->branch_id,
             'user_id' => $user->id,
             'feedback' => $request->feedback,
         ]);
 
-        return $this->sendSuccess(['renewal_prompter' =>   new JSONApiResource($renewal_prompter)], 'Renewal Prompter created successfully');
+        return $this->sendSuccess(['renewal_prompter' => new JSONApiResource($renewal_prompter)], 'Renewal Prompter created successfully');
     }
 
     public function show(RenewalPrompterFilter $renewalPrompterFilter): Response
@@ -74,9 +77,15 @@ class RenewalPrompterController extends Controller
         return $this->sendSuccess(['prompter_statuses' => RenewalPrompterStatus::all()], 'renewal prompter status retrieved successfully');
     }
 
-    public function statistics(RenewalPrompterFilter $renewalPrompterFilter): Response
+    public function statistics(NewOrderFilter $newOrderFilter, RenewalPrompterService  $renewalPrompterService)
     {
-        $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter)->get();
-        return $this->sendSuccess(['renewal_prompter_agents_stat' => $renewalPrompterStatQuery], 'renewal prompter agents statistics retrieved successfully');
+        $renewalPrompterStatQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
+        return $this->sendSuccess(['renewal_prompter_agents_stat' =>   $renewalPrompterService->getAgentsStats($renewalPrompterStatQuery)], 'renewal prompter agents statistics retrieved successfully');
+    }
+
+    public function customerList(NewOrderFilter $newOrderFilter, RenewalPrompterService $renewalPrompterService)
+    {
+        $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
+        return Excel::download(new RenewalPrompterCustomerList($renewalPrompterService->generateRenewalPrompterCustomerListMetaData($renewalPromptersQuery)), 'RenewalPrompterCustomerList.csv');
     }
 }

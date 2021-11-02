@@ -46,6 +46,7 @@ class NewOrder extends Model
             'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
+            'discount_id' => 'sometimes|exists:discounts,id',
         ];
     }
 
@@ -70,6 +71,7 @@ class NewOrder extends Model
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
             'owner_id' => 'sometimes|required|exists:users,id',
+            'discount_id' => 'sometimes|exists:discounts,id',
         ];
     }
 
@@ -161,6 +163,11 @@ class NewOrder extends Model
         );
     }
 
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
+    }
+
     /**
      * Get all of the New Order's payments.
      */
@@ -236,6 +243,7 @@ class NewOrder extends Model
             "order_type" => $this->orderType->name ?? null,
             'renewal_prompters' => ($this->renewalPrompters->count() > 0) ? new JSONApiCollection($this->renewalPrompters) : null,
             'last_renewal_prompter_activity' => ($this->lastRenewalPrompter) ? new JSONApiResource($this->lastRenewalPrompter) : null,
+            'order_discount' => $this->discount,
         ];
     }
 }
