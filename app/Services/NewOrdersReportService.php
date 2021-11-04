@@ -74,6 +74,7 @@ class NewOrdersReportService
     }
 
 
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     private function generateUngroupedBranchesDataWithNoOrders($allBranches, $groupedBranches)
     {
         return $allBranches->map(function ($branch) use ($groupedBranches) {
@@ -126,27 +127,27 @@ class NewOrdersReportService
     private  function getNoOfAltaraPayProduct($newOrdersForComputation)
     {
         return $newOrdersForComputation->whereHas('businessType', function ($query) {
-            $query->where('name', 'like', '%Altara Pay%');
+            $query->where('slug', 'like', '%ap%');
         })->count();
     }
 
     private  function getNoOfAltaraPayProductPerBranch($newOrdersForComputation, $branch_id)
     {
         return $newOrdersForComputation->where('branch_id', $branch_id)->whereHas('businessType', function ($query) {
-            $query->where('name', 'like', '%Altara Pay%');
+            $query->where('slug', 'like', '%ap%');
         })->count();
     }
     private  function getNoOfAltaraCashProductPerBranch($newOrdersForComputation, $branch_id)
     {
         return $newOrdersForComputation->where('branch_id', $branch_id)->whereHas('businessType', function ($query) {
-            $query->where('name', 'like', '%Altara Credit%');
+            $query->where('slug', 'like', '%ac%');
         })->count();
     }
 
     private  function getNoOfAltaraCashProduct($newOrdersForComputation)
     {
         return $newOrdersForComputation->whereHas('businessType', function ($query) {
-            $query->where('name', 'like', '%Altara Credit%');
+            $query->where('slug', 'like', '%ac%');
         })->count();
     }
 
