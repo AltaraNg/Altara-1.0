@@ -86,7 +86,7 @@ class Product extends Model
             'feature' => $this->feature,
             'product_type' => $this->productType->name ?? null,
             'is_active' => $this->is_active,
-            'user' => $this->user->full_name,
+            'user' => $this->user->full_name ?? null,
             'inventories' => $this->when((bool) strpos(url()->current(), 'inventory-summary'), function () {
                 return $this->invs;
             }),

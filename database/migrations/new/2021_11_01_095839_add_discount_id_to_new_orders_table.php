@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSlugToBusinessTypesTable extends Migration
+class AddDiscountIdToNewOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddSlugToBusinessTypesTable extends Migration
      */
     public function up()
     {
-        Schema::table('business_types', function (Blueprint $table) {
-            $table->string('slug')->nullable();
+        Schema::table('new_orders', function (Blueprint $table) {
+            $table->unsignedInteger('discount_id')->nullable();
+            $table->foreign('discount_id')->references('id')->on('discounts');
         });
     }
 
@@ -25,8 +26,8 @@ class AddSlugToBusinessTypesTable extends Migration
      */
     public function down()
     {
-        Schema::table('business_types', function (Blueprint $table) {
-            $table->dropColumn('slug');
+        Schema::table('new_orders', function (Blueprint $table) {
+            $table->dropColumn('discount_id');
         });
     }
 }

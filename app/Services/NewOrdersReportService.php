@@ -63,8 +63,8 @@ class NewOrdersReportService
             ->select(
                 'branches.name as branch_name',
                 'branches.id',
-                DB::raw("count(*) as count, 
-            AVG(product_price) as avg_price_of_prod_per_showroom, 
+                DB::raw("count(*) as count,
+            AVG(product_price) as avg_price_of_prod_per_showroom,
             AVG(product_price) * count(*)  as total_potential_revenue_sold_per_showroom,
             SUM(product_price) as sum_product_price,
             SUM(down_payment) as sum_down_payment
