@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerStage;
 use App\Document;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
+use App\Repositories\ContactCustomerRepository;
 use App\Verification;
 use File;
 use Illuminate\Http\Request;
@@ -11,6 +15,12 @@ use Illuminate\Support\Str;
 
 class DocumentController extends Controller
 {
+    private $contactRepo;
+
+    public function __construct(ContactCustomerRepository $contactRepository)
+    {
+        $this->contactRepo = $contactRepository;
+    }
    /**
     * Display a listing of the resource.
     *
@@ -72,7 +82,7 @@ class DocumentController extends Controller
     * @return \Illuminate\Http\Response
     */
 
-   public function update(Request $request, $id)
+   public function update(Request $request, $id,  ContactCustomerFilter $contactCustomerFilter)
    {
       /** 1. Validate the document(image) */
       $this->validate($request, [
@@ -121,6 +131,13 @@ class DocumentController extends Controller
 
          /** update the record*/
          $verification[$request['document']] = 1;
+         if ($verification->id_card ==1 && $verification->passport == 1){
+             $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('id', $document->customer_id)->first();
+             $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::KYC)->first()->id]);
+             if ($contact_customer->wasChanged('customer_stage_id')) {
+                 event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+             }
+         }
 
          /** save the record*/
          $verification->save();

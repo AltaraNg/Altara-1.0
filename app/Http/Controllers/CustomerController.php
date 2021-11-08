@@ -96,7 +96,7 @@ class CustomerController extends Controller
 
         /** Upgrade customer stage if reg_id is supplied */
         if ($request->has('reg_id')) {
-            $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('reg_id', $request->reg_id)->first();
+            $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('id', $request->reg_id)->first();
             $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::REGISTERED)->first()->id]);
             if ($contact_customer->wasChanged('customer_stage_id')) {
                 event(new CustomerStageUpdatedEvent($customer_contact->refresh()));

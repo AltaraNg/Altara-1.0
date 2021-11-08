@@ -6,6 +6,7 @@ use App\Events\NewOrderEvent;
 use App\Events\RepaymentEvent;
 use App\Events\TodoCreatedEvent;
 use App\Events\OldRepaymentEvent;
+use App\Listeners\ContactCustomerStageListener;
 use App\Listeners\NewOrderListener;
 use App\Events\FeedbackCreatedEvent;
 use App\Events\ProductTransferEvent;
@@ -62,7 +63,8 @@ class EventServiceProvider extends ServiceProvider
             ProspectActivityListener::class
         ],
         CustomerStageUpdatedEvent::class => [
-            CustomerStageProspectActivityListener::class
+            CustomerStageProspectActivityListener::class,
+//            ContactCustomerStageListener::class,
         ],
     ];
 
