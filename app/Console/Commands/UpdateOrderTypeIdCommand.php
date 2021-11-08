@@ -71,23 +71,23 @@ class UpdateOrderTypeIdCommand extends Command
 
     private  function getAltaraPayBusinessTypeIds()
     {
-        return BusinessType::where('name', 'like', '%Altara Pay%')->pluck('id')->toArray();
+        return BusinessType::where('slug', 'like', '%ap%')->pluck('id')->toArray();
     }
 
     private  function getAltaraCreditBusinessTypeIds()
     {
-        return BusinessType::where('name', 'like', '%Altara Credit%')->pluck('id')->toArray();
+        return BusinessType::where('slug', 'like', '%ac%')->pluck('id')->toArray();
     }
 
     private  function getAltaraPayOrderTypeId()
     {
-        $orderType = OrderType::where('name', 'like', '%Altara Pay%')->first();
+        $orderType = OrderType::where('slug', 'like', '%ap%')->first();
         return  $orderType->id ?? null;
     }
 
     private  function getAltaraCreditOrderTypeId()
     {
-        $orderType = OrderType::where('name', 'like', '%Altara Credit%')->first();
+        $orderType = OrderType::where('slug', 'like', '%ac%')->first();
         return  $orderType->id ?? null;
     }
 
