@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Address;
 use App\Branch;
+use App\ContactCustomer;
 use App\Customer;
+use App\CustomerStage;
 use App\Document;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
 use App\PersonalGuarantor;
 use App\ProcessingFee;
+use App\Repositories\ContactCustomerRepository;
 use App\State;
 use App\Verification;
 use App\WorkGuarantor;
@@ -17,11 +22,19 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
+    private $contactRepo;
+
+    public function __construct(ContactCustomerRepository $contactRepository)
+    {
+        $this->contactRepo = $contactRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
 
     public function index()
     {
@@ -57,13 +70,13 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, ContactCustomerFilter $contactCustomerFilter)
     {
         /** 1. validate the customer's phone number */
         $this->validate($request, [
             'telephone' => 'required|string|unique:customers,telephone',
-            'email' => 'required|string|email|unique:customers,email'
-
+            'email' => 'required|string|email|unique:customers,email',
+            'reg_id' => 'sometimes|exists:contact_customers,reg_id',
         ]);
 
         /** 2. Create a new customer instance */
@@ -80,6 +93,15 @@ class CustomerController extends Controller
 
         /** 6. create a record for the customer in the verifications table */
         $this->createCustomerVerification($customer->id);
+
+        /** Upgrade customer stage if reg_id is supplied */
+        if ($request->has('reg_id')) {
+            $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('reg_id', $request->reg_id)->first();
+            $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::REGISTERED)->first()->id]);
+            if ($contact_customer->wasChanged('customer_stage_id')) {
+                event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+            }
+        }
 
         /** 7. return the registered flag, a new customer object form and the just created customer*/
         return response()->json([
