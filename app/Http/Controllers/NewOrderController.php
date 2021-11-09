@@ -48,13 +48,13 @@ class NewOrderController extends Controller
     public function store(NewOrderRequest $request, ContactCustomerFilter $contactCustomerFilter)
     {
         $order = $this->newOrderRepository->store($request->validated());
-        if ($order){
-            $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('id', $order->customer_id)->first();
-            $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id]);
-            if ($contact_customer->wasChanged('customer_stage_id')) {
-                event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
-            }
-        }
+        // if ($order){
+        //     $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('id', $order->customer_id)->first();
+        //     $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id]);
+        //     if ($contact_customer->wasChanged('customer_stage_id')) {
+        //         event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+        //     }
+        // }
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 
