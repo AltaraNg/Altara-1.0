@@ -40,6 +40,11 @@ class RenewalPrompterController extends Controller
     //
     public function index(RenewalPrompterService $renewalPrompterService, NewOrderFilter $newOrderFilter, RenewalPrompterFilter $renewalPrompterFilter)
     {
+//        $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter)->orWhereHas('amortization', function ($query) {
+//                $query->select(DB::RAW("COUNT(*) as same_order_count from amortizations where new_orders.id = amortizations.new_order_id group by amortizations.new_order_id HAVING SUM(same_order_count/same_order_count) * 100 >= 80");
+//        });
+//        return $renewalPromptersQuery->toSql();
+
         $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
 
         $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);

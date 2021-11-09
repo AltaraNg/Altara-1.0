@@ -15,8 +15,8 @@ class JSONApiResource extends JsonResource
     public function toArray($request) :array
     {
         return [
-            'id' => $this->id ?? '',
-            'attributes' => $this->allowedAttributes() ?? [],
+            'id' => $this->id,
+            'attributes' => $this->allowedAttributes(),
         ];
     }
 }
