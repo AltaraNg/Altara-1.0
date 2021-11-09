@@ -11,6 +11,7 @@ class CustomerStage extends Model
     const REGISTERED = 'Registered On Portal';
     const AFFIDAVIT = 'Paid Affidavit';
     const PURCHASED = 'Paid Downpayment and Product Picked Up';
+    const KYC = "KYC Documents Submitted";
 
     public function prospectActivities()
     {

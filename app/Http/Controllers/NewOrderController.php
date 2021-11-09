@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerStage;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
+use App\Repositories\ContactCustomerRepository;
 use App\Repositories\NewOrderRepository;
 use App\Services\NewOrdersReportService;
 use Illuminate\Http\Response;
@@ -14,10 +18,12 @@ class NewOrderController extends Controller
 {
 
     private $newOrderRepository;
+    private $contactRepo;
 
-    public function __construct(NewOrderRepository $newOrderRepository)
+    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository)
     {
         $this->newOrderRepository = $newOrderRepository;
+        $this->contactRepo = $contactRepository;
     }
 
     /**
@@ -39,10 +45,16 @@ class NewOrderController extends Controller
      * @param NewOrderRequest $request
      * @return Response
      */
-    public function store(NewOrderRequest $request)
+    public function store(NewOrderRequest $request, ContactCustomerFilter $contactCustomerFilter)
     {
         $order = $this->newOrderRepository->store($request->validated());
-
+        if ($order){
+            $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('id', $order->customer_id)->first();
+            $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id]);
+            if ($contact_customer->wasChanged('customer_stage_id')) {
+                event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+            }
+        }
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 
