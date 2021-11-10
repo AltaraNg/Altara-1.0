@@ -12,6 +12,7 @@ use App\Events\FeedbackCreatedEvent;
 use App\Events\ProductTransferEvent;
 use App\Listeners\RepaymentListener;
 use App\Listeners\LogPaymentListener;
+use App\Listeners\UpgradeContactCustomerStageListener;
 use Illuminate\Support\Facades\Event;
 use App\Events\CustomerStageUpdatedEvent;
 use App\Events\SendPasswordResetLinkEvent;
@@ -43,7 +44,8 @@ class EventServiceProvider extends ServiceProvider
             UpdateInventoryListener::class,
             LogPaymentListener::class,
             NewOrderListener::class,
-            UpdateInventoryDictListener::class
+            UpdateInventoryDictListener::class,
+            UpgradeContactCustomerStageListener::class,
         ],
         OldRepaymentEvent::class => [
             LogPaymentListener::class
