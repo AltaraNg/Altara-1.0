@@ -45,7 +45,7 @@ class NewOrderController extends Controller
      * @param NewOrderRequest $request
      * @return Response
      */
-    public function store(NewOrderRequest $request, ContactCustomerFilter $contactCustomerFilter)
+    public function store(NewOrderRequest $request)
     {
         $order = $this->newOrderRepository->store($request->validated());
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
