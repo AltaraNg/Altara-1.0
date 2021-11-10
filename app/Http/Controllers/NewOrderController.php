@@ -10,6 +10,7 @@ use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
 use App\Repositories\ContactCustomerRepository;
+use App\Repositories\CustomerRepository;
 use App\Repositories\NewOrderRepository;
 use App\Services\NewOrdersReportService;
 use Illuminate\Http\Response;
@@ -19,11 +20,13 @@ class NewOrderController extends Controller
 
     private $newOrderRepository;
     private $contactRepo;
+    private $customerRepo;
 
-    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository)
+    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository, CustomerRepository $customerRepository)
     {
         $this->newOrderRepository = $newOrderRepository;
         $this->contactRepo = $contactRepository;
+        $this->customerRepo = $customerRepository;
     }
 
     /**
@@ -48,13 +51,20 @@ class NewOrderController extends Controller
     public function store(NewOrderRequest $request, ContactCustomerFilter $contactCustomerFilter)
     {
         $order = $this->newOrderRepository->store($request->validated());
-        if ($order && $order->customer->reg_id != null){
-            $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('reg_id', $order->customer->reg_id)->first();
-            $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id]);
-            if ($contact_customer->wasChanged('customer_stage_id')) {
-                event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+        //check if orders is successfully created and customer is true
+        if ($order && $order->customer){
+            // get customer
+            $customer = $this->customerRepo->getCustomer($order->customer->id);
+            //check if reg_id is present and customers does not already have order in the system to prevent upgrading customer stage status everytime an order is placed against it.
+            if ($customer->reg_id != null && $customer->new_orders->count() > 0) {
+                $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('reg_id', $order->customer->reg_id)->first();
+                $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id]);
+                if ($contact_customer->wasChanged('customer_stage_id')) {
+                    event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+                }
             }
         }
+
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 
