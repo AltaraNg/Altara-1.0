@@ -10,7 +10,6 @@ use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
 use App\Repositories\ContactCustomerRepository;
-use App\Repositories\CustomerRepository;
 use App\Repositories\NewOrderRepository;
 use App\Services\NewOrdersReportService;
 use Illuminate\Http\Response;
@@ -20,13 +19,11 @@ class NewOrderController extends Controller
 
     private $newOrderRepository;
     private $contactRepo;
-    private $customerRepo;
 
-    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository, CustomerRepository $customerRepository)
+    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository)
     {
         $this->newOrderRepository = $newOrderRepository;
         $this->contactRepo = $contactRepository;
-        $this->customerRepo = $customerRepository;
     }
 
     /**
@@ -52,11 +49,9 @@ class NewOrderController extends Controller
     {
         $order = $this->newOrderRepository->store($request->validated());
         //check if orders is successfully created and customer is true
-        if ($order && $order->customer){
-            // get customer
-            $customer = $this->customerRepo->getCustomer($order->customer->id);
+        if ($order && $order->customer) {
             //check if reg_id is present and customers does not already have order in the system to prevent upgrading customer stage status everytime an order is placed against it.
-            if ($customer->reg_id != null && $customer->new_orders->count() > 0) {
+            if ($order->customer->reg_id != null) {
                 $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('reg_id', $order->customer->reg_id)->first();
                 $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id]);
                 if ($contact_customer->wasChanged('customer_stage_id')) {
@@ -99,6 +94,7 @@ class NewOrderController extends Controller
         $result = $this->newOrderRepository->repossess($new_order);
         return $this->sendSuccess($result, 'Order repossessed successfully');
     }
+
     public function report(NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService, DailySalesNewOrderFilter $dailySalesNewOrderFilter)
     {
         $dailySalesNewOrdersQuery = $this->newOrderRepository->reportQuery($dailySalesNewOrderFilter);
