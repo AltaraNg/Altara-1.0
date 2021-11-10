@@ -50,8 +50,10 @@ class NewOrderController extends Controller
         $order = $this->newOrderRepository->store($request->validated());
         //check if orders is successfully created and customer is true
         if ($order && $order->customer) {
-            //check if reg_id is present and customers does not already have order in the system to prevent upgrading customer stage status everytime an order is placed against it.
-            if ($order->customer->reg_id != null) {
+            //check if reg_id is present
+            //and if customer does not already have more than 1 order in the system to prevent upgrading customer stage status everytime an order is placed against it.
+            //This block of code will only run the first time an order is placed against the customer
+            if ($order->customer->reg_id != null && $order->customer->new_orders->count() < 1) {
                 $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('reg_id', $order->customer->reg_id)->first();
                 $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id]);
                 if ($contact_customer->wasChanged('customer_stage_id')) {
