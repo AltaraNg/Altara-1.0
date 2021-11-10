@@ -45,16 +45,9 @@ class NewOrderController extends Controller
      * @param NewOrderRequest $request
      * @return Response
      */
-    public function store(NewOrderRequest $request, ContactCustomerFilter $contactCustomerFilter)
+    public function store(NewOrderRequest $request)
     {
         $order = $this->newOrderRepository->store($request->validated());
-        if ($order){
-            $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('id', $order->customer_id)->first();
-            $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::PURCHASED)->first()->id]);
-            if ($contact_customer->wasChanged('customer_stage_id')) {
-                event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
-            }
-        }
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 
@@ -89,6 +82,7 @@ class NewOrderController extends Controller
         $result = $this->newOrderRepository->repossess($new_order);
         return $this->sendSuccess($result, 'Order repossessed successfully');
     }
+
     public function report(NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService, DailySalesNewOrderFilter $dailySalesNewOrderFilter)
     {
         $dailySalesNewOrdersQuery = $this->newOrderRepository->reportQuery($dailySalesNewOrderFilter);
