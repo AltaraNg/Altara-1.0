@@ -26,4 +26,8 @@ class ContactCustomerRepository extends Repository
         return $this->model::where('customer_stage_id','!=', CustomerStage::where('name', '=',CustomerStage::PURCHASED)->first()->id)
         ->whereMonth('created_at', '<=',  $now->subMonths(intval($month)))->filter($filter);
     }
+
+    public function getByRegId(string $reg_id){
+        return $this->model::where('reg_id', $reg_id)->first();
+    }
 }

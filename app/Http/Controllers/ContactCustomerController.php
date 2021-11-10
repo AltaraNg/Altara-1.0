@@ -68,7 +68,10 @@ class ContactCustomerController extends Controller
         return $this->sendSuccess($customer_contact->toArray(), 'Contact retrieved successfully');
     }
 
-
+    public function findByRegId(string $reg_id){
+        $customer = $this->contactRepo->getByRegId($reg_id);
+        return $this->sendSuccess($customer->toArray(), 'Contact retrieved successfully');
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -78,7 +81,7 @@ class ContactCustomerController extends Controller
      */
     public function update(ContactCustomer $customer_contact, ContactCustomerRequest $request)
     {
-    
+
         $contact_customer = $this->contactRepo->update($customer_contact, $request->validated());
         if ($contact_customer->wasChanged('customer_stage_id')) {
            event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
