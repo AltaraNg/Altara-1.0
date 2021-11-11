@@ -8,6 +8,7 @@ use App\ContactCustomer;
 use App\Customer;
 use App\CustomerStage;
 use App\Document;
+use App\Events\CustomerCreatedEvent;
 use App\Events\CustomerStageUpdatedEvent;
 use App\Http\Filters\ContactCustomerFilter;
 use App\PersonalGuarantor;
@@ -22,11 +23,9 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
-    private $contactRepo;
 
-    public function __construct(ContactCustomerRepository $contactRepository)
+    public function __construct()
     {
-        $this->contactRepo = $contactRepository;
     }
 
     /**
@@ -70,7 +69,7 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function store(Request $request, ContactCustomerFilter $contactCustomerFilter)
+    public function store(Request $request)
     {
         /** 1. validate the customer's phone number */
         $this->validate($request, [
@@ -96,11 +95,7 @@ class CustomerController extends Controller
 
         /** Upgrade customer stage if reg_id is supplied */
         if ($request->has('reg_id')) {
-            $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('id', $request->reg_id)->first();
-            $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::REGISTERED)->first()->id]);
-            if ($contact_customer->wasChanged('customer_stage_id')) {
-                event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
-            }
+            event(new CustomerCreatedEvent($request->reg_id));
         }
 
         /** 7. return the registered flag, a new customer object form and the just created customer*/
