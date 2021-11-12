@@ -45,7 +45,7 @@ class ProcessingFeeController extends Controller
     * @param  \Illuminate\Http\Request $request
     * @return \Illuminate\Http\Response
     */
-   public function store(Request $request, ContactCustomerFilter $contactCustomerFilter)
+   public function store(Request $request)
    {
       /** fetch the processing with the id passed from the request*/
       $processingFee = ProcessingFee::where('customer_id', $request->customer_id)->get();
@@ -61,7 +61,7 @@ class ProcessingFeeController extends Controller
        * status sent from the request(0 or 1 as the case may be) */
      $verification = Verification::where('customer_id', '=', $request->customer_id)->update(['processing_fee' => 1]);
      if ($verification){
-         $customer_contact = $this->contactRepo->query($contactCustomerFilter)->where('id', $request->customer_id)->first();
+         $customer_contact = $this->contactRepo->getByID($request->customer_id);
          $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::AFFIDAVIT)->first()->id]);
          if ($contact_customer->wasChanged('customer_stage_id')) {
              event(new CustomerStageUpdatedEvent($customer_contact->refresh()));

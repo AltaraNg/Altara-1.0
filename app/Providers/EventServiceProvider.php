@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\CustomerCreatedEvent;
 use App\Events\NewOrderEvent;
 use App\Events\RepaymentEvent;
 use App\Events\TodoCreatedEvent;
 use App\Events\OldRepaymentEvent;
 use App\Listeners\ContactCustomerStageListener;
+use App\Listeners\CustomerRegisteredListener;
 use App\Listeners\NewOrderListener;
 use App\Events\FeedbackCreatedEvent;
 use App\Events\ProductTransferEvent;
@@ -68,6 +70,9 @@ class EventServiceProvider extends ServiceProvider
             CustomerStageProspectActivityListener::class,
 //            ContactCustomerStageListener::class,
         ],
+        CustomerCreatedEvent::class => [
+            CustomerRegisteredListener::class,
+        ]
     ];
 
     /**
