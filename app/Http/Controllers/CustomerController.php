@@ -24,10 +24,6 @@ use Illuminate\Support\Facades\DB;
 class CustomerController extends Controller
 {
 
-    public function __construct()
-    {
-    }
-
     /**
      * Display a listing of the resource.
      *
