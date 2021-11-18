@@ -15,12 +15,12 @@ use Illuminate\Support\Str;
 
 class DocumentController extends Controller
 {
-    private $contactRepo;
+   private $contactRepo;
 
-    public function __construct(ContactCustomerRepository $contactRepository)
-    {
-        $this->contactRepo = $contactRepository;
-    }
+   public function __construct(ContactCustomerRepository $contactRepository)
+   {
+      $this->contactRepo = $contactRepository;
+   }
    /**
     * Display a listing of the resource.
     *
@@ -82,7 +82,7 @@ class DocumentController extends Controller
     * @return \Illuminate\Http\Response
     */
 
-   public function update(Request $request, $id,  ContactCustomerFilter $contactCustomerFilter)
+   public function update(Request $request, $id)
    {
       /** 1. Validate the document(image) */
       $this->validate($request, [
@@ -131,12 +131,14 @@ class DocumentController extends Controller
 
          /** update the record*/
          $verification[$request['document']] = 1;
-         if ($verification->id_card ==1 && $verification->passport == 1){
-             $customer_contact = $this->contactRepo->getByID($document->customer_id);
-             $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::KYC)->first()->id]);
-             if ($contact_customer->wasChanged('customer_stage_id')) {
-                 event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
-             }
+         if ($verification->id_card == 1 && $verification->passport == 1) {
+            $customer_contact = $this->contactRepo->getByRegId($document->customer->reg_id ?? '');
+            if ($customer_contact) {
+               $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::KYC)->first()->id]);
+               if ($contact_customer->wasChanged('customer_stage_id')) {
+                  event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+               }
+            }
          }
 
          /** save the record*/
