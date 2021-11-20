@@ -2,15 +2,19 @@
 
 namespace App\Providers;
 
+use App\Events\CustomerCreatedEvent;
 use App\Events\NewOrderEvent;
 use App\Events\RepaymentEvent;
 use App\Events\TodoCreatedEvent;
 use App\Events\OldRepaymentEvent;
+use App\Listeners\ContactCustomerStageListener;
+use App\Listeners\CustomerRegisteredListener;
 use App\Listeners\NewOrderListener;
 use App\Events\FeedbackCreatedEvent;
 use App\Events\ProductTransferEvent;
 use App\Listeners\RepaymentListener;
 use App\Listeners\LogPaymentListener;
+use App\Listeners\UpgradeContactCustomerStageListener;
 use Illuminate\Support\Facades\Event;
 use App\Events\CustomerStageUpdatedEvent;
 use App\Events\SendPasswordResetLinkEvent;
@@ -42,7 +46,8 @@ class EventServiceProvider extends ServiceProvider
             UpdateInventoryListener::class,
             LogPaymentListener::class,
             NewOrderListener::class,
-            UpdateInventoryDictListener::class
+            UpdateInventoryDictListener::class,
+            UpgradeContactCustomerStageListener::class,
         ],
         OldRepaymentEvent::class => [
             LogPaymentListener::class
@@ -62,8 +67,12 @@ class EventServiceProvider extends ServiceProvider
             ProspectActivityListener::class
         ],
         CustomerStageUpdatedEvent::class => [
-            CustomerStageProspectActivityListener::class
+            CustomerStageProspectActivityListener::class,
+//            ContactCustomerStageListener::class,
         ],
+        CustomerCreatedEvent::class => [
+            CustomerRegisteredListener::class,
+        ]
     ];
 
     /**

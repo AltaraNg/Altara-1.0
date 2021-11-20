@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerStage;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
+use App\Repositories\ContactCustomerRepository;
 use App\Repositories\NewOrderRepository;
 use App\Services\NewOrdersReportService;
 use Illuminate\Http\Response;
@@ -14,10 +18,12 @@ class NewOrderController extends Controller
 {
 
     private $newOrderRepository;
+    private $contactRepo;
 
-    public function __construct(NewOrderRepository $newOrderRepository)
+    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository)
     {
         $this->newOrderRepository = $newOrderRepository;
+        $this->contactRepo = $contactRepository;
     }
 
     /**
@@ -42,7 +48,6 @@ class NewOrderController extends Controller
     public function store(NewOrderRequest $request)
     {
         $order = $this->newOrderRepository->store($request->validated());
-
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 
@@ -77,6 +82,7 @@ class NewOrderController extends Controller
         $result = $this->newOrderRepository->repossess($new_order);
         return $this->sendSuccess($result, 'Order repossessed successfully');
     }
+
     public function report(NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService, DailySalesNewOrderFilter $dailySalesNewOrderFilter)
     {
         $dailySalesNewOrdersQuery = $this->newOrderRepository->reportQuery($dailySalesNewOrderFilter);

@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');
     Route::get('/order-types', 'OrderTypeController@index');
     Route::get('/paymentgateways', 'PaymentGatewayController@index');
+    Route::get('/customer-contact/get-by-id/{reg_id}', 'ContactCustomerController@findByRegId');
 
     Route::get('/inactive/prospects', 'ProspectActivityController@inActiveProspects');
     Route::Resource('prospect_activities', 'ProspectActivityController')->only(['index', 'show']);

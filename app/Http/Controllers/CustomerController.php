@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Address;
 use App\Branch;
+use App\ContactCustomer;
 use App\Customer;
+use App\CustomerStage;
 use App\Document;
+use App\Events\CustomerCreatedEvent;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
 use App\PersonalGuarantor;
 use App\ProcessingFee;
+use App\Repositories\ContactCustomerRepository;
 use App\State;
 use App\Verification;
 use App\WorkGuarantor;
@@ -17,11 +23,13 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
 
     public function index()
     {
@@ -62,8 +70,8 @@ class CustomerController extends Controller
         /** 1. validate the customer's phone number */
         $this->validate($request, [
             'telephone' => 'required|string|unique:customers,telephone',
-            'email' => 'required|string|email|unique:customers,email'
-
+            'email' => 'required|string|email|unique:customers,email',
+            'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
         ]);
 
         /** 2. Create a new customer instance */
@@ -80,6 +88,11 @@ class CustomerController extends Controller
 
         /** 6. create a record for the customer in the verifications table */
         $this->createCustomerVerification($customer->id);
+
+        /** Upgrade customer stage if reg_id is supplied */
+        if ($request->has('reg_id')) {
+            event(new CustomerCreatedEvent($request->reg_id));
+        }
 
         /** 7. return the registered flag, a new customer object form and the just created customer*/
         return response()->json([
