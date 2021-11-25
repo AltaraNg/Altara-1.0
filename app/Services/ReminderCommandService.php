@@ -36,6 +36,7 @@ class ReminderCommandService
             return 'No Customers are available';
         }
         foreach ($orders as $order) {
+
             $businessType = BusinessType::find($order->business_type_id);
             if (str_contains($businessType->name, 'Altara Credit')) {
                 $getMessage = Constants::$reminderMessages[$type][Constants::ALTARACREDIT];
@@ -43,8 +44,12 @@ class ReminderCommandService
                 $getMessage = Constants::$reminderMessages[$type][Constants::ALTARAPAY];
             }
             # code...
-
             $data = $order->toArray();
+
+            //remove this two keys since they are not needed
+            unset($data['renewal_prompters']);
+            unset($data['last_renewal_prompter_activity']);
+
             //create formatter object to add st, th, nd and th to count e.g 1st, 2nd, 3rd.
             //get number of times payment has been made and add 1 to know next number of payment then format
             $data['count'] = Helper::str_ordinal($order->amortization->where('actual_payment_date', '!=', null)->count() + 1);
