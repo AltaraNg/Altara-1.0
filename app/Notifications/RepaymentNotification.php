@@ -32,6 +32,8 @@ class RepaymentNotification extends Notification
 
         $this->amortization = $data->amortization();
         $this->data = $data->toArray();
+
+         //remove this two keys since they are not needed
         unset($data['renewal_prompters']);
         unset($data['last_renewal_prompter_activity']);
         $downPayment = $this->data['down_payment'];
@@ -75,7 +77,6 @@ class RepaymentNotification extends Notification
      */
     public function toSms($notifiable)
     {
-         //remove this two keys since they are not needed
         $replacementKeys = Helper::generateReplacementKeys(array_keys($this->data));
         $replacementValues    = array_values($this->data);
         $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_REPAYMENT);
