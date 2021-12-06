@@ -16,6 +16,13 @@ class NewOrder extends Model
     protected $with = ['amortization'];
 
     protected $guarded = [];
+
+    const REM = 'reminder';
+    const CRDBUR = 'credit_bureau';
+    const INTREPO = 'internal_repossession';
+    const EXTREPO = 'external_repossession';
+
+
     /**
      * Validation rules
      *
@@ -194,6 +201,11 @@ class NewOrder extends Model
     public function renewalPrompters()
     {
         return $this->hasMany(RenewalPrompter::class, 'order_id');
+    }
+
+    public function recollection()
+    {
+        return $this->hasOne(Recollection::class, 'new_order_id');
     }
     /**
      * Get all of the New Order's payments.

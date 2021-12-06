@@ -155,3 +155,6 @@ Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
+
+
+Route::get('/recollection', 'RecollectionController@index');

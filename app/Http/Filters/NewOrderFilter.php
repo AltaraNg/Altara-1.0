@@ -2,6 +2,7 @@
 
 namespace App\Http\Filters;
 
+
 use App\ProductType;
 use App\Traits\IFilterByBranch;
 use Carbon\Carbon;
@@ -194,6 +195,12 @@ class NewOrderFilter extends BaseFilter
         if ($getNotContacted) {
             $this->builder->doesntHave('renewalPrompters');
         }
+    }
+
+    public function recollection (string $status = null){
+        $this->builder->whereHas('recollection', function ($query) use ($status) {
+            $query->where('status', $status);
+        });
     }
     public function filterOrderByBranch($filterOrderByBranch = true)
     {
