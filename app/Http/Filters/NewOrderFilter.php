@@ -218,4 +218,11 @@ class NewOrderFilter extends BaseFilter
             }
         }
     }
+    /**
+     * @param int $id
+     */
+    public function branch(int $id)
+    {
+        $this->builder->where('new_orders.branch_id', $id);
+    }
 }
