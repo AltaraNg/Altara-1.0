@@ -88,4 +88,9 @@ class NewOrderRepository extends Repository
         $order = $this->model::find($orderId);
         $order->update(['status_id' =>  OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id]);
     }
+
+    public function firstById (int $orderId)
+    {
+       return $this->model::findOrFail($orderId);
+    }
 }

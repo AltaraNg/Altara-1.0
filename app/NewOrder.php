@@ -217,6 +217,14 @@ class NewOrder extends Model
         })->first()->paymentMethod->name ?? null;
     }
 
+     /**
+     * Get the neworder's feedbacks.
+     */
+    // generalFeedbackAble
+    public function generalFeedBacks()
+    {
+        return $this->morphMany(GeneralFeedback::class, 'generalFeedbackAble', 'general_feedback_able_type', 'general_feedback_able_id');
+    }
     public function toArray()
     {
         return [
@@ -256,6 +264,7 @@ class NewOrder extends Model
             'renewal_prompters' => ($this->renewalPrompters->count() > 0) ? new JSONApiCollection($this->renewalPrompters) : null,
             'last_renewal_prompter_activity' => ($this->lastRenewalPrompter) ? new JSONApiResource($this->lastRenewalPrompter) : null,
             'order_discount' => $this->discount,
+            'general_feedbacks' => $this->generalFeedBacks ?? null
         ];
     }
 }

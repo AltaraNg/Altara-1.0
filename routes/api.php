@@ -158,3 +158,5 @@ Route::post('/credit-check', 'CreditCheckController@check');
 
 
 Route::get('/recollection', 'RecollectionController@index');
+Route::post('/recollection/feedback', 'RecollectionController@store');
+Route::get('/recollection/feedback/{new_order}', 'RecollectionController@show');
