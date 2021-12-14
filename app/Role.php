@@ -16,7 +16,7 @@ class Role extends Model
     const FREELANCE_CAPTAIN = 'Freelance Captain';
     const COORDINATOR = 'Coordinator';
     const CLA = 'Cash Loan agents';
-
+    const RA = 'Rent Agent';
 
 
 

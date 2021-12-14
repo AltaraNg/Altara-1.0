@@ -215,6 +215,8 @@ class NewOrderFilter extends BaseFilter
                 $this->builder->where('owner_id', auth()->user()->id)->whereHas('product.productType', function ($query) {
                     $query->where('name', ProductType::CASH_LOAN);
                 });
+            }else if (auth()->user()->isRentAgent()) {
+                $this->builder->where('owner_id', auth()->user()->id);
             }
         }
     }
