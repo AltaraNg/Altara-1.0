@@ -15,10 +15,14 @@ class CreateGeneralFeedbacksTable extends Migration
     {
         Schema::create('general_feedbacks', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('creator_id');
             $table->json('data')->nullable();
+            $table->text('feedback')->nullable();
+            $table->date('follow_up_date')->nullable();
             $table->integer('general_feedback_able_id');
             $table->string('general_feedback_able_type');
             $table->timestamps();
+            $table->foreign('creator_id')->references('id')->on('users');
         });
     }
 

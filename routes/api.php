@@ -142,6 +142,7 @@ Route::middleware('auth:api')->group(function () {
         'role' => 'RoleController'
 
     ]);
+    Route::post('/recollection/feedback', 'RecollectionController@store');
 });
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
 Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']]);
@@ -158,5 +159,4 @@ Route::post('/credit-check', 'CreditCheckController@check');
 
 
 Route::get('/recollection', 'RecollectionController@index');
-Route::post('/recollection/feedback', 'RecollectionController@store');
 Route::get('/recollection/feedback/{new_order}', 'RecollectionController@show');
