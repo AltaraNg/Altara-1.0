@@ -207,6 +207,10 @@ class User extends Authenticatable
     {
         return  $this->role->name === Role::CLA;
     }
+    public function isRentAgent()
+    {
+        return  $this->role->name === Role::RA;
+    }
     public function todo()
     {
         return $this->hasMany(Todo::class);

@@ -32,6 +32,10 @@ class RepaymentNotification extends Notification
 
         $this->amortization = $data->amortization();
         $this->data = $data->toArray();
+
+         //remove this two keys since they are not needed
+        unset($this->data['renewal_prompters']);
+        unset($this->data['last_renewal_prompter_activity']);
         $downPayment = $this->data['down_payment'];
         //Attaching required parameters from amortization to data to send sms to customer
         $this->data['total_no_of_repayment_expected'] = $data->amortization->count();

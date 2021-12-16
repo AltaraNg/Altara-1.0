@@ -222,7 +222,16 @@ class NewOrderFilter extends BaseFilter
                 $this->builder->where('owner_id', auth()->user()->id)->whereHas('product.productType', function ($query) {
                     $query->where('name', ProductType::CASH_LOAN);
                 });
+            }else if (auth()->user()->isRentAgent()) {
+                $this->builder->where('owner_id', auth()->user()->id);
             }
         }
+    }
+    /**
+     * @param int $id
+     */
+    public function branch(int $id)
+    {
+        $this->builder->where('new_orders.branch_id', $id);
     }
 }
