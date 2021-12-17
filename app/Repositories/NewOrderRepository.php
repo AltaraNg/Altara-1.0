@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
+use App\GeneralFeedback;
 use App\Helper\Helper;
 use App\Inventory;
 use App\InventoryStatus;
@@ -92,5 +93,16 @@ class NewOrderRepository extends Repository
     public function firstById (int $orderId)
     {
        return $this->model::findOrFail($orderId);
+    }
+    public function saveFeedBack($data)
+    {
+        $order = $this->firstById($data['new_order_id']);
+        $feedback = new GeneralFeedback([
+            'data' =>  $data['data'],
+            'creator_id' => auth()->id(),
+            'feedback' => $data['feedback'],
+            'follow_up_date' => $data['follow_up_date']
+        ]);
+       return $order->generalFeedBacks()->save($feedback);
     }
 }

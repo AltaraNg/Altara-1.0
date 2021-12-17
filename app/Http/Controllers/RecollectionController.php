@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Filters\NewOrderFilter;
+use App\Http\Requests\GeneralFeedbackRequest;
 use App\Repositories\NewOrderRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Artisan;
@@ -32,21 +33,9 @@ class RecollectionController extends Controller
         return $this->sendSuccess([$orders->paginate(10)], 'Orders retrieved successfully');
     }
 
-    public function store(Request $request)
+    public function store(GeneralFeedbackRequest $request)
     {
-        $this->validate($request, [
-            'new_order_id' => 'required|exists:new_orders,id',
-            'feedback' => ['required', 'string'],
-            'follow_up_date' => ['required', 'date']
-        ]);
-        $order = $this->newOrderRepository->firstById($request->new_order_id);
-        $feedback = new GeneralFeedback([
-            'data' => $request->data,
-            'creator_id' => auth()->id(),
-            'feedback' => $request->feedback,
-            'follow_up_date' => $request->follow_up_date
-        ]);
-        $order->generalFeedBacks()->save($feedback);
+       $order = $this->newOrderRepository->saveFeedBack($request->all());
         return $this->sendSuccess([$order->toArray()], 'Order feedback created');
     }
     public function show(NewOrder $new_order)
