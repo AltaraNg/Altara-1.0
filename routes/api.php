@@ -76,7 +76,6 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/history', 'RenewalPrompterController@show');
         Route::get('/customer-list', 'RenewalPrompterController@customerList');
     });
-
 });
 Route::middleware('auth:api')->group(function () {
     Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
@@ -142,6 +141,12 @@ Route::middleware('auth:api')->group(function () {
         'role' => 'RoleController'
 
     ]);
+    Route::prefix('recollection')->group(function () {
+        Route::get('/', 'RecollectionController@index');
+        Route::get('/feedback/{new_order}', 'RecollectionController@show');
+        Route::post('/feedback', 'RecollectionController@store');
+        Route::get('/regenerate/list', 'RecollectionController@reGenerateCollectionList');
+    });
 });
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
 Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']]);

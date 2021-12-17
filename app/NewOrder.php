@@ -16,6 +16,13 @@ class NewOrder extends Model
     protected $with = ['amortization'];
 
     protected $guarded = [];
+
+    const REM = 'reminder';
+    const CRDBUR = 'credit_bureau';
+    const INTREPO = 'internal_repossession';
+    const EXTREPO = 'external_repossession';
+
+
     /**
      * Validation rules
      *
@@ -195,6 +202,11 @@ class NewOrder extends Model
     {
         return $this->hasMany(RenewalPrompter::class, 'order_id');
     }
+
+    public function recollection()
+    {
+        return $this->hasOne(Recollection::class, 'new_order_id');
+    }
     /**
      * Get all of the New Order's payments.
      */
@@ -205,6 +217,14 @@ class NewOrder extends Model
         })->first()->paymentMethod->name ?? null;
     }
 
+     /**
+     * Get the neworder's feedbacks.
+     */
+    // generalFeedbackAble
+    public function generalFeedBacks()
+    {
+        return $this->morphMany(GeneralFeedback::class, 'generalFeedbackAble', 'general_feedback_able_type', 'general_feedback_able_id');
+    }
     public function toArray()
     {
         return [
@@ -244,6 +264,7 @@ class NewOrder extends Model
             'renewal_prompters' => ($this->renewalPrompters->count() > 0) ? new JSONApiCollection($this->renewalPrompters) : null,
             'last_renewal_prompter_activity' => ($this->lastRenewalPrompter) ? new JSONApiResource($this->lastRenewalPrompter) : null,
             'order_discount' => $this->discount,
+            'general_feedbacks' => $this->generalFeedBacks ?? null
         ];
     }
 }
