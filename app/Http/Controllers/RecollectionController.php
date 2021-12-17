@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Filters\NewOrderFilter;
 use App\Repositories\NewOrderRepository;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 class RecollectionController extends Controller
@@ -28,11 +29,6 @@ class RecollectionController extends Controller
     public function index(NewOrderFilter $filter)
     {
         $orders = $this->newOrderRepository->reportQuery($filter);
-        $additional = collect([]);
-        // $count =  $orders->whereHas('amortization', function ($query) {
-        //     $query->whereRaw('amortizations.expected_payment_date < amortizations.actual_payment_date');
-        // })->count('new_orders.id');
-        // dd($count);
         return $this->sendSuccess([$orders->paginate(10)], 'Orders retrieved successfully');
     }
 
@@ -56,5 +52,11 @@ class RecollectionController extends Controller
     public function show(NewOrder $new_order)
     {
         return $this->sendSuccess(['data' => $new_order], 'Order retrieved successfully');
+    }
+
+    public function reGenerateCollectionList()
+    {
+        Artisan::call('make:collection');
+        return $this->sendSuccess([], 'Collection list has been successfully generated');
     }
 }

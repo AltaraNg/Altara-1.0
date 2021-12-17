@@ -9,6 +9,7 @@ class GeneralFeedback extends Model
     //
     protected $guarded = [];
     protected $casts = ['data' => 'array'];
+    protected  $table = 'general_feedbacks';
     /**
      * Get the parent feedbackable model (user or post).
      */

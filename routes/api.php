@@ -160,3 +160,4 @@ Route::post('/credit-check', 'CreditCheckController@check');
 
 Route::get('/recollection', 'RecollectionController@index');
 Route::get('/recollection/feedback/{new_order}', 'RecollectionController@show');
+Route::get('/regenerate/collection/list', 'RecollectionController@reGenerateCollectionList');
