@@ -76,7 +76,6 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/history', 'RenewalPrompterController@show');
         Route::get('/customer-list', 'RenewalPrompterController@customerList');
     });
-
 });
 Route::middleware('auth:api')->group(function () {
     Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
@@ -142,7 +141,12 @@ Route::middleware('auth:api')->group(function () {
         'role' => 'RoleController'
 
     ]);
-    Route::post('/recollection/feedback', 'RecollectionController@store');
+    Route::prefix('recollection')->group(function () {
+        Route::get('/', 'RecollectionController@index');
+        Route::get('/feedback/{new_order}', 'RecollectionController@show');
+        Route::post('/feedback', 'RecollectionController@store');
+        Route::get('/regenerate/list', 'RecollectionController@reGenerateCollectionList');
+    });
 });
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
 Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']]);
@@ -156,8 +160,3 @@ Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
-
-
-Route::get('/recollection', 'RecollectionController@index');
-Route::get('/recollection/feedback/{new_order}', 'RecollectionController@show');
-Route::get('/regenerate/collection/list', 'RecollectionController@reGenerateCollectionList');
