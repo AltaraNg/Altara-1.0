@@ -198,9 +198,13 @@ class NewOrderFilter extends BaseFilter
     }
 
     public function recollection (string $status = null){
-        $this->builder->whereHas('recollection', function ($query) use ($status) {
-            $query->where('status', $status);
-        });
+        if ($status == 'all'){
+            $this->builder->has('recollection');
+        }else{
+            $this->builder->whereHas('recollection', function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+        }
     }
     public function filterOrderByBranch($filterOrderByBranch = true)
     {

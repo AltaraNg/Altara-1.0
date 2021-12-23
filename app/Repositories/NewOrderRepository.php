@@ -98,6 +98,7 @@ class NewOrderRepository extends Repository
     {
         $order = $this->firstById($data['new_order_id']);
         $feedback = new GeneralFeedback([
+            'reason_id' => $data->reason_id,
             'data' =>  $data['data'],
             'creator_id' => auth()->id(),
             'feedback' => $data['feedback'],

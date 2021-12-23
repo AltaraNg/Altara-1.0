@@ -58,13 +58,46 @@ class RecollectionService
 
     private function storeOrUpdateRecollection($data, $status, $days)
     {
+//        dd($data);
         $this->recollectRepository->updateOrCreate(new Recollection(), [
             'new_order_id' => $data->id,
         ],
             [
                 'status' => $status,
-                'number_of_days' => $days
+                'number_of_days' => $days,
+                'expected_amount' => $data->amortization[0]['expected_amount']
             ]
         );
+    }
+
+    public function generateStats($newOrders): array
+    {
+        $totalAmountOwedPerRecollectionStage = $this->getTotalAmountOwedPerRecollectionStage(clone $newOrders);
+        $totalAmountOwed = $this->getTotalAmountOwed($totalAmountOwedPerRecollectionStage);
+        $additional['totalAmountOwedPerRecollectionStage'] = $totalAmountOwedPerRecollectionStage;
+        $additional['totalAmountOwed'] = $totalAmountOwed;
+        return $additional;
+    }
+
+    private function getTotalAmountOwed($totalAmountOwedPerRecollectionStage)
+    {
+       return $totalAmountOwedPerRecollectionStage->reduce(function ($initialValue, $data) {
+            return $initialValue + $data['amount_owed'];
+        });
+    }
+
+    private function getTotalAmountOwedPerRecollectionStage($newOrders)
+    {
+        return $newOrders
+            ->leftJoin('recollections', 'new_orders.id', '=', 'recollections.new_order_id')
+            ->selectRaw('count(*) as total, SUM(expected_amount) as owed, number_of_days, status')
+            ->groupBy('recollections.status')
+            ->get()->map(function ($item) {
+                return [
+                    'total' => $item->total,
+                    'amount_owed' => $item->owed,
+                    'status' => $item->status
+                ];
+            });
     }
 }
