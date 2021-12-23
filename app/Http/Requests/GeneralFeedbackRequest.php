@@ -24,7 +24,8 @@ class GeneralFeedbackRequest extends FormRequest
     public function rules()
     {
         return [
-            'new_order_id' => 'required|exists:new_orders,id',
+            'reason_id' => ['required', 'exists:general_reasons,id'],
+            'new_order_id' => ['required','exists:new_orders,id'],
             'feedback' => ['required', 'string'],
             'follow_up_date' => ['required', 'date']
         ];
