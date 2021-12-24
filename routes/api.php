@@ -147,7 +147,9 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/feedback', 'RecollectionController@store');
         Route::get('/regenerate/list', 'RecollectionController@reGenerateCollectionList');
     });
+    Route::get('general/reasons/{type}', 'GeneralReasonController@index');
 });
+
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
 Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']]);
 Route::resource('price_calculator', 'PriceCalculatorController', ['only' => ['index', 'show']]);

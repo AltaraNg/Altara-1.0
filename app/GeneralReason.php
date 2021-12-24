@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Recollection extends Model
+class GeneralReason extends Model
 {
-    protected $guarded =[];
-
+    //
+    protected $guarded=[];
 }
