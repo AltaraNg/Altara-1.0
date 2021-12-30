@@ -14,6 +14,8 @@ use App\Repositories\NewOrderRepository;
 use App\Repositories\PaystackAuthCodeRepository;
 use App\Services\NewOrdersReportService;
 use Illuminate\Http\Response;
+use phpDocumentor\Reflection\Types\This;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class NewOrderController extends Controller
 {
@@ -26,6 +28,7 @@ class NewOrderController extends Controller
     {
         $this->newOrderRepository = $newOrderRepository;
         $this->contactRepo = $contactRepository;
+        $this->paystackAuthCodeRepository = $paystackAuthCodeRepository;
     }
 
     /**
@@ -50,7 +53,8 @@ class NewOrderController extends Controller
     {
         $order = $this->newOrderRepository->store($request->validated());
         if ($request->authorization_code) {
-            $this->paystackAuthCodeRepository->store(['order_id' => $order->order_number, 'auth_code' => $request->authorization_code]);
+            $data = ['order_id' => $order->order_number, 'auth_code' => $request->authorization_code];
+            $this->paystackAuthCodeRepository->store($data);
         }
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
