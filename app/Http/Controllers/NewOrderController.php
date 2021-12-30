@@ -11,6 +11,7 @@ use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\NewOrderRepository;
+use App\Repositories\PaystackAuthCodeRepository;
 use App\Services\NewOrdersReportService;
 use Illuminate\Http\Response;
 
@@ -19,8 +20,9 @@ class NewOrderController extends Controller
 
     private $newOrderRepository;
     private $contactRepo;
+    private $paystackAuthCodeRepository;
 
-    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository)
+    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository, PaystackAuthCodeRepository $paystackAuthCodeRepository)
     {
         $this->newOrderRepository = $newOrderRepository;
         $this->contactRepo = $contactRepository;
@@ -35,7 +37,6 @@ class NewOrderController extends Controller
     public function index(NewOrderFilter $newOrderFilter)
     {
         $orders = $this->newOrderRepository->query($newOrderFilter);
-
         return $this->sendSuccess($orders->toArray(), 'Orders retrieved successfully');
     }
 
@@ -48,6 +49,9 @@ class NewOrderController extends Controller
     public function store(NewOrderRequest $request)
     {
         $order = $this->newOrderRepository->store($request->validated());
+        if ($request->authorization_code) {
+            $this->paystackAuthCodeRepository->store(['order_id' => $order->order_number, 'auth_code' => $request->authorization_code]);
+        }
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 
