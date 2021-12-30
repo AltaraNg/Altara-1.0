@@ -248,7 +248,7 @@ class NewOrderFilter extends BaseFilter
     /**
      * @param int $id
      */
-    public function customerId(string $id)
+    public function customerId(int $id)
     {
         $this->builder->where('new_orders.customer_id', $id);
     }
