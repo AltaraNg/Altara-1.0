@@ -60,5 +60,4 @@ class RecollectionController extends Controller
         Artisan::call('make:collection');
         return $this->sendSuccess([], 'Collection list has been successfully generated');
     }
-
 }

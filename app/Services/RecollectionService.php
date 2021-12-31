@@ -30,7 +30,7 @@ class RecollectionService
                 if ($expectedPaymentDate) {
                     $todaysDate = Carbon::now();
                     $days = Carbon::parse($expectedPaymentDate)->diffInDays($todaysDate);
-                    $bizType = Str::contains($data->businessType->slug, ['ac', 'cash_loan']);
+                    $bizType = Str::contains($data->businessType->slug, ['cash_loan']);
 
                     $range = $bizType ? range(1, 15) : range(1, 30);
                     if (in_array($days, $range)) {

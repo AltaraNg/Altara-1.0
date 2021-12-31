@@ -238,4 +238,18 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->where('new_orders.branch_id', $id);
     }
+     /**
+     * @param int $id
+     */
+    public function orderNumber(string $order_number)
+    {
+        $this->builder->where('new_orders.order_number', $order_number);
+    }
+    /**
+     * @param int $id
+     */
+    public function customerId(int $id)
+    {
+        $this->builder->where('new_orders.customer_id', $id);
+    }
 }
