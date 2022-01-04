@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CollectionListExport;
 use App\GeneralFeedback;
 use App\NewOrder;
 use App\Repositories\RecollectionRepository;
@@ -16,6 +17,7 @@ use App\Repositories\NewOrderRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RecollectionController extends Controller
 {
@@ -59,5 +61,12 @@ class RecollectionController extends Controller
     {
         Artisan::call('make:collection');
         return $this->sendSuccess([], 'Collection list has been successfully generated');
+    }
+
+    public function exportCollectionList(NewOrderFilter $filter, RecollectionService $recollectionService)
+    {
+        $collectQuery = $this->newOrderRepository->reportQuery($filter);
+        $data = $recollectionService->generateCollectionListCSV($collectQuery);
+         return Excel::download(new CollectionListExport($data), 'CollectionList.csv');
     }
 }
