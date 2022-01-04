@@ -58,10 +58,11 @@ class RecollectionService
 
     private function storeOrUpdateRecollection($data, $status, $days)
     {
-//        dd($data);
-        $this->recollectRepository->updateOrCreate(new Recollection(), [
-            'new_order_id' => $data->id,
-        ],
+        $this->recollectRepository->updateOrCreate(
+            new Recollection(),
+            [
+                'new_order_id' => $data->id,
+            ],
             [
                 'status' => $status,
                 'number_of_days' => $days,
@@ -81,7 +82,7 @@ class RecollectionService
 
     private function getTotalAmountOwed($totalAmountOwedPerRecollectionStage)
     {
-       return $totalAmountOwedPerRecollectionStage->reduce(function ($initialValue, $data) {
+        return $totalAmountOwedPerRecollectionStage->reduce(function ($initialValue, $data) {
             return $initialValue + $data['amount_owed'];
         });
     }
@@ -99,5 +100,35 @@ class RecollectionService
                     'status' => $item->status
                 ];
             });
+    }
+
+    public  function generateCollectionListCSV($orders)
+    {
+       return $orders->get()->map(function ($item) {
+           $saleType =  $item->salesCategory->name  ?? null;
+           $payment_made_query= $item->amortization->where('actual_payment_date', '<>', null)->where('actual_amount', '<>', null);
+           $payment_due_query = $item->amortization->where('actual_payment_date', null)->where('actual_amount', null);
+           $no_of_payments_made = $payment_made_query->count();
+           $no_of_payments_due = $payment_due_query->count();
+           $sum_of_payments_made = $payment_made_query->sum('expected_amount') + $item->down_payment;
+           $sum_of_payments_due = $payment_due_query->sum('expected_amount');
+            return [
+                'full_name' => $item->customer->full_name ?? 'Not Available',
+                'phone_number' => $item->customer->telephone ?? 'Not Available',
+                'email' => $item->customer->email ?? 'Not Available',
+                'order_number' => $item->order_number,
+                'sale_type' => $saleType ?? 'Not Available',
+                'new_sale' =>  $saleType == "new sales" ? "Yes" : "No",
+                'business_type' => $item->businessType->name,
+                'product_type' => $item->product->product_type ?? 'Not Available',
+                'showroom' => $item->branch->name,
+                'down_payment' => $item->down_payment,
+                'date_purchased' => $item->order_date,
+                'number_of_payments_made' => $no_of_payments_made,
+                'amount_of_payments_made' => $sum_of_payments_made,
+                'number_of_payments_due' => $no_of_payments_due,
+                'amount_of_payment_due' => $sum_of_payments_due,
+            ];
+        });
     }
 }
