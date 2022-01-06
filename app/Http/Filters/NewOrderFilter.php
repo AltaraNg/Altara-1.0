@@ -195,6 +195,16 @@ class NewOrderFilter extends BaseFilter
             $this->builder->doesntHave('renewalPrompters');
         }
     }
+
+    public function recollection (string $status = null){
+        if ($status == 'all'){
+            $this->builder->has('recollection');
+        }else{
+            $this->builder->whereHas('recollection', function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+        }
+    }
     public function filterOrderByBranch($filterOrderByBranch = true)
     {
 
@@ -215,6 +225,8 @@ class NewOrderFilter extends BaseFilter
                 $this->builder->where('owner_id', auth()->user()->id)->whereHas('product.productType', function ($query) {
                     $query->where('name', ProductType::CASH_LOAN);
                 });
+            }else if (auth()->user()->isRentAgent()) {
+                $this->builder->where('owner_id', auth()->user()->id);
             }
         }
     }
@@ -224,5 +236,19 @@ class NewOrderFilter extends BaseFilter
     public function branch(int $id)
     {
         $this->builder->where('new_orders.branch_id', $id);
+    }
+     /**
+     * @param int $id
+     */
+    public function orderNumber(string $order_number)
+    {
+        $this->builder->where('new_orders.order_number', $order_number);
+    }
+    /**
+     * @param int $id
+     */
+    public function customerId(int $id)
+    {
+        $this->builder->where('new_orders.customer_id', $id);
     }
 }

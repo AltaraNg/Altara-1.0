@@ -13,10 +13,7 @@ class PaystackAuthCodeRepository extends Repository
 
     public function store(array $data)
     {
-        // dd($data);
         $result = $this->model::create($data);
-
-
         return $result;
     }
 }
