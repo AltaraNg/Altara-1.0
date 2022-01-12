@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\GeneralFeedbackRequest;
 use App\Repositories\NewOrderRepository;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -36,10 +36,20 @@ class RecollectionController extends Controller
 
     public function index(NewOrderFilter $filter, RecollectionService $recollectionService)
     {
+
+        $collectQuery = $this->newOrderRepository->reportQuery($filter);
+        $additional['stats'] = $recollectionService->generateStats(clone $collectQuery);
+        return $additional;
+
+        //Amount Recieved
+
+        //Amount Owed
+
         $collectQuery = $this->newOrderRepository->reportQuery($filter);
         if (request()->query('recollection') == 'all') {
             $collectQuery = $this->newOrderRepository->reportQuery($filter);
             $additional['stats'] = $recollectionService->generateStats(clone $collectQuery);
+            return $additional;
             $additional['total_sales'] = $collectQuery->count();
             return $this->sendSuccess([$collectQuery->paginate(10) ?? [], "meta" => $additional], 'Orders and stats retrieved successfully');
         }
