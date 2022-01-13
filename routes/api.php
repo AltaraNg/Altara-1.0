@@ -148,7 +148,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/feedback', 'RecollectionController@store');
         Route::get('/regenerate/list', 'RecollectionController@reGenerateCollectionList');
         Route::get('/export/list', 'RecollectionController@exportCollectionList');
-
     });
     Route::get('general/reasons/{type}', 'GeneralReasonController@index');
 });

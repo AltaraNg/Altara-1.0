@@ -2,7 +2,6 @@
 
 namespace App\Http\Filters;
 
-
 use App\ProductType;
 use App\Traits\IFilterByBranch;
 use Carbon\Carbon;
