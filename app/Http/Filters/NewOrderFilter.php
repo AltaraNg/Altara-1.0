@@ -2,7 +2,6 @@
 
 namespace App\Http\Filters;
 
-
 use App\ProductType;
 use App\Traits\IFilterByBranch;
 use Carbon\Carbon;
@@ -237,5 +236,19 @@ class NewOrderFilter extends BaseFilter
     public function branch(int $id)
     {
         $this->builder->where('new_orders.branch_id', $id);
+    }
+     /**
+     * @param int $id
+     */
+    public function orderNumber(string $order_number)
+    {
+        $this->builder->where('new_orders.order_number', $order_number);
+    }
+    /**
+     * @param int $id
+     */
+    public function customerId(int $id)
+    {
+        $this->builder->where('new_orders.customer_id', $id);
     }
 }

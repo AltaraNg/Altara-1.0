@@ -33,6 +33,7 @@ abstract class Amortization
         return 3;
     }
 
+
     public function repaymentAmount(): float
     {
         return round($this->order->repayment / $this->repaymentCount() / 100) * 100;
