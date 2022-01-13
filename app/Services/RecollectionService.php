@@ -73,19 +73,20 @@ class RecollectionService
         );
     }
 
-    public function generateStats($newOrders): array
+    public function generateStats($newOrders) : array
     {
-        $totalAmountOwedPerRecollectionStage = $this->getTotalAmountOwedPerRecollectionStage(clone $newOrders);
-        $totalAmountOwed = $this->getTotalAmountOwed($totalAmountOwedPerRecollectionStage);
         $additional['amountReceived'] = $this->getAmountReceived(clone $newOrders);
         $additional['amountOwed'] = $this->getAmountOwed(clone $newOrders);
-        $additional['ordersStatusCount'] =[
-            'active' =>  $this->getCountActiveOrders(clone $newOrders),
+        $additional['ordersStatusCount'] = [
+            'active' => $this->getCountActiveOrders(clone $newOrders),
             'inactive' => $this->getCountInactiveOrders(clone $newOrders),
             'complete' => $this->getCountCompletedOrders(clone $newOrders)
         ];
-        $additional['totalAmountOwedPerRecollectionStage'] = $totalAmountOwedPerRecollectionStage;
-        $additional['totalAmountOwed'] = $totalAmountOwed;
+        $additional['overdueRange'] = [
+            '1_31' => $this->getOverDueStatsForRange(clone $newOrders, [1, 31]),
+            '31_45' => $this->getOverDueStatsForRange(clone $newOrders, [31, 45]),
+            '45_above' => $this->getOverDueStatsGreaterThan45Days(clone $newOrders)
+        ];
         return $additional;
     }
 
@@ -111,6 +112,20 @@ class RecollectionService
             });
     }
 
+    private function getOverDueStatsForRange($newOrders, array $range= [])
+    {
+        return $newOrders->whereHas('recollection', function ($query) use ($range) {
+            $query->whereBetween('number_of_days',$range);
+        })->count();
+    }
+
+    private function getOverDueStatsGreaterThan45Days($newOrders)
+    {
+        return $newOrders->whereHas('recollection', function ($query) {
+            $query->where('number_of_days', '>', 45);
+        })->count();
+    }
+
     private function getCountActiveOrders($orderQuery)
     {
         return $orderQuery->whereHas('lastAmortization', function ($query) {
@@ -120,7 +135,6 @@ class RecollectionService
 
     private function getCountInactiveOrders($orderQuery)
     {
-//        ->selectRaw('*,  new_orders.order_date + interval 3 month as day')
         return $orderQuery->whereHas('lastAmortization', function ($query) {
             $query->where('expected_payment_date', '<=', Carbon::now()->subMonths(3));
         })->count();
@@ -180,3 +194,4 @@ class RecollectionService
         });
     }
 }
+
