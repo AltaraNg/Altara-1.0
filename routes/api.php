@@ -143,10 +143,12 @@ Route::middleware('auth:api')->group(function () {
     ]);
     Route::prefix('recollection')->group(function () {
         Route::get('/', 'RecollectionController@index');
+        Route::get('/statistics', 'RecollectionController@statistics');
         Route::get('/feedback/{new_order}', 'RecollectionController@show');
         Route::post('/feedback', 'RecollectionController@store');
         Route::get('/regenerate/list', 'RecollectionController@reGenerateCollectionList');
         Route::get('/export/list', 'RecollectionController@exportCollectionList');
+
     });
     Route::get('general/reasons/{type}', 'GeneralReasonController@index');
 });

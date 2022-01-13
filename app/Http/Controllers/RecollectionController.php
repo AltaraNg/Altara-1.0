@@ -26,34 +26,28 @@ class RecollectionController extends Controller
      * @var NewOrderRepository
      */
     private $newOrderRepository;
-    private $recollectionRepository;
 
-    public function __construct(NewOrderRepository $newOrderRepository, RecollectionRepository $recollectionRepository)
+    public function __construct(NewOrderRepository $newOrderRepository)
     {
         $this->newOrderRepository = $newOrderRepository;
-        $this->recollectionRepository = $recollectionRepository;
     }
 
     public function index(NewOrderFilter $filter, RecollectionService $recollectionService)
     {
-
-        $collectQuery = $this->newOrderRepository->reportQuery($filter);
-        $additional['stats'] = $recollectionService->generateStats(clone $collectQuery);
-        return $additional;
-
-        //Amount Recieved
-
-        //Amount Owed
-
         $collectQuery = $this->newOrderRepository->reportQuery($filter);
         if (request()->query('recollection') == 'all') {
             $collectQuery = $this->newOrderRepository->reportQuery($filter);
-            $additional['stats'] = $recollectionService->generateStats(clone $collectQuery);
-            return $additional;
             $additional['total_sales'] = $collectQuery->count();
             return $this->sendSuccess([$collectQuery->paginate(10) ?? [], "meta" => $additional], 'Orders and stats retrieved successfully');
         }
         return $this->sendSuccess([$collectQuery->paginate(10)], 'Orders retrieved successfully');
+    }
+
+    public function statistics(NewOrderFilter $filter, RecollectionService $recollectionService): Response
+    {
+        $collectQuery = $this->newOrderRepository->reportQuery($filter);
+        $additional['stats'] = $recollectionService->generateStats(clone $collectQuery);
+        return $this->sendSuccess(['meta' => $additional], 'Orders retrieved successfully');
     }
 
     public function store(GeneralFeedbackRequest $request)

@@ -83,7 +83,7 @@ class RecollectionService
             'complete' => $this->getCountCompletedOrders(clone $newOrders)
         ];
         $additional['overdueRange'] = [
-            '1_31' => $this->getOverDueStatsForRange(clone $newOrders, [1, 31]),
+            '1_30' => $this->getOverDueStatsForRange(clone $newOrders, [1, 30]),
             '31_45' => $this->getOverDueStatsForRange(clone $newOrders, [31, 45]),
             '45_above' => $this->getOverDueStatsGreaterThan45Days(clone $newOrders)
         ];
