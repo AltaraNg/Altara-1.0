@@ -6,7 +6,9 @@ use App\NewOrder;
 use App\Recollection;
 use App\Repositories\RecollectionRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use function foo\func;
 
 class RecollectionService
 {
@@ -71,12 +73,20 @@ class RecollectionService
         );
     }
 
-    public function generateStats($newOrders): array
+    public function generateStats($newOrders) : array
     {
-        $totalAmountOwedPerRecollectionStage = $this->getTotalAmountOwedPerRecollectionStage(clone $newOrders);
-        $totalAmountOwed = $this->getTotalAmountOwed($totalAmountOwedPerRecollectionStage);
-        $additional['totalAmountOwedPerRecollectionStage'] = $totalAmountOwedPerRecollectionStage;
-        $additional['totalAmountOwed'] = $totalAmountOwed;
+        $additional['amountReceived'] = $this->getAmountReceived(clone $newOrders);
+        $additional['amountOwed'] = $this->getAmountOwed(clone $newOrders);
+        $additional['ordersStatusCount'] = [
+            'active' => $this->getCountActiveOrders(clone $newOrders),
+            'inactive' => $this->getCountInactiveOrders(clone $newOrders),
+            'complete' => $this->getCountCompletedOrders(clone $newOrders)
+        ];
+        $additional['overdueRange'] = [
+            '1_30' => $this->getOverDueStatsForRange(clone $newOrders, [1, 30]),
+            '31_45' => $this->getOverDueStatsForRange(clone $newOrders, [31, 45]),
+            '45_above' => $this->getOverDueStatsGreaterThan45Days(clone $newOrders)
+        ];
         return $additional;
     }
 
@@ -102,23 +112,75 @@ class RecollectionService
             });
     }
 
-    public  function generateCollectionListCSV($orders)
+    private function getOverDueStatsForRange($newOrders, array $range= [])
     {
-       return $orders->get()->map(function ($item) {
-           $saleType =  $item->salesCategory->name  ?? null;
-           $payment_made_query= $item->amortization->where('actual_payment_date', '<>', null)->where('actual_amount', '<>', null);
-           $payment_due_query = $item->amortization->where('actual_payment_date', null)->where('actual_amount', null);
-           $no_of_payments_made = $payment_made_query->count();
-           $no_of_payments_due = $payment_due_query->count();
-           $sum_of_payments_made = $payment_made_query->sum('expected_amount') + $item->down_payment;
-           $sum_of_payments_due = $payment_due_query->sum('expected_amount');
+        return $newOrders->whereHas('recollection', function ($query) use ($range) {
+            $query->whereBetween('number_of_days',$range);
+        })->count();
+    }
+
+    private function getOverDueStatsGreaterThan45Days($newOrders)
+    {
+        return $newOrders->whereHas('recollection', function ($query) {
+            $query->where('number_of_days', '>', 45);
+        })->count();
+    }
+
+    private function getCountActiveOrders($orderQuery)
+    {
+        return $orderQuery->whereHas('lastAmortization', function ($query) {
+            $query->where('expected_payment_date', '>=', Carbon::now()->subMonths(3));
+        })->count();
+    }
+
+    private function getCountInactiveOrders($orderQuery)
+    {
+        return $orderQuery->whereHas('lastAmortization', function ($query) {
+            $query->where('expected_payment_date', '<=', Carbon::now()->subMonths(3));
+        })->count();
+    }
+
+    private function getCountCompletedOrders($orderQuery)
+    {
+        $rawQuery = DB::raw("EXISTS(SELECT COUNT(*) AS totalRepayment, SUM(IF(amortizations.actual_payment_date IS NOT NULL, 1 , 0)) as noOfRePaymentMade from amortizations WHERE new_orders.id = amortizations.new_order_id GROUP BY amortizations.new_order_id HAVING(totalRepayment-noOfRePaymentMade) <= 0)");
+        return $orderQuery->whereRaw($rawQuery)->count();
+    }
+
+    private function getAmountReceived($orderQuery)
+    {
+        return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
+            ->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)
+            ->where('expected_payment_date', '<', Carbon::now())
+            // ->whereBetween('expected_payment_date', ['2021-01-01', '2021-12-30'])
+            ->sum('actual_amount');
+    }
+
+    private function getAmountOwed($orderQuery)
+    {
+        return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
+            ->where('actual_payment_date', null)->where('actual_amount', '<', 1)
+            ->where('expected_payment_date', '<', Carbon::now())
+            // ->whereBetween('expected_payment_date', ['2021-01-01', '2021-12-30'])
+            ->sum('expected_amount');
+    }
+
+    public function generateCollectionListCSV($orders)
+    {
+        return $orders->get()->map(function ($item) {
+            $saleType = $item->salesCategory->name ?? null;
+            $payment_made_query = $item->amortization->where('actual_payment_date', '<>', null)->where('actual_amount', '<>', null);
+            $payment_due_query = $item->amortization->where('actual_payment_date', null)->where('actual_amount', null);
+            $no_of_payments_made = $payment_made_query->count();
+            $no_of_payments_due = $payment_due_query->count();
+            $sum_of_payments_made = $payment_made_query->sum('expected_amount') + $item->down_payment;
+            $sum_of_payments_due = $payment_due_query->sum('expected_amount');
             return [
                 'full_name' => $item->customer->full_name ?? 'Not Available',
                 'phone_number' => $item->customer->telephone ?? 'Not Available',
                 'email' => $item->customer->email ?? 'Not Available',
                 'order_number' => $item->order_number,
                 'sale_type' => $saleType ?? 'Not Available',
-                'new_sale' =>  $saleType == "new sales" ? "Yes" : "No",
+                'new_sale' => $saleType == "new sales" ? "Yes" : "No",
                 'business_type' => $item->businessType->name,
                 'product_type' => $item->product->product_type ?? 'Not Available',
                 'showroom' => $item->branch->name,
