@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         //Macro
-        Builder::macro('appplyLikeOnMultipleSearchTerms', function ($attribute, array $searchTerms) {
+        Builder::macro('appplyLikeOnMultipleSearchTerms', function (string $attribute, array $searchTerms) {
             $this->where(function (Builder $query) use ($attribute, $searchTerms) {
                 foreach (Arr::wrap($searchTerms) as $searchTerm) {
                     $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
