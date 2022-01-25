@@ -252,13 +252,20 @@ class NewOrderFilter extends BaseFilter
         $this->builder->where('new_orders.customer_id', $id);
     }
     public function businessTypeGroup (string $group){
-        if ($group == 'cash'){
-            $group = "cash_loan";
-        }else if ($group == 'product'){
-            $group = "_products";
+        if ($group == 'cash') {
+            $closure = function ($query) {
+                $query->where(function ($query)
+                {
+                    $query->where('slug', 'like', "%cash_loan%")
+                    ->orWhere('slug', 'like', "%_rentals%");
+                });
+
+            };
+        } else if ($group == 'product') {
+            $closure =   function ($query) {
+                $query->where('slug', 'like', "%_products%");
+            };
         }
-        $this->builder->whereHas('businessType', function ($query) use ($group) {
-            $query->where('slug', 'like', "%$group%");
-        });
+        $this->builder->whereHas('businessType', $closure);
     }
 }
