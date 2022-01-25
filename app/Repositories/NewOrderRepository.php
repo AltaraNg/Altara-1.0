@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
+use App\GeneralFeedback;
 use App\Helper\Helper;
 use App\Inventory;
 use App\InventoryStatus;
@@ -26,7 +27,7 @@ class NewOrderRepository extends Repository
         return NewOrder::class;
     }
 
-    public function query($filter)
+    public function reportQuery($filter)
     {
         return $this->model::filter($filter);
     }
@@ -49,7 +50,7 @@ class NewOrderRepository extends Repository
             'status_id' => OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id,
             'product_id' => $inventory->product_id
         ]));
-        if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM){
+        if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM) {
             $order->customDate()->create(['custom_date' => $data['custom_date']]);
             $order->custom_date = $data['custom_date'];
         }
@@ -81,6 +82,28 @@ class NewOrderRepository extends Repository
         } catch (Exception $e) {
             throw new AException($e->getMessage(), $e->getCode());
         }
+    }
 
+    public function updateOrderStatus($orderId)
+    {
+        $order = $this->model::find($orderId);
+        $order->update(['status_id' =>  OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id]);
+    }
+
+    public function firstById (int $orderId)
+    {
+       return $this->model::findOrFail($orderId);
+    }
+    public function saveFeedBack($data)
+    {
+        $order = $this->firstById($data['new_order_id']);
+        $feedback = new GeneralFeedback([
+            'reason_id' => $data['reason_id'],
+            'data' =>  $data['data'],
+            'creator_id' => auth()->id(),
+            'feedback' => $data['feedback'],
+            'follow_up_date' => $data['follow_up_date']
+        ]);
+       return $order->generalFeedBacks()->save($feedback);
     }
 }

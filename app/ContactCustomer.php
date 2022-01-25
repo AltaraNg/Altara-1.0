@@ -75,4 +75,9 @@ class ContactCustomer extends Model
         return $this->belongsTo(Customer::class, 'reg_id', 'reg_id');
     }
 
+    public function lastProspectActivity()
+    {
+        return $this->hasOne(ProspectActivity::class)->latest('prospect_activities.date');
+    }
+
 }

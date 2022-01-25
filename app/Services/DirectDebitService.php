@@ -5,7 +5,8 @@ namespace App\Services;
 
 
 use App\Amortization;
-use App\BusinessType;
+use App\OrderType;
+use App\PaymentGateway;
 use App\Events\RepaymentEvent;
 use App\OrderStatus;
 use App\PaymentMethod;
@@ -41,11 +42,8 @@ class DirectDebitService
             ->whereDate('expected_payment_date', '<=' ,Carbon::now())
             ->whereHas('new_orders', function ($q){
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
-                    ->where('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_PRODUCT)->first()->id)
-                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN)->first()->id)
-                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT)->first()->id)
-                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_STARTER_CASH_LOAN)->first()->id)
-                    ->orWhere('business_type_id', BusinessType::where('name', BusinessType::ALTARA_PAY_RENTALS)->first()->id);
+                    ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
+                    ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
             });
 
         return $data->get();

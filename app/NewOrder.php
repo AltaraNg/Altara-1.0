@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Http\Filters\Filterable;
+use App\Http\Resources\JSONApiCollection;
+use App\Http\Resources\JSONApiResource;
 use App\Rules\Money;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -14,6 +16,13 @@ class NewOrder extends Model
     protected $with = ['amortization'];
 
     protected $guarded = [];
+
+    const REM = 'reminder';
+    const CRDBUR = 'credit_bureau';
+    const INTREPO = 'internal_repossession';
+    const EXTREPO = 'external_repossession';
+
+
     /**
      * Validation rules
      *
@@ -44,6 +53,7 @@ class NewOrder extends Model
             'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
+            'discount_id' => 'sometimes|exists:discounts,id',
         ];
     }
 
@@ -67,6 +77,8 @@ class NewOrder extends Model
             'down_payment_rate_id' => 'sometimes|exists:down_payment_rates,id',
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
+            'owner_id' => 'sometimes|required|exists:users,id',
+            'discount_id' => 'sometimes|exists:discounts,id',
         ];
     }
 
@@ -103,7 +115,14 @@ class NewOrder extends Model
     {
         return $this->hasMany(Amortization::class);
     }
-
+    public function lastAmortization()
+    {
+        return $this->hasOne(Amortization::class)->latest('expected_payment_date');
+    }
+    public function latestAmortizationNotPayed()
+    {
+        return $this->hasOne(Amortization::class)->where('expected_payment_date', '<', now()->endOfDay())->where('actual_payment_date', null)->where('actual_amount', '<', 1)->oldest('expected_payment_date');
+    }
     public function orderStatus()
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');
@@ -158,6 +177,11 @@ class NewOrder extends Model
         );
     }
 
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
+    }
+
     /**
      * Get all of the New Order's payments.
      */
@@ -177,6 +201,19 @@ class NewOrder extends Model
     {
         return $this->belongsTo(PaymentGateway::class, 'payment_gateway_id');
     }
+    public function lastRenewalPrompter()
+    {
+        return $this->hasOne(RenewalPrompter::class, 'order_id')->latest('renewal_prompters.created_at');
+    }
+    public function renewalPrompters()
+    {
+        return $this->hasMany(RenewalPrompter::class, 'order_id');
+    }
+
+    public function recollection()
+    {
+        return $this->hasOne(Recollection::class, 'new_order_id');
+    }
     /**
      * Get all of the New Order's payments.
      */
@@ -187,42 +224,54 @@ class NewOrder extends Model
         })->first()->paymentMethod->name ?? null;
     }
 
-    public function toArray()
+     /**
+     * Get the neworder's feedbacks.
+     */
+    // generalFeedbackAble
+    public function generalFeedBacks()
     {
-        return [
-            "id" => $this->id,
-            "order_number" => $this->order_number,
-            "product_id" => $this->product_id,
-            "product" => $this->product,
-            "product_name" => $this->product->name,
-            "serial_number" => $this->serial_number,
-            "repayment_duration" => $this->repaymentDuration->name ?? null,
-            "repayment_cycle" => $this->repaymentCycle->name ?? null,
-            "customer_id" => $this->customer->id,
-            "customer_name" => $this->customer->fullName,
-            "customer_phone" => $this->customer->telephone,
-            "customer_email" => $this->customer->email,
-            "business_type" => $this->businessType->name ?? null,
-            "status" => $this->orderStatus->name ?? null,
-            "branch" => $this->branch->name,
-            "product_price" => $this->product_price,
-            "down_payment" => $this->down_payment,
-            "repayment" => $this->repayment,
-            "discount" => $this->discounts,
-            "single_repayment" => $this->amortization[0]->expected_amount ?? '',
-            "custom_date" => $this->customDate->custom_date ?? null,
-            "amortization" => $this->amortization,
-            "notifications" => $this->notifications,
-            "order_payment_method" => $this->order_payment_method,
-            "customer" => $this->customer,
-            "order_date" => $this->order_date,
-            "owner" => $this->owner->full_name ?? '',
-            "sales_type" => $this->salesCategory ?? '',
-            "branch_id" => $this->branch->id,
-            "owner_id" => $this->owner->id,
-            "down_payment_rate" => $this->downPaymentRate->name ?? null,
-            "payment_gateway" => $this->paymentGateway->name ?? null,
-            "order_type" => $this->orderType->name ?? null,
-        ];
+        return $this->morphMany(GeneralFeedback::class, 'generalFeedbackAble', 'general_feedback_able_type', 'general_feedback_able_id');
     }
+   public function toArray()
+   {
+       return [
+           "id" => $this->id,
+           "order_number" => $this->order_number,
+           "product_id" => $this->product_id,
+           "product" => $this->product,
+           "product_name" => $this->product->name ?? null,
+           "serial_number" => $this->serial_number,
+           "repayment_duration" => $this->repaymentDuration->name ?? null,
+           "repayment_cycle" => $this->repaymentCycle->name ?? null,
+           "customer_id" => $this->customer->id ?? '',
+           "customer_name" => $this->customer->fullName ?? '',
+           "customer_phone" => $this->customer->telephone ?? '',
+           "customer_email" => $this->customer->email ?? '',
+           "business_type" => $this->businessType->name ?? null,
+           "status" => $this->orderStatus->name ?? null,
+           "branch" => $this->branch->name ?? '',
+           "product_price" => $this->product_price,
+           "down_payment" => $this->down_payment,
+           "repayment" => $this->repayment,
+           "discount" => $this->discounts,
+           "single_repayment" => $this->amortization[0]->expected_amount ?? '',
+           "custom_date" => $this->customDate->custom_date ?? null,
+           "amortization" => $this->amortization,
+           "notifications" => $this->notifications,
+           "order_payment_method" => $this->order_payment_method,
+           "customer" => $this->customer,
+           "order_date" => $this->order_date,
+           "owner" => $this->owner->full_name ?? '',
+           "sales_type" => $this->salesCategory ?? '',
+           "branch_id" => $this->branch->id ?? '',
+           "owner_id" => $this->owner->id ?? '',
+           "down_payment_rate" => $this->downPaymentRate->name ?? null,
+           "payment_gateway" => $this->paymentGateway->name ?? null,
+           "order_type" => $this->orderType->name ?? null,
+           'renewal_prompters' => ($this->renewalPrompters->count() > 0) ? new JSONApiCollection($this->renewalPrompters) : null,
+           'last_renewal_prompter_activity' => ($this->lastRenewalPrompter) ? new JSONApiResource($this->lastRenewalPrompter) : null,
+           'order_discount' => $this->discount,
+           'general_feedbacks' => $this->generalFeedBacks ?? null
+       ];
+   }
 }

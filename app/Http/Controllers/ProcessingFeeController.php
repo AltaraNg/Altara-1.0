@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerStage;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
 use App\ProcessingFee;
+use App\Repositories\ContactCustomerRepository;
 use App\Verification;
 use Illuminate\Http\Request;
 
 class ProcessingFeeController extends Controller
 {
+    private $contactRepo;
+
+    public function __construct(ContactCustomerRepository $contactRepository)
+    {
+        $this->contactRepo = $contactRepository;
+    }
    /**
     * Display a listing of the resource.
     *
@@ -49,7 +59,14 @@ class ProcessingFeeController extends Controller
       /**else create a processing fee record for the customer and save*/
       /** after creating address update the address column in the verification table to the approval
        * status sent from the request(0 or 1 as the case may be) */
-      Verification::where('customer_id', '=', $request->customer_id)->update(['processing_fee' => 1]);
+     $verification = Verification::where('customer_id', '=', $request->customer_id)->update(['processing_fee' => 1]);
+     if ($verification){
+         $customer_contact = $this->contactRepo->getByID($request->customer_id);
+         $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::AFFIDAVIT)->first()->id]);
+         if ($contact_customer->wasChanged('customer_stage_id')) {
+             event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+         }
+     }
       /** return the customer with all his/her details*/
       return response()->json([
          'response' => (new CustomerController)->show($request->customer_id)->original

@@ -2,12 +2,17 @@
 
 namespace App\Http\Filters;
 
-use App\OrderStatus;
+use App\ProductType;
+use App\Traits\IFilterByBranch;
 use Carbon\Carbon;
+use App\OrderStatus;
+use App\RenewalPrompterStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class NewOrderFilter extends BaseFilter
 {
+    //    use IFilterByBranch;
     /**
      * @param int $day
      */
@@ -114,7 +119,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $employee_status
-     * Filter orders employee status 
+     * Filter orders employee status
      */
     public function sector(string $employee_status)
     {
@@ -128,7 +133,7 @@ class NewOrderFilter extends BaseFilter
 
     /**
      * @param string $salesCategory
-     * Filter orders sales 
+     * Filter orders sales
      */
     public function salesCategory(int $salesCategory)
     {
@@ -145,5 +150,115 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->whereDate($column, '>=', $date)
             ->whereDate($column, '<=', $this->request->toDate ?? Carbon::now());
+    }
+
+    /**
+     * @param string $orderType
+     * Filter orders by order type
+     */
+    public function orderType(int $orderType)
+    {
+        $this->builder->whereHas('orderType', function ($query) use ($orderType) {
+            $query->where('id', $orderType);
+        });
+    }
+
+    /**
+     * @param string $orderType
+     * Filter orders by order type
+     */
+    public function isCompletedOrder(bool $isCompletedOrder = true)
+    {
+        if ($isCompletedOrder) {
+            $this->builder->where('status_id', OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id);
+        }
+    }
+
+    public function orderHasAtMostTwoPaymentsLeft(bool $orderHasTwoPaymentsLeft = true)
+    {
+        if ($orderHasTwoPaymentsLeft) {
+            $rawQuery = DB::raw("EXISTS(SELECT COUNT(*) AS totalRepayment, SUM(IF(amortizations.actual_payment_date IS NOT NULL, 1 , 0)) as noOfRePaymentMade from amortizations WHERE new_orders.id = amortizations.new_order_id GROUP BY amortizations.new_order_id HAVING(totalRepayment-noOfRePaymentMade) <= 2)");
+            $this->builder->whereRaw($rawQuery);
+        }
+    }
+
+    public function renewalPrompterStatus(string $renewalPrompterStatus)
+    {
+        $renewalPrompterStatusId =  RenewalPrompterStatus::where('name', 'like', '%' . $renewalPrompterStatus . '%')->first()->id ?? '';
+        $this->builder->whereHas('renewalPrompters', function ($query) use ($renewalPrompterStatusId) {
+            $query->where('renewal_prompter_status_id', $renewalPrompterStatusId);
+        });
+    }
+    public function unContactedRenewalPrompters($getNotContacted = true)
+    {
+        if ($getNotContacted) {
+            $this->builder->doesntHave('renewalPrompters');
+        }
+    }
+
+    public function recollection (string $status = null){
+        if ($status == 'all'){
+            $this->builder->has('recollection');
+        }else{
+            $this->builder->whereHas('recollection', function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+        }
+    }
+    public function filterOrderByBranch($filterOrderByBranch = true)
+    {
+
+        if ($filterOrderByBranch) {
+            if (auth()->user()->isDSACaptain()) {
+                $this->builder->where('new_orders.branch_id', auth()->user()->branch_id);
+            } else if (auth()->user()->isCoordinator()) {
+                // ** Might need refactoring
+                $branches = auth()->user()->branches;
+                $ids = $branches->map(function ($branch) {
+                    return $branch->id;
+                });
+                $this->builder->whereIn('new_orders.branch_id', $ids);
+            } else if (auth()->user()->isDSAAgent()) {
+
+                $this->builder->where('owner_id', auth()->user()->id);
+            } else if (auth()->user()->isCashLoanAgent()) {
+                $this->builder->where('owner_id', auth()->user()->id)->whereHas('product.productType', function ($query) {
+                    $query->where('name', ProductType::CASH_LOAN);
+                });
+            }else if (auth()->user()->isRentAgent()) {
+                $this->builder->where('owner_id', auth()->user()->id);
+            }
+        }
+    }
+    /**
+     * @param int $id
+     */
+    public function branch(int $id)
+    {
+        $this->builder->where('new_orders.branch_id', $id);
+    }
+     /**
+     * @param int $id
+     */
+    public function orderNumber(string $order_number)
+    {
+        $this->builder->where('new_orders.order_number', $order_number);
+    }
+    /**
+     * @param int $id
+     */
+    public function customerId(int $id)
+    {
+        $this->builder->where('new_orders.customer_id', $id);
+    }
+    public function businessTypeGroup (string $group){
+        if ($group == 'cash'){
+            $group = "cash_loan";
+        }else if ($group == 'product'){
+            $group = "_products";
+        }
+        $this->builder->whereHas('businessType', function ($query) use ($group) {
+            $query->where('slug', 'like', "%$group%");
+        });
     }
 }

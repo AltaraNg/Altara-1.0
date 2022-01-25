@@ -9,6 +9,7 @@ class PaystackAuthCode extends Model
 
     protected $guarded = [];
     protected $table = "paystack_auth_code";
+    public $timestamps = false;
     public static function rules()
     {
         return [

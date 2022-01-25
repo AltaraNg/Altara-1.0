@@ -2,21 +2,30 @@
 
 namespace App\Providers;
 
+use App\Events\CustomerCreatedEvent;
 use App\Events\NewOrderEvent;
-use App\Events\OldRepaymentEvent;
-use App\Events\ProductTransferEvent;
-use App\Events\SendPasswordResetLinkEvent;
 use App\Events\RepaymentEvent;
-use App\Listeners\LogPaymentListener;
+use App\Events\TodoCreatedEvent;
+use App\Events\OldRepaymentEvent;
+use App\Listeners\ContactCustomerStageListener;
+use App\Listeners\CustomerRegisteredListener;
 use App\Listeners\NewOrderListener;
-use App\Listeners\ProductTransferListener;
+use App\Events\FeedbackCreatedEvent;
+use App\Events\ProductTransferEvent;
 use App\Listeners\RepaymentListener;
+use App\Listeners\LogPaymentListener;
+use App\Listeners\UpgradeContactCustomerStageListener;
+use Illuminate\Support\Facades\Event;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Events\SendPasswordResetLinkEvent;
+use App\Listeners\CustomerStageProspectActivityListener;
+use App\Listeners\ProductTransferListener;
+use App\Listeners\UpdateInventoryListener;
+use App\Listeners\ProspectActivityListener;
+use App\Listeners\UpdateAmortizationListener;
+use App\Listeners\UpdateInventoryDictListener;
 use App\Listeners\SendPasswordResetLinkListener;
 use App\Listeners\UpdateInventoryBranchListener;
-use App\Listeners\UpdateInventoryListener;
-use App\Listeners\UpdateInventoryDictListener;
-use App\Listeners\UpdateAmortizationListener;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -37,7 +46,8 @@ class EventServiceProvider extends ServiceProvider
             UpdateInventoryListener::class,
             LogPaymentListener::class,
             NewOrderListener::class,
-            UpdateInventoryDictListener::class
+            UpdateInventoryDictListener::class,
+            UpgradeContactCustomerStageListener::class,
         ],
         OldRepaymentEvent::class => [
             LogPaymentListener::class
@@ -49,6 +59,19 @@ class EventServiceProvider extends ServiceProvider
         RepaymentEvent::class => [
             UpdateAmortizationListener::class,
             RepaymentListener::class
+        ],
+        TodoCreatedEvent::class => [
+            ProspectActivityListener::class
+        ],
+        FeedbackCreatedEvent::class => [
+            ProspectActivityListener::class
+        ],
+        CustomerStageUpdatedEvent::class => [
+            CustomerStageProspectActivityListener::class,
+//            ContactCustomerStageListener::class,
+        ],
+        CustomerCreatedEvent::class => [
+            CustomerRegisteredListener::class,
         ]
     ];
 

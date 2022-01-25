@@ -203,6 +203,14 @@ class User extends Authenticatable
          $this->role->name === Role::DSA_REFERRAL ||
          $this->role->name === Role::DSA_RENEWAL;
     }
+    public function isCashLoanAgent()
+    {
+        return  $this->role->name === Role::CLA;
+    }
+    public function isRentAgent()
+    {
+        return  $this->role->name === Role::RA;
+    }
     public function todo()
     {
         return $this->hasMany(Todo::class);
