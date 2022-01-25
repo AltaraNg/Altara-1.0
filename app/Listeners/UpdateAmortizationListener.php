@@ -25,7 +25,8 @@ class UpdateAmortizationListener
             if ($amortization){
                 $amortization->update([
                     'actual_payment_date' => Carbon::now(),
-                    'actual_amount' => $event->newOrder['amount']
+                    'actual_amount' => $event->newOrder['amount'],
+                    'user_id' => auth('api')->user()->id
                 ]);
             }
         } catch (\Exception $e) {
