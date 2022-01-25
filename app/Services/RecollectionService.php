@@ -150,7 +150,6 @@ class RecollectionService
     {
         return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
             ->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)
-            // ->where('expected_payment_date', '<', Carbon::now())
             ->sum('actual_amount');
     }
 
