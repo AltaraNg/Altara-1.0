@@ -29,5 +29,9 @@ class UpdateAmortizatonTable extends Migration
     public function down()
     {
         //
+        Schema::table('amortizations', function (Blueprint $table) {
+            $table->dropColumn('user_id');
+        });
+
     }
 }
