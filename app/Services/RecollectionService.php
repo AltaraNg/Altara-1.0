@@ -75,7 +75,7 @@ class RecollectionService
 
     public function generateStats($newOrders) : array
     {
-        $additional['amountReceived'] = $this->getAmountReceived(clone $newOrders);
+        $additional['amountReceived'] = $this->getAmountReceived(clone $newOrders) + $newOrders->sum('down_payment');
         $additional['amountOwed'] = $this->getAmountOwed(clone $newOrders);
         $additional['ordersStatusCount'] = [
             'active' => $this->getCountActiveOrders(clone $newOrders),
@@ -150,8 +150,6 @@ class RecollectionService
     {
         return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
             ->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)
-            ->where('expected_payment_date', '<', Carbon::now())
-            // ->whereBetween('expected_payment_date', ['2021-01-01', '2021-12-30'])
             ->sum('actual_amount');
     }
 
@@ -159,8 +157,7 @@ class RecollectionService
     {
         return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
             ->where('actual_payment_date', null)->where('actual_amount', '<', 1)
-            ->where('expected_payment_date', '<', Carbon::now())
-            // ->whereBetween('expected_payment_date', ['2021-01-01', '2021-12-30'])
+            ->where('expected_payment_date', '<', Carbon::now()->endOfDay())
             ->sum('expected_amount');
     }
 
