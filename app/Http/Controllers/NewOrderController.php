@@ -35,6 +35,7 @@ class NewOrderController extends Controller
         $this->newOrderRepository = $newOrderRepository;
         $this->contactRepo = $contactRepository;
         $this->paystackAuthCodeRepository = $paystackAuthCodeRepository;
+        $this->directDebitDataRepository = $directDebitDataRepository;
     }
 
     /**
@@ -57,13 +58,14 @@ class NewOrderController extends Controller
      */
     public function store(NewOrderRequest $request)
     {
+
         $order = $this->newOrderRepository->store($request->validated());
         if ($request->authorization_code) {
             $data = ['order_id' => $order->order_number, 'auth_code' => $request->authorization_code];
             $this->paystackAuthCodeRepository->store($data);
         }
         if ($request->collection_verification_data) {
-            $collection_verification_data = $request->collection_verification_data;
+            $collection_verification_data = (object) $request->collection_verification_data;
             $this->directDebitDataRepository->store([
                 'customer_id' => $order->customer_id,
                 'order_id' => $order->order_number,
