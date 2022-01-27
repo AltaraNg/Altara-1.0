@@ -27,6 +27,8 @@ abstract class Amortization
             return 18;
         } else if ($result >= 12) {
             return 12;
+        } else if ($result >= 9) {
+            return 9;
         } else if ($result >= 6) {
             return 6;
         }
