@@ -17,6 +17,7 @@ class CreateOtpsTable extends Migration
             $table->bigIncrements('id');
             $table->string('identifier');
             $table->string('token');
+            
             $table->integer('validity');
             $table->boolean('expired')->default(false);
             $table->timestamp('generated_at');
