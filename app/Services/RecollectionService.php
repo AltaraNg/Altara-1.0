@@ -135,7 +135,7 @@ class RecollectionService
     private function getCountActiveOrders($orderQuery)
     {
         return $orderQuery->whereRaw($this->rawQueryNotCompletedPayment)->whereHas('amortization', function ($query) {
-            $query->where('actual_payment_date', '>=', Carbon::now()->subMonths(2));
+            $query->where('actual_payment_date', '>=', Carbon::now()->subMonths(2))->orWhere('new_orders.order_date', '<=', Carbon::now()->subMonths(2));
         })->count();
     }
 
