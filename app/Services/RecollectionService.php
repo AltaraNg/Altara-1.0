@@ -135,14 +135,14 @@ class RecollectionService
     private function getCountActiveOrders($orderQuery)
     {
         return $orderQuery->whereRaw($this->rawQueryNotCompletedPayment)->whereHas('amortization', function ($query) {
-            $query->where('actual_payment_date', '>=', Carbon::now()->subMonths(2))->orWhere('new_orders.order_date', '<=', Carbon::now()->subMonths(2));
+            $query->whereDate('actual_payment_date', '>=', Carbon::now()->subMonths(2))->orWhereDate('new_orders.order_date', '>=', Carbon::now()->subMonths(2));
         })->count();
     }
 
     private function getCountInactiveOrders($orderQuery)
     {
         return $orderQuery->whereRaw($this->rawQueryNotCompletedPayment)->whereHas('amortization', function ($query) {
-            $query->where('actual_payment_date', '<=', Carbon::now()->subMonths(2));
+            $query->whereDate('actual_payment_date', '<=', Carbon::now()->subMonths(2));
         })->count();
     }
 
@@ -155,7 +155,7 @@ class RecollectionService
     private function getAmountReceived($orderQuery)
     {
         return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
-            ->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)
+            ->whereDate('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)
             ->sum('actual_amount');
     }
 
@@ -163,7 +163,7 @@ class RecollectionService
     {
         return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
             ->where('actual_payment_date', null)->where('actual_amount', '<', 1)
-            ->where('expected_payment_date', '<', Carbon::now()->endOfDay())
+            ->whereDate('expected_payment_date', '<', Carbon::now()->endOfDay())
             ->sum('expected_amount');
     }
     private function getTotalOutstanding($orderQuery)
