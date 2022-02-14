@@ -155,7 +155,7 @@ class RecollectionService
     private function getAmountReceived($orderQuery)
     {
         return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
-            ->whereDate('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)
+            ->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)
             ->sum('actual_amount');
     }
 
