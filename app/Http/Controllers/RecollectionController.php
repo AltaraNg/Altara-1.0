@@ -71,6 +71,6 @@ class RecollectionController extends Controller
     {
         $collectQuery = $this->newOrderRepository->reportQuery($filter);
         $data = $recollectionService->generateCollectionListCSV($collectQuery);
-         return Excel::download(new CollectionListExport($data), 'CollectionList.csv');
+        return Excel::download(new CollectionListExport($data), 'CollectionList.csv');
     }
 }
