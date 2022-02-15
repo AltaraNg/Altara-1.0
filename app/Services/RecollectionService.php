@@ -3,20 +3,21 @@
 namespace App\Services;
 
 use App\NewOrder;
-use App\Recollection;
-use App\Repositories\RecollectionRepository;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Recollection;
 use Illuminate\Support\Str;
-use function foo\func;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\RecollectionRepository;
 
 class RecollectionService
 {
     private $recollectRepository;
+    private $rawQueryNotCompletedPayment;
 
     public function __construct(RecollectionRepository $recollectionRepository)
     {
         $this->recollectRepository = $recollectionRepository;
+        $this->rawQueryNotCompletedPayment =  DB::raw("EXISTS(SELECT COUNT(*) AS totalRepayment, SUM(IF(amortizations.actual_payment_date IS NOT NULL, 1 , 0)) as noOfRePaymentMade from amortizations WHERE new_orders.id = amortizations.new_order_id GROUP BY amortizations.new_order_id HAVING(totalRepayment-noOfRePaymentMade) > 0)");
     }
 
     public function categoriseRecollection()
@@ -73,14 +74,22 @@ class RecollectionService
         );
     }
 
-    public function generateStats($newOrders) : array
+    public function generateStats($newOrders): array
     {
+        $newOrders = $newOrders->whereHas('branch', function ($query) {
+            $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
+        });
+        $additional['total_sales'] =  $newOrders->count();
         $additional['amountReceived'] = $this->getAmountReceived(clone $newOrders) + $newOrders->sum('down_payment');
         $additional['amountOwed'] = $this->getAmountOwed(clone $newOrders);
+        $additional['totalOutstanding'] = $this->getTotalOutstanding(clone $newOrders);
+        $active = $this->getCountActiveOrders(clone $newOrders);
+        $complete = $this->getCountCompletedOrders(clone $newOrders);
+        $inactive =   $additional['total_sales'] - ($active + $complete);
         $additional['ordersStatusCount'] = [
-            'active' => $this->getCountActiveOrders(clone $newOrders),
-            'inactive' => $this->getCountInactiveOrders(clone $newOrders),
-            'complete' => $this->getCountCompletedOrders(clone $newOrders)
+            'active' => $active,
+            'inactive' => $inactive,
+            'complete' => $complete
         ];
         $additional['overdueRange'] = [
             '1_30' => $this->getOverDueStatsForRange(clone $newOrders, [1, 30]),
@@ -112,10 +121,10 @@ class RecollectionService
             });
     }
 
-    private function getOverDueStatsForRange($newOrders, array $range= [])
+    private function getOverDueStatsForRange($newOrders, array $range = [])
     {
         return $newOrders->whereHas('recollection', function ($query) use ($range) {
-            $query->whereBetween('number_of_days',$range);
+            $query->whereBetween('number_of_days', $range);
         })->count();
     }
 
@@ -128,16 +137,15 @@ class RecollectionService
 
     private function getCountActiveOrders($orderQuery)
     {
-        return $orderQuery->whereHas('lastAmortization', function ($query) {
-            $query->where('expected_payment_date', '>=', Carbon::now()->subMonths(3));
+
+        return $orderQuery->whereRaw($this->rawQueryNotCompletedPayment)->whereHas('amortization', function ($query) {
+            $query->whereDate('actual_payment_date', '>=', Carbon::now()->subMonths(2))->orWhereDate('new_orders.order_date', '>=', Carbon::now()->subMonths(2));
         })->count();
     }
 
     private function getCountInactiveOrders($orderQuery)
     {
-        return $orderQuery->whereHas('lastAmortization', function ($query) {
-            $query->where('expected_payment_date', '<=', Carbon::now()->subMonths(3));
-        })->count();
+       
     }
 
     private function getCountCompletedOrders($orderQuery)
@@ -157,7 +165,13 @@ class RecollectionService
     {
         return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
             ->where('actual_payment_date', null)->where('actual_amount', '<', 1)
-            ->where('expected_payment_date', '<', Carbon::now()->endOfDay())
+            ->whereDate('expected_payment_date', '<', Carbon::now()->endOfDay())
+            ->sum('expected_amount');
+    }
+    private function getTotalOutstanding($orderQuery)
+    {
+        return $orderQuery->join('amortizations', 'new_orders.id', '=', 'amortizations.new_order_id')
+            ->where('actual_payment_date', null)->where('actual_amount', '<', 1)
             ->sum('expected_amount');
     }
 
