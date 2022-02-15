@@ -61,7 +61,6 @@ class RecollectionService
 
     private function storeOrUpdateRecollection($data, $status, $days)
     {
-        //        dd($data);
         $this->recollectRepository->updateOrCreate(
             new Recollection(),
             [
