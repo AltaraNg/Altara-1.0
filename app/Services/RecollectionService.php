@@ -61,10 +61,12 @@ class RecollectionService
 
     private function storeOrUpdateRecollection($data, $status, $days)
     {
-//        dd($data);
-        $this->recollectRepository->updateOrCreate(new Recollection(), [
-            'new_order_id' => $data->id,
-        ],
+        //        dd($data);
+        $this->recollectRepository->updateOrCreate(
+            new Recollection(),
+            [
+                'new_order_id' => $data->id,
+            ],
             [
                 'status' => $status,
                 'number_of_days' => $days,
@@ -82,10 +84,13 @@ class RecollectionService
         $additional['amountReceived'] = $this->getAmountReceived(clone $newOrders) + $newOrders->sum('down_payment');
         $additional['amountOwed'] = $this->getAmountOwed(clone $newOrders);
         $additional['totalOutstanding'] = $this->getTotalOutstanding(clone $newOrders);
+        $active = $this->getCountActiveOrders(clone $newOrders);
+        $complete = $this->getCountCompletedOrders(clone $newOrders);
+        $inactive =   $additional['total_sales'] - ($active + $complete);
         $additional['ordersStatusCount'] = [
-            'active' => $this->getCountActiveOrders(clone $newOrders),
-            'inactive' => $this->getCountInactiveOrders(clone $newOrders),
-            'complete' => $this->getCountCompletedOrders(clone $newOrders)
+            'active' => $active,
+            'inactive' => $inactive,
+            'complete' => $complete
         ];
         $additional['overdueRange'] = [
             '1_30' => $this->getOverDueStatsForRange(clone $newOrders, [1, 30]),
@@ -133,6 +138,7 @@ class RecollectionService
 
     private function getCountActiveOrders($orderQuery)
     {
+
         return $orderQuery->whereRaw($this->rawQueryNotCompletedPayment)->whereHas('amortization', function ($query) {
             $query->whereDate('actual_payment_date', '>=', Carbon::now()->subMonths(2))->orWhereDate('new_orders.order_date', '>=', Carbon::now()->subMonths(2));
         })->count();
@@ -140,9 +146,11 @@ class RecollectionService
 
     private function getCountInactiveOrders($orderQuery)
     {
-        return $orderQuery->whereRaw($this->rawQueryNotCompletedPayment)->whereHas('amortization', function ($query) {
-            $query->whereDate('actual_payment_date', '<=', Carbon::now()->subMonths(2));
-        })->count();
+        // dd(Carbon::today()->subMonths(2));   
+        // return $orderQuery->whereHas('lastAmortization', function ($query) {
+        //     $query->where(DB::raw('COALESCE(actual_payment_date,0)'), '<=', Carbon::now()->subMonths(2))->whereRaw($this->rawQueryNotCompletedPayment);
+        // })->count();
+
     }
 
     private function getCountCompletedOrders($orderQuery)
