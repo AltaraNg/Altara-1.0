@@ -146,11 +146,7 @@ class RecollectionService
 
     private function getCountInactiveOrders($orderQuery)
     {
-        // dd(Carbon::today()->subMonths(2));   
-        // return $orderQuery->whereHas('lastAmortization', function ($query) {
-        //     $query->where(DB::raw('COALESCE(actual_payment_date,0)'), '<=', Carbon::now()->subMonths(2))->whereRaw($this->rawQueryNotCompletedPayment);
-        // })->count();
-
+       
     }
 
     private function getCountCompletedOrders($orderQuery)
