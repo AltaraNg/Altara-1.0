@@ -73,6 +73,11 @@ class User extends Authenticatable
         return $this->hasMany(NewOrder::class, 'owner_id', 'id');
     }
 
+    public function amortization()
+    {
+        return $this->hasMany(Amortization::class);
+    }
+
     public function customersManaged()
     {
         return $this->hasMany(Customer::class, 'managed_by', 'id');

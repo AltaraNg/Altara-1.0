@@ -196,10 +196,11 @@ class NewOrderFilter extends BaseFilter
         }
     }
 
-    public function recollection (string $status = null){
-        if ($status == 'all'){
+    public function recollection(string $status = null)
+    {
+        if ($status == 'all') {
             $this->builder->has('recollection');
-        }else{
+        } else {
             $this->builder->whereHas('recollection', function ($query) use ($status) {
                 $query->where('status', $status);
             });
@@ -225,7 +226,7 @@ class NewOrderFilter extends BaseFilter
                 $this->builder->where('owner_id', auth()->user()->id)->whereHas('product.productType', function ($query) {
                     $query->where('name', ProductType::CASH_LOAN);
                 });
-            }else if (auth()->user()->isRentAgent()) {
+            } else if (auth()->user()->isRentAgent()) {
                 $this->builder->where('owner_id', auth()->user()->id);
             }
         }
@@ -237,7 +238,7 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->where('new_orders.branch_id', $id);
     }
-     /**
+    /**
      * @param int $id
      */
     public function orderNumber(string $order_number)
@@ -250,5 +251,20 @@ class NewOrderFilter extends BaseFilter
     public function customerId(int $id)
     {
         $this->builder->where('new_orders.customer_id', $id);
+    }
+    public function businessTypeGroup(string $group)
+    {
+        if ($group == 'cash') {
+            $searchTerms = ['cash_loan', '_rentals', 'super_loan'];
+            $closure =   function ($query) use ($searchTerms) {
+                //this method is a laravel query builder macro, you can find in the app service provider.
+                $query->appplyLikeOnMultipleSearchTerms('slug', $searchTerms);
+            };
+        } else if ($group == 'product') {
+            $closure =   function ($query) {
+                $query->where('slug', 'like', "%_products%");
+            };
+        }
+        $this->builder->whereHas('businessType', $closure);
     }
 }

@@ -10,10 +10,12 @@ use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
 use App\Repositories\ContactCustomerRepository;
+use App\Repositories\DirectDebitDataRepository;
 use App\Repositories\NewOrderRepository;
 use App\Repositories\PaystackAuthCodeRepository;
 use App\Services\NewOrdersReportService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\VarDumper\Cloner\Data;
 
@@ -21,14 +23,19 @@ class NewOrderController extends Controller
 {
 
     private $newOrderRepository;
-    private $contactRepo;
     private $paystackAuthCodeRepository;
+    private $directDebitDataRepository;
 
-    public function __construct(NewOrderRepository $newOrderRepository, ContactCustomerRepository $contactRepository, PaystackAuthCodeRepository $paystackAuthCodeRepository)
-    {
+    public function __construct(
+        NewOrderRepository $newOrderRepository,
+        ContactCustomerRepository $contactRepository,
+        PaystackAuthCodeRepository $paystackAuthCodeRepository,
+        DirectDebitDataRepository $directDebitDataRepository
+    ) {
         $this->newOrderRepository = $newOrderRepository;
         $this->contactRepo = $contactRepository;
         $this->paystackAuthCodeRepository = $paystackAuthCodeRepository;
+        $this->directDebitDataRepository = $directDebitDataRepository;
     }
 
     /**
@@ -51,11 +58,29 @@ class NewOrderController extends Controller
      */
     public function store(NewOrderRequest $request)
     {
+
         $order = $this->newOrderRepository->store($request->validated());
         if ($request->authorization_code) {
             $data = ['order_id' => $order->order_number, 'auth_code' => $request->authorization_code];
             $this->paystackAuthCodeRepository->store($data);
         }
+        if ($request->collection_verification_data) {
+            $collection_verification_data = (object) $request->collection_verification_data;
+            $this->directDebitDataRepository->store([
+                'customer_id' => $order->customer_id,
+                'order_id' => $order->order_number,
+                'sal_sug_date_1' => $collection_verification_data->salary_day_1,
+                'sal_sug_date_2' => $collection_verification_data->salary_day_2,
+                'sal_sug_date_3' => $collection_verification_data->salary_day_3,
+                'proof_of_salary_bank' =>  $collection_verification_data->proof_of_credit,
+                'guarantor_signed' =>  $collection_verification_data->guarantor_signed,
+                'address_visited' =>  $collection_verification_data->address_visited,
+                'credit_report' =>  $collection_verification_data->credit_report_status,
+                'credit_point' =>  $collection_verification_data->credit_point_status,
+                'mode' => 0,
+            ]);
+        }
+
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 

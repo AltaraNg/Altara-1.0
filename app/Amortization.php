@@ -21,6 +21,7 @@ class Amortization extends Model
     public static function updateRules()
     {
         return [
+            'user_id' => 'sometimes|exists:users,id',
             'actual_payment_date' => 'sometimes|nullable|date',
             'actual_amount' => ['sometimes', 'required', new Money],
             'expected_payment_date' => 'sometimes|required|date',
@@ -31,5 +32,9 @@ class Amortization extends Model
     public function new_orders()
     {
         return $this->belongsTo(NewOrder::class, 'new_order_id');
+    }
+
+    public function users(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
