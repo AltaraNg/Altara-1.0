@@ -8,6 +8,7 @@ class PaystackCustomersCode extends Model
 {
     protected $guarded = [];
     protected $table = "paystack_customers_code";
+    public $timestamps = FALSE;
     public static function rules()
     {
         return [
