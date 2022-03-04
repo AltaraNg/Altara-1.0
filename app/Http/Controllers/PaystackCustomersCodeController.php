@@ -20,9 +20,9 @@ class PaystackCustomersCodeController extends Controller
         $this->customerRepository = $customerRepository;
     }
 
-    public function store(PaystackCustomersCode $model,PaystackCustomersCodeRequest $request)
+    public function store(PaystackCustomersCode $model, PaystackCustomersCodeRequest $request)
     {
-        $result = $this->payStackCustomerCodeRepo->updateOrCreate($model, $request->id, $request->validated());
+        $result = $this->payStackCustomerCodeRepo->updateOrCreate($model, ['id' => $request->id], $request->validated());
         return ResponseHelper::createSuccessResponse($result->toArray());
     }
 }
