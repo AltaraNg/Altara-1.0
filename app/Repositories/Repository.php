@@ -40,7 +40,8 @@ abstract class Repository
         $this->limit = (int)$request->query->get('limit', 20);
     }
 
-    public function all() {
+    public function all()
+    {
         $limit = request('limit', 20);
         return $this->model::latest()->paginate($limit);
     }
@@ -55,23 +56,27 @@ abstract class Repository
         return $this->model::filter($filter)->paginate($this->limit);
     }
 
-    public function store(array $data) {
+    public function store(array $data)
+    {
         return $this->model::create($data);
     }
 
-    public function update($model, $data) {
+    public function update($model, $data)
+    {
         $model->update($data);
         return $model;
     }
 
-    public function updateOrCreate($model, $target,$data) {
+    public function updateOrCreate(Model $model, array $target, array $data)
+    {
 
         $model->updateOrCreate($target, $data);
 
         return $model;
     }
 
-    public function delete($model) {
+    public function delete($model)
+    {
         $model->delete();
         return $model;
     }
