@@ -19,4 +19,8 @@ class PaystackCustomersCodeRepository extends Repository
 
         return $result;
     }
+    public function getByID($id)
+    {
+        return $this->model()::find($id);
+    }
 }
