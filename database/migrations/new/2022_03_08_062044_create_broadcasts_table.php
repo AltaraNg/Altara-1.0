@@ -19,6 +19,7 @@ class CreateBroadcastsTable extends Migration
             $table->text('messages');
             $table->text('data')->nullable();
             $table->timestamps();
+            
         });
     }
 
