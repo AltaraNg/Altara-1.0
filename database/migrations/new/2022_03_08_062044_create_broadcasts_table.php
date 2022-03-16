@@ -15,9 +15,12 @@ class CreateBroadcastsTable extends Migration
     {
         Schema::create('broadcasts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedInteger('creator_id');
             $table->string('subject');
             $table->text('messages');
             $table->text('data')->nullable();
+            $table->unsignedBigInteger('resent');
+            $table->foreign('creator_id')->references('id')->on('users');
             $table->timestamps();
             
         });
