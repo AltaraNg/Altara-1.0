@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/jobs', 'ManualController@jobs');
     Route::post('/no-auth', 'ManualController@getNoAuth');
     Route::post('/contact_notification/{customer}', 'CustomerContactNotificationController@store');
+    Route::post('/customer/notification/{customer}', 'CustomerNotificationController@store');
     Route::post('/send-internal-message', 'MessageController@sendStaffMessage');
     Route::patch('/sales-category/{salesCat}/roles', 'SalesCategoryController@manageRoles');
     Route::patch('/new-order/{new_order}/repossess', 'NewOrderController@repossess');
