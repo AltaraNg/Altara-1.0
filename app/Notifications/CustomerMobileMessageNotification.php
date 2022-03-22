@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Channels\SmsChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Notification;
@@ -35,7 +36,7 @@ class CustomerMobileMessageNotification extends Notification implements ShouldBr
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast'];
+        return ['database', 'broadcast', SmsChannel::class];
     }
 
     /**
@@ -50,6 +51,17 @@ class CustomerMobileMessageNotification extends Notification implements ShouldBr
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!');
+    }
+
+     /**
+     * Get the sms representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return string
+     */
+    public function toSms($notifiable)
+    {
+        return $this->message;
     }
 
     /**
