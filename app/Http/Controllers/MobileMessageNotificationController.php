@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Notifications\CustomerMobileMessageNotification;
 use App\Repositories\CustomerRepository;
+use App\Services\MessageService;
 use Illuminate\Http\Request;
 
 class MobileMessageNotificationController extends Controller
@@ -25,7 +26,13 @@ class MobileMessageNotificationController extends Controller
         if (!$customer) {
             $this->sendError('Invalid customer ID supplied', 400);
         }
-        $customer->notify(new CustomerMobileMessageNotification($request->message, $request->subject));
-      return  $this->sendSuccess([], 'Customer has been successfully notified');
+        $messageService = new MessageService();
+        $receiver = $customer->telephone;
+        $message = $request->message;
+        if ($receiver) {
+            $messageService->sendMessage($receiver, $message);
+        }
+        $customer->notify(new CustomerMobileMessageNotification($message, $request->subject));
+        return  $this->sendSuccess([], 'Customer has been successfully notified');
     }
 }
