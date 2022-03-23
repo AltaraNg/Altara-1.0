@@ -26,12 +26,7 @@ class MobileMessageNotificationController extends Controller
         if (!$customer) {
             $this->sendError('Invalid customer ID supplied', 400);
         }
-        $messageService = new MessageService();
-        $receiver = $customer->telephone;
         $message = $request->message;
-        if ($receiver) {
-            $messageService->sendMessage($receiver, $message);
-        }
         $customer->notify(new CustomerMobileMessageNotification($message, $request->subject));
         return  $this->sendSuccess([], 'Customer has been successfully notified');
     }
