@@ -151,6 +151,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/export/list', 'RecollectionController@exportCollectionList');
     });
     Route::get('general/reasons/{type}', 'GeneralReasonController@index');
+    Route::post('/send/customer/mobile/notification', 'MobileMessageNotificationController@store');
 });
 
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
