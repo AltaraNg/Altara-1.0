@@ -15,7 +15,7 @@ class AddFinancedByToTable extends Migration
     {
         Schema::table('new_orders', function (Blueprint $table) {
             $table->string('financed_by')->default('altara');
-            
+
         });
     }
 
@@ -27,7 +27,7 @@ class AddFinancedByToTable extends Migration
     public function down()
     {
         Schema::table('new_orders', function (Blueprint $table) {
-            //
+            $table->dropColumn('financed_by');
         });
     }
 }

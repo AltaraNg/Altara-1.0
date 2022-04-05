@@ -26,7 +26,7 @@ class AddOnboardedToTable extends Migration
     public function down()
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->dropColumn(('on_boarded'));
+            $table->dropColumn('on_boarded');
         });
     }
 }
