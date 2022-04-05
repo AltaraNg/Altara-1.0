@@ -15,6 +15,7 @@ class AddFinancedByToTable extends Migration
     {
         Schema::table('new_orders', function (Blueprint $table) {
             $table->string('financed_by')->default('altara');
+            
         });
     }
 
