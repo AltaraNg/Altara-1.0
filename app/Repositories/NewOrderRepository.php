@@ -41,6 +41,7 @@ class NewOrderRepository extends Repository
         unset($validated['inventory_id']);
         unset($validated['bank_id']);
         unset($validated['discount']);
+        unset($validated['bvn']);
 
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),

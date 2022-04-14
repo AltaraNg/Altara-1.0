@@ -8,6 +8,8 @@ use App\Http\Resources\JSONApiResource;
 use App\Rules\Money;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\RequiredIf;
 
 class NewOrder extends Model
 {
@@ -21,6 +23,8 @@ class NewOrder extends Model
     const CRDBUR = 'credit_bureau';
     const INTREPO = 'internal_repossession';
     const EXTREPO = 'external_repossession';
+
+    const BANK54 = 'bank54';
 
 
     /**
@@ -54,6 +58,8 @@ class NewOrder extends Model
             'order_type_id' => 'sometimes|exists:order_types,id',
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
             'discount_id' => 'sometimes|exists:discounts,id',
+            'bvn' => [new RequiredIf(request('financed_by') == self::BANK54), 'string'],
+            'financed_by' => ['required', 'string', Rule::in(['altara', self::BANK54])],
         ];
     }
 
