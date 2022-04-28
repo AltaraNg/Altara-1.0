@@ -26,18 +26,19 @@ class Bank45RepaymentListener
      */
     public function handle($event)
     {
-      
         $order =  $event->newOrder;
-        $data = json_encode([
-            "customer_partner_id" => env('BANK54_ID'),
-            "payments" => [
-                [
-                    "transaction_reference" => $order->order_number,
-                    "amount" => $order->amount
+
+        if (env('BANK54_IS_ENABLED') && $order->financed_by == NewOrder::BANK54) {
+            $data = json_encode([
+                "customer_partner_id" => env('BANK54_ID'),
+                "payments" => [
+                    [
+                        "transaction_reference" => $order->order_number,
+                        "amount" => $order->amount
+                    ]
                 ]
-            ]
-        ]);            
-        if ($order->financed_by == NewOrder::BANK54) {
+            ]);
+
             try {
                 $curl = curl_init();
                 curl_setopt_array($curl, [

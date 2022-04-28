@@ -21,7 +21,7 @@ class Bank54OrderPlacedListener
     {
         $order = $event->order;
         try {
-            if ($order->financed_by == NewOrder::BANK54) {
+            if (env('BANK54_IS_ENABLED') && $order->financed_by == NewOrder::BANK54) {
                 $curl = curl_init();
                 curl_setopt_array($curl, [
                     CURLOPT_URL => env('BANK54_URL') . '/transactions/register',
