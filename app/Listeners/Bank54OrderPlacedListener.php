@@ -20,25 +20,29 @@ class Bank54OrderPlacedListener
     public function handle(NewOrderEvent $event)
     {
         $order = $event->order;
-        if ($order->financed_by == NewOrder::BANK54) {
-            $curl = curl_init();
-            curl_setopt_array($curl, [
-                CURLOPT_URL => env('BANK54_URL') . '/transactions/register',
-                CURLOPT_HTTPHEADER => [
-                    'Authorization:' . env('BANK54_API_KEY'),
-                    'Content-Type: application/json',
-                ],
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => $this->getBank54Data($order, request('bvn')),
+        try {
+            if ($order->financed_by == NewOrder::BANK54) {
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => env('BANK54_URL') . '/transactions/register',
+                    CURLOPT_HTTPHEADER => [
+                        'Authorization:' . env('BANK54_API_KEY'),
+                        'Content-Type: application/json',
+                    ],
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => $this->getBank54Data($order, request('bvn')),
 
-            ]);
-            $response = curl_exec($curl);
+                ]);
+                $response = curl_exec($curl);
+            }
+        } catch (\Throwable $th) {
+            report($th);
         }
     }
     private function getBank54Data($new_order, $bvn)
