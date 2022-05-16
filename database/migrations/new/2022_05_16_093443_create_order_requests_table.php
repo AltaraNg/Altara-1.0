@@ -15,7 +15,8 @@ class CreateOrderRequestsTable extends Migration
     {
         Schema::create('order_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('customer_id')->nullable();
+            $table->unsignedInteger('processed_by')->nullable();
             $table->unsignedInteger('accepted_by')->nullable();
             $table->unsignedInteger('declined_by')->nullable();
             $table->string('order_type');
@@ -23,9 +24,10 @@ class CreateOrderRequestsTable extends Migration
             $table->string('status');
             $table->timestamps();
 
-            $table->foreign('updated_by')->references('id')->on('customers');
-            $table->foreign('accepted_by')->references('id')->on('customers');
-            $table->foreign('declined_by')->references('id')->on('customers');
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('processed_by')->references('id')->on('users');
+            $table->foreign('accepted_by')->references('id')->on('users');
+            $table->foreign('declined_by')->references('id')->on('users');
         });
     }
 
