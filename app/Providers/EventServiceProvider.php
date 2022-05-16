@@ -18,6 +18,8 @@ use App\Listeners\UpgradeContactCustomerStageListener;
 use Illuminate\Support\Facades\Event;
 use App\Events\CustomerStageUpdatedEvent;
 use App\Events\SendPasswordResetLinkEvent;
+use App\Listeners\Bank45RepaymentListener;
+use App\Listeners\Bank54OrderPlacedListener;
 use App\Listeners\CustomerStageProspectActivityListener;
 use App\Listeners\ProductTransferListener;
 use App\Listeners\UpdateInventoryListener;
@@ -48,6 +50,7 @@ class EventServiceProvider extends ServiceProvider
             NewOrderListener::class,
             UpdateInventoryDictListener::class,
             UpgradeContactCustomerStageListener::class,
+            Bank54OrderPlacedListener::class,
         ],
         OldRepaymentEvent::class => [
             LogPaymentListener::class
@@ -58,7 +61,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         RepaymentEvent::class => [
             UpdateAmortizationListener::class,
-            RepaymentListener::class
+            RepaymentListener::class,
+            Bank45RepaymentListener::class,
         ],
         TodoCreatedEvent::class => [
             ProspectActivityListener::class
