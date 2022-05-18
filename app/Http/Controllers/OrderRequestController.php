@@ -40,6 +40,7 @@ class OrderRequestController extends Controller
         $orderRequest->status = OrderRequest::STATUS_PROCESSED;
         $orderRequest->processed_by = auth()->id();
         $orderRequest->save();
+        
         return $this->sendSuccess(['order_request' => $orderRequest->fresh()], 'Order request successfully processed');
     }
 
