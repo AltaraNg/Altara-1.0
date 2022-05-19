@@ -1,0 +1,21 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      testEnv:
+        description: 'Test Environment (altara-play-api | altara-prod-api)'
+        required: true
+        default: 'altara-play-api'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{github.event.inputs.testEnv}}
+          heroku_email: "accounts@altaracredit.com"
+          branch: "version8-php5"
