@@ -14,7 +14,7 @@ class OrderRequest extends Model
         'declined_by:id,full_name,staff_id,phone_number,email'
     ];
 
-    const STATUS_PLACED = 'placed';
+    const STATUS_PENDING = 'pending';
     const STATUS_PROCESSED = 'processed';
     const STATUS_ACCEPTED = 'accepted';
     const STATUS_DECLINED = 'declined';
