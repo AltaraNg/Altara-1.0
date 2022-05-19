@@ -142,6 +142,7 @@ Route::middleware('auth:api')->group(function () {
         'role' => 'RoleController'
 
     ]);
+
     Route::prefix('recollection')->group(function () {
         Route::get('/', 'RecollectionController@index');
         Route::get('/statistics', 'RecollectionController@statistics');
@@ -149,6 +150,15 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/feedback', 'RecollectionController@store');
         Route::get('/regenerate/list', 'RecollectionController@reGenerateCollectionList');
         Route::get('/export/list', 'RecollectionController@exportCollectionList');
+    });
+
+    Route::prefix('order-requests')->group(function () {
+        Route::get('/', 'OrderRequestController@index');
+        Route::patch('/{orderRequest}/process', 'OrderRequestController@process');
+        Route::patch('/{orderRequest}/accept', 'OrderRequestController@accept');
+        Route::patch('/{orderRequest}/decline', 'OrderRequestController@decline');
+        Route::delete('/{orderRequest}/delete', 'OrderRequestController@destroy');
+        // Route::patch('/', 'OrderRequestController@index');
     });
     Route::get('general/reasons/{type}', 'GeneralReasonController@index');
     Route::post('/send/customer/mobile/notification', 'MobileMessageNotificationController@store');
