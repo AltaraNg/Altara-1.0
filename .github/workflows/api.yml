@@ -1,4 +1,4 @@
-name: Deploy
+name: Api Deploy
 
 on:
   workflow_dispatch:
