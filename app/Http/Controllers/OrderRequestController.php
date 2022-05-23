@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\OrderRequestFilter;
 use App\OrderRequest;
 use App\Repositories\OrderRequestRepository;
 use Illuminate\Http\Request;
@@ -15,9 +16,9 @@ class OrderRequestController extends Controller
         $this->orderRequestRepository = $orderRequestRepository;
     }
 
-    public function index()
+    public function index(OrderRequestFilter $orderRequestFilter)
     {
-        $orderRequests = $this->orderRequestRepository->all();
+        $orderRequests = $this->orderRequestRepository->query($orderRequestFilter);
         return $this->sendSuccess(['order_requests' => $orderRequests], 'All order requests fetched successfully');
     }
 

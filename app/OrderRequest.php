@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderRequest extends Model
 {
+    use Filterable;
     protected $guarded = [];
     protected $with = [
         'customer:id,first_name,last_name,telephone',
