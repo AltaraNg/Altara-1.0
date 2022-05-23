@@ -9,7 +9,7 @@ class OrderRequest extends Model
     protected $guarded = [];
     protected $with = [
         'customer:id,first_name,last_name,telephone',
-        'updated_by:id,full_name,staff_id,phone_number,email',
+        'processed_by:id,full_name,staff_id,phone_number,email',
         'accepted_by:id,full_name,staff_id,phone_number,email',
         'declined_by:id,full_name,staff_id,phone_number,email'
     ];
@@ -24,9 +24,9 @@ class OrderRequest extends Model
     {
         return $this->belongsTo(Customer::class);
     }
-    public function updated_by()
+    public function processed_by()
     {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $this->belongsTo(User::class, 'processed_by');
     }
     public function accepted_by()
     {
