@@ -27,4 +27,15 @@ class OrderRequestFilter extends BaseFilter
             $builder->where('telephone', $telephone);
         });
     }
+    /**
+     * @param string $telephone
+     */
+    public function customerName(string $customerName)
+    {
+        $this->builder->whereHas('customer', function ($builder) use ($customerName) {
+            $builder->where('first_name', 'like', '%' . $customerName . '%')
+                ->orWhere('middle_name', 'like', '%' . $customerName . '%')
+                ->orWhere('last_name', 'like', '%' . $customerName . '%');
+        });
+    }
 }
