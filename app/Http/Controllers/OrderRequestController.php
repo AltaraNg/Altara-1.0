@@ -18,7 +18,7 @@ class OrderRequestController extends Controller
 
     public function index(OrderRequestFilter $orderRequestFilter)
     {
-        $orderRequests = $this->orderRequestRepository->query($orderRequestFilter);
+        $orderRequests = $this->orderRequestRepository->getAll($orderRequestFilter);
         return $this->sendSuccess(['order_requests' => $orderRequests], 'All order requests fetched successfully');
     }
 
