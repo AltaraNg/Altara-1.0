@@ -18,28 +18,31 @@ class OrderRequestController extends Controller
 
     public function index(OrderRequestFilter $orderRequestFilter)
     {
-        $orderRequests = $this->orderRequestRepository->query($orderRequestFilter);
+        $orderRequests = $this->orderRequestRepository->getAll($orderRequestFilter);
         return $this->sendSuccess(['order_requests' => $orderRequests], 'All order requests fetched successfully');
     }
 
-    public function decline(OrderRequest $orderRequest)
+    public function decline(Request $request,OrderRequest $orderRequest)
     {
         $orderRequest->status = OrderRequest::STATUS_DECLINED;
         $orderRequest->declined_by = auth()->id();
+        $orderRequest->reason = $request->reason;
         $orderRequest->save();
         return $this->sendSuccess(['order_request' => $orderRequest->fresh()], 'Order request requests successfully declined');
     }
-    public function accept(OrderRequest $orderRequest)
+    public function accept(Request $request, OrderRequest $orderRequest)
     {
         $orderRequest->status = OrderRequest::STATUS_ACCEPTED;
         $orderRequest->accepted_by = auth()->id();
+        $orderRequest->reason = $request->reason;
         $orderRequest->save();
         return $this->sendSuccess(['order_request' => $orderRequest->fresh()], 'Order request successfully accepted');
     }
-    public function process(OrderRequest $orderRequest)
+    public function process(Request $request, OrderRequest $orderRequest)
     {
         $orderRequest->status = OrderRequest::STATUS_PROCESSED;
         $orderRequest->processed_by = auth()->id();
+        $orderRequest->reason = $request->reason;
         $orderRequest->save();
         
         return $this->sendSuccess(['order_request' => $orderRequest->fresh()], 'Order request successfully processed');

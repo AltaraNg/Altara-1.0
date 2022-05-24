@@ -21,6 +21,7 @@ class CreateOrderRequestsTable extends Migration
             $table->unsignedInteger('declined_by')->nullable();
             $table->string('order_type');
             $table->timestamp('request_date');
+            $table->text('reason')->nullable();
             $table->string('status');
             $table->timestamps();
 
