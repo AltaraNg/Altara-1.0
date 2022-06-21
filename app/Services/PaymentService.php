@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helper\Helper;
+use App\LateFee;
 use App\PaymentReconcile;
 use Carbon\Carbon;
 
@@ -32,5 +33,18 @@ class PaymentService
         $trans->update();
 
         return $payment;
+    }
+    public static function logLateFee($data){
+        try {
+            //code...
+            $payment = LateFee::create($data);
+            if($payment){
+                return [
+                    'status' => 'success'
+                ];
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
