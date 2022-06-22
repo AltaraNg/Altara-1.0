@@ -82,11 +82,11 @@ class PaystackService implements PaymentGatewayInterface
     {
         return $amortization->expected_amount * 100;
     }
-    public function getLateFee($amortization)
+    public function getLateFee($order)
     {
-        $amortizationList = $amortization->new_orders->amortization;
+        $amortizationList = $order->amortization;
         $totalPaid = $this->getTotalPaidRepayment($amortizationList);
-        $debt =  $amortization->new_orders->repayment - $totalPaid;
+        $debt =  $order->repayment - $totalPaid;
         return $debt * 5 / 100;
     }
 

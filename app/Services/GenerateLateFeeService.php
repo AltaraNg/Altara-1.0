@@ -9,6 +9,7 @@ use App\BusinessType;
 use App\OrderType;
 use App\PaymentGateway;
 use App\Events\RepaymentEvent;
+use App\NewOrder;
 use App\OrderStatus;
 use App\PaymentMethod;
 use App\PaymentType;
@@ -40,24 +41,16 @@ class GenerateLateFeeService
 
     private function fetchOrders()
     {
-        //get list of due payments
-        $data = Amortization::where('actual_payment_date', null)
-            ->whereDay('expected_payment_date', Carbon::now()->day)
-            ->whereDate('expected_payment_date', '!=', Carbon::now())
-            ->whereHas('new_orders', function ($q) {
-                $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
-                    ->where('business_type_id', BusinessType::whereIn('slug', $this->businessType)->first()->id)
-                    ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
-            });
-
-        return $data->get();
+        $data = NewOrder::where('business_type_id', BusinessType::whereIn('slug', $this->businessType)->first()->id)
+            ->whereHas('example')->with('example');
+        return $data->get()->filter(function ($c) {
+            return Carbon::parse($c->example->expected_payment_date)->day == Carbon::now()->day;
+        })->values();
     }
 
     public function handle()
     {
         $items = $this->fetchOrders();
-        // dd($items);
-
         $res = array();
         if (empty($items)) {
             return 'No Customers are available';
@@ -66,27 +59,27 @@ class GenerateLateFeeService
 
             # code...
             $data = [
-                'order_id' => $item->new_orders->id,
+                'order_id' => $item->id,
                 'amount' => $this->paystackService->getLateFee($item),
+            ];
+
+            $dataToDisplay = [
+                'Order Number' => $item->order_number,
+                'Amount' => $this->paystackService->getLateFee($item),
+                'Customer Name' => $item->customer_name
             ];
 
             $response = PaymentService::logLateFee($data);
 
-
-
             if ($response['status'] == 'success') {
-                // $item->new_orders['amount'] = $item->expected_amount;
-                // $item->new_orders['is_dd'] = true;
-                // $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
-                // event(new RepaymentEvent($item->new_orders));
-                $res[] = array_merge($data, [
+
+                $res[] = array_merge($dataToDisplay, [
                     'status' => 'success',
-                    'statusMessage' => 'Approved'
                 ]);
             } else {
-                $res[] = array_merge($data, [
+                $res[] = array_merge($dataToDisplay, [
                     'status' => 'failed',
-                    // 'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
+
                 ]);
             }
         }

@@ -10,4 +10,8 @@ class LateFee extends Model
     //
     use Filterable;
     protected $guarded = [];
+
+    public function newOrder(){
+        $this->belongsTo(NewOrder::class, 'order_id');
+    }
 }

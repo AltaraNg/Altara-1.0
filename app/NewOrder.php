@@ -6,6 +6,7 @@ use App\Http\Filters\Filterable;
 use App\Http\Resources\JSONApiCollection;
 use App\Http\Resources\JSONApiResource;
 use App\Rules\Money;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule;
@@ -119,8 +120,22 @@ class NewOrder extends Model
 
     public function amortization()
     {
-        return $this->hasMany(Amortization::class);
+        return $this->hasMany(Amortization::class, 'new_order_id', 'id');
     }
+
+    public function example()
+    {
+        return $this->hasOne(Amortization::class)
+        ->latest('expected_payment_date')
+        ->where('expected_payment_date', '<=', Carbon::now()->subMonth()->format('Y-m-d'))
+
+        // ->whereDay('expected_payment_date', Carbon::now()->day)
+        ->where('actual_payment_date', null)
+        ->where('actual_amount', '<', 1)
+        // ->orderBy('amortizations.id', 'desc')
+        ;
+    }
+
     public function lastAmortization()
     {
         return $this->hasOne(Amortization::class)->latest('expected_payment_date');
@@ -220,6 +235,10 @@ class NewOrder extends Model
     {
         return $this->hasOne(Recollection::class, 'new_order_id');
     }
+
+    public function lateFee(){
+        return $this->hasMany(LateFee::class, 'order_id');
+    }
     /**
      * Get all of the New Order's payments.
      */
@@ -230,7 +249,7 @@ class NewOrder extends Model
         })->first()->paymentMethod->name ?? null;
     }
 
-     /**
+    /**
      * Get the neworder's feedbacks.
      */
     // generalFeedbackAble
@@ -238,47 +257,49 @@ class NewOrder extends Model
     {
         return $this->morphMany(GeneralFeedback::class, 'generalFeedbackAble', 'general_feedback_able_type', 'general_feedback_able_id');
     }
-   public function toArray()
-   {
-       return [
-           "id" => $this->id,
-           "order_number" => $this->order_number,
-           "product_id" => $this->product_id,
-           "product" => $this->product,
-           "product_name" => $this->product->name ?? null,
-           "serial_number" => $this->serial_number,
-           "repayment_duration" => $this->repaymentDuration->name ?? null,
-           "repayment_cycle" => $this->repaymentCycle->name ?? null,
-           "customer_id" => $this->customer->id ?? '',
-           "customer_name" => $this->customer->fullName ?? '',
-           "customer_phone" => $this->customer->telephone ?? '',
-           "customer_email" => $this->customer->email ?? '',
-           "business_type" => $this->businessType->name ?? null,
-           "status" => $this->orderStatus->name ?? null,
-           "branch" => $this->branch->name ?? '',
-           "product_price" => $this->product_price,
-           "down_payment" => $this->down_payment,
-           "repayment" => $this->repayment,
-           "discount" => $this->discounts,
-           "single_repayment" => $this->amortization[0]->expected_amount ?? '',
-           "custom_date" => $this->customDate->custom_date ?? null,
-           "amortization" => $this->amortization,
-           "notifications" => $this->notifications,
-           "order_payment_method" => $this->order_payment_method,
-           "customer" => $this->customer,
-           "order_date" => $this->order_date,
-           "owner" => $this->owner->full_name ?? '',
-           "sales_type" => $this->salesCategory ?? '',
-           "branch_id" => $this->branch->id ?? '',
-           "owner_id" => $this->owner->id ?? '',
-           "down_payment_rate" => $this->downPaymentRate->name ?? null,
-           "payment_gateway" => $this->paymentGateway->name ?? null,
-           "order_type" => $this->orderType->name ?? null,
-           'renewal_prompters' => ($this->renewalPrompters->count() > 0) ? new JSONApiCollection($this->renewalPrompters) : null,
-           'last_renewal_prompter_activity' => ($this->lastRenewalPrompter) ? new JSONApiResource($this->lastRenewalPrompter) : null,
-           'order_discount' => $this->discount,
-           'general_feedbacks' => $this->generalFeedBacks ?? null,
-           'financed_by' => $this->financed_by ?? null
-       ];
-   }
+    public function toArray()
+    {
+        return [
+            "example" => $this->example,
+            "id" => $this->id,
+            "order_number" => $this->order_number,
+            "product_id" => $this->product_id,
+            "product" => $this->product,
+            "product_name" => $this->product->name ?? null,
+            "serial_number" => $this->serial_number,
+            "repayment_duration" => $this->repaymentDuration->name ?? null,
+            "repayment_cycle" => $this->repaymentCycle->name ?? null,
+            "customer_id" => $this->customer->id ?? '',
+            "customer_name" => $this->customer->fullName ?? '',
+            "customer_phone" => $this->customer->telephone ?? '',
+            "customer_email" => $this->customer->email ?? '',
+            "business_type" => $this->businessType->name ?? null,
+            "status" => $this->orderStatus->name ?? null,
+            "branch" => $this->branch->name ?? '',
+            "product_price" => $this->product_price,
+            "down_payment" => $this->down_payment,
+            "repayment" => $this->repayment,
+            "discount" => $this->discounts,
+            "single_repayment" => $this->amortization[0]->expected_amount ?? '',
+            "custom_date" => $this->customDate->custom_date ?? null,
+            "amortization" => $this->amortization,
+            "notifications" => $this->notifications,
+            "order_payment_method" => $this->order_payment_method,
+            "customer" => $this->customer,
+            "order_date" => $this->order_date,
+            "owner" => $this->owner->full_name ?? '',
+            "sales_type" => $this->salesCategory ?? '',
+            "branch_id" => $this->branch->id ?? '',
+            "owner_id" => $this->owner->id ?? '',
+            "down_payment_rate" => $this->downPaymentRate->name ?? null,
+            "payment_gateway" => $this->paymentGateway->name ?? null,
+            "order_type" => $this->orderType->name ?? null,
+            'renewal_prompters' => ($this->renewalPrompters->count() > 0) ? new JSONApiCollection($this->renewalPrompters) : null,
+            'last_renewal_prompter_activity' => ($this->lastRenewalPrompter) ? new JSONApiResource($this->lastRenewalPrompter) : null,
+            'order_discount' => $this->discount,
+            'general_feedbacks' => $this->generalFeedBacks ?? null,
+            'financed_by' => $this->financed_by ?? null,
+
+        ];
+    }
 }
