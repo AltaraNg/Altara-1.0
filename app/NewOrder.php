@@ -123,7 +123,7 @@ class NewOrder extends Model
         return $this->hasMany(Amortization::class, 'new_order_id', 'id');
     }
 
-    public function example()
+    public function late_fee_gen()
     {
         return $this->hasOne(Amortization::class)
         ->latest('expected_payment_date')

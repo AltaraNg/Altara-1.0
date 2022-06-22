@@ -42,9 +42,9 @@ class GenerateLateFeeService
     private function fetchOrders()
     {
         $data = NewOrder::where('business_type_id', BusinessType::whereIn('slug', $this->businessType)->first()->id)
-            ->whereHas('example')->with('example');
+            ->whereHas('late_fee_gen')->with('late_fee_gen');
         return $data->get()->filter(function ($c) {
-            return Carbon::parse($c->example->expected_payment_date)->day == Carbon::now()->day;
+            return Carbon::parse($c->late_fee_gen->expected_payment_date)->day == Carbon::now()->day;
         })->values();
     }
 
