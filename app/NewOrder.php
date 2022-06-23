@@ -260,7 +260,7 @@ class NewOrder extends Model
     public function toArray()
     {
         return [
-            "example" => $this->example,
+            "late_fee_gen" => $this->late_fee_gen,
             "id" => $this->id,
             "order_number" => $this->order_number,
             "product_id" => $this->product_id,
