@@ -86,7 +86,8 @@ class PaystackService implements PaymentGatewayInterface
     {
         $amortizationList = $order->amortization;
         $totalPaid = $this->getTotalPaidRepayment($amortizationList);
-        $debt =  $order->repayment - $totalPaid;
+        $expectedRepayment = $this->getTotalExpected($amortizationList);
+        $debt =  $expectedRepayment - $totalPaid;
         return $debt * 5 / 100;
     }
 
@@ -97,12 +98,23 @@ class PaystackService implements PaymentGatewayInterface
     private function getTotalPaidRepayment($a)
     {
         $repayment = ($a->toArray());
-        $actual = array_map(array($this, 'extract'), $repayment);
+        $actual = array_map(array($this, 'extractActual'), $repayment);
         $sum = array_sum($actual);
         return $sum;
     }
 
-    public function extract($item){
+    private function getTotalExpected($a)
+    {
+        $repayment = ($a->toArray());
+        $actual = array_map(array($this, 'extractExpected'), $repayment);
+        $sum = array_sum($actual);
+        return $sum;
+    }
+
+    public function extractActual($item){
         return $item['actual_amount'];
+    }
+    public function extractExpected($item){
+        return $item['expected_amount'];
     }
 }

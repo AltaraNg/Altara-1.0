@@ -7,6 +7,7 @@ use App\LateFee;
 use App\PaymentReconcile;
 use Carbon\Carbon;
 
+
 /**
  *
  * @author Adeniyi
@@ -37,7 +38,11 @@ class PaymentService
     public static function logLateFee($data){
         try {
             //code...
-            $payment = LateFee::create($data);
+
+            $date = Carbon::now()->toDateString();
+            $data = array_merge($data, ['date_created' => $date, 'date_updated' => $date]);
+
+            $payment = LateFee::updateOrCreate($data);
             if($payment){
                 return [
                     'status' => 'success'
