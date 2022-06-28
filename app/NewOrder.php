@@ -126,12 +126,13 @@ class NewOrder extends Model
     public function late_fee_gen()
     {
         return $this->hasOne(Amortization::class)
-        ->latest('expected_payment_date')
         ->where('expected_payment_date', '<=', Carbon::now()->subMonth()->format('Y-m-d'))
 
         // ->whereDay('expected_payment_date', Carbon::now()->day)
         ->where('actual_payment_date', null)
         ->where('actual_amount', '<', 1)
+        ->latest('expected_payment_date')
+
         // ->orderBy('amortizations.id', 'desc')
         ;
     }

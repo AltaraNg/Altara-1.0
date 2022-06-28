@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Services\GenerateLateFeeService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Validator;
+
 
 class GenerateLateFeeCommand extends BaseCommand
 {
@@ -13,7 +15,7 @@ class GenerateLateFeeCommand extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'make:late-fee';
+    protected $signature = 'make:late-fee' . '{--day= : Generate late fee for a specific day of the month in the past e.g 18. Must be in range 1 - 31} ';
 
     /**
      * The console command description.
@@ -43,6 +45,7 @@ class GenerateLateFeeCommand extends BaseCommand
     public function handle()
     {
         //
+        $this->valInput();
         $this->process();
     }
 
@@ -50,10 +53,11 @@ class GenerateLateFeeCommand extends BaseCommand
     {
         $this->line('<info>[' . Carbon::now()->format('Y-m-d H:i:s') . ']</info> Calling late fee');
         try {
-            $response = $this->generateLateFeeService->handle();
+            $day = $this->option('day');
+            $response = $this->generateLateFeeService->handle($day);
             $this->info(count($response) . ' records treated');
             $this->table(
-                ['Order Number', 'Amount', 'Customer Name', 'Status'],
+                ['ID','Order Number', 'Amount', 'Status'],
                 $response
             );
 
@@ -64,5 +68,19 @@ class GenerateLateFeeCommand extends BaseCommand
         $this->info('Late Fees Generated Successfully');
         $this->info('Exiting...');
         return 0;
+    }
+
+    protected function valInput()
+    {
+        $data = $this->option();
+        $validator = Validator::make($data, [
+            'day' => 'nullable|integer|min:1|max:32'
+        ]);
+        if ($validator->fails()) {
+            $this->error('input arguments failed validation Errors: ');
+            $errors = $validator->getMessageBag()->all();
+            array_walk($errors, [$this, "error"]);
+            exit();
+        }
     }
 }

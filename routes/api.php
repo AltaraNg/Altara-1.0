@@ -181,4 +181,15 @@ Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
 
+Route::get('test-late-fee', function(){
+    $data = NewOrder::where('business_type_id', BusinessType::whereIn('slug', [BusinessType::ALTARA_CREDIT_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_EMPLOYEE_CASH_LOAN_SLUG])->first()->id)
+            ->whereHas('late_fee_gen')->with('late_fee_gen');
+            // dd($data->amortization);
+        // dd($data->amortization[$data->amortization->count() - 1], $data->late_fee_gen, $data->amortization);
+
+        return $data->get()->filter(function ($c) {
+            return Carbon::parse($c->amortization[$c->amortization->count() - 1]->expected_payment_date)->day == Carbon::now()->day;
+        })->values();
+});
+
 

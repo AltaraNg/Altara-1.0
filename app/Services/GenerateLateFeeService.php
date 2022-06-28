@@ -39,18 +39,26 @@ class GenerateLateFeeService
         $this->paystackService = $paystackService;
     }
 
-    private function fetchOrders()
+    private function fetchOrders($day)
     {
+        $today;
         $data = NewOrder::where('business_type_id', BusinessType::whereIn('slug', $this->businessType)->first()->id)
             ->whereHas('late_fee_gen')->with('late_fee_gen');
-        return $data->get()->filter(function ($c) {
-            return Carbon::parse($c->late_fee_gen->expected_payment_date)->day == Carbon::now()->day;
+        // dd($data->amortization, $data->late_fee_gen);
+        if($day == null){
+            $today = Carbon::now()->day;
+        }else{
+            $today = $day;
+        }
+
+        return $data->get()->filter(function ($c) use($today) {
+            return Carbon::parse($c->amortization[$c->amortization->count() - 1]->expected_payment_date)->day == $today;
         })->values();
     }
 
-    public function handle()
+    public function handle($day)
     {
-        $items = $this->fetchOrders();
+        $items = $this->fetchOrders($day);
         $res = array();
         if (empty($items)) {
             return 'No Customers are available';
@@ -64,9 +72,10 @@ class GenerateLateFeeService
             ];
 
             $dataToDisplay = [
+                'Order ID' => $item->id,
                 'Order Number' => $item->order_number,
                 'Amount' => $this->paystackService->getLateFee($item),
-                'Customer Name' => $item->customer_name
+
             ];
 
             $response = PaymentService::logLateFee($data);
