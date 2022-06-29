@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Helper\Helper;
+use App\LateFee;
 use App\PaymentReconcile;
 use Carbon\Carbon;
+
 
 /**
  *
@@ -32,5 +34,22 @@ class PaymentService
         $trans->update();
 
         return $payment;
+    }
+    public static function logLateFee($data){
+        try {
+            //code...
+
+            $date = Carbon::now()->toDateString();
+            $data = array_merge($data, ['date_created' => $date, 'date_updated' => $date]);
+
+            $payment = LateFee::updateOrCreate($data);
+            if($payment){
+                return [
+                    'status' => 'success'
+                ];
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
