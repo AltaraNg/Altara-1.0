@@ -21,7 +21,7 @@ class CreateLateFeesTable extends Migration
             $table->foreign('order_id')->references('id')->on('new_orders');
             $table->date('date_created');
             $table->date('date_updated');
-            // $table->unique(['order_id', "date_created"], 'order_day_unique');
+            $table->unique(['order_id', "date_created"], 'order_day_unique');
         });
     }
 

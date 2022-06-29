@@ -41,16 +41,14 @@ class GenerateLateFeeService
 
     private function fetchOrders($day)
     {
-        $today;
+        $today = '';
         $data = NewOrder::where('business_type_id', BusinessType::whereIn('slug', $this->businessType)->first()->id)
             ->whereHas('late_fee_gen')->with('late_fee_gen');
-        // dd($data->amortization, $data->late_fee_gen);
         if($day == null){
             $today = Carbon::now()->day;
         }else{
             $today = $day;
         }
-
         return $data->get()->filter(function ($c) use($today) {
             return Carbon::parse($c->amortization[$c->amortization->count() - 1]->expected_payment_date)->day == $today;
         })->values();
@@ -92,14 +90,6 @@ class GenerateLateFeeService
                 ]);
             }
         }
-
-        # send report mail
-        //        try {
-        //            $this->mailService->sendReportAsMail('Direct Debit Report', $res,
-        //                config('app.operations_email'), 'Direct Debit Report',
-        //                'DirectDebit', 'Direct Debit Report ' . Carbon::now()->toDateString());
-        //        } catch (BindingResolutionException $e) {
-        //        }
 
         return $res;
     }

@@ -126,15 +126,10 @@ class NewOrder extends Model
     public function late_fee_gen()
     {
         return $this->hasOne(Amortization::class)
-        ->where('expected_payment_date', '<=', Carbon::now()->subMonth()->format('Y-m-d'))
-
-        // ->whereDay('expected_payment_date', Carbon::now()->day)
-        ->where('actual_payment_date', null)
-        ->where('actual_amount', '<', 1)
-        ->latest('expected_payment_date')
-
-        // ->orderBy('amortizations.id', 'desc')
-        ;
+            ->where('expected_payment_date', '<=', Carbon::now()->subMonth()->format('Y-m-d'))
+            ->where('actual_payment_date', null)
+            ->where('actual_amount', '<', 1)
+            ->latest('expected_payment_date');
     }
 
     public function lastAmortization()
@@ -237,7 +232,8 @@ class NewOrder extends Model
         return $this->hasOne(Recollection::class, 'new_order_id');
     }
 
-    public function lateFee(){
+    public function lateFee()
+    {
         return $this->hasMany(LateFee::class, 'order_id');
     }
     /**
