@@ -3,7 +3,6 @@
 
 namespace App\Http\Filters;
 
-use Carbon\Carbon;
 
 class LateFeeFilter extends BaseFilter
 {
@@ -19,7 +18,7 @@ class LateFeeFilter extends BaseFilter
     public function customer($id)
     {
         $this->builder->whereHas('newOrder', function($q) use($id){
-            $q->where('newOrder.customer_id', $id);
+            $q->where('customer_id', $id);
         });
     }
 
