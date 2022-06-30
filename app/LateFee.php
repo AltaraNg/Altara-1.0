@@ -14,6 +14,6 @@ class LateFee extends Model
     const UPDATED_AT = 'date_updated';
 
     public function newOrder(){
-        $this->belongsTo(NewOrder::class, 'order_id');
+        return $this->belongsTo(NewOrder::class, 'order_id');
     }
 }
