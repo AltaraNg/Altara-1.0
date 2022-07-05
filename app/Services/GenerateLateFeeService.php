@@ -42,20 +42,23 @@ class GenerateLateFeeService
     private function fetchOrders($day)
     {
         $today = '';
-        $data = NewOrder::where('business_type_id', BusinessType::whereIn('slug', $this->businessType)->first()->id)
+        $data = NewOrder::whereHas('businessType', function ($q) {
+            $q->whereIn('slug', $this->businessType);
+        })
             ->whereHas('late_fee_gen')->with('late_fee_gen');
-        if($day == null){
+        if ($day == null) {
             $today = Carbon::now()->day;
-        }else{
+        } else {
             $today = $day;
         }
-        return $data->get()->filter(function ($c) use($today) {
+        return $data->get()->filter(function ($c) use ($today) {
             return Carbon::parse($c->amortization[$c->amortization->count() - 1]->expected_payment_date)->day == $today;
         })->values();
     }
 
     public function handle($day)
     {
+
         $items = $this->fetchOrders($day);
         $res = array();
         if (empty($items)) {
@@ -91,7 +94,7 @@ class GenerateLateFeeService
             }
         }
 
-       //**TODO Later (Notifications and payment) */
+        //**TODO Later (Notifications and payment) */
         return $res;
     }
 }
