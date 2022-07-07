@@ -129,6 +129,10 @@ class NewOrder extends Model
     {
         return $this->hasOne(Amortization::class)->where('expected_payment_date', '<', now()->endOfDay())->where('actual_payment_date', null)->where('actual_amount', '<', 1)->oldest('expected_payment_date');
     }
+    public function latestAmortizationPayed()
+    {
+        return $this->hasOne(Amortization::class)->where('expected_payment_date', '<=', now()->endOfDay())->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->oldest('expected_payment_date');
+    }
     public function orderStatus()
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');

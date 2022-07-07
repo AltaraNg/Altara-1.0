@@ -162,6 +162,8 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::get('general/reasons/{type}', 'GeneralReasonController@index');
     Route::post('/send/customer/mobile/notification', 'MobileMessageNotificationController@store');
+
+    Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
 });
 
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
@@ -176,3 +178,6 @@ Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
+
+
+Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
