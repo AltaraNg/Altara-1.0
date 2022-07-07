@@ -48,7 +48,7 @@
         "datatables.net-bs4": "^1.10.19",
         "datatables.net-responsive": "^2.2.3",
         "es6-promise": "^4.2.4",
-        "moment": "^2.18.1",
+        "moment": "^2.29.4",
         "net": "^1.0.2",
         "vee-validate": "^2.1.0-beta.7",
         "vue-form-wizard": "^0.8.4",
