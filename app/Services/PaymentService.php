@@ -19,7 +19,7 @@ class PaymentService
 
 
         $trans = PaymentReconcile::firstOrCreate(
-            ['branch_id' => auth()->user()->branch_id ?? $model->branch_id, 'payment_method_id' =>$data['payment_method_id'], 'date' => Carbon::today()],
+            ['branch_id' => auth()->user()->branch_id ?? $model->branch_id, 'payment_method_id' => $data['payment_method_id'], 'date' => Carbon::today()],
             ['reconcile_number' => Helper::generateTansactionNumber('RE')]
         );
 
@@ -35,15 +35,11 @@ class PaymentService
 
         return $payment;
     }
-    public static function logLateFee($data){
+    public static function logLateFee($data)
+    {
         try {
-            //code...
-
-            $date = Carbon::now()->toDateString();
-            $data = array_merge($data, ['date_created' => $date, 'date_updated' => $date]);
-
-            $payment = LateFee::updateOrCreate($data);
-            if($payment){
+            $payment = LateFee::updateOrCreate(['id' => $data['id']], ['date_paid' => $data['date_paid']]);
+            if ($payment) {
                 return [
                     'status' => 'success'
                 ];

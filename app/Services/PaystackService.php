@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Amortization;
 use App\Contracts\PaymentGatewayInterface;
+use App\LateFee;
 
 class PaystackService implements PaymentGatewayInterface
 {
@@ -39,17 +40,17 @@ class PaystackService implements PaymentGatewayInterface
         //execute post
         return json_decode(curl_exec($ch));
     }
-    public function chargeLateFee(Amortization $amortization)
+    public function chargeLateFee(LateFee $lateFee)
     {
         $url = config('app.paystack_charge_url');
         $fields = [
-            'authorization_code' => $this->getAuthCode($amortization),
-            'email' => $this->getEmail($amortization),
-            'amount' => $this->getLateFee($amortization),
-            'subaccount' => $this->getBankCode($amortization)
+            'authorization_code' => $this->getAuthCode($lateFee),
+            'email' => $this->getEmail($lateFee),
+            'amount' => $lateFee->amount * 100,
+            'subaccount' => $this->getBankCode($lateFee)
         ];
         $fields_string = http_build_query($fields);
-        //open connection
+        // dd($fields);
         $ch = curl_init();
 
         //set the url, number of POST vars, POST data
@@ -88,7 +89,7 @@ class PaystackService implements PaymentGatewayInterface
         $totalPaid = $this->getTotalPaidRepayment($amortizationList);
         $expectedRepayment = $this->getTotalExpected($amortizationList);
         $debt =  $expectedRepayment - $totalPaid;
-        return $debt * 5 / 100;
+        return $debt * 5.5 / 100;
     }
 
     private function getEmail($amortization)
@@ -111,10 +112,12 @@ class PaystackService implements PaymentGatewayInterface
         return $sum;
     }
 
-    public function extractActual($item){
+    public function extractActual($item)
+    {
         return $item['actual_amount'];
     }
-    public function extractExpected($item){
+    public function extractExpected($item)
+    {
         return $item['expected_amount'];
     }
 }
