@@ -38,7 +38,12 @@ class PaymentService
     public static function logLateFee($data)
     {
         try {
-            $payment = LateFee::updateOrCreate(['id' => $data['id']], ['date_paid' => $data['date_paid']]);
+            if (isset($data['id'])) {
+
+                $payment = LateFee::updateOrCreate(['id' => $data['id']], ['date_paid' => $data['date_paid'], 'amount' => $data->amount]);
+            } else {
+                $payment = LateFee::updateOrCreate($data);
+            }
             if ($payment) {
                 return [
                     'status' => 'success'
