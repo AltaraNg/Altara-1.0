@@ -42,11 +42,8 @@ class PaymentService
 
                 $payment = LateFee::updateOrCreate(['id' => $data['id']], ['date_paid' => $data['date_paid'], 'amount' => $data->amount]);
             } else {
-                // dd('i got here');
-
                 $payment = LateFee::updateOrCreate($data);
             }
-            $payment = LateFee::updateOrCreate($data);
             if ($payment) {
                 return [
                     'status' => 'success'
