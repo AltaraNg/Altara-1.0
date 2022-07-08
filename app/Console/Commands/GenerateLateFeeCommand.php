@@ -15,7 +15,7 @@ class GenerateLateFeeCommand extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'make:late-fee' . '{--day= : Generate late fee for a specific day of the month in the past e.g 18. Must be in range 1 - 31} ';
+    protected $signature = 'make:late-fee-gen' . '{--day= : Generate late fee for a specific day of the month in the past e.g 18. Must be in range 1 - 31} ';
 
     /**
      * The console command description.
@@ -57,10 +57,9 @@ class GenerateLateFeeCommand extends BaseCommand
             $response = $this->generateLateFeeService->handle($day);
             $this->info(count($response) . ' records treated');
             $this->table(
-                ['ID','Order Number', 'Amount', 'Status'],
+                ['ID', 'Order Number', 'Amount', 'Status'],
                 $response
             );
-
         } catch (\Exception $e) {
             $this->error($e->getMessage() ?? 'Something went wrong');
         }
