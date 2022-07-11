@@ -61,7 +61,7 @@ class LateFeeDeduction extends BaseCommand
             $response = $this->lateFeeDeductionService->handle();
             $this->info(count($response) . ' records treated');
             $this->table(
-                ['Id', 'Name', 'Order Id', 'Amount', 'Status', 'Message'],
+                ['Id', 'Order Id', 'Amount', 'Status', 'Message'],
                 $response
             );
         } catch (\Exception $e) {

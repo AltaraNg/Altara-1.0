@@ -46,7 +46,7 @@ class PaystackService implements PaymentGatewayInterface
         $fields = [
             'authorization_code' => $this->getAuthCode($lateFee),
             'email' => $this->getEmail($lateFee),
-            'amount' => $lateFee->amount * 100,
+            'amount' => ($lateFee->amount_due - $lateFee->amount_paid) * 100,
             'subaccount' => $this->getBankCode($lateFee)
         ];
         $fields_string = http_build_query($fields);

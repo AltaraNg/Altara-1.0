@@ -69,7 +69,7 @@ class GenerateLateFeeService
             # code...
             $data = [
                 'order_id' => $item->id,
-                'amount' => $this->paystackService->getLateFee($item),
+                'amount_due' => $this->paystackService->getLateFee($item),
             ];
 
             $dataToDisplay = [

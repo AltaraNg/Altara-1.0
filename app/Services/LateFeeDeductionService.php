@@ -40,7 +40,7 @@ class LateFeeDeductionService
     private function fetchLateFees()
     {
         //get list of due payments
-        $data = LateFee::where('date_paid', null);
+        $data = LateFee::whereRaw('amount_due <> amount_paid');
         return $data->get();
     }
 
@@ -62,11 +62,11 @@ class LateFeeDeductionService
             $data = [
                 'id' => $item->id,
                 'order_id' => $item->order_id,
-                'amount' => $item->amount,
+                'amount_paid' => $item->amount_due,
                 'date_paid' => Carbon::now()->toDateString()
             ];
             $data_for_log = [
-                "amount" => $item->amount,
+                "amount" => $item->amount_due,
                 "customer_id" => $item->new_orders->customer_id,
                 "payment_type_id" => PaymentType::where('type', PaymentType::LATE_FEE)->first()->id,
                 "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
@@ -74,8 +74,6 @@ class LateFeeDeductionService
             ];
 
             if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
-                $item->new_orders['amount'] = $item->amount;
-                $item->new_orders['is_dd'] = true;
                 $resp = PaymentService::logLateFee($data);
                 $resp2 = PaymentService::logPayment($data_for_log, $item->new_orders);
                 event(new LateFeeDebitEvent($item));
