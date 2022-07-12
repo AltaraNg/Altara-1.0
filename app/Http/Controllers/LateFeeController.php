@@ -28,14 +28,17 @@ class LateFeeController extends Controller
         return $this->sendSuccess($lateFees->toArray(), 'Late fees retrieved successfully');
     }
 
-    public function update(LateFee $lateFee)
+    public function update(LateFee $lateFee, Request $request)
     {
+        // dd($request['amount_paid']);
         $today = Carbon::now()->toDateString();
         $lateFee->date_paid = $today;
-        $lateFee->save();
+        $lateFee->update($request->validate([
+            'amount_paid' => 'numeric'
+        ]));
 
         $data_for_log = [
-            "amount" => $lateFee->amount,
+            "amount" => $lateFee->amount_paid,
             "customer_id" => $lateFee->new_orders->customer_id,
             "payment_type_id" => PaymentType::where('type', PaymentType::LATE_FEE)->first()->id,
             "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
