@@ -40,7 +40,7 @@ class PaymentService
         try {
             if (isset($data['id'])) {
 
-                $payment = LateFee::updateOrCreate(['id' => $data['id']], ['date_paid' => $data['date_paid'], 'amount_paid' => $data->amount_paid]);
+                $payment = LateFee::updateOrCreate(['id' => $data['id']], ['date_paid' => $data['date_paid'], 'amount_paid' => $data['amount_paid']]);
             } else {
                 $payment = LateFee::updateOrCreate($data);
             }
