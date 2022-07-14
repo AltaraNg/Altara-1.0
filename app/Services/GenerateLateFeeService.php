@@ -70,6 +70,7 @@ class GenerateLateFeeService
             $data = [
                 'order_id' => $item->id,
                 'amount_due' => $this->paystackService->getLateFee($item),
+                'date_created' => Carbon::now()->format('Y-m-d')
             ];
 
             $dataToDisplay = [
