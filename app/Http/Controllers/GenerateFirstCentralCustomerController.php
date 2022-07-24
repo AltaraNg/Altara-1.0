@@ -17,7 +17,9 @@ class GenerateFirstCentralCustomerController extends Controller
     public function index()
     {
         $customersQuery = Customer::query()->whereHas('new_orders')->limit(100);
-        $newOrdersQuery  =  NewOrder::query()->whereHas('customer')->whereHas('amortization')->with(['amortization']);
+        $customersId = (clone $customersQuery)->get()->pluck('id')->toArray();
+        $newOrdersQuery  =  NewOrder::query()->whereIn('customer_id', $customersId)->whereHas('customer')->whereHas('amortization')->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed']);
+
         $fileName = 'CreditReport_' . Date::now()->format('Y-m-d') . '.xlsx';
         return Excel::download(new FirstCentralCreditBureauExport($customersQuery, $newOrdersQuery), $fileName);
     }

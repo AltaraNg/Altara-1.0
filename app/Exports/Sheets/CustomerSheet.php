@@ -2,17 +2,15 @@
 
 namespace App\Exports\Sheets;
 
-use App\Customer;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
-class CustomerSheet implements FromQuery, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
+class CustomerSheet implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
 {
     use Exportable;
 
@@ -25,9 +23,9 @@ class CustomerSheet implements FromQuery, WithHeadings, WithMapping, WithTitle, 
     {
         return 'Individual Borrowers';
     }
-    public function query()
+    public function collection()
     {
-        return $this->customers;
+        return $this->customers->get();
     }
 
     public function map($customer): array
