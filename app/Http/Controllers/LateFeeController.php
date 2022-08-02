@@ -32,7 +32,12 @@ class LateFeeController extends Controller
     {
         // dd($request['amount_paid']);
         $today = Carbon::now()->toDateString();
-        $lateFee->date_paid = $today;
+        if($request->date_paid != null){
+            $lateFee->date_paid = $request->date_paid;
+        }else{
+            $lateFee->date_paid = $today;
+
+        }
         $lateFee->update($request->validate([
             'amount_paid' => 'numeric'
         ]));
