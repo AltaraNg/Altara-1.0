@@ -12,6 +12,7 @@ class PaymentType extends Model
     const REPAYMENTS = 'Repayments';
     const AFFIDAVITS = 'Affidavits';
     const WALLETS = 'Wallets';
+    const LATE_FEE = 'Late Fees';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

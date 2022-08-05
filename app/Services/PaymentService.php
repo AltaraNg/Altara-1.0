@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Helper\Helper;
+use App\LateFee;
 use App\PaymentReconcile;
 use Carbon\Carbon;
+
 
 /**
  *
@@ -17,7 +19,7 @@ class PaymentService
 
 
         $trans = PaymentReconcile::firstOrCreate(
-            ['branch_id' => auth()->user()->branch_id ?? $model->branch_id, 'payment_method_id' =>$data['payment_method_id'], 'date' => Carbon::today()],
+            ['branch_id' => auth()->user()->branch_id ?? $model->branch_id, 'payment_method_id' => $data['payment_method_id'], 'date' => Carbon::today()],
             ['reconcile_number' => Helper::generateTansactionNumber('RE')]
         );
 
@@ -32,5 +34,23 @@ class PaymentService
         $trans->update();
 
         return $payment;
+    }
+    public static function logLateFee($data)
+    {
+        try {
+            if (isset($data['id'])) {
+
+                $payment = LateFee::updateOrCreate(['id' => $data['id']], ['date_paid' => $data['date_paid'], 'amount_paid' => $data['amount_paid']]);
+            } else {
+                $payment = LateFee::updateOrCreate($data);
+            }
+            if ($payment) {
+                return [
+                    'status' => 'success'
+                ];
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
