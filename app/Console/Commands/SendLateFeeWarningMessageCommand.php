@@ -46,19 +46,24 @@ class SendLateFeeWarningMessageCommand extends Command
         })->whereHas('late_fee_gen')->with('late_fee_gen', 'customer:id,first_name,last_name,telephone', 'amortization')->get();
         $orders->each(function ($order) {
             // $amortization = $order->amortization;
-            if ($order->amortization && $order->amortization->expected_payment_date) {
-                $daysToLate = Carbon::parse($order->amortization->expected_payment_date)->diffInDays(Carbon::now()->addMonth());
+            
+            if ($order->late_fee_gen && isset($order->late_fee_gen->expected_payment_date)) {
+                $daysToLate = Carbon::parse($order->late_fee_gen->expected_payment_date)->diffInDays(Carbon::now()->addMonth());
+                // dd($daysToLate);
+                if ($daysToLate > 15) {
+                    $this->info($order->id . ' is '.$daysToLate.' days away from been charged for late fee');
+                }
                 if ($daysToLate == 15) {
-                    $this->info(count($order->id) . ' is 15 days away from been charged for late fee');
+                    $this->info($order->id . ' is 15 days away from been charged for late fee');
                 }
                 if ($daysToLate == 7) {
-                    $this->info(count($order->id) . ' is 7 days away from been charged for late fee');
+                    $this->info($order->id . ' is 7 days away from been charged for late fee');
                 }
                 if ($daysToLate == 3) {
-                    $this->info(count($order->id) . ' is 3 days away from been charged for late fee');
+                    $this->info($order->id . ' is 3 days away from been charged for late fee');
                 }
                 if ($daysToLate == 1) {
-                    $this->info(count($order->id) . ' is 1 days away from been charged for late fee');
+                    $this->info($order->id . ' is 1 days away from been charged for late fee');
                 }
             }
         });
