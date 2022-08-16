@@ -176,7 +176,7 @@ Route::resource('price_calculator', 'PriceCalculatorController', ['only' => ['in
 Route::resource('down_payment_rate', 'DownPaymentRateController', ['only' => ['index', 'show']]);
 Route::resource('business_type', 'BusinessTypeController', ['only' => ['index', 'show']]);
 Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => ['index', 'show']]);
-
+Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
 
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
