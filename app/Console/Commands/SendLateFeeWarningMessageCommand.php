@@ -41,40 +41,41 @@ class SendLateFeeWarningMessageCommand extends Command
      */
     public function handle()
     {
+        // whereHas('businessType', function ($q) {
+        //     $q->whereIn('slug', $this->businessType);
+        // })
         // where('order_number', 'AT62EA231E04')->orWhere('order_number', 'AT62EA22B634')
-        $orders = NewOrder::whereHas('businessType', function ($q) {
-            $q->whereIn('slug', $this->businessType);
-        })->with('customer:id,first_name,last_name,telephone', 'amortization')->get();
+        $orders = NewOrder::whereIn('order_number', ['AT62FF1CD891', 'AT62ECB71F4B', 'AT62EA231E04', 'AT62EA22B634'])->with('customer:id,first_name,last_name,telephone', 'amortization')->whereHas('late_fee_gen')->get();
         $orders->each(function ($order) {
             $amortization = $order->amortization;
-            // dd($order->order_number);
+            // dd($amortization);
             $lastAmortization = (object) $amortization[$amortization->count() - 1];
             if ($amortization && isset($lastAmortization->expected_payment_date)) {
 
-                $daysToLate = Carbon::now()->endOfDay()->subMonth()->diffInDays(Carbon::parse($lastAmortization->expected_payment_date), false);
+                $daysToLate =  Carbon::parse($lastAmortization->expected_payment_date)->day - Carbon::now()->day;
                 $this->info($daysToLate);
                 if ($daysToLate < 0) {
                     $this->info('-------------------------------------------------------------------');
-                    $this->info('Order with ID: ' . $order->id . ' should have been charged for late fee ' . abs($daysToLate) . ' days ago');
+                    $this->info('Order with ID: ' . $order->order_number . ' should have been charged for late fee ' . abs($daysToLate) . ' days ago');
                     $this->info('Expected Payment Date: ' . $lastAmortization->expected_payment_date);
-                    $this->info('Date Used: ' . Carbon::now()->addMonth());
+                    $this->info('Date Used: ' . Carbon::now()->subMonth());
                     $this->info('-------------------------------------------------------------------');
                 }
 
-                if ($daysToLate  == 11) {
-                    $this->info($order->id . ' is ' . $daysToLate . ' days away from been charged for late fee');
+                if ($daysToLate  == 14) {
+                    $this->info($order->order_number . ' is ' . $daysToLate . ' days away from been charged for late fee');
                 }
                 if ($daysToLate == 12) {
-                    $this->info($order->id . ' is 15 days away from been charged for late fee');
+                    $this->info($order->order_number . ' is 15 days away from been charged for late fee');
                 }
-                if ($daysToLate == 7) {
-                    $this->info($order->id . ' is 7 days away from been charged for late fee');
+                if ($daysToLate == 6) {
+                    $this->info($order->order_number . ' is 7 days away from been charged for late fee');
                 }
                 if ($daysToLate == 3) {
-                    $this->info($order->id . ' is 3 days away from been charged for late fee');
+                    $this->info($order->order_number . ' is 3 days away from been charged for late fee');
                 }
                 if ($daysToLate == 1) {
-                    $this->info($order->id . ' is 1 days away from been charged for late fee');
+                    $this->info($order->order_number . ' is 1 days away from been charged for late fee');
                 }
             }
         });
