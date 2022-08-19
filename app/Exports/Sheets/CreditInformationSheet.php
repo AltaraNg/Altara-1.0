@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromGenerator;
@@ -16,7 +17,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 
-class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithLimit, WithCustomChunkSize
+class CreditInformationSheet implements FromQuery, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithCustomChunkSize
 {
 
     private $orders;
@@ -28,16 +29,15 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
     {
         return 'Credit Information';
     }
-    // public function query()
-    // {
-    //     // dd($this->orders->count());
-    //     return $this->orders;
-    // }
-    public function generator(): Generator
+    public function query()
     {
-        // 
-        return $this->orders->cursor();
+        return $this->orders;
     }
+    // public function generator(): Generator
+    // {
+    //     // 
+    //     return $this->orders->cursor();
+    // }
 
     public function map($order): array
     {
@@ -140,11 +140,13 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
 
     private function outstandingBalance($order)
     {
+        // return 10;
         $sum = $order->amortization->where('actual_payment_date',  null)->where('actual_amount', '<', 1)->sum('expected_amount');
         return  $sum > 0 ? $sum : '0';
     }
     private function overdueAmount($order)
     {
+        // return 10;
         $sum =  $order->amortization->where('expected_payment_date', '<', Carbon::now()->endOfDay())
             ->where('actual_payment_date',  null)
             ->where('actual_amount', '<', 1)->sum('expected_amount');
@@ -153,6 +155,7 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
 
     public function openOrClosed($order)
     {
+        // return 'Open';
         $sumOfRepaymentMade = (clone $order)->amortization->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->sum('actual_amount');
 
         $expectedSumOfPayment = $order->amortization->sum('expected_amount');
@@ -169,6 +172,7 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
 
     public function accountStatusDate($status, $order)
     {
+        // return "2202-01-29";
         $date = null;
         if ($status == 'Closed' && $order->latestAmortizationPayed) {
             $date =  $order->latestAmortizationPayed->actual_payment_date;
@@ -183,6 +187,7 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
 
     public function loanClassification($days)
     {
+        // return "testing";
         if (in_array($days, range(0, 30))) {
             return 'Performing';
         }
@@ -205,13 +210,13 @@ class CreditInformationSheet implements FromGenerator, WithHeadings, WithMapping
         }
         return 'N/A';
     }
-    public function limit(): int
-    {
-        return 500;
-    }
+    // public function limit(): int
+    // {
+    //     return 500;
+    // }
 
     public function chunkSize(): int
     {
-        return 500;
+        return 100;
     }
 }
