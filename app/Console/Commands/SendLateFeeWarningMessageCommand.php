@@ -41,11 +41,6 @@ class SendLateFeeWarningMessageCommand extends Command
      */
     public function handle()
     {
-        // whereHas('businessType', function ($q) {
-        //     $q->whereIn('slug', $this->businessType);
-        // })
-        // where('order_number', 'AT62EA231E04')->orWhere('order_number', 'AT62EA22B634')
-        // $orders = NewOrder::whereIn('order_number', ['AT62FF1CD891', 'AT62ECB71F4B', 'AT62EA231E04', 'AT62EA22B634'])->with('customer:id,first_name,last_name,telephone', 'amortization')->whereHas('late_fee_gen')->get();
         $response = 0;
         $this->info("Starting processing of Late fee SMS Reminders");
         try {
