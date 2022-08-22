@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\BusinessType;
-use App\NewOrder;
-use Carbon\Carbon;
+use App\Services\LateFeeReminderCommandService;
+use App\Services\ReminderService;
 use Illuminate\Console\Command;
 
 class SendLateFeeWarningMessageCommand extends Command
@@ -16,6 +15,7 @@ class SendLateFeeWarningMessageCommand extends Command
      */
     protected $signature = 'send:late-fee-message-warning';
 
+    private $lateFeeReminderCommandService;
     /**
      * The console command description.
      *
@@ -28,10 +28,10 @@ class SendLateFeeWarningMessageCommand extends Command
      *
      * @return void
      */
-    private  $businessType = [BusinessType::ALTARA_CREDIT_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_NINE_MONTHS, BusinessType::ALTARA_PAY_SUPER_LOAN_RENEWAL, BusinessType::ALTARA_PAY_SUPER_LOAN_NEW, BusinessType::ALTARA_PAY_CASH_LOAN_NO_COLLATERAL, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_NO_COLLATERAL, BusinessType::ALTARA_PAY_RENTALS_SLUG];
-    public function __construct()
+    public function __construct(LateFeeReminderCommandService $lateFeeReminderCommandService)
     {
         parent::__construct();
+        $this->lateFeeReminderCommandService = $lateFeeReminderCommandService;
     }
 
     /**
@@ -45,39 +45,22 @@ class SendLateFeeWarningMessageCommand extends Command
         //     $q->whereIn('slug', $this->businessType);
         // })
         // where('order_number', 'AT62EA231E04')->orWhere('order_number', 'AT62EA22B634')
-        $orders = NewOrder::whereIn('order_number', ['AT62FF1CD891', 'AT62ECB71F4B', 'AT62EA231E04', 'AT62EA22B634'])->with('customer:id,first_name,last_name,telephone', 'amortization')->whereHas('late_fee_gen')->get();
-        $orders->each(function ($order) {
-            $amortization = $order->amortization;
-            // dd($amortization);
-            $lastAmortization = (object) $amortization[$amortization->count() - 1];
-            if ($amortization && isset($lastAmortization->expected_payment_date)) {
+        // $orders = NewOrder::whereIn('order_number', ['AT62FF1CD891', 'AT62ECB71F4B', 'AT62EA231E04', 'AT62EA22B634'])->with('customer:id,first_name,last_name,telephone', 'amortization')->whereHas('late_fee_gen')->get();
+        $response = 0;
+        $this->info("Starting processing of Late fee SMS Reminders");
+        try {
+            $response =  $this->lateFeeReminderCommandService->handle();
+            $this->info(count($response) . ' records treated');
+            $this->table(
+                ['Id', 'Name', 'Order Number', 'Sms', 'Status', 'Response Message'],
+                $response
+            );
+        } catch (\Exception $e) {
+            $this->error($e->getMessage() ?? 'Something went wrong');
+        }
 
-                $daysToLate =  Carbon::parse($lastAmortization->expected_payment_date)->day - Carbon::now()->day;
-                $this->info($daysToLate);
-                if ($daysToLate < 0) {
-                    $this->info('-------------------------------------------------------------------');
-                    $this->info('Order with ID: ' . $order->order_number . ' should have been charged for late fee ' . abs($daysToLate) . ' days ago');
-                    $this->info('Expected Payment Date: ' . $lastAmortization->expected_payment_date);
-                    $this->info('Date Used: ' . Carbon::now()->subMonth());
-                    $this->info('-------------------------------------------------------------------');
-                }
-
-                if ($daysToLate  == 14) {
-                    $this->info($order->order_number . ' is ' . $daysToLate . ' days away from been charged for late fee');
-                }
-                if ($daysToLate == 12) {
-                    $this->info($order->order_number . ' is 15 days away from been charged for late fee');
-                }
-                if ($daysToLate == 6) {
-                    $this->info($order->order_number . ' is 7 days away from been charged for late fee');
-                }
-                if ($daysToLate == 3) {
-                    $this->info($order->order_number . ' is 3 days away from been charged for late fee');
-                }
-                if ($daysToLate == 1) {
-                    $this->info($order->order_number . ' is 1 days away from been charged for late fee');
-                }
-            }
-        });
+        $this->info('Late fee Sms Reminders completed.');
+        $this->info('Exiting...');
+        return 0;
     }
 }
