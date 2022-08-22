@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithLimit;
-class CustomerSheet implements FromQuery, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithCustomChunkSize
+class CustomerSheet implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithCustomChunkSize
 {
     use Exportable;
 
@@ -29,9 +29,9 @@ class CustomerSheet implements FromQuery, WithHeadings, WithMapping, WithTitle, 
         return 'Individual Borrowers';
     }
   
-    public function query()
+    public function collection()
     {
-        return $this->customers;
+        return $this->customers->get();
     }
 
     public function map($customer): array

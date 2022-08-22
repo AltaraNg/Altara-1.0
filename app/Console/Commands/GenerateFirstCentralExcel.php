@@ -47,7 +47,7 @@ class GenerateFirstCentralExcel extends Command
         $this->comment('Processing');
         // dd(public_path('exported_excel/processed'));
         $from = '2020-01-01';
-        $to = '2020-01-15';
+        $to = '2022-08-28';
 
         $this->info('-----Generating Queries------');
         $customersQuery = Customer::query()->whereBetween('date_of_registration', [$from, $to])->has('new_orders')->orderBy('date_of_registration');

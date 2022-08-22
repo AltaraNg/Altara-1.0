@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 
-class CreditInformationSheet implements FromQuery, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithCustomChunkSize
+class CreditInformationSheet implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithCustomChunkSize
 {
 
     private $orders;
@@ -29,19 +29,19 @@ class CreditInformationSheet implements FromQuery, WithHeadings, WithMapping, Wi
     {
         return 'Credit Information';
     }
-    public function query()
-    {
-        return $this->orders;
-    }
-    // public function generator(): Generator
+    // public function query()
     // {
-    //     // 
-    //     return $this->orders->cursor();
+    //     return $this->orders;
     // }
+    public function collection()
+    {
+        // 
+        return $this->orders->get();
+    }
 
     public function map($order): array
     {
-        //   dd($order);
+
         $lastNonePaymentDate = null;
         $lastPaymentDate = null;
         $days_in_arrears = '0';
@@ -58,7 +58,7 @@ class CreditInformationSheet implements FromQuery, WithHeadings, WithMapping, Wi
         }
 
         $outStandingBalance = $this->outstandingBalance(clone $order) ?? '0';
-        $accountStatus = $this->openOrClosed(clone $order);
+        $accountStatus = $this->openOrClosed($outStandingBalance);
         $accountStatusDate = $this->accountStatusDate($accountStatus, $order);
         $overDueAmount =  $this->overdueAmount(clone $order) ?? '0';
         $repaymentFrequencyName =  $this->repaymentCycleName($order->repaymentCycle->name);
@@ -67,7 +67,7 @@ class CreditInformationSheet implements FromQuery, WithHeadings, WithMapping, Wi
 
         return [
             $order->customer->id, // 'Customer ID',
-            $order->id, // 'Account Number',
+            $order->order_number, // 'Account Number',
             $accountStatus, // 'Account Status',
             $accountStatusDate, // 'Account status date',
             $order->order_date, // 'Date of loan (facility) disbursement/Loan effective date',
@@ -153,18 +153,16 @@ class CreditInformationSheet implements FromQuery, WithHeadings, WithMapping, Wi
         return $sum > 0 ? $sum : '0';
     }
 
-    public function openOrClosed($order)
+    public function openOrClosed($outStandingBalance)
     {
         // return 'Open';
-        $sumOfRepaymentMade = (clone $order)->amortization->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->sum('actual_amount');
+        // $sumOfRepaymentMade = (clone $order)->amortization->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->sum('actual_amount');
 
-        $expectedSumOfPayment = $order->amortization->sum('expected_amount');
+        // $expectedSumOfPayment = $order->amortization->sum('expected_amount');
 
-        $amountLeftToBePayed =  $expectedSumOfPayment - $sumOfRepaymentMade;
-        if ($amountLeftToBePayed > 0) {
+        // $amountLeftToBePayed =  $expectedSumOfPayment - $sumOfRepaymentMade;
+        if ($outStandingBalance > 0) {
             return 'Open';
-        } elseif ($amountLeftToBePayed == 0) {
-            return 'Closed';
         } else {
             return 'Closed';
         }
@@ -173,14 +171,17 @@ class CreditInformationSheet implements FromQuery, WithHeadings, WithMapping, Wi
     public function accountStatusDate($status, $order)
     {
         // return "2202-01-29";
-        $date = null;
         if ($status == 'Closed' && $order->latestAmortizationPayed) {
-            $date =  $order->latestAmortizationPayed->actual_payment_date;
+            return $order->latestAmortizationPayed->actual_payment_date;
         }
         if ($status == 'Open' &&  $order->latestAmortizationNotPayed) {
-            $date = $order->latestAmortizationNotPayed->expected_payment_date;
+            return $order->latestAmortizationNotPayed->expected_payment_date;
         }
-        return $date;
+        //this is to consider situations where all amortization has been filled but repayment is not completely paid
+        if ($status == 'Open' && $order->latestAmortizationNotPayed == null && $order->latestAmortizationPayed) {
+            return $order->latestAmortizationPayed->actual_payment_date;
+        }
+        return $order->amortization[$order->amortization->count() - 1]->expected_payment_date;
     }
 
 
