@@ -138,7 +138,7 @@ class   NewOrder extends Model
     }
     public function latestAmortizationNotPayed()
     {
-        return $this->hasOne(Amortization::class)->where('expected_payment_date', '<', now()->endOfDay())->where('actual_payment_date', null)->where('actual_amount', '<', 1)->oldest('expected_payment_date');
+        return $this->hasOne(Amortization::class)->where('actual_payment_date', null)->where('actual_amount', '<', 1)->oldest('expected_payment_date');
     }
     public function latestAmortizationPayed()
     {
@@ -300,6 +300,8 @@ class   NewOrder extends Model
             'order_discount' => $this->discount,
             'general_feedbacks' => $this->generalFeedBacks ?? null,
             'financed_by' => $this->financed_by ?? null,
+            'latestAmortizationPayed' => $this->latestAmortizationPayed,
+            'latestAmortizationNotPayed' => $this->latestAmortizationNotPayed,
 
         ];
     }

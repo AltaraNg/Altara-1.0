@@ -2,15 +2,19 @@
 
 namespace App\Exports\Sheets;
 
+use App\Customer;
 use Carbon\Carbon;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
+use Generator;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
-
-class CustomerSheet implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromGenerator;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
+use Maatwebsite\Excel\Concerns\WithLimit;
+class CustomerSheet implements FromGenerator, WithHeadings, WithMapping, WithTitle, ShouldAutoSize, WithLimit, WithCustomChunkSize
 {
     use Exportable;
 
@@ -23,21 +27,27 @@ class CustomerSheet implements FromCollection, WithHeadings, WithMapping, WithTi
     {
         return 'Individual Borrowers';
     }
-    public function collection()
+  
+    public function generator(): Generator
     {
-        return $this->customers->get();
+        return $this->customers->cursor();
     }
 
     public function map($customer): array
     {
-       
+        try {
+            $dateOfBirth  = Carbon::parse($customer->date_of_birth)->format('d/m/Y');
+        } catch (\Throwable $th) {
+            $dateOfBirth = 'N/A';
+        }
+
         return [
             $customer->id,  // 'CustomerID',
             $customer->branch_id,   // 'Branch Code',
             $customer->last_name,   // 'Surname',
             $customer->first_name,  // 'First name',
             $customer->middle_name, // 'Middle name',
-            Carbon::parse($customer->date_of_birth)->format('d/m/Y'),   // 'Date of Birth',
+            $dateOfBirth,   // 'Date of Birth',
             'N/A', // 'National Identity Number',
             'N/A', // 'Drivers License No',
             $customer->bvn_no ?? 'N/A', // 'BVN No',
@@ -143,5 +153,15 @@ class CustomerSheet implements FromCollection, WithHeadings, WithMapping, WithTi
             $status = "SE"; //self employed
         }
         return $status;
+    }
+
+    public function limit(): int
+    {
+        return 500;
+    }
+
+    public function chunkSize(): int
+    {
+        return 500;
     }
 }
