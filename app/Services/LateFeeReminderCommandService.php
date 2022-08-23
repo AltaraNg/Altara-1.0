@@ -52,6 +52,7 @@ class LateFeeReminderCommandService
                         $messageToSend = LateFeeReminderMessages::DAY_ONE;
                     }
                     $data = $order->toArray();
+                    //get late fee
                     $data['late_fee'] = $this->paystackService->getLateFee($order);
                     //remove this two keys since they are not needed
                     unset($data['renewal_prompters']);
