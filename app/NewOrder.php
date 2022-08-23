@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\RequiredIf;
 
-class NewOrder extends Model
+class   NewOrder extends Model
 {
     use Filterable, Notifiable;
 
