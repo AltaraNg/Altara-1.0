@@ -15,14 +15,17 @@ use App\Notifications\Models\SmsReminderModel;
 
 class LateFeeReminderCommandService
 {
+
+    private $paystackService;
     private  $businessType = [BusinessType::ALTARA_CREDIT_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_NINE_MONTHS, BusinessType::ALTARA_PAY_SUPER_LOAN_RENEWAL, BusinessType::ALTARA_PAY_SUPER_LOAN_NEW, BusinessType::ALTARA_PAY_CASH_LOAN_NO_COLLATERAL, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_NO_COLLATERAL, BusinessType::ALTARA_PAY_RENTALS_SLUG];
+    public function __construct(PaystackService $paystackService) {
+        $this->paystackService = $paystackService;
+    }
     public function handle()
     {
         $orders = NewOrder::whereHas('businessType', function ($q) {
             $q->whereIn('slug', $this->businessType);
-        })->with('customer:id,first_name,last_name,telephone', 'amortization')
-        ->whereHas('late_fee_gen')
-            ->get();
+        })->with('customer:id,first_name,last_name,telephone', 'amortization')->whereHas('late_fee_gen')->get();
 
 
         $response  = [];
@@ -35,7 +38,7 @@ class LateFeeReminderCommandService
             $lastAmortization = (object) $amortization[$amortization->count() - 1];
             if ($amortization && isset($lastAmortization->expected_payment_date)) {
                 $daysToLate =  Carbon::parse($lastAmortization->expected_payment_date)->day - Carbon::now()->day;
-                if ($daysToLate > 0) {
+                if ($daysToLate > 0 && $daysToLate <= 14) {
                     if ($daysToLate  == 14) {
                         $messageToSend = LateFeeReminderMessages::DAY_FOURTEEN;
                     }
@@ -45,10 +48,14 @@ class LateFeeReminderCommandService
                     if ($daysToLate == 3) {
                         $messageToSend = LateFeeReminderMessages::DAY_THREE;
                     }
-                    if ($daysToLate == 1) {
+                    if ($daysToLate == 2) {
                         $messageToSend = LateFeeReminderMessages::DAY_ONE;
                     }
                     $data = $order->toArray();
+                    $data['late_fee'] = $this->paystackService->getLateFee($order);
+                    //remove this two keys since they are not needed
+                    unset($data['renewal_prompters']);
+                    unset($data['last_renewal_prompter_activity']);
                     $replacementKeys = Helper::generateReplacementKeys(array_keys($data));
                     $replacementValues    = array_values($data);
                     $message = preg_replace($replacementKeys, $replacementValues, $messageToSend);

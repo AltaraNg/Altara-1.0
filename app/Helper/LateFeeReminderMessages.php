@@ -5,8 +5,8 @@ namespace App\Helper;
 class LateFeeReminderMessages
 {
 
-    const DAY_ONE = "Day 1 message.....";
-    const DAY_THREE = "Day 3 message.....";
-    const DAY_SEVEN = "Day 7 message...";
-    const DAY_FOURTEEN = "Day 14 message";
+    const DAY_ONE = 'Dear [customer_name], Please note that you will be charged N[late_fee] for late fee tomorrow';
+    const DAY_THREE = 'Dear [customer_name], Please note that you will be charged N[late_fee] for late fee in 3 days';
+    const DAY_SEVEN = 'Dear [customer_name], Please note that you will be charged N[late_fee] for late fee in 7 days';
+    const DAY_FOURTEEN = 'Dear [customer_name], Please note that you will be charged N[late_fee] for late fee in 14 days';
 }
