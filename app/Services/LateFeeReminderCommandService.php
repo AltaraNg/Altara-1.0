@@ -24,9 +24,10 @@ class LateFeeReminderCommandService
         $this->paystackService = $paystackService;
     }
 
-    public function handle()
+    public function handle($start_date)
     {
-        $orders = NewOrder::whereHas('businessType', function ($q) {
+
+        $orders = NewOrder::where('order_date', '>=', $start_date)->whereHas('businessType', function ($q) {
             $q->whereIn('slug', $this->businessType);
         })->with('customer:id,first_name,last_name,telephone', 'amortization')->whereHas('late_fee_gen')->get();
 
