@@ -55,7 +55,7 @@ class SendLateFeeWarningMessageCommand extends Command
             $response =  $this->lateFeeReminderCommandService->handle($start_date);
             $this->info(count($response) . ' records treated');
             $this->table(
-                ['Id', 'Name', 'Order Number', 'Sms', 'Status', 'Response Message'],
+                ['Id', 'Name', 'Order Number', 'Phone', 'Sms', 'Status', 'Response Message'],
                 $response
             );
         } catch (\Exception $e) {
@@ -66,7 +66,8 @@ class SendLateFeeWarningMessageCommand extends Command
         $this->info('Exiting...');
         return 0;
     }
-     /**
+
+    /**
      * Validate the input.
      *
      */

@@ -12,6 +12,7 @@ use App\Notifications\SmsReminder;
 use App\Notifications\SmsReminderSent;
 use App\Helper\LateFeeReminderMessages;
 use App\Notifications\Models\SmsReminderModel;
+use Illuminate\Support\Facades\Log;
 
 class LateFeeReminderCommandService
 {
@@ -27,9 +28,9 @@ class LateFeeReminderCommandService
     public function handle($start_date)
     {
 
-        $orders = NewOrder::where('order_date', '>=', $start_date)->whereHas('businessType', function ($q) {
+        $orders = NewOrder::where('order_date', '>=', $start_date)->whereHas('late_fee_gen')->whereHas('businessType', function ($q) {
             $q->whereIn('slug', $this->businessType);
-        })->with('customer:id,first_name,last_name,telephone', 'amortization')->whereHas('late_fee_gen')->get();
+        })->with('customer:id,first_name,last_name,telephone', 'amortization')->get();
 
 
 
@@ -37,31 +38,34 @@ class LateFeeReminderCommandService
         if (empty($orders)) {
             return 'No Customers are will be due for late fee soon';
         }
-        $messageToSend = "";
+
+        $nextSevenDaysDay = Carbon::now()->endOfDay()->addDays(7)->day;
+        $nextFifteenDaysDay =  Carbon::now()->endOfDay()->addDays(15)->day;
+        $tomorrowDay =  Carbon::now()->endOfDay()->addDay()->day;
         foreach ($orders as  $order) {
             $amortization = $order->amortization;
             $lastAmortization = (object) $amortization[$amortization->count() - 1];
             if ($amortization && isset($lastAmortization->expected_payment_date)) {
-                $daysToLate =  Carbon::parse($lastAmortization->expected_payment_date)->day - Carbon::now()->day;
+                $expectedPaymentDay =  Carbon::parse($lastAmortization->expected_payment_date)->endOfDay()->day;
+                if ($expectedPaymentDay === $nextFifteenDaysDay) {
+                    $day = 15;
+                    $messageToSend = LateFeeReminderMessages::DAY_FIFTEEN;
+                } else if ($expectedPaymentDay === $nextSevenDaysDay) {
+                    $day = 7;
+                    $messageToSend = LateFeeReminderMessages::DAY_SEVEN;
+                } else if ($expectedPaymentDay === $tomorrowDay) {
+                    $day = 1;
+                    $messageToSend = LateFeeReminderMessages::DAY_ONE;
+                } else {
+                    $day = null;
+                    $messageToSend = null;
+                }
 
-                if ($daysToLate > 0 && $daysToLate <= 14) {
-
-                    if ($daysToLate  == 14) {
-                        $messageToSend = LateFeeReminderMessages::DAY_FOURTEEN;
-                    }
-                    if ($daysToLate == 7) {
-                        $messageToSend = LateFeeReminderMessages::DAY_SEVEN;
-                    }
-                    if ($daysToLate == 3) {
-                        $messageToSend = LateFeeReminderMessages::DAY_THREE;
-                    }
-
-                    if ($daysToLate == 1) {
-                        $messageToSend = LateFeeReminderMessages::DAY_ONE;
-                    }
+                if ($day != null && $messageToSend != null) {
                     $data = $order->toArray();
                     //get late fee
                     $data['late_fee'] = $this->paystackService->getLateFee($order);
+                    $data['amount_owed'] = $this->getAmountOwed(clone $order);
                     //remove this two keys since they are not needed
                     unset($data['renewal_prompters']);
                     unset($data['last_renewal_prompter_activity']);
@@ -73,10 +77,11 @@ class LateFeeReminderCommandService
                         'customer_id' => $order->customer_id,
                         'customer_name' => $order->customer->full_name,
                         'order_number' => $order->order_number,
+                        'tel' => $order->customer->telephone,
                         'message' => $message,
                     ];
                     try {
-                        $reminderObject = new SmsReminderModel('day_' . $daysToLate . '_sms', $message);
+                        $reminderObject = new SmsReminderModel('day_' . $day  . '_sms', $message);
                         $order->customer->notify(new SmsReminder($reminderObject));
                         $response[] = array_merge($item, [
                             'status' => 'success',
@@ -96,5 +101,13 @@ class LateFeeReminderCommandService
         }
 
         return $response;
+    }
+
+    private function getAmountOwed($order)
+    {
+        return $order->amortization
+            ->where('actual_payment_date', null)->where('actual_amount', '<', 1)
+            ->where('expected_payment_date', '<', Carbon::now()->endOfDay())
+            ->sum('expected_amount');
     }
 }
