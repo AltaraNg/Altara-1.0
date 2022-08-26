@@ -66,6 +66,7 @@ class SendLateFeeWarningMessageCommand extends Command
         $this->info('Exiting...');
         return 0;
     }
+
     /**
      * Validate the input.
      *
