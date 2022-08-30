@@ -23,7 +23,7 @@ class UpdateCustomerPhoneNumbersCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Update all customers telephone on staging environment by passing a telephone';
 
     /**
      * Create a new command instance.
