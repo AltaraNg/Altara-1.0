@@ -11,8 +11,11 @@
 |
 */
 
+use App\BusinessType;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
+use App\NewOrder;
+use Carbon\Carbon;
 
 Route::post('/login', 'AuthController@login');
 Route::post('/password/reset', 'AuthController@sendResetLinkEmail');
@@ -139,7 +142,8 @@ Route::middleware('auth:api')->group(function () {
         'todo' => 'TodoController',
         'reason' => 'ReasonController',
         'feedback' => 'FeedbackController',
-        'role' => 'RoleController'
+        'role' => 'RoleController',
+        'late_fee' => 'LateFeeController'
 
     ]);
 
@@ -176,3 +180,7 @@ Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
 //Route::post('/amortization/preview', 'AmortizationController@preview');
+
+
+
+

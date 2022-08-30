@@ -18,7 +18,10 @@ use App\Listeners\UpgradeContactCustomerStageListener;
 use Illuminate\Support\Facades\Event;
 use App\Events\CustomerStageUpdatedEvent;
 use App\Events\SendPasswordResetLinkEvent;
+use App\Events\LateFeeDebitEvent;
 use App\Listeners\Bank45RepaymentListener;
+use App\Listeners\LateFeeDebitListener;
+
 use App\Listeners\Bank54OrderPlacedListener;
 use App\Listeners\CustomerStageProspectActivityListener;
 use App\Listeners\ProductTransferListener;
@@ -72,10 +75,13 @@ class EventServiceProvider extends ServiceProvider
         ],
         CustomerStageUpdatedEvent::class => [
             CustomerStageProspectActivityListener::class,
-//            ContactCustomerStageListener::class,
+            //            ContactCustomerStageListener::class,
         ],
         CustomerCreatedEvent::class => [
             CustomerRegisteredListener::class,
+        ],
+        LateFeeDebitEvent::class => [
+            LateFeeDebitListener::class
         ]
     ];
 
