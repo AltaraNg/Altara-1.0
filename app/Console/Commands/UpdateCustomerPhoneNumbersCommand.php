@@ -43,7 +43,7 @@ class UpdateCustomerPhoneNumbersCommand extends Command
     public function handle()
     {
         $isInStaging = App::environment() === 'staging';
-        if (!$isInStaging) {
+        if ($isInStaging) {
             $data = $this->option();
             $validator = Validator::make($data, [
                 'telephone' => 'required'
@@ -57,7 +57,7 @@ class UpdateCustomerPhoneNumbersCommand extends Command
             DB::table('customers')->update(['telephone' => $data['telephone']]);
             $this->info('Customer\'s telephone updated successfully');
         } else {
-            $this->error('You are not allowed to run this command on production environment');
+            $this->error('You are not allowed to run this command on '. App::environment()  .' environment');
         }
         return 0;
     }
