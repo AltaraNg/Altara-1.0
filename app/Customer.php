@@ -224,4 +224,8 @@ class Customer extends Model
        return $this->belongsTo(RenewalPrompterStatus::class);
     }
 
+    public function amortizations()
+    {
+       return $this->hasManyThrough(Amortization::class, NewOrder::class); 
+    }
 }
