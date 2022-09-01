@@ -1,5 +1,5 @@
 # Altara PHP Application
-Altara PHP is build with Laravel and uses docker!!!
+Altara PHP is build with Laravel and uses docker
 
 Table of Contents
 
