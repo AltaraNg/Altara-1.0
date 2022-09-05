@@ -52,6 +52,8 @@ class Kernel extends ConsoleKernel
             default:
 //                throw new AException('Type is invalid', 401);
         }
+        //send command 7am every morning
+        $schedule->command('send:report')->dailyAt('7:00');
 
     }
 
