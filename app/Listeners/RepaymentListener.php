@@ -34,11 +34,8 @@ class RepaymentListener
     {
         $customer = Customer::find($event->newOrder['customer_id']);
         try {
-
-            if (env('SEND_ORDER_SMS')) {
                 $order = $event->newOrder->refresh();
                 $customer->notify(new RepaymentNotification($order));
-            }
             if (Helper::PaymentCompleted($order)) {
                 $this->newOrderRepository->updateOrderStatus($order->id);
             }
