@@ -83,7 +83,7 @@ class AuthController extends Controller
     }
 
     public function reset()
-    {
+    { //ibeanuhillary@gmail.com
         $data = $this->validate(request(), PasswordResets::$resetRules);
         $this->authRepository->resetPassword($data);
         return response()->json(['data' => [], 'message' => 'Password reset Successful'], 200);
