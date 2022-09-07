@@ -260,7 +260,7 @@ class   NewOrder extends Model
     }
 
     public function paystackAuthCode(){
-        return $this->hasOne(PaystackAuthCode::class, 'order_id');
+        return $this->hasOne(PaystackAuthCode::class, 'order_id', 'order_number');
     }
     public function toArray()
     {
