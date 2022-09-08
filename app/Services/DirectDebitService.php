@@ -4,14 +4,18 @@
 namespace App\Services;
 
 
-use App\Amortization;
 use App\OrderType;
+use Carbon\Carbon;
+use App\OrderStatus;
+use App\PaymentType;
+use App\Amortization;
+use App\PaymentMethod;
 use App\PaymentGateway;
 use App\Events\RepaymentEvent;
-use App\OrderStatus;
-use App\PaymentMethod;
-use App\PaymentType;
-use Carbon\Carbon;
+use App\Log;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Facades\Log as FacadesLog;
 
 class DirectDebitService
 {
@@ -39,8 +43,8 @@ class DirectDebitService
     {
         //get list of due payments
         $data = Amortization::where('actual_payment_date', null)
-            ->whereDate('expected_payment_date', '<=' ,Carbon::now())
-            ->whereHas('new_orders', function ($q){
+            ->whereDate('expected_payment_date', '<=', Carbon::now())
+            ->whereHas('new_orders', function ($q) {
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
@@ -52,7 +56,6 @@ class DirectDebitService
     public function handle()
     {
         $items = $this->fetchOrders();
-
         $res = array();
         if (empty($items)) {
             return 'No Customers are available';
@@ -75,7 +78,7 @@ class DirectDebitService
                 "bank_id" => 6 //hardcoded to fcmb
             ];
 
-            if(isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
+            if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
                 $item->new_orders['amount'] = $item->expected_amount;
                 $item->new_orders['is_dd'] = true;
                 $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
@@ -84,7 +87,7 @@ class DirectDebitService
                     'status' => 'success',
                     'statusMessage' => 'Approved'
                 ]);
-            }else {
+            } else {
                 $res[] = array_merge($data, [
                     'status' => 'failed',
                     'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
@@ -93,14 +96,21 @@ class DirectDebitService
         }
 
         # send report mail
-//        try {
-//            $this->mailService->sendReportAsMail('Direct Debit Report', $res,
-//                config('app.operations_email'), 'Direct Debit Report',
-//                'DirectDebit', 'Direct Debit Report ' . Carbon::now()->toDateString());
-//        } catch (BindingResolutionException $e) {
-//        }
+        try {
+            $this->mailService->sendReportAsMail(
+                'Direct Debit Report',
+                $res,
+                [config('app.operations_email'), config('app.admin_email')],
+                'Direct Debit Report',
+                'DirectDebit',
+                'Direct Debit Report ' . Carbon::now()->toDateString()
+            );
+        } catch (BindingResolutionException $e) {
+            FacadesLog::error($e->getMessage());
+        } catch (Exception $e) {
+            FacadesLog::error($e->getMessage()); 
+        }
 
         return $res;
-
     }
 }

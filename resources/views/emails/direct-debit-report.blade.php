@@ -1,6 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
-      xmlns:o="urn:schemas-microsoft-com:office:office">
+    xmlns:o="urn:schemas-microsoft-com:office:office">
 
 <head>
     <!--[if gte mso 9]>
@@ -58,7 +59,7 @@
                 width: 100% !important;
             }
 
-            .col > div {
+            .col>div {
                 margin: 0 auto;
             }
 
@@ -138,7 +139,7 @@
             padding: 3px;
         } */
 
-        table.GeneratedTable thead tr th{
+        table.GeneratedTable thead tr th {
             border-left: #0068a5 solid 1px;
             padding: 8px;
             height: 70px;
@@ -149,17 +150,18 @@
         }
 
 
-        table.GeneratedTable tbody tr td{
+        table.GeneratedTable tbody tr td {
             padding: 8px;
             text-align: center;
 
             border-left: #0068a5 solid 1px;
         }
 
-        .tr-header{
+        .tr-header {
             background-color: #0068a5;
             color: #ffffff;
         }
+
         table.GeneratedTable tbody tr {
             padding: 8px;
         }
@@ -168,30 +170,31 @@
 </head>
 
 <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;">
-<!--[if IE]>
+    <!--[if IE]>
 <div class="ie-browser"><![endif]-->
-<table class="nl-container"
-       style="table-layout: fixed; vertical-align: top; min-width: 450px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;"
-       cellpadding="0" cellspacing="0" role="presentation" width="100%" bgcolor="#FFFFFF" valign="top">
-    <tbody>
-    <tr style="vertical-align: top;" valign="top">
-        <td style="word-break: break-word; vertical-align: top;" valign="top">
-            <!--[if (mso)|(IE)]>
+    <table class="nl-container"
+        style="table-layout: fixed; vertical-align: top; min-width: 450px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;"
+        cellpadding="0" cellspacing="0" role="presentation" width="100%" bgcolor="#FFFFFF" valign="top">
+        <tbody>
+            <tr style="vertical-align: top;" valign="top">
+                <td style="word-break: break-word; vertical-align: top;" valign="top">
+                    <!--[if (mso)|(IE)]>
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                     <td align="center" style="background-color:#FFFFFF"><![endif]-->
-            <div style="background-color:transparent;">
-                <div class="block-grid "
-                     style="Margin: 0 auto; min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
-                    <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
-                        <!--[if (mso)|(IE)]>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid "
+                            style="Margin: 0 auto; min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                <!--[if (mso)|(IE)]>
                         <table width="100%" cellpadding="0" cellspacing="0" border="0"
                                style="background-color:transparent;">
                             <tr>
                                 <td align="center">
                                     <table cellpadding="0" cellspacing="0" border="0" style="width:500px">
                                         <tr class="layout-full-width" style="background-color:transparent"><![endif]-->
-                        <!--[if (mso)|(IE)]>
+                                <!--[if (mso)|(IE)]>
                         <td align="center" width="500"
                             style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
                             valign="top">
@@ -199,145 +202,151 @@
                                 <tr>
                                     <td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;">
                         <![endif]-->
-                        <div class="col num12"
-                             style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
-                            <div style="width:100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div
-                                    style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-                                    <!--[if mso]>
+                                <div class="col num12"
+                                    style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div
+                                            style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <!--[if mso]>
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                         <tr>
                                             <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
                                     <![endif]-->
-                                    <div
-                                        style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                        <div
-                                            style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
-                                            <p style="font-size: 16px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0; color: #0068a5; font-weight: bold">
-                                                <span style="font-size: 22px;"><strong><span
-                                                            style="background-color: #0068a5; padding: 5px 10px; color: #ffffff">A</span></strong></span>
-                                                altara</p>
-                                        </div>
-                                    </div>
-                                    <!--[if mso]></td></tr></table><![endif]-->
-                                    <!--[if (!mso)&(!IE)]><!-->
-                                </div>
-                                <!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-                        <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
-                    </div>
-                </div>
-            </div>
-            <div style="background-color:transparent;">
-                <div class="block-grid "
-                     style="Margin: 0 auto; min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
-                    <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
-                        <!--[if (mso)|(IE)]>
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                               style="background-color:transparent;">
-                            <tr>
-                                <td align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width:500px">
-                                        <tr class="layout-full-width" style="background-color:transparent"><![endif]-->
-                        <!--[if (mso)|(IE)]>
-                        <td align="center" width="500"
-                            style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top">
-                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                <tr>
-                                    <td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;">
-                        <![endif]-->
-                        <div class="col num12"
-                             style="min-width: 450px; max-width: 800px; display: table-cell; vertical-align: top; width: 700px;">
-                            <div style="width:100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div
-                                    style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-                                    <!--[if mso]>
-                                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                        <tr>
-                                            <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
-                                    <![endif]-->
-                                    @if(count($data['reports']))
-                                        <div
-                                            style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                            <div style="padding: 10px 2px;">Direct Debit Report for {{Carbon\Carbon::now()->toDateString()}}</div>
                                             <div
-                                                style="font-size: 12px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
-
-                                                <table class="GeneratedTable">
-                                                    <thead>
-                                                    <tr class="tr-header">
-                                                        <td colspan="6">Direct Debit Report</td></tr>
-                                                    <tr>
-                                                        <th>Customer Id</th>
-                                                        <th>Name</th>
-                                                        <th>Order Number</th>
-                                                        <th>Amount</th>
-                                                        <th>Status</th>
-                                                        <th>Message</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @foreach($data['reports'] as $item)
-                                                        <tr>
-                                                            <td>{{$item['customer_id']}}</td>
-                                                            <td>{{$item['customer_name']}}</td>
-                                                            <td>{{$item['order_id']}}</td>
-                                                            <td>{{$item['amount']}}</td>
-                                                            <td>{{$item['status']}}</td>
-                                                            @if ($item['statusMessage'] == 'SUCCESS')
-                                                            <td style="color: limegreen">{{$item['statusMessage']}}</td>
-
-                                                            @else
-                                                            <td style="color: firebrick">{{$item['statusMessage']}}</td>
-
-                                                            @endif
-                                                        </tr>
-                                                    @endforeach
-                                                    </tbody>
-                                                </table>
+                                                style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                                <div
+                                                    style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p
+                                                        style="font-size: 16px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0; color: #0068a5; font-weight: bold">
+                                                        <span style="font-size: 22px;"><strong><span
+                                                                    style="background-color: #0068a5; padding: 5px 10px; color: #ffffff">A</span></strong></span>
+                                                        altara
+                                                    </p>
+                                                </div>
                                             </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if (!mso)&(!IE)]><!-->
                                         </div>
-                                    @else
-                                        <div>
-                                            There is no customer Due for reminder
-                                        </div>
-                                    @endif
-                                    <!--[if mso]></td></tr></table><![endif]-->
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid "
+                            style="Margin: 0 auto; min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                <!--[if (mso)|(IE)]>
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                               style="background-color:transparent;">
+                            <tr>
+                                <td align="center">
+                                    <table cellpadding="0" cellspacing="0" border="0" style="width:500px">
+                                        <tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                                <!--[if (mso)|(IE)]>
+                        <td align="center" width="500"
+                            style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
+                            valign="top">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;">
+                        <![endif]-->
+                                <div class="col num12"
+                                    style="min-width: 450px; max-width: 800px; display: table-cell; vertical-align: top; width: 700px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div
+                                            style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <!--[if mso]>
+                                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                        <tr>
+                                            <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
+                                    <![endif]-->
+                                            @if (count($data['reports']))
+                                                <div
+                                                    style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                                    <div style="padding: 10px 2px;">Direct Debit Report for
+                                                        {{ Carbon\Carbon::now()->toDateString() }}</div>
+                                                    <div
+                                                        style="font-size: 12px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
 
-                                    <!--[if mso]>
+                                                        <table class="GeneratedTable">
+                                                            <thead>
+                                                                <tr class="tr-header">
+                                                                    <td colspan="6">Direct Debit Report</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>Details</th>
+                                                                    <th>Status</th>
+                                                                    <th>Message</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($data['reports'] as $item)
+                                                                    <tr>
+                                                                        <td>{{ $item['customer_id'] }}</td>
+                                                                        <td>
+                                                                            {{ $item['customer_name'] }} <br>
+                                                                            {{ $item['order_id'] }} <br>
+                                                                            {{ $item['amount'] }} <br>
+                                                                        </td>
+                                                                        <td>{{ $item['status'] }}</td>
+                                                                        @if ($item['statusMessage'] == 'SUCCESS')
+                                                                            <td style="color: limegreen">
+                                                                                {{ $item['statusMessage'] }}</td>
+                                                                        @else
+                                                                            <td style="color: firebrick">
+                                                                                {{ $item['statusMessage'] }}</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div>
+                                                    There is no customer Due for reminder
+                                                </div>
+                                            @endif
+                                            <!--[if mso]></td></tr></table><![endif]-->
+
+                                            <!--[if mso]>
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                         <tr>
                                             <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
                                     <![endif]-->
 
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
                                 </div>
-                                <!--<![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
                             </div>
                         </div>
-                        <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-                        <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
                     </div>
-                </div>
-            </div>
-            <div style="background-color:transparent;">
-                <div class="block-grid "
-                     style="Margin: 0 auto; min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #0068a5;">
-                    <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068a5;">
-                        <!--[if (mso)|(IE)]>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid "
+                            style="Margin: 0 auto; min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #0068a5;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;background-color:#0068a5;">
+                                <!--[if (mso)|(IE)]>
                         <table width="100%" cellpadding="0" cellspacing="0" border="0"
                                style="background-color:transparent;">
                             <tr>
                                 <td align="center">
                                     <table cellpadding="0" cellspacing="0" border="0" style="width:500px">
                                         <tr class="layout-full-width" style="background-color:#0068a5"><![endif]-->
-                        <!--[if (mso)|(IE)]>
+                                <!--[if (mso)|(IE)]>
                         <td align="center" width="500"
                             style="background-color:#0068a5;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
                             valign="top">
@@ -345,45 +354,46 @@
                                 <tr>
                                     <td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;">
                         <![endif]-->
-                        <div class="col num12"
-                             style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
-                            <div style="width:100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div
-                                    style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-                                    <!--[if mso]>
+                                <div class="col num12"
+                                    style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div
+                                            style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <!--[if mso]>
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                         <tr>
                                             <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
                                     <![endif]-->
-                                    <div
-                                        style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                        <div
-                                            style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
-                                            <p dir="ltr"
-                                               style="font-size: 14px; line-height: 1.2; word-break: break-word; text-align: right; mso-line-height-alt: 17px; margin: 0;">
-                                                <span style="color: #ffffff; background-color: #0068a5;">...to improve lives of Nigerians</span>
-                                            </p>
+                                            <div
+                                                style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                                <div
+                                                    style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p dir="ltr"
+                                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; text-align: right; mso-line-height-alt: 17px; margin: 0;">
+                                                        <span style="color: #ffffff; background-color: #0068a5;">...to
+                                                            improve lives of Nigerians</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if (!mso)&(!IE)]><!-->
                                         </div>
+                                        <!--<![endif]-->
                                     </div>
-                                    <!--[if mso]></td></tr></table><![endif]-->
-                                    <!--[if (!mso)&(!IE)]><!-->
                                 </div>
-                                <!--<![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
                             </div>
                         </div>
-                        <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-                        <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
                     </div>
-                </div>
-            </div>
-            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-        </td>
-    </tr>
-    </tbody>
-</table>
-<!--[if (IE)]></div><![endif]-->
+                    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!--[if (IE)]></div><![endif]-->
 </body>
 
 </html>
