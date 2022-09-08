@@ -50,7 +50,7 @@ class DirectDebitService
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
             });
 
-        return $data->limit(5)->get();
+        return $data->get();
     }
 
     public function handle()
@@ -82,7 +82,7 @@ class DirectDebitService
                 $item->new_orders['amount'] = $item->expected_amount;
                 $item->new_orders['is_dd'] = true;
                 $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
-                // event(new RepaymentEvent($item->new_orders));
+                event(new RepaymentEvent($item->new_orders));
                 $res[] = array_merge($data, [
                     'status' => 'success',
                     'statusMessage' => 'Approved'
