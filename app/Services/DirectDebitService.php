@@ -100,7 +100,7 @@ class DirectDebitService
             $this->mailService->sendReportAsMail(
                 'Direct Debit Report',
                 $res,
-                [config('app.operations_email'), 'tadewuyi@altaracredit.com'],
+                [config('app.operations_email'), config('app.admin_email')],
                 'Direct Debit Report',
                 'DirectDebit',
                 'Direct Debit Report ' . Carbon::now()->toDateString()
