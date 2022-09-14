@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerStage;
-use App\Events\CustomerStageUpdatedEvent;
-use App\Http\Filters\ContactCustomerFilter;
-use App\Http\Filters\DailySalesNewOrderFilter;
-use App\Http\Filters\NewOrderFilter;
-use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
-use App\Repositories\ContactCustomerRepository;
-use App\Repositories\DirectDebitDataRepository;
-use App\Repositories\NewOrderRepository;
-use App\Repositories\PaystackAuthCodeRepository;
-use App\Services\NewOrdersReportService;
+use App\CustomerStage;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Http\Filters\NewOrderFilter;
+use App\Http\Requests\NewOrderRequest;
+use App\Repositories\NewOrderRepository;
+use App\Services\NewOrdersReportService;
 use phpDocumentor\Reflection\Types\This;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
 use Symfony\Component\VarDumper\Cloner\Data;
+use App\Http\Filters\DailySalesNewOrderFilter;
+use App\PaymentGateway;
+use App\Repositories\ContactCustomerRepository;
+use App\Repositories\DirectDebitDataRepository;
+use App\Repositories\PaystackAuthCodeRepository;
+use App\Services\PaystackService;
 
 class NewOrderController extends Controller
 {
@@ -124,5 +127,26 @@ class NewOrderController extends Controller
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
         $additional = $additional->put('totalSalesPerDay', $getTotalSalesPerDay);
         return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
+    }
+
+
+    public function chargeCustomerOrder(Request $request, PaystackService $paystackService)
+    {
+        $this->validate($request, [
+            'amount' => ['required', 'integer', 'min:1'],
+            'order_id' => ['required', 'integer']
+        ]);
+
+        $new_order = NewOrder::where('id', $request->order_id)
+            ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id)
+            ->has('authCode')
+            ->has('amortization')
+            ->first();
+        //if orders is not found 
+        if ($new_order == null) {
+            return $this->sendError('Invalid order ID supplied', 400);
+        }
+        $response = $paystackService->chargeCustomer($new_order->amortization[0], $request->amount);
+        
     }
 }
