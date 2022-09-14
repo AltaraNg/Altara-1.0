@@ -25,6 +25,7 @@ use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\DirectDebitDataRepository;
 use App\Repositories\PaystackAuthCodeRepository;
+use App\Services\DirectDebitService;
 
 class NewOrderController extends Controller
 {
@@ -134,7 +135,7 @@ class NewOrderController extends Controller
     }
 
 
-    public function chargeCustomerOrder(Request $request, PaystackService $paystackService)
+    public function chargeCustomerOrder(Request $request, DirectDebitService $directDebitService)
     {
         $this->validate($request, [
             'amount' => ['required', 'integer', 'min:1'],
@@ -150,32 +151,6 @@ class NewOrderController extends Controller
         if ($new_order == null) {
             return $this->sendError('Invalid order ID supplied', 400);
         }
-        $item = $new_order->amortization[0];
-        $response = $paystackService->chargeCustomer($new_order->amortization[0], $request->amount);
-        # code...
-        
-        $data_for_log = [
-            "amount" => $item->expected_amount,
-            "customer_id" => $item->new_orders->customer_id,
-            "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
-            "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
-            "bank_id" => 6 //hardcoded to fcmb
-        ];
-        if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
-            
-            $item->new_orders['amount'] = $item->expected_amount;
-            $item->new_orders['is_dd'] = true;
-            $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
-            event(new RepaymentEvent($item->new_orders));
-            $res[] = array_merge($data, [
-                'status' => 'success',
-                'statusMessage' => 'Approved'
-            ]);
-        } else {
-            $res[] = array_merge($data, [
-                'status' => 'failed',
-                'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
-            ]);
-        }
+        $directDebitService->handleCustomDebit($new_order, $request->amount);
     }
 }

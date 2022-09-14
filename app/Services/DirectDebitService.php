@@ -13,6 +13,7 @@ use App\PaymentMethod;
 use App\PaymentGateway;
 use App\Events\RepaymentEvent;
 use App\Log;
+use App\NewOrder;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Log as FacadesLog;
@@ -88,7 +89,45 @@ class DirectDebitService
         return $res;
     }
 
-    private function sendDirectDebitReport($response)
+    public function handleCustomDebit(NewOrder $new_order, $amount)
+    {
+        $amount = 15000000;
+        $amortizations = $new_order->amortization->where('actual_payment_date', null)->where('actual_amount', '<', 1);
+        $sendNotification = false;
+        foreach ($amortizations as $item) {
+            if ($amount >= $item->expected_amount) {
+                $item->new_orders['amount'] = $item->expected_amount;
+                $amount = $amount - $item->expected_amount;
+                $sendNotification = true;
+            } else if ($amount <= $item->expected_amount && $amount > 0) {
+                $item->new_orders['amount'] = $amount;
+                $amount = 0;
+                $sendNotification = true;
+            } else {
+                $sendNotification = false;
+            }
+            if ($sendNotification == true) {
+                $item->new_orders['is_dd'] = true;
+                event(new RepaymentEvent($item->new_orders));
+            }
+        }
+        
+        dd($amount, $new_order->id);
+        // $res = array();
+        // $item = $new_order->amortization[0];
+        $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
+        if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
+        } else {
+        }
+        # code...
+        $data = $this->constructReportData($item);
+        $data_for_log = $this->constructPaymentLogData($item);
+        $res = array_merge($res, $this->mergeResponse($response, $data, $data_for_log, $item));
+        $this->sendDirectDebitReport($res);
+        return $res;
+    }
+
+    private function sendDirectDebitReport(array $response)
     {
         try {
             $this->mailService->sendReportAsMail(
@@ -102,10 +141,10 @@ class DirectDebitService
         } catch (BindingResolutionException $e) {
             FacadesLog::error($e->getMessage());
         } catch (Exception $e) {
-            FacadesLog::error($e->getMessage()); 
+            FacadesLog::error($e->getMessage());
         }
     }
-    private function constructReportData($item)
+    private function constructReportData(Amortization $item)
     {
         return [
             'customer_id' => $item->new_orders->customer_id,
@@ -114,7 +153,7 @@ class DirectDebitService
             'amount' => $item->expected_amount,
         ];
     }
-    private function constructPaymentLogData($item)
+    private function constructPaymentLogData(Amortization $item)
     {
         return  [
             "amount" => $item->expected_amount,
@@ -123,5 +162,25 @@ class DirectDebitService
             "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
             "bank_id" => 6 //hardcoded to fcmb
         ];
+    }
+
+    private function mergeResponse($paystackResponse, array $data, array $paymentLogData, Amortization $item)
+    {
+        if (isset($paystackResponse->data) && isset($paystackResponse->data->status) && $paystackResponse->data->status === "success") {
+
+            $item->new_orders['amount'] = $item->expected_amount;
+            $item->new_orders['is_dd'] = true;
+            $resp = PaymentService::logPayment($paymentLogData, $item->new_orders);
+            event(new RepaymentEvent($item->new_orders));
+            return array_merge($data, [
+                'status' => 'success',
+                'statusMessage' => 'Approved'
+            ]);
+        } else {
+            return array_merge($data, [
+                'status' => 'failed',
+                'statusMessage' => (isset($paystackResponse->data) &&  isset($paystackResponse->data->gateway_response)) ? $paystackResponse->data->gateway_response : ($paystackResponse ? $paystackResponse->message : 'Something went wrong')
+            ]);
+        }
     }
 }
