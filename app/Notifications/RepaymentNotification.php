@@ -60,7 +60,6 @@ class RepaymentNotification extends Notification
         if (env('SEND_REPAYMENT_MAIL')) {
             array_push($channels, 'mail');
         }
-        return $channels;
     }
 
     /**
