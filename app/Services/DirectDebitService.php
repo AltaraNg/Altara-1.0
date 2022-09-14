@@ -64,20 +64,8 @@ class DirectDebitService
             $response = $this->paystackService->charge($item);
 
             # code...
-            $data = [
-                'customer_id' => $item->new_orders->customer_id,
-                'customer_name' => $item->new_orders->customer->full_name,
-                'order_id' => $item->new_orders->order_number,
-                'amount' => $item->expected_amount,
-            ];
-            $data_for_log = [
-                "amount" => $item->expected_amount,
-                "customer_id" => $item->new_orders->customer_id,
-                "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
-                "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
-                "bank_id" => 6 //hardcoded to fcmb
-            ];
-
+            $data = $this->constructReportData($item);
+            $data_for_log = $this->constructPaymentLogData($item);
             if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
                 $item->new_orders['amount'] = $item->expected_amount;
                 $item->new_orders['is_dd'] = true;
@@ -96,10 +84,16 @@ class DirectDebitService
         }
 
         # send report mail
+        $this->sendDirectDebitReport($res);
+        return $res;
+    }
+
+    private function sendDirectDebitReport($response)
+    {
         try {
             $this->mailService->sendReportAsMail(
                 'Direct Debit Report',
-                $res,
+                $response,
                 [config('app.operations_email'), config('app.admin_email')],
                 'Direct Debit Report',
                 'DirectDebit',
@@ -110,7 +104,24 @@ class DirectDebitService
         } catch (Exception $e) {
             FacadesLog::error($e->getMessage()); 
         }
-
-        return $res;
+    }
+    private function constructReportData($item)
+    {
+        return [
+            'customer_id' => $item->new_orders->customer_id,
+            'customer_name' => $item->new_orders->customer->full_name,
+            'order_id' => $item->new_orders->order_number,
+            'amount' => $item->expected_amount,
+        ];
+    }
+    private function constructPaymentLogData($item)
+    {
+        return  [
+            "amount" => $item->expected_amount,
+            "customer_id" => $item->new_orders->customer_id,
+            "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
+            "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
+            "bank_id" => 6 //hardcoded to fcmb
+        ];
     }
 }
