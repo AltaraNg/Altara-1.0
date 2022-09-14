@@ -42,9 +42,12 @@ class NewOrderNotification extends Notification
      */
     public function via($notifiable)
     {
-        $channels = ['database', 'mail'];
+        $channels = ['database'];
         if (env('SEND_ORDER_SMS')) {
             array_push($channels, SmsChannel::class);
+        }
+        if (env('SEND_ORDER_MAIL')) {
+            array_push($channels, 'mail');
         }
         return $channels;
     }
