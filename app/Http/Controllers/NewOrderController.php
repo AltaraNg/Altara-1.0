@@ -126,15 +126,4 @@ class NewOrderController extends Controller
         $additional = $additional->put('totalSalesPerDay', $getTotalSalesPerDay);
         return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
     }
-
-    public function fetchByRank(NewOrderFilter $filter, NewOrdersReportService $newOrdersReportService, Request $request)
-    {
-        $limit = $request['numberOfProduct'];
-        $newOrdersQuery = $this->newOrderRepository->reportQuery($filter)->latest('new_orders.created_at');
-        $additional = $newOrdersReportService->getProductByRanks($newOrdersQuery, $limit ?? 3);
-
-
-        return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
-
-    }
 }
