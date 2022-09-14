@@ -42,6 +42,19 @@ class NewOrdersReportService
         return $additional;
     }
 
+    public function getProductByRanks($newOrdersQuery, $limit){
+        $newOrdersForComputation = clone $newOrdersQuery->whereHas('branch', function ($query) {
+            $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
+        });
+        $totalSales = $newOrdersQuery->count();
+
+        $list = collect([]);
+
+        $list = $list->put('top_selling_products', $this->getNoOfSalesMadeOnEachProduct(clone $newOrdersForComputation, $totalSales, $limit));
+        $list = $list->put('least_selling_products', $this->getNoOfSalesMadeOnEachProductAsc(clone $newOrdersForComputation, $totalSales, $limit));
+        return $list;
+    }
+
     private  function getBranchesData($newOrdersQuery, $totalRevenue, $totalDownPayment)
     {
         $branches = $this->branchRepo->getBranches(['id', 'name']);
@@ -173,7 +186,7 @@ class NewOrdersReportService
             });
     }
 
-    private  function getNoOfSalesMadeOnEachProduct($newOrdersForComputation, $totalSales)
+    private  function getNoOfSalesMadeOnEachProduct($newOrdersForComputation, $totalSales, $limit = 10)
     {
         //prevent zero division
         $totalSales = $totalSales ?: 1;
@@ -191,7 +204,25 @@ class NewOrdersReportService
                     'product_count' => $product->count ?? 0,
                     'percentage' => number_format(($product->count / $totalSales) * 100, 2) ?? 0,
                 ];
-            })->sortByDesc('product_count')->take(10)->values();
+            })->sortByDesc('product_count')->take($limit)->values();
+    }
+    private  function getNoOfSalesMadeOnEachProductAsc($newOrdersForComputation, $totalSales, $limit = 10){
+        $totalSales = $totalSales ?: 1;
+        return $newOrdersForComputation->join('products', 'new_orders.product_id', '=', 'products.id')
+            ->select(
+                'product_id',
+                'products.name as product_name',
+                'products.retail_price as retail_price',
+                DB::raw("count(*) as count")
+            )
+            ->groupBy('product_id')->get()->map(function ($product) use ($totalSales) {
+                return [
+                    'product_name' => ucwords($product->product_name) ?? 0,
+                    'product_retail_price' => $product->retail_price ?? 0,
+                    'product_count' => $product->count ?? 0,
+                    'percentage' => number_format(($product->count / $totalSales) * 100, 2) ?? 0,
+                ];
+            })->sortBy('product_count')->take($limit)->values();
     }
 
 
