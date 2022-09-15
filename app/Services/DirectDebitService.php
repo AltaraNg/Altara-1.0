@@ -91,29 +91,40 @@ class DirectDebitService
 
     public function handleCustomDebit(NewOrder $new_order, $amount)
     {
-        $amount = 15000000;
+        $amount = 915000;
         $amortizations = $new_order->amortization->where('actual_payment_date', null)->where('actual_amount', '<', 1);
         $sendNotification = false;
-        foreach ($amortizations as $item) {
-            if ($amount >= $item->expected_amount) {
-                $item->new_orders['amount'] = $item->expected_amount;
-                $amount = $amount - $item->expected_amount;
-                $sendNotification = true;
-            } else if ($amount <= $item->expected_amount && $amount > 0) {
-                $item->new_orders['amount'] = $amount;
-                $amount = 0;
-                $sendNotification = true;
+        $last_key = end(array_keys($amortizations));
+        foreach ($amortizations as $key => $item) {
+            if ($key != $last_key) {
+                if ($amount >= $item->expected_amount) {
+                    $item->new_orders['amount'] = $item->expected_amount;
+                    $amount = $amount - $item->expected_amount;
+                    $sendNotification = true;
+                } else if ($amount <= $item->expected_amount && $amount > 0) {
+                    $item->new_orders['amount'] = $amount;
+                    $amount = 0;
+                    $sendNotification = true;
+                } else {
+                    $sendNotification = false;
+                }
             } else {
-                $sendNotification = false;
+                if ($amount > 0) {
+                    $item->new_orders['amount'] = $item->actual_amount + $amount;
+                    $amount = 0;
+                    $sendNotification = true;
+                } else {
+                    $sendNotification = false;
+                }
             }
             if ($sendNotification == true) {
                 $item->new_orders['is_dd'] = true;
                 event(new RepaymentEvent($item->new_orders));
             }
         }
-        
+
         dd($amount, $new_order->id);
-        // $res = array();
+        $res = array();
         // $item = $new_order->amortization[0];
         $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
         if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
