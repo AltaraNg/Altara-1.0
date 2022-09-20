@@ -262,8 +262,7 @@ class   NewOrder extends Model
         return $this->morphMany(GeneralFeedback::class, 'generalFeedbackAble', 'general_feedback_able_type', 'general_feedback_able_id');
     }
 
-    public function paystackAuthCode()
-    {
+    public function paystackAuthCode(){
         return $this->hasOne(PaystackAuthCode::class, 'order_id', 'order_number');
     }
     public function toArray()
