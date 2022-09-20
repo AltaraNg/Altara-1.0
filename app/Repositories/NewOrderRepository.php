@@ -2,18 +2,19 @@
 
 namespace App\Repositories;
 
-use App\Events\NewOrderEvent;
-use App\Exceptions\AException;
-use App\GeneralFeedback;
-use App\Helper\Helper;
-use App\Inventory;
-use App\InventoryStatus;
+use Exception;
 use App\NewOrder;
+use App\Inventory;
+use Carbon\Carbon;
 use App\OrderStatus;
 use App\PaymentType;
+use App\Helper\Helper;
+use App\PaymentGateway;
 use App\RepaymentCycle;
-use Carbon\Carbon;
-use Exception;
+use App\GeneralFeedback;
+use App\InventoryStatus;
+use App\Events\NewOrderEvent;
+use App\Exceptions\AException;
 
 class NewOrderRepository extends Repository
 {
@@ -106,5 +107,15 @@ class NewOrderRepository extends Repository
             'follow_up_date' => $data['follow_up_date']
         ]);
        return $order->generalFeedBacks()->save($feedback);
+    }
+
+    public function getDirectDebitOrderWithUnpaidAmortization(int $order_id)
+    {
+       return $this->model::where('id', $order_id)
+            ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id)
+            ->has('authCode')
+            ->has('unpaidAmortizations')
+            ->with('customer')
+            ->first();
     }
 }

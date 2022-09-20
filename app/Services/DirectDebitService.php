@@ -4,6 +4,9 @@
 namespace App\Services;
 
 
+use App\Log;
+use Exception;
+use App\NewOrder;
 use App\OrderType;
 use Carbon\Carbon;
 use App\OrderStatus;
@@ -12,11 +15,9 @@ use App\Amortization;
 use App\PaymentMethod;
 use App\PaymentGateway;
 use App\Events\RepaymentEvent;
-use App\Log;
-use App\NewOrder;
-use Exception;
-use Illuminate\Contracts\Container\BindingResolutionException;
+use App\Notifications\RepaymentNotification;
 use Illuminate\Support\Facades\Log as FacadesLog;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class DirectDebitService
 {
@@ -63,10 +64,20 @@ class DirectDebitService
         }
         foreach ($items as $item) {
             $response = $this->paystackService->charge($item);
-
             # code...
-            $data = $this->constructReportData($item);
-            $data_for_log = $this->constructPaymentLogData($item);
+            $data = [
+                'customer_id' => $item->new_orders->customer_id,
+                'customer_name' => $item->new_orders->customer->full_name,
+                'order_id' => $item->new_orders->order_number,
+                'amount' => $item->expected_amount,
+            ];
+            $data_for_log =  [
+                "amount" => $item->expected_amount,
+                "customer_id" => $item->new_orders->customer_id,
+                "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
+                "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
+                "bank_id" => 6 //hardcoded to fcmb
+            ];
             if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
                 $item->new_orders['amount'] = $item->expected_amount;
                 $item->new_orders['is_dd'] = true;
@@ -91,50 +102,75 @@ class DirectDebitService
 
     public function handleCustomDebit(NewOrder $new_order, $amount)
     {
-        $amount = 915000;
-        $amortizations = $new_order->amortization->where('actual_payment_date', null)->where('actual_amount', '<', 1);
-        $sendNotification = false;
-        $last_key = end(array_keys($amortizations));
-        foreach ($amortizations as $key => $item) {
-            if ($key != $last_key) {
-                if ($amount >= $item->expected_amount) {
-                    $item->new_orders['amount'] = $item->expected_amount;
-                    $amount = $amount - $item->expected_amount;
-                    $sendNotification = true;
-                } else if ($amount <= $item->expected_amount && $amount > 0) {
-                    $item->new_orders['amount'] = $amount;
-                    $amount = 0;
-                    $sendNotification = true;
-                } else {
-                    $sendNotification = false;
-                }
-            } else {
-                if ($amount > 0) {
-                    $item->new_orders['amount'] = $item->actual_amount + $amount;
-                    $amount = 0;
-                    $sendNotification = true;
-                } else {
-                    $sendNotification = false;
-                }
-            }
-            if ($sendNotification == true) {
-                $item->new_orders['is_dd'] = true;
-                event(new RepaymentEvent($item->new_orders));
-            }
-        }
-
-        dd($amount, $new_order->id);
-        $res = array();
+        // dd($new_order);
+        $res = null;
         // $item = $new_order->amortization[0];
         $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
-        if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
-        } else {
-        }
         # code...
-        $data = $this->constructReportData($item);
-        $data_for_log = $this->constructPaymentLogData($item);
-        $res = array_merge($res, $this->mergeResponse($response, $data, $data_for_log, $item));
-        $this->sendDirectDebitReport($res);
+        $data =  [
+            'customer_id' => $new_order->customer_id,
+            'customer_name' => $new_order->customer->full_name,
+            'order_id' => $new_order->order_number,
+            'amount' => $amount,
+        ];
+        $data_for_log = [
+            "amount" => $amount,
+            "customer_id" => $new_order->customer_id,
+            "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
+            "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
+            "bank_id" => 6 //hardcoded to fcmb
+        ];
+        if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
+            PaymentService::logPayment($data_for_log, $new_order);
+            $amortizations = collect($new_order->amortization);
+            $sendNotification = false;
+            $last_key = $amortizations->keys()->last();
+            foreach ($amortizations as $key => $item) {
+                if ($key != $last_key) {
+                    $amountToDeduct = $item->expected_amount - $item->actual_amount;
+                    if ($amount >= $amountToDeduct && $item->actual_amount < $item->expected_amount) {
+
+                        $item->new_orders['amount'] = $item->actual_amount + $amountToDeduct;
+                        $amount = $amount - $amountToDeduct;
+                        $sendNotification = true;
+                    } else if ($amount < $amountToDeduct && $amount > 0 && $item->actual_amount < $item->expected_amount) {
+                        $item->new_orders['amount'] = $item->actual_amount + $amount;
+                        $amount = 0;
+                        $sendNotification = true;
+                    } else {
+                        $sendNotification = false;
+                    }
+                } else {
+                    if ($amount > 0) {
+                        $item->new_orders['amount'] = $item->actual_amount + $amount;
+                        $amount = 0;
+                        $sendNotification = true;
+                    } else {
+                        $sendNotification = false;
+                    }
+                }
+                if ($sendNotification == true) {
+                    // $item->new_orders['is_dd'] = true;
+                    $item->update([
+                        'actual_payment_date' => Carbon::now(),
+                        'actual_amount' => $item->new_orders['amount'],
+                        'user_id' => 1
+                    ]);
+                    $new_order->customer->notify(new RepaymentNotification($new_order));
+                    // event(new RepaymentEvent($item->new_orders));
+                }
+            }
+            $res = array_merge($data, [
+                'status' => 'success',
+                'statusMessage' => 'Approved'
+            ]);
+        } else {
+            $res = array_merge($data, [
+                'status' => 'failed',
+                'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
+            ]);
+        }
+        $this->sendDirectDebitReport([$res]);
         return $res;
     }
 
@@ -155,43 +191,5 @@ class DirectDebitService
             FacadesLog::error($e->getMessage());
         }
     }
-    private function constructReportData(Amortization $item)
-    {
-        return [
-            'customer_id' => $item->new_orders->customer_id,
-            'customer_name' => $item->new_orders->customer->full_name,
-            'order_id' => $item->new_orders->order_number,
-            'amount' => $item->expected_amount,
-        ];
-    }
-    private function constructPaymentLogData(Amortization $item)
-    {
-        return  [
-            "amount" => $item->expected_amount,
-            "customer_id" => $item->new_orders->customer_id,
-            "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
-            "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
-            "bank_id" => 6 //hardcoded to fcmb
-        ];
-    }
-
-    private function mergeResponse($paystackResponse, array $data, array $paymentLogData, Amortization $item)
-    {
-        if (isset($paystackResponse->data) && isset($paystackResponse->data->status) && $paystackResponse->data->status === "success") {
-
-            $item->new_orders['amount'] = $item->expected_amount;
-            $item->new_orders['is_dd'] = true;
-            $resp = PaymentService::logPayment($paymentLogData, $item->new_orders);
-            event(new RepaymentEvent($item->new_orders));
-            return array_merge($data, [
-                'status' => 'success',
-                'statusMessage' => 'Approved'
-            ]);
-        } else {
-            return array_merge($data, [
-                'status' => 'failed',
-                'statusMessage' => (isset($paystackResponse->data) &&  isset($paystackResponse->data->gateway_response)) ? $paystackResponse->data->gateway_response : ($paystackResponse ? $paystackResponse->message : 'Something went wrong')
-            ]);
-        }
-    }
+    
 }

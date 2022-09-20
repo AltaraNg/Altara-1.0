@@ -131,7 +131,10 @@ class   NewOrder extends Model
             ->where('actual_amount', '<', 1)
             ->latest('expected_payment_date');
     }
-
+    public function unpaidAmortizations()
+    {
+        return $this->hasMany(Amortization::class, 'new_order_id', 'id')->whereColumn('actual_amount', '<', 'expected_amount');
+    }
     public function lastAmortization()
     {
         return $this->hasOne(Amortization::class)->latest('expected_payment_date');
@@ -259,7 +262,8 @@ class   NewOrder extends Model
         return $this->morphMany(GeneralFeedback::class, 'generalFeedbackAble', 'general_feedback_able_type', 'general_feedback_able_id');
     }
 
-    public function paystackAuthCode(){
+    public function paystackAuthCode()
+    {
         return $this->hasOne(PaystackAuthCode::class, 'order_id', 'order_number');
     }
     public function toArray()

@@ -141,16 +141,15 @@ class NewOrderController extends Controller
             'amount' => ['required', 'integer', 'min:1'],
             'order_id' => ['required', 'integer']
         ]);
-
-        $new_order = NewOrder::where('id', $request->order_id)
-            ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id)
-            ->has('authCode')
-            ->has('amortization')
-            ->first();
-        //if orders is not found 
+        $new_order = $this->newOrderRepository->getDirectDebitOrderWithUnpaidAmortization($request->order_id);
+        //if order does not qualify to get debited through this method
         if ($new_order == null) {
-            return $this->sendError('Invalid order ID supplied', 400);
+            return $this->sendError('Order supplied can not be treated', 400);
         }
-        $directDebitService->handleCustomDebit($new_order, $request->amount);
+        $response =  $directDebitService->handleCustomDebit($new_order, $request->amount);
+        if ($response['status'] == 'failed') {
+            return $this->sendError($response['statusMessage'], 400);
+        }
+        return $this->sendSuccess([], 'Customer debited successfully and amortization(s) has been updated');
     }
 }
