@@ -3,24 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\NewOrder;
-use App\PaymentType;
-use App\CustomerStage;
-use App\PaymentMethod;
-use App\PaymentGateway;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Events\RepaymentEvent;
-use App\Services\PaymentService;
-use App\Services\PaystackService;
-use Illuminate\Support\Facades\DB;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\Repositories\NewOrderRepository;
 use App\Services\NewOrdersReportService;
-use phpDocumentor\Reflection\Types\This;
-use App\Events\CustomerStageUpdatedEvent;
-use App\Http\Filters\ContactCustomerFilter;
-use Symfony\Component\VarDumper\Cloner\Data;
 use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\DirectDebitDataRepository;

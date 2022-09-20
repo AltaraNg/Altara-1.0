@@ -102,9 +102,9 @@ class DirectDebitService
 
     public function handleCustomDebit(NewOrder $new_order, $amount)
     {
-        // dd($new_order);
+       
         $res = null;
-        // $item = $new_order->amortization[0];
+       
         $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
         # code...
         $data =  [
@@ -150,14 +150,14 @@ class DirectDebitService
                     }
                 }
                 if ($sendNotification == true) {
-                    // $item->new_orders['is_dd'] = true;
+           
                     $item->update([
                         'actual_payment_date' => Carbon::now(),
                         'actual_amount' => $item->new_orders['amount'],
                         'user_id' => 1
                     ]);
                     $new_order->customer->notify(new RepaymentNotification($new_order));
-                    // event(new RepaymentEvent($item->new_orders));
+
                 }
             }
             $res = array_merge($data, [
