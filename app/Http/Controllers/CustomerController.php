@@ -234,7 +234,9 @@ class CustomerController extends Controller
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'branch', 'new_orders', 'orders' => function ($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'branch', 'new_orders' => function ($query) {
+            return $query->orderBy('created_at', 'desc');
+        }, 'orders' => function ($query) {
             return $query->with([
                 'repayment', 'repaymentFormal', 'repaymentInformal', 'status',
                 'storeProduct', 'discount', 'salesCategory', 'salesType',
@@ -261,7 +263,8 @@ class CustomerController extends Controller
 
         try {
             if (in_array('middle_name', $searchColumns)) {
-                $customers = DB::select(DB::raw("SELECT id,
+                $customers = DB::select(DB::raw(
+                    "SELECT id,
                     CONCAT(
                         COALESCE(`first_name`,''),' ',
                         COALESCE(`middle_name`,''),' ',
@@ -305,5 +308,4 @@ class CustomerController extends Controller
         in_array('middle_name', $searchColumns) && array_push($columns, 'middle_name');
         return $columns;
     }
-
 }

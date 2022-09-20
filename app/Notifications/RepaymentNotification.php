@@ -53,7 +53,14 @@ class RepaymentNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', SmsChannel::class];
+        $channels = ['database'];
+        if (env('SEND_ORDER_SMS')) {
+            array_push($channels, SmsChannel::class);
+        }
+        if (env('SEND_REPAYMENT_MAIL')) {
+            array_push($channels, 'mail');
+        }
+        return $channels;
     }
 
     /**
