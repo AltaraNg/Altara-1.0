@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/contact-customer/export', 'ContactCustomerController@export');
     Route::get('/feedbacks/export', 'FeedbackController@export');
     Route::post('/recommendation', 'AmortizationController@recommend');
-    Route::get('/get-product-by-rank', 'ProductController@fetchByRank');
+    Route::get('/get-product-by-rank', 'ProductController@fetchLeastAndMostOrderedProduct');
 
     Route::get('/order/reports', 'NewOrderController@report');
     Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');

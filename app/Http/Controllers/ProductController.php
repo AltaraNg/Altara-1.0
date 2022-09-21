@@ -102,7 +102,7 @@ class ProductController extends Controller
         return $this->sendSuccess([], 'Product Uploaded successfully');
     }
 
-    public function fetchByRank(NewOrderFilter $filter, ProductService $productService, HttpRequest $request)
+    public function fetchLeastAndMostOrderedProduct (NewOrderFilter $filter, ProductService $productService, HttpRequest $request)
     {
         $limit = $request['numberOfProduct'];
         $newOrdersQuery = $this->newOrderRepository->reportQuery($filter)->latest('new_orders.created_at');

@@ -53,6 +53,11 @@ class ProductService
                     'percentage' => number_format(($product->count / $totalSales) * 100, 2) ?? 0,
                 ];
             });
+        $result = $this->sortQuery($query, $order, $limit);
+        return $result;
+    }
+
+    private function sortQuery($query, $order, $limit){
         $result = $order == 'ASC' ?  $query->sortBy('product_count')->take($limit)->values() : $query->sortByDesc('product_count')->take($limit)->values();
         return $result;
     }
