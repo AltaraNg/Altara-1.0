@@ -102,7 +102,7 @@ class DirectDebitService
 
     public function handleCustomDebit(NewOrder $new_order, $amount)
     {
-        $res = null;  
+        $res = null;
         $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
         # code...
         $data =  [
