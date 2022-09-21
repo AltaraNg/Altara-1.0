@@ -11,6 +11,7 @@ use App\LateFee;
 class PaystackService implements PaymentGatewayInterface
 {
 
+
     public function charge(Amortization $amortization)
     {
         $url = config('app.paystack_charge_url');
@@ -69,6 +70,18 @@ class PaystackService implements PaymentGatewayInterface
         return json_decode(curl_exec($ch));
     }
 
+    public function chargeCustomer(Amortization $amortization, int $amount)
+    {
+        $url = config('app.paystack_charge_url');
+        $fields = [
+            'authorization_code' => $this->getAuthCode($amortization),
+            'email' => $this->getEmail($amortization),
+            'amount' => $amount * 100,
+            'subaccount' => $this->getBankCode($amortization)
+        ];
+        return  $this->makePostRequest($url, $fields);
+    }
+
     private function getAuthCode($amortization)
     {
         return $amortization->new_orders->authCode->auth_code ?? '';
@@ -119,5 +132,28 @@ class PaystackService implements PaymentGatewayInterface
     public function extractExpected($item)
     {
         return $item['expected_amount'];
+    }
+
+    private function makePostRequest($url, array $fields)
+    {
+        $fields_string = http_build_query($fields);
+
+        //open connection
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer " . config('app.paystack_secret'),
+            "Cache-Control: no-cache",
+        ));
+
+        //So that curl_exec returns the contents of the cURL; rather than echoing it
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        //execute post
+        return json_decode(curl_exec($ch));
     }
 }
