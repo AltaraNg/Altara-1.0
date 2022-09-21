@@ -132,11 +132,11 @@ class NewOrderController extends Controller
         $new_order = $this->newOrderRepository->getDirectDebitOrderWithUnpaidAmortization($request->order_id);
         //if order does not qualify to get debited through this method
         if ($new_order == null) {
-            return $this->sendError('Order supplied can not be treated', 400);
+            return $this->sendError('Order supplied can not be treated', 400, [], 400);
         }
         $response =  $directDebitService->handleCustomDebit($new_order, $request->amount);
         if ($response['status'] == 'failed') {
-            return $this->sendError($response['statusMessage'], 400);
+            return $this->sendError($response['statusMessage'], 400, [], 400);
         }
         return $this->sendSuccess([], 'Customer debited successfully and amortization(s) has been updated');
     }
