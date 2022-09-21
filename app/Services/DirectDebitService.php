@@ -94,20 +94,37 @@ class DirectDebitService
         }
 
         # send report mail
-        try {
-            $this->mailService->sendReportAsMail(
-                'Direct Debit Report',
-                $res,
-                [config('app.operations_email'), config('app.admin_email')],
-                'Direct Debit Report',
-                'DirectDebit',
-                'Direct Debit Report ' . Carbon::now()->toDateString()
-            );
-        } catch (BindingResolutionException $e) {
-            FacadesLog::error($e->getMessage());
-        } catch (Exception $e) {
-            FacadesLog::error($e->getMessage());
-        }
+        $this->sendDirectDebitReport($res);
+        return $res;
+    }
+
+    public function handleCustomDebit(NewOrder $new_order, $amount)
+    {
+        $res = null;
+        $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
+        # code...
+        $data =  [
+            'customer_id' => $new_order->customer_id,
+            'customer_name' => $new_order->customer->full_name,
+            'order_id' => $new_order->order_number,
+            'amount' => $amount,
+        ];
+        $data_for_log = [
+            "amount" => $amount,
+            "customer_id" => $new_order->customer_id,
+            "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
+            "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
+            "bank_id" => 6 //hardcoded to fcmb
+        ];
+        if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
+            PaymentService::logPayment($data_for_log, $new_order);
+            $amortizations = collect($new_order->amortization);
+            $sendNotification = false;
+            $last_key = $amortizations->keys()->last();
+            foreach ($amortizations as $key => $item) {
+                if ($key != $last_key) {
+                    $amountToDeduct = $item->expected_amount - $item->actual_amount;
+                    if ($amount >= $amountToDeduct && $item->actual_amount < $item->expected_amount) {
 
                         $item->new_orders['amount'] = $item->actual_amount + $amountToDeduct;
                         $amount = $amount - $amountToDeduct;
@@ -150,5 +167,23 @@ class DirectDebitService
         }
         $this->sendDirectDebitReport([$res]);
         return $res;
+    }
+
+    private function sendDirectDebitReport(array $response)
+    {
+        try {
+            $this->mailService->sendReportAsMail(
+                'Direct Debit Report',
+                $response,
+                [config('app.operations_email'), config('app.admin_email')],
+                'Direct Debit Report',
+                'DirectDebit',
+                'Direct Debit Report ' . Carbon::now()->toDateString()
+            );
+        } catch (BindingResolutionException $e) {
+            FacadesLog::error($e->getMessage());
+        } catch (Exception $e) {
+            FacadesLog::error($e->getMessage());
+        }
     }
 }
