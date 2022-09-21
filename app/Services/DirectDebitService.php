@@ -78,6 +78,7 @@ class DirectDebitService
                 "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
                 "bank_id" => 6 //hardcoded to fcmb
             ];
+
             if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
                 $item->new_orders['amount'] = $item->expected_amount;
                 $item->new_orders['is_dd'] = true;
@@ -102,9 +103,9 @@ class DirectDebitService
 
     public function handleCustomDebit(NewOrder $new_order, $amount)
     {
-       
+
         $res = null;
-       
+
         $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
         # code...
         $data =  [
@@ -150,7 +151,7 @@ class DirectDebitService
                     }
                 }
                 if ($sendNotification == true) {
-           
+
                     $item->update([
                         'actual_payment_date' => Carbon::now(),
                         'actual_amount' => $item->new_orders['amount'],
@@ -191,5 +192,5 @@ class DirectDebitService
             FacadesLog::error($e->getMessage());
         }
     }
-    
+
 }
