@@ -168,6 +168,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/send/customer/mobile/notification', 'MobileMessageNotificationController@store');
 
     Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
+
+    Route::post('/charge/customer', 'NewOrderController@chargeCustomerOrder');
 });
 
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
