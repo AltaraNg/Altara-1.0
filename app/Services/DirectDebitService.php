@@ -102,9 +102,7 @@ class DirectDebitService
 
     public function handleCustomDebit(NewOrder $new_order, $amount)
     {
-       
-        $res = null;
-       
+        $res = null;  
         $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
         # code...
         $data =  [
@@ -150,7 +148,6 @@ class DirectDebitService
                     }
                 }
                 if ($sendNotification == true) {
-           
                     $item->update([
                         'actual_payment_date' => Carbon::now(),
                         'actual_amount' => $item->new_orders['amount'],
@@ -191,5 +188,4 @@ class DirectDebitService
             FacadesLog::error($e->getMessage());
         }
     }
-    
 }
