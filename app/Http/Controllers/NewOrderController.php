@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerStage;
-use App\Events\CustomerStageUpdatedEvent;
-use App\Http\Filters\ContactCustomerFilter;
-use App\Http\Filters\DailySalesNewOrderFilter;
-use App\Http\Filters\NewOrderFilter;
-use App\Http\Requests\NewOrderRequest;
 use App\NewOrder;
-use App\Repositories\ContactCustomerRepository;
-use App\Repositories\DirectDebitDataRepository;
-use App\Repositories\NewOrderRepository;
-use App\Repositories\PaystackAuthCodeRepository;
-use App\Services\NewOrdersReportService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Types\This;
-use Symfony\Component\VarDumper\Cloner\Data;
+use App\Http\Filters\NewOrderFilter;
+use App\Http\Requests\NewOrderRequest;
+use App\Repositories\NewOrderRepository;
+use App\Services\NewOrdersReportService;
+use App\Http\Filters\DailySalesNewOrderFilter;
+use App\Repositories\ContactCustomerRepository;
+use App\Repositories\DirectDebitDataRepository;
+use App\Repositories\PaystackAuthCodeRepository;
+use App\Services\DirectDebitService;
 
 class NewOrderController extends Controller
 {
@@ -125,5 +120,24 @@ class NewOrderController extends Controller
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
         $additional = $additional->put('totalSalesPerDay', $getTotalSalesPerDay);
         return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
+    }
+
+
+    public function chargeCustomerOrder(Request $request, DirectDebitService $directDebitService)
+    {
+        $this->validate($request, [
+            'amount' => ['required', 'integer', 'min:1'],
+            'order_id' => ['required', 'integer']
+        ]);
+        $new_order = $this->newOrderRepository->getDirectDebitOrderWithUnpaidAmortization($request->order_id);
+        //if order does not qualify to get debited through this method
+        if ($new_order == null) {
+            return $this->sendError('Order supplied can not be treated', 400);
+        }
+        $response =  $directDebitService->handleCustomDebit($new_order, $request->amount);
+        if ($response['status'] == 'failed') {
+            return $this->sendError($response['statusMessage'], 400);
+        }
+        return $this->sendSuccess([], 'Customer debited successfully and amortization(s) has been updated');
     }
 }

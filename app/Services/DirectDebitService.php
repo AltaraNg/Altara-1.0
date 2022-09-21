@@ -150,7 +150,6 @@ class DirectDebitService
                     }
                 }
                 if ($sendNotification == true) {
-
                     $item->update([
                         'actual_payment_date' => Carbon::now(),
                         'actual_amount' => $item->new_orders['amount'],
@@ -191,5 +190,4 @@ class DirectDebitService
             FacadesLog::error($e->getMessage());
         }
     }
-
 }
