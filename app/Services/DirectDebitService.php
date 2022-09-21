@@ -4,6 +4,9 @@
 namespace App\Services;
 
 
+use App\Log;
+use Exception;
+use App\NewOrder;
 use App\OrderType;
 use Carbon\Carbon;
 use App\OrderStatus;
@@ -12,10 +15,9 @@ use App\Amortization;
 use App\PaymentMethod;
 use App\PaymentGateway;
 use App\Events\RepaymentEvent;
-use App\Log;
-use Exception;
-use Illuminate\Contracts\Container\BindingResolutionException;
+use App\Notifications\RepaymentNotification;
 use Illuminate\Support\Facades\Log as FacadesLog;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class DirectDebitService
 {
