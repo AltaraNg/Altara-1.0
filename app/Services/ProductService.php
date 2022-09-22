@@ -43,12 +43,15 @@ class ProductService
                 'product_id',
                 'products.name as product_name',
                 'products.retail_price as retail_price',
-                DB::raw("count(*) as count")
+                'products.category_id as category_id',
+                DB::raw("count(*) as count"),
+
             )
             ->groupBy('product_id')->get()->map(function ($product) use ($totalSales) {
                 return [
                     'product_name' => ucwords($product->product_name) ?? 0,
                     'product_retail_price' => $product->retail_price ?? 0,
+                    'product_category_id' => $product->category_id ?? 0,
                     'product_count' => $product->count ?? 0,
                     'percentage' => number_format(($product->count / $totalSales) * 100, 2) ?? 0,
                 ];
