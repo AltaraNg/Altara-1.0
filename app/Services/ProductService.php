@@ -37,8 +37,6 @@ class ProductService
     {
         //prevent zero division
         $totalSales = $totalSales ?: 1;
-
-        // $query = $newOrdersForComputation->join('products', 'new_orders.product_id', '=', 'products.id')
         $query = $newOrdersForComputation->join('products', function ($join){
             $join->on('new_orders.product_id', '=', 'products.id')
             ->join('categories', function ($join){
