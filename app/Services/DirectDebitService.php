@@ -153,7 +153,6 @@ class DirectDebitService
                         'actual_amount' => $item->new_orders['amount'],
                         'user_id' => 1
                     ]);
-                    // $new_order->customer->notify(new RepaymentNotification($new_order));
                     event(new RepaymentEvent($new_order));
                 }
             }
