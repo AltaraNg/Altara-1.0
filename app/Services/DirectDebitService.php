@@ -121,7 +121,6 @@ class DirectDebitService
         if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
             PaymentService::logPayment($data_for_log, $new_order);
             $amortizations = collect($new_order->amortization);
-            $sendNotification = false;
             $last_key = $amortizations->keys()->last();
             foreach ($amortizations as $key => $item) {
                 $sendNotification = false;
