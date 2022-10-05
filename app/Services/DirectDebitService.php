@@ -124,6 +124,8 @@ class DirectDebitService
             $sendNotification = false;
             $last_key = $amortizations->keys()->last();
             foreach ($amortizations as $key => $item) {
+                $sendNotification = false;
+
                 if ($key != $last_key && $amount != 0) {
                     $amountToDeduct = $item->expected_amount - $item->actual_amount;
                     if ($amount >= $amountToDeduct && $item->actual_amount < $item->expected_amount) {
