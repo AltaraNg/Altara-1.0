@@ -46,10 +46,10 @@ class GenerateFirstCentralExcel extends Command
         $start = now();
         $this->comment('Processing');
         // dd(public_path('exported_excel/processed'));
-        $from = '2020-01-01';
-        $to = '2022-08-28';
+        $from = '2022-09-01';
+        $to = '2022-09-30';
 
-        $this->info('-----Generating Queries------');
+        $this->info('-----Generating Data From: ' . $from. ' ---To: '. $to);
         $customersQuery = Customer::query()->whereBetween('date_of_registration', [$from, $to])->has('new_orders')->orderBy('date_of_registration');
         $this->info('Generated Customer query');
         // $this->customersQuery = Customer::query()->whereRaw("Date(date_of_registration) >='" . date($from) . "' AND " . "Date(date_of_registration) <='" . date($to) . "'")->has('new_orders');
