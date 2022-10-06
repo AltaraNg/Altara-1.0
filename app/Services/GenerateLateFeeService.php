@@ -67,11 +67,14 @@ class GenerateLateFeeService
         foreach ($items as $item) {
 
             # code...
-            $data = [
-                'order_id' => $item->id,
-                'amount_due' => $this->paystackService->getLateFee($item) === 'invalid' ? 0 : $this->paystackService->getLateFee($item),
-                'date_created' => Carbon::now()->format('Y-m-d')
-            ];
+            if($this->paystackService->getLateFee($item) !== 'invalid'){
+                $data = [
+                    'order_id' => $item->id,
+                    'amount_due' => $this->paystackService->getLateFee($item),
+                    'date_created' => Carbon::now()->format('Y-m-d')
+                ];
+            }
+
 
             $dataToDisplay = [
                 'Order ID' => $item->id,
