@@ -67,16 +67,20 @@ class GenerateLateFeeService
         foreach ($items as $item) {
 
             # code...
-            $data = [
-                'order_id' => $item->id,
-                'amount_due' => $this->paystackService->getLateFee($item),
-                'date_created' => Carbon::now()->format('Y-m-d')
-            ];
+            if($this->paystackService->getLateFee($item) !== 'invalid'){
+                $data = [
+                    'order_id' => $item->id,
+                    'amount_due' => $this->paystackService->getLateFee($item),
+                    'date_created' => Carbon::now()->format('Y-m-d')
+                ];
+            }
+
 
             $dataToDisplay = [
                 'Order ID' => $item->id,
                 'Order Number' => $item->order_number,
                 'Amount' => $this->paystackService->getLateFee($item),
+                'Reason' => $this->paystackService->getLateFee($item) == 'invalid' ? "Price calculator doesn't exist" : ''
 
             ];
 
