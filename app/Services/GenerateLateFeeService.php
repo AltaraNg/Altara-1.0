@@ -67,12 +67,14 @@ class GenerateLateFeeService
         foreach ($items as $item) {
 
             # code...
-            if($this->paystackService->getLateFee($item) !== 'invalid'){
+            $response = ['status' => 'failed'];
+            if ($this->paystackService->getLateFee($item) !== 'invalid') {
                 $data = [
                     'order_id' => $item->id,
                     'amount_due' => $this->paystackService->getLateFee($item),
                     'date_created' => Carbon::now()->format('Y-m-d')
                 ];
+                $response = PaymentService::logLateFee($data);
             }
 
 
@@ -84,7 +86,6 @@ class GenerateLateFeeService
 
             ];
 
-            $response = PaymentService::logLateFee($data);
 
             if ($response['status'] == 'success') {
 
