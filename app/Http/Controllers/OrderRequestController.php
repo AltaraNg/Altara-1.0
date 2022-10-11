@@ -40,7 +40,7 @@ class OrderRequestController extends Controller
         $orderRequest->reason = $request->reason;
         $orderRequest->save();
         $message = $this->getOrderRequestMessage($orderRequest->status, $orderRequest->customer, $orderRequest->reason);
-        
+
         $orderRequest->customer->notify(new OrderRequestNotification($message));
         return $this->sendSuccess(['order_request' => $orderRequest->fresh()], 'Order request successfully accepted');
     }
@@ -64,6 +64,7 @@ class OrderRequestController extends Controller
     private function getOrderRequestMessage($status, $customer, $reason)
     {
         $full_name = $customer->first_name . ' ' . $customer->last_name;
-        return 'Dear ' . $full_name . ',your order request has been ' . $status . '.REASON: ' . $reason . '.';
+        return 'Dear ' . $full_name . ', your order request has been ' . $status .
+            '. REASON: ' . $reason . '.';
     }
 }
