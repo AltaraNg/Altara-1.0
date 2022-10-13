@@ -8,6 +8,7 @@ use App\Amortization;
 use App\Contracts\PaymentGatewayInterface;
 use App\LateFee;
 use App\PriceCalculator;
+use Illuminate\Support\Facades\Log;
 
 class PaystackService implements PaymentGatewayInterface
 {
@@ -73,6 +74,7 @@ class PaystackService implements PaymentGatewayInterface
 
     public function chargeCustomer(Amortization $amortization, int $amount)
     {
+        Log::info("Auth Code: ".  $this->getAuthCode($amortization));
         $url = config('app.paystack_charge_url');
         $fields = [
             'authorization_code' => $this->getAuthCode($amortization),
@@ -103,8 +105,8 @@ class PaystackService implements PaymentGatewayInterface
         $totalPaid = $this->getTotalPaidRepayment($amortizationList);
         $expectedRepayment = $this->getTotalExpected($amortizationList);
         $debt =  $expectedRepayment - $totalPaid;
-        $interest = PriceCalculator::where([['business_type_id','=', $order->business_type_id], ['down_payment_rate_id', $order->down_payment_rate_id], ['repayment_duration_id', $order->repayment_duration_id]])->first();
-        if ($interest == null){
+        $interest = PriceCalculator::where([['business_type_id', '=', $order->business_type_id], ['down_payment_rate_id', $order->down_payment_rate_id], ['repayment_duration_id', $order->repayment_duration_id]])->first();
+        if ($interest == null) {
             return 'invalid';
         }
         return $debt * $interest->interest / 100;

@@ -124,7 +124,6 @@ class DirectDebitService
             $last_key = $amortizations->keys()->last();
             foreach ($amortizations as $key => $item) {
                 $sendNotification = false;
-
                 if ($key != $last_key && $amount != 0) {
                     $amountToDeduct = $item->expected_amount - $item->actual_amount;
                     if ($amount >= $amountToDeduct && $item->actual_amount < $item->expected_amount) {
@@ -148,14 +147,15 @@ class DirectDebitService
                         $sendNotification = false;
                     }
                 }
-                if ($sendNotification == true) {
+                if ($sendNotification == true && $item->new_orders['amount'] > 0) {
                     $item->update([
                         'actual_payment_date' => Carbon::now(),
                         'actual_amount' => $item->new_orders['amount'],
                         'user_id' => 1
                     ]);
-                    event(new RepaymentEvent($new_order));
+                    // event(new RepaymentEvent($new_order));
                 }
+                
             }
             $res = array_merge($data, [
                 'status' => 'success',
