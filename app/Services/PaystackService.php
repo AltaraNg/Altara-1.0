@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Amortization;
 use App\Contracts\PaymentGatewayInterface;
 use App\LateFee;
+use App\PriceCalculator;
 
 class PaystackService implements PaymentGatewayInterface
 {
@@ -102,7 +103,11 @@ class PaystackService implements PaymentGatewayInterface
         $totalPaid = $this->getTotalPaidRepayment($amortizationList);
         $expectedRepayment = $this->getTotalExpected($amortizationList);
         $debt =  $expectedRepayment - $totalPaid;
-        return $debt * 5.5 / 100;
+        $interest = PriceCalculator::where([['business_type_id','=', $order->business_type_id], ['down_payment_rate_id', $order->down_payment_rate_id], ['repayment_duration_id', $order->repayment_duration_id]])->first();
+        if ($interest == null){
+            return 'invalid';
+        }
+        return $debt * $interest->interest / 100;
     }
 
     private function getEmail($amortization)
