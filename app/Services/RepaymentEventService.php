@@ -13,15 +13,16 @@ use App\Notifications\RepaymentNotification;
 class RepaymentEventService
 {
     private $newOrderRepository;
-    public function __construct(NewOrderRepository $newOrderRepository) {
+    public function __construct(NewOrderRepository $newOrderRepository)
+    {
         $this->newOrderRepository = $newOrderRepository;
     }
     public function repaymentListenerAction($newOrder)
     {
         $customer = Customer::find($newOrder['customer_id']);
         try {
-                $order = $newOrder->refresh();
-                $customer->notify(new RepaymentNotification($order));
+            $order = $newOrder->refresh();
+            $customer->notify(new RepaymentNotification($order));
             if (Helper::PaymentCompleted($order)) {
                 $this->newOrderRepository->updateOrderStatus($order->id);
             }
