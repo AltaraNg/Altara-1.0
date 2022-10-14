@@ -29,16 +29,21 @@ class DirectDebitService
      * @var PaystackService
      */
     private $paystackService;
-
+    /**
+     * @var RepaymentEventService
+     */
+    private $repaymentEventService;
     /**
      * DirectDebitService constructor.
      * @param MailService $mailService
      * @param PaystackService $paystackService
+     * @param RepaymentEventService $repaymentEventService
      */
-    public function __construct(MailService $mailService, PaystackService $paystackService)
+    public function __construct(MailService $mailService, PaystackService $paystackService, RepaymentEventService $repaymentEventService)
     {
         $this->mailService = $mailService;
         $this->paystackService = $paystackService;
+        $this->repaymentEventService = $repaymentEventService;
     }
 
     private function fetchOrders()
@@ -153,9 +158,9 @@ class DirectDebitService
                         'actual_amount' => $item->new_orders['amount'],
                         'user_id' => 1
                     ]);
-                    event(new RepaymentEvent($new_order));
+                    $this->repaymentEventService->repaymentListenerAction($item->new_orders);
+                    $this->repaymentEventService->bank54RepaymentListenerAction($item->new_orders);
                 }
-                
             }
             $res = array_merge($data, [
                 'status' => 'success',
