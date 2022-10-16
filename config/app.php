@@ -54,6 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+
+    'frontend_url' => env('FRONTEND_URL', 'https://play.altaracredit.com/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

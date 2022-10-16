@@ -57,7 +57,7 @@ class GenerateLateFeeCommand extends BaseCommand
             $response = $this->generateLateFeeService->handle($day);
             $this->info(count($response) . ' records treated');
             $this->table(
-                ['ID', 'Order Number', 'Amount', 'Status'],
+                ['ID', 'Order Number', 'Amount','Reason', 'Status'],
                 $response
             );
         } catch (\Exception $e) {
