@@ -14,6 +14,7 @@ use App\Repositories\ContactCustomerRepository;
 use App\Repositories\DirectDebitDataRepository;
 use App\Repositories\PaystackAuthCodeRepository;
 use App\Services\DirectDebitService;
+use Carbon\Carbon;
 
 class NewOrderController extends Controller
 {
@@ -76,7 +77,32 @@ class NewOrderController extends Controller
                 'mode' => 0,
             ]);
         }
-
+        if ($request->amortization_downpayment > 0) {
+            $order = $order->refresh();
+            $amortization = $order->amortization;
+            $amount = $request->amortization_downpayment;
+            $count = $amortization->count() - 1;
+            while ($amount > 0 && $count < $amortization->count()) {
+                $item = $amortization[$count];
+                $amountToDeduct = $item->expected_amount;
+                $actualAmount = 0;
+                if ($amount >= $amountToDeduct) {
+                    $actualAmount = $item->actual_amount + $amountToDeduct;
+                    $amount = $amount - $amountToDeduct;
+                } else if ($amount < $amountToDeduct) {
+                    $actualAmount = $item->actual_amount + $amount;
+                    $amount = 0;
+                }
+                if ($actualAmount > 0) {
+                    $item->update([
+                        'actual_payment_date' => Carbon::now(),
+                        'actual_amount' => $actualAmount,
+                        'user_id' => auth('api')->user()->id
+                    ]);
+                }
+                $count--;
+            }
+        }
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 
