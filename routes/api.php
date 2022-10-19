@@ -143,7 +143,8 @@ Route::middleware('auth:api')->group(function () {
         'reason' => 'ReasonController',
         'feedback' => 'FeedbackController',
         'role' => 'RoleController',
-        'late_fee' => 'LateFeeController'
+        'late_fee' => 'LateFeeController',
+        'guarantor_paystack' => 'GuarantorPaystackAuthCodeController'
 
     ]);
 
@@ -179,6 +180,7 @@ Route::resource('down_payment_rate', 'DownPaymentRateController', ['only' => ['i
 Route::resource('business_type', 'BusinessTypeController', ['only' => ['index', 'show']]);
 Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => ['index', 'show']]);
 Route::get('/get-product-by-rank', 'ProductController@fetchLeastAndMostOrderedProduct');
+
 
 Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
 
