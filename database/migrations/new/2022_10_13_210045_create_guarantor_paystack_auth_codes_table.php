@@ -16,6 +16,7 @@ class CreateGuarantorPaystackAuthCodesTable extends Migration
         Schema::create('guarantor_paystack_auth_codes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
             $table->string('guarantor_email');
             $table->string('guarantor_name');
             $table->string('auth_code');
