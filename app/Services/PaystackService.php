@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Amortization;
 use App\Contracts\PaymentGatewayInterface;
+use App\GuarantorPaystackAuthCode;
 use App\LateFee;
 use App\PriceCalculator;
 
@@ -71,12 +72,12 @@ class PaystackService implements PaymentGatewayInterface
         return json_decode(curl_exec($ch));
     }
 
-    public function chargeCustomer(Amortization $amortization, int $amount)
+    public function chargeCustomer(Amortization $amortization, int $amount, int $payer)
     {
         $url = config('app.paystack_charge_url');
         $fields = [
-            'authorization_code' => $this->getAuthCode($amortization),
-            'email' => $this->getEmail($amortization),
+            'authorization_code' => $payer == 0 ? $this->getAuthCode($amortization): GuarantorPaystackAuthCode::where('id', $payer)->first()->auth_code,
+            'email' => $payer == 0 ? $this->getEmail($amortization) : GuarantorPaystackAuthCode::where('id', $payer)->first()->email,
             'amount' => $amount * 100,
             'subaccount' => $this->getBankCode($amortization)
         ];

@@ -100,10 +100,10 @@ class DirectDebitService
         return $res;
     }
 
-    public function handleCustomDebit(NewOrder $new_order, $amount)
+    public function handleCustomDebit(NewOrder $new_order, $amount, $payer)
     {
         $res = null;
-        $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
+        $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount, $payer);
         # code...
         $data =  [
             'customer_id' => $new_order->customer_id,
@@ -155,7 +155,7 @@ class DirectDebitService
                     ]);
                     event(new RepaymentEvent($new_order));
                 }
-                
+
             }
             $res = array_merge($data, [
                 'status' => 'success',

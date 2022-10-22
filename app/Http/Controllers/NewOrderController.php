@@ -127,14 +127,15 @@ class NewOrderController extends Controller
     {
         $this->validate($request, [
             'amount' => ['required', 'integer', 'min:1'],
-            'order_id' => ['required', 'integer']
+            'order_id' => ['required', 'integer'],
+            'payer' => ['required', 'integer']
         ]);
         $new_order = $this->newOrderRepository->getDirectDebitOrderWithUnpaidAmortization($request->order_id);
         //if order does not qualify to get debited through this method
         if ($new_order == null) {
             return $this->sendError('Order supplied can not be treated', 400, [], 400);
         }
-        $response =  $directDebitService->handleCustomDebit($new_order, $request->amount);
+        $response =  $directDebitService->handleCustomDebit($new_order, $request->amount, $request->payer);
         if ($response['status'] == 'failed') {
             return $this->sendError($response['statusMessage'], 400, [], 400);
         }
