@@ -77,7 +77,7 @@ class PaystackService implements PaymentGatewayInterface
         $url = config('app.paystack_charge_url');
         $fields = [
             'authorization_code' => $payer == 0 ? $this->getAuthCode($amortization): GuarantorPaystackAuthCode::where('id', $payer)->first()->auth_code,
-            'email' => $payer == 0 ? $this->getEmail($amortization) : GuarantorPaystackAuthCode::where('id', $payer)->first()->email,
+            'email' => $payer == 0 ? $this->getEmail($amortization) : GuarantorPaystackAuthCode::where('id', $payer)->first()->guarantor_email,
             'amount' => $amount * 100,
             'subaccount' => $this->getBankCode($amortization)
         ];
