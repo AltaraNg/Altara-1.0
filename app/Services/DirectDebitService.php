@@ -18,6 +18,7 @@ use App\Events\RepaymentEvent;
 use App\Notifications\RepaymentNotification;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Builder;
 
 class DirectDebitService
 {
@@ -50,8 +51,10 @@ class DirectDebitService
     {
         //get list of due payments
         $data = Amortization::where('actual_payment_date', null)
-            ->orWhereColumn('actual_amount', '<', 'expected_amount')
             ->whereDate('expected_payment_date', '<=', Carbon::now())
+            ->orWhere(function (Builder $query) {
+                $query->whereDate('expected_payment_date', '<=', Carbon::now())->whereColumn('actual_amount', '<', 'expected_amount');
+            })
             ->whereHas('new_orders', function ($q) {
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
@@ -68,23 +71,24 @@ class DirectDebitService
             return 'No Customers are available';
         }
         foreach ($items as $item) {
+            $amountToDeduct = $item->expected_amount - $item->actual_amount;
             $response = $this->paystackService->charge($item);
             # code...
             $data = [
                 'customer_id' => $item->new_orders->customer_id,
                 'customer_name' => $item->new_orders->customer->full_name,
                 'order_id' => $item->new_orders->order_number,
-                'amount' => $item->expected_amount,
+                'amount' => $amountToDeduct,
             ];
             $data_for_log =  [
-                "amount" => $item->expected_amount,
+                "amount" => $amountToDeduct,
                 "customer_id" => $item->new_orders->customer_id,
                 "payment_type_id" => PaymentType::where('type', PaymentType::REPAYMENTS)->first()->id,
                 "payment_method_id" => PaymentMethod::where('name', 'direct-debit')->first()->id,
                 "bank_id" => 6 //hardcoded to fcmb
             ];
             if (isset($response->data) && isset($response->data->status) && $response->data->status === "success") {
-                $item->new_orders['amount'] = $item->expected_amount;
+                $item->new_orders['amount'] = $amountToDeduct;
                 $item->new_orders['is_dd'] = true;
                 $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
                 event(new RepaymentEvent($item->new_orders, $item));
