@@ -50,13 +50,13 @@ class DirectDebitService
     {
         //get list of due payments
         $data = Amortization::where('actual_payment_date', null)
+            ->orWhereColumn('actual_amount', '<', 'expected_amount')
             ->whereDate('expected_payment_date', '<=', Carbon::now())
             ->whereHas('new_orders', function ($q) {
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
             });
-
         return $data->get();
     }
 
@@ -87,7 +87,7 @@ class DirectDebitService
                 $item->new_orders['amount'] = $item->expected_amount;
                 $item->new_orders['is_dd'] = true;
                 $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
-                event(new RepaymentEvent($item->new_orders));
+                event(new RepaymentEvent($item->new_orders, $item));
                 $res[] = array_merge($data, [
                     'status' => 'success',
                     'statusMessage' => 'Approved'
