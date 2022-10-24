@@ -234,7 +234,7 @@ class CustomerController extends Controller
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'branch', 'new_orders' => function ($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack',  'branch', 'new_orders' => function ($query) {
             return $query->orderBy('created_at', 'desc');
         }, 'orders' => function ($query) {
             return $query->with([
