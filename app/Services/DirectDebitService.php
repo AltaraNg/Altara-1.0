@@ -105,10 +105,10 @@ class DirectDebitService
         return $res;
     }
 
-    public function handleCustomDebit(NewOrder $new_order, $amount, $payer)
+    public function handleCustomDebit(NewOrder $new_order, $amount, $account)
     {
         $res = null;
-        $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount, $payer);
+        $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount, $account);
         # code...
         $data =  [
             'customer_id' => $new_order->customer_id,
