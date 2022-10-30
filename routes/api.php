@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 Route::middleware('auth:api')->group(function () {
     Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
+    Route::resource('website-product', 'WebsiteProductController', ['except' => ['index', 'show']]);
     Route::resource('inventory', 'InventoryController', ['except' => ['index', 'show']]);
     Route::resource('price_calculator', 'PriceCalculatorController', ['except' => ['index', 'show']]);
     Route::resource('down_payment_rate', 'DownPaymentRateController', ['except' => ['index', 'show']]);
@@ -174,6 +175,8 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
+Route::resource('website-product', 'WebsiteProductController', ['only' => ['index', 'show']]);
+
 Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']]);
 Route::resource('price_calculator', 'PriceCalculatorController', ['only' => ['index', 'show']]);
 Route::resource('down_payment_rate', 'DownPaymentRateController', ['only' => ['index', 'show']]);
