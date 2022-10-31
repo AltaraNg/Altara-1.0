@@ -191,6 +191,9 @@ class CustomerController extends Controller
             'user' => function ($query) {
                 $query->select('id', 'full_name', 'branch_id');
             },
+            'guarantorPaystack' => function($query) {
+                return $query->where('status', 'active');
+            },
             'branch',
             'verification',
             'address',
