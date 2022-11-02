@@ -28,15 +28,6 @@ class WebsiteProductController extends Controller
         return $this->sendSuccess($products->toArray(), 'Products retrieved successfully');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -70,16 +61,7 @@ class WebsiteProductController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\WebsiteProduct  $websiteProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(WebsiteProduct $websiteProduct)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
