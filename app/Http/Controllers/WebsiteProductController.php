@@ -65,6 +65,9 @@ class WebsiteProductController extends Controller
     public function show(WebsiteProduct $websiteProduct)
     {
         //
+        return $this->sendSuccess($websiteProduct->toArray(), 'Product Successfully fetched');
+
+
     }
 
     /**
@@ -102,5 +105,8 @@ class WebsiteProductController extends Controller
     public function destroy(WebsiteProduct $websiteProduct)
     {
         //
+        $websiteProduct->delete();
+        return $this->sendSuccess($websiteProduct->toArray(), 'Product deleted successfully');
+
     }
 }
