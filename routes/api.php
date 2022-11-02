@@ -187,7 +187,7 @@ Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerControll
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
-//Route::post('/amortization/preview', 'AmortizationController@preview');
+Route::post('/amortization/preview', 'AmortizationController@preview');
 
 
 
