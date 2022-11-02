@@ -191,6 +191,9 @@ class CustomerController extends Controller
             'user' => function ($query) {
                 $query->select('id', 'full_name', 'branch_id');
             },
+            'guarantorPaystack' => function($query) {
+                return $query->where('status', 'active');
+            },
             'branch',
             'verification',
             'address',
@@ -234,7 +237,10 @@ class CustomerController extends Controller
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack',  'branch', 'new_orders' => function ($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack' => function($query) {
+            return $query->where('status', 'active');
+        },  'branch', 'new_orders' => function ($query) {
+
             return $query->orderBy('created_at', 'desc');
         }, 'orders' => function ($query) {
             return $query->with([

@@ -50,7 +50,10 @@ class PaymentService
                 ];
             }
         } catch (\Throwable $th) {
-            throw $th;
+            echo $th;
+        }
+        finally{
+            //
         }
     }
 }
