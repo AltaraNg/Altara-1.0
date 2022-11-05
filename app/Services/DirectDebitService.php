@@ -55,7 +55,7 @@ class DirectDebitService
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
-            });
+            })->orderBy('id', 'DESC');
 
         return $data->get();
     }
