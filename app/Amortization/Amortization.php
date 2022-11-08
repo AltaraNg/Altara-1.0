@@ -86,7 +86,7 @@ abstract class Amortization
 
     private function superLoanPercentages()
     {
-        return [7.72, 2.98, 1.78];
+        return [7.72, 2.98, 1.80];
     }
     private function getSuperLoaPaymentPlans()
     {
