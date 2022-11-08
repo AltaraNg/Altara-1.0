@@ -45,7 +45,7 @@ abstract class Amortization
 
     public function repaymentAmountSuperLoan(float $percentage = 0.0)
     {
-        return floor(($percentage  / 100) *  $this->order->repayment);
+        return floor((($percentage  / 100) *  $this->order->repayment) / 100) * 100;
     }
 
     public function repaymentDuration(): int
@@ -64,12 +64,12 @@ abstract class Amortization
     public abstract function getRepaymentDate(int $count);
 
     public function create()
-    {       
-        $plans = (object) $this->preview();
+    {
+        $plans =  $this->preview();
         foreach ($plans as $key => $plan) {
             $this->order->amortization()->create([
-                'expected_payment_date' => $plan->expected_payment_date,
-                'expected_amount' => $plan->expected_amount,
+                'expected_payment_date' => $plan['expected_payment_date'],
+                'expected_amount' => $plan['expected_amount'],
             ]);
         }
     }
@@ -86,7 +86,7 @@ abstract class Amortization
 
     private function superLoanPercentages()
     {
-        return [7.72, 2.98, 1.78];
+        return [7.72, 2.98, 1.80];
     }
     private function getSuperLoaPaymentPlans()
     {
@@ -97,7 +97,7 @@ abstract class Amortization
             //calculate repayment base on the current percentage
             for ($i = 1; $i <= $this->repaymentCount() / count($percentages); $i++) {
                 $plan[] = [
-                    'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString() ,
+                    'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
                     'expected_amount' => $this->repaymentAmountSuperLoan($percentage),
                 ];
             }
