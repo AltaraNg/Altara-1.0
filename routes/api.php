@@ -184,13 +184,14 @@ Route::resource('business_type', 'BusinessTypeController', ['only' => ['index', 
 Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => ['index', 'show']]);
 Route::get('/get-product-by-rank', 'ProductController@fetchLeastAndMostOrderedProduct');
 
-
 Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
 
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
 //Route::apiResource('amortization', 'AmortizationController');
-Route::post('/amortization/preview', 'AmortizationController@preview');
+
+//Route::post('/amortization/preview', 'AmortizationController@preview');
+// Route::post('/amortization/preview', 'AmortizationController@preview');
 
 
 
