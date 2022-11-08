@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\WebsiteProductFilter;
 use App\Http\Requests\WebsiteProductRequest;
 use App\Repositories\WebsiteProductRepository;
 use App\WebsiteProduct;
@@ -21,9 +22,9 @@ class WebsiteProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(WebsiteProductFilter $filter)
     {
-        $products = $this->productRepo->all();
+        $products = $this->productRepo->getAll($filter);
 
         return $this->sendSuccess($products->toArray(), 'Products retrieved successfully');
     }

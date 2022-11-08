@@ -16,17 +16,17 @@ class WebsiteProduct extends Model
             'name' => 'required|unique:website_products,name',
             'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
     public static function updateRules($id)
     {
         return [
-            'name' => 'sometimes|required|unique:website_products,name',
+            'name' => 'sometimes|required',
             'price' => 'sometimes|required|numeric|regex:/^\d+(\.\d{1,2})?$/',
             'description' => 'sometimes|required|string',
-            'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'sometimes|required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'sometimes|required|string'
         ];
     }
