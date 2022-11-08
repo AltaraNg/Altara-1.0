@@ -45,7 +45,7 @@ abstract class Amortization
 
     public function repaymentAmountSuperLoan(float $percentage = 0.0)
     {
-        return floor(($percentage  / 100) *  $this->order->repayment);
+        return floor((($percentage  / 100) *  $this->order->repayment) / 100) * 100;
     }
 
     public function repaymentDuration(): int
