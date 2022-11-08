@@ -64,12 +64,12 @@ abstract class Amortization
     public abstract function getRepaymentDate(int $count);
 
     public function create()
-    {       
-        $plans = (object) $this->preview();
+    {
+        $plans =  $this->preview();
         foreach ($plans as $key => $plan) {
             $this->order->amortization()->create([
-                'expected_payment_date' => $plan->expected_payment_date,
-                'expected_amount' => $plan->expected_amount,
+                'expected_payment_date' => $plan['expected_payment_date'],
+                'expected_amount' => $plan['expected_amount'],
             ]);
         }
     }
@@ -97,7 +97,7 @@ abstract class Amortization
             //calculate repayment base on the current percentage
             for ($i = 1; $i <= $this->repaymentCount() / count($percentages); $i++) {
                 $plan[] = [
-                    'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString() ,
+                    'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
                     'expected_amount' => $this->repaymentAmountSuperLoan($percentage),
                 ];
             }
