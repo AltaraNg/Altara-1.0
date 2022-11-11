@@ -5,6 +5,7 @@ namespace App\Amortization;
 
 use Illuminate\Support\Str;
 use App\Discount;
+use App\RepaymentCycle;
 
 abstract class Amortization
 {
@@ -45,7 +46,12 @@ abstract class Amortization
 
     public function repaymentAmountSuperLoan(float $percentage = 0.0)
     {
-        return floor((($percentage  / 100) *  $this->order->repayment) / 100) * 100;
+        $amount = floor((($percentage  / 100) *  $this->order->repayment) / 100) * 100;
+        if (RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::CUSTOM) {
+            return $amount * 2;
+        } else {
+            return $amount;
+        }
     }
 
     public function repaymentDuration(): int
