@@ -161,6 +161,11 @@ class Customer extends Model
         return $this->hasOne(WorkGuarantor::class);
     }
 
+    public function guarantorPaystack()
+    {
+        return $this->hasMany(GuarantorPaystackAuthCode::class);
+    }
+
     public function personalGuarantor()
     {
         return $this->hasOne(PersonalGuarantor::class);
@@ -226,6 +231,6 @@ class Customer extends Model
 
     public function amortizations()
     {
-       return $this->hasManyThrough(Amortization::class, NewOrder::class); 
+       return $this->hasManyThrough(Amortization::class, NewOrder::class);
     }
 }
