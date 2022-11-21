@@ -172,6 +172,7 @@ class CustomerController extends Controller
         unset($request['work_guarantor']);
         unset($request['processing_fee']);
         unset($request['personal_guarantor']);
+        unset($request['guarantor_paystack']);
         /** 2. Update the customer*/
         Customer::whereId($id)->update($request->all());
         /** return the update flag, prepare form
@@ -190,6 +191,9 @@ class CustomerController extends Controller
         $customer = Customer::with([
             'user' => function ($query) {
                 $query->select('id', 'full_name', 'branch_id');
+            },
+            'guarantorPaystack' => function($query) {
+                return $query->where('status', 'active');
             },
             'branch',
             'verification',
@@ -234,7 +238,10 @@ class CustomerController extends Controller
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack',  'branch', 'new_orders' => function ($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack' => function($query) {
+            return $query->where('status', 'active');
+        },  'branch', 'new_orders' => function ($query) {
+
             return $query->orderBy('created_at', 'desc');
         }, 'orders' => function ($query) {
             return $query->with([

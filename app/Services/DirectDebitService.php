@@ -59,7 +59,8 @@ class DirectDebitService
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
-            });
+
+            })->orderBy('id', 'DESC');
         return $data->get();
     }
 
@@ -109,10 +110,10 @@ class DirectDebitService
         return $res;
     }
 
-    public function handleCustomDebit(NewOrder $new_order, $amount)
+    public function handleCustomDebit(NewOrder $new_order, $amount, $account)
     {
         $res = null;
-        $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount);
+        $response = $this->paystackService->chargeCustomer($new_order->amortization[0], $amount, $account);
         # code...
         $data =  [
             'customer_id' => $new_order->customer_id,
