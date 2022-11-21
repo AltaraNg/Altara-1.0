@@ -172,6 +172,7 @@ class CustomerController extends Controller
         unset($request['work_guarantor']);
         unset($request['processing_fee']);
         unset($request['personal_guarantor']);
+        unset($request['guarantor_paystack']);
         /** 2. Update the customer*/
         Customer::whereId($id)->update($request->all());
         /** return the update flag, prepare form
