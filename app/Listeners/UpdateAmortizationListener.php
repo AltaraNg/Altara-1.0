@@ -20,9 +20,15 @@ class UpdateAmortizationListener
     public function handle($event)
     {
         //update amortization
+
         try {
-            $amortization = $event->newOrder->amortization()->where('actual_payment_date', null)->first();
-            if ($amortization){
+
+            if ($event->amortization != null) {
+                $amortization = $event->amortization;
+            } else {
+                $amortization = $event->newOrder->amortization()->where('actual_payment_date', null)->first();
+            }
+            if ($amortization) {
                 $amortization->update([
                     'actual_payment_date' => Carbon::now(),
                     'actual_amount' => $event->newOrder['amount'],
