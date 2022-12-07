@@ -3,21 +3,24 @@
 namespace App\Providers;
 
 use App\Mail\TransportManager;
-use Illuminate\Mail\MailServiceProvider as IluminateMailProvider;
+use Illuminate\Mail\MailServiceProvider as IlluminateMailProvider;
 use Illuminate\Support\ServiceProvider;
 
-class MailServiceProvider extends IluminateMailProvider
+class MailServiceProvider extends IlluminateMailProvider
 {
-
     /**
-     * Bind the service to IoC.
+     * Register the Illuminate mailer instance.
+     *
      * @return void
      */
-    public function registerSwiftTransport()
-    {
-        //bind TransportManager
-        $this->app->singleton('swift.transport', function ($app) {
-            return new TransportManager($app);
-        });
-    }
+    // protected function registerIlluminateMailer()
+    // {
+    //     $this->app->singleton('mail.manager', function ($app) {
+    //         return new TransportManager($app);
+    //     });
+
+    //     $this->app->bind('mailer', function ($app) {
+    //         return $app->make('mail.manager')->mailer();
+    //     });
+    // }
 }

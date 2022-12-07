@@ -126,20 +126,42 @@
             background-color: #ffffff;
             border-collapse: collapse;
             border-width: 2px;
-            border-color: #ffcc00;
+            border-color: #0068a5;
             border-style: solid;
-            color: #000000;
+            color: #0068a5;
         }
 
-        table.GeneratedTable td, table.GeneratedTable th {
+        /* table.GeneratedTable td, table.GeneratedTable th {
             border-width: 2px;
-            border-color: #ffcc00;
+            border-color: #0068a5;
             border-style: solid;
             padding: 3px;
+        } */
+
+        table.GeneratedTable thead tr th{
+            border-left: #0068a5 solid 1px;
+            padding: 8px;
+            height: 70px;
+            text-align: center;
+
+            border-bottom: #0068a5 solid 1px;
+
         }
 
-        table.GeneratedTable thead {
-            background-color: #ffcc00;
+
+        table.GeneratedTable tbody tr td{
+            padding: 8px;
+            text-align: center;
+
+            border-left: #0068a5 solid 1px;
+        }
+
+        .tr-header{
+            background-color: #0068a5;
+            color: #ffffff;
+        }
+        table.GeneratedTable tbody tr {
+            padding: 8px;
         }
     </style>
 
@@ -149,7 +171,7 @@
 <!--[if IE]>
 <div class="ie-browser"><![endif]-->
 <table class="nl-container"
-       style="table-layout: fixed; vertical-align: top; min-width: 320px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;"
+       style="table-layout: fixed; vertical-align: top; min-width: 450px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;"
        cellpadding="0" cellspacing="0" role="presentation" width="100%" bgcolor="#FFFFFF" valign="top">
     <tbody>
     <tr style="vertical-align: top;" valign="top">
@@ -230,7 +252,7 @@
                                     <td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;">
                         <![endif]-->
                         <div class="col num12"
-                             style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+                             style="min-width: 450px; max-width: 800px; display: table-cell; vertical-align: top; width: 700px;">
                             <div style="width:100% !important;">
                                 <!--[if (!mso)&(!IE)]><!-->
                                 <div
@@ -244,13 +266,16 @@
                                     @if(count($data['reports']))
                                         <div
                                             style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="padding: 10px 2px;">SMS Reminder Report for {{Carbon\Carbon::now()->toDateString()}}</div>
                                             <div
-                                                style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                style="font-size: 12px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
 
                                                 <table class="GeneratedTable">
                                                     <thead>
+                                                    <tr class="tr-header">
+                                                        <td colspan="5">Sms Reminder Report</td></tr>
                                                     <tr>
-                                                        <th>Cust. Id</th>
+                                                        <th>Customer Id</th>
                                                         <th>Name</th>
                                                         <th>Order Number</th>
                                                         <th>Message</th>
@@ -264,7 +289,13 @@
                                                             <td>{{$item['customer_name']}}</td>
                                                             <td>{{$item['order_id']}}</td>
                                                             <td>{{$item['message']}}</td>
-                                                            <td>{{$item['statusMessage']}}</td>
+                                                            @if ($item['statusMessage'] == 'SUCCESS')
+                                                            <td style="color: limegreen">{{$item['statusMessage']}}</td>
+
+                                                            @else
+                                                            <td style="color: firebrick">{{$item['statusMessage']}}</td>
+
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -277,45 +308,13 @@
                                         </div>
                                     @endif
                                     <!--[if mso]></td></tr></table><![endif]-->
-                                    <div class="button-container" align="center"
-                                         style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                                               style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-                                            <tr>
-                                                <td style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px"
-                                                    align="center">
-                                                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
-                                                                 xmlns:w="urn:schemas-microsoft-com:office:word"
-                                                                 href="https/beaf"
-                                                                 style="height:25.5pt; width:102pt; v-text-anchor:middle;"
-                                                                 arcsize="15%" stroke="false" fillcolor="#3AAEE0">
-                                                        <w:anchorlock/>
-                                                        <v:textbox inset="0,0,0,0">
-                                                            <center
-                                                                style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px">
-                                        <![endif]--><p>Test</p>
-                                        <!--[if mso]></center></v:textbox></v:roundrect></td></tr></table><![endif]-->
-                                    </div>
+
                                     <!--[if mso]>
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                         <tr>
                                             <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif">
                                     <![endif]-->
-                                    <div
-                                        style="color:#555555;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                        <div
-                                            style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                Thank you,</p>
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                &nbsp;</p>
-                                            <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
-                                                Management</p>
-                                        </div>
-                                    </div>
-                                    <!--[if mso]></td></tr></table><![endif]-->
-                                    <!--[if (!mso)&(!IE)]><!-->
+
                                 </div>
                                 <!--<![endif]-->
                             </div>

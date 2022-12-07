@@ -3,12 +3,13 @@
 namespace App;
 
 use App\Helper\DataViewer;
+use App\Http\Filters\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Filterable;
 
     /** this is a generic trait created to serve as a generic
      * scope for fetching and paginating the
@@ -28,7 +29,7 @@ class User extends Authenticatable
      * view when the user creation
      * form is required */
 
-    public static function Form() : iterable
+    public static function Form(): iterable
     {
         return [
             'role_id' => '',
@@ -69,17 +70,27 @@ class User extends Authenticatable
     }
     public function newOrder()
     {
-        return $this->hasMany(NewOrder::class);
+        return $this->hasMany(NewOrder::class, 'owner_id', 'id');
+    }
+
+    public function amortization()
+    {
+        return $this->hasMany(Amortization::class);
     }
 
     public function customersManaged()
     {
-        return $this->hasMany(Customer::class, 'managed_by','id');
+        return $this->hasMany(Customer::class, 'managed_by', 'id');
     }
 
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function contact_customers()
+    {
+        return $this->hasMany(ContactCustomer::class);
     }
 
     public function logs()
@@ -164,16 +175,55 @@ class User extends Authenticatable
 
     public function isSuperAdmin()
     {
-        return $this->accesses->contains(function(Access $access) {
+        return $this->accesses->contains(function (Access $access) {
             return $access->name == Access::SUPER_ADMIN;
         });
     }
 
     public function isAdmin()
     {
-        return $this->accesses->contains(function(Access $access) {
+        return $this->accesses->contains(function (Access $access) {
             return $access->name == Access::ADMIN;
         });
+    }
+
+    public function isManager()
+    {
+        $managers = array('Software Engineering', 'General Manager', 'Software Engineering Lead');
+        return  in_array($this->role->name, $managers);
+    }
+    public function isDSACaptain()
+    {
+        return  $this->role->name === Role::DSA_CAPTAIN||
+        $this->role->name === Role::FREELANCE_CAPTAIN;
+    }
+    public function isCoordinator()
+    {
+        // TODO: create rules for coordinator
+        return $this->role->name === Role::COORDINATOR;
+    }
+    public function isDSAAgent()
+    {
+        return  $this->role->name === Role::DSA ||
+         $this->role->name === Role::DSA_REFERRAL ||
+         $this->role->name === Role::DSA_RENEWAL;
+    }
+    public function isCashLoanAgent()
+    {
+        return  $this->role->name === Role::CLA;
+    }
+    public function isRentAgent()
+    {
+        return  $this->role->name === Role::RA;
+    }
+    public function todo()
+    {
+        return $this->hasMany(Todo::class);
+    }
+
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class);
     }
 
     /*public function counterSales()
@@ -185,7 +235,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reminder::class, 'id','dva_id');
     }*/
-
-
-
 }

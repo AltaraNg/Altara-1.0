@@ -8,7 +8,7 @@ class DownPaymentRate extends Model
 {
     protected $guarded = [];
     //
-    public $downPayments = [
+    public  static $downPayments = [
       "zero"=> 0,
       "twenty"=>20,
       "forty"=> 40,

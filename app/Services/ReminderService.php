@@ -5,7 +5,9 @@ namespace App\Services;
 
 use App\NewOrder;
 use App\Notifications\CallReminder;
+use App\Notifications\Collection;
 use App\Notifications\Models\CallReminderModel;
+use App\OrderStatus;
 use Carbon\Carbon;
 
 class ReminderService
@@ -17,9 +19,22 @@ class ReminderService
             $today = Carbon::parse($date) ?? Carbon::now();
             $query->select('new_order_id')
                 ->from('amortizations')
-                ->whereDate('expected_payment_date', $today->subDays($days)->toDateString())
+            ->whereDate('expected_payment_date', '<=', $today->subDays($days)->toDateString())
                 ->where('actual_payment_date', NULL);
-        });
+        })->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id);
+
+        return $data->get();
+    }
+
+    public function fetchMessagingOrders($days = 7, $date = null)
+    {
+        $data = NewOrder::whereIn('id', function ($query) use ($days, $date) {
+            $today = Carbon::parse($date) ?? Carbon::now();
+            $query->select('new_order_id')
+            ->from('amortizations')
+            ->whereDate('expected_payment_date', '=', $today->addDays($days)->toDateString())
+                ->where('actual_payment_date', NULL);
+        })->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id);
 
         return $data->get();
     }
@@ -27,7 +42,14 @@ class ReminderService
     public function saveCallNotifications($data)
     {
         $order = NewOrder::find($data['order_id']);
-        $order->notify(new CallReminder(new CallReminderModel($data['type'], $data['feedback'], $data['status'] , $data['promise_date'])));
-        $order->customer->notify(new CallReminder(new CallReminderModel($data['type'], $data['feedback'], $data['status'], $data['promise_date'])));
+        $callReminder = new CallReminderModel($data['type'], $data['feedback'], $data['status'] , $data['promise_date']);
+        $order->notify(new CallReminder($callReminder));
+        $order->customer->notify(new CallReminder($callReminder));
+    }
+
+    public function saveCollectionNotifications($data)
+    {
+        $order = NewOrder::findOrFail($data['order_id']);
+        $order->notify(new Collection($data));
     }
 }

@@ -3,13 +3,14 @@
 namespace App\Mail;
 
 use App\Services\FileMailService;
+use Illuminate\Mail\Transport\Transport;
 
 /**
  * Swift transport for saving mails to file on local environment
  *
  * @author Adeniyi
  */
-class FileTransport extends \Illuminate\Mail\Transport\Transport
+class FileTransport extends Transport
 {
 
     /**

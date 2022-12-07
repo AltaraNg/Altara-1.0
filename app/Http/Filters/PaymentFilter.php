@@ -13,4 +13,12 @@ class PaymentFilter extends BaseFilter
     {
         $this->builder->where('payment_method_id', $id);
     }
+
+    /**
+     * @param int $id
+     */
+    public function bank(int $id)
+    {
+        $this->builder->where('bank_id', $id);
+    }
 }

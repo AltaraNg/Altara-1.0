@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use App\RepaymentDuration;
 use Illuminate\Database\Seeder;

@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Amortization;
+use App\NewOrder;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -14,16 +16,16 @@ class RepaymentEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $newOrder;
-
+    public $amortization;
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param $newOrder
      */
-    public function __construct($newOrder)
+    public function __construct(NewOrder $newOrder, Amortization $amortization = null)
     {
-        //
         $this->newOrder = $newOrder;
+        $this->amortization = $amortization;
     }
 
     /**

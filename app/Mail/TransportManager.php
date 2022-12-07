@@ -16,9 +16,9 @@ class TransportManager extends \Illuminate\Mail\TransportManager
 
     /**
      *
-     * @return \App\Mail\FileTransport
+     * @return FileTransport
      */
-    public function createFileDriver()
+    public function createFileTransport()
     {
         return new FileTransport(app(FileMailService::class));
     }

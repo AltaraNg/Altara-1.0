@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\{Attendance,Branch,User};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AttendanceController extends Controller
 {
@@ -155,9 +156,9 @@ class AttendanceController extends Controller
         for ($i = 1; $i < $days + 1; $i++) {
             $d = Carbon::parse($year . '-' . $month . '-' . $i);
             $daysString[$i] = [
-                'dayString' => str_limit($d->format('l'), '3', ''),
+                'dayString' => Str::limit($d->format('l'), '3', ''),
                 'date' => $i,
-                'month' => str_limit($monthString, '3', ''),
+                'month' => Str::limit($monthString, '3', ''),
                 'fullDate' => Carbon::parse($i . '-' . $month . '-' . $year)->toDateString()
             ];
         }

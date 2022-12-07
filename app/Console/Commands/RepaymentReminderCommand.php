@@ -18,7 +18,7 @@ class RepaymentReminderCommand extends BaseCommand
     protected $signature = 'send:smsReminder '
     . '{--days= : The number of days payment past due e.g 7} '
     . '{--date= : Send Sms Reminder for a specific date in the past e.g 2020-11-06} '
-    . '{--type= : The type of message e.g first_sms, second_sms} ';
+    . '{--type= : The type of message e.g first_sms, second_sms, third_sms,} ';
     private $reminderCommandService;
 
     /**
@@ -50,7 +50,7 @@ class RepaymentReminderCommand extends BaseCommand
     public function handle()
     {
         $this->valInput();
-        $this->processInput();
+        // $this->processInput();
         $this->process();
     }
 
@@ -65,12 +65,16 @@ class RepaymentReminderCommand extends BaseCommand
             $date = $this->option('date');
 
             $response = $this->reminderCommandService->handle($days, $type, $date);
+            $this->info(count($response) . ' records treated');
+            $this->table(
+                ['Id', 'Name', 'Order Id', 'Sms', 'Status', 'Response Message'],
+                $response
+            );
 
         } catch (\Exception $e) {
             $this->error($e->getMessage() ?? 'Something went wrong');
         }
 
-        $this->info(count($response) . ' records treated');
         $this->info('Sms Reminders completed.');
         $this->info('Exiting...');
         return 0;
@@ -84,8 +88,8 @@ class RepaymentReminderCommand extends BaseCommand
     {
         $data = $this->option();
         $validator = Validator::make($data, [
-            'type' => 'required|in:' . Constants::FIRST_SMS . ',' . Constants::SECOND_SMS . ',' . Constants::THIRD_SMS,
-            'days' => 'required|integer|min:1'
+            'type' => 'required|in:' . Constants::F_SMS . ',' . Constants::S_SMS . ',' . Constants::T_SMS,
+            'days' => 'required|integer|min:0'
         ]);
         if ($validator->fails()) {
             $this->error('input arguments failed validation Errors: ');

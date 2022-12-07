@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Amortization;
-use App\Helpers\ResponseHelper;
+use App\Exceptions\AException;
+use App\Helper\ResponseHelper;
 use App\Http\Filters\AmortizationFilter;
 use App\Http\Requests\NewOrderRequest;
 use App\Repositories\AmortizationRepository;
 use App\Services\AmmortizationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class AmortizationController extends Controller
 {
@@ -49,10 +51,11 @@ class AmortizationController extends Controller
      * @param Request $request
      * @param Amortization $amortization
      * @return Response
+     * @throws ValidationException
      */
     public function update(Request $request, Amortization $amortization)
     {
-        $data = $this->validate($request, Amortization::$updateRules);
+        $data = $this->validate($request, Amortization::updateRules());
         $resp = $this->amortizationRepository->update($amortization, $data);
         return ResponseHelper::createSuccessResponse($resp->toArray());
     }
@@ -63,11 +66,44 @@ class AmortizationController extends Controller
      * @param NewOrderRequest $request
      * @param AmmortizationService $service
      * @return Response
-     * @throws \App\Exceptions\AException
+     * @throws AException
      */
     public function preview(NewOrderRequest $request, AmmortizationService $service)
     {
         $resp = $service->generatePreview($request->validated());
         return ResponseHelper::createSuccessResponse($resp);
+    }
+    public function recommend(AmmortizationService $service)
+    {
+        // dd(request('down_payment'));
+        if (request('type') == 'formal') {
+            $data = [
+                'salary' => request('salary'),
+                'total_price' => request('total_price'),
+                'plan_id' => request('plan_id'),
+                'duration' => request('duration'),
+                'cycle' => request('cycle'),
+            ];
+            $resp = [
+                'ans' => $service->recommend($data)
+            ];
+            return ResponseHelper::createSuccessResponse($resp);
+        }else{
+            $data = [
+                'month1' => request('balances')[0],
+                'month2' => request('balances')[1],
+                'month3' => request('balances')[2],
+                'total_price' => request('total_price'),
+                'plan_id' => request('plan_id'),
+                'duration' => request('duration'),
+                'cycle' => request('cycle'),
+                'customer_type' => request('customer_type')
+
+            ];
+            $resp = [
+                'ans' => $service->recommendInformal($data)
+            ];
+            return ResponseHelper::createSuccessResponse($resp);
+        }
     }
 }

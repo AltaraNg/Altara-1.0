@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\PaymentReconcile;
-use App\Repayment;
 use App\Services\PaymentService;
 use Illuminate\Support\Str;
 use App\Events\RepaymentEvent;
@@ -22,34 +21,37 @@ class PaymentReconcileRepository extends Repository
     }
 
     public function storeOrCreate(array $data)
+
     {
         $model = app('App\\' . Str::studly($data['model']))->findOrFail($data['model_id']);
-        $new_order = $data;
+        $model['amount'] = $data['amount'];
         unset($data['model_id']);
         unset($data['model']);
 
         $resp = PaymentService::logPayment($data, $model);
 
-        if(request()->has('comment')){
+        if (request()->has('comment')) {
             $resp->comment()->create(['comment' => request('comment'), 'user_id' => auth()->user()->id]);
         }
         $payment_type = PaymentType::where('id', $data["payment_type_id"])->first();
 
         if ($payment_type->type == PaymentType::REPAYMENTS) {
-            event(new RepaymentEvent($new_order));
+            event(new RepaymentEvent($model));
         }
         return $resp;
     }
 
     public function getAll($filter)
     {
-        return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate();
+        $limit = request('limit', 20);
+        return $this->model::orderBy('created_at', 'desc')->filter($filter)->paginate($limit);
     }
 
-    public function update($model, $data) {
+    public function update($model, $data)
+    {
         $model->update($data);
-        if(request()->has('comment')){
-            $model->comment()->updateOrCreate(['commentable_id' => $model->id],['comment' => request('comment'), 'user_id' => auth()->user()->id]);
+        if (request()->has('comment')) {
+            $model->comment()->updateOrCreate(['commentable_id' => $model->id], ['comment' => request('comment'), 'user_id' => auth()->user()->id]);
         }
         return $model;
     }

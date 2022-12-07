@@ -7,7 +7,9 @@ use App\Counter;
 use App\EmployeeCategory;
 use App\Events\Event;
 use App\Events\NewOrderEvent;
+use App\Http\Filters\UserFilter;
 use App\NewOrder;
+use App\Repositories\UserRepository;
 use App\Role;
 use App\User;
 use Carbon\Carbon;
@@ -15,10 +17,18 @@ use DateTime;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Validator;
 
 class UserController extends Controller
 {
+
+    private $userRepo;
+
+    public function __construct(UserRepository $userRepo)
+    {
+        $this->userRepo = $userRepo;
+    }
     public function index()
     {
         /** gets list of users(paginated), searchPaginateAndOrder is a custom
@@ -90,7 +100,7 @@ class UserController extends Controller
                 'cv' => 'mimes:pdf|max:10000'
             ]);
             $image = $request->file('cv');
-            $filename = 'cv' . '/' . str_slug($request->full_name) . '-' . date('d-m-Y');
+            $filename = 'cv' . '/' . Str::slug($request->full_name) . '-' . date('d-m-Y');
             $s3 = Storage::disk('s3');
             $s3->put($filename, file_get_contents($image), 'public');
             $request['cv_url'] = $filename;
@@ -98,7 +108,7 @@ class UserController extends Controller
 
         $user = new User;
         $user->fill($request->except(['cv', 'transfer']));
-        $gen_password = str_random(8);
+        $gen_password = Str::random(8);
         /** encrypt the password*/
         $user->password = bcrypt($gen_password);
         /** generate a staff ID for the user*/
@@ -200,7 +210,7 @@ class UserController extends Controller
             'cv' => 'mimes:pdf|max:10000'
         ]);
         $image = $request->file('cv');
-        $filename = 'cv' . '/' . str_slug($user->full_name) . '-' . date('d-m-Y');
+        $filename = 'cv' . '/' . Str::slug($user->full_name) . '-' . date('d-m-Y');
         $s3 = Storage::disk('s3');
         $s3->put($filename, file_get_contents($image), 'public');
         $user->update(['cv_url' => $filename]);
@@ -268,5 +278,11 @@ class UserController extends Controller
             $minAge = (!empty($parameters)) ? (int)$parameters[0] : 18;
             return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
         });
+    }
+
+    public function getUsers(UserFilter $filter)
+    {
+        $users = $this->userRepo->getAll($filter);
+        return $this->sendSuccess($users->toArray(), 'users retrieved successfully');
     }
 }

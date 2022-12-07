@@ -22,6 +22,7 @@ trait Scopes
     public function scopeGetOrPaginate($query, $requestObject)
     {
         return isset($requestObject['list']) ? $query->get() : $query->paginate($requestObject['pageSize']);
+        // return $query->paginate();
     }
 
     public function scopeOrderWithOtherTables($query, $requestObject)

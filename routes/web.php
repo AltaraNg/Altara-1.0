@@ -1,11 +1,9 @@
 <?php
 
-Route::get('/data', function(){});
-
-Route::get('/{vue?}', function () {
+Route::get('/', function () {
     return view('welcome');
-})->where('vue', '[\/\w\.-]*');
-
-Route::any('/', function (){
-    return response().json(["message" => "working"]);
 });
+
+//Route::any('/', function (){
+//    return response()->json(["message" => "working"], 200);
+//});
