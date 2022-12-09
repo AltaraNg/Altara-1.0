@@ -233,4 +233,8 @@ class Customer extends Model
     {
        return $this->hasManyThrough(Amortization::class, NewOrder::class);
     }
+    public function recommendation(){
+        return $this->hasMany(Recommendation::class);
+    }
+
 }
