@@ -19,7 +19,7 @@ class FigFinanceCommmand extends Command
      *
      * @var string
      */
-    protected $signature = 'fig:finance ' . '{--date=}';
+    protected $signature = 'fig:finance ' . '{--date= : Expected date format "2021-01, 2022-12"}';
 
     /**
      * The console command description.
