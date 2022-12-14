@@ -14,7 +14,7 @@ class AException extends Exception {
     protected $errorMessages = [];
 
     public function __construct(string $message = "", int $code = 0
-        , array $errorMessages = [], \Throwable $previous = null) {
+        , array $errorMessages = [], \Exception $previous = null) {
         parent::__construct($message, $code, $previous);
         $this->errorMessages = $errorMessages;
     }

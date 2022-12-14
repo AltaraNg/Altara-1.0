@@ -2,14 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerStage;
 use App\Document;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
+use App\Repositories\ContactCustomerRepository;
 use App\Verification;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DocumentController extends Controller
 {
+   private $contactRepo;
+
+   public function __construct(ContactCustomerRepository $contactRepository)
+   {
+      $this->contactRepo = $contactRepository;
+   }
    /**
     * Display a listing of the resource.
     *
@@ -75,7 +86,7 @@ class DocumentController extends Controller
    {
       /** 1. Validate the document(image) */
       $this->validate($request, [
-         $request['document'] => 'image|max:512|dimensions:max_width=1200,max_height=1200|mimes:jpeg,jpg,png'
+         $request['document'] => 'max:512|dimensions:max_width=1200,max_height=1200|mimes:jpeg,jpg,png,svg'
       ]);
 
       /**NB the $request['document'] field is not the document rather the document type - passport or id card.
@@ -120,6 +131,15 @@ class DocumentController extends Controller
 
          /** update the record*/
          $verification[$request['document']] = 1;
+         if ($verification->id_card == 1 && $verification->passport == 1) {
+            $customer_contact = $this->contactRepo->getByRegId($document->customer->reg_id ?? '');
+            if ($customer_contact) {
+               $contact_customer = $this->contactRepo->update($customer_contact, ['customer_stage_id' => CustomerStage::where('name', CustomerStage::KYC)->first()->id]);
+               if ($contact_customer->wasChanged('customer_stage_id')) {
+                  event(new CustomerStageUpdatedEvent($customer_contact->refresh()));
+               }
+            }
+         }
 
          /** save the record*/
          $verification->save();
@@ -135,7 +155,7 @@ class DocumentController extends Controller
    protected function getFileName($file)
    {
       /** generate a random string and append the file extension to the random string */
-      return str_random(32) . '.' . $file->extension();
+      return Str::random(32) . '.' . $file->extension();
    }
 
    /**

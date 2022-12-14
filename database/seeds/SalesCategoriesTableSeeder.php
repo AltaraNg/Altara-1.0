@@ -1,6 +1,6 @@
 <?php
 
-use App\Discount;
+namespace Database\Seeders;
 use App\SalesCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,10 +14,15 @@ class SalesCategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $categories = ['new sales', 'renewal'];
-        DB::table('sales_categories')->delete();
-        foreach ($categories as $category) {
-            SalesCategory::create(['name' => $category]);
-        }
+        SalesCategory::updateOrCreate(
+            [
+                'name' => SalesCategory::GROUP_REFERRAL
+            ]
+        );
+        SalesCategory::updateOrCreate(
+            [
+                'name' => SalesCategory::STAFF_PROGRAM
+            ]
+        );
     }
 }

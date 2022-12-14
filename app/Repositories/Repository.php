@@ -32,46 +32,51 @@ abstract class Repository
     {
         $this->app = $app;
         $this->filter = $collection;
+        $this->request = $request;
         $this->criteria = $collection;
         $this->makeModel();
 
         $this->page = (int)$request->query->get('page', 1);
-        $this->limit = (int)$request->query->get('limit', 10);
+        $this->limit = (int)$request->query->get('limit', 20);
     }
 
-    public function all() {
-        $limit = request('limit', 10);
+    public function all()
+    {
+        $limit = request('limit', 20);
         return $this->model::latest()->paginate($limit);
     }
 
     public function getAll($filter)
     {
-        return $this->model::latest()->filter($filter)->paginate();
+        return $this->model::latest()->filter($filter)->paginate($this->limit);
     }
 
     public function query($filter)
     {
-        return $this->model::filter($filter)->paginate();
+        return $this->model::filter($filter)->paginate($this->limit);
     }
 
-    public function store(array $data) {
-        $result = $this->model::create($data);
-        return $result;
+    public function store(array $data)
+    {
+        return $this->model::create($data);
     }
 
-    public function update($model, $data) {
+    public function update($model, $data)
+    {
         $model->update($data);
         return $model;
     }
 
-    public function updateOrCreate($model, $target,$data) {
+    public function updateOrCreate(Model $model, array $target, array $data)
+    {
 
         $model->updateOrCreate($target, $data);
 
         return $model;
     }
 
-    public function delete($model) {
+    public function delete($model)
+    {
         $model->delete();
         return $model;
     }

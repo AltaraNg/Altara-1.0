@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Caution extends Model
 {
@@ -12,12 +13,12 @@ class Caution extends Model
 
     public function getReasonMinAttribute()
     {
-        return str_limit($this->attributes['reason'], '20');
+        return Str::limit($this->attributes['reason'], '20');
     }
 
     public function getPenaltyMinAttribute()
     {
-        return str_limit($this->attributes['penalty'], '20');
+        return Str::limit($this->attributes['penalty'], '20');
     }
 
     public function user()

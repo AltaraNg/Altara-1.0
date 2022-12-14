@@ -66,7 +66,8 @@ class ProductTransfer extends Model
     {
         return [
             'id' => $this->id,
-            'product' => $this->inventory,
+            'inventory_id' => $this->inventory->id,
+            'inventory_name' => $this->inventory->product_name,
             'to' => $this->to->name,
             'from' => $this->from->name,
             'user' => $this->user->full_name,

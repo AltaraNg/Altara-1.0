@@ -3,24 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\SalesCategory;
+use App\Repositories\SalesCategoryRepository;
 use Illuminate\Http\Request;
+use App\Helper\ResponseHelper;
+use App\Http\Requests\SalesCategoryRequest;
+use Illuminate\Http\Response;
 
 class SalesCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
+
+    private $salesCategory;
+
+    public function __construct(SalesCategoryRepository $salesCategoryRepository)
+    {
+        $this->salesCategory = $salesCategoryRepository;
+    }
+
     public function index()
     {
-        //
+        $result = $this->salesCategory->all();
+        return ResponseHelper::createSuccessResponse($result->toArray());
     }
+
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -31,7 +45,7 @@ class SalesCategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -42,7 +56,7 @@ class SalesCategoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\SalesCategory  $salesCategory
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(SalesCategory $salesCategory)
     {
@@ -53,7 +67,7 @@ class SalesCategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\SalesCategory  $salesCategory
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(SalesCategory $salesCategory)
     {
@@ -65,18 +79,31 @@ class SalesCategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\SalesCategory  $salesCategory
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, SalesCategory $salesCategory)
     {
         //
     }
 
+    public function getRoles(SalesCategory $salesCat)
+    {
+        $result = $this->salesCategory->fetchRoles($salesCat);
+        return $this->sendSuccess($result, 'Users sent successfully');
+    }
+
+    public function manageRoles(SalesCategory $salesCat, SalesCategoryRequest $request)
+    {
+        $salesCat->roles()->sync($request->validated()['roles']);
+
+        return $this->sendSuccess([], 'Roles Updated successfully');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SalesCategory  $salesCategory
-     * @return \Illuminate\Http\Response
+     * @param \App\SalesCategory $salesCategory
+     * @return void
      */
     public function destroy(SalesCategory $salesCategory)
     {

@@ -4,10 +4,12 @@ namespace App\Repositories;
 
 use App\Helper\ExtractRequestObject;
 use App\Helper\OrderObject;
+use App\NewOrder;
 use App\Order;
 use App\RenewalList;
 use App\RenewalStatus;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class RenewalListRepository extends Repository
 {
@@ -128,6 +130,19 @@ class RenewalListRepository extends Repository
     public function isCallback()
     {
         return RenewalStatus::findOrFail(request('status_id'))->status == self::CALLBACK;
+    }
+
+    public function getNewOrdersRenewal()
+    {
+        return NewOrder::whereHas('amortization', function (Builder $query) {
+            $query->where('actual_amount', '<', 1);
+        }, '<=', request('count', 2))
+            ->when(request('from'),
+                function ($query) {
+                    return $query->whereDate('order_date', '>=', request('from'))
+                        ->whereDate('order_date', '<=', request('to', Carbon::now()));
+                }
+            )->paginate(request('limit', 20));
     }
 
 }

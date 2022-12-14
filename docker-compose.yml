@@ -15,8 +15,10 @@ services:
     volumes:
       - ./:/var/www
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    external_links:
+      - altara_db
     networks:
-      - app-network
+      - servers_altara-servers
 
   #Nginx Service
   webserver:
@@ -30,41 +32,9 @@ services:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - app-network
-
-  #MySQL Service
-  db:
-    image: mysql:5.7.22
-    container_name: altara_db
-    tty: true
-    ports:
-      - "7072:3306"
-    environment:
-      MYSQL_DATABASE: altara
-      MYSQL_ROOT_PASSWORD: password
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - dbdata:/var/lib/mysql/
-      - ./mysql/my.cnf:/etc/mysql/my.cnf
-    networks:
-      - app-network
-
-  #adminer
-  adminer:
-    image: adminer
-    container_name: Al_Admin
-    ports:
-      - 7073:8080
-    networks:
-      - app-network
+      - servers_altara-servers
 
 #Docker Networks
 networks:
-  app-network:
-    name: altara
-    driver: bridge
-#Volumes
-volumes:
-  dbdata:
-    driver: local
+   servers_altara-servers:
+      external: true

@@ -14,4 +14,9 @@ class PaymentReconcileFilter extends BaseFilter
     {
         $this->builder->where('payment_method_id', $id);
     }
+
+    public function bank(int $id)
+    {
+        $this->builder->where('bank_id', $id);
+    }
 }

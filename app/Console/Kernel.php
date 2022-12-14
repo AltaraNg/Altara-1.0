@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Exceptions\AException;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,24 +15,43 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\DisapproveCustomers',
-        'App\Console\Commands\RepaymentReminderCommand'
+        'App\Console\Commands\RepaymentReminderCommand',
+        'App\Console\Commands\PopulateDownPaymentCommand',
+        'App\Console\Commands\SendNewOrderReportCommmand',
+        'App\Console\Commands\UpdateOrderTypeIdCommand',
+        'App\Console\Commands\UpdateCompletedNewOrdersStatuses',
+         'App\Console\Commands\PopupaleGeneralReasonsTable'
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
+     * @throws AException
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:smsReminder --type=first_sms --days=7')
-            ->dailyAt('8:00')
-            ->emailOutputTo('naderounmu@altaracredit.com');
-        $schedule->command('send:smsReminder --type=second_sms --days=14')
-            ->dailyAt('9:00');
-        $schedule->command('send:smsReminder --type=third_sms --days=21')
-            ->dailyAt('10:00');
+        switch (request('type')){
+            case 1:
+                $schedule->command('send:smsReminder --type=first_sms --days=7')
+                    ->emailOutputTo('naderounmu@altaracredit.com');
+                break;
+            case 2:
+                $schedule->command('send:smsReminder --type=second_sms --days=14')
+                    ->emailOutputTo('naderounmu@altaracredit.com');
+                break;
+            case 3:
+                $schedule->command('send:smsReminder --type=third_sms --days=21')
+                    ->emailOutputTo('naderounmu@altaracredit.com');
+                break;
+            case 4:
+                $schedule->command('make:debit')
+                    ->emailOutputTo('naderounmu@altaracredit.com');;
+                break;
+            default:
+//                throw new AException('Type is invalid', 401);
+        }
 
     }
 

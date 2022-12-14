@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Address;
 use App\Branch;
+use App\ContactCustomer;
 use App\Customer;
+use App\CustomerStage;
 use App\Document;
+use App\Events\CustomerCreatedEvent;
+use App\Events\CustomerStageUpdatedEvent;
+use App\Http\Filters\ContactCustomerFilter;
 use App\PersonalGuarantor;
 use App\ProcessingFee;
+use App\Repositories\ContactCustomerRepository;
 use App\State;
 use App\Verification;
 use App\WorkGuarantor;
@@ -17,11 +23,13 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
 
     public function index()
     {
@@ -60,7 +68,11 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         /** 1. validate the customer's phone number */
-        $this->validate($request, ['telephone' => 'unique:customers']);
+        $this->validate($request, [
+            'telephone' => 'required|string|unique:customers,telephone',
+            'email' => 'required|string|email|unique:customers,email',
+            'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
+        ]);
 
         /** 2. Create a new customer instance */
         $customer = new Customer($request->all());
@@ -76,6 +88,11 @@ class CustomerController extends Controller
 
         /** 6. create a record for the customer in the verifications table */
         $this->createCustomerVerification($customer->id);
+
+        /** Upgrade customer stage if reg_id is supplied */
+        if ($request->has('reg_id')) {
+            event(new CustomerCreatedEvent($request->reg_id));
+        }
 
         /** 7. return the registered flag, a new customer object form and the just created customer*/
         return response()->json([
@@ -141,6 +158,12 @@ class CustomerController extends Controller
     {
         /** 1. Strip all the eager loaded model attached
          * to the $request(customer model) received */
+        $this->validate($request, [
+            'telephone' => 'sometimes|required|string|unique:customers,telephone,' . $id,
+            'email' => 'sometimes|required|string|email|unique:customers,email,' . $id
+
+        ]);
+
         unset($request['user']);
         unset($request['branch']);
         unset($request['address']);
@@ -149,6 +172,7 @@ class CustomerController extends Controller
         unset($request['work_guarantor']);
         unset($request['processing_fee']);
         unset($request['personal_guarantor']);
+        unset($request['guarantor_paystack']);
         /** 2. Update the customer*/
         Customer::whereId($id)->update($request->all());
         /** return the update flag, prepare form
@@ -167,6 +191,9 @@ class CustomerController extends Controller
         $customer = Customer::with([
             'user' => function ($query) {
                 $query->select('id', 'full_name', 'branch_id');
+            },
+            'guarantorPaystack' => function($query) {
+                return $query->where('status', 'active');
             },
             'branch',
             'verification',
@@ -189,6 +216,8 @@ class CustomerController extends Controller
             'address' => 0,
             'passport' => 0,
             'work_guarantor' => 0,
+            'guarantor_id' => 0,
+            'proof_of_income' => 0,
             'personal_guarantor' => 0,
             'customer_id' => $customerId
         ]))->save();
@@ -201,13 +230,20 @@ class CustomerController extends Controller
         (new Document([
             'id_card_url' => '',
             'passport_url' => '',
+            'guarantor_id_url' => '',
+            'proof_of_income_url' => '',
             'customer_id' => $customerId
         ]))->save();
     }
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'branch', 'new_orders', 'orders' => function ($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack' => function($query) {
+            return $query->where('status', 'active');
+        },  'branch', 'new_orders' => function ($query) {
+
+            return $query->orderBy('created_at', 'desc');
+        }, 'orders' => function ($query) {
             return $query->with([
                 'repayment', 'repaymentFormal', 'repaymentInformal', 'status',
                 'storeProduct', 'discount', 'salesCategory', 'salesType',
@@ -234,7 +270,8 @@ class CustomerController extends Controller
 
         try {
             if (in_array('middle_name', $searchColumns)) {
-                $customers = DB::select(DB::raw("SELECT id,
+                $customers = DB::select(DB::raw(
+                    "SELECT id,
                     CONCAT(
                         COALESCE(`first_name`,''),' ',
                         COALESCE(`middle_name`,''),' ',
@@ -278,5 +315,4 @@ class CustomerController extends Controller
         in_array('middle_name', $searchColumns) && array_push($columns, 'middle_name');
         return $columns;
     }
-
 }

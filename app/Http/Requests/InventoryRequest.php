@@ -21,9 +21,10 @@ class InventoryRequest extends FormRequest
                 return Inventory::rules();
             }
             case 'PUT': {
-                return Inventory::updateRules($this->inventory->id);
+                return Inventory::updateRules();
             }
-            default:break;
+            default:
+                return [''];
         }
     }
 }

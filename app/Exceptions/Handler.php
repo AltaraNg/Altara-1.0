@@ -2,16 +2,18 @@
 
 namespace App\Exceptions;
 
-use App\Helpers\ResponseCodes;
-use App\Helpers\ResponseHelper;
-use App\Helpers\ResponseMessages;
-use Exception;
+use App\Helper\ResponseCodes;
+use App\Helper\ResponseHelper;
+use App\Helper\ResponseMessages;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Exception;
 
 class Handler extends ExceptionHandler
 {
@@ -36,9 +38,9 @@ class Handler extends ExceptionHandler
 
     /**
      * Report or log an exception.
-     *
-     * @param \Exception $exception
-     * @return void
+     *=
+     * @param Exception $e
+     * @return void=
      * @throws Exception
      */
     public function report(Exception $e)
@@ -49,9 +51,9 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param Exception $e
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function render($request, Exception $e)
     {

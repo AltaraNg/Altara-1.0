@@ -8,6 +8,7 @@ use App\Repositories\AuthRepository;
 use App\User;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Validator;
 
 class AuthController extends Controller
@@ -38,8 +39,9 @@ class AuthController extends Controller
         ], 404);
 
         if ($user->portal_access === 1) {
+
             if ($user && Hash::check($request->password, $user->password)) {
-                $user->api_token = str_random(60);
+                $user->api_token = Str::random(60);
                 $user->save();
                 return response()->json([
                     'user_id' => $user->id,
@@ -51,7 +53,7 @@ class AuthController extends Controller
                     'branch_id' => $user->branch_id,
 
                     'message' => 'You have successfully logged in'
-                ]);
+                ], 200);
             }
             return response()->json([
                 'staff_id' => ['Provided staff id and password does not match'],
@@ -90,7 +92,7 @@ class AuthController extends Controller
     public function resetPassword($id)
     {
         $user = User::where('id', $id)->first();
-        $gen_password = str_random(8);
+        $gen_password = Str::random(8);
         $user->password = bcrypt($gen_password);
         $user->api_token = null;
         $user->save();
