@@ -233,4 +233,13 @@ class Customer extends Model
     {
        return $this->hasManyThrough(Amortization::class, NewOrder::class);
     }
+    
+    public function latestAmortizationPayed()
+    {
+       return $this->hasOneThrough(Amortization::class, NewOrder::class)->where('expected_payment_date', '<=', now()->endOfDay())->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->latest('expected_payment_date');
+    }
+
+    public function recommendation(){
+        return $this->hasMany(Recommendation::class);
+    }
 }
