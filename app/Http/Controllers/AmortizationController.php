@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Amortization;
+use App\DownPaymentRate;
 use App\Exceptions\AException;
 use App\Helper\ResponseHelper;
 use App\Http\Filters\AmortizationFilter;
@@ -12,6 +13,9 @@ use App\Services\AmmortizationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
+use App\Recommendation;
+use App\RepaymentCycle;
+use App\RepaymentDuration;
 
 class AmortizationController extends Controller
 {
@@ -84,9 +88,28 @@ class AmortizationController extends Controller
                 'duration' => request('duration'),
                 'cycle' => request('cycle'),
             ];
+            $user = auth()->user();
+
+
             $resp = [
                 'ans' => $service->recommend($data)
             ];
+
+            $dataService = [
+                'salary' => request('salary'),
+                'total_price' => request('total_price'),
+                'plan' => DownPaymentRate::where('id', request('plan_id'))->first()->name,
+                'duration' => RepaymentDuration::where('id', request('duration'))->first()->name,
+                'cycle' => RepaymentCycle::where('id', request('cycle'))->first()->name
+            ];
+
+            $recommendation = Recommendation::create([
+                "staff_id" => $user->id,
+                "customer_id" => request("customer_id"),
+                "type" => request('type'),
+                "input_data" => json_encode($dataService),
+                "result" => json_encode($resp)
+            ]);
             return ResponseHelper::createSuccessResponse($resp);
         }else{
             $data = [
@@ -100,9 +123,28 @@ class AmortizationController extends Controller
                 'customer_type' => request('customer_type')
 
             ];
+            $user = auth()->user();
+
             $resp = [
                 'ans' => $service->recommendInformal($data)
             ];
+            $dataService = [
+                'month1' => request('balances')[0],
+                'month2' => request('balances')[1],
+                'month3' => request('balances')[2],
+                'total_price' => request('total_price'),
+                'plan' => DownPaymentRate::where('id', request('plan_id'))->first()->name,
+                'duration' => RepaymentDuration::where('id', request('duration'))->first()->name,
+                'cycle' => RepaymentCycle::where('id', request('cycle'))->first()->name
+            ];
+
+            $recommendation = Recommendation::create([
+                "staff_id" => $user->id,
+                "customer_id" => request("customer_id"),
+                "type" => request('type'),
+                "input_data" => json_encode($dataService),
+                "result" => json_encode($resp)
+            ]);
             return ResponseHelper::createSuccessResponse($resp);
         }
     }
