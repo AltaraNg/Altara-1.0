@@ -27,7 +27,7 @@ class LateFeeDeductionService
     private $paystackService;
 
     /**
-     * DirectDebitService constructor.
+     *
      * @param MailService $mailService
      * @param PaystackService $paystackService
      */

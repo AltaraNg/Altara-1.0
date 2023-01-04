@@ -14,7 +14,7 @@ class DirectDebitDeduction extends BaseCommand
      */
 
     protected $signature = 'make:debit '
-    . '{--date= : Send Sms Reminder for a specific date in the past e.g 2020-11-06} ';
+    . '{--S|sortOrder=DESC : Set the order of deduction e.g ASC|DESC} ';
 
     /**
      * The console command description.
@@ -58,7 +58,8 @@ class DirectDebitDeduction extends BaseCommand
     {
         $this->line('<info>[' . Carbon::now()->format('Y-m-d H:i:s') . ']</info> Calling Direct Debit');
         try {
-            $response = $this->directDebitService->handle();
+            $sortOrder = $this->option('sortOrder');
+            $response = $this->directDebitService->handle($sortOrder);
             $this->info(count($response) . ' records treated');
             $this->table(
                 ['Id', 'Name', 'Order Id', 'Ammount', 'Status', 'Message'],

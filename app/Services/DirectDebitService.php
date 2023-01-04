@@ -47,7 +47,7 @@ class DirectDebitService
         $this->repaymentEventService = $repaymentEventService;
     }
 
-    private function fetchOrders()
+    private function fetchOrders($sortOrder)
     {
         //get list of due payments
         $data = Amortization::where('actual_payment_date', null)
@@ -60,13 +60,13 @@ class DirectDebitService
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
 
-            })->orderBy('id', 'DESC');
+            })->orderBy('id', $sortOrder);
         return $data->get();
     }
 
-    public function handle()
+    public function handle($sortOrder="DESC")
     {
-        $items = $this->fetchOrders();
+        $items = $this->fetchOrders($sortOrder);
         $res = array();
         if (empty($items)) {
             return 'No Customers are available';
