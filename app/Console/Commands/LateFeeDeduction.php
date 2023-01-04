@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Services\DirectDebitService;
 use App\Services\LateFeeDeductionService;
 use Carbon\Carbon;
 
@@ -23,14 +22,14 @@ class LateFeeDeduction extends BaseCommand
      */
     protected $description = 'Command description';
     /**
-     * @var DirectDebitService
+     * @var LateFeeDeductionService
      */
     private $lateFeeDeductionService;
 
     /**
      * Create a new command instance.
      *
-     * @param DirectDebitService $directDebitService
+     * @param LateFeeDeductionService $lateFeeDeductionService
      */
     public function __construct(LateFeeDeductionService $lateFeeDeductionService)
     {
