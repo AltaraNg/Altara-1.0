@@ -71,7 +71,12 @@ class DirectDebitService
         if (empty($items)) {
             return 'No Customers are available';
         }
+        $skip = 0;
         foreach ($items as $item) {
+            if ($skip == $item->new_order_id) {
+                Log::info('Skipping ' . $item->new_order_id . 'because of failed transaction');
+                continue;
+            }
             $amountToDeduct = $item->expected_amount - $item->actual_amount;
             $response = $this->paystackService->charge($item);
             # code...
@@ -98,6 +103,7 @@ class DirectDebitService
                     'statusMessage' => 'Approved'
                 ]);
             } else {
+                $skip = $item->new_order_id;
                 $res[] = array_merge($data, [
                     'status' => 'failed',
                     'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
