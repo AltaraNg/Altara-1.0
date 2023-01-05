@@ -19,6 +19,8 @@ use App\Notifications\RepaymentNotification;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class DirectDebitService
 {
@@ -190,14 +192,36 @@ class DirectDebitService
     private function sendDirectDebitReport(array $response)
     {
         try {
+            // $this->mailService->sendReportAsMail(
+            //     'Direct Debit Report',
+            //     $response,
+            //     [config('app.operations_email'), config('app.admin_email')],
+            //     'Direct Debit Report',
+            //     'DirectDebit',
+            //     'Direct Debit Report ' . Carbon::now()->toDateString()
+            // );
+
+            $filename = 'dd-' . \Carbon\Carbon::now()->toDateString();
+            $excel = Excel::create($filename, function($excel) use ($response) {
+                $excel->sheet('Sheet 1', function($sheet) use ($response) {
+                    $sheet->fromArray($response);
+                });
+            });
+
+            // Save the Excel file to S3
+            $excel->store('xlsx', Storage::disk('s3'), $filename);
+
+            $url = Storage::disk('s3')->url($filename . '.xlsx');
+
             $this->mailService->sendReportAsMail(
                 'Direct Debit Report',
-                $response,
+                $url,
                 [config('app.operations_email'), config('app.admin_email')],
                 'Direct Debit Report',
-                'DirectDebit',
+                'DirectDebitLink',
                 'Direct Debit Report ' . Carbon::now()->toDateString()
             );
+
         } catch (BindingResolutionException $e) {
             FacadesLog::error($e->getMessage());
         } catch (Exception $e) {
