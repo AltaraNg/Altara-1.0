@@ -21,6 +21,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\DirectDebitExport;
 
 class DirectDebitService
 {
@@ -63,7 +64,7 @@ class DirectDebitService
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
 
             })->orderBy('id', $sortOrder);
-        return $data->get();
+        return $data->take(1)->get();
     }
 
     public function handle($sortOrder="DESC")
@@ -192,30 +193,18 @@ class DirectDebitService
     private function sendDirectDebitReport(array $response)
     {
         try {
-            // $this->mailService->sendReportAsMail(
-            //     'Direct Debit Report',
-            //     $response,
-            //     [config('app.operations_email'), config('app.admin_email')],
-            //     'Direct Debit Report',
-            //     'DirectDebit',
-            //     'Direct Debit Report ' . Carbon::now()->toDateString()
-            // );
+            $filename = 'direct-debit-report-' . \Carbon\Carbon::now()->format('Y-m-d_H:i:s');
 
-            $filename = 'dd-' . \Carbon\Carbon::now()->toDateString();
-            $excel = Excel::create($filename, function($excel) use ($response) {
-                $excel->sheet('Sheet 1', function($sheet) use ($response) {
-                    $sheet->fromArray($response);
-                });
-            });
+            $export = new DirectDebitExport($response);
 
-            // Save the Excel file to S3
-            $excel->store('xlsx', Storage::disk('s3'), $filename);
+            Excel::store($export, 'dd/' . $filename . '.xlsx', 's3');
 
-            $url = Storage::disk('s3')->url($filename . '.xlsx');
+            $url = Storage::disk('s3')->url('dd/' . $filename . '.xlsx');
+            FacadesLog::debug('Skipping ' . $url );
 
             $this->mailService->sendReportAsMail(
                 'Direct Debit Report',
-                $url,
+                [$url],
                 [config('app.operations_email'), config('app.admin_email')],
                 'Direct Debit Report',
                 'DirectDebitLink',

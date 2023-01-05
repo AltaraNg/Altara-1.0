@@ -275,7 +275,9 @@
                                                     {{ Carbon\Carbon::now()->toDateString() }}</div>
                                                 <div
                                                     style="font-size: 12px; line-height: 1.2; color: #555555; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 17px;">
-                                                    <a href="{{ $data['reports'] }}">Download Report</a>
+                                                    @foreach ($data['reports'] as $item)
+                                                        <a href="{{ $item }}">Download Report</a>
+                                                    @endforeach
                                                 </div>
                                             </div>
 
