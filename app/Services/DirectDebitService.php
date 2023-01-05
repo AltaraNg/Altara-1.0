@@ -19,6 +19,7 @@ use App\Notifications\RepaymentNotification;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DirectDebitService
 {
@@ -198,6 +199,17 @@ class DirectDebitService
                 'DirectDebit',
                 'Direct Debit Report ' . Carbon::now()->toDateString()
             );
+
+            $filename = 'dd-' . \Carbon\Carbon::now()->toDateString();
+            $excel = Excel::create($filename, function($excel) use ($response) {
+                $excel->sheet('Sheet 1', function($sheet) use ($response) {
+                    $sheet->fromArray($response);
+                });
+            });
+
+            // Save the Excel file to storage
+            $excel->store('xlsx', storage_path('app/public/excel'), true);
+
         } catch (BindingResolutionException $e) {
             FacadesLog::error($e->getMessage());
         } catch (Exception $e) {
