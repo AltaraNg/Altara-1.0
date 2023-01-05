@@ -19,6 +19,9 @@ use App\Notifications\RepaymentNotification;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use App\Exports\DirectDebitExport;
 
 class DirectDebitService
 {
@@ -71,7 +74,12 @@ class DirectDebitService
         if (empty($items)) {
             return 'No Customers are available';
         }
+        $skip = 0;
         foreach ($items as $item) {
+            if ($skip == $item->new_order_id) {
+                FacadesLog::debug('Skipping ' . $item->new_order_id . 'because of failed transaction');
+                continue;
+            }
             $amountToDeduct = $item->expected_amount - $item->actual_amount;
             $response = $this->paystackService->charge($item);
             # code...
@@ -98,6 +106,7 @@ class DirectDebitService
                     'statusMessage' => 'Approved'
                 ]);
             } else {
+                $skip = $item->new_order_id;
                 $res[] = array_merge($data, [
                     'status' => 'failed',
                     'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
@@ -184,14 +193,24 @@ class DirectDebitService
     private function sendDirectDebitReport(array $response)
     {
         try {
+            $filename = 'direct-debit-report-' . \Carbon\Carbon::now()->format('Y-m-d_H:i:s');
+
+            $export = new DirectDebitExport($response);
+
+            Excel::store($export, 'dd/' . $filename . '.xlsx', 's3');
+
+            $url = Storage::disk('s3')->url('dd/' . $filename . '.xlsx');
+            FacadesLog::debug('Skipping ' . $url );
+
             $this->mailService->sendReportAsMail(
                 'Direct Debit Report',
-                $response,
+                [$url],
                 [config('app.operations_email'), config('app.admin_email')],
                 'Direct Debit Report',
-                'DirectDebit',
+                'DirectDebitLink',
                 'Direct Debit Report ' . Carbon::now()->toDateString()
             );
+
         } catch (BindingResolutionException $e) {
             FacadesLog::error($e->getMessage());
         } catch (Exception $e) {
