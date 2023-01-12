@@ -64,7 +64,7 @@ class DirectDebitService
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
 
             })->orderBy('id', $sortOrder);
-        return $data->get();
+        return $data->limit(2)->get();
     }
 
     public function handle($sortOrder="DESC")
@@ -77,6 +77,7 @@ class DirectDebitService
         $skip = 0;
         $errorMessage = "";
         foreach ($items as $item) {
+            FacadesLog::debug('Treating Order ID ' . $item->new_order_id);
             if ($skip == $item->new_order_id) {
                 FacadesLog::debug('Skipping Order ID ' . $item->new_order_id . ' because of ' . $errorMessage);
                 continue;
