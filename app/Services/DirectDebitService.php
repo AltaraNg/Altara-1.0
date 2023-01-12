@@ -75,9 +75,10 @@ class DirectDebitService
             return 'No Customers are available';
         }
         $skip = 0;
+        $errorMessage = "";
         foreach ($items as $item) {
             if ($skip == $item->new_order_id) {
-                FacadesLog::debug('Skipping ' . $item->new_order_id . 'because of failed transaction');
+                FacadesLog::debug('Skipping ' . $item->new_order_id . ' because of ' . $errorMessage);
                 continue;
             }
             $amountToDeduct = $item->expected_amount - $item->actual_amount;
@@ -107,9 +108,10 @@ class DirectDebitService
                 ]);
             } else {
                 $skip = $item->new_order_id;
+                $errorMessage =  (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong');
                 $res[] = array_merge($data, [
                     'status' => 'failed',
-                    'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
+                    'statusMessage' => $errorMessage
                 ]);
             }
         }
