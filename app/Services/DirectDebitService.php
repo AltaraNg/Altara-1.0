@@ -64,7 +64,7 @@ class DirectDebitService
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
 
             })->orderBy('id', $sortOrder);
-        return $data->limit(2)->get();
+        return $data->get();
     }
 
     public function handle($sortOrder="DESC")
