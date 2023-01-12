@@ -78,7 +78,7 @@ class DirectDebitService
         $errorMessage = "";
         foreach ($items as $item) {
             if ($skip == $item->new_order_id) {
-                FacadesLog::debug('Skipping ' . $item->new_order_id . ' because of ' . $errorMessage);
+                FacadesLog::debug('Skipping Order ID ' . $item->new_order_id . ' because of ' . $errorMessage);
                 continue;
             }
             $amountToDeduct = $item->expected_amount - $item->actual_amount;
