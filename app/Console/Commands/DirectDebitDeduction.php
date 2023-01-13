@@ -62,7 +62,7 @@ class DirectDebitDeduction extends BaseCommand
             $response = $this->directDebitService->handle($sortOrder);
             $this->info(count($response) . ' records treated');
             $this->table(
-                ['Id', 'Name', 'Order Id', 'Ammount', 'Status', 'Message'],
+                ['Id', 'Name', 'Order Id', 'Order Date', 'Business Type', 'Amount', 'Status', 'Message'],
                 $response
             );
 

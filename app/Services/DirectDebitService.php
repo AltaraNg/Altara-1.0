@@ -77,7 +77,6 @@ class DirectDebitService
         $skip = 0;
         $errorMessage = "";
         foreach ($items as $item) {
-            FacadesLog::debug('Treating Order ID ' . $item->new_order_id);
             if ($skip == $item->new_order_id) {
                 FacadesLog::debug('Skipping Order ID ' . $item->new_order_id . ' because of ' . $errorMessage);
                 continue;
@@ -89,6 +88,8 @@ class DirectDebitService
                 'customer_id' => $item->new_orders->customer_id,
                 'customer_name' => $item->new_orders->customer->full_name,
                 'order_id' => $item->new_orders->order_number,
+                'order_date' => $item->new_orders->order_date,
+                'business_type' => $item->new_orders->businessType->name ?? null,
                 'amount' => $amountToDeduct,
             ];
             $data_for_log =  [
