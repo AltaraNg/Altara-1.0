@@ -195,5 +195,6 @@ Route::post('/credit-check', 'CreditCheckController@check');
 
 Route::prefix('/bnlp')->group(function () {
     Route::post('/amortization/preview', 'BnlpController@previewAmortization');
+    Route::post('/create/order', 'BnlpController@createOrder');
     Route::post('/send/message', 'BnlpController@sendMessage');
 });

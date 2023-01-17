@@ -6,6 +6,7 @@ use App\Http\Requests\NewOrderRequest;
 use App\Services\AmmortizationService;
 use Illuminate\Http\Request;
 use App\Helper\ResponseHelper;
+use App\Repositories\NewOrderRepository;
 use App\Services\MessageService;
 use Error;
 
@@ -36,5 +37,11 @@ class BnlpController extends Controller
         ]);
         $response = $messageService->sendMessage($request->input('phone_number'), $request->input('message'));
         return $this->sendSuccess(['response' => $response], 'Message Response');
+    }
+
+    public function createOrder(NewOrderRequest $request, NewOrderRepository $newOrderRepository)
+    {
+        $order = $newOrderRepository->store($request->validated());
+        return $this->sendSuccess(['order' => $order], 'Order created');
     }
 }
