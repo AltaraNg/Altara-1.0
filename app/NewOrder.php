@@ -26,7 +26,7 @@ class   NewOrder extends Model
     const EXTREPO = 'external_repossession';
 
     const BANK54 = 'bank54';
-    const ALTARA_BNPL ='altar-bnpl';
+    const ALTARA_BNPL ='altara-bnpl';
 
 
     /**
