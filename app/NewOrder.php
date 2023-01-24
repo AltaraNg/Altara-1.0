@@ -26,6 +26,7 @@ class   NewOrder extends Model
     const EXTREPO = 'external_repossession';
 
     const BANK54 = 'bank54';
+    const ALTARA_BNPL ='altar-bnpl';
 
 
     /**
@@ -60,7 +61,7 @@ class   NewOrder extends Model
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
             'discount_id' => 'sometimes|exists:discounts,id',
             'bvn' => [new RequiredIf(request('financed_by') == self::BANK54), 'string'],
-            'financed_by' => ['required', 'string', Rule::in(['altara', self::BANK54])],
+            'financed_by' => ['required', 'string', Rule::in(['altara', self::BANK54, self::ALTARA_BNPL])],
         ];
     }
 
