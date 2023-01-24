@@ -46,7 +46,7 @@ class NewOrderRepository extends Repository
         unset($validated['bvn']);
 
         if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
-            $user_id = 1;
+            $user_id = $validated['owner_id'];
             $branch_id = Branch::query()->where('name', 'Ikoyi')->first()->id;
         } else {
             $user_id = auth()->user()->id;
