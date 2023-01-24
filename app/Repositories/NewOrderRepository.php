@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Branch;
 use Exception;
 use App\NewOrder;
 use App\Inventory;
@@ -44,11 +45,19 @@ class NewOrderRepository extends Repository
         unset($validated['discount']);
         unset($validated['bvn']);
 
+        if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
+            $user_id = $validated['owner_id'];
+            $branch_id = Branch::query()->where('name', 'Ikoyi')->first()->id;
+        } else {
+            $user_id = auth()->user()->id;
+            $branch_id = auth()->user()->branch_id;
+        }
+
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
             'order_date' => Carbon::now(),
-            'user_id' => auth()->user()->id,
-            'branch_id' => auth()->user()->branch_id,
+            'user_id' => $user_id,
+            'branch_id' => $branch_id,
             'status_id' => OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id,
             'product_id' => $inventory->product_id
         ]));
@@ -92,9 +101,9 @@ class NewOrderRepository extends Repository
         $order->update(['status_id' =>  OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id]);
     }
 
-    public function firstById (int $orderId)
+    public function firstById(int $orderId)
     {
-       return $this->model::findOrFail($orderId);
+        return $this->model::findOrFail($orderId);
     }
     public function saveFeedBack($data)
     {
@@ -106,12 +115,12 @@ class NewOrderRepository extends Repository
             'feedback' => $data['feedback'],
             'follow_up_date' => $data['follow_up_date']
         ]);
-       return $order->generalFeedBacks()->save($feedback);
+        return $order->generalFeedBacks()->save($feedback);
     }
 
     public function getDirectDebitOrderWithUnpaidAmortization(int $order_id)
     {
-       return $this->model::where('id', $order_id)
+        return $this->model::where('id', $order_id)
             ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id)
             ->has('authCode')
             ->has('unpaidAmortizations')
