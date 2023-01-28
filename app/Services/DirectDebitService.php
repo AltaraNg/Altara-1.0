@@ -114,7 +114,7 @@ class DirectDebitService
                 $skip = $item->new_order_id;
                 $errorMessage =  (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong');
                 $res[] = array_merge($data, [
-                    'bank' => '',
+                    'bank' => $response->data->authorization->bank ?? '',
                     'status' => 'failed',
                     'statusMessage' => $errorMessage
                 ]);
