@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerStage;
-use App\Events\CustomerStageUpdatedEvent;
-use App\Http\Filters\ContactCustomerFilter;
-use App\Http\Filters\DailySalesNewOrderFilter;
+use App\NewOrder;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
-use App\NewOrder;
+use App\Repositories\NewOrderRepository;
+use App\Services\NewOrdersReportService;
+use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\DirectDebitDataRepository;
-use App\Repositories\NewOrderRepository;
 use App\Repositories\PaystackAuthCodeRepository;
-use App\Services\NewOrdersReportService;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Types\This;
-use Symfony\Component\VarDumper\Cloner\Data;
+use App\Services\DirectDebitService;
+use Carbon\Carbon;
 
 class NewOrderController extends Controller
 {
@@ -80,7 +77,32 @@ class NewOrderController extends Controller
                 'mode' => 0,
             ]);
         }
-
+        if ($request->amortization_downpayment > 0) {
+            $order = $order->refresh();
+            $amortization = $order->amortization;
+            $amount = $request->amortization_downpayment;
+            $count = $amortization->count() - 1;
+            while ($amount > 0 && $count < $amortization->count()) {
+                $item = $amortization[$count];
+                $amountToDeduct = $item->expected_amount;
+                $actualAmount = 0;
+                if ($amount >= $amountToDeduct) {
+                    $actualAmount = $item->actual_amount + $amountToDeduct;
+                    $amount = $amount - $amountToDeduct;
+                } else if ($amount < $amountToDeduct) {
+                    $actualAmount = $item->actual_amount + $amount;
+                    $amount = 0;
+                }
+                if ($actualAmount > 0) {
+                    $item->update([
+                        'actual_payment_date' => Carbon::now(),
+                        'actual_amount' => $actualAmount,
+                        'user_id' => auth('api')->user()->id
+                    ]);
+                }
+                $count--;
+            }
+        }
         return $this->sendSuccess($order->toArray(), 'Order Successfully Created');
     }
 
@@ -124,5 +146,25 @@ class NewOrderController extends Controller
         $additional = $newOrdersReportService->generateMetaData($newOrdersQuery);
         $additional = $additional->put('totalSalesPerDay', $getTotalSalesPerDay);
         return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
+    }
+
+
+    public function chargeCustomerOrder(Request $request, DirectDebitService $directDebitService)
+    {
+        $this->validate($request, [
+            'amount' => ['required', 'integer', 'min:1'],
+            'order_id' => ['required', 'integer'],
+            'account' => ['required', 'integer']
+        ]);
+        $new_order = $this->newOrderRepository->getDirectDebitOrderWithUnpaidAmortization($request->order_id);
+        //if order does not qualify to get debited through this method
+        if ($new_order == null) {
+            return $this->sendError('Order supplied can not be treated', 400, [], 400);
+        }
+        $response =  $directDebitService->handleCustomDebit($new_order, $request->amount, $request->account);
+        if ($response['status'] == 'failed') {
+            return $this->sendError($response['statusMessage'], 400, [], 400);
+        }
+        return $this->sendSuccess([], 'Customer debited successfully and amortization(s) has been updated');
     }
 }

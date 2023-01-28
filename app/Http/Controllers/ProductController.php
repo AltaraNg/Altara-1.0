@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\NewOrderFilter;
 use App\Http\Filters\ProductFilter;
 use App\Http\Requests\ProductRequest;
 use App\Imports\ProductsImport;
 use App\Product;
+use App\Repositories\NewOrderRepository;
 use App\Repositories\ProductRepository;
+use App\Services\ProductService;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -14,10 +18,13 @@ use Maatwebsite\Excel\Facades\Excel;
 class ProductController extends Controller
 {
     private $productRepo;
+    private $newOrderRepository;
 
-    public function __construct(ProductRepository $productRepository)
+
+    public function __construct(ProductRepository $productRepository, NewOrderRepository $newOrderRepository)
     {
         $this->productRepo = $productRepository;
+        $this->newOrderRepository = $newOrderRepository;
     }
 
     /**
@@ -82,7 +89,7 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        return $this->sendSuccess([],'Product deleted successfully');
+        return $this->sendSuccess([], 'Product deleted successfully');
     }
 
     /**
@@ -90,8 +97,16 @@ class ProductController extends Controller
      */
     public function uploadSheet()
     {
-        Excel::import(new ProductsImport(),Request::file('file'));
+        Excel::import(new ProductsImport(), Request::file('file'));
 
-        return $this->sendSuccess([],'Product Uploaded successfully');
+        return $this->sendSuccess([], 'Product Uploaded successfully');
+    }
+
+    public function fetchLeastAndMostOrderedProduct (NewOrderFilter $filter, ProductService $productService, HttpRequest $request)
+    {
+        $limit = $request['numberOfProduct'];
+        $newOrdersQuery = $this->newOrderRepository->reportQuery($filter)->latest('new_orders.created_at');
+        $additional = $productService->getProductByRanks($newOrdersQuery, $limit ?? 3);
+        return $this->sendSuccess(["meta" => $additional], 'Products retrieved successfully');
     }
 }

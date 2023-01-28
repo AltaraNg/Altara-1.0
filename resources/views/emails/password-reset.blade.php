@@ -251,7 +251,7 @@
                                                         <v:textbox inset="0,0,0,0">
                                                             <center
                                                                 style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px">
-                                        <![endif]--><a href="{{config('app.url')}}/password/reset/{{$token}}" target="_blank"
+                                        <![endif]--><a href="{{config('app.frontend_url')}}/password/reset/{{$token}}" target="_blank"
                                                        style="-webkit-text-size-adjust: none; text-decoration: none; display: inline-block; color: #ffffff; background-color: #0068a5; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; width: auto; width: auto; border-top: 1px solid #3AAEE0; border-right: 1px solid #3AAEE0; border-bottom: 1px solid #3AAEE0; border-left: 1px solid #3AAEE0; padding-top: 5px; padding-bottom: 5px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; text-align: center; mso-border-alt: none; word-break: keep-all;"><span
                                                 style="padding-left:5px;padding-right:5px;font-size:16px;display:inline-block;"><span
                                                     style="font-size: 16px; line-height: 1.5; word-break: break-word; mso-line-height-alt: 24px;">Reset Password</span></span></a>

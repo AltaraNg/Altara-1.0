@@ -42,6 +42,7 @@ class NewOrdersReportService
         return $additional;
     }
 
+
     private  function getBranchesData($newOrdersQuery, $totalRevenue, $totalDownPayment)
     {
         $branches = $this->branchRepo->getBranches(['id', 'name']);
