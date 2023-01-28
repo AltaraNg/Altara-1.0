@@ -64,7 +64,7 @@ class DirectDebitService
                     ->where('payment_gateway_id', PaymentGateway::where('name', PaymentGateway::PAYSTACK)->first()->id);
 
             })->orderBy('id', $sortOrder);
-        return $data->get();
+        return $data->take(1)->get();
     }
 
     public function handle($sortOrder="DESC")
@@ -83,10 +83,12 @@ class DirectDebitService
             }
             $amountToDeduct = $item->expected_amount - $item->actual_amount;
             $response = $this->paystackService->charge($item);
+            // dd($response);
             # code...
             $data = [
                 'customer_id' => $item->new_orders->customer_id,
                 'customer_name' => $item->new_orders->customer->full_name,
+                'branch' => $item->new_orders->branch->name ?? "",
                 'order_id' => $item->new_orders->order_number,
                 'order_date' => $item->new_orders->order_date,
                 'business_type' => $item->new_orders->businessType->name ?? null,
@@ -105,6 +107,7 @@ class DirectDebitService
                 $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
                 event(new RepaymentEvent($item->new_orders, $item));
                 $res[] = array_merge($data, [
+                    'bank' => $response->data->authorization->bank ?? '',
                     'status' => 'success',
                     'statusMessage' => 'Approved'
                 ]);
@@ -112,6 +115,7 @@ class DirectDebitService
                 $skip = $item->new_order_id;
                 $errorMessage =  (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong');
                 $res[] = array_merge($data, [
+                    'bank' => '',
                     'status' => 'failed',
                     'statusMessage' => $errorMessage
                 ]);
