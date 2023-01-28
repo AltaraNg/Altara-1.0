@@ -16,6 +16,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\NewOrder;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/login', 'AuthController@login');
 Route::post('/password/reset', 'AuthController@sendResetLinkEmail');
@@ -189,9 +190,11 @@ Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerControll
 
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
-//Route::apiResource('amortization', 'AmortizationController');
+// Route::apiResource('amortization', 'AmortizationController');
 // Route::post('/amortization/preview', 'AmortizationController@preview');
 
-
-
-
+Route::prefix('/bnlp')->group(function () {
+    Route::post('/amortization/preview', 'BnlpController@previewAmortization');
+    Route::post('/create/order', 'BnlpController@createOrder');
+    Route::post('/send/message', 'BnlpController@sendMessage');
+});
