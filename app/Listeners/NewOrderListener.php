@@ -7,6 +7,7 @@ use App\Exceptions\AException;
 use App\Helper\Constants;
 use App\Helper\LogHelper;
 use App\Notifications\NewOrderNotification;
+use App\OrderStatus;
 use Illuminate\Support\Str;
 
 class NewOrderListener
@@ -20,6 +21,11 @@ class NewOrderListener
      */
     public function handle(NewOrderEvent $event)
     {
+        if ($event->order->repayment < 1 && $event->order->businessType->slug == 'ap_cash_n_carry') {
+            $event->order->status_id =  OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id;
+            $event->order->save();
+            return;
+        }
         try {
             $p = app()->make('App\Amortization\\' . Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
             try {
