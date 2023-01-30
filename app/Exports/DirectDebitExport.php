@@ -24,6 +24,6 @@ class DirectDebitExport implements FromArray, WithHeadings
 
     public function headings(): array
     {
-        return ['ID', 'Customer Name', 'Order Number', 'Amount', 'Status', 'Gateway Response'];
+        return ['ID', 'Customer Name', 'Branch', 'Order Number', 'Order Date', 'Business Type', 'Amount', 'Bank', 'Status', 'Gateway Response'];
     }
 }

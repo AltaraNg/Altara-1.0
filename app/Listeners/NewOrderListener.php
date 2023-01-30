@@ -22,7 +22,6 @@ class NewOrderListener
      */
     public function handle(NewOrderEvent $event)
     {
-
         $order = $event->order;
         try {
             if ($order->repayment < 1 && $order->businessType->slug == 'ap_cash_n_carry') {
@@ -31,13 +30,6 @@ class NewOrderListener
                         'status_id' => OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,
                     ]
                 );
-                // $order->update([
-                //     'status_id' => OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,
-                // ]);
-                // $order->status_id =  OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id;
-                // $order->save();
-                return;
-            }
             $p = app()->make('App\Amortization\\' . Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
             try {
                 $event->order->customer->notify(new NewOrderNotification($event->order));
