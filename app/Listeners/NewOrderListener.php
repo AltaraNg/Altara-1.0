@@ -30,6 +30,7 @@ class NewOrderListener
                         'status_id' => OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,
                     ]
                 );
+            }
             $p = app()->make('App\Amortization\\' . Str::studly($event->order->repaymentCycle->name), ['order' => $event->order])->create();
             try {
                 $event->order->customer->notify(new NewOrderNotification($event->order));
