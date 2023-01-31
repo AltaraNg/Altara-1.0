@@ -54,12 +54,14 @@ class NewOrderRepository extends Repository
             $branch_id = auth()->user()->branch_id;
         }
         $businessType = BusinessType::query()->where('id', $data['business_type_id'])->first();
+
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
             'order_date' => Carbon::now(),
             'user_id' => $user_id,
             'branch_id' => $branch_id,
             'status_id' => $validated['repayment'] > 0 &&  $businessType->slug != 'ap_cash_n_carry' ? OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id : OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,
+
             'product_id' => $inventory->product_id
         ]));
         if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM) {
