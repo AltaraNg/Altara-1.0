@@ -45,7 +45,9 @@ class NewOrderRepository extends Repository
         unset($validated['bank_id']);
         unset($validated['discount']);
         unset($validated['bvn']);
-
+        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL) {
+            unset($validated['bnpl_vendor_product_id']);
+        }
         if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
             $user_id = $validated['owner_id'];
             $branch_id = Branch::query()->where('name', 'Ikoyi')->first()->id;
@@ -55,13 +57,14 @@ class NewOrderRepository extends Repository
         }
         $businessType = BusinessType::query()->where('id', $data['business_type_id'])->first();
 
+
+
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
             'order_date' => Carbon::now(),
             'user_id' => $user_id,
             'branch_id' => $branch_id,
             'status_id' => $validated['repayment'] > 0 &&  $businessType->slug != 'ap_cash_n_carry' ? OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id : OrderStatus::where('name', OrderStatus::COMPLETED)->first()->id,
-
             'product_id' => $inventory->product_id
         ]));
         if (RepaymentCycle::find($data['repayment_cycle_id'])->name === RepaymentCycle::CUSTOM) {
