@@ -267,4 +267,12 @@ class NewOrderFilter extends BaseFilter
         }
         $this->builder->whereHas('businessType', $closure);
     }
+
+      /**
+     * @param int $id
+     */
+    public function financed_by(string $financed_by)
+    {
+        $this->builder->where('financed_by', $financed_by);
+    }
 }

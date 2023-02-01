@@ -22,6 +22,7 @@ class NewOrderController extends Controller
     private $newOrderRepository;
     private $paystackAuthCodeRepository;
     private $directDebitDataRepository;
+    private $contactRepository;
 
     public function __construct(
         NewOrderRepository $newOrderRepository,
@@ -30,7 +31,7 @@ class NewOrderController extends Controller
         DirectDebitDataRepository $directDebitDataRepository
     ) {
         $this->newOrderRepository = $newOrderRepository;
-        $this->contactRepo = $contactRepository;
+        $this->contactRepository = $contactRepository;
         $this->paystackAuthCodeRepository = $paystackAuthCodeRepository;
         $this->directDebitDataRepository = $directDebitDataRepository;
     }
