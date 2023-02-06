@@ -55,9 +55,9 @@ class DirectDebitService
         //get list of due payments
         $data = Amortization::where('actual_payment_date', null)
             ->whereDate('expected_payment_date', '<=', Carbon::now())
-            ->orWhere(function (Builder $query) {
-                $query->whereDate('expected_payment_date', '<=', Carbon::now())->whereColumn('actual_amount', '<', 'expected_amount');
-            })
+            // ->orWhere(function (Builder $query) {
+            //     $query->whereDate('expected_payment_date', '<=', Carbon::now())->whereColumn('actual_amount', '<', 'expected_amount');
+            // })
             ->whereHas('new_orders', function ($q) {
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
@@ -75,9 +75,10 @@ class DirectDebitService
             return 'No Customers are available';
         }
         $skip = 0;
+        $errorMessage = "";
         foreach ($items as $item) {
             if ($skip == $item->new_order_id) {
-                FacadesLog::debug('Skipping ' . $item->new_order_id . 'because of failed transaction');
+                FacadesLog::debug('Skipping Order ID ' . $item->new_order_id . ' because of ' . $errorMessage);
                 continue;
             }
             $amountToDeduct = $item->expected_amount - $item->actual_amount;
@@ -86,7 +87,10 @@ class DirectDebitService
             $data = [
                 'customer_id' => $item->new_orders->customer_id,
                 'customer_name' => $item->new_orders->customer->full_name,
+                'branch' => $item->new_orders->branch->name ?? "",
                 'order_id' => $item->new_orders->order_number,
+                'order_date' => $item->new_orders->order_date,
+                'business_type' => $item->new_orders->businessType->name ?? null,
                 'amount' => $amountToDeduct,
             ];
             $data_for_log =  [
@@ -102,14 +106,17 @@ class DirectDebitService
                 $resp = PaymentService::logPayment($data_for_log, $item->new_orders);
                 event(new RepaymentEvent($item->new_orders, $item));
                 $res[] = array_merge($data, [
+                    'bank' => $response->data->authorization->bank ?? '',
                     'status' => 'success',
                     'statusMessage' => 'Approved'
                 ]);
             } else {
                 $skip = $item->new_order_id;
+                $errorMessage =  (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong');
                 $res[] = array_merge($data, [
+                    'bank' => $response->data->authorization->bank ?? '',
                     'status' => 'failed',
-                    'statusMessage' => (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong')
+                    'statusMessage' => $errorMessage
                 ]);
             }
         }
