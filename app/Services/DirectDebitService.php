@@ -177,7 +177,7 @@ class DirectDebitService
                     $item->update([
                         'actual_payment_date' => Carbon::now(),
                         'actual_amount' => $item->new_orders['amount'],
-                        'user_id' => 1
+                        'user_id' => auth()->user()->id ?? 1
                     ]);
                     $this->repaymentEventService->repaymentListenerAction($item->new_orders);
                     $this->repaymentEventService->bank54RepaymentListenerAction($item->new_orders);
