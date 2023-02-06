@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\NewOrder;
+use App\OrderType;
 use Carbon\Carbon;
 use App\Recollection;
 use Illuminate\Support\Str;
@@ -150,8 +151,9 @@ class RecollectionService
 
     private function getCountCompletedOrders($orderQuery)
     {
+        $cashAndCarryId = OrderType::where('name', 'Cash n Carry')->first()->id;
         $rawQuery = DB::raw("EXISTS(SELECT COUNT(*) AS totalRepayment, SUM(IF(amortizations.actual_payment_date IS NOT NULL, 1 , 0)) as noOfRePaymentMade from amortizations WHERE new_orders.id = amortizations.new_order_id GROUP BY amortizations.new_order_id HAVING(totalRepayment-noOfRePaymentMade) <= 0)");
-        return $orderQuery->whereRaw($rawQuery)->count();
+        return $orderQuery->whereRaw($rawQuery)->orWhere('order_type_id', $cashAndCarryId)->count();
     }
 
     private function getAmountReceived($orderQuery)
