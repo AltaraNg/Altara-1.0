@@ -70,7 +70,7 @@ class CustomerController extends Controller
         /** 1. validate the customer's phone number */
         $this->validate($request, [
             'telephone' => 'required|string|unique:customers,telephone',
-            'email' => 'required|string|email|unique:customers,email',
+            'email' => 'sometimes|string|email|unique:customers,email',
             'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
         ]);
 
