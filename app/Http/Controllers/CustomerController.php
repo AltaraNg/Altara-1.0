@@ -74,11 +74,23 @@ class CustomerController extends Controller
             'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
         ]);
 
-        /** 2. Create a new customer instance */
-        $customer = new Customer($request->all());
 
-        /** 3. Add other key value pairs */
-        $customer->days_of_work = implode(' ', $request['days_of_work']);
+        $data = $request->all();
+        if (array_key_exists('customer_type', $data)) {
+            unset($data['customer_type']);
+        }
+
+
+        if (array_key_exists('days_of_work', $data)) {
+            /** 3. Add other key value pairs */
+            $data['days_of_work'] = implode(' ', $request['days_of_work']);
+            unset($data['days_of_work']);
+        }
+
+        /** 2. Create a new customer instance */
+        $customer = new Customer($data);
+
+
 
         /** 4. save the customer to db */
         $customer->save();
@@ -192,7 +204,7 @@ class CustomerController extends Controller
             'user' => function ($query) {
                 $query->select('id', 'full_name', 'branch_id');
             },
-            'guarantorPaystack' => function($query) {
+            'guarantorPaystack' => function ($query) {
                 return $query->where('status', 'active');
             },
             'branch',
@@ -238,7 +250,7 @@ class CustomerController extends Controller
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack' => function($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack' => function ($query) {
             return $query->where('status', 'active');
         },  'branch', 'new_orders' => function ($query) {
 
