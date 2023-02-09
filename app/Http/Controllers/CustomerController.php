@@ -122,7 +122,7 @@ class CustomerController extends Controller
             /** 2. Check if the customer is linked to a branch(NB:: this is as a result of the new field branch_id
              * in the customers table during the migration to this new portal) hence most
              * of the old records dont have branch_id */
-            if (!isset($customer->branch)) {
+            if (!isset($customer->branch) && property_exists($customer, 'user')) {
                 /** 2 if the branch is not set (ie its an old record)*/
                 /** 2.a set the branch id of the customer to the branch of the DSA that registered the customer*/
                 $customer->branch_id = $customer->user->branch_id;
