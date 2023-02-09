@@ -77,9 +77,10 @@ class RecollectionService
 
     public function generateStats($newOrders): array
     {
+        $cashAndCarryId = OrderType::where('name', 'Cash n Carry')->first()->id;
         $newOrders = $newOrders->whereHas('branch', function ($query) {
             $query->where('name', '!=', 'Ikoyi')->where('name', '!=', 'Challenge Warehouse')->where('name', '!=', 'Micro Alakia');
-        });
+        })->where('order_type_id', '!=', $cashAndCarryId);
         $additional['total_sales'] =  $newOrders->count();
         $additional['amountReceived'] = $this->getAmountReceived(clone $newOrders) + $newOrders->sum('down_payment');
         $additional['amountOwed'] = $this->getAmountOwed(clone $newOrders);
@@ -146,14 +147,13 @@ class RecollectionService
 
     private function getCountInactiveOrders($orderQuery)
     {
-       
     }
 
     private function getCountCompletedOrders($orderQuery)
     {
-        $cashAndCarryId = OrderType::where('name', 'Cash n Carry')->first()->id;
+
         $rawQuery = DB::raw("EXISTS(SELECT COUNT(*) AS totalRepayment, SUM(IF(amortizations.actual_payment_date IS NOT NULL, 1 , 0)) as noOfRePaymentMade from amortizations WHERE new_orders.id = amortizations.new_order_id GROUP BY amortizations.new_order_id HAVING(totalRepayment-noOfRePaymentMade) <= 0)");
-        return $orderQuery->whereRaw($rawQuery)->orWhere('order_type_id', $cashAndCarryId)->count();
+        return $orderQuery->whereRaw($rawQuery)->count();
     }
 
     private function getAmountReceived($orderQuery)
