@@ -68,11 +68,21 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         /** 1. validate the customer's phone number */
-        $this->validate($request, [
-            'telephone' => 'required|string|unique:customers,telephone',
-            'email' => 'sometimes|string|email|unique:customers,email',
-            'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'telephone' => 'required|string|unique:customers,telephone',
+                'email' => 'sometimes|string|email|unique:customers,email',
+                'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
+            ],
+            [
+                'telephone.required' => 'Phone number field is required',
+                'telephone.unique' => 'The supplied phone number has already been taken',
+                'email.unique' => 'The supplied email address has already been taken',
+                'reg_id.exists' => 'The supplied registration id does not exists in our system',
+                'reg_id.unique' => 'The supplied registration id has already been taken',
+            ]
+        );
 
 
         $data = $request->all();
