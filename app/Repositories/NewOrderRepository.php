@@ -45,7 +45,9 @@ class NewOrderRepository extends Repository
         unset($validated['bank_id']);
         unset($validated['discount']);
         unset($validated['bvn']);
-
+        if ($validated['financed_by'] != NewOrder::ALTARA_BNPL) {
+            unset($validated['bnpl_vendor_product_id']);
+        }
         if ($data['financed_by'] === NewOrder::ALTARA_BNPL) {
             $user_id = $validated['owner_id'];
             $branch_id = Branch::query()->where('name', 'Ikoyi')->first()->id;
@@ -54,6 +56,9 @@ class NewOrderRepository extends Repository
             $branch_id = auth()->user()->branch_id;
         }
         $businessType = BusinessType::query()->where('id', $data['business_type_id'])->first();
+
+
+
         $order = $this->model::create(array_merge($validated, [
             'order_number' => Helper::generateTansactionNumber('AT'),
             'order_date' => Carbon::now(),
