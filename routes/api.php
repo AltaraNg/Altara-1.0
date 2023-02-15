@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/feedbacks/export', 'FeedbackController@export');
     Route::post('/recommendation', 'AmortizationController@recommend');
     Route::get('/customer-recommendation/{customer}', 'RecommendationController@getRecommendationByCustomer');
-
+    Route::post('saveVerification', 'VerificationController@saveVerificationData');
     Route::get('/order/reports', 'NewOrderController@report');
     Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');
     Route::get('/order-types', 'OrderTypeController@index');
