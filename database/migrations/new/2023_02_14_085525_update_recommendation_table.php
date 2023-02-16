@@ -34,6 +34,7 @@ class UpdateRecommendationTable extends Migration
     {
         Schema::table('recommendations', function (Blueprint $table) {
             //
+            $table->enum('type', ["formal", "informal"])->change();
         });
     }
 }

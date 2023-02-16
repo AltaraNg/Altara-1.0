@@ -84,19 +84,7 @@ class VerificationController extends Controller
         //
     }
 
-    public function saveVerificationData(Request $request)
-    {
-        $data = $request->all();
-        $data['verifiedBy'] = auth()->user()->full_name;
-        $verifiedData = Recommendation::create([
-            "staff_id" => auth()->user()->id,
-            "customer_id" => request("customer_id"),
-            "type" => "verification",
-            "input_data" => json_encode($data),
-            "result" => json_encode([])
-        ]);
-        return $this->sendSuccess($verifiedData->toArray(), 'data saved successfully');
-    }
+    
 
     /**
      * Remove the specified resource from storage.
