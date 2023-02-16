@@ -63,6 +63,8 @@ class   NewOrder extends Model
             'bvn' => [new RequiredIf(request('financed_by') == self::BANK54), 'string'],
             'financed_by' => ['required', 'string', Rule::in(['altara', self::BANK54, self::ALTARA_BNPL])],
             'bnpl_vendor_product_id' => [new RequiredIf(request('financed_by') == self::ALTARA_BNPL), 'integer', Rule::exists('bnpl_vendor_products', 'id')->where('vendor_id', request('owner_id'))],
+            "commission_percentage" => ['sometimes', 'numeric', 'max:100'],
+            "commission_amount" => ['sometimes', 'numeric'],
         ];
     }
 
