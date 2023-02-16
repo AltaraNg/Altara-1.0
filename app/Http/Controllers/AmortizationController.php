@@ -80,7 +80,7 @@ class AmortizationController extends Controller
     public function recommend(AmmortizationService $service, Request $request)
     {
         // dd(request('down_payment'));
-        if (request('type') == 'verification' || request('type') == 'credit_check') {
+        if (request('type') == 'verification' || request('type') == 'credit_report') {
             $data = $request->all();
             $data['verifiedBy'] = auth()->user()->full_name;
             $verifiedData = Recommendation::create([
