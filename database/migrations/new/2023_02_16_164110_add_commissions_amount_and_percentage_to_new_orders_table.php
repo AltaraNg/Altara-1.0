@@ -14,8 +14,8 @@ class AddCommissionsAmountAndPercentageToNewOrdersTable extends Migration
     public function up()
     {
         Schema::table('new_orders', function (Blueprint $table) {
-            $table->float('commission_percentage')->default(0);
-            $table->float('commission_amount')->default(0);
+            $table->float('commitment_percentage')->default(0);
+            $table->float('commitment_amount')->default(0);
         });
     }
 
@@ -27,7 +27,7 @@ class AddCommissionsAmountAndPercentageToNewOrdersTable extends Migration
     public function down()
     {
         Schema::table('new_orders', function (Blueprint $table) {
-            $table->dropColumn(['commission_amount', 'commission_percentage']);
+            $table->dropColumn(['commitment_amount', 'commitment_percentage']);
         });
     }
 }
