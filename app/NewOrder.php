@@ -63,6 +63,8 @@ class   NewOrder extends Model
             'bvn' => [new RequiredIf(request('financed_by') == self::BANK54), 'string'],
             'financed_by' => ['required', 'string', Rule::in(['altara', self::BANK54, self::ALTARA_BNPL])],
             'bnpl_vendor_product_id' => [new RequiredIf(request('financed_by') == self::ALTARA_BNPL), 'integer', Rule::exists('bnpl_vendor_products', 'id')->where('vendor_id', request('owner_id'))],
+            "commitment_percentage" => ['sometimes', 'numeric', 'max:100'],
+            "commitment_amount" => ['sometimes', 'numeric'],
         ];
     }
 
@@ -319,8 +321,9 @@ class   NewOrder extends Model
             'financed_by' => $this->financed_by ?? null,
             'latestAmortizationPayed' => $this->latestAmortizationPayed,
             'latestAmortizationNotPayed' => $this->latestAmortizationNotPayed,
-            'paystack_auth_code' => $this->paystackAuthCode ?? null
-
+            'paystack_auth_code' => $this->paystackAuthCode ?? null,
+            'commitment_amount' => $this->commitment_amount,
+            'commitment_percentage' => $this->commitment_percentage,
         ];
     }
 }

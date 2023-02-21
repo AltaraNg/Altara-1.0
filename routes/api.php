@@ -64,7 +64,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/feedbacks/export', 'FeedbackController@export');
     Route::post('/recommendation', 'AmortizationController@recommend');
     Route::get('/customer-recommendation/{customer}', 'RecommendationController@getRecommendationByCustomer');
-
     Route::get('/order/reports', 'NewOrderController@report');
     Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');
     Route::get('/order-types', 'OrderTypeController@index');
@@ -174,6 +173,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
 
     Route::post('/charge/customer', 'NewOrderController@chargeCustomerOrder');
+
+    Route::post('/update/credit/checker/status/{creditCheckerVerification}', 'BnlpController@updateCreditCheckerVerificationStatus');
+    Route::get('all/credit/checker', 'BnlpController@allCreditCheckerVerification');
 });
 
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
@@ -193,7 +195,7 @@ Route::post('/credit-check', 'CreditCheckController@check');
 // Route::apiResource('amortization', 'AmortizationController');
 // Route::post('/amortization/preview', 'AmortizationController@preview');
 
-Route::prefix('/bnlp')->group(function () {
+Route::middleware('bnpl.admin.access')->prefix('/bnlp')->group(function () {
     Route::post('/amortization/preview', 'BnlpController@previewAmortization');
     Route::post('/create/order', 'BnlpController@createOrder');
     Route::post('/send/message', 'BnlpController@sendMessage');
