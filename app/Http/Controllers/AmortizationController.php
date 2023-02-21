@@ -118,7 +118,7 @@ class AmortizationController extends Controller
             $recommendation = Recommendation::create([
                 "staff_id" => $user->id,
                 "customer_id" => request("customer_id"),
-                "type" => 'recommendation',
+                "type" => request('type'),
                 "input_data" => json_encode($dataService),
                 "result" => json_encode($resp)
             ]);
