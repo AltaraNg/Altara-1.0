@@ -15,7 +15,7 @@ class CreateGuarantorsTable extends Migration
     {
         Schema::create('guarantors', function (Blueprint $table) {
             $table->bigIncrements('id');
-            
+            $table->unsignedInteger('created_by')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('middle_name')->nullable();
@@ -23,11 +23,12 @@ class CreateGuarantorsTable extends Migration
             $table->string('home_address')->nullable();
             $table->string('work_address')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('gender');
+            $table->string('gender')->nullable();
             $table->string('relationship')->nullable();
             $table->string('occupation')->nullable();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+          
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 
