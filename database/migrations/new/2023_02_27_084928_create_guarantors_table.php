@@ -16,6 +16,7 @@ class CreateGuarantorsTable extends Migration
         Schema::create('guarantors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('created_by')->nullable();
+            $table->unsignedInteger('customer_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('middle_name')->nullable();
@@ -29,6 +30,7 @@ class CreateGuarantorsTable extends Migration
           
             $table->timestamps();
             $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 
