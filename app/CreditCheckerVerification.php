@@ -14,4 +14,19 @@ class CreditCheckerVerification extends Model
 
     protected $guarded = [];
 
+    public function bnplProduct()
+    {
+       return $this->belongsTo(BnplVendorProduct::class, 'bnpl_vendor_product_id');
+    }
+
+    public function customer()
+    {
+       return $this->belongsTo(Customer::class, 'bnpl_vendor_product_id');
+    }
+
+    public function vendor()
+    {
+       return $this->belongsTo(User::class, 'initiated_by');
+    }
+
 }

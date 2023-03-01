@@ -45,7 +45,7 @@ class BnlpController extends Controller
             'status' => ['required', 'string', Rule::in(CreditCheckerVerification::STATUSES)],
             'reason' => ['sometimes', 'string'],
         ]);
-        
+
         $creditCheckerVerification->status = $request->input('status');
         $creditCheckerVerification->reason = $request->input('reason', $creditCheckerVerification->reason);
         $creditCheckerVerification->processed_by =  $request->user()->id;
@@ -56,7 +56,10 @@ class BnlpController extends Controller
     public function allCreditCheckerVerification(Request $request)
     {
         $status = $request->query('status', CreditCheckerVerification::PENDING);
-        $creditCheckerVerifications = CreditCheckerVerification::where('status', $status)->paginate();
+        $query =  CreditCheckerVerification::query()->when($request->query('status'), function ($query) use ($status) {
+            $query->where('status', $status);
+        })->with('bnplProduct', 'customer', 'vendor');
+        $creditCheckerVerifications = $query->paginate();
         return $this->sendSuccess(['creditCheckerVerifications' => $creditCheckerVerifications], 'Data fetched successfully');
     }
 }
