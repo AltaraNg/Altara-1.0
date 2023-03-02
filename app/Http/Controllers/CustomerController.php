@@ -222,8 +222,9 @@ class CustomerController extends Controller
             'address',
             'workGuarantor',
             'personalGuarantor',
+            'newDocuments',
             'document',
-            'processingFee'
+            'processingFee',
         ])->whereId($id)->first();
         /** 2. return the customer fetched*/
         return $customer;
@@ -260,7 +261,7 @@ class CustomerController extends Controller
 
     public function customerLookup($id)
     {
-        $customer = Customer::where('id', $id)->with(['document', 'verification', 'guarantorPaystack' => function ($query) {
+        $customer = Customer::where('id', $id)->with(['document', 'verification', 'newDocuments', 'guarantorPaystack' => function ($query) {
             return $query->where('status', 'active');
         },  'branch', 'new_orders' => function ($query) {
 
