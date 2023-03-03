@@ -20,6 +20,7 @@ class CreateNewDocumentsTable extends Migration
             $table->string('document_type')->nullable();
             $table->string('document_url')->nullable();
             $table->string('status')->nullable();
+            $table->string('name');
             $table->unsignedInteger('reviewed_by')->nullable();
             $table->timestamps();
             $table->softDeletes();

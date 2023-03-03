@@ -42,7 +42,8 @@ class NewDocumentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'document' => 'required|max:512|dimensions:max_width=1200,max_height=1200|mimes:jpeg,jpg,png,svg'
+            'document' => 'required|max:512|dimensions:max_width=1200,max_height=1200|mimes:jpeg,jpg,png,svg',
+            'name' => 'required|string'
         ]);
 
 
@@ -64,6 +65,7 @@ class NewDocumentController extends Controller
             $document->document_url = $filename;
 
             $document->user_id = auth('api')->user()->id;
+            $document->name = $request['name'];
 
 
             $customer = Customer::find($request['customer_id']);
