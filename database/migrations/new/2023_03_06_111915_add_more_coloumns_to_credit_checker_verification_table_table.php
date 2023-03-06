@@ -32,7 +32,7 @@ class AddMoreColoumnsToCreditCheckerVerificationTableTable extends Migration
     public function down()
     {
         Schema::table('credit_checker_verifications', function (Blueprint $table) {
-            //
+            $table->dropForeign(['repayment_cycle_id', 'repayment_duration_id', 'down_payment_rate_id']);
         });
     }
 }
