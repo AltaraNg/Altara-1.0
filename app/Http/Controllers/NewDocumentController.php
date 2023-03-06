@@ -7,7 +7,7 @@ use App\NewDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use App\Helper\Helper;
 
 class NewDocumentController extends Controller
 {
@@ -66,6 +66,7 @@ class NewDocumentController extends Controller
 
             $document->user_id = auth('api')->user()->id;
             $document->name = $request['name'];
+            $document->document_type = Helper::convertUnderscoreToCamelcase($request['name']);
 
 
             $customer = Customer::find($request['customer_id']);
