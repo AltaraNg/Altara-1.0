@@ -242,4 +242,8 @@ class Customer extends Model
     public function recommendation(){
         return $this->hasMany(Recommendation::class);
     }
+
+    public function newDocuments(){
+        return $this->morphMany(NewDocument::class, 'documentable');
+    }
 }

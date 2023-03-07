@@ -116,6 +116,7 @@ Route::middleware('auth:api')->group(function () {
         'dsa_daily_registration' => 'DsaDailyRegistrationController',
         'update_customer_manager' => 'CustomerManagementHistoryController',
         'repayment' => 'RepaymentController',
+        'new_document' => 'NewDocumentController',
         'payment_method' => 'PaymentMethodController',
         'renewal-list' => 'RenewalListController',
         'payment' => 'PaymentController',
