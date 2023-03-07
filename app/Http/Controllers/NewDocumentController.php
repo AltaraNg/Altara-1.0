@@ -53,7 +53,7 @@ class NewDocumentController extends Controller
         if ($request->hasFile('document') && $request->file('document')->isValid()) {
 
 
-            $image = $request->file($request['document']);
+            $image = $request->file('document');
 
 
             $filename = 'customer' . '/' . $this->getFileName($request['document']);
