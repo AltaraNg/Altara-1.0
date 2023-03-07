@@ -60,7 +60,7 @@ class NewDocumentController extends Controller
 
             $s3 = Storage::disk('s3');
 
-            $s3->put($filename, $image, 'public');
+            $s3->put($filename, file_get_contents($image), 'public');
 
             $document->document_url = $filename;
 
