@@ -175,7 +175,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/charge/customer', 'NewOrderController@chargeCustomerOrder');
 
-    Route::post('/update/credit/checker/status/{creditCheckerVerification}', 'BnlpController@updateCreditCheckerVerificationStatus');
+    Route::patch('/update/credit/checker/status/{creditCheckerVerification}', 'BnlpController@updateCreditCheckerVerificationStatus');
     Route::get('all/credit/checker', 'BnlpController@allCreditCheckerVerification');
 });
 
