@@ -35,7 +35,7 @@ class CreditCheckerVerification extends Model
 
    public function customer()
    {
-      return $this->belongsTo(Customer::class, 'bnpl_vendor_product_id');
+      return $this->belongsTo(Customer::class, 'customer_id');
    }
 
    public function vendor()
