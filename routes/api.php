@@ -116,6 +116,7 @@ Route::middleware('auth:api')->group(function () {
         'dsa_daily_registration' => 'DsaDailyRegistrationController',
         'update_customer_manager' => 'CustomerManagementHistoryController',
         'repayment' => 'RepaymentController',
+        'new_document' => 'NewDocumentController',
         'payment_method' => 'PaymentMethodController',
         'renewal-list' => 'RenewalListController',
         'payment' => 'PaymentController',
@@ -174,7 +175,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/charge/customer', 'NewOrderController@chargeCustomerOrder');
 
-    Route::post('/update/credit/checker/status/{creditCheckerVerification}', 'BnlpController@updateCreditCheckerVerificationStatus');
+    Route::patch('/update/credit/checker/status/{creditCheckerVerification}', 'BnlpController@updateCreditCheckerVerificationStatus');
     Route::get('all/credit/checker', 'BnlpController@allCreditCheckerVerification');
 });
 
