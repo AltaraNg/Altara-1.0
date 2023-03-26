@@ -59,7 +59,7 @@ class BnlpController extends Controller
         $query =  CreditCheckerVerification::query()->search()->when($request->query('status'), function ($query) use ($status) {
             $query->where('status', $status);
         })->with('bnplProduct', 'customer', 'vendor');
-        $creditCheckerVerifications = $query->latest('created_at')->paginate(request('per_page'));
+        $creditCheckerVerifications = $query->latest('created_at')->paginate(request('per_page', 15));
         return $this->sendSuccess(['creditCheckerVerifications' => $creditCheckerVerifications], 'Data fetched successfully');
     }
 }

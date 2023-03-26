@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 /**
  *
@@ -12,7 +13,7 @@ class MessageService
 {
     public function sendMessage($receiver, $message)
     {
-        
+
         $isInProduction = App::environment() === 'production';
         if (!$isInProduction) {
             $num = rand(0, 1);
@@ -21,7 +22,12 @@ class MessageService
             }
             return json_decode(json_encode($this->error($receiver)));
         }
-
+        //check if there is an authenticated user and app is not in production
+        //if there is an authenticated user and is not in production
+        // the authenticated user phone receives the message
+        if (Auth::check() && !$isInProduction) {
+            $receiver = auth()->user()->phone_number ?  '234' . substr(auth()->user()->phone_number, 1) : $receiver;
+        }
         $ch = curl_init();
         $receiver = urlencode($receiver);
         $message = urlencode($message);
@@ -30,7 +36,7 @@ class MessageService
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $data = curl_exec($ch);
         curl_close($ch);
-        
+
         $response = (int) preg_replace('/[^0-9]/', '', $data);
         $res_message = '';
         switch ($data) {
