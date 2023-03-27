@@ -11,6 +11,9 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Mail\NewOrder as NewOrderMailable;
 use App\Helper\Helper;
+use App\Log;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class NewOrderNotification extends Notification
 {
@@ -60,8 +63,19 @@ class NewOrderNotification extends Notification
      */
     public function toMail($notifiable)
     {
+        $isInProduction = App::environment() === 'production';
+        $email =   $notifiable->email;
+        if (Auth::check() && !$isInProduction) {
+            $email = auth()->user()->email;
+        }
+        Log::info([
+            'environment' => App::environment(),
+            'receiver' => $notifiable->email,
+            'sent_to' => $email,
+            'instance' => 'New Order Mail', 
+        ]);
         return (new NewOrderMailable($this->data))
-            ->to($notifiable->email)
+            ->to($email)
             ->cc(config('app.admin_email'));
     }
 
