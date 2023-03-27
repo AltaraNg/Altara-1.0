@@ -18,7 +18,6 @@ class BnlpAdminAccessMiddleware
      */
     public function handle($request, Closure $next)
     {
-        Log::info($request->headers);
         if (env('BNLP_ADMIN_ACCESS') == null || $request->header('bnlp-admin-access') == null) {
             throw new Error('Please confirm bnlp key is set and also provided in request header');
         }
@@ -28,6 +27,7 @@ class BnlpAdminAccessMiddleware
         } else {
             $userID = $request->header('bnlp-admin-access-auth-user-id');
             Auth::loginUsingId($userID);
+
         }
 
         if ($request->header('bnlp-admin-access') !== env('BNLP_ADMIN_ACCESS')) {

@@ -47,8 +47,6 @@ class MessageService
 
        
         $response = (int) preg_replace('/[^0-9]/', '', $data);
-        Log::info('from sms api');
-        Log::info(json_encode($data));
         $res_message = '';
         switch ($data) {
             case -1:
