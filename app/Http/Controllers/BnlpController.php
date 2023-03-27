@@ -12,6 +12,7 @@ use App\Repositories\NewOrderRepository;
 use App\Services\MessageService;
 use Carbon\Carbon;
 use Error;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class BnlpController extends Controller
@@ -30,6 +31,7 @@ class BnlpController extends Controller
             'phone_number' => ['required', 'string'],
         ]);
         $response = $messageService->sendMessage($request->input('phone_number'), $request->input('message'));
+        Log::info(json_encode($response));
         return $this->sendSuccess(['response' => $response], 'Message Response');
     }
 
