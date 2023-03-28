@@ -17,7 +17,8 @@ class MessageService
 
         $isInProduction = App::environment() === 'production';
 
-        if (!$isInProduction) {
+
+        if (App::environment() === 'local') {
             $num = rand(0, 1);
             if ($num > 0.5) {
                 return json_decode(json_encode($this->success($receiver)));
@@ -27,7 +28,7 @@ class MessageService
         //check if there is an authenticated user and app is not in production
         //if there is an authenticated user and is not in production
         // the authenticated user phone receives the message
-        if (Auth::check() && !$isInProduction) {
+        if (Auth::check() &&  App::environment() === 'staging') {
             $phone_number = auth()->user()->phone_number ? '234' . substr(auth()->user()->phone_number, 1) : $receiver;
             Log::info([
                 'environment' => App::environment(),
