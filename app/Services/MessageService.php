@@ -17,7 +17,7 @@ class MessageService
 
         $isInProduction = App::environment() === 'production';
 
-        if (!$isInProduction) {
+        if (App::environment() === 'local') {
             $num = rand(0, 1);
             if ($num > 0.5) {
                 return json_decode(json_encode($this->success($receiver)));
