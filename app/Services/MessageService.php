@@ -35,8 +35,9 @@ class MessageService
                 'receiver' => $receiver,
                 'sent_to' => $phone_number,
             ]);
-            $receiver = $phone_number;
+            $receiver = trim($phone_number);
         }
+        Log::info($receiver);
         $ch = curl_init();
         $receiver = urlencode($receiver);
         $message = urlencode($message);
