@@ -9,6 +9,7 @@ use App\OrderStatus;
 use App\RenewalPrompterStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class NewOrderFilter extends BaseFilter
 {
@@ -274,5 +275,10 @@ class NewOrderFilter extends BaseFilter
     public function financed_by(string $financed_by)
     {
         $this->builder->where('financed_by', $financed_by);
+    }
+    public function bnplOrders(bool $isBNPL = true ){
+        if ($isBNPL) {
+            $this->builder->whereNotNull('bnpl_vendor_product_id');
+        }
     }
 }
