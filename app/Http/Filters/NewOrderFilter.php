@@ -269,16 +269,16 @@ class NewOrderFilter extends BaseFilter
         $this->builder->whereHas('businessType', $closure);
     }
 
-      /**
+    /**
      * @param int $id
      */
     public function financed_by(string $financed_by)
     {
         $this->builder->where('financed_by', $financed_by);
     }
-    public function bnplOrders(bool $isBNPL = true ){
-        if ($isBNPL) {
-            $this->builder->whereNotNull('bnpl_vendor_product_id');
-        }
+    public function bnplOrders(bool $isBNPL = true)
+    {
+
+        $this->builder->whereNotNull('bnpl_vendor_product_id');
     }
 }
