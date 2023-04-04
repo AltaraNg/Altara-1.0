@@ -276,7 +276,7 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->where('financed_by', $financed_by);
     }
-    public function bnplOrders(bool $isBNPL = true)
+    public function bnplOrders()
     {
 
         $this->builder->whereNotNull('bnpl_vendor_product_id');
