@@ -279,6 +279,6 @@ class NewOrderFilter extends BaseFilter
     public function bnplOrders()
     {
 
-        $this->builder->whereNotNull('bnpl_vendor_product_id');
+        $this->builder->whereNotNull('bnpl_vendor_product_id')->orderBy('order_date', 'desc');
     }
 }
