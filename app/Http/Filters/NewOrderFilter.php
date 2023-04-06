@@ -278,7 +278,14 @@ class NewOrderFilter extends BaseFilter
     }
     public function bnplOrders()
     {
-
         $this->builder->whereNotNull('bnpl_vendor_product_id')->orderBy('order_date', 'desc');
+    }
+    public function orderStatus($status){
+        $this->builder->where('status_id', OrderStatus::where('name', $status)->first()->id);
+    }
+    public function vendor($vendor){
+        $this->builder->whereHas('bnplVendorProduct.vendor',function($q) use ($vendor) {
+            $q->where('full_name', 'like', '%'. $vendor . '%');
+        });
     }
 }
