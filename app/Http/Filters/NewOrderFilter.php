@@ -288,4 +288,9 @@ class NewOrderFilter extends BaseFilter
             $q->where('full_name', 'like', '%'. $vendor . '%');
         });
     }
+    public function customerPhone($phone){
+        $this->builder->whereHas('customer', function($q) use ($phone){
+            $q->where('telephone', 'like', '%'. $phone . '%');
+        });
+    }
 }
