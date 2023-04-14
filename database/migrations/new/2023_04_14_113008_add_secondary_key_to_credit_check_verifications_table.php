@@ -14,7 +14,7 @@ class AddSecondaryKeyToCreditCheckVerificationsTable extends Migration
     public function up()
     {
         Schema::table('credit_checker_verifications', function (Blueprint $table) {
-            $table->string('credit_check_no')->nullable();
+            $table->string('credit_check_no')->nullable()->index('credit_check_no_index');
         });
     }
 
