@@ -83,8 +83,18 @@ abstract class Amortization
     public function preview()
     {
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
+        $IsNoBs = Str::contains($this->order->businessType->slug, 'no_bs');
+        $IsNoBsRenewalLoan = Str::contains($this->order->businessType->slug, 'renewal');
+
+
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
             return $this->getSuperLoaPaymentPlans();
+        } else if ($IsNoBs) {
+            if ($IsNoBsRenewalLoan) {
+                return $this->getNoBsRenewalPaymentPlans();
+            } else {
+                return $this->getNoBsNewPaymentPlans();
+            }
         } else {
             return $this->getNormalPaymentPlans();
         }
@@ -94,10 +104,53 @@ abstract class Amortization
     {
         return [7.72, 2.98, 1.80];
     }
+
+    private function nobsNewPercentages()
+    {
+        return [14.20, 11.23, 5.39, 2.42];
+    }
+
+    private function nobsRenewalPercentages()
+    {
+        return [13.98, 11.01, 5.17, 2.20];
+    }
     private function getSuperLoaPaymentPlans()
     {
         $plan = [];
         $percentages = $this->superLoanPercentages();
+        //loop through all the percentage
+        foreach ($percentages as $key => $percentage) {
+            //calculate repayment base on the current percentage
+            for ($i = 1; $i <= $this->repaymentCount() / count($percentages); $i++) {
+                $plan[] = [
+                    'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                    'expected_amount' => $this->repaymentAmountSuperLoan($percentage),
+                ];
+            }
+        }
+        return $plan;
+    }
+    private function getNoBsNewPaymentPlans()
+    {
+        $plan = [];
+        $percentages = $this->nobsNewPercentages();
+        //loop through all the percentage
+        foreach ($percentages as $key => $percentage) {
+            //calculate repayment base on the current percentage
+            for ($i = 1; $i <= $this->repaymentCount() / count($percentages); $i++) {
+                $plan[] = [
+                    'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                    'expected_amount' => $this->repaymentAmountSuperLoan($percentage),
+                ];
+            }
+        }
+        return $plan;
+    }
+
+    private function getNoBsRenewalPaymentPlans()
+    {
+        $plan = [];
+        $percentages = $this->nobsRenewalPercentages();
         //loop through all the percentage
         foreach ($percentages as $key => $percentage) {
             //calculate repayment base on the current percentage
