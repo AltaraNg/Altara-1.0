@@ -100,16 +100,22 @@ abstract class Amortization
         }
     }
 
+    
+    //** Percentage is gotten by  (repayment/total * 100) */
+
     private function superLoanPercentages()
     {
         return [7.72, 2.98, 1.80];
     }
+
+    //** Percentage is gotten by  (repayment/total * 100) */
 
     private function nobsNewPercentages()
     {
         return [14.20, 11.23, 5.39, 2.42];
     }
 
+    //** Percentage is gotten by  (repayment/total * 100) */
     private function nobsRenewalPercentages()
     {
         return [13.98, 11.01, 5.17, 2.20];
