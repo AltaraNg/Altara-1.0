@@ -84,12 +84,13 @@ abstract class Amortization
     {
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
         $IsNoBs = Str::contains($this->order->businessType->slug, 'no_bs');
+        $IsProduct = Str::contains($this->order->businessType->slug, 'product');
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
             return $this->getSuperLoaPaymentPlans();
-        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC')) {
+        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC') && !$IsProduct)  {
             return $this->getNoBsPaymentPlans();
-        } else {
+        } else { 
             return $this->getNormalPaymentPlans();
         }
     }
@@ -106,13 +107,13 @@ abstract class Amortization
 
     private function nobsNewPercentages()
     {
-        return [12.10, 9.60, 4.60, 2.10];
+        return [14.02, 11.23, 5.40, 2.42];
     }
 
     //** Percentage is gotten by  (repayment/total * 100) */
     private function nobsRenewalPercentages()
     {
-        return [11.98, 9.44, 4.40, 1.95];
+        return [13.90, 11.01, 5.18, 2.20];
     }
     private function getSuperLoaPaymentPlans()
     {
