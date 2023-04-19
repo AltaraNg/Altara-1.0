@@ -107,13 +107,13 @@ abstract class Amortization
 
     private function nobsNewPercentages()
     {
-        return [14.02, 11.23, 5.40, 2.42];
+        return [13.65, 10.82, 5.20, 2.42];
     }
 
     //** Percentage is gotten by  (repayment/total * 100) */
     private function nobsRenewalPercentages()
     {
-        return [13.90, 11.01, 5.18, 2.20];
+        return [13.85, 11.01, 5.18, 2.20];
     }
     private function getSuperLoaPaymentPlans()
     {
