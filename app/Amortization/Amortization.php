@@ -85,10 +85,11 @@ abstract class Amortization
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
         $IsNoBs = Str::contains($this->order->businessType->slug, 'no_bs');
         $IsProduct = Str::contains($this->order->businessType->slug, 'product');
+        $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
             return $this->getSuperLoaPaymentPlans();
-        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC') && !$IsProduct)  {
+        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC') && !$IsProduct && $isBimonthly)  {
             return $this->getNoBsPaymentPlans();
         } else { 
             return $this->getNormalPaymentPlans();
