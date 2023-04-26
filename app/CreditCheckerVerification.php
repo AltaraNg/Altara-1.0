@@ -4,6 +4,8 @@ namespace App;
 
 use App\Traits\SearchableTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+
 
 class CreditCheckerVerification extends Model
 {
@@ -42,4 +44,8 @@ class CreditCheckerVerification extends Model
    {
       return $this->belongsTo(User::class, 'initiated_by');
    }
+   public function documents(): MorphMany
+    {
+        return $this->morphMany(NewDocument::class, 'documentable');
+    }
 }
