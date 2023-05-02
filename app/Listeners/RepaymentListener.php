@@ -11,6 +11,7 @@ use App\OrderStatus;
 use App\Repositories\NewOrderRepository;
 use App\Repositories\RenewalPrompterRepository;
 use App\Services\PaymentService;
+use App\Services\RepaymentEventService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -18,11 +19,11 @@ class RepaymentListener
 {
 
     private $newOrderRepository;
-    private $renewalPrompterRepository;
-    public function __construct(NewOrderRepository $newOrderRepository, RenewalPrompterRepository $renewalPrompterRepository)
+    private $repaymentEventService;
+    public function __construct(NewOrderRepository $newOrderRepository, RepaymentEventService $repaymentEventService)
     {
         $this->newOrderRepository = $newOrderRepository;
-        $this->renewalPrompterRepository = $renewalPrompterRepository;
+        $this->repaymentEventService = $repaymentEventService;
     }
     /**
      * Handle the event.
@@ -32,18 +33,16 @@ class RepaymentListener
      */
     public function handle($event)
     {
-        $customer = Customer::find($event->newOrder['customer_id']);
-        try {
-
-            if (env('SEND_ORDER_SMS')) {
-                $order = $event->newOrder->refresh();
-                $customer->notify(new RepaymentNotification($order));
-            }
-            if (Helper::PaymentCompleted($order)) {
-                $this->newOrderRepository->updateOrderStatus($order->id);
-            }
-        } catch (\Exception $e) {
-            LogHelper::error(strtr(Constants::REPAYMENT_NOTIFICATION_ERROR, $event->newOrder->toArray()), $e);
-        }
+        $this->repaymentEventService->repaymentListenerAction($event->newOrder);
+        // $customer = Customer::find($event->newOrder['customer_id']);
+        // try {
+        //         $order = $event->newOrder->refresh();
+        //         $customer->notify(new RepaymentNotification($order));
+        //     if (Helper::PaymentCompleted($order)) {
+        //         $this->newOrderRepository->updateOrderStatus($order->id);
+        //     }
+        // } catch (\Exception $e) {
+        //     LogHelper::error(strtr(Constants::REPAYMENT_NOTIFICATION_ERROR, $event->newOrder->toArray()), $e);
+        // }
     }
 }

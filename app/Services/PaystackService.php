@@ -6,10 +6,13 @@ namespace App\Services;
 
 use App\Amortization;
 use App\Contracts\PaymentGatewayInterface;
+use App\GuarantorPaystackAuthCode;
 use App\LateFee;
+use App\PriceCalculator;
 
 class PaystackService implements PaymentGatewayInterface
 {
+
 
     public function charge(Amortization $amortization)
     {
@@ -69,6 +72,18 @@ class PaystackService implements PaymentGatewayInterface
         return json_decode(curl_exec($ch));
     }
 
+    public function chargeCustomer(Amortization $amortization, int $amount, int $account)
+    {
+        $url = config('app.paystack_charge_url');
+        $fields = [
+            'authorization_code' => $account == 0 ? $this->getAuthCode($amortization): GuarantorPaystackAuthCode::where('id', $account)->first()->auth_code,
+            'email' => $account == 0 ? $this->getEmail($amortization) : GuarantorPaystackAuthCode::where('id', $account)->first()->guarantor_email,
+            'amount' => $amount * 100,
+            'subaccount' => $this->getBankCode($amortization)
+        ];
+        return  $this->makePostRequest($url, $fields);
+    }
+
     private function getAuthCode($amortization)
     {
         return $amortization->new_orders->authCode->auth_code ?? '';
@@ -81,7 +96,7 @@ class PaystackService implements PaymentGatewayInterface
 
     private function getAmount($amortization)
     {
-        return $amortization->expected_amount * 100;
+        return ($amortization->expected_amount - $amortization->actual_amount) * 100;
     }
     public function getLateFee($order)
     {
@@ -89,7 +104,11 @@ class PaystackService implements PaymentGatewayInterface
         $totalPaid = $this->getTotalPaidRepayment($amortizationList);
         $expectedRepayment = $this->getTotalExpected($amortizationList);
         $debt =  $expectedRepayment - $totalPaid;
-        return $debt * 5.5 / 100;
+        $interest = PriceCalculator::where([['business_type_id','=', $order->business_type_id], ['down_payment_rate_id', $order->down_payment_rate_id], ['repayment_duration_id', $order->repayment_duration_id]])->first();
+        if ($interest == null){
+            return 'invalid';
+        }
+        return $debt * $interest->interest / 100;
     }
 
     private function getEmail($amortization)
@@ -119,5 +138,28 @@ class PaystackService implements PaymentGatewayInterface
     public function extractExpected($item)
     {
         return $item['expected_amount'];
+    }
+
+    private function makePostRequest($url, array $fields)
+    {
+        $fields_string = http_build_query($fields);
+
+        //open connection
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer " . config('app.paystack_secret'),
+            "Cache-Control: no-cache",
+        ));
+
+        //So that curl_exec returns the contents of the cURL; rather than echoing it
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        //execute post
+        return json_decode(curl_exec($ch));
     }
 }

@@ -9,8 +9,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Mail\NewOrder as Mailable;
+use App\Mail\NewOrder as NewOrderMailable;
 use App\Helper\Helper;
+use App\Log;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class NewOrderNotification extends Notification
 {
@@ -28,7 +31,6 @@ class NewOrderNotification extends Notification
      */
     public function __construct(NewOrder $data)
     {
-
         $this->data = $data->toArray();
         //Attaching required parameters from amortization to data to send sms to customer
         $this->data["next_payment_date"] = $data->amortization[0]->expected_payment_date;
@@ -43,7 +45,14 @@ class NewOrderNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', SmsChannel::class];
+        $channels = ['database'];
+        if (env('SEND_ORDER_SMS')) {
+            array_push($channels, SmsChannel::class);
+        }
+        if (env('SEND_ORDER_MAIL')) {
+            array_push($channels, 'mail');
+        }
+        return $channels;
     }
 
     /**
@@ -54,8 +63,19 @@ class NewOrderNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new Mailable($this->data))
-            ->to($notifiable->email)
+        $isInProduction = App::environment() === 'production';
+        $email =   $notifiable->email;
+        if (Auth::check() && !$isInProduction) {
+            $email = auth()->user()->email;
+        }
+        Log::info([
+            'environment' => App::environment(),
+            'receiver' => $notifiable->email,
+            'sent_to' => $email,
+            'instance' => 'New Order Mail', 
+        ]);
+        return (new NewOrderMailable($this->data))
+            ->to($email)
             ->cc(config('app.admin_email'));
     }
 

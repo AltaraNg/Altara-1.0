@@ -58,7 +58,16 @@ class GenerateFirstCentralExcel extends Command
         $customerIds = (clone $customersQuery)->select('id')->get()->pluck('id')->toArray();
         $this->info(count($customerIds) . ' customers will be populated into the excel sheet');
         $this->info('Getting order....');
-        $orders = NewOrder::query()->whereIn('customer_id', $customerIds)->has('amortization')->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status']);
+        $orders = NewOrder::query()
+        ->whereBetween('order_date', [$from, $to])
+        // ->whereIn('customer_id', $customerIds)
+        ->has('amortization')
+        ->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status'])
+        ->get();
+        $customers = $orders->pluck('customer')->unique('id');
+
+        dd($customers);
+
         $this->info($orders->count() . " orders about to be populated into the excel");
         $fileName = 'Credit Report for' . $from . "-" . $to . '.xlsx';
         $this->info('Population of Excel sheet started');

@@ -17,4 +17,8 @@ class PaystackAuthCode extends Model
             'auth_code' => 'required'
         ];
     }
+    public function order()
+    {
+        return $this->belongsTo(NewOrder::class, 'order_id', 'order_number');
+    }
 }

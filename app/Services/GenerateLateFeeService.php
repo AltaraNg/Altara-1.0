@@ -29,7 +29,6 @@ class GenerateLateFeeService
     private  $businessType = [BusinessType::ALTARA_CREDIT_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_CASH_LOAN_PRODUCT_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_SLUG, BusinessType::ALTARA_PAY_STARTER_CASH_NINE_MONTHS, BusinessType::ALTARA_PAY_SUPER_LOAN_RENEWAL, BusinessType::ALTARA_PAY_SUPER_LOAN_NEW, BusinessType::ALTARA_PAY_CASH_LOAN_NO_COLLATERAL, BusinessType::ALTARA_PAY_STARTER_CASH_LOAN_NO_COLLATERAL, BusinessType::ALTARA_PAY_RENTALS_SLUG];
 
     /**
-     * DirectDebitService constructor.
      * @param MailService $mailService
      * @param PaystackService $paystackService
      */
@@ -67,20 +66,25 @@ class GenerateLateFeeService
         foreach ($items as $item) {
 
             # code...
-            $data = [
-                'order_id' => $item->id,
-                'amount_due' => $this->paystackService->getLateFee($item),
-                'date_created' => Carbon::now()->format('Y-m-d')
-            ];
+            $response = ['status' => 'failed'];
+            if ($this->paystackService->getLateFee($item) !== 'invalid') {
+                $data = [
+                    'order_id' => $item->id,
+                    'amount_due' => $this->paystackService->getLateFee($item),
+                    'date_created' => Carbon::now()->format('Y-m-d')
+                ];
+                $response = PaymentService::logLateFee($data);
+            }
+
 
             $dataToDisplay = [
                 'Order ID' => $item->id,
                 'Order Number' => $item->order_number,
                 'Amount' => $this->paystackService->getLateFee($item),
+                'Reason' => $this->paystackService->getLateFee($item) == 'invalid' ? "Price calculator doesn't exist" : ''
 
             ];
 
-            $response = PaymentService::logLateFee($data);
 
             if ($response['status'] == 'success') {
 

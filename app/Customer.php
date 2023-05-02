@@ -161,6 +161,11 @@ class Customer extends Model
         return $this->hasOne(WorkGuarantor::class);
     }
 
+    public function guarantorPaystack()
+    {
+        return $this->hasMany(GuarantorPaystackAuthCode::class);
+    }
+
     public function personalGuarantor()
     {
         return $this->hasOne(PersonalGuarantor::class);
@@ -226,6 +231,22 @@ class Customer extends Model
 
     public function amortizations()
     {
-       return $this->hasManyThrough(Amortization::class, NewOrder::class); 
+       return $this->hasManyThrough(Amortization::class, NewOrder::class);
+    }
+    
+    public function latestAmortizationPayed()
+    {
+       return $this->hasOneThrough(Amortization::class, NewOrder::class)->where('expected_payment_date', '<=', now()->endOfDay())->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->latest('expected_payment_date');
+    }
+
+    public function recommendation(){
+        return $this->hasMany(Recommendation::class);
+    }
+
+    public function newDocuments(){
+        return $this->morphMany(NewDocument::class, 'documentable');
+    }
+    public function guarantors(){
+        return $this->hasMany(Guarantor::class, 'customer_id');
     }
 }

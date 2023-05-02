@@ -9,6 +9,7 @@ use App\OrderStatus;
 use App\RenewalPrompterStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class NewOrderFilter extends BaseFilter
 {
@@ -266,5 +267,30 @@ class NewOrderFilter extends BaseFilter
             };
         }
         $this->builder->whereHas('businessType', $closure);
+    }
+
+    /**
+     * @param int $id
+     */
+    public function financed_by(string $financed_by)
+    {
+        $this->builder->where('financed_by', $financed_by);
+    }
+    public function bnplOrders()
+    {
+        $this->builder->whereNotNull('bnpl_vendor_product_id')->orderBy('order_date', 'desc');
+    }
+    public function orderStatus($status){
+        $this->builder->where('status_id', OrderStatus::where('name', $status)->first()->id);
+    }
+    public function vendor($vendor){
+        $this->builder->whereHas('bnplVendorProduct.vendor',function($q) use ($vendor) {
+            $q->where('full_name', 'like', '%'. $vendor . '%');
+        });
+    }
+    public function customerPhone($phone){
+        $this->builder->whereHas('customer', function($q) use ($phone){
+            $q->where('telephone', 'like', '%'. $phone . '%');
+        });
     }
 }

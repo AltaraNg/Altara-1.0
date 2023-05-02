@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\RequiredIf;
 
-class NewOrder extends Model
+class   NewOrder extends Model
 {
     use Filterable, Notifiable;
 
@@ -26,6 +26,7 @@ class NewOrder extends Model
     const EXTREPO = 'external_repossession';
 
     const BANK54 = 'bank54';
+    const ALTARA_BNPL = 'altara-bnpl';
 
 
     /**
@@ -60,7 +61,10 @@ class NewOrder extends Model
             'payment_gateway_id' => 'sometimes|exists:payment_gateways,id',
             'discount_id' => 'sometimes|exists:discounts,id',
             'bvn' => [new RequiredIf(request('financed_by') == self::BANK54), 'string'],
-            'financed_by' => ['required', 'string', Rule::in(['altara', self::BANK54])],
+            'financed_by' => ['required', 'string', Rule::in(['altara', self::BANK54, self::ALTARA_BNPL])],
+            'bnpl_vendor_product_id' => [new RequiredIf(request('financed_by') == self::ALTARA_BNPL), 'integer', Rule::exists('bnpl_vendor_products', 'id')->where('vendor_id', request('owner_id'))],
+            "commitment_percentage" => ['sometimes', 'numeric', 'max:100'],
+            "commitment_amount" => ['sometimes', 'numeric'],
         ];
     }
 
@@ -131,7 +135,10 @@ class NewOrder extends Model
             ->where('actual_amount', '<', 1)
             ->latest('expected_payment_date');
     }
-
+    public function unpaidAmortizations()
+    {
+        return $this->hasMany(Amortization::class, 'new_order_id', 'id')->whereColumn('actual_amount', '<', 'expected_amount');
+    }
     public function lastAmortization()
     {
         return $this->hasOne(Amortization::class)->latest('expected_payment_date');
@@ -169,6 +176,11 @@ class NewOrder extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function bnplVendorProduct()
+    {
+        return $this->belongsTo(BnplVendorProduct::class, 'bnpl_vendor_product_id');
     }
 
     public function customDate()
@@ -258,14 +270,21 @@ class NewOrder extends Model
     {
         return $this->morphMany(GeneralFeedback::class, 'generalFeedbackAble', 'general_feedback_able_type', 'general_feedback_able_id');
     }
+
+    public function paystackAuthCode()
+    {
+        return $this->hasOne(PaystackAuthCode::class, 'order_id', 'order_number');
+    }
     public function toArray()
     {
         return [
             "late_fee_gen" => $this->late_fee_gen,
             "id" => $this->id,
             "order_number" => $this->order_number,
+            "bnpl_vendor_product_id" => $this->bnpl_vendor_product_id,
             "product_id" => $this->product_id,
             "product" => $this->product,
+            'bnpl_vendor_product' => $this->bnplVendorProduct,
             "product_name" => $this->product->name ?? null,
             "serial_number" => $this->serial_number,
             "repayment_duration" => $this->repaymentDuration->name ?? null,
@@ -302,7 +321,9 @@ class NewOrder extends Model
             'financed_by' => $this->financed_by ?? null,
             'latestAmortizationPayed' => $this->latestAmortizationPayed,
             'latestAmortizationNotPayed' => $this->latestAmortizationNotPayed,
-
+            'paystack_auth_code' => $this->paystackAuthCode ?? null,
+            'commitment_amount' => $this->commitment_amount,
+            'commitment_percentage' => $this->commitment_percentage,
         ];
     }
 }

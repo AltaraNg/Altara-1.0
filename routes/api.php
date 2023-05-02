@@ -16,6 +16,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\NewOrder;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/login', 'AuthController@login');
 Route::post('/password/reset', 'AuthController@sendResetLinkEmail');
@@ -62,7 +63,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/contact-customer/export', 'ContactCustomerController@export');
     Route::get('/feedbacks/export', 'FeedbackController@export');
     Route::post('/recommendation', 'AmortizationController@recommend');
-
+    Route::get('/customer-recommendation/{customer}', 'RecommendationController@getRecommendationByCustomer');
     Route::get('/order/reports', 'NewOrderController@report');
     Route::get('/order/reports/export', 'ReportController@getNewOrdersReport');
     Route::get('/order-types', 'OrderTypeController@index');
@@ -83,6 +84,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 Route::middleware('auth:api')->group(function () {
     Route::resource('brand', 'BrandController', ['except' => ['index', 'show']]);
+    Route::resource('website-product', 'WebsiteProductController', ['except' => ['index', 'show']]);
     Route::resource('inventory', 'InventoryController', ['except' => ['index', 'show']]);
     Route::resource('price_calculator', 'PriceCalculatorController', ['except' => ['index', 'show']]);
     Route::resource('down_payment_rate', 'DownPaymentRateController', ['except' => ['index', 'show']]);
@@ -114,6 +116,7 @@ Route::middleware('auth:api')->group(function () {
         'dsa_daily_registration' => 'DsaDailyRegistrationController',
         'update_customer_manager' => 'CustomerManagementHistoryController',
         'repayment' => 'RepaymentController',
+        'new_document' => 'NewDocumentController',
         'payment_method' => 'PaymentMethodController',
         'renewal-list' => 'RenewalListController',
         'payment' => 'PaymentController',
@@ -143,7 +146,8 @@ Route::middleware('auth:api')->group(function () {
         'reason' => 'ReasonController',
         'feedback' => 'FeedbackController',
         'role' => 'RoleController',
-        'late_fee' => 'LateFeeController'
+        'late_fee' => 'LateFeeController',
+        'guarantor_paystack' => 'GuarantorPaystackAuthCodeController'
 
     ]);
 
@@ -168,17 +172,32 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/send/customer/mobile/notification', 'MobileMessageNotificationController@store');
 
     Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
+
+    Route::post('/charge/customer', 'NewOrderController@chargeCustomerOrder');
+
+    Route::patch('/update/credit/checker/status/{creditCheckerVerification}', 'BnlpController@updateCreditCheckerVerificationStatus');
+    Route::get('all/credit/checker', 'BnlpController@allCreditCheckerVerification');
 });
 
 Route::resource('brand', 'BrandController', ['only' => ['index', 'show']]);
+Route::resource('website-product', 'WebsiteProductController', ['only' => ['index', 'show']]);
+
 Route::resource('inventory', 'InventoryController', ['only' => ['index', 'show']]);
 Route::resource('price_calculator', 'PriceCalculatorController', ['only' => ['index', 'show']]);
 Route::resource('down_payment_rate', 'DownPaymentRateController', ['only' => ['index', 'show']]);
 Route::resource('business_type', 'BusinessTypeController', ['only' => ['index', 'show']]);
 Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => ['index', 'show']]);
+Route::get('/get-product-by-rank', 'ProductController@fetchLeastAndMostOrderedProduct');
+
 Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
 
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
-//Route::apiResource('amortization', 'AmortizationController');
-//Route::post('/amortization/preview', 'AmortizationController@preview');
+// Route::apiResource('amortization', 'AmortizationController');
+// Route::post('/amortization/preview', 'AmortizationController@preview');
+
+Route::middleware('bnpl.admin.access')->prefix('/bnlp')->group(function () {
+    Route::post('/amortization/preview', 'BnlpController@previewAmortization');
+    Route::post('/create/order', 'BnlpController@createOrder');
+    Route::post('/send/message', 'BnlpController@sendMessage');
+});
