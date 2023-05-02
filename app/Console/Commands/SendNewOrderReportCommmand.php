@@ -38,5 +38,6 @@ class SendNewOrderReportCommmand extends Command
     public function handle()
     {
         //
+        return 0;
     }
 }

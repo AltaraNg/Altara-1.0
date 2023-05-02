@@ -77,6 +77,7 @@ abstract class BaseCommand extends Command
             $this->endDateTime = $time->endOfDay();
             $this->singleDay = true;
         }
+        return 0;
     }
 
     /**
