@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         Relation::morphMap([
-            'App\Model\CreditCheckerVerification' => 'App\CreditCheckerVerification'
+            'App\Models\CreditCheckerVerification' => 'App\CreditCheckerVerification'
         ]);
 
         //Macro
