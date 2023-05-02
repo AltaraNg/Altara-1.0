@@ -36,7 +36,7 @@ class CreditInformationSheet implements FromCollection, WithHeadings, WithMappin
     public function collection()
     {
         // 
-        return $this->orders->get();
+        return $this->orders;
     }
 
     public function map($order): array
