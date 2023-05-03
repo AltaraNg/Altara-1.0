@@ -47,15 +47,15 @@ class GenerateFirstCentralExcel extends Command
         $start = now();
         $this->comment('Processing');
         // dd(public_path('exported_excel/processed'));
-        $from = '2022-09-01';
-        $to = '2022-12-30';
+        $from = '2021-09-01';
+        $to = '2023-12-30';
 
         $this->info('-----Generating Data From: ' . $from . ' ---To: ' . $to);
 
         $this->info('Getting order....');
         $orders = NewOrder::query()
             ->orderBy('customer_id')
-            ->whereBetween('order_date', [$from, $to])
+            // ->whereBetween('order_date', [$from, $to])
             // ->whereIn('customer_id', $customerIds)
             ->has('amortization')
             ->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status'])
@@ -80,7 +80,7 @@ class GenerateFirstCentralExcel extends Command
             $this->info('Population of Excel successful');
             chmod(public_path('exported_excel/processed/' . $fileName), 0775);
             $this->comment('Excel sheet generated: ' . $response);
-            
+
             $this->info('Upload of Excel To S3');
             $s3 = Storage::disk('s3');
             $pathToFile = 'firstcentral/report/' . $fileName;
