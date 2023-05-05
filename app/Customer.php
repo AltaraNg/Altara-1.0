@@ -246,4 +246,7 @@ class Customer extends Model
     public function newDocuments(){
         return $this->morphMany(NewDocument::class, 'documentable');
     }
+    public function guarantors(){
+        return $this->hasMany(Guarantor::class, 'customer_id');
+    }
 }
