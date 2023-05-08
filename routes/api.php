@@ -47,7 +47,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/renewal-list-status', 'RenewalListStatusController@index');
     Route::patch('/payment-reconcile/{payment_reconcile}/finance', 'PaymentReconcileController@finance');
     Route::patch('/brand/{brand}/categories', 'BrandController@manageCategories');
-    Route::post('/amortization/preview', 'AmortizationController@preview');
     Route::get('/inventory-summary', 'InventoryController@summary');
     Route::post('/sheet/product', 'ProductController@uploadSheet');
     Route::post('/sheet/inventory', 'InventoryController@uploadSheet');
@@ -190,6 +189,8 @@ Route::resource('repayment_duration', 'RepaymentDurationController', ['only' => 
 Route::get('/get-product-by-rank', 'ProductController@fetchLeastAndMostOrderedProduct');
 
 Route::get('generate/first/central/excel', 'GenerateFirstCentralCustomerController@index');
+Route::post('/amortization/preview', 'AmortizationController@preview');
+
 
 Route::post('/ammo', 'UserController@test');
 Route::post('/credit-check', 'CreditCheckController@check');
