@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\DirectDebitExport;
+use Illuminate\Support\Facades\DB;
 
 class DirectDebitService
 {
@@ -119,6 +120,15 @@ class DirectDebitService
                     'statusMessage' => $errorMessage
                 ]);
             }
+        }
+
+        try {
+            $json_array=array_map(function ($item) { 
+                return array_merge($item,['created_at'=> Carbon::now(),'updated_at'=> Carbon::now()]); 
+            }, $res);
+            DB::table('dd_responses')->insert($json_array);
+        } catch (\Throwable $e) {
+            FacadesLog::debug($e->getMessage());
         }
 
         # send report mail
