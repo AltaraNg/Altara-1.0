@@ -125,6 +125,7 @@ class FigFinanceCommmand extends Command
             FigFinance::query()->updateOrCreate(['date' => $metric['date'], 'key' => $metric['key']], ['value' => $metric['value']]);
             $this->info('Updating or inserting metrics into database');
         }
+        return 0;
 
     }
     private function transactionsQuarterlyGrowth($startOfQ, $endOfQ)
