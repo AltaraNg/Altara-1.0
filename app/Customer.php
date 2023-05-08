@@ -249,4 +249,8 @@ class Customer extends Model
     public function guarantors(){
         return $this->hasMany(Guarantor::class, 'customer_id');
     }
+
+    public function bankAccount(){
+        return $this->hasOne(BankAccount::class, 'customer_id');
+    }
 }
