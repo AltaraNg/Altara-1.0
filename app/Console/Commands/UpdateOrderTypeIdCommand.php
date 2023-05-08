@@ -67,6 +67,7 @@ class UpdateOrderTypeIdCommand extends Command
             }
         }
         $this->info($count . ' New Orders Updated');
+        return 0;
     }
 
     private  function getAltaraPayBusinessTypeIds()
