@@ -31,7 +31,7 @@ class CustomerSheet implements FromCollection, WithHeadings, WithMapping, WithTi
   
     public function collection()
     {
-        return $this->customers->get();
+        return $this->customers;
     }
 
     public function map($customer): array

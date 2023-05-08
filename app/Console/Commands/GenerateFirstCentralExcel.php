@@ -48,18 +48,23 @@ class GenerateFirstCentralExcel extends Command
         $this->comment('Processing');
         // dd(public_path('exported_excel/processed'));
         $from = '2021-09-01';
-        $to = '2023-12-30';
+        $to = '2021-09-30';
 
         $this->info('-----Generating Data From: ' . $from . ' ---To: ' . $to);
 
         $this->info('Getting order....');
+        \DB::enableQueryLog();
         $orders = NewOrder::query()
             ->orderBy('customer_id')
             // ->whereBetween('order_date', [$from, $to])
             // ->whereIn('customer_id', $customerIds)
-            ->has('amortization')
+            ->with('amortization')
             ->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status'])
             ->get();
+
+            dd(\DB::getQueryLog());
+
+            // dd($orders);
         $customers = $orders->pluck('customer')->unique('id');
 
 
@@ -67,16 +72,16 @@ class GenerateFirstCentralExcel extends Command
 
         $this->info('Getting customer ids.....');
         $customerIds = $customers->pluck('id')->toArray();
-        $customersQuery = Customer::query()->whereIn('id', $customerIds)->orderBy('id');
-        $this->info(count($customerIds) . ' customers will be populated into the excel sheet');
+        $customersData = Customer::query()->whereIn('id', $customerIds)->orderBy('id')->get();
+        $this->info($customersData->count() . ' customers will be populated into the excel sheet');
 
 
         $this->info($orders->count() . " orders about to be populated into the excel");
-        $fileName = 'Credit Report for ' . $from . "-" . $to . '.xlsx';
+        $fileName = 'Credit-Report-for-' . $from . "-" . $to . '.xlsx';
         $this->info('Population of Excel sheet started');
 
         try {
-            $response =  Excel::store(new FirstCentralCreditBureauExport($customersQuery, $orders), $fileName, 'excel');
+            $response =  Excel::store(new FirstCentralCreditBureauExport($customersData, $orders), $fileName, 'excel');
             $this->info('Population of Excel successful');
             chmod(public_path('exported_excel/processed/' . $fileName), 0775);
             $this->comment('Excel sheet generated: ' . $response);
@@ -89,7 +94,7 @@ class GenerateFirstCentralExcel extends Command
                 $this->error('Upload of Excel To S3 Failed');
             }else{
                 $this->info($s3->url($pathToFile));
-                $this->error('Upload of Excel To S3 Successful');
+                $this->info('Upload of Excel To S3 Successful');
             }
             
             

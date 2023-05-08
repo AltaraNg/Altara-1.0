@@ -41,6 +41,7 @@ class CreditInformationSheet implements FromCollection, WithHeadings, WithMappin
 
     public function map($order): array
     {
+        // dd($order);
         $lastNonePaymentDate = null;
         $lastPaymentDate = null;
         $days_in_arrears = '0';
