@@ -14,6 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Exception;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -39,11 +40,11 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *=
-     * @param Exception $e
+     * @param Throwable $e
      * @return void=
-     * @throws Exception
+     * @throws Throwable
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
         parent::report($e);
     }
@@ -52,10 +53,10 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param Request $request
-     * @param Exception $e
+     * @param Throwable $e
      * @return Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         if ($e instanceof AException) {
             return ResponseHelper::createErrorResponse($e->getMessage(), $e->getCode(), [

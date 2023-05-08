@@ -39,5 +39,6 @@ class CollectionCommand extends Command
     public function handle(RecollectionService $service)
     {
         $service->categoriseRecollection();
+        return 0;
     }
 }

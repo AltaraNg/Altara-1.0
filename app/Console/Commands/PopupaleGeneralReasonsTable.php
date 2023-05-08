@@ -65,5 +65,6 @@ class PopupaleGeneralReasonsTable extends Command
             ]);
         }
         $this->info('All reasons successfully inserted');
+        return 0;
     }
 }
