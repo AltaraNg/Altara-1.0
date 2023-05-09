@@ -46,6 +46,7 @@ class LateFeeDeduction extends BaseCommand
     public function handle()
     {
         $this->process();
+        return 0;
     }
 
     /**
