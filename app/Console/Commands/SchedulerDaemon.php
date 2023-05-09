@@ -45,5 +45,7 @@ class SchedulerDaemon extends Command
 
             sleep($this->option('sleep'));
         }
+
+        return 0;
     }
 }
