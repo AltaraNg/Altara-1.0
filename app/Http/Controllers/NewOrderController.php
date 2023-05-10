@@ -13,6 +13,7 @@ use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\DirectDebitDataRepository;
 use App\Repositories\PaystackAuthCodeRepository;
+use App\Services\CreditCheckService;
 use App\Services\DirectDebitService;
 use Carbon\Carbon;
 
@@ -61,6 +62,15 @@ class NewOrderController extends Controller
         if ($request->authorization_code) {
             $data = ['order_id' => $order->order_number, 'auth_code' => $request->authorization_code];
             $this->paystackAuthCodeRepository->store($data);
+            if ($request->has('account_number')) {
+                CreditCheckService::accountNumberVerification(
+                    $order->customer_id,
+                    $order->id,
+                    $request->input('account_number'),
+                    $request->input('account_name'),
+                    $request->input('bank_name')
+                );
+            }
         }
         if ($request->collection_verification_data) {
             $collection_verification_data = (object) $request->collection_verification_data;

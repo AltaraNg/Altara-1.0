@@ -253,4 +253,9 @@ class Customer extends Model
     public function bankAccount(){
         return $this->hasOne(BankAccount::class, 'customer_id');
     }
+
+    public function missMatchedPayments()
+    {
+        return $this->hasMany(MissMatchedPayments::class, 'customer_id');
+    }
 }
