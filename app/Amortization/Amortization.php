@@ -158,7 +158,9 @@ abstract class Amortization
                 $i  = $currentPlanIndex;
                 $constraint = $this->repaymentCount() / count($percentages);
             } else {
+                // we want to make sure our for loop restarts with the next index as starting point
                 $i = $currentPlanIndex +  1;
+                //we increment our constraint we have incremented i
                 $constraint = $currentPlanIndex + $this->repaymentCount() / count($percentages);
             }
             //calculate repayment base on the current percentage
