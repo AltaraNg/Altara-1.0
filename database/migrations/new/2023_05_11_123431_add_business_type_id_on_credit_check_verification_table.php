@@ -14,8 +14,8 @@ class AddBusinessTypeIdOnCreditCheckVerificationTable extends Migration
     public function up()
     {
         Schema::table('credit_checker_verifications', function (Blueprint $table) {
-            $table->unsignedInteger('business_type_id');
-            $table->foreign('business_type_id')->references('id')->on('business_types');
+            $table->unsignedInteger('business_type_id')->nullable();
+            $table->foreign('business_type_id', 'business_type_id')->references('id')->on('business_types');
         });
     }
 
@@ -27,7 +27,7 @@ class AddBusinessTypeIdOnCreditCheckVerificationTable extends Migration
     public function down()
     {
         Schema::table('credit_checker_verifications', function (Blueprint $table) {
-            //
+            $table->dropColumn('business_type_id');
         });
     }
 }
