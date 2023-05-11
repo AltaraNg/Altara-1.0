@@ -63,5 +63,6 @@ class UpdateCompletedNewOrdersStatuses extends Command
             $this->error($th->getMessage());
         }
 
+        return 0;
     }
 }
