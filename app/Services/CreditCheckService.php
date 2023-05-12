@@ -8,6 +8,7 @@ use App\Notifications\AccountNumberVerificationFailedNotification;
 use App\Recommendation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\App;
 
 class CreditCheckService
 {
@@ -49,43 +50,49 @@ class CreditCheckService
         string $bank_name,
         string $reference = null
     ) {
-        try {
-            $isValid = false;
-            $orderQuery = NewOrder::query();
-            $order = is_string($order_id) ? $orderQuery->where('order_number', $order_id)->first() : $orderQuery->where('id', $order_id)->first();
-            $latestCreditReport = Recommendation::query()->where('customer_id', $customer_id)->where('type', 'credit_report')->latest('created_at')->first();
-            if ($latestCreditReport) {
-                $data = json_decode($latestCreditReport->input_data);
-                if (property_exists($data, 'accountName') && property_exists($data, 'bankName')) {
-                    $isValid = $data->accountName == $account_name  && $data->bankName ==  $bank_name;
+        if (env('USE_MISS_MATCHED_ACCOUNT')) {
+            try {
+                $isValid = false;
+                $orderQuery = NewOrder::query();
+                $order = is_string($order_id) ? $orderQuery->where('order_number', $order_id)->first() : $orderQuery->where('id', $order_id)->first();
+                $latestCreditReport = Recommendation::query()->where('customer_id', $customer_id)->where('type', 'credit_report')->latest('created_at')->first();
+                if ($latestCreditReport) {
+                    $data = json_decode($latestCreditReport->input_data);
+                    if (property_exists($data, 'accountName') && property_exists($data, 'bankName')) {
+                        $isValid = $data->accountName == $account_name  && $data->bankName ==  $bank_name;
+                    }
+                    if (!$isValid) {
+                        // dd($data);
+                        //keep a record 
+                        $missMatchedPayment =  MissMatchedPayments::create([
+                            'reference' => $reference,
+                            'customer_id' => $customer_id,
+                            'order_id' => $order->id,
+
+                            'actual_account_number' => $account_number,
+                            'actual_account_name' => $account_name,
+                            'actual_bank_name' => $bank_name,
+
+                            'expected_account_name' => $data->accountName ?? null,
+                            'expected_account_number' => $data->accountNo ?? null,
+                            'expected_bank_name' => $data->bankName ?? null,
+
+                        ]);
+                        //send notification
+                        $receiver = config('app.admin_email');
+                        if (!App::environment() === 'production') {
+                            $receiver = auth()->user()->email;
+                        }
+                        Notification::route('mail', $receiver)->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
+                    } else {
+                        //delete record 
+                        MissMatchedPayments::query()->where('customer_id', $customer_id)->delete();
+                    }
                 }
-                if (!$isValid) {
-                    // dd($data);
-                    //keep a record 
-                   $missMatchedPayment =  MissMatchedPayments::create([
-                        'reference' => $reference,
-                        'customer_id' => $customer_id,
-                        'order_id' => $order->id,
-
-                        'actual_account_number' => $account_number,
-                        'actual_account_name' => $account_name,
-                        'actual_bank_name' => $bank_name,
-
-                        'expected_account_name' => $data->accountName ?? null,
-                        'expected_account_number' => $data->accountNo ?? null,
-                        'expected_bank_name' => $data->bankName ?? null,
-
-                    ]);
-                    //send notification
-                    Notification::route('mail', config('app.admin_email'))->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
-                } else {
-                    //delete record 
-                    MissMatchedPayments::query()->where('customer_id', $customer_id)->delete();
-                }
+            } catch (\Throwable $th) {
+                //throw $th;
+                Log::error($th);
             }
-        } catch (\Throwable $th) {
-            //throw $th;
-            Log::error($th);
         }
     }
 }
