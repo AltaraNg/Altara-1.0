@@ -65,6 +65,9 @@ class   NewOrder extends Model
             'bnpl_vendor_product_id' => [new RequiredIf(request('financed_by') == self::ALTARA_BNPL), 'integer', Rule::exists('bnpl_vendor_products', 'id')->where('vendor_id', request('owner_id'))],
             "commitment_percentage" => ['sometimes', 'numeric', 'max:100'],
             "commitment_amount" => ['sometimes', 'numeric'],
+            'account_number' => ['sometimes', 'string', 'min:10'],
+            'account_name' => ['sometimes', 'string'],
+            'bank_name' => ['sometimes', 'string'],
         ];
     }
 
@@ -275,6 +278,11 @@ class   NewOrder extends Model
     {
         return $this->hasOne(PaystackAuthCode::class, 'order_id', 'order_number');
     }
+
+    public function missMatchedPayments()
+    {
+        return $this->hasMany(MissMatchedPayments::class, 'order_id');
+    }
     public function toArray()
     {
         return [
@@ -324,6 +332,7 @@ class   NewOrder extends Model
             'paystack_auth_code' => $this->paystackAuthCode ?? null,
             'commitment_amount' => $this->commitment_amount,
             'commitment_percentage' => $this->commitment_percentage,
+            'missMatchedPayments' => $this->missMatchedPayments,
         ];
     }
 }

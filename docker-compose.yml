@@ -39,5 +39,5 @@ services:
 
 #Docker Networks
 networks:
-   servers_altara-servers:
-      external: true
+  servers_altara-servers:
+    external: true

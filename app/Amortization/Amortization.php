@@ -89,9 +89,9 @@ abstract class Amortization
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
             return $this->getSuperLoaPaymentPlans();
-        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC') && !$IsProduct && $isBimonthly)  {
+        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC') && !$IsProduct && $isBimonthly) {
             return $this->getNoBsPaymentPlans();
-        } else { 
+        } else {
             return $this->getNormalPaymentPlans();
         }
     }
@@ -120,14 +120,28 @@ abstract class Amortization
     {
         $plan = [];
         $percentages = $this->superLoanPercentages();
+        $currentPlanIndex = 1;
         //loop through all the percentage
         foreach ($percentages as $key => $percentage) {
+            if ($key == 0) {
+                $i  = $currentPlanIndex;
+                $constraint = $this->repaymentCount() / count($percentages);
+            } else {
+                $i = $currentPlanIndex +  1;
+                $constraint = $currentPlanIndex + $this->repaymentCount() / count($percentages);
+            }
             //calculate repayment base on the current percentage
-            for ($i = 1; $i <= $this->repaymentCount() / count($percentages); $i++) {
+            for ($i; $i <= $constraint; $i++) {
+
                 $plan[] = [
                     'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
                     'expected_amount' => $this->repaymentAmountSuperLoan($percentage),
                 ];
+                //if we are in the last index of the current iteration
+                if ($i == $constraint) {
+                    //save it as our current index for next for each
+                    $currentPlanIndex = $i;
+                }
             }
         }
         return $plan;
@@ -137,20 +151,35 @@ abstract class Amortization
         $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
         $plan = [];
         $percentages = $IsNoBsRenewalLoan ? $this->nobsRenewalPercentages() : $this->nobsNewPercentages();
+        $currentPlanIndex = 1;
         //loop through all the percentage
         foreach ($percentages as $key => $percentage) {
+            if ($key == 0) {
+                $i  = $currentPlanIndex;
+                $constraint = $this->repaymentCount() / count($percentages);
+            } else {
+                // we want to make sure our for loop restarts with the next index as starting point
+                $i = $currentPlanIndex +  1;
+                //we increment our constraint we have incremented i
+                $constraint = $currentPlanIndex + $this->repaymentCount() / count($percentages);
+            }
             //calculate repayment base on the current percentage
-            for ($i = 1; $i <= $this->repaymentCount() / count($percentages); $i++) {
+            for ($i; $i <= $constraint; $i++) {
                 $plan[] = [
                     'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
                     'expected_amount' => $this->repaymentAmountSuperLoan($percentage),
                 ];
+                //if we are in the last index of the current iteration
+                if ($i == $constraint) {
+                    //save it as our current index for next for each
+                    $currentPlanIndex = $i;
+                }
             }
         }
         return $plan;
     }
 
-   
+
     private function getNormalPaymentPlans()
     {
         $plan = [];
