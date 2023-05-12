@@ -24,6 +24,7 @@ class CreateMissMatchedPaymentsTable extends Migration
             $table->string('actual_account_number')->nullable();
             $table->string('actual_account_name')->nullable();
             $table->string('actual_bank_name')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers');

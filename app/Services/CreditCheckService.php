@@ -56,8 +56,8 @@ class CreditCheckService
             $latestCreditReport = Recommendation::query()->where('customer_id', $customer_id)->where('type', 'credit_report')->latest('created_at')->first();
             if ($latestCreditReport) {
                 $data = json_decode($latestCreditReport->input_data);
-                if (property_exists($data, 'accountNo')) {
-                    $isValid = $data->accountNo == $account_number;
+                if (property_exists($data, 'accountName') && property_exists($data, 'bankName')) {
+                    $isValid = $data->accountName == $account_name  && $data->bankName ==  $bank_name;
                 }
                 if (!$isValid) {
                     // dd($data);
@@ -80,7 +80,7 @@ class CreditCheckService
                     Notification::route('mail', config('app.admin_email'))->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
                 } else {
                     //delete record 
-
+                    MissMatchedPayments::query()->where('customer_id', $customer_id)->delete();
                 }
             }
         } catch (\Throwable $th) {
