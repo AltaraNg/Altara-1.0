@@ -14,7 +14,10 @@ class PaystackAuthCode extends Model
     {
         return [
             'order_id' => 'required|exists:new_orders,order_number',
-            'auth_code' => 'required'
+            'auth_code' => 'required',
+            'account_number' => ['sometimes', 'string', 'min:10'],
+            'account_name' => ['sometimes', 'string'],
+            'bank_name' => ['sometimes', 'string'],
         ];
     }
     public function order()
