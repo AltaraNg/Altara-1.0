@@ -179,7 +179,6 @@ abstract class Amortization
             }
         }else{
             $plan = [];
-            // dd($this->repaymentCount());
             for ($i = 1; $i <= $this->repaymentCount(); $i++) {
                 switch($i){
                     case 1:{
