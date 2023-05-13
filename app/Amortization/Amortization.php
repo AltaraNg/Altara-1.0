@@ -48,7 +48,7 @@ abstract class Amortization
     {
         $amount = floor((($percentage  / 100) *  $this->order->repayment) / 100) * 100;
         if (RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::CUSTOM) {
-            return $amount * 2;
+            return $amount;
         } else {
             return $amount;
         }
@@ -85,11 +85,10 @@ abstract class Amortization
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
         $IsNoBs = Str::contains($this->order->businessType->slug, 'no_bs');
         $IsProduct = Str::contains($this->order->businessType->slug, 'product');
-        $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
             return $this->getSuperLoaPaymentPlans();
-        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC') && !$IsProduct && $isBimonthly) {
+        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC') && !$IsProduct) {
             return $this->getNoBsPaymentPlans();
         } else {
             return $this->getNormalPaymentPlans();
@@ -149,33 +148,88 @@ abstract class Amortization
     private function getNoBsPaymentPlans()
     {
         $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
+        $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $plan = [];
         $percentages = $IsNoBsRenewalLoan ? $this->nobsRenewalPercentages() : $this->nobsNewPercentages();
         $currentPlanIndex = 1;
         //loop through all the percentage
-        foreach ($percentages as $key => $percentage) {
-            if ($key == 0) {
-                $i  = $currentPlanIndex;
-                $constraint = $this->repaymentCount() / count($percentages);
-            } else {
-                // we want to make sure our for loop restarts with the next index as starting point
-                $i = $currentPlanIndex +  1;
-                //we increment our constraint we have incremented i
-                $constraint = $currentPlanIndex + $this->repaymentCount() / count($percentages);
-            }
-            //calculate repayment base on the current percentage
-            for ($i; $i <= $constraint; $i++) {
-                $plan[] = [
-                    'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
-                    'expected_amount' => $this->repaymentAmountSuperLoan($percentage),
-                ];
-                //if we are in the last index of the current iteration
-                if ($i == $constraint) {
-                    //save it as our current index for next for each
-                    $currentPlanIndex = $i;
+        if($isBimonthly){
+            foreach ($percentages as $key => $percentage) {
+                if ($key == 0) {
+                    $i  = $currentPlanIndex;
+                    $constraint = $this->repaymentCount() / count($percentages);
+                } else {
+                    // we want to make sure our for loop restarts with the next index as starting point
+                    $i = $currentPlanIndex +  1;
+                    //we increment our constraint we have incremented i
+                    $constraint = $currentPlanIndex + $this->repaymentCount() / count($percentages);
+                }
+                //calculate repayment base on the current percentage
+                for ($i; $i <= $constraint; $i++) {
+                    $plan[] = [
+                        'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                        'expected_amount' => $this->repaymentAmountSuperLoan($percentage),
+                    ];
+                    //if we are in the last index of the current iteration
+                    if ($i == $constraint) {
+                        //save it as our current index for next for each
+                        $currentPlanIndex = $i;
+                    }
                 }
             }
+        }else{
+            $plan = [];
+            // dd($this->repaymentCount());
+            for ($i = 1; $i <= $this->repaymentCount(); $i++) {
+                switch($i){
+                    case 1:{
+                        $plan[] = [
+                            'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                            'expected_amount' => $this->repaymentAmountSuperLoan($percentages[0]) * 2
+                        ];
+                        break;
+                    }
+                    case 2:{
+                        $plan[] = [
+                            'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                            'expected_amount' => $this->repaymentAmountSuperLoan($percentages[0]) + $this->repaymentAmountSuperLoan($percentages[1])
+                        ];
+                        break;
+                    }
+                    case 3:{
+                        $plan[] = [
+                            'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                            'expected_amount' => $this->repaymentAmountSuperLoan($percentages[1]) * 2
+                        ];
+                        break;
+                    }
+                    case 4:{
+                        $plan[] = [
+                            'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                            'expected_amount' => $this->repaymentAmountSuperLoan($percentages[2]) * 2
+                        ];
+                        break;
+                    }
+
+                    case 5:{
+                        $plan[] = [
+                            'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                            'expected_amount' => $this->repaymentAmountSuperLoan($percentages[2]) + $this->repaymentAmountSuperLoan($percentages[3])
+                        ];
+                        break;
+                    }
+                    case 6:{
+                        $plan[] = [
+                            'expected_payment_date' => $this->getRepaymentDate($i)->toDateTimeString(),
+                            'expected_amount' => $this->repaymentAmountSuperLoan($percentages[3]) * 2
+                        ];
+                        break;
+                    }
+                }
+                
+            }
         }
+       
         return $plan;
     }
 
