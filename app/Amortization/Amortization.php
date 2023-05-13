@@ -47,11 +47,7 @@ abstract class Amortization
     public function repaymentAmountSuperLoan(float $percentage = 0.0)
     {
         $amount = floor((($percentage  / 100) *  $this->order->repayment) / 100) * 100;
-        if (RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::CUSTOM) {
-            return $amount;
-        } else {
-            return $amount;
-        }
+        return $amount;
     }
 
     public function repaymentDuration(): int
