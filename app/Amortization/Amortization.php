@@ -173,9 +173,33 @@ abstract class Amortization
                 }
             }
         }
+        if ($isBimonthly) {
+            return $plan;
+        } else {
+            $bimonthly = [];
+            $dates = [];
+            foreach ($plan as $p) {
+                $bimonthly[] = $p['expected_amount'];
+                $dates[] = $p['expected_payment_date'];
+            }
+            $monthly = [];
+            for ($i = 0; $i < count($bimonthly); $i += 2) {
+                $monthly[] = $bimonthly[$i] + $bimonthly[$i + 1];
+            }
+            $plan = [];
+            for ($i = 0; $i < count($monthly); $i += 1) {
+                $plan[] = [
+                    'expected_payment_date' => $dates[$i],
+                    'expected_amount' => $monthly[$i]
+                ];
+            }
+            return $plan;
+
+        }
 
 
-        return $plan;
+
+
     }
 
 
