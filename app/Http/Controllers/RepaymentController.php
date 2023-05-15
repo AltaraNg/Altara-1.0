@@ -9,6 +9,7 @@ use App\Repayment;
 use App\RepaymentFormal;
 use App\RepaymentInformal;
 use App\Rules\Money;
+use App\Services\CreditCheckService;
 use Illuminate\Http\Request;
 
 class RepaymentController extends Controller
@@ -44,6 +45,9 @@ class RepaymentController extends Controller
         $this->validate($request, [
             'order_id' => 'required|exists:orders,id',
             'amount' => ['required', new Money],
+            'account_number' => ['sometimes', 'string', 'min:10'],
+            'account_name' => ['sometimes', 'string'],
+            'bank_name' => ['sometimes', 'string'],
         ]);
         $amortization = null;
 
@@ -64,6 +68,15 @@ class RepaymentController extends Controller
         $order->amount = $request->amount;
         $order->payment_type_id = $paymentType;
         $order->payment_method_id = $request->payment_method_id;
+        if ($request->has('account_number')) {
+            CreditCheckService::accountNumberVerification(
+                $order->customer_id,
+                $order->id,
+                $request->input('account_number'),
+                $request->input('account_name'),
+                $request->input('bank_name')
+            );
+        }
         event(new OldRepaymentEvent($order));
 
 
