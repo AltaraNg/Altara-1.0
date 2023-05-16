@@ -68,6 +68,7 @@ class   NewOrder extends Model
             'account_number' => ['sometimes', 'string', 'min:10'],
             'account_name' => ['sometimes', 'string'],
             'bank_name' => ['sometimes', 'string'],
+            'fixed_repayment' => ['sometimes', 'boolean']
         ];
     }
 

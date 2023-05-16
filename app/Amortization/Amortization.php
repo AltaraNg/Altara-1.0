@@ -46,12 +46,8 @@ abstract class Amortization
 
     public function repaymentAmountSuperLoan(float $percentage = 0.0)
     {
-        $amount = floor((($percentage  / 100) *  $this->order->repayment) / 100) * 100;
-        if (RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::CUSTOM) {
-            return $amount * 2;
-        } else {
-            return $amount;
-        }
+        $amount = floor((($percentage / 100) * $this->order->repayment) / 100) * 100;
+        return $amount;
     }
 
     public function repaymentDuration(): int
@@ -71,7 +67,7 @@ abstract class Amortization
 
     public function create()
     {
-        $plans =  $this->preview();
+        $plans = $this->preview();
         foreach ($plans as $key => $plan) {
             $this->order->amortization()->create([
                 'expected_payment_date' => $plan['expected_payment_date'],
@@ -83,14 +79,12 @@ abstract class Amortization
     public function preview()
     {
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
-        $IsNoBs = Str::contains($this->order->businessType->slug, 'no_bs');
         $IsProduct = Str::contains($this->order->businessType->slug, 'product');
-        $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
             return $this->getSuperLoaPaymentPlans();
-        } else if ($IsNoBs && env('USE_NOBS_LOAN_CALC') && !$IsProduct && $isBimonthly) {
-            return $this->getNoBsPaymentPlans();
+        } else if ($this->order->fixed_repayment === false && !$IsProduct) {
+            return $this->getDecliningPaymentPlans();
         } else {
             return $this->getNormalPaymentPlans();
         }
@@ -124,10 +118,10 @@ abstract class Amortization
         //loop through all the percentage
         foreach ($percentages as $key => $percentage) {
             if ($key == 0) {
-                $i  = $currentPlanIndex;
+                $i = $currentPlanIndex;
                 $constraint = $this->repaymentCount() / count($percentages);
             } else {
-                $i = $currentPlanIndex +  1;
+                $i = $currentPlanIndex + 1;
                 $constraint = $currentPlanIndex + $this->repaymentCount() / count($percentages);
             }
             //calculate repayment base on the current percentage
@@ -146,22 +140,25 @@ abstract class Amortization
         }
         return $plan;
     }
-    private function getNoBsPaymentPlans()
+    private function getDecliningPaymentPlans()
     {
+
         $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
+        $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
+        $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
         $plan = [];
         $percentages = $IsNoBsRenewalLoan ? $this->nobsRenewalPercentages() : $this->nobsNewPercentages();
         $currentPlanIndex = 1;
         //loop through all the percentage
         foreach ($percentages as $key => $percentage) {
             if ($key == 0) {
-                $i  = $currentPlanIndex;
-                $constraint = $this->repaymentCount() / count($percentages);
+                $i = $currentPlanIndex;
+                $constraint = $repaymentCount / count($percentages);
             } else {
                 // we want to make sure our for loop restarts with the next index as starting point
-                $i = $currentPlanIndex +  1;
+                $i = $currentPlanIndex + 1;
                 //we increment our constraint we have incremented i
-                $constraint = $currentPlanIndex + $this->repaymentCount() / count($percentages);
+                $constraint = $currentPlanIndex + $repaymentCount / count($percentages);
             }
             //calculate repayment base on the current percentage
             for ($i; $i <= $constraint; $i++) {
@@ -176,7 +173,33 @@ abstract class Amortization
                 }
             }
         }
-        return $plan;
+        if ($isBimonthly) {
+            return $plan;
+        } else {
+            $bimonthly = [];
+            $dates = [];
+            foreach ($plan as $p) {
+                $bimonthly[] = $p['expected_amount'];
+                $dates[] = $p['expected_payment_date'];
+            }
+            $monthly = [];
+            for ($i = 0; $i < count($bimonthly); $i += 2) {
+                $monthly[] = $bimonthly[$i] + $bimonthly[$i + 1];
+            }
+            $plan = [];
+            for ($i = 0; $i < count($monthly); $i += 1) {
+                $plan[] = [
+                    'expected_payment_date' => $dates[$i],
+                    'expected_amount' => $monthly[$i]
+                ];
+            }
+            return $plan;
+
+        }
+
+
+
+
     }
 
 
