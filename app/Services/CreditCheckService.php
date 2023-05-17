@@ -8,6 +8,7 @@ use App\Notifications\AccountNumberVerificationFailedNotification;
 use App\Recommendation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\App;
 
 class CreditCheckService
 {
@@ -49,6 +50,10 @@ class CreditCheckService
         string $bank_name,
         string $reference = null
     ) {
+
+        if (!env('USE_MISS_MATCHED_ACCOUNT')) {
+            return;
+        }
         try {
             $isValid = false;
             $orderQuery = NewOrder::query();
@@ -62,7 +67,7 @@ class CreditCheckService
                 if (!$isValid) {
                     // dd($data);
                     //keep a record 
-                   $missMatchedPayment =  MissMatchedPayments::create([
+                    $missMatchedPayment =  MissMatchedPayments::create([
                         'reference' => $reference,
                         'customer_id' => $customer_id,
                         'order_id' => $order->id,
@@ -77,7 +82,11 @@ class CreditCheckService
 
                     ]);
                     //send notification
-                    Notification::route('mail', config('app.admin_email'))->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
+                    $receiver = config('app.admin_email');
+                    if (!App::environment() === 'production') {
+                        $receiver = auth()->user()->email;
+                    }
+                    Notification::route('mail', $receiver)->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
                 } else {
                     //delete record 
                     MissMatchedPayments::query()->where('customer_id', $customer_id)->delete();

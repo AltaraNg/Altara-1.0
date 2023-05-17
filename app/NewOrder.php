@@ -45,7 +45,7 @@ class   NewOrder extends Model
             'bank_id' => 'required|exists:banks,id',
             'repayment' => ['required', new Money],
             'owner_id' => 'required|exists:users,id',
-            'serial_number' => 'sometimes|string',
+            'serial_number' => 'sometimes|string|unique:new_orders,serial_number',
             'sales_category_id' => 'required|exists:sales_categories,id',
             'repayment_duration_id' => 'required|exists:repayment_durations,id',
             'repayment_cycle_id' => 'required|exists:repayment_cycles,id',
@@ -68,6 +68,7 @@ class   NewOrder extends Model
             'account_number' => ['sometimes', 'string', 'min:10'],
             'account_name' => ['sometimes', 'string'],
             'bank_name' => ['sometimes', 'string'],
+            'fixed_repayment' => ['sometimes', 'boolean']
         ];
     }
 
