@@ -70,7 +70,7 @@ class DirectDebitService
 
     public function handle($sortOrder="DESC")
     {
-        $items = $this->fetchOrders($sortOrder)->reverse();
+        $items = $this->fetchOrders($sortOrder);
         $res = array();
         if (empty($items)) {
             return 'No Customers are available';
