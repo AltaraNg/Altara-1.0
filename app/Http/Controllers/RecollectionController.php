@@ -35,6 +35,9 @@ class RecollectionController extends Controller
     public function index(NewOrderFilter $filter, RecollectionService $recollectionService)
     {
         $collectQuery = $this->newOrderRepository->reportQuery($filter);
+        $collectQuery->with(['generalFeedBacks' => function($q){
+            $q->orderBy('created_at', 'DESC');
+        }]);
         if (request()->query('recollection') == 'all') {
             $collectQuery = $this->newOrderRepository->reportQuery($filter);
             $additional['total_sales'] = $collectQuery->count();
