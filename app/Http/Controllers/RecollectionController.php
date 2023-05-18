@@ -40,6 +40,9 @@ class RecollectionController extends Controller
         }]);
         if (request()->query('recollection') == 'all') {
             $collectQuery = $this->newOrderRepository->reportQuery($filter);
+            $collectQuery->with(['generalFeedBacks' => function($q){
+                $q->orderBy('created_at', 'DESC');
+            }]);
             $additional['total_sales'] = $collectQuery->count();
             return $this->sendSuccess([$collectQuery->paginate(10) ?? [], "meta" => $additional], 'Orders and stats retrieved successfully');
         }
