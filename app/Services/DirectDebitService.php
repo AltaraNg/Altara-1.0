@@ -126,7 +126,10 @@ class DirectDebitService
             $json_array=array_map(function ($item) { 
                 return array_merge($item,['created_at'=> Carbon::now(),'updated_at'=> Carbon::now()]); 
             }, $res);
-            DB::table('dd_responses')->insert($json_array);
+            foreach ($json_array as $record) {
+                $uniqueColumn = $record['order_id'];
+                DB::table('dd_responses')->updateOrInsert(['order_id' => $uniqueColumn], $record);
+            }
         } catch (\Throwable $e) {
             FacadesLog::debug($e->getMessage());
         }
