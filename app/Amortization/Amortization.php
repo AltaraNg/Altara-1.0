@@ -112,17 +112,20 @@ abstract class Amortization
     }
     private function getSuperLoaPaymentPlans()
     {
+        $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $plan = [];
         $percentages = $this->superLoanPercentages();
+        $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
+
         $currentPlanIndex = 1;
         //loop through all the percentage
         foreach ($percentages as $key => $percentage) {
             if ($key == 0) {
                 $i = $currentPlanIndex;
-                $constraint = $this->repaymentCount() / count($percentages);
+                $constraint = $repaymentCount / count($percentages);
             } else {
                 $i = $currentPlanIndex + 1;
-                $constraint = $currentPlanIndex + $this->repaymentCount() / count($percentages);
+                $constraint = $currentPlanIndex + $repaymentCount / count($percentages);
             }
             //calculate repayment base on the current percentage
             for ($i; $i <= $constraint; $i++) {
@@ -138,7 +141,29 @@ abstract class Amortization
                 }
             }
         }
-        return $plan;
+        if ($isBimonthly) {
+            return $plan;
+        } else {
+            $bimonthly = [];
+            $dates = [];
+            foreach ($plan as $p) {
+                $bimonthly[] = $p['expected_amount'];
+                $dates[] = $p['expected_payment_date'];
+            }
+            $monthly = [];
+            for ($i = 0; $i < count($bimonthly); $i += 2) {
+                $monthly[] = $bimonthly[$i] + $bimonthly[$i + 1];
+            }
+            $plan = [];
+            for ($i = 0; $i < count($monthly); $i += 1) {
+                $plan[] = [
+                    'expected_payment_date' => $dates[$i],
+                    'expected_amount' => $monthly[$i]
+                ];
+            }
+            return $plan;
+
+        }
     }
     private function getDecliningPaymentPlans()
     {
