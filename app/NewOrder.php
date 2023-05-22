@@ -65,9 +65,10 @@ class   NewOrder extends Model
             'bnpl_vendor_product_id' => [new RequiredIf(request('financed_by') == self::ALTARA_BNPL), 'integer', Rule::exists('bnpl_vendor_products', 'id')->where('vendor_id', request('owner_id'))],
             "commitment_percentage" => ['sometimes', 'numeric', 'max:100'],
             "commitment_amount" => ['sometimes', 'numeric'],
-            'account_number' => ['sometimes', 'string', 'min:10'],
+            'account_number' => ['sometimes', 'string', 'min:4'],
             'account_name' => ['sometimes', 'string'],
             'bank_name' => ['sometimes', 'string'],
+            'fixed_repayment' => ['sometimes', 'boolean']
         ];
     }
 
