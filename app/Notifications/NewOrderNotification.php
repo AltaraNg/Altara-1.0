@@ -11,7 +11,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Mail\NewOrder as NewOrderMailable;
 use App\Helper\Helper;
-use App\Log;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,7 +64,7 @@ class NewOrderNotification extends Notification
     public function toMail($notifiable)
     {
         $isInProduction = App::environment() === 'production';
-        $email =   $notifiable->email;
+        $email = $notifiable->email;
         if (Auth::check() && !$isInProduction) {
             $email = auth()->user()->email;
         }
@@ -72,7 +72,7 @@ class NewOrderNotification extends Notification
             'environment' => App::environment(),
             'receiver' => $notifiable->email,
             'sent_to' => $email,
-            'instance' => 'New Order Mail', 
+            'instance' => 'New Order Mail',
         ]);
         return (new NewOrderMailable($this->data))
             ->to($email)
@@ -88,7 +88,7 @@ class NewOrderNotification extends Notification
     public function toSms($notifiable)
     {
         $replacementKeys = Helper::generateReplacementKeys(array_keys($this->data));
-        $replacementValues    = array_values($this->data);
+        $replacementValues = array_values($this->data);
         $message = preg_replace($replacementKeys, $replacementValues, Constants::SUCCESSFUL_ORDER);
         return $message;
     }
