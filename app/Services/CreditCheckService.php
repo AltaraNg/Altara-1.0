@@ -62,12 +62,12 @@ class CreditCheckService
             if ($latestCreditReport) {
                 $data = json_decode($latestCreditReport->input_data);
                 if (property_exists($data, 'accountName') && property_exists($data, 'bankName')) {
-                    $isValid = $data->accountName == $account_name  && $data->bankName ==  $bank_name;
+                    $isValid = $data->accountName == $account_name && $data->bankName == $bank_name;
                 }
                 if (!$isValid) {
                     // dd($data);
                     //keep a record 
-                    $missMatchedPayment =  MissMatchedPayments::create([
+                    $missMatchedPayment = MissMatchedPayments::create([
                         'reference' => $reference,
                         'customer_id' => $customer_id,
                         'order_id' => $order->id,
@@ -86,6 +86,10 @@ class CreditCheckService
                     if (!App::environment() === 'production') {
                         $receiver = auth()->user()->email;
                     }
+                    Log::info([
+                        'environment' => App::environment(),
+                        "comment" => "sending discrepancy email"
+                    ]);
                     Notification::route('mail', $receiver)->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
                 } else {
                     //delete record 

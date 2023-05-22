@@ -49,6 +49,7 @@ class NewOrderRepository extends Repository
         unset($validated['account_number']);
         unset($validated['account_name']);
         unset($validated['bank_name']);
+        unset($validated['reference']);
 
         if ($validated['financed_by'] != NewOrder::ALTARA_BNPL) {
             unset($validated['bnpl_vendor_product_id']);
