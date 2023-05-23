@@ -27,9 +27,7 @@ class AccountNumberVerificationFailedNotification extends Notification
     {
         $this->order = $order;
         $this->missMatchedPayment = $missMatchedPayment;
-        Log::info([
-            "comment" => "Logging notification for missmatched payment"
-        ]);
+
     }
 
     /**
@@ -51,9 +49,11 @@ class AccountNumberVerificationFailedNotification extends Notification
      */
     public function toMail($notifiable)
     {
-
+        Log::info([
+            "comment" => "To email block"
+        ]);
         return (new MailMessage)
-            ->view('emails.miss-matched-payment', [
+            ->view('emails.test', [
                 'customer' => $this->order->customer,
                 'order' => $this->order,
                 'missMatchedData' => $this->missMatchedPayment
