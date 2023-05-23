@@ -59,6 +59,10 @@ class CreditCheckService
             $orderQuery = NewOrder::query();
             $order = is_string($order_id) ? $orderQuery->where('order_number', $order_id)->first() : $orderQuery->where('id', $order_id)->first();
             $latestCreditReport = Recommendation::query()->where('customer_id', $customer_id)->where('type', 'credit_report')->latest('created_at')->first();
+            Log::info([
+                'environment' => App::environment(),
+                "comment" => "Before checking credit report occurence"
+            ]);
             if ($latestCreditReport) {
                 $data = json_decode($latestCreditReport->input_data);
                 if (property_exists($data, 'accountName') && property_exists($data, 'bankName')) {
@@ -67,6 +71,10 @@ class CreditCheckService
                 if (!$isValid) {
                     // dd($data);
                     //keep a record 
+                    Log::info([
+                        'environment' => App::environment(),
+                        "comment" => "Checkked there is discrepancy"
+                    ]);
                     $missMatchedPayment = MissMatchedPayments::create([
                         'reference' => $reference,
                         'customer_id' => $customer_id,
