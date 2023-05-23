@@ -9,6 +9,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+
 
 class AccountNumberVerificationFailedNotification extends Notification
 {
@@ -25,6 +27,9 @@ class AccountNumberVerificationFailedNotification extends Notification
     {
         $this->order = $order;
         $this->missMatchedPayment = $missMatchedPayment;
+        Log::info([
+            "comment" => "Logging notification for missmatched payment"
+        ]);
     }
 
     /**
@@ -46,7 +51,7 @@ class AccountNumberVerificationFailedNotification extends Notification
      */
     public function toMail($notifiable)
     {
-       
+
         return (new MailMessage)
             ->view('emails.miss-matched-payment', [
                 'customer' => $this->order->customer,

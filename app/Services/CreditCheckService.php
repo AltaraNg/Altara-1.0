@@ -6,6 +6,7 @@ use App\MissMatchedPayments;
 use App\NewOrder;
 use App\Notifications\AccountNumberVerificationFailedNotification;
 use App\Recommendation;
+use App\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\App;
@@ -98,7 +99,9 @@ class CreditCheckService
                         'environment' => App::environment(),
                         "comment" => "sending discrepancy email"
                     ]);
-                    Notification::route('mail', $receiver)->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
+                    $user = User::find(auth()->user()->id);
+                    $user->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
+                    // Notification::route('mail', $receiver)->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
                 } else {
                     //delete record 
                     MissMatchedPayments::query()->where('customer_id', $customer_id)->delete();
