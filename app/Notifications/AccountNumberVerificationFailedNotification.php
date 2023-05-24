@@ -48,12 +48,9 @@ class AccountNumberVerificationFailedNotification extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {
-        Log::info([
-            "comment" => "To email block"
-        ]);
+    {        
         return (new MailMessage)
-            ->view('emails.test', [
+            ->view('emails.miss-matched-payment', [
                 'customer' => $this->order->customer,
                 'order' => $this->order,
                 'missMatchedData' => $this->missMatchedPayment

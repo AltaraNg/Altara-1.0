@@ -60,10 +60,6 @@ class CreditCheckService
             $orderQuery = NewOrder::query();
             $order = is_string($order_id) ? $orderQuery->where('order_number', $order_id)->first() : $orderQuery->where('id', $order_id)->first();
             $latestCreditReport = Recommendation::query()->where('customer_id', $customer_id)->where('type', 'credit_report')->latest('created_at')->first();
-            Log::info([
-                'environment' => App::environment(),
-                "comment" => "Before checking credit report occurence"
-            ]);
             if ($latestCreditReport) {
                 $data = json_decode($latestCreditReport->input_data);
                 if (property_exists($data, 'accountName') && property_exists($data, 'bankName')) {
@@ -93,15 +89,12 @@ class CreditCheckService
                     //send notification
                     $receiver = config('app.admin_email');
                     if (!App::environment() === 'production') {
-                        $receiver = auth()->user()->email;
+                        $user = User::find(auth()->user()->id);
+                        $user->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
+                    } else {
+                        Notification::route('mail', $receiver)->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
                     }
-                    Log::info([
-                        'environment' => App::environment(),
-                        "comment" => "sending discrepancy email"
-                    ]);
-                    $user = User::find(auth()->user()->id);
-                    $user->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
-                    // Notification::route('mail', $receiver)->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
+
                 } else {
                     //delete record 
                     MissMatchedPayments::query()->where('customer_id', $customer_id)->delete();
