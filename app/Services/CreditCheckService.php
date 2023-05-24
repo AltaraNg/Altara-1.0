@@ -65,13 +65,7 @@ class CreditCheckService
                 if (property_exists($data, 'accountName') && property_exists($data, 'bankName')) {
                     $isValid = $data->accountName == $account_name && $data->bankName == $bank_name;
                 }
-                if (!$isValid) {
-                    // dd($data);
-                    //keep a record 
-                    Log::info([
-                        'environment' => App::environment(),
-                        "comment" => "Checkked there is discrepancy"
-                    ]);
+                if (!$isValid) {                   
                     $missMatchedPayment = MissMatchedPayments::create([
                         'reference' => $reference,
                         'customer_id' => $customer_id,
