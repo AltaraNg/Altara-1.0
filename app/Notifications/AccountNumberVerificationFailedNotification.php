@@ -16,8 +16,8 @@ class AccountNumberVerificationFailedNotification extends Notification
 {
     use Queueable;
 
-    public NewOrder $order;
-    public MissMatchedPayments $missMatchedPayment;
+    public $order;
+    public $missMatchedPayment;
     /**
      * Create a new notification instance.
      *
@@ -48,7 +48,7 @@ class AccountNumberVerificationFailedNotification extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {        
+    {
         return (new MailMessage)
             ->view('emails.miss-matched-payment', [
                 'customer' => $this->order->customer,
