@@ -83,6 +83,10 @@ class CreditCheckService
                     //send notification
                     $receiver = config('app.admin_email');
                     if (!App::environment() === 'production') {
+                        Log::info([
+                            'info' => "This mail is supposed to work",
+                            "env" => "Not Production"
+                        ]);
                         $user = User::find(auth()->user()->id);
                         $user->notify(new AccountNumberVerificationFailedNotification($order, $missMatchedPayment));
                     } else {
