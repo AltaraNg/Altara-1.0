@@ -18,10 +18,10 @@ class PaystackAuthCodeController extends Controller
         $this->paystackAuthCode = $paystackAuthCodeRepo;
     }
 
-    public function store(PaystackAuthCodeRequest $request)
+    public function store(PaystackAuthCode $model, PaystackAuthCodeRequest $request)
     {
-        
-        $result = $this->paystackAuthCode->store([
+
+        $result = $this->paystackAuthCode->updateOrCreate($model, ['order_id' => $request->input('order_id')], [
             'order_id' => $request->input('order_id'),
             'auth_code' => $request->input('auth_code'),
         ]);
