@@ -25,6 +25,7 @@ class PaystackAuthCodeController extends Controller
             'order_id' => $request->input('order_id'),
             'auth_code' => $request->input('auth_code'),
         ]);
+        // dd($result);
         $elem = PaystackAuthCode::query()->where('order_id', $request->input('order_id'))->first();
         if ($request->has('account_number') && $result) {
             CreditCheckService::accountNumberVerification(
