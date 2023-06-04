@@ -9,13 +9,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+
 
 class AccountNumberVerificationFailedNotification extends Notification
 {
     use Queueable;
 
-    public NewOrder $order;
-    public MissMatchedPayments $missMatchedPayment;
+    public $order;
+    public $missMatchedPayment;
     /**
      * Create a new notification instance.
      *
@@ -25,6 +27,7 @@ class AccountNumberVerificationFailedNotification extends Notification
     {
         $this->order = $order;
         $this->missMatchedPayment = $missMatchedPayment;
+
     }
 
     /**

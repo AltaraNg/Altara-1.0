@@ -18,17 +18,17 @@ class PaystackAuthCodeController extends Controller
         $this->paystackAuthCode = $paystackAuthCodeRepo;
     }
 
-    public function store(PaystackAuthCodeRequest $request)
+    public function store(PaystackAuthCode $model, PaystackAuthCodeRequest $request)
     {
-        
-        // $result = $this->paystackAuthCode->store([
-        //     'order_id' => $request->input('order_id'),
-        //     'auth_code' => $request->input('auth_code'),
-        // ]);
-        $result = PaystackAuthCode::query()->where('order_id', $request->input('order_id'))->first();
+
+        $result = $this->paystackAuthCode->updateOrCreate($model, ['order_id' => $request->input('order_id')], [
+            'order_id' => $request->input('order_id'),
+            'auth_code' => $request->input('auth_code'),
+        ]);
+        $elem = PaystackAuthCode::query()->where('order_id', $request->input('order_id'))->first();
         if ($request->has('account_number') && $result) {
             CreditCheckService::accountNumberVerification(
-                $result->order->customer_id,
+                $elem->order->customer_id,
                 $request->order_id,
                 $request->input('account_number'),
                 $request->input('account_name'),
