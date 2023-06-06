@@ -108,7 +108,8 @@ abstract class Amortization
         return [13.65, 10.82, 5.20, 2.42];
     }
 
-    private function bnpl40PercentPercentage(){
+    private function bnpl40PercentPercentage()
+    {
         return [25, 12.5, 12.5];
     }
 
@@ -175,13 +176,17 @@ abstract class Amortization
     private function getDecliningPaymentPlans()
     {
         $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
-        $isFortyPercent = DownPaymentRate::find($this->order->down_payment_rate_id)->percent == DownPaymentRate::$downPayments['forty'];
-        $is3Months = RepaymentDuration::find($this->order->repayment_duration_id)->name == 'three_months';
-        $useBNPLPercentage = $this->order->financed_by == "altara-bnpl" && $isFortyPercent && $is3Months;
+        $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
         $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
         $plan = [];
-        $percentages = ($IsNoBsRenewalLoan ? $this->nobsRenewalPercentages() : $useBNPLPercentage) ? $this->bnpl40PercentPercentage() : $this->nobsNewPercentages();
+        if ($useBNPLPercentage) {
+            $percentages = $this->bnpl40PercentPercentage();
+        } else if ($IsNoBsRenewalLoan) {
+            $percentages = $this->nobsRenewalPercentages();
+        } else {
+            $percentages = $this->nobsNewPercentages();
+        }
         $currentPlanIndex = 1;
         //loop through all the percentage
         foreach ($percentages as $key => $percentage) {
