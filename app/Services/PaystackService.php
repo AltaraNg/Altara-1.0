@@ -4,11 +4,11 @@
 namespace App\Services;
 
 
-use App\Amortization;
 use App\Contracts\PaymentGatewayInterface;
-use App\GuarantorPaystackAuthCode;
-use App\LateFee;
-use App\PriceCalculator;
+use App\Models\Amortization;
+use App\Models\GuarantorPaystackAuthCode;
+use App\Models\LateFee;
+use App\Models\PriceCalculator;
 
 class PaystackService implements PaymentGatewayInterface
 {

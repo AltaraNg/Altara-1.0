@@ -1,8 +1,6 @@
 <?php
 
-use App\Discount;
-use App\SalesCategory;
-use App\SalesType;
+use App\Models\SalesType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories;
 
-use App\OrderType;
+use App\Models\OrderType;
 
 class OrderTypeRepository extends Repository
 {

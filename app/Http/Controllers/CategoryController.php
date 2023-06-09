@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
 use App\Http\Filters\CategoryFilter;
 use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\Response;
 

@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\NewOrder;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Http\Filters\DailySalesNewOrderFilter;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\NewOrderRequest;
-use App\Repositories\NewOrderRepository;
-use App\Services\NewOrdersReportService;
-use App\Http\Filters\DailySalesNewOrderFilter;
+use App\Models\NewOrder;
 use App\Repositories\ContactCustomerRepository;
 use App\Repositories\DirectDebitDataRepository;
+use App\Repositories\NewOrderRepository;
 use App\Repositories\PaystackAuthCodeRepository;
 use App\Services\CreditCheckService;
 use App\Services\DirectDebitService;
+use App\Services\NewOrdersReportService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class NewOrderController extends Controller
 {

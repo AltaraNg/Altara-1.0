@@ -1,7 +1,6 @@
 <?php
 
-use App\ProductType;
-use App\RepaymentCycle;
+use App\Models\ProductType;
 use Illuminate\Database\Seeder;
 
 class ProductTypeTableSeeder extends Seeder

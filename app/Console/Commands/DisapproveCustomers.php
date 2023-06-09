@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Customer;
+use App\Models\Customer;
 use Illuminate\Console\Command;
 
 class DisapproveCustomers extends Command

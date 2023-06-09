@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\DownPaymentRate;
+use App\Models\DownPaymentRate;
 use Illuminate\Database\Seeder;
 
 class DownPaymentRateTableSeeder extends Seeder

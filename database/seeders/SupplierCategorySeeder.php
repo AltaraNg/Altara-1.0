@@ -1,8 +1,6 @@
 <?php
 
-use App\Supplier;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class SupplierCategorySeeder extends Seeder
 {

@@ -1,6 +1,6 @@
 <?php
 
-use App\State;
+use App\Models\State;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

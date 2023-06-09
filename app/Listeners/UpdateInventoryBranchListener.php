@@ -3,9 +3,7 @@
 namespace App\Listeners;
 
 use App\Exceptions\AException;
-use App\Inventory;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Inventory;
 
 class UpdateInventoryBranchListener
 {

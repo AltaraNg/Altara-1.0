@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Discount extends Model
+{
+    public $timestamps = false;
+
+    protected $fillable = ['name','percentage'];
+    protected $guarded = [];
+
+    public function new_orders()
+    {
+        return $this->belongsToMany(
+            NewOrder::class,
+            'orders_discounts',
+            'discount_id',
+            'order_id'
+        );
+    }
+}

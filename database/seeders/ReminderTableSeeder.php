@@ -1,7 +1,7 @@
 <?php
 
-use App\Order;
-use App\Reminder;
+use App\Models\Order;
+use App\Models\Reminder;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\WebsiteProductFilter;
 use App\Http\Requests\WebsiteProductRequest;
+use App\Models\WebsiteProduct;
 use App\Repositories\WebsiteProductRepository;
-use App\WebsiteProduct;
-use Illuminate\Http\Request;
 
 class WebsiteProductController extends Controller
 {
@@ -51,7 +50,7 @@ class WebsiteProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\WebsiteProduct  $websiteProduct
+     * @param  \App\Models\WebsiteProduct  $websiteProduct
      * @return \Illuminate\Http\Response
      */
     public function show(WebsiteProduct $websiteProduct)
@@ -68,7 +67,7 @@ class WebsiteProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\WebsiteProduct  $websiteProduct
+     * @param  \App\Models\WebsiteProduct  $websiteProduct
      * @return \Illuminate\Http\Response
      */
     public function update(WebsiteProductRequest $request, WebsiteProduct $websiteProduct)
@@ -82,7 +81,7 @@ class WebsiteProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\WebsiteProduct  $websiteProduct
+     * @param  \App\Models\WebsiteProduct  $websiteProduct
      * @return \Illuminate\Http\Response
      */
     public function destroy(WebsiteProduct $websiteProduct)

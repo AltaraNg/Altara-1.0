@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
-use App\Recommendation;
+use App\Models\Customer;
+use App\Models\Recommendation;
 use Illuminate\Http\Request;
 
 class RecommendationController extends Controller
@@ -42,7 +42,7 @@ class RecommendationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Recommendation  $recommendation
+     * @param  \App\Models\Recommendation  $recommendation
      * @return \Illuminate\Http\Response
      */
     public function show(Recommendation $recommendation)
@@ -53,7 +53,7 @@ class RecommendationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Recommendation  $recommendation
+     * @param  \App\Models\Recommendation  $recommendation
      * @return \Illuminate\Http\Response
      */
     public function edit(Recommendation $recommendation)
@@ -70,7 +70,7 @@ class RecommendationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Recommendation  $recommendation
+     * @param  \App\Models\Recommendation  $recommendation
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Recommendation $recommendation)
@@ -81,7 +81,7 @@ class RecommendationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Recommendation  $recommendation
+     * @param  \App\Models\Recommendation  $recommendation
      * @return \Illuminate\Http\Response
      */
     public function destroy(Recommendation $recommendation)

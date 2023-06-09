@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 
-use App\RepaymentDuration;
+use App\Models\RepaymentDuration;
 use Illuminate\Database\Seeder;
 
 class PaymentDurationTableSeeder extends Seeder

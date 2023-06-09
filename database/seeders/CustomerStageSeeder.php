@@ -1,9 +1,8 @@
 <?php
 
 
-use App\CustomerStage;
+use App\Models\CustomerStage;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CustomerStageSeeder extends Seeder
 {

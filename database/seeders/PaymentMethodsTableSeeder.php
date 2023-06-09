@@ -1,7 +1,6 @@
 <?php
 
-use App\PaymentMethod;
-use App\SalesCategory;
+use App\Models\PaymentMethod;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

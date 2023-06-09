@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\NewOrder;
+use App\Models\NewOrder;
 use Illuminate\Foundation\Http\FormRequest;
 
 class NewOrderRequest extends FormRequest

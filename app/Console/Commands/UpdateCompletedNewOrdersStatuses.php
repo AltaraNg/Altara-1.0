@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Http\Filters\NewOrderFilter;
-use App\NewOrder;
-use App\OrderStatus;
+use App\Models\OrderStatus;
 use App\Repositories\NewOrderRepository;
+use Illuminate\Console\Command;
 
 class UpdateCompletedNewOrdersStatuses extends Command
 {

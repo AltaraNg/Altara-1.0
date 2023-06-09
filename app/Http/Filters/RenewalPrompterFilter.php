@@ -2,7 +2,6 @@
 
 namespace App\Http\Filters;
 
-use App\RenewalPrompterStatus;
 use App\Traits\IFilterByBranch;
 use Illuminate\Support\Facades\DB;
 

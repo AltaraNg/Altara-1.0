@@ -1,9 +1,8 @@
 <?php
 namespace Database\Seeders;
 
-use App\Brand;
-use App\Category;
-use App\Supplier;
+use App\Models\Brand;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

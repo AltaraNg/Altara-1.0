@@ -1,8 +1,7 @@
 <?php
 
 
-
-use App\Reason;
+use App\Models\Reason;
 use Illuminate\Database\Seeder;
 
 class ReasonTableSeeder extends Seeder

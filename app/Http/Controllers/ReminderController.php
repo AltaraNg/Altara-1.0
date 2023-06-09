@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Helper\ExtractRequestObject;
 use App\Helper\OrderConstants;
 use App\Helper\OrderObject;
-use App\Order;
-use App\PromiseCall;
-use App\Reminder;
+use App\Models\Order;
+use App\Models\PromiseCall;
+use App\Models\Reminder;
 use Illuminate\Http\Request;
 
 /*use Monolog\Logger;

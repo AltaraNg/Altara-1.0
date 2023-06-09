@@ -11,12 +11,7 @@
 |
 */
 
-use App\BusinessType;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\UserController;
-use App\NewOrder;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class ,'login']);

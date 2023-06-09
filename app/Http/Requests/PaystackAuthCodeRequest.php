@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\PaystackAuthCode;
+use App\Models\PaystackAuthCode;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PaystackAuthCodeRequest extends FormRequest

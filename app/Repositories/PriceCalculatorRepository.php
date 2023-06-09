@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\PriceCalculator;
+use App\Models\PriceCalculator;
 
 class PriceCalculatorRepository extends Repository
 {

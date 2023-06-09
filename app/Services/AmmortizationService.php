@@ -2,14 +2,12 @@
 
 namespace App\Services;
 
-use App\DownPaymentRate;
 use App\Exceptions\AException;
 use App\Helper\Helper;
-use App\NewOrder;
-use App\PriceCalculator;
-use App\RepaymentCycle;
-use App\RepaymentDuration;
-use App\StoreProduct;
+use App\Models\DownPaymentRate;
+use App\Models\NewOrder;
+use App\Models\RepaymentCycle;
+use App\Models\RepaymentDuration;
 use Illuminate\Support\Str;
 
 /**

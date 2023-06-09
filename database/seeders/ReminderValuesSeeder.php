@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\ReminderValue;
 use Illuminate\Database\Seeder;
-use App\ReminderValue;
 
 class ReminderValuesSeeder extends Seeder
 {

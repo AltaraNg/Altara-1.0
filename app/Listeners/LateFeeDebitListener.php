@@ -2,13 +2,9 @@
 
 namespace App\Listeners;
 
-use App\Customer;
 use App\Helper\Constants;
-use App\Helper\Helper;
 use App\Helper\LogHelper;
 use App\Notifications\LateFeeDebitNotification;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class LateFeeDebitListener
 {

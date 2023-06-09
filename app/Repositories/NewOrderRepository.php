@@ -2,21 +2,21 @@
 
 namespace App\Repositories;
 
-use App\Branch;
-use App\BusinessType;
-use Exception;
-use App\NewOrder;
-use App\Inventory;
-use Carbon\Carbon;
-use App\OrderStatus;
-use App\PaymentType;
-use App\Helper\Helper;
-use App\PaymentGateway;
-use App\RepaymentCycle;
-use App\GeneralFeedback;
-use App\InventoryStatus;
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
+use App\Helper\Helper;
+use App\Models\Branch;
+use App\Models\BusinessType;
+use App\Models\GeneralFeedback;
+use App\Models\Inventory;
+use App\Models\InventoryStatus;
+use App\Models\NewOrder;
+use App\Models\OrderStatus;
+use App\Models\PaymentGateway;
+use App\Models\PaymentType;
+use App\Models\RepaymentCycle;
+use Carbon\Carbon;
+use Exception;
 
 class NewOrderRepository extends Repository
 {

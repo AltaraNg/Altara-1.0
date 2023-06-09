@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Customer;
-use App\NewOrder;
-use App\Helper\Helper;
 use App\Helper\Constants;
+use App\Helper\Helper;
 use App\Helper\LogHelper;
-use App\Repositories\NewOrderRepository;
+use App\Models\Customer;
+use App\Models\NewOrder;
 use App\Notifications\RepaymentNotification;
+use App\Repositories\NewOrderRepository;
 
 class RepaymentEventService
 {

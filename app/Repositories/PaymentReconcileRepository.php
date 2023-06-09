@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\PaymentReconcile;
+use App\Events\RepaymentEvent;
+use App\Models\PaymentReconcile;
+use App\Models\PaymentType;
 use App\Services\PaymentService;
 use Illuminate\Support\Str;
-use App\Events\RepaymentEvent;
-use App\PaymentType;
 
 class PaymentReconcileRepository extends Repository
 {

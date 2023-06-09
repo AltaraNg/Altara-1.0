@@ -2,11 +2,11 @@
 
 namespace App\Exports;
 
-use App\Customer;
-use App\NewOrder;
-use App\Exports\Sheets\CustomerSheet;
-use Maatwebsite\Excel\Concerns\Exportable;
 use App\Exports\Sheets\CreditInformationSheet;
+use App\Exports\Sheets\CustomerSheet;
+use App\Models\Customer;
+use App\Models\NewOrder;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class FirstCentralCreditBureauExport implements WithMultipleSheets

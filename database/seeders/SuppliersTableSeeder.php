@@ -1,6 +1,6 @@
 <?php
 
-use App\Supplier;
+use App\Models\Supplier;
 use Illuminate\Database\Seeder;
 
 class SuppliersTableSeeder extends Seeder

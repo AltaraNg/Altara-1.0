@@ -1,7 +1,6 @@
 <?php
 
-use App\Role;
-use App\User;
+use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

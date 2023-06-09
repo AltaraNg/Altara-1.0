@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Helper\ResponseHelper;
 use App\Http\Requests\PriceCalculatorRequest;
 use App\Imports\CalculatorImport;
-use App\PriceCalculator;
+use App\Models\PriceCalculator;
 use App\Repositories\PriceCalculatorRepository;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request;

@@ -4,8 +4,7 @@ namespace App\Listeners;
 
 use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
-use App\InventoryDictionary;
-use Carbon\Carbon;
+use App\Models\InventoryDictionary;
 
 class UpdateInventoryDictListener
 {

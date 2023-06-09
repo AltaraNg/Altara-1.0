@@ -1,6 +1,6 @@
 <?php
 
-use App\Caution;
+use App\Models\Caution;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

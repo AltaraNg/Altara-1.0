@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
-use App\NewDocument;
+use App\Helper\Helper;
+use App\Models\Customer;
+use App\Models\NewDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Helper\Helper;
 
 class NewDocumentController extends Controller
 {
@@ -85,7 +85,7 @@ class NewDocumentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\NewDocument  $newDocument
+     * @param  \App\Models\NewDocument  $newDocument
      * @return \Illuminate\Http\Response
      */
     public function show(NewDocument $newDocument)
@@ -102,7 +102,7 @@ class NewDocumentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\NewDocument  $newDocument
+     * @param  \App\Models\NewDocument  $newDocument
      * @return \Illuminate\Http\Response
      */
     public function edit(NewDocument $newDocument)
@@ -114,7 +114,7 @@ class NewDocumentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\NewDocument  $newDocument
+     * @param  \App\Models\NewDocument  $newDocument
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, NewDocument $newDocument)
@@ -125,7 +125,7 @@ class NewDocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\NewDocument  $newDocument
+     * @param  \App\Models\NewDocument  $newDocument
      * @return \Illuminate\Http\Response
      */
     public function destroy(NewDocument $newDocument)

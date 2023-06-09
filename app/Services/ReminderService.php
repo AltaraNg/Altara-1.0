@@ -3,11 +3,11 @@
 namespace App\Services;
 
 
-use App\NewOrder;
+use App\Models\NewOrder;
+use App\Models\OrderStatus;
 use App\Notifications\CallReminder;
 use App\Notifications\Collection;
 use App\Notifications\Models\CallReminderModel;
-use App\OrderStatus;
 use Carbon\Carbon;
 
 class ReminderService

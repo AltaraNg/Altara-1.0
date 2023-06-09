@@ -3,9 +3,8 @@
 
 namespace App\Http\Filters;
 
+use App\Models\CustomerStage;
 use Carbon\Carbon;
-use App\CustomerStage;
-use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class ContactCustomerFilter extends BaseFilter

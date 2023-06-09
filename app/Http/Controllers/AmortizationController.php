@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Amortization;
-use App\DownPaymentRate;
 use App\Exceptions\AException;
 use App\Helper\ResponseHelper;
 use App\Http\Filters\AmortizationFilter;
 use App\Http\Requests\NewOrderRequest;
+use App\Models\Amortization;
+use App\Models\DownPaymentRate;
+use App\Models\Recommendation;
+use App\Models\RepaymentCycle;
+use App\Models\RepaymentDuration;
 use App\Repositories\AmortizationRepository;
 use App\Services\AmmortizationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
-use App\Recommendation;
-use App\RepaymentCycle;
-use App\RepaymentDuration;
 
 class AmortizationController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-use App\EmployeeCategory;
+use App\Models\EmployeeCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

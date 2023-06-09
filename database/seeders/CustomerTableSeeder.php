@@ -1,9 +1,9 @@
 <?php
 
-use App\Customer;
-use App\Document;
-use App\State;
-use App\Verification;
+use App\Models\Customer;
+use App\Models\Document;
+use App\Models\State;
+use App\Models\Verification;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

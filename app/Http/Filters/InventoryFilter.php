@@ -3,7 +3,6 @@
 
 namespace App\Http\Filters;
 
-use App\InventoryStatus;
 use Carbon\Carbon;
 
 class InventoryFilter extends BaseFilter

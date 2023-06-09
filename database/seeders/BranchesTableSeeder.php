@@ -1,8 +1,8 @@
 <?php
 namespace Database\Seeders;
 
-use App\Branch;
-use App\State;
+use App\Models\Branch;
+use App\Models\State;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

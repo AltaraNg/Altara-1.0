@@ -6,7 +6,7 @@ use App\Http\Filters\NewOrderFilter;
 use App\Http\Filters\ProductFilter;
 use App\Http\Requests\ProductRequest;
 use App\Imports\ProductsImport;
-use App\Product;
+use App\Models\Product;
 use App\Repositories\NewOrderRepository;
 use App\Repositories\ProductRepository;
 use App\Services\ProductService;

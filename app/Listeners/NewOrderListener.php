@@ -6,9 +6,7 @@ use App\Events\NewOrderEvent;
 use App\Exceptions\AException;
 use App\Helper\Constants;
 use App\Helper\LogHelper;
-use App\NewOrder;
 use App\Notifications\NewOrderNotification;
-use App\OrderStatus;
 use Illuminate\Support\Str;
 
 class NewOrderListener

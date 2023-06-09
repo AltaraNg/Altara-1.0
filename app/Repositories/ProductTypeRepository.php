@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\ProductType;
+use App\Models\ProductType;
 
 class ProductTypeRepository extends Repository
 {

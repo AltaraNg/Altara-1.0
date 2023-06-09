@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Discount;
 use App\Helper\ResponseHelper;
+use App\Models\Discount;
 use App\Repositories\DiscountRepository;
 use Illuminate\Http\Request;
 
@@ -52,7 +52,7 @@ class DiscountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Discount  $discount
+     * @param  \App\Models\Discount  $discount
      * @return \Illuminate\Http\Response
      */
     public function show(Discount $discount)
@@ -63,7 +63,7 @@ class DiscountController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Discount  $discount
+     * @param  \App\Models\Discount  $discount
      * @return \Illuminate\Http\Response
      */
     public function edit(Discount $discount)
@@ -75,7 +75,7 @@ class DiscountController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Discount  $discount
+     * @param  \App\Models\Discount  $discount
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Discount $discount)
@@ -86,7 +86,7 @@ class DiscountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Discount  $discount
+     * @param  \App\Models\Discount  $discount
      * @return \Illuminate\Http\Response
      */
     public function destroy(Discount $discount)

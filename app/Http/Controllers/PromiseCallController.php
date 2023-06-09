@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\PromiseCall;
+use App\Models\PromiseCall;
 use Illuminate\Http\Request;
 
 class PromiseCallController extends Controller
@@ -44,7 +44,7 @@ class PromiseCallController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\PromiseCall $promiseCall
+     * @param \App\Models\PromiseCall $promiseCall
      * @return \Illuminate\Http\Response
      */
     public function show(PromiseCall $promiseCall)
@@ -55,7 +55,7 @@ class PromiseCallController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\PromiseCall $promiseCall
+     * @param \App\Models\PromiseCall $promiseCall
      * @return \Illuminate\Http\Response
      */
     public function edit(PromiseCall $promiseCall)
@@ -67,7 +67,7 @@ class PromiseCallController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\PromiseCall $promiseCall
+     * @param \App\Models\PromiseCall $promiseCall
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, PromiseCall $promiseCall)
@@ -78,7 +78,7 @@ class PromiseCallController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\PromiseCall $promiseCall
+     * @param \App\Models\PromiseCall $promiseCall
      * @return \Illuminate\Http\Response
      */
     public function destroy(PromiseCall $promiseCall)

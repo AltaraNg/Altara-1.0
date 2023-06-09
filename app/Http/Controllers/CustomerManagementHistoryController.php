@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerManagementHistory;
+use App\Models\CustomerManagementHistory;
 use Illuminate\Http\Request;
 use Validator;
 

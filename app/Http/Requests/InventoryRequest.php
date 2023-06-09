@@ -4,7 +4,7 @@
 namespace App\Http\Requests;
 
 
-use App\Inventory;
+use App\Models\Inventory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class InventoryRequest extends FormRequest

@@ -3,13 +3,10 @@
 namespace App\Notifications;
 
 use App\Helper\Helper;
-use App\NewOrder;
+use App\Mail\LateFeeDebit as Mailable;
+use App\Models\NewOrder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Mail\LateFeeDebit as Mailable;
-
-use Illuminate\Notifications\Messages\MailMessage;
 
 class LateFeeDebitNotification extends Notification
 {

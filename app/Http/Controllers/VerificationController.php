@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Recommendation;
-use App\Verification;
+use App\Models\Verification;
 use Illuminate\Http\Request;
 
 class VerificationController extends Controller
@@ -53,7 +52,7 @@ class VerificationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Verification $verification
+     * @param  \App\Models\Verification $verification
      * @return \Illuminate\Http\Response
      */
     public function show(Verification $verification)
@@ -64,7 +63,7 @@ class VerificationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Verification $verification
+     * @param  \App\Models\Verification $verification
      * @return \Illuminate\Http\Response
      */
     public function edit(Verification $verification)
@@ -76,7 +75,7 @@ class VerificationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Verification $verification
+     * @param  \App\Models\Verification $verification
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Verification $verification)
@@ -84,12 +83,12 @@ class VerificationController extends Controller
         //
     }
 
-    
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Verification $verification
+     * @param  \App\Models\Verification $verification
      * @return \Illuminate\Http\Response
      */
     public function destroy(Verification $verification)

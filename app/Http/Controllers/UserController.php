@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Branch;
-use App\Counter;
-use App\EmployeeCategory;
 use App\Events\Event;
-use App\Events\NewOrderEvent;
 use App\Http\Filters\UserFilter;
-use App\NewOrder;
+use App\Models\Branch;
+use App\Models\Counter;
+use App\Models\EmployeeCategory;
+use App\Models\Role;
+use App\Models\User;
 use App\Repositories\UserRepository;
-use App\Role;
-use App\User;
-use Carbon\Carbon;
 use DateTime;
 use Hash;
 use Illuminate\Http\Request;

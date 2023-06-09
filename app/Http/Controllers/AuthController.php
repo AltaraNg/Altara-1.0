@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SendPasswordResetLinkEvent;
-use App\PasswordResets;
+use App\Models\PasswordResets;
+use App\Models\User;
 use App\Repositories\AuthRepository;
-use App\User;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

@@ -14,7 +14,7 @@ class RenewalStatusSeeder extends Seeder
         $status = ['successful', 'callback', 'unreachable'];
 
         for ($i=0; $i<count($status); $i++){
-            \App\RenewalStatus::create([
+            \App\Models\RenewalStatus::create([
                 'status' => $status[$i]
             ]);
         }

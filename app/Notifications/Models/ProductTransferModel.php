@@ -3,8 +3,8 @@
 namespace App\Notifications\Models;
 
 
-use App\Branch;
-use App\Inventory;
+use App\Models\Branch;
+use App\Models\Inventory;
 
 class ProductTransferModel
 {

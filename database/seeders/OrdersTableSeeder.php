@@ -1,11 +1,11 @@
 <?php
 
-use App\Customer;
-use App\Order;
-use App\Purchase;
-use App\RepaymentFormal;
-use App\RepaymentInformal;
-use App\User;
+use App\Models\Customer;
+use App\Models\Order;
+use App\Models\Purchase;
+use App\Models\RepaymentFormal;
+use App\Models\RepaymentInformal;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

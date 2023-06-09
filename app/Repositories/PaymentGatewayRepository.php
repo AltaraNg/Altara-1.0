@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories;
 
-use App\PaymentGateway;
+use App\Models\PaymentGateway;
 
 class PaymentGatewayRepository extends Repository
 {

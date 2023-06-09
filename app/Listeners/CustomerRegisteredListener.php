@@ -2,12 +2,10 @@
 
 namespace App\Listeners;
 
-use App\ContactCustomer;
-use App\CustomerStage;
 use App\Events\CustomerStageUpdatedEvent;
+use App\Models\ContactCustomer;
+use App\Models\CustomerStage;
 use App\Repositories\ContactCustomerRepository;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CustomerRegisteredListener
 {

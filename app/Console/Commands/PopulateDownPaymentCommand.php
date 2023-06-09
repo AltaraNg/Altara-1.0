@@ -2,14 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\AltaraPayDdData;
-use App\DownPaymentRate;
-use App\Log;
-use App\NewOrder;
+use App\Models\NewOrder;
 use App\Repositories\DownPaymentRateRepository;
 use App\Repositories\NewOrderRepository;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log as FacadesLog;
 
 class PopulateDownPaymentCommand extends Command
 {

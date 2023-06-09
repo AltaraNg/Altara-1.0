@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Branch;
-
-use App\Supplier;
+use App\Models\Supplier;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SupplierRequest extends FormRequest

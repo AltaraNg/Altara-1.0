@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Attendance,Branch,User};
+use App\{Models\Attendance, Models\Branch, Models\User};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -105,7 +105,7 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Attendance $attendance
+     * @param  \App\Models\Attendance $attendance
      * @return \Illuminate\Http\Response
      */
     public function show(Attendance $attendance)
@@ -116,7 +116,7 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Attendance $attendance
+     * @param  \App\Models\Attendance $attendance
      * @return \Illuminate\Http\Response
      */
     public function edit(Attendance $attendance)
@@ -128,7 +128,7 @@ class AttendanceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Attendance $attendance
+     * @param  \App\Models\Attendance $attendance
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Attendance $attendance)
@@ -139,7 +139,7 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Attendance $attendance
+     * @param  \App\Models\Attendance $attendance
      * @return \Illuminate\Http\Response
      */
     public function destroy(Attendance $attendance)

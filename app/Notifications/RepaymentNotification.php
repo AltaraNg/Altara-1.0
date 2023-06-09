@@ -5,12 +5,10 @@ namespace App\Notifications;
 use App\Channels\SmsChannel;
 use App\Helper\Constants;
 use App\Helper\Helper;
-use App\NewOrder;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use App\Mail\Repayment as Mailable;
+use App\Models\NewOrder;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 
 class RepaymentNotification extends Notification
 {

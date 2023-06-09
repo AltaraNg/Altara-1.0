@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\InventoryStatus;
+use App\Models\InventoryStatus;
 
 class InventoryStatusRepository extends Repository
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 
-use App\InventoryStatus;
+use App\Models\InventoryStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

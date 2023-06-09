@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\PaystackAuthCode;
+use App\Models\PaystackAuthCode;
 
 class PaystackAuthCodeRepository extends Repository
 {

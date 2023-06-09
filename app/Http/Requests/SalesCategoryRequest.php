@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\SalesCategory;
+use App\Models\SalesCategory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SalesCategoryRequest extends FormRequest

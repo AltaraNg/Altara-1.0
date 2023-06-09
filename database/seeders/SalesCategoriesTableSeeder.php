@@ -1,9 +1,8 @@
 <?php
 
 namespace Database\Seeders;
-use App\SalesCategory;
+use App\Models\SalesCategory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class SalesCategoriesTableSeeder extends Seeder
 {

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\EmploymentStatus;
+use App\Models\EmploymentStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

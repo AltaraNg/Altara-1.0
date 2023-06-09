@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Branch;
+use App\Models\Branch;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 

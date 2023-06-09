@@ -11,7 +11,7 @@ class NewOrderSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\NewOrder::class, 10)->create()->each(function ($order) {
+        factory(\App\Models\NewOrder::class, 10)->create()->each(function ($order) {
             if($order->repaymentCycle->id === 3){
                 $order->customDate()->create(['custom_date' => rand(1,31)]);
             }

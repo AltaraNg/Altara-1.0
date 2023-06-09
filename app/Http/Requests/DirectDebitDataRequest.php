@@ -4,7 +4,7 @@
 namespace App\Http\Requests;
 
 
-use App\AltaraPayDdData;
+use App\Models\AltaraPayDdData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DirectDebitDataRequest extends FormRequest
