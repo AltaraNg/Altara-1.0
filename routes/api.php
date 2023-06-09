@@ -12,13 +12,14 @@
 */
 
 use App\BusinessType;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\NewOrder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', 'AuthController@login');
+Route::post('/login', [AuthController::class ,'login']);
 Route::post('/password/reset', 'AuthController@sendResetLinkEmail');
 Route::put('/password/reset', 'AuthController@reset');
 Route::group(['middleware' => ['auth:api']], function () {
