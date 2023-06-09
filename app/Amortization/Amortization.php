@@ -81,12 +81,11 @@ abstract class Amortization
     public function preview()
     {
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
-        $IsProduct = Str::contains($this->order->businessType->slug, 'product');
         $IsRental = Str::contains($this->order->businessType->slug, 'rentals');
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
             return $this->getSuperLoaPaymentPlans();
-        } else if (($this->order->fixed_repayment === false && !$IsProduct) || $IsRental) {
+        } else if ($this->order->fixed_repayment === false || $IsRental) {
             return $this->getDecliningPaymentPlans();
         } else {
             return $this->getNormalPaymentPlans();
