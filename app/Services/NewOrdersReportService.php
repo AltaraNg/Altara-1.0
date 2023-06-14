@@ -31,6 +31,8 @@ class NewOrdersReportService
         $additional = $additional->put('groupedDataByBranch', $this->getBranchesData(clone $newOrdersQuery, $totalRevenue, $totalDownPayment));
         $totalAltaraPay = $this->getNoOfAltaraPayProduct(clone $newOrdersForComputation);
         $totalAltaraCash = $this->getNoOfAltaraCashProduct(clone $newOrdersForComputation);
+
+
         //to prevent division by zero error
         $revenuePerSale = $totalRevenue / ($totalSales ?: 1);
         $additional = $additional->put('altaraPayVersusAltaraCash', $this->getComparismOfAltaraPayVsAltaraCash($totalAltaraCash, $totalAltaraPay, $totalSales));
@@ -39,6 +41,8 @@ class NewOrdersReportService
         $additional = $additional->put('total_no_sales', $totalSales);
         $additional = $additional->put('total_revenue', number_format($totalRevenue, 2));
         $additional = $additional->put('revenue_per_sale', number_format($revenuePerSale, 2));
+        $additional = $additional->put("TotalSalesBySalesCategory", $this->groupOrderBySalesCategory(clone $newOrdersForComputation));
+        $additional = $additional->put("totalSalesByDownPaymentsAndRepaymentDuration", $this->groupOrderByRepaymentDurationAndDownPaymentRate(clone $newOrdersForComputation));
         return $additional;
     }
 
@@ -234,5 +238,57 @@ class NewOrdersReportService
             ];
         })->sortBy('order_date');
         return $totalSalesPerDay;
+    }
+
+    private  function groupOrderByBusinessType($newOrdersToBeGrouped)
+    {
+        return  $newOrdersToBeGrouped->join('business_types', 'new_orders.business_type_id', '=', 'business_types.id')
+            ->select(
+                'business_types.name as business_type_name',
+                'business_types.id',
+                DB::raw("count(*) as total_sales
+                ")
+            )
+            ->groupBy('business_type_id')->get()->map(function ($item) {
+                return [
+                    'total_sales' => $item->total_sales,
+                    'business_type_name' => $item->business_type_name,
+                ];
+            });
+    }
+
+    private  function groupOrderBySalesCategory($newOrdersToBeGrouped)
+    {
+        return  $newOrdersToBeGrouped->join('sales_categories', 'new_orders.sales_category_id', '=', 'sales_categories.id')
+            ->select(
+                'sales_categories.name as sales_category_name',
+                'sales_categories.id as sales_category_id',
+                DB::raw("count(*) as total_sales
+                ")
+            )
+            ->groupBy('sales_category_id')->get()->map(function ($item) {
+                return [
+                    'total_sales' => $item->total_sales,
+                    'sales_category_name' => $item->sales_category_name,
+                ];
+            });
+    }
+
+    private  function groupOrderByRepaymentDurationAndDownPaymentRate($newOrdersToBeGrouped)
+    {
+        return  $newOrdersToBeGrouped->join('repayment_durations', 'new_orders.repayment_duration_id', '=', 'repayment_durations.id')
+            ->join('down_payment_rates', 'new_orders.down_payment_rate_id', '=', 'down_payment_rates.id')
+            ->select(
+                'repayment_durations.name as repayment_duration_name',
+                'down_payment_rates.percent as down_payment_rate_name',
+                DB::raw("count(new_orders.id) as total_sales
+                ")
+            )
+            ->groupBy("down_payment_rate_id", "repayment_duration_id")->get()->map(function ($item) {
+                return [
+                    'total_sales' => $item->total_sales,
+                    'name' => $item->repayment_duration_name . "-" . $item->down_payment_rate_name,
+                ];
+            });
     }
 }

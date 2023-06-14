@@ -42,6 +42,10 @@ class RenewalPrompterController extends Controller
     {
         $renewalPromptersQuery = $this->newOrderRepository->reportQuery($newOrderFilter);
 
+        $renewalPromptersQuery->with(['renewalPrompters' => function($q){
+            $q->orderBy('created_at', 'DESC');
+        }]);
+
         $renewalPrompterStatQuery = $this->renewalPrompterRepository->renewalQuery($renewalPrompterFilter);
         $additional = $renewalPrompterService->generateMetaData($renewalPrompterStatQuery, $renewalPromptersQuery);
         $additional['total'] = $renewalPromptersQuery->count();
