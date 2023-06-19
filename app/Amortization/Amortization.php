@@ -78,12 +78,11 @@ abstract class Amortization
     public function preview()
     {
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
-        $IsProduct = Str::contains($this->order->businessType->slug, 'product');
         $IsRental = Str::contains($this->order->businessType->slug, 'rentals');
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
             return $this->getSuperLoaPaymentPlans();
-        } else if (($this->order->fixed_repayment === false && !$IsProduct) || $IsRental) {
+        } else if ($this->order->fixed_repayment === false || $IsRental) {
             return $this->getDecliningPaymentPlans();
         } else {
             return $this->getNormalPaymentPlans();
@@ -173,11 +172,12 @@ abstract class Amortization
     private function getDecliningPaymentPlans()
     {
         $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
+        $is3MonthsDuration = $this->order->repaymentDuration->name == "three_months";
         $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
         $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
         $plan = [];
-        if ($useBNPLPercentage) {
+        if ($useBNPLPercentage || $is3MonthsDuration ) {
             $percentages = $this->bnpl40PercentPercentage();
         } else if ($IsNoBsRenewalLoan) {
             $percentages = $this->nobsRenewalPercentages();
