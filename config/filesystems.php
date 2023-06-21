@@ -47,6 +47,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
+        'excel' => [
+            'driver' => 'local',
+            'root' => public_path('exported_excel/processed'),
+        ],
 
         'public' => [
             'driver' => 'local',

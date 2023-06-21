@@ -1,5 +1,8 @@
 FROM php:8.1-fpm
 
+ARG user
+ARG uid
+
 LABEL maintainer="Adeniyi Aderounmu naderounmu@altaracredit.com"
 
 # Copy composer.lock and composer.json
@@ -42,6 +45,13 @@ COPY . /var/www
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 RUN apt install nodejs -y
+
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+
+RUN mkdir -p /home/$user/.composer && chown -R $user:$user /home/$user
+
+USER $user
+
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

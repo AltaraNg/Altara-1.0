@@ -18,3 +18,4 @@ test.sql
 /public/storage
 /public/exported_excel
 .devcontainer
+/public/exported_excel
