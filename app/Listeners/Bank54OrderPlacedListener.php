@@ -3,9 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\NewOrderEvent;
-use App\NewOrder;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\NewOrder;
 
 class Bank54OrderPlacedListener
 {

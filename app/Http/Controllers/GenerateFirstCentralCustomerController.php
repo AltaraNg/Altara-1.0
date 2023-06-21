@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
 use App\Exports\FirstCentralCreditBureauExport;
-use App\NewOrder;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Models\Customer;
+use App\Models\NewOrder;
 use Illuminate\Support\Facades\Date;
 use Maatwebsite\Excel\Facades\Excel;
 

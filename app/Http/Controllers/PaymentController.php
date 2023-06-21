@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Helper\ResponseHelper;
 use App\Http\Filters\PaymentFilter;
 use App\Http\Requests\PaymentRequest;
-use App\Repositories\RenewalListRepository;
-use App\Repositories\PaymentRepository;
+use App\Models\Payment;
 use App\Repositories\PaymentReconcileRepository;
-use App\Payment;
+use App\Repositories\PaymentRepository;
+use App\Repositories\RenewalListRepository;
 use Illuminate\Http\Response;
 
 class PaymentController extends Controller

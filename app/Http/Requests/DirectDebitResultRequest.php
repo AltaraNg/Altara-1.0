@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\DirectDebitResult;
+use App\Models\DirectDebitResult;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DirectDebitResultRequest extends FormRequest

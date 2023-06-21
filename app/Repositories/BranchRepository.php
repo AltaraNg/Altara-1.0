@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Branch;
+use App\Models\Branch;
 
 class BranchRepository extends Repository
 {

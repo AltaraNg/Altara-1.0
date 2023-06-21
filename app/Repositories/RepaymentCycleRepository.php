@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\RepaymentCycle;
+use App\Models\RepaymentCycle;
 
 class RepaymentCycleRepository extends Repository
 {

@@ -2,14 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Branch;
 use App\Exceptions\AException;
-use App\Inventory;
+use App\Models\Branch;
 use App\Notifications\Models\ProductTransferModel;
 use App\Notifications\ProductTransferNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Notification;
 
 class ProductTransferListener
 {

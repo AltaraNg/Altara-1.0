@@ -5,7 +5,7 @@ namespace App\Repositories;
 
 
 
-use App\Todo;
+use App\Models\Todo;
 
 class TodosRepository extends Repository
 {

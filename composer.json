@@ -8,39 +8,32 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.3",
+        "php": "^8.1",
         "ext-json": "*",
-        "aws/aws-sdk-php": "^3.235",
+        "aws/aws-sdk-php": "^3.273.2",
         "doctrine/dbal": "2.13.6",
-        "facade/ignition": "^2.0",
-        "fideloper/proxy": "^4.0",
+        "fideloper/proxy": "^4.4.2",
         "fruitcake/laravel-cors": "^2.2",
-        "intervention/image": "^2.4",
-        "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.0",
-        "league/flysystem-aws-s3-v3": "^1.0",
+        "intervention/image": "^2.7.2",
+        "laravel/framework": "^9.0",
+        "laravel/tinker": "^v2.8.1",
+        "league/flysystem-aws-s3-v3": "^3.15.0",
         "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
-        "codeception/codeception": "^4.1",
-        "codeception/module-asserts": "^1.0.0",
-        "codeception/module-laravel5": "^1.0",
-        "codeception/module-phpbrowser": "^1.0.0",
-        "codeception/module-rest": "^1.2",
-        "composer/composer": "^2.0",
+        "composer/composer": "^2.5",
         "filp/whoops": "^2.0",
-        "fzaninotto/faker": "^1.4",
-        "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^4.1",
-        "phpunit/phpunit": "^8.5"
+        "fzaninotto/faker": "^1.5",
+        "mockery/mockery": "^1.6.2",
+        "nunomaduro/collision": "^6.1",
+        "spatie/laravel-ignition": "^1.0",
+        "phpunit/phpunit": "^9.6.8"
     },
     "autoload": {
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {

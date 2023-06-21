@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\DownPaymentRate;
+use App\Models\DownPaymentRate;
 
 class DownPaymentRateRepository extends Repository
 {

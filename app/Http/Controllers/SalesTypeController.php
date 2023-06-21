@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\SalesType;
+use App\Models\SalesType;
 use Illuminate\Http\Request;
 
 class SalesTypeController extends Controller
@@ -41,7 +41,7 @@ class SalesTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SalesType  $salesType
+     * @param  \App\Models\SalesType  $salesType
      * @return \Illuminate\Http\Response
      */
     public function show(SalesType $salesType)
@@ -52,7 +52,7 @@ class SalesTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SalesType  $salesType
+     * @param  \App\Models\SalesType  $salesType
      * @return \Illuminate\Http\Response
      */
     public function edit(SalesType $salesType)
@@ -64,7 +64,7 @@ class SalesTypeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SalesType  $salesType
+     * @param  \App\Models\SalesType  $salesType
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, SalesType $salesType)
@@ -75,7 +75,7 @@ class SalesTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SalesType  $salesType
+     * @param  \App\Models\SalesType  $salesType
      * @return \Illuminate\Http\Response
      */
     public function destroy(SalesType $salesType)

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Returns;
+use App\Models\Returns;
 use Illuminate\Http\Request;
 
 class ReturnsController extends Controller
@@ -41,7 +41,7 @@ class ReturnsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Returns  $returns
+     * @param  \App\Models\Returns  $returns
      * @return \Illuminate\Http\Response
      */
     public function show(Returns $returns)
@@ -52,7 +52,7 @@ class ReturnsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Returns  $returns
+     * @param  \App\Models\Returns  $returns
      * @return \Illuminate\Http\Response
      */
     public function edit(Returns $returns)
@@ -64,7 +64,7 @@ class ReturnsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Returns  $returns
+     * @param  \App\Models\Returns  $returns
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Returns $returns)
@@ -75,7 +75,7 @@ class ReturnsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Returns  $returns
+     * @param  \App\Models\Returns  $returns
      * @return \Illuminate\Http\Response
      */
     public function destroy(Returns $returns)

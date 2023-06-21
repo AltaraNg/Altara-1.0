@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\ExtractRequestObject;
 use App\Helper\OrderConstants;
-use App\Order;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

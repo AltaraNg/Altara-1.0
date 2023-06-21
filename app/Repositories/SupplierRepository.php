@@ -5,7 +5,7 @@ namespace App\Repositories;
 
 
 
-use App\Supplier;
+use App\Models\Supplier;
 
 class SupplierRepository extends Repository
 {

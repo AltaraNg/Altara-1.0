@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\SalesCategory;
-use App\Repositories\SalesCategoryRepository;
-use Illuminate\Http\Request;
 use App\Helper\ResponseHelper;
 use App\Http\Requests\SalesCategoryRequest;
+use App\Models\SalesCategory;
+use App\Repositories\SalesCategoryRepository;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class SalesCategoryController extends Controller
@@ -55,7 +55,7 @@ class SalesCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SalesCategory  $salesCategory
+     * @param  \App\Models\SalesCategory  $salesCategory
      * @return Response
      */
     public function show(SalesCategory $salesCategory)
@@ -66,7 +66,7 @@ class SalesCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SalesCategory  $salesCategory
+     * @param  \App\Models\SalesCategory  $salesCategory
      * @return Response
      */
     public function edit(SalesCategory $salesCategory)
@@ -78,7 +78,7 @@ class SalesCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SalesCategory  $salesCategory
+     * @param  \App\Models\SalesCategory  $salesCategory
      * @return Response
      */
     public function update(Request $request, SalesCategory $salesCategory)
@@ -102,7 +102,7 @@ class SalesCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\SalesCategory $salesCategory
+     * @param \App\Models\SalesCategory $salesCategory
      * @return void
      */
     public function destroy(SalesCategory $salesCategory)

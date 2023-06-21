@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Helper\Helper;
-use App\LateFee;
-use App\PaymentReconcile;
+use App\Models\LateFee;
+use App\Models\PaymentReconcile;
 use Carbon\Carbon;
 
 

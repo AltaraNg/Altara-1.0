@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\NewOrder;
-use App\OrderType;
-use Carbon\Carbon;
-use App\Recollection;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
+use App\Models\NewOrder;
+use App\Models\OrderType;
+use App\Models\Recollection;
 use App\Repositories\RecollectionRepository;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class RecollectionService
 {

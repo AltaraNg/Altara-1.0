@@ -4,15 +4,10 @@
 namespace App\Services;
 
 
-use App\Amortization;
 use App\Events\LateFeeDebitEvent;
-use App\OrderType;
-use App\PaymentGateway;
-use App\Events\RepaymentEvent;
-use App\LateFee;
-use App\OrderStatus;
-use App\PaymentMethod;
-use App\PaymentType;
+use App\Models\LateFee;
+use App\Models\PaymentMethod;
+use App\Models\PaymentType;
 use Carbon\Carbon;
 
 class LateFeeDeductionService

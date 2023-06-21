@@ -2,18 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Customer;
-use App\Helper\Constants;
-use App\Helper\Helper;
-use App\Helper\LogHelper;
-use App\Notifications\RepaymentNotification;
-use App\OrderStatus;
 use App\Repositories\NewOrderRepository;
-use App\Repositories\RenewalPrompterRepository;
-use App\Services\PaymentService;
 use App\Services\RepaymentEventService;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class RepaymentListener
 {

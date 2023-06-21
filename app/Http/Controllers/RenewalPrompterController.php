@@ -3,26 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Exports\RenewalPrompterCustomerList;
-use App\Http\Resources\JSONApiCollection;
-use App\Http\Resources\JSONApiResource;
-use App\Http\Resources\RenewalPrompterCollection;
-use App\Http\Resources\RenewalPrompterResource;
-use App\NewOrder;
-use App\OrderStatus;
-use App\RenewalPrompter;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\RenewalPrompterStatus;
-use App\Http\Filters\BaseFilter;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Http\Filters\NewOrderFilter;
-use App\Repositories\NewOrderRepository;
-use App\Services\RenewalPrompterService;
-use App\Notifications\RenewalNotification;
 use App\Http\Filters\RenewalPrompterFilter;
 use App\Http\Requests\RenewalPrompterRequest;
+use App\Http\Resources\JSONApiCollection;
+use App\Http\Resources\JSONApiResource;
+use App\Models\RenewalPrompterStatus;
+use App\Repositories\NewOrderRepository;
 use App\Repositories\RenewalPrompterRepository;
+use App\Services\RenewalPrompterService;
+use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
 
 class RenewalPrompterController extends Controller

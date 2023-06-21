@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\OldRepaymentEvent;
-use App\Order;
-use App\PaymentType;
-use App\Repayment;
-use App\RepaymentFormal;
-use App\RepaymentInformal;
+use App\Models\Order;
+use App\Models\PaymentType;
+use App\Models\Repayment;
+use App\Models\RepaymentFormal;
+use App\Models\RepaymentInformal;
 use App\Rules\Money;
 use App\Services\CreditCheckService;
 use Illuminate\Http\Request;
@@ -90,7 +90,7 @@ class RepaymentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Repayment  $repayment
+     * @param  \App\Models\Repayment  $repayment
      * @return \Illuminate\Http\Response
      */
     public function show(Repayment $repayment)
@@ -101,7 +101,7 @@ class RepaymentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Repayment  $repayment
+     * @param  \App\Models\Repayment  $repayment
      * @return \Illuminate\Http\Response
      */
     public function edit(Repayment $repayment)
@@ -113,7 +113,7 @@ class RepaymentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Repayment  $repayment
+     * @param  \App\Models\Repayment  $repayment
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Repayment $repayment)
@@ -124,7 +124,7 @@ class RepaymentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Repayment  $repayment
+     * @param  \App\Models\Repayment  $repayment
      * @return \Illuminate\Http\Response
      */
     public function destroy(Repayment $repayment)

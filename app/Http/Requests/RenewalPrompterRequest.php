@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\RenewalPrompterStatus;
+use App\Models\RenewalPrompterStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\RequiredIf;
 
 class RenewalPrompterRequest extends FormRequest
 {

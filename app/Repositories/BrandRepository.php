@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Brand;
+use App\Models\Brand;
 
 class BrandRepository extends Repository
 {

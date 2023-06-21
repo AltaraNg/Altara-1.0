@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Events\LateFeeDebitEvent;
 use App\Http\Filters\LateFeeFilter;
-use App\LateFee;
-use App\PaymentMethod;
-use App\PaymentType;
+use App\Models\LateFee;
+use App\Models\PaymentMethod;
+use App\Models\PaymentType;
 use App\Repositories\LateFeeRepository;
 use App\Services\PaymentService;
 use Carbon\Carbon;

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-use App\Message;
+use App\Models\Message;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MessageRequest extends FormRequest

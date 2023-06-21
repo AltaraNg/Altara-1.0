@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
 use App\Helper\Constants;
 use App\Helper\ExtractRequestObject;
 use App\Helper\LogHelper;
 use App\Helper\OrderObject;
-use App\NewOrder;
+use App\Models\NewOrder;
+use App\Models\RenewalList;
 use App\Notifications\Models\RenewalModel;
 use App\Notifications\RenewalNotification;
-use App\RenewalList;
 use App\Repositories\RenewalListRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\RenewalStatus;
+use App\Models\RenewalStatus;
 
 class RenewalListStatusController extends Controller
 {

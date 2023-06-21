@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\ContactCustomer;
-use App\CustomerStage;
 use App\Events\CustomerStageUpdatedEvent;
 use App\Exports\ContactCustomerExport;
 use App\Helper\Helper;
 use App\Http\Filters\ContactCustomerFilter;
 use App\Http\Requests\ContactCustomerRequest;
+use App\Models\ContactCustomer;
+use App\Models\CustomerStage;
 use App\Repositories\ContactCustomerRepository;
 use App\Services\OverdueProspectService;
 use Illuminate\Http\Response;

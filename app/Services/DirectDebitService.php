@@ -4,25 +4,22 @@
 namespace App\Services;
 
 
-use App\Log;
-use Exception;
-use App\NewOrder;
-use App\OrderType;
-use Carbon\Carbon;
-use App\OrderStatus;
-use App\PaymentType;
-use App\Amortization;
-use App\PaymentMethod;
-use App\PaymentGateway;
 use App\Events\RepaymentEvent;
-use App\Notifications\RepaymentNotification;
-use Illuminate\Support\Facades\Log as FacadesLog;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
 use App\Exports\DirectDebitExport;
+use App\Models\Amortization;
+use App\Models\NewOrder;
+use App\Models\OrderStatus;
+use App\Models\OrderType;
+use App\Models\PaymentGateway;
+use App\Models\PaymentMethod;
+use App\Models\PaymentType;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log as FacadesLog;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DirectDebitService
 {
@@ -123,8 +120,8 @@ class DirectDebitService
         }
 
         try {
-            $json_array=array_map(function ($item) { 
-                return array_merge($item,['created_at'=> Carbon::now(),'updated_at'=> Carbon::now()]); 
+            $json_array=array_map(function ($item) {
+                return array_merge($item,['created_at'=> Carbon::now(),'updated_at'=> Carbon::now()]);
             }, $res);
             foreach ($json_array as $record) {
                 $uniqueColumn = $record['order_id'];

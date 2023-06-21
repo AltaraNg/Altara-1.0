@@ -4,16 +4,15 @@ namespace App\Notifications;
 
 use App\Channels\SmsChannel;
 use App\Helper\Constants;
-use App\NewOrder;
+use App\Helper\Helper;
+use App\Mail\NewOrder as NewOrderMailable;
+use App\Models\NewOrder;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Mail\NewOrder as NewOrderMailable;
-use App\Helper\Helper;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class NewOrderNotification extends Notification
 {

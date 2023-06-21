@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\RepaymentInformal;
+use App\Models\RepaymentInformal;
 use Illuminate\Http\Request;
 
 class RepaymentInformalController extends Controller
@@ -41,7 +41,7 @@ class RepaymentInformalController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\RepaymentInformal  $repaymentInformal
+     * @param  \App\Models\RepaymentInformal  $repaymentInformal
      * @return \Illuminate\Http\Response
      */
     public function show(RepaymentInformal $repaymentInformal)
@@ -52,7 +52,7 @@ class RepaymentInformalController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\RepaymentInformal  $repaymentInformal
+     * @param  \App\Models\RepaymentInformal  $repaymentInformal
      * @return \Illuminate\Http\Response
      */
     public function edit(RepaymentInformal $repaymentInformal)
@@ -64,7 +64,7 @@ class RepaymentInformalController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\RepaymentInformal  $repaymentInformal
+     * @param  \App\Models\RepaymentInformal  $repaymentInformal
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, RepaymentInformal $repaymentInformal)
@@ -75,7 +75,7 @@ class RepaymentInformalController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\RepaymentInformal  $repaymentInformal
+     * @param  \App\Models\RepaymentInformal  $repaymentInformal
      * @return \Illuminate\Http\Response
      */
     public function destroy(RepaymentInformal $repaymentInformal)

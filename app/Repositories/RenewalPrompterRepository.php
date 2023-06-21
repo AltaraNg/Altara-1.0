@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\RenewalPrompter;
+use App\Models\RenewalPrompter;
 
 class RenewalPrompterRepository extends Repository
 {

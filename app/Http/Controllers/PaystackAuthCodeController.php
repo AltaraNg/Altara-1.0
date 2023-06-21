@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\ResponseHelper;
 use App\Http\Requests\PaystackAuthCodeRequest;
-use App\PaystackAuthCode;
+use App\Models\PaystackAuthCode;
 use App\Repositories\PaystackAuthCodeRepository;
 use App\Services\CreditCheckService;
 

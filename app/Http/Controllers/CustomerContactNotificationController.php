@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ContactCustomer;
+use App\Models\ContactCustomer;
 use App\Notifications\ContactCustomerNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Response;

@@ -3,11 +3,8 @@
 
 namespace App\Amortization;
 
+use App\Models\RepaymentCycle;
 use Illuminate\Support\Str;
-use App\Discount;
-use App\DownPaymentRate;
-use App\RepaymentCycle;
-use App\RepaymentDuration;
 
 abstract class Amortization
 {

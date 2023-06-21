@@ -3,7 +3,7 @@
 
 namespace App\Repositories;
 
-use App\ProspectActivity;
+use App\Models\ProspectActivity;
 
 class ProspectActivityRepository extends Repository
 {

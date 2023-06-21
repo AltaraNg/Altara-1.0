@@ -5,8 +5,8 @@ namespace App\Repositories;
 use App\Events\SendPasswordResetLinkEvent;
 use App\Helper\ExtractRequestObject;
 use App\Helper\OrderObject;
-use App\PasswordResets;
-use App\User;
+use App\Models\PasswordResets;
+use App\Models\User;
 
 class AuthRepository extends Repository
 {

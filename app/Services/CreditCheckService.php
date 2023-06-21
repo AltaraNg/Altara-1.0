@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\MissMatchedPayments;
-use App\NewOrder;
+use App\Models\MissMatchedPayments;
+use App\Models\NewOrder;
+use App\Models\Recommendation;
+use App\Models\User;
 use App\Notifications\AccountNumberVerificationFailedNotification;
-use App\Recommendation;
-use App\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\App;
 
 class CreditCheckService
 {
@@ -93,7 +93,7 @@ class CreditCheckService
                     }
 
                 } else {
-                    //delete record 
+                    //delete record
                     MissMatchedPayments::query()->where('customer_id', $customer_id)->delete();
                 }
             }

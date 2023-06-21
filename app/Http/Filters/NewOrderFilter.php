@@ -2,11 +2,10 @@
 
 namespace App\Http\Filters;
 
-use App\ProductType;
-use App\Traits\IFilterByBranch;
+use App\Models\OrderStatus;
+use App\Models\ProductType;
+use App\Models\RenewalPrompterStatus;
 use Carbon\Carbon;
-use App\OrderStatus;
-use App\RenewalPrompterStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -75,7 +74,7 @@ class NewOrderFilter extends BaseFilter
             $query->select('notifiable_id')
                 ->from('notifications')
                 ->where('data->type', $type)
-                ->where('notifiable_type', 'App\NewOrder');
+                ->where('notifiable_type', 'App\Models\NewOrder');
         });
     }
 
@@ -88,7 +87,7 @@ class NewOrderFilter extends BaseFilter
             $query->select('notifiable_id')
                 ->from('notifications')
                 ->where('data->status', $status)
-                ->where('notifiable_type', 'App\NewOrder');
+                ->where('notifiable_type', 'App\Models\NewOrder');
         });
     }
 

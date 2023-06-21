@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Filters\OrderRequestFilter;
+use App\Models\OrderRequest;
 use App\Notifications\OrderRequestNotification;
-use App\OrderRequest;
 use App\Repositories\OrderRequestRepository;
 use Illuminate\Http\Request;
 
