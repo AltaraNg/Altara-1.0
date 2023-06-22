@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Customer;
-use App\NewOrder;
+use App\Models\Customer;
+use App\Models\NewOrder;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
@@ -96,8 +96,8 @@ class GenerateFirstCentralExcel extends Command
                 $this->info($s3->url($pathToFile));
                 $this->info('Upload of Excel To S3 Successful');
             }
-            
-            
+
+
         } catch (\Throwable $th) {
             $this->error($th->getMessage());
         }
