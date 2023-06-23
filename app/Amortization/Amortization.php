@@ -10,6 +10,7 @@ abstract class Amortization
 {
     public $order;
 
+    private const FACTORS = [2, 1.5, 0.5];
     /**
      * Amortization constructor.
      * @param $order
