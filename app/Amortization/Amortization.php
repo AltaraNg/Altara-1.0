@@ -4,11 +4,16 @@
 namespace App\Amortization;
 
 use App\Models\RepaymentCycle;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use mysql_xdevapi\XSession;
 
 abstract class Amortization
 {
     public $order;
+
+    private const FACTORS = [2, 1.5, 0.5, 0];
+    private const INTEREST = 3.5;
 
     /**
      * Amortization constructor.
@@ -49,6 +54,15 @@ abstract class Amortization
         return $amount;
     }
 
+    public function getDecliningRepaymentAmount(float $repaymentAmount, float $interestOnNormalSinglePayment, float $percentage = 0.0): float
+    {
+        if ($percentage <= 0) {
+            return $interestOnNormalSinglePayment;
+        }
+        return (($percentage / 100) * $repaymentAmount) + $interestOnNormalSinglePayment;
+
+    }
+
     public function repaymentDuration(): int
     {
         return $this->order->repaymentDuration->value;
@@ -81,7 +95,8 @@ abstract class Amortization
         $IsRental = Str::contains($this->order->businessType->slug, 'rentals');
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC')) {
-            return $this->getSuperLoaPaymentPlans();
+//            return $this->getSuperLoaPaymentPlans();
+            return $this->getDecliningPaymentPlansVersion2();
         } else if ($this->order->fixed_repayment === false || $IsRental) {
             return $this->getDecliningPaymentPlans();
         } else {
@@ -114,6 +129,12 @@ abstract class Amortization
     {
         return [13.85, 11.01, 5.18, 2.20];
     }
+
+    public function decliningPaymentPercentages($relativePercentage): Collection
+    {
+        return collect(self::FACTORS)->map(fn($factor) => $factor * $relativePercentage * 100);
+    }
+
     private function getSuperLoaPaymentPlans()
     {
         $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
@@ -169,6 +190,7 @@ abstract class Amortization
 
         }
     }
+
     private function getDecliningPaymentPlans()
     {
         $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
@@ -176,8 +198,10 @@ abstract class Amortization
         $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
         $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
+
+
         $plan = [];
-        if ($useBNPLPercentage || $is3MonthsDuration ) {
+        if ($useBNPLPercentage || $is3MonthsDuration) {
             $percentages = $this->bnpl40PercentPercentage();
         } else if ($IsNoBsRenewalLoan) {
             $percentages = $this->nobsRenewalPercentages();
@@ -220,6 +244,7 @@ abstract class Amortization
             }
             $monthly = [];
             for ($i = 0; $i < count($bimonthly); $i += 2) {
+
                 $monthly[] = $bimonthly[$i] + $bimonthly[$i + 1];
             }
             $plan = [];
@@ -234,11 +259,84 @@ abstract class Amortization
         }
 
 
-
-
     }
 
-    private function getNormalPaymentPlans()
+    private function getDecliningPaymentPlansVersion2(): array
+    {
+        $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
+        $is3MonthsDuration = $this->order->repaymentDuration->name == "three_months";
+        $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
+        $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
+        $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
+
+        $repaymentAmount = $this->order->repayment;
+        $normalInstallment = $repaymentAmount / $repaymentCount;
+
+        $plan = [];
+        if ($useBNPLPercentage || $is3MonthsDuration) {
+            $percentages = $this->bnpl40PercentPercentage();
+        } else {
+            $relativePercentage = $this->getRelativePercentage($normalInstallment, $repaymentAmount);
+            $percentages = $this->decliningPaymentPercentages($relativePercentage);
+        }
+        $interestOnNormalSingleRepayment = (self::INTEREST / 100) * $repaymentAmount;
+        $plan = $this->generateDecliningRepayments($percentages, $repaymentCount ,$repaymentAmount, $interestOnNormalSingleRepayment);
+
+        if (!$isBimonthly) {
+            $bimonthly = [];
+            $dates = [];
+            foreach ($plan as $p) {
+                $bimonthly[] = $p['expected_amount'];
+                $dates[] = $p['expected_payment_date'];
+            }
+            $monthly = [];
+            for ($i = 0; $i < count($bimonthly); $i += 2) {
+                $monthly[] = $bimonthly[$i] + $bimonthly[$i + 1];
+            }
+            $plan = [];
+            for ($i = 0; $i < count($monthly); $i += 1) {
+                $plan[] = [
+                    'expected_payment_date' => $dates[$i],
+                    'expected_amount' => $monthly[$i]
+                ];
+            }
+        }
+        return $plan;
+    }
+
+    private function generateDecliningRepayments($percentages, $repaymentCount, $repaymentAmount,$interestOnNormalSingleRepayment): array
+    {
+        $percentagesToArray = $percentages->toArray();
+        $currentPlanIndex = 1;
+        $repayments = [];
+        foreach ($percentagesToArray as $key => $percentage) {
+            if ($key == 0) {
+                $index = $currentPlanIndex;
+                $constraint = $repaymentCount / ($percentages->count() - 1);
+            } else {
+                // we want to make sure our for loop restarts with the next index as starting point
+                $index = $currentPlanIndex + 1;
+                //we increment our constraint as we have incremented index
+                $constraint = $currentPlanIndex + ($repaymentCount / ($percentages->count() - 1));
+            }
+
+            while ($index < $constraint) {
+                $repayments[] = [
+                    'expected_payment_date' => $this->getRepaymentDate($index)->toDateTimeString(),
+                    'expected_amount' => round($this->getDecliningRepaymentAmount($repaymentAmount, $interestOnNormalSingleRepayment, $percentage), 2),
+                ];
+                $index++;
+                //if we are in the last index of the current iteration
+                if ($index == $constraint) {
+                    //save it as our current index for next for each
+                    $currentPlanIndex = $index;
+                }
+            }
+        }
+        return $repayments;
+    }
+
+    private function getNormalPaymentPlans(): array
     {
         $plan = [];
         $reyAmount = $this->repaymentAmount();
@@ -249,5 +347,10 @@ abstract class Amortization
             ];
         }
         return $plan;
+    }
+
+    public function getRelativePercentage(float $normalInstallment, float $residual): float
+    {
+        return $normalInstallment / $residual;
     }
 }
