@@ -16,6 +16,6 @@ test.sql
 /public/css
 /public/mix-manifest.json
 /public/storage
-/public/exported_excel
+# /public/exported_excel
 .devcontainer
-/public/exported_excel
+# /public/exported_excel
