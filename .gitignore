@@ -11,11 +11,11 @@ yarn-error.log
 .env
 .env.prod
 test.sql
-# /public/*.js
-# /public/js
-# /public/css
-# /public/mix-manifest.json
-# /public/storage
+/public/*.js
+/public/js
+/public/css
+/public/mix-manifest.json
+/public/storage
 # /public/exported_excel
 .devcontainer
 # /public/exported_excel
