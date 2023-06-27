@@ -4,8 +4,12 @@
 namespace App\Amortization;
 
 use App\Models\Inventory;
+use App\Models\PriceCalculator;
 use App\Models\RepaymentCycle;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 abstract class Amortization
@@ -48,6 +52,15 @@ abstract class Amortization
         return round($this->order->repayment / $this->repaymentCount() / 100) * 100;
     }
 
+    public function getPriceCalculator(): Model|Builder|null
+    {
+        return PriceCalculator::query()
+            ->where('business_type_id', $this->order->businessType->id)
+            ->where('down_payment_rate_id', $this->order->downPaymentRate->id)
+            ->where('repayment_duration_id', $this->order->repaymentDuration->id)
+            ->first();
+    }
+
     public function repaymentAmountSuperLoan(float $percentage = 0.0)
     {
         $amount = floor((($percentage / 100) * $this->order->repayment) / 100) * 100;
@@ -56,10 +69,13 @@ abstract class Amortization
 
     public function getDecliningRepaymentAmount(float $repaymentAmount, float $interestOnNormalSinglePayment, float $percentage = 0.0): float
     {
+        $amount = 0;
         if ($percentage <= 0) {
-            return $interestOnNormalSinglePayment;
+            $amount = $interestOnNormalSinglePayment;
+        } else {
+            $amount = (($percentage / 100) * $repaymentAmount) + $interestOnNormalSinglePayment;
         }
-        return (($percentage / 100) * $repaymentAmount) + $interestOnNormalSinglePayment;
+        return ceil($amount / 100) * 100;
 
     }
 
@@ -70,7 +86,11 @@ abstract class Amortization
 
     public function getDiscountValue(): float
     {
-        return (float)$this->order->discount->percentage_discount;
+        $discount = $this->order->discount;
+        if ($discount){
+            return (float)$discount->percentage_discount;
+        }
+        return 0.0;
     }
 
     public function repaymentDurationName(): string
@@ -166,6 +186,7 @@ abstract class Amortization
 
     public function roundExpectedAmount(array $repayments, int $places): array
     {
+
         return array_map(function ($repayment) use ($places) {
             $repayment["expected_amount"] = round($repayment["expected_amount"], $places);
             return $repayment;
@@ -310,7 +331,7 @@ abstract class Amortization
         $repaymentAmount = $this->order->repayment;
         $normalInstallment = $residual / $repaymentCount;
         $discountValue = $this->getDiscountValue();
-
+        $priceCalculator = $this->getPriceCalculator();
         $plan = [];
         if ($useBNPLPercentage || $is3MonthsDuration) {
             $percentages = $this->bnpl40PercentPercentage();
@@ -318,7 +339,8 @@ abstract class Amortization
             $relativePercentage = $this->getRelativePercentage($normalInstallment, $residual);
             $percentages = $this->decliningPaymentPercentages($relativePercentage);
         }
-        $interestOnNormalSingleRepayment = (self::INTEREST / 100) * $residual;
+
+        $interestOnNormalSingleRepayment = ($priceCalculator->interest / 100) * $residual;
         $plan = $this->generateDecliningRepayments($percentages, $repaymentCount, $residual, $interestOnNormalSingleRepayment);
         if ($discountValue > 0) {
             $plan = $this->applyDiscountOnDecliningRepayment($plan, $discountValue);
@@ -362,18 +384,21 @@ abstract class Amortization
                 $constraint = $currentPlanIndex + ($repaymentCount / ($percentages->count() - 1));
             }
 
-            while ($index < $constraint) {
+            while ($index <= $constraint) {
+
                 $repayments[] = [
                     'expected_payment_date' => $this->getRepaymentDate($index)->toDateTimeString(),
                     'expected_amount' => $this->getDecliningRepaymentAmount($residual, $interestOnNormalSingleRepayment, $percentage),
                 ];
                 $index++;
+
                 //if we are in the last index of the current iteration
                 if ($index == $constraint) {
                     //save it as our current index for next for each
                     $currentPlanIndex = $index;
                 }
             }
+            Log::info("constraint: " . $constraint . " index: " . $index . " current Index: " . $currentPlanIndex);
         }
         return $repayments;
     }
