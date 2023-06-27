@@ -398,7 +398,7 @@ abstract class Amortization
                     $currentPlanIndex = $index;
                 }
             }
-          
+
         }
         return $repayments;
     }
