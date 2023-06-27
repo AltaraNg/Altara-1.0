@@ -398,7 +398,7 @@ abstract class Amortization
                     $currentPlanIndex = $index;
                 }
             }
-            Log::info("constraint: " . $constraint . " index: " . $index . " current Index: " . $currentPlanIndex);
+          
         }
         return $repayments;
     }
