@@ -86,7 +86,6 @@ abstract class Amortization
 
     public function getResidual(): float
     {
-        return 64000;
         $inventory = Inventory::query()->where('id', $this->order->inventory_id)->first();
         return (float)$inventory->price - $this->order->down_payment;
     }
