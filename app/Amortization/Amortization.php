@@ -137,13 +137,11 @@ abstract class Amortization
         $IsRental = Str::contains($this->order->businessType->slug, 'rentals');
         $isSixMonth = $this->repaymentDurationName() == 'six_months';
         $repaymentCycleName = $this->repaymentCircleName();
-      
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC') && !$isSixMonth) {
             return $this->getSuperLoaPaymentPlans();
         } else if (!$this->order->fixed_repayment || $IsRental) {
             if ($this->repaymentDurationName() == 'six_months'  && $repaymentCycleName == 'bi_monthly') {
-                
                 return $this->getDecliningPaymentPlansForSixMonths();
             }
             return $this->getDecliningPaymentPlans();
@@ -381,15 +379,16 @@ abstract class Amortization
         $percentagesToArray = $percentages->toArray();
         $currentPlanIndex = 1;
         $repayments = [];
+
         foreach ($percentagesToArray as $key => $percentage) {
             if ($key == 0) {
                 $index = $currentPlanIndex;
-                $constraint = $repaymentCount / ($percentages->count() - 1);
+                $constraint = $repaymentCount / ($percentages->count());
             } else {
                 // we want to make sure our for loop restarts with the next index as starting point
                 $index = $currentPlanIndex + 1;
                 //we increment our constraint as we have incremented index
-                $constraint = $currentPlanIndex + ($repaymentCount / ($percentages->count() - 1));
+                $constraint = $currentPlanIndex + ($repaymentCount / ($percentages->count()));
             }
 
             while ($index <= $constraint) {
@@ -408,6 +407,8 @@ abstract class Amortization
             }
 
         }
+
+
         return $repayments;
     }
 
