@@ -104,6 +104,11 @@ abstract class Amortization
         return $this->order->repaymentCycle->value;
     }
 
+    public function repaymentCircleName(): string
+    {
+        return $this->order->repaymentCycle->name;
+    }
+
     public function getResidual(): float
     {
         $inventory = Inventory::query()->where('id', $this->order->inventory_id)->first();
@@ -131,11 +136,14 @@ abstract class Amortization
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
         $IsRental = Str::contains($this->order->businessType->slug, 'rentals');
         $isSixMonth = $this->repaymentDurationName() == 'six_months';
+        $repaymentCycleName = $this->repaymentCircleName();
+      
 
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC') && !$isSixMonth) {
             return $this->getSuperLoaPaymentPlans();
         } else if (!$this->order->fixed_repayment || $IsRental) {
-            if ($this->repaymentDurationName() == 'six_months') {
+            if ($this->repaymentDurationName() == 'six_months'  && $repaymentCycleName == 'bi_monthly') {
+                
                 return $this->getDecliningPaymentPlansForSixMonths();
             }
             return $this->getDecliningPaymentPlans();
