@@ -3,6 +3,7 @@
 
 namespace App\Amortization;
 
+use App\Exceptions\AException;
 use App\Models\Inventory;
 use App\Models\PriceCalculator;
 use App\Models\RepaymentCycle;
@@ -109,9 +110,17 @@ abstract class Amortization
         return $this->order->repaymentCycle->name;
     }
 
+    /**
+     * @throws AException
+     */
     public function getResidual(): float
     {
-        $inventory = Inventory::query()->where('id', $this->order->inventory_id)->first();
+        $inventory_id = $this->order->inventory_id ?? $this->order->product_id;
+        $inventory = Inventory::query()->where('id', $inventory_id)->first();
+
+        if (!$inventory){
+            throw new AException("Could not find the supplied inventory with ID: " . $this->order->inventory_id);
+        }
         return (float)$inventory->price - $this->order->down_payment;
     }
 
