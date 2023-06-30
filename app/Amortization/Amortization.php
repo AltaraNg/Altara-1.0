@@ -138,12 +138,10 @@ abstract class Amortization
         $isSixMonth = $this->repaymentDurationName() == 'six_months';
         $repaymentCycleName = $this->repaymentCircleName();
 
-
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC') && !$isSixMonth) {
             return $this->getSuperLoaPaymentPlans();
         } else if (!$this->order->fixed_repayment || $IsRental) {
             if ($this->repaymentDurationName() == 'six_months'  && $repaymentCycleName == 'bi_monthly') {
-
                 return $this->getDecliningPaymentPlansForSixMonths();
             }
             return $this->getDecliningPaymentPlans();
@@ -409,7 +407,7 @@ abstract class Amortization
             }
 
         }
-    
+
 
         return $repayments;
     }
