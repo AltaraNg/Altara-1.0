@@ -110,6 +110,9 @@ abstract class Amortization
         return $this->order->repaymentCycle->name;
     }
 
+    /**
+     * @throws AException
+     */
     public function getResidual(): float
     {
         $inventory_id = $this->order->inventory_id ?? $this->order->product_id;
