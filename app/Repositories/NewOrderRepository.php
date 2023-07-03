@@ -89,6 +89,7 @@ class NewOrderRepository extends Repository
         $order->bank_id = $data['bank_id'];
         $order->inventory = $inventory;
         $order->fixed_repayment = $data['fixed_repayment'];
+        $order = $order->load('businessType', 'discount', 'customer', 'bnplVendorProduct', 'repaymentDuration', 'repaymentCycle', 'product', 'downPaymentRate');
         event(new NewOrderEvent($order));
 
         return $order->fresh();

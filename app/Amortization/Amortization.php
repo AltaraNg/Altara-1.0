@@ -7,9 +7,11 @@ use App\Exceptions\AException;
 use App\Models\Inventory;
 use App\Models\PriceCalculator;
 use App\Models\RepaymentCycle;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -62,7 +64,7 @@ abstract class Amortization
             ->first();
     }
 
-    public function repaymentAmountSuperLoan(float $percentage = 0.0)
+    public function repaymentAmountSuperLoan(float $percentage = 0.0): float|int
     {
         $amount = floor((($percentage / 100) * $this->order->repayment) / 100) * 100;
         return $amount;
@@ -70,7 +72,6 @@ abstract class Amortization
 
     public function getDecliningRepaymentAmount(float $repaymentAmount, float $interestOnNormalSinglePayment, float $percentage = 0.0): float
     {
-        $amount = 0;
         if ($percentage <= 0) {
             $amount = $interestOnNormalSinglePayment;
         } else {
@@ -88,7 +89,7 @@ abstract class Amortization
     public function getDiscountValue(): float
     {
         $discount = $this->order->discount;
-        if ($discount){
+        if ($discount) {
             return (float)$discount->percentage_discount;
         }
         return 0.0;
@@ -115,11 +116,15 @@ abstract class Amortization
      */
     public function getResidual(): float
     {
-        $inventory_id = $this->order->inventory_id ?? $this->order->product_id;
-        $inventory = Inventory::query()->where('id', $inventory_id)->first();
+        $inventory_id = $this->order->inventory_id;
 
-        if (!$inventory){
-            throw new AException("Could not find the supplied inventory with ID: " . $this->order->inventory_id);
+        if ($inventory_id != null) {
+            $inventory = Inventory::query()->where('id', $inventory_id)->first();
+        } else {
+            $inventory = $this->order->inventory;
+        }
+        if (!$inventory) {
+            throw new AException("Could not find the supplied inventory");
         }
         return (float)$inventory->price - $this->order->down_payment;
     }
@@ -132,12 +137,21 @@ abstract class Amortization
     public function create()
     {
         $plans = $this->preview();
+        $data = [];
         foreach ($plans as $key => $plan) {
-            $this->order->amortization()->create([
+//            $this->order->amortization()->create([
+//                'expected_payment_date' => $plan['expected_payment_date'],
+//                'expected_amount' => $plan['expected_amount'],
+//            ]);
+            $data[] = [
                 'expected_payment_date' => $plan['expected_payment_date'],
                 'expected_amount' => $plan['expected_amount'],
-            ]);
+                'created_at' => Carbon::now()->toDateString(),
+                'updated_at' => Carbon::now()->toDateString(),
+                'new_order_id' => $this->order->id
+            ];
         }
+        DB::table('amortizations')->insert($data);
     }
 
     public function preview()
@@ -150,9 +164,13 @@ abstract class Amortization
         if ($IsSuperLoan && env('USE_SUPER_LOAN_CALC') && !$isSixMonth) {
             return $this->getSuperLoaPaymentPlans();
         } else if (!$this->order->fixed_repayment || $IsRental) {
-            if ($this->repaymentDurationName() == 'six_months'  && $repaymentCycleName == 'bi_monthly') {
+
+            if (($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'bi_monthly') ||
+                ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'custom')
+            ) {
                 return $this->getDecliningPaymentPlansForSixMonths();
             }
+
             return $this->getDecliningPaymentPlans();
         } else {
             return $this->getNormalPaymentPlans();
@@ -350,6 +368,7 @@ abstract class Amortization
         $plan = [];
         if ($useBNPLPercentage || $is3MonthsDuration) {
             $percentages = $this->bnpl40PercentPercentage();
+            dd($percentages);
         } else {
             $relativePercentage = $this->getRelativePercentage($normalInstallment, $residual);
             $percentages = $this->decliningPaymentPercentages($relativePercentage);
@@ -362,26 +381,37 @@ abstract class Amortization
         }
 
         if (!$isBimonthly) {
-            $bimonthly = [];
-            $dates = [];
-            foreach ($plan as $p) {
-                $bimonthly[] = $p['expected_amount'];
-                $dates[] = $p['expected_payment_date'];
-            }
-            $monthly = [];
-            for ($i = 0; $i < count($bimonthly); $i += 2) {
-                $monthly[] = $bimonthly[$i] + $bimonthly[$i + 1];
-            }
-            $plan = [];
-            for ($i = 0; $i < count($monthly); $i += 1) {
-                $plan[] = [
-                    'expected_payment_date' => $dates[$i],
-                    'expected_amount' => $monthly[$i]
-                ];
-            }
+            $plan = $this->transformToMonthlyPayments($plan);
         }
+
         return $this->roundExpectedAmount($plan, 2);
     }
+
+    public function transformToMonthlyPayments($repaymentArray): array
+    {
+        $monthlyPayments = [];
+
+        $bimonthly = [];
+        $dates = [];
+        foreach ($repaymentArray as $p) {
+            $bimonthly[] = $p['expected_amount'];
+            $dates[] = $p['expected_payment_date'];
+        }
+        $monthly = [];
+        for ($i = 0; $i < count($bimonthly); $i += 2) {
+            $monthly[] = $bimonthly[$i] + $bimonthly[$i + 1];
+        }
+
+        for ($i = 0; $i < count($monthly); $i += 1) {
+            $monthlyPayments[] = [
+                'expected_payment_date' => $dates[$i],
+                'expected_amount' => $monthly[$i]
+            ];
+        }
+
+        return $monthlyPayments;
+    }
+
 
     private function generateDecliningRepayments($percentages, $repaymentCount, $residual, $interestOnNormalSingleRepayment): array
     {
