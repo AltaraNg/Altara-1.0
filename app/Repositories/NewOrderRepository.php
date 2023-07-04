@@ -50,7 +50,11 @@ class NewOrderRepository extends Repository
         unset($validated['account_name']);
         unset($validated['bank_name']);
         unset($validated['reference']);
-        unset($validated['cost_price']);
+        $costPriceIsSent = array_key_exists('cost_price', $validated);
+        if ($costPriceIsSent){
+            unset($validated['cost_price']);
+        }
+
 
         if ($validated['financed_by'] != NewOrder::ALTARA_BNPL) {
             unset($validated['bnpl_vendor_product_id']);
@@ -90,7 +94,10 @@ class NewOrderRepository extends Repository
         $order->bank_id = $data['bank_id'];
         $order->inventory = $inventory;
         $order->fixed_repayment = $data['fixed_repayment'];
-        $order->cost_price = $data['cost_price'];
+        if ($costPriceIsSent){
+            $order->cost_price = $data['cost_price'];
+        }
+
         $order = $order->load('businessType', 'discount', 'customer', 'bnplVendorProduct', 'repaymentDuration', 'repaymentCycle', 'product', 'downPaymentRate');
         event(new NewOrderEvent($order));
 
