@@ -116,6 +116,7 @@ abstract class Amortization
      */
     public function getResidual(): float
     {
+
         $inventory_id = $this->order->inventory_id;
 
         if ($inventory_id != null) {
