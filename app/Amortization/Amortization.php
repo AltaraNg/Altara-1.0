@@ -78,7 +78,6 @@ abstract class Amortization
             $amount = (($percentage / 100) * $repaymentAmount) + $interestOnNormalSinglePayment;
         }
         return ceil($amount / 100) * 100;
-
     }
 
     public function repaymentDuration(): int
@@ -116,17 +115,32 @@ abstract class Amortization
      */
     public function getResidual(): float
     {
-        $inventory_id = $this->order->inventory_id;
+        $price = 0;
 
-        if ($inventory_id != null) {
-            $inventory = Inventory::query()->where('id', $inventory_id)->first();
+        if ($this->order->cost_price) {
+
+            $price = $this->order->cost_price;
+
         } else {
-            $inventory = $this->order->inventory;
+
+            $inventory_id = $this->order->inventory_id;
+
+            if ($inventory_id != null) {
+                $inventory = Inventory::query()->where('id', $inventory_id)->first();
+            } else {
+                $inventory = $this->order->inventory;
+            }
+            if (!$inventory) {
+                throw new AException("Could not find the supplied inventory");
+            }
+
+            $price = $inventory->price;
         }
-        if (!$inventory) {
-            throw new AException("Could not find the supplied inventory");
+        if ($this->order->down_payment > $price) {
+            throw new AException("Calculation of residual failed, cost price must be higher than down payment");
         }
-        return (float)$inventory->price - $this->order->down_payment;
+
+        return (float)$price - $this->order->down_payment;
     }
 
     /**
@@ -139,10 +153,10 @@ abstract class Amortization
         $plans = $this->preview();
         $data = [];
         foreach ($plans as $key => $plan) {
-//            $this->order->amortization()->create([
-//                'expected_payment_date' => $plan['expected_payment_date'],
-//                'expected_amount' => $plan['expected_amount'],
-//            ]);
+            //            $this->order->amortization()->create([
+            //                'expected_payment_date' => $plan['expected_payment_date'],
+            //                'expected_amount' => $plan['expected_amount'],
+            //            ]);
             $data[] = [
                 'expected_payment_date' => $plan['expected_payment_date'],
                 'expected_amount' => $plan['expected_amount'],
@@ -205,7 +219,7 @@ abstract class Amortization
 
     public function decliningPaymentPercentages($relativePercentage): Collection
     {
-        return collect(self::FACTORS)->map(fn($factor) => $factor * $relativePercentage * 100);
+        return collect(self::FACTORS)->map(fn ($factor) => $factor * $relativePercentage * 100);
     }
 
     public function applyDiscountOnDecliningRepayment(array $repayments, float $discount): array
@@ -213,7 +227,6 @@ abstract class Amortization
         return array_map(function ($repayment) use ($discount) {
             $repayment["expected_amount"] = $repayment["expected_amount"] - ($repayment["expected_amount"] * ($discount / 100));
             return $repayment;
-
         }, $repayments);
     }
 
@@ -279,7 +292,6 @@ abstract class Amortization
                 ];
             }
             return $plan;
-
         }
     }
 
@@ -347,10 +359,7 @@ abstract class Amortization
                 ];
             }
             return $plan;
-
         }
-
-
     }
 
     private function getDecliningPaymentPlansForSixMonths(): array
@@ -444,7 +453,6 @@ abstract class Amortization
                     $currentPlanIndex = $index;
                 }
             }
-
         }
 
 
