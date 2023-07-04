@@ -136,6 +136,9 @@ abstract class Amortization
 
             $price = $inventory->price;
         }
+        if ($this->order->down_payment > $price) {
+            throw new AException("Calculation of residual failed, cost price must be higher than down payment");
+        }
 
         return (float)$price - $this->order->down_payment;
     }
