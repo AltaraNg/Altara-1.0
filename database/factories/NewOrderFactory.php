@@ -2,17 +2,17 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\NewOrder;
+use App\Models\NewOrder;
 use Faker\Generator as Faker;
 
 $factory->define(NewOrder::class, function (Faker $faker) {
-    $customer = App\Customer::pluck('id')->toArray();
-    $product = App\StoreProduct::all()->toArray();
-    $repaymentDuration = App\RepaymentDuration::pluck('id')->toArray();
-    $repaymentCycle = App\RepaymentCycle::pluck('id')->toArray();
-    $businessType = App\BusinessType::pluck('id')->toArray();
-    $status = App\OrderStatus::pluck('id')->toArray();
-    $user = App\User::all()->toArray();
+    $customer = \App\Models\Customer::pluck('id')->toArray();
+    $product = \App\Models\StoreProduct::all()->toArray();
+    $repaymentDuration = \App\Models\RepaymentDuration::pluck('id')->toArray();
+    $repaymentCycle = \App\Models\RepaymentCycle::pluck('id')->toArray();
+    $businessType = \App\Models\BusinessType::pluck('id')->toArray();
+    $status = \App\Models\OrderStatus::pluck('id')->toArray();
+    $user = \App\Models\User::all()->toArray();
 
     return [
         'order_date' => $faker->date(),

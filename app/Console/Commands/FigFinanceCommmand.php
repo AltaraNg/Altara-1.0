@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Customer;
-use App\FigFinance;
-use App\NewOrder;
-use App\SalesCategory;
+use App\Models\Customer;
+use App\Models\FigFinance;
+use App\Models\NewOrder;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;

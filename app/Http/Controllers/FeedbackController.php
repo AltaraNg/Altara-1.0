@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Events\FeedbackCreatedEvent;
 use App\Events\ProspectActivityEvent;
 use App\Exports\FeedbackExport;
-use App\Feedback;
 use App\Http\Filters\FeedBackFilter;
 use App\Http\Requests\FeedbackRequest;
+use App\Models\Feedback;
 use App\Repositories\FeedbackRepository;
 use Maatwebsite\Excel\Excel;
 
@@ -57,7 +57,7 @@ class FeedbackController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Feedback  $feedBack
+     * @param  \App\Models\Feedback  $feedBack
      * @return \Illuminate\Http\Response
      */
     public function show(Feedback $feedback)
@@ -72,7 +72,7 @@ class FeedbackController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Feedback  $feedBack
+     * @param  \App\Models\Feedback  $feedBack
      * @return \Illuminate\Http\Response
      */
     public function update(FeedbackRequest $request, Feedback $feedback)
@@ -86,7 +86,7 @@ class FeedbackController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Feedback  $feedBack
+     * @param  \App\Models\Feedback  $feedBack
      * @return \Illuminate\Http\Response
      */
     public function destroy(Feedback $feedBack)

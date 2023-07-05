@@ -2,14 +2,15 @@
 
 namespace App\Services;
 
-use App\MissMatchedPayments;
-use App\NewOrder;
+use App\Models\MissMatchedPayments;
+use App\Models\NewOrder;
+use App\Models\Recommendation;
+use App\Models\User;
 use App\Notifications\AccountNumberVerificationFailedNotification;
-use App\Recommendation;
-use App\User;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\Notification;
 
 class CreditCheckService
 {
@@ -55,19 +56,37 @@ class CreditCheckService
         if (!env('USE_MISS_MATCHED_ACCOUNT')) {
             return;
         }
+        Log::info([
+            "status" => "Start checking for descrepancy",
+            "going" => "ok"
+        ]);
         try {
             $isValid = false;
             $orderQuery = NewOrder::query();
             $order = is_string($order_id) ? $orderQuery->where('order_number', $order_id)->first() : $orderQuery->where('id', $order_id)->first();
-            $latestCreditReport = Recommendation::query()->where('customer_id', $customer_id)->where('type', 'credit_report')->latest('created_at')->first();
+            $latestCreditReport = Recommendation::query()->where('customer_id', $customer_id)->where('type', 'credit_report')->whereJsonContains('input_data->customer_type', 'customer')->latest('created_at')->first();
 
             if ($latestCreditReport) {
+
+                Log::info([
+                    "status" => "There is a credit report to be used",
+                    "credit_report" => $latestCreditReport
+                ]);
 
                 $data = json_decode($latestCreditReport->input_data);
                 if (property_exists($data, 'accountName') && property_exists($data, 'bankName')) {
                     $isValid = $data->accountName == $account_name && $data->bankName == $bank_name;
                 }
                 if (!$isValid) {
+                    Log::info([
+                        "status" => "There is a A discrepancy and mail should be sent",
+                        "credit_report" => $latestCreditReport,
+                        "bank_details_from_payment" => [
+                            "account_no" => $account_number,
+                            "account_name" => $account_name,
+                            "bank_name" => $bank_name
+                        ]
+                    ]);
 
                     $missMatchedPayment = MissMatchedPayments::create([
                         'reference' => $reference,
@@ -93,7 +112,16 @@ class CreditCheckService
                     }
 
                 } else {
-                    //delete record 
+                    //delete record
+                    Log::info([
+                        "status" => "There is no discrepancy",
+                        "credit_report" => $latestCreditReport,
+                        "bank_details_from_payment" => [
+                            "account_no" => $account_number,
+                            "account_name" => $account_name,
+                            "bank_name" => $bank_name
+                        ]
+                    ]);
                     MissMatchedPayments::query()->where('customer_id', $customer_id)->delete();
                 }
             }

@@ -4,15 +4,8 @@
 namespace App\Services;
 
 
-use App\Amortization;
-use App\BusinessType;
-use App\OrderType;
-use App\PaymentGateway;
-use App\Events\RepaymentEvent;
-use App\NewOrder;
-use App\OrderStatus;
-use App\PaymentMethod;
-use App\PaymentType;
+use App\Models\BusinessType;
+use App\Models\NewOrder;
 use Carbon\Carbon;
 
 class GenerateLateFeeService

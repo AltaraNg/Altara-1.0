@@ -2,16 +2,13 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
-use NumberFormatter;
-use App\BusinessType;
-use App\Helper\Helper;
 use App\Helper\Constants;
+use App\Helper\Helper;
 use App\Helper\LogHelper;
+use App\Models\BusinessType;
+use App\Notifications\Models\SmsReminderModel;
 use App\Notifications\SmsReminder;
 use App\Notifications\SmsReminderSent;
-use App\Notifications\Models\SmsReminderModel;
-use Illuminate\Contracts\Container\BindingResolutionException;
 
 class ReminderCommandService
 {

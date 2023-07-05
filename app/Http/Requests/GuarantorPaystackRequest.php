@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\GuarantorPaystackAuthCode;
+use App\Models\GuarantorPaystackAuthCode;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GuarantorPaystackRequest extends FormRequest

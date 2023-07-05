@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\EmploymentStatus;
-use Illuminate\Http\Request;
+use App\Models\EmploymentStatus;
 use Illuminate\Http\Response;
 
 class EmploymentStatusController extends Controller

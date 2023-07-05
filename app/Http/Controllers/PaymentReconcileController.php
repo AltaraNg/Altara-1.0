@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\FinanceReconcile;
 use App\Helper\ResponseHelper;
 use App\Http\Filters\PaymentReconcileFilter;
-use App\PaymentReconcile;
+use App\Models\FinanceReconcile;
+use App\Models\PaymentReconcile;
 use App\Repositories\PaymentReconcileRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

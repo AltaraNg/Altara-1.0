@@ -3,20 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CollectionListExport;
-use App\GeneralFeedback;
-use App\NewOrder;
-use App\Repositories\RecollectionRepository;
-use App\Services\RecollectionService;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use App\Http\Filters\NewOrderFilter;
 use App\Http\Requests\GeneralFeedbackRequest;
+use App\Models\NewOrder;
 use App\Repositories\NewOrderRepository;
-use Illuminate\Database\Query\Builder;
+use App\Services\RecollectionService;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class RecollectionController extends Controller

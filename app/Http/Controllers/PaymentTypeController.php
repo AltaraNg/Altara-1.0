@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\ResponseHelper;
-use App\PaymentType;
+use App\Models\PaymentType;
 use Illuminate\Http\Response;
 
 class PaymentTypeController extends Controller

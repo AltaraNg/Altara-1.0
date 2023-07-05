@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\PriceCalculator;
+use App\Models\PriceCalculator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PriceCalculatorRequest extends FormRequest

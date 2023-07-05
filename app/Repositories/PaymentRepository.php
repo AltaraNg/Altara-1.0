@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Payment;
+use App\Models\Payment;
 
 
 class PaymentRepository extends Repository

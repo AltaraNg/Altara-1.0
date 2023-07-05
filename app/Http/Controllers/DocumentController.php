@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerStage;
-use App\Document;
 use App\Events\CustomerStageUpdatedEvent;
-use App\Http\Filters\ContactCustomerFilter;
+use App\Models\CustomerStage;
+use App\Models\Document;
+use App\Models\Verification;
 use App\Repositories\ContactCustomerRepository;
-use App\Verification;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -55,7 +54,7 @@ class DocumentController extends Controller
    /**
     * Display the specified resource.
     *
-    * @param  \App\Document $document
+    * @param  \App\Models\Document $document
     * @return \Illuminate\Http\Response
     */
    public function show(Document $document)
@@ -66,7 +65,7 @@ class DocumentController extends Controller
    /**
     * Show the form for editing the specified resource.
     *
-    * @param  \App\Document $document
+    * @param  \App\Models\Document $document
     * @return \Illuminate\Http\Response
     */
    public function edit(Document $document)
@@ -78,7 +77,7 @@ class DocumentController extends Controller
     * Update the specified resource in storage.
     *
     * @param  \Illuminate\Http\Request $request
-    * @param  \App\Document $document
+    * @param  \App\Models\Document $document
     * @return \Illuminate\Http\Response
     */
 
@@ -161,7 +160,7 @@ class DocumentController extends Controller
    /**
     * Remove the specified resource from storage.
     *
-    * @param  \App\Document $document
+    * @param  \App\Models\Document $document
     * @return \Illuminate\Http\Response
     */
    public function destroy(Document $document)

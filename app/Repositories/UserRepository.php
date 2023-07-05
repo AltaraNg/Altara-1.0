@@ -3,8 +3,8 @@
 
 namespace App\Repositories;
 
-use App\CustomerStage;
-use App\User;
+use App\Models\CustomerStage;
+use App\Models\User;
 
 class UserRepository extends Repository
 {

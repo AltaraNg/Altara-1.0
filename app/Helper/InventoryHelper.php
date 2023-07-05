@@ -2,9 +2,9 @@
 namespace App\Helper;
 
 
-use App\Inventory;
-use App\InventoryStatus;
-use App\Product;
+use App\Models\Inventory;
+use App\Models\InventoryStatus;
+use App\Models\Product;
 use Illuminate\Support\Collection;
 
 /**

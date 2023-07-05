@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class RenewalPrompterStatus extends Model
+{
+    protected $guarded = [];
+    //
+    /**
+     * Get the customer that owns the status.
+     */
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
+
+    public function renewalPrompter()
+    {
+      return  $this->hasMany(RenewalPrompter::class);
+    }
+}

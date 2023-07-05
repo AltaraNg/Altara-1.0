@@ -16,6 +16,7 @@ test.sql
 /public/css
 /public/mix-manifest.json
 /public/storage
-/public/exported_excel
-composer.lock
+/public/exported_excel/processed/*
+/public/exported_excel/raw_files/*
 .devcontainer
+# /public/exported_excel

@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Address;
-use App\Branch;
-use App\ContactCustomer;
-use App\Customer;
-use App\CustomerStage;
-use App\Document;
 use App\Events\CustomerCreatedEvent;
-use App\Events\CustomerStageUpdatedEvent;
-use App\Http\Filters\ContactCustomerFilter;
-use App\PersonalGuarantor;
-use App\ProcessingFee;
-use App\Repositories\ContactCustomerRepository;
-use App\State;
-use App\Verification;
-use App\WorkGuarantor;
+use App\Models\Address;
+use App\Models\Branch;
+use App\Models\Customer;
+use App\Models\Document;
+use App\Models\PersonalGuarantor;
+use App\Models\ProcessingFee;
+use App\Models\State;
+use App\Models\Verification;
+use App\Models\WorkGuarantor;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

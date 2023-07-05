@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\ProductTransfer;
+use App\Models\ProductTransfer;
 
 class ProductTransferRepository extends Repository
 {

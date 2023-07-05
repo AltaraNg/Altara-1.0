@@ -2,10 +2,10 @@
 
 namespace App\Imports;
 
-use App\Brand;
-use App\Category;
-use App\Product;
-use App\ProductType;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\ProductType;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;

@@ -29,7 +29,7 @@ class UpdateLateFeeTable extends Migration
         Schema::table('late_fees', function (Blueprint $table) {
             //
             $table->dropColumn('amount_paid');
-            $table->rename('amount_due', 'amount');
+            $table->renameColumn('amount_due', 'amount');
         });
     }
 }

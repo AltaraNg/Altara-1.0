@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Brand;
 use App\Http\Filters\BrandFilter;
 use App\Http\Requests\BrandRequest;
+use App\Models\Brand;
 use App\Repositories\BrandRepository;
 use Illuminate\Http\Response;
 

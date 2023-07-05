@@ -3,8 +3,7 @@
 
 namespace App\Http\Filters;
 
-use App\Role;
-use Maatwebsite\Excel\Row;
+use App\Models\Role;
 
 class UserFilter extends BaseFilter
 {

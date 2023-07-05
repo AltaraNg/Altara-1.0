@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Events\ProductTransferEvent;
 use App\Http\Filters\ProductTransferFilter;
 use App\Http\Requests\ProductTransferRequest;
-use App\Inventory;
-use App\ProductTransfer;
+use App\Models\Inventory;
+use App\Models\ProductTransfer;
 use App\Repositories\ProductTransferRepository;
 use Illuminate\Http\Response;
 

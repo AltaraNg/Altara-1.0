@@ -5,7 +5,7 @@ namespace App\Repositories;
 
 
 
-use App\SalesCategory;
+use App\Models\SalesCategory;
 
 class SalesCategoryRepository extends Repository
 {

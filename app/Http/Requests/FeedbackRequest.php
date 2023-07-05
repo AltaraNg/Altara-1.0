@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-use App\Feedback;
+use App\Models\Feedback;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FeedbackRequest extends FormRequest

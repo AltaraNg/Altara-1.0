@@ -2,9 +2,9 @@
 
 namespace App\Exports;
 
-use App\Customer;
-use App\Order;
-use App\User;
+use App\Models\Customer;
+use App\Models\Order;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class UsersExport implements FromCollection

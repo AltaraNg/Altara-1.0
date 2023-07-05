@@ -4,10 +4,10 @@ namespace App\Repositories;
 
 use App\Helper\ExtractRequestObject;
 use App\Helper\OrderObject;
-use App\NewOrder;
-use App\Order;
-use App\RenewalList;
-use App\RenewalStatus;
+use App\Models\NewOrder;
+use App\Models\Order;
+use App\Models\RenewalList;
+use App\Models\RenewalStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 

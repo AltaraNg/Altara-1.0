@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\CustomRepaymentDate;
+use App\Models\CustomRepaymentDate;
 
 class CustomRepaymentDatesRepository extends Repository
 {

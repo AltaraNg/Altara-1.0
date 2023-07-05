@@ -3,8 +3,7 @@
 namespace App\Http\Requests;
 
 
-use App\Todo;
-use App\WebsiteProduct;
+use App\Models\WebsiteProduct;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WebsiteProductRequest extends FormRequest

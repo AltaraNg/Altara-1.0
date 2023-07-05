@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Collection;
+use App\Models\Collection;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CollectionRequest extends FormRequest

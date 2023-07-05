@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\EmployeeCategory;
+use App\Models\EmployeeCategory;
 use Illuminate\Http\Request;
 
 class EmployeeCategoryController extends Controller
@@ -41,7 +41,7 @@ class EmployeeCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\EmployeeCategory  $employeeCategory
+     * @param  \App\Models\EmployeeCategory  $employeeCategory
      * @return \Illuminate\Http\Response
      */
     public function show(EmployeeCategory $employeeCategory)
@@ -52,7 +52,7 @@ class EmployeeCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\EmployeeCategory  $employeeCategory
+     * @param  \App\Models\EmployeeCategory  $employeeCategory
      * @return \Illuminate\Http\Response
      */
     public function edit(EmployeeCategory $employeeCategory)
@@ -64,7 +64,7 @@ class EmployeeCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\EmployeeCategory  $employeeCategory
+     * @param  \App\Models\EmployeeCategory  $employeeCategory
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, EmployeeCategory $employeeCategory)
@@ -75,7 +75,7 @@ class EmployeeCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\EmployeeCategory  $employeeCategory
+     * @param  \App\Models\EmployeeCategory  $employeeCategory
      * @return \Illuminate\Http\Response
      */
     public function destroy(EmployeeCategory $employeeCategory)

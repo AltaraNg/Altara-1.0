@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Reason;
-use Illuminate\Http\Request;
+use App\Models\Reason;
 
 class ReasonController extends Controller
 {

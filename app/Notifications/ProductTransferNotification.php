@@ -2,13 +2,11 @@
 
 namespace App\Notifications;
 
-use App\Branch;
+use App\Mail\ProductTransfer as Mailable;
+use App\Models\Branch;
 use App\Notifications\Models\ProductTransferModel;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Mail\ProductTransfer as Mailable;
 
 class ProductTransferNotification extends Notification
 {

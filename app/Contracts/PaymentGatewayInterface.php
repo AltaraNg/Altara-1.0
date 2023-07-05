@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-use App\Amortization;
+use App\Models\Amortization;
 
 interface PaymentGatewayInterface
 {

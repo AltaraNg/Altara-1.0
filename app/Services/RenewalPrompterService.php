@@ -2,10 +2,7 @@
 
 namespace App\Services;
 
-use App\Helper\LogHelper;
-use App\NewOrder;
-use App\RenewalPrompter;
-use App\RenewalPrompterStatus;
+use App\Models\RenewalPrompterStatus;
 use Illuminate\Support\Facades\DB;
 
 class RenewalPrompterService

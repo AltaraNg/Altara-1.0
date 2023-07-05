@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\OrderType;
 use App\Repositories\OrderTypeRepository;
-use Illuminate\Http\Request;
 
 class OrderTypeController extends Controller
 {

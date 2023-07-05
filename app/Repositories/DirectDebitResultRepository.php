@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\DirectDebitResult;
+use App\Models\DirectDebitResult;
 
 class DirectDebitResultRepository extends Repository
 {

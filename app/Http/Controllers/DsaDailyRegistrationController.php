@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\DsaDailyRegistration;
+use App\Models\DsaDailyRegistration;
 use Illuminate\Http\Request;
 
 class DsaDailyRegistrationController extends Controller

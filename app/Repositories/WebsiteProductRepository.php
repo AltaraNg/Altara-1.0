@@ -5,7 +5,7 @@ namespace App\Repositories;
 
 
 
-use App\WebsiteProduct;
+use App\Models\WebsiteProduct;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\GeneralReason;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Models\GeneralReason;
 
 class GeneralReasonController extends Controller
 {

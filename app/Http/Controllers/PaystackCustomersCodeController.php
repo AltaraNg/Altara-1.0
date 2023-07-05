@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\ResponseHelper;
 use App\Http\Requests\PaystackCustomersCodeRequest;
-use App\PaystackCustomersCode;
+use App\Models\PaystackCustomersCode;
 use App\Repositories\CustomerRepository;
 use App\Repositories\PaystackCustomersCodeRepository;
 

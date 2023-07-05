@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Recollection;
+use App\Models\Recollection;
 
 class RecollectionRepository extends Repository
 {

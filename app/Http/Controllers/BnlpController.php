@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\CreditCheckerVerification;
-use App\Http\Requests\NewOrderRequest;
-use App\Services\AmmortizationService;
-use Illuminate\Http\Request;
 use App\Helper\ResponseHelper;
-use App\Reason;
+use App\Http\Requests\NewOrderRequest;
+use App\Models\CreditCheckerVerification;
 use App\Repositories\NewOrderRepository;
+use App\Services\AmmortizationService;
 use App\Services\MessageService;
 use Carbon\Carbon;
-use Error;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 

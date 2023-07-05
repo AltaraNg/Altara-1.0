@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\BusinessType;
-use App\NewOrder;
-use App\OrderType;
+use App\Models\BusinessType;
+use App\Models\NewOrder;
+use App\Models\OrderType;
 use App\Repositories\NewOrderRepository;
-use App\Repositories\OrderTypeRepository;
 use Illuminate\Console\Command;
 
 class UpdateOrderTypeIdCommand extends Command

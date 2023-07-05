@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\MessageFilter;
 use App\Http\Requests\MessageRequest;
-use App\Message;
+use App\Models\Message;
+use App\Models\User;
 use App\Repositories\MessageRepository;
 use App\Services\MessageService;
-use App\User;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller

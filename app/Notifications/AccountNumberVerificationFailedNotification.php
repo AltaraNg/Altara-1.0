@@ -2,14 +2,11 @@
 
 namespace App\Notifications;
 
-use App\MissMatchedPayments;
-use App\NewOrder;
-
+use App\Models\MissMatchedPayments;
+use App\Models\NewOrder;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log;
 
 
 class AccountNumberVerificationFailedNotification extends Notification

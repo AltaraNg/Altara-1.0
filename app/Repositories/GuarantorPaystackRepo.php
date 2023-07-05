@@ -2,8 +2,7 @@
 
 namespace App\Repositories;
 
-use App\GuarantorPaystackAuthCode;
-use App\Product;
+use App\Models\GuarantorPaystackAuthCode;
 
 class GuarantorPaystackRepo extends Repository
 {

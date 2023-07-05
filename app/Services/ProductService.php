@@ -3,12 +3,8 @@
 namespace App\Services;
 
 use App\Helper\GenerateDateRange;
-use App\NewOrder;
-use Illuminate\Support\Facades\DB;
 use App\Repositories\BranchRepository;
-use App\Repositories\BusinessTypeRepository;
-
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
