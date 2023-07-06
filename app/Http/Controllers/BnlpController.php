@@ -45,7 +45,9 @@ class BnlpController extends Controller
             'status' => ['required', 'string', Rule::in(CreditCheckerVerification::STATUSES)],
             'reason' => ['sometimes', 'string'],
         ]);
-
+        if ($creditCheckerVerification->status == CreditCheckerVerification::FAILED){
+            return  $this->sendError('You are not allowed to change the status of a declined or failed credit check', 401);
+        }
         $creditCheckerVerification->status = $request->input('status');
         $creditCheckerVerification->reason = $request->input('reason', $creditCheckerVerification->reason);
         $creditCheckerVerification->processed_by =  $request->user()->id;
