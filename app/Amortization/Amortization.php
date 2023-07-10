@@ -73,8 +73,7 @@ abstract class Amortization
 
     public function repaymentAmountSuperLoan(float $percentage = 0.0): float|int
     {
-        $amount = floor((($percentage / 100) * $this->order->repayment) / 100) * 100;
-        return $amount;
+        return floor((($percentage / 100) * $this->order->repayment) / 100) * 100;
     }
 
     public function getDecliningRepaymentAmount(float $repaymentAmount, float $interestOnNormalSinglePayment, float $percentage = 0.0): float
