@@ -20,7 +20,6 @@ abstract class Amortization
     public $order;
 
     private const FACTORS = [2, 1.5, 0.5, 0];
-    private const INTEREST = 3.5;
 
     /**
      * Amortization constructor.
@@ -55,14 +54,22 @@ abstract class Amortization
         return round($this->order->repayment / $this->repaymentCount() / 100) * 100;
     }
 
+    /**
+     * @throws AException
+     */
     public function getPriceCalculator(): Model|Builder|null
     {
-        return PriceCalculator::query()
+        $calculator = PriceCalculator::query()
             ->where('business_type_id', $this->order->businessType->id)
             ->where('down_payment_rate_id', $this->order->downPaymentRate->id)
             ->where('repayment_duration_id', $this->order->repaymentDuration->id)
             ->first();
+        if (!$calculator) {
+            throw new AException('Price calculator with supplied parameter could not be found');
+        }
+        return $calculator;
     }
+
 
     public function repaymentAmountSuperLoan(float $percentage = 0.0): float|int
     {
@@ -110,13 +117,8 @@ abstract class Amortization
         return $this->order->repaymentCycle->name;
     }
 
-    /**
-     * @throws AException
-     */
-    public function getResidual(): float
+    private function getCostPrice()
     {
-        $price = 0;
-
         if ($this->order->cost_price) {
 
             $price = $this->order->cost_price;
@@ -136,10 +138,18 @@ abstract class Amortization
 
             $price = $inventory->price;
         }
+        return $price;
+    }
+
+    /**
+     * @throws AException
+     */
+    public function getResidual(): float
+    {
+        $price = $this->getCostPrice();
         if ($this->order->down_payment > $price) {
             throw new AException("Calculation of residual failed, cost price must be higher than down payment");
         }
-
         return (float)$price - $this->order->down_payment;
     }
 
@@ -168,6 +178,9 @@ abstract class Amortization
         DB::table('amortizations')->insert($data);
     }
 
+    /**
+     * @throws AException
+     */
     public function preview()
     {
         $IsSuperLoan = Str::contains($this->order->businessType->slug, 'super');
@@ -179,12 +192,16 @@ abstract class Amortization
             return $this->getSuperLoaPaymentPlans();
         } else if (!$this->order->fixed_repayment || $IsRental) {
 
-            if (($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'bi_monthly') ||
-                ($this->repaymentDurationName() == 'six_months' && $repaymentCycleName == 'custom')
-            ) {
-                return $this->getDecliningPaymentPlansForSixMonths();
+            if ($this->repaymentDurationName() == 'six_months') {
+                if ($repaymentCycleName == 'bi_monthly' || $repaymentCycleName == 'custom') {
+                    return $this->getDecliningPaymentPlansForSixMonths();
+                }
             }
-
+            if ($this->repaymentDurationName() == 'three_months') {
+                if ($repaymentCycleName == 'bi_monthly' || $repaymentCycleName == 'custom') {
+                    return $this->getDecliningPaymentPlansForThreeMonths();
+                }
+            }
             return $this->getDecliningPaymentPlans();
         } else {
             return $this->getNormalPaymentPlans();
@@ -219,7 +236,12 @@ abstract class Amortization
 
     public function decliningPaymentPercentages($relativePercentage): Collection
     {
-        return collect(self::FACTORS)->map(fn ($factor) => $factor * $relativePercentage * 100);
+        return collect(self::FACTORS)->map(fn($factor) => $factor * $relativePercentage * 100);
+    }
+
+    public function decliningPaymentPercentagesForThreeMonths(): Collection
+    {
+        return collect([26.9482435205326, 16.6738587360158, 6.39947395149903]);
     }
 
     public function applyDiscountOnDecliningRepayment(array $repayments, float $discount): array
@@ -362,10 +384,54 @@ abstract class Amortization
         }
     }
 
+
+    private function getInterestAmountOnResidual($interest, $residual): float|int
+    {
+        return ($interest / 100) * $residual;
+    }
+
+    /**
+     * @throws AException
+     */
+    private function getDecliningPaymentPlansForThreeMonths()
+    {
+
+        $is3MonthsDuration = $this->order->repaymentDuration->name == "three_months";
+        $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
+        $costPrice = $this->getCostPrice();
+        $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
+        $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
+        $residual = $this->getResidual();
+        $discountValue = $this->getDiscountValue();
+        $priceCalculator = $this->getPriceCalculator();
+        $normalInstallment = $residual / $repaymentCount;
+        $normalInstallmentAndInterest = $normalInstallment + ($priceCalculator->interest / 100) * $residual;
+        $totalNormalInstallmentAndInterest = $normalInstallmentAndInterest * $repaymentCount;
+        $totalNormalInstallmentAndInterestAndDownPayment = $totalNormalInstallmentAndInterest + $this->order->down_payment;
+        $labelPrice = ($priceCalculator->tax / 100) * $totalNormalInstallmentAndInterestAndDownPayment + $totalNormalInstallmentAndInterestAndDownPayment;
+        $decliningDownPayment = ($this->order->downPaymentRate->percent / 100) * $labelPrice;
+        $decliningResidual = $labelPrice - $decliningDownPayment;
+        if ($useBNPLPercentage) {
+            $percentages = $this->bnpl40PercentPercentage();
+        } else {
+            $percentages = $this->decliningPaymentPercentagesForThreeMonths();
+        }
+        $plan = $this->generateDecliningRepayments($percentages, $repaymentCount, $decliningResidual, 0);
+        if ($discountValue > 0) {
+            $plan = $this->applyDiscountOnDecliningRepayment($plan, $discountValue);
+        }
+        if (!$isBimonthly) {
+            $plan = $this->transformToMonthlyPayments($plan);
+        }
+        return $plan;
+    }
+
+    /**
+     * @throws AException
+     */
     private function getDecliningPaymentPlansForSixMonths(): array
     {
         $IsNoBsRenewalLoan = Str::containsAll($this->order->businessType->slug, ['renewal', 'no_bs']);
-        $is3MonthsDuration = $this->order->repaymentDuration->name == "three_months";
         $useBNPLPercentage = $this->order->financed_by == "altara-bnpl";
         $isBimonthly = RepaymentCycle::find($this->order->repayment_cycle_id)->name == RepaymentCycle::BIMONTHLY;
         $repaymentCount = $isBimonthly ? $this->repaymentCount() : $this->repaymentCount() * 2;
@@ -374,16 +440,16 @@ abstract class Amortization
         $normalInstallment = $residual / $repaymentCount;
         $discountValue = $this->getDiscountValue();
         $priceCalculator = $this->getPriceCalculator();
-        $plan = [];
-        if ($useBNPLPercentage || $is3MonthsDuration) {
+
+        if ($useBNPLPercentage) {
             $percentages = $this->bnpl40PercentPercentage();
-            dd($percentages);
         } else {
             $relativePercentage = $this->getRelativePercentage($normalInstallment, $residual);
             $percentages = $this->decliningPaymentPercentages($relativePercentage);
         }
 
-        $interestOnNormalSingleRepayment = ($priceCalculator->interest / 100) * $residual;
+        $interestOnNormalSingleRepayment = $this->getInterestAmountOnResidual($priceCalculator->interest, $residual);
+
         $plan = $this->generateDecliningRepayments($percentages, $repaymentCount, $residual, $interestOnNormalSingleRepayment);
         if ($discountValue > 0) {
             $plan = $this->applyDiscountOnDecliningRepayment($plan, $discountValue);
