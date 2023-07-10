@@ -48,6 +48,7 @@ class Customer extends Model
             'city' => '',
             'state' => '',
             'telephone' => '',
+            'bvn' => '',
             'email' => '',
             'gender' => '',
             'date_of_birth' => '',
