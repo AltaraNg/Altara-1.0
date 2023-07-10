@@ -16,7 +16,7 @@ class User extends Authenticatable
      * model where it is called */
     use DataViewer;
 
-    const ADMIN = [1,2,8,9];
+    const BVN_ACCESS = [1,2,8,9];
 
     protected $guarded = [];
 
