@@ -6,6 +6,7 @@ use App\BankAccount;
 use App\Helper\AutoCompleteSearchTrait;
 use App\Helper\DataViewer;
 use App\Helper\Scopes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -22,7 +23,14 @@ class Customer extends Model
 
     /** columns to be used to render the list(Data viewer) of customers in the view*/
     public static $columns = [
-        'id', 'first_name', 'last_name', 'employee_name', 'branch_id', 'date_of_registration', 'telephone'
+        'id',
+        'first_name',
+        'last_name',
+        'employee_name',
+        'branch_id',
+        'date_of_registration',
+        'telephone',
+        'bvn'
     ];
 
     /** this is the user object form, it is sent to the js
@@ -48,6 +56,7 @@ class Customer extends Model
             'city' => '',
             'state' => '',
             'telephone' => '',
+            'bvn' => '',
             'email' => '',
             'gender' => '',
             'date_of_birth' => '',
@@ -225,33 +234,44 @@ class Customer extends Model
         return $this->first_name . ' ' . $this->last_name;
     }
 
+    protected function bvn(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => in_array(auth()->user()->role_id, User::BVN_ACCESS) ? $value : -1,
+        );
+    }
+
     public function renewalPrompterStatus()
     {
-       return $this->belongsTo(RenewalPrompterStatus::class);
+        return $this->belongsTo(RenewalPrompterStatus::class);
     }
 
     public function amortizations()
     {
-       return $this->hasManyThrough(Amortization::class, NewOrder::class);
+        return $this->hasManyThrough(Amortization::class, NewOrder::class);
     }
 
     public function latestAmortizationPayed()
     {
-       return $this->hasOneThrough(Amortization::class, NewOrder::class)->where('expected_payment_date', '<=', now()->endOfDay())->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->latest('expected_payment_date');
+        return $this->hasOneThrough(Amortization::class, NewOrder::class)->where('expected_payment_date', '<=', now()->endOfDay())->where('actual_payment_date', '<>', null)->where('actual_amount', '>', 1)->latest('expected_payment_date');
     }
 
-    public function recommendation(){
+    public function recommendation()
+    {
         return $this->hasMany(Recommendation::class);
     }
 
-    public function newDocuments(){
+    public function newDocuments()
+    {
         return $this->morphMany(NewDocument::class, 'documentable');
     }
-    public function guarantors(){
+    public function guarantors()
+    {
         return $this->hasMany(Guarantor::class, 'customer_id');
     }
 
-    public function bankAccount(){
+    public function bankAccount()
+    {
         return $this->hasOne(BankAccount::class, 'customer_id');
     }
 

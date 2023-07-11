@@ -38,20 +38,8 @@ RUN docker-php-ext-install gd
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-
 # Copy existing application directory contents
 COPY . /var/www
-
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-
-RUN apt install nodejs -y
-
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-
-RUN mkdir -p /home/$user/.composer && chown -R $user:$user /home/$user
-
-USER $user
-
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

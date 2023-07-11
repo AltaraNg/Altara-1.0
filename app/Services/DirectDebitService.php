@@ -51,11 +51,9 @@ class DirectDebitService
     private function fetchOrders($sortOrder)
     {
         //get list of due payments
-        $data = Amortization::where('actual_payment_date', null)
-            ->whereDate('expected_payment_date', '<=', Carbon::now())
-            // ->orWhere(function (Builder $query) {
-            //     $query->whereDate('expected_payment_date', '<=', Carbon::now())->whereColumn('actual_amount', '<', 'expected_amount');
-            // })
+        $data = Amortization::whereDate('expected_payment_date', '<=', Carbon::now())
+            // ->whereColumn('actual_amount', '<', 'expected_amount')
+            ->whereRaw('expected_amount - actual_amount > 100')
             ->whereHas('new_orders', function ($q) {
                 $q->where('status_id', OrderStatus::where('name', OrderStatus::ACTIVE)->first()->id)
                     ->where('order_type_id', OrderType::where('name', OrderType::ALTARA_PAY)->first()->id)
