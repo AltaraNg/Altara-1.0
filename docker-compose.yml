@@ -4,9 +4,6 @@ services:
   #PHP Service
   app:
     build:
-      args:
-        user: ${USER}
-        uid: 1000
       context: .
       dockerfile: Dockerfile
     container_name: altara_php
