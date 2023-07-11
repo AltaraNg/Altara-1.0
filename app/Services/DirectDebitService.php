@@ -111,6 +111,9 @@ class DirectDebitService
             } else {
                 $skip = $item->new_order_id;
                 $errorMessage =  (isset($response->data) &&  isset($response->data->gateway_response)) ? $response->data->gateway_response : ($response ? $response->message : 'Something went wrong');
+                if (str_contains($errorMessage, "Charge attempt")) {
+                    continue;
+                }
                 $res[] = array_merge($data, [
                     'bank' => $response->data->authorization->bank ?? '',
                     'status' => 'failed',
