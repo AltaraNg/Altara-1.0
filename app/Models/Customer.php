@@ -236,9 +236,10 @@ class Customer extends Model
 
     protected function bvn(): Attribute
     {
-        // Users not logged in
         return Attribute::make(
-            get: fn($value) => in_array(auth()->user()->role_id ?? 10000000000, User::BVN_ACCESS) ? $value : -1,
+            // if bvn value is null return it, if user is not admin and value is not null, return -1 else return value;
+            get: fn($value) => $value === null ? $value : (in_array(auth()->user()->role_id ?? 10000000000, User::BVN_ACCESS) ? $value : -1),
+
         );
     }
 
