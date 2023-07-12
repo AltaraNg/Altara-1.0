@@ -237,7 +237,7 @@ class Customer extends Model
     protected function bvn(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $value === null ? $value : (in_array(auth()->user()->role_id, User::BVN_ACCESS) ? $value : -1),
+            get: fn($value) => $value === null ? $value : (in_array(auth()->user()->role_id ?? 10000000000, User::BVN_ACCESS) ? $value : -1),
 
         );
     }
