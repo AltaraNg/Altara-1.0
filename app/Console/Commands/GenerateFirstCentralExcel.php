@@ -74,7 +74,7 @@ class GenerateFirstCentralExcel extends Command
 
 
         $this->info($orders->count() . " orders about to be populated into the excel");
-        $fileName = 'Credit-Report-for-' . $from . "-" . $to . '.xlsx';
+        $fileName = 'Credit-Report-for-' . Carbon::now()->format('Y-F') . '.xlsx';
         $this->info('Population of Excel sheet started');
 
         try {
