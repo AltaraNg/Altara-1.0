@@ -53,7 +53,7 @@ class GenerateFirstCentralExcel extends Command
         $this->info('-----Generating Data From: ' . $from . ' ---To: ' . $to);
 
         $this->info('Getting order....');
-        \DB::enableQueryLog();
+
         $orders = NewOrder::query()
             ->orderBy('customer_id')
             // ->whereBetween('order_date', [$from, $to])
@@ -62,9 +62,6 @@ class GenerateFirstCentralExcel extends Command
             ->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status'])
             ->get();
 
-            dd(\DB::getQueryLog());
-
-            // dd($orders);
         $customers = $orders->pluck('customer')->unique('id');
 
 
