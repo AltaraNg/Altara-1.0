@@ -51,7 +51,7 @@ class GenerateFirstCentralExcel extends Command
         $from = '2021-09-01';
         $to = '2021-09-30';
 
-        $this->info('-----Generating Data From: ' . $from . ' ---To: ' . $to);
+        $this->info('-----Generating Data From: ' . Carbon::now()->format('Y-F'));
 
         $this->info('Getting order....');
 
