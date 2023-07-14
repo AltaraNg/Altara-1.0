@@ -31,13 +31,13 @@ class CreditInformationSheet implements FromCollection, WithHeadings, WithMappin
     // }
     public function collection()
     {
-        // 
+        //
         return $this->orders;
     }
 
     public function map($order): array
     {
-        // dd($order);
+
         $lastNonePaymentDate = null;
         $lastPaymentDate = null;
         $days_in_arrears = '0';
