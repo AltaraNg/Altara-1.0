@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\RequiredIf;
+use OwenIt\Auditing\Auditable;
 
-class   NewOrder extends Model
+class   NewOrder extends Model implements \OwenIt\Auditing\Contracts\Auditable
 {
-    use Filterable, Notifiable;
+    use Filterable, Notifiable, Auditable;
 
     protected $with = ['amortization'];
 
