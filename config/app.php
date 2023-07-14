@@ -154,7 +154,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        OwenIt\Auditing\AuditingServiceProvider::class,
 //       Intervention\Image\ImageServiceProvider::class,
 
         /*
