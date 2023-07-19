@@ -100,6 +100,15 @@ class NewOrderFilter extends BaseFilter
         });
     }
 
+    public function repaymentPlan(int $type)
+    {
+        $this->builder->whereHas('repaymentDuration', function ($query) use ($type) {
+            $query->select('repayment_duration_id')
+                ->from('repayment_durations')
+                ->where('id', $type);
+        });
+    }
+
     public function renewalList(string $renew)
     {
         $this->builder->whereHas('amortization', function (Builder $query) {
@@ -150,6 +159,19 @@ class NewOrderFilter extends BaseFilter
     {
         $this->builder->whereDate($column, '>=', $date)
             ->whereDate($column, '<=', $this->request->toDate ?? Carbon::now());
+    }
+
+    public function orderMonth(string $date, $column = 'order_date')
+    {
+        // dd($date);
+        $date = $date ?? Carbon::now()->month;
+        $this->builder->whereMonth($column, '=', $date);
+            
+    }
+    public function orderYear(string $date, $column = 'order_date')
+    {
+        $date = $date ?? Carbon::now()->year;
+        $this->builder->whereYear($column, '=', $date);
     }
 
     /**

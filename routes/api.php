@@ -117,6 +117,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/orders/direct-debit-sales', [OrderController::class, 'directDebitSales']);
     Route::post('/report', [ReportController::class, 'generateReport']);
     Route::post('/report/daily', [ReportController::class, 'getRegistrationReport']);
+    Route::get('/repayment-schedule/report', [NewOrderController::class, 'repaymentSchedule']);
     Route::get('/renewal-list/status/{status}', [RenewalListController::class, 'list']);
     Route::post('/new-order-renewal', [RenewalListController::class, 'newOrderRenewal']);
     Route::get('/sales-category/{salesCat}/roles', [SalesCategoryController::class, 'getRoles']);
