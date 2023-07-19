@@ -163,7 +163,7 @@ class NewOrderController extends Controller
     public function repaymentSchedule(NewOrderFilter $filter, RepaymentScheduleService $repaymentScheduleService)
     {
         $newOrdersQuery = $this->newOrderRepository->reportQuery($filter);
-        $getTotalRepaymentExpected = $repaymentScheduleService->getTotalRepayment($newOrdersQuery);
+        $getTotalRepaymentExpected = $repaymentScheduleService->getRepaymentPerMonth($newOrdersQuery);
         
         return $this->sendSuccess(["meta" => $getTotalRepaymentExpected], 'Orders retrieved successfully');
     }

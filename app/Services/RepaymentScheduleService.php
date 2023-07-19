@@ -16,7 +16,7 @@ class RepaymentScheduleService
         $this->branchRepo = $branchRepository;
     }
 
-    public function getTotalRepayment($dailySalesNewOrdersQuery)
+    public function getRepaymentPerMonth($dailySalesNewOrdersQuery)
     {
 
         $expectedRepayment = $dailySalesNewOrdersQuery->withSum('amortization', 'expected_amount')->get()->sum('amortization_sum_expected_amount');
