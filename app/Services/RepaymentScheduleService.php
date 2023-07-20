@@ -33,7 +33,7 @@ class RepaymentScheduleService
             "orders" => $orders,
             "total_orders" => $totalOrders,
             "defaultingOrders" => $defaultingOrders,
-            "groupByMonth" => $orderGroup
+            "groupByMonth" => $orderGroup,
         ]);
 
 
