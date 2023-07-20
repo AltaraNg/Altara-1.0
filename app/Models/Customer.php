@@ -31,7 +31,6 @@ class Customer extends Model implements \OwenIt\Auditing\Contracts\Auditable
         'branch_id',
         'date_of_registration',
         'telephone',
-        'bvn'
     ];
 
     /** this is the user object form, it is sent to the js

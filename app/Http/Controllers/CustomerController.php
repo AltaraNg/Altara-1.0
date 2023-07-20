@@ -69,6 +69,7 @@ class CustomerController extends Controller
                 'telephone' => 'required|string|unique:customers,telephone',
                 'email' => 'sometimes|string|email|unique:customers,email',
                 'reg_id' => 'sometimes|exists:contact_customers,reg_id|unique:customers,reg_id',
+                'bvn' => 'sometimes|string|min:11|max:11'
             ],
             [
                 'telephone.required' => 'Phone number field is required',
@@ -76,6 +77,9 @@ class CustomerController extends Controller
                 'email.unique' => 'The supplied email address has already been taken',
                 'reg_id.exists' => 'The supplied registration id does not exists in our system',
                 'reg_id.unique' => 'The supplied registration id has already been taken',
+                'bvn.min' => 'The bvn should be 11 digits',
+                'bvn.max' => 'The bvn should be 11 digits'
+
             ]
         );
 
