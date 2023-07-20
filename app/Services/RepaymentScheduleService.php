@@ -23,7 +23,7 @@ class RepaymentScheduleService
         $totalOrders = $dailySalesNewOrdersQuery->count();
         $orderGroup = $this->groupAmortizationByMonth(clone $dailySalesNewOrdersQuery);
         $actualRepayment = $dailySalesNewOrdersQuery->withSum('amortization', 'actual_amount')->get()->sum('amortization_sum_actual_amount');
-        $orders = $dailySalesNewOrdersQuery->get();
+        $orders = $dailySalesNewOrdersQuery->paginate(10);
         $defaultingOrders = $dailySalesNewOrdersQuery->whereHas('amortization', function ($q) {
             return $q->whereColumn('actual_amount', '<', 'expected_amount');
         })->count();
