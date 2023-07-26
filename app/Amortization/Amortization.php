@@ -378,7 +378,7 @@ abstract class Amortization
         if ($useBNPLPercentage || $is3MonthsDuration) {
             $percentages = $this->bnpl40PercentPercentage();
             $orderCount = $this->order->customer->new_orders->count();
-            if ($orderCount > 0) {
+            if ($orderCount == 0) {
                 $interest = 3.5;
             } else if ($orderCount = 1) {
                 $interest = 3.0;
