@@ -11,6 +11,7 @@ class RepaymentScheduleService
 {
     use GenerateDateRange;
     private $branchRepo;
+    private $defaultingDays = 45;
     public function __construct(BranchRepository $branchRepository)
     {
         $this->branchRepo = $branchRepository;
@@ -23,10 +24,8 @@ class RepaymentScheduleService
         $totalOrders = $dailySalesNewOrdersQuery->count();
         $orderGroup = $this->groupAmortizationByMonth(clone $dailySalesNewOrdersQuery);
         $actualRepayment = $dailySalesNewOrdersQuery->withSum('amortization', 'actual_amount')->get()->sum('amortization_sum_actual_amount');
+        $defaultingOrders = $this->getDefaultingOrders($dailySalesNewOrdersQuery);
         $orders = $dailySalesNewOrdersQuery->paginate(10);
-        $defaultingOrders = $dailySalesNewOrdersQuery->whereHas('amortization', function ($q) {
-            return $q->whereColumn('actual_amount', '<', 'expected_amount');
-        })->count();
         $data = ([
             "actual_repayment" => $actualRepayment,
             "expected_repayment" => $expectedRepayment,
@@ -38,6 +37,15 @@ class RepaymentScheduleService
 
 
         return $data;
+    }
+
+    public function getDefaultingOrders($orderQuery)
+    //get orders whose amortization is 45days due
+    {
+        $defaultingOrders = $orderQuery->whereHas('amortization', function ($q) {
+            return $q->whereColumn('actual_amount', '<', 'expected_amount')->whereDate('expected_payment_date', '<=', Carbon::now()->subDays($this->defaultingDays));
+        })->count();
+        return $defaultingOrders;
     }
 
     private function groupAmortizationByMonth($newOrdersToBeGrouped)
