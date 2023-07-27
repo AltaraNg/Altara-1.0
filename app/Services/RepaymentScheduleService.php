@@ -24,7 +24,7 @@ class RepaymentScheduleService
         $totalOrders = $dailySalesNewOrdersQuery->count();
         $orderGroup = $this->groupAmortizationByMonth(clone $dailySalesNewOrdersQuery);
         $actualRepayment = $dailySalesNewOrdersQuery->withSum('amortization', 'actual_amount')->get()->sum('amortization_sum_actual_amount');
-        $defaultingOrders = $this->getDefaultingOrders($dailySalesNewOrdersQuery);
+        $defaultingOrders = $this->getDefaultingOrders(clone $dailySalesNewOrdersQuery);
         $orders = $dailySalesNewOrdersQuery->paginate(10);
         $data = ([
             "actual_repayment" => $actualRepayment,
