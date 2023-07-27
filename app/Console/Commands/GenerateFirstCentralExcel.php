@@ -51,7 +51,7 @@ class GenerateFirstCentralExcel extends Command
         $from = '2021-09-01';
         $to = '2021-09-30';
 
-        $this->info('-----Generating Data From: ' . Carbon::now()->format('Y-F'));
+        $this->info('-----Generating Data for: ' . Carbon::now()->format('Y-F'));
 
         $this->info('Getting order....');
 
@@ -60,7 +60,7 @@ class GenerateFirstCentralExcel extends Command
             // ->whereBetween('order_date', [$from, $to])
             // ->whereIn('customer_id', $customerIds)
             ->has('amortization')
-            ->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status'])
+            ->with(['amortization', 'latestAmortizationNotPayed', 'latestAmortizationPayed', 'customer:id,first_name,last_name,civil_status', 'repaymentDuration', 'repaymentCycle'])
             ->get();
 
         $customers = $orders->pluck('customer')->unique('id');
