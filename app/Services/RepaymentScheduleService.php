@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helper\GenerateDateRange;
+use App\Models\BusinessType;
 use App\Repositories\BranchRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -19,13 +20,18 @@ class RepaymentScheduleService
 
     public function getRepaymentPerMonth($dailySalesNewOrdersQuery)
     {
+        $withoutCNC = $dailySalesNewOrdersQuery->whereHas('businessType', function ($query) {
+            $query->select('business_type_id')
+                ->from('business_types')
+                ->where('slug', '!=', BusinessType::ALTARA_PAY_CASH_N_CARRY);
+        });
 
-        $expectedRepayment = $dailySalesNewOrdersQuery->withSum('amortization', 'expected_amount')->get()->sum('amortization_sum_expected_amount');
-        $totalOrders = $dailySalesNewOrdersQuery->count();
-        $orderGroup = $this->groupAmortizationByMonth(clone $dailySalesNewOrdersQuery);
-        $actualRepayment = $dailySalesNewOrdersQuery->withSum('amortization', 'actual_amount')->get()->sum('amortization_sum_actual_amount');
-        $defaultingOrders = $this->getDefaultingOrders(clone $dailySalesNewOrdersQuery);
-        $orders = $dailySalesNewOrdersQuery->paginate(10);
+        $expectedRepayment = $withoutCNC->withSum('amortization', 'expected_amount')->get()->sum('amortization_sum_expected_amount');
+        $totalOrders = $withoutCNC->count();
+        $orderGroup = $this->groupAmortizationByMonth(clone $withoutCNC);
+        $actualRepayment = $withoutCNC->withSum('amortization', 'actual_amount')->get()->sum('amortization_sum_actual_amount');
+        $defaultingOrders = $this->getDefaultingOrders(clone $withoutCNC);
+        $orders = $withoutCNC->paginate(10);
         $data = ([
             "actual_repayment" => $actualRepayment,
             "expected_repayment" => $expectedRepayment,
