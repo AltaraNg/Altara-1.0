@@ -13,6 +13,7 @@ use App\Repositories\PaystackAuthCodeRepository;
 use App\Services\CreditCheckService;
 use App\Services\DirectDebitService;
 use App\Services\NewOrdersReportService;
+use App\Services\RepaymentScheduleService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -158,6 +159,16 @@ class NewOrderController extends Controller
         $additional = $additional->put('totalSalesPerDay', $getTotalSalesPerDay);
         return $this->sendSuccess(["meta" => $additional], 'Orders retrieved successfully');
     }
+
+    public function repaymentSchedule(NewOrderFilter $filter, RepaymentScheduleService $repaymentScheduleService)
+    {
+        $newOrdersQuery = $this->newOrderRepository->reportQuery($filter);
+        $getTotalRepaymentExpected = $repaymentScheduleService->getRepaymentPerMonth($newOrdersQuery);
+        
+        return $this->sendSuccess(["meta" => $getTotalRepaymentExpected], 'Orders retrieved successfully');
+    }
+
+
 
 
     public function chargeCustomerOrder(Request $request, DirectDebitService $directDebitService)
