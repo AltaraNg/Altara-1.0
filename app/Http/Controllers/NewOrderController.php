@@ -17,6 +17,7 @@ use App\Services\RepaymentScheduleService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class NewOrderController extends Controller
 {
@@ -188,5 +189,18 @@ class NewOrderController extends Controller
             return $this->sendError($response['statusMessage'], 400, [], 400);
         }
         return $this->sendSuccess([], 'Customer debited successfully and amortization(s) has been updated');
+    }
+
+    public function changeOrderStatus(Request $request)
+    {
+       $validated =  $this->validate($request, [
+            'status' => ['required', 'string', Rule::in(['Approved', 'Pending', 'Active', 'Closed', 'Repossessed', "Completed"])],
+            'order_id' => ['required', 'integer', 'exists:new_orders,id'],
+        ]);
+
+        $newOrder = $this->newOrderRepository->changeOrderStatus($validated);
+
+        return $this->sendSuccess(["meta" => $newOrder], 'Order Status Changed successfully');
+
     }
 }
