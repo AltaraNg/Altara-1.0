@@ -54,6 +54,7 @@ use App\Http\Controllers\NewDocumentController;
 use App\Http\Controllers\NewOrderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderRequestController;
+use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\OrderTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentGatewayController;
@@ -145,6 +146,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order-types', [OrderTypeController::class, 'index']);
     Route::get('/paymentgateways', [PaymentGatewayController::class, 'index']);
     Route::get('/customer-contact/get-by-id/{reg_id}', [ContactCustomerController::class, 'findByRegId']);
+    Route::post('/change-order-status', [NewOrderController::class, 'changeOrderStatus']);
+
 
     Route::get('/inactive/prospects', [ProspectActivityController::class, 'inActiveProspects']);
     Route::Resource('prospect_activities', ProspectActivityController::class)->only(['index', 'show']);
@@ -219,6 +222,7 @@ Route::middleware('auth:api')->group(function () {
         'sales_category' => SalesCategoryController::class,
         'inventory_status' => InventoryStatusController::class,
         'todo' => TodoController::class,
+        'order_status' => OrderStatusController::class,
         'reason' => ReasonController::class,
         'feedback' => FeedbackController::class,
         'role' => RoleController::class,
