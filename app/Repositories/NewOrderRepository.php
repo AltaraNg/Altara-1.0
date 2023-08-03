@@ -154,7 +154,7 @@ class NewOrderRepository extends Repository
     public function changeOrderStatus(array $data)
     {
         $order = $this->firstById($data['order_id']);
-        $order->status_id = OrderStatus::where('name', $data['status'])->first()->id;
+        $order->status_id = $data['status_id'];
         $order->save();
         return $order;
     }

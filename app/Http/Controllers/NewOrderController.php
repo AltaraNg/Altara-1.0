@@ -194,13 +194,13 @@ class NewOrderController extends Controller
     public function changeOrderStatus(Request $request)
     {
        $validated =  $this->validate($request, [
-            'status' => ['required', 'string', Rule::in(['Approved', 'Pending', 'Active', 'Closed', 'Repossessed', "Completed"])],
+            'status_id' => ['required', 'integer', 'exists:order_statuses,id'],
             'order_id' => ['required', 'integer', 'exists:new_orders,id'],
         ]);
 
         $newOrder = $this->newOrderRepository->changeOrderStatus($validated);
 
-        return $this->sendSuccess(["meta" => $newOrder], 'Order Status Changed successfully');
+        return $this->sendSuccess(["order" => $newOrder], 'Order Status Changed successfully');
 
     }
 }

@@ -54,6 +54,7 @@ use App\Http\Controllers\NewDocumentController;
 use App\Http\Controllers\NewOrderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderRequestController;
+use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\OrderTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentGatewayController;
@@ -221,6 +222,7 @@ Route::middleware('auth:api')->group(function () {
         'sales_category' => SalesCategoryController::class,
         'inventory_status' => InventoryStatusController::class,
         'todo' => TodoController::class,
+        'order_status' => OrderStatusController::class,
         'reason' => ReasonController::class,
         'feedback' => FeedbackController::class,
         'role' => RoleController::class,
