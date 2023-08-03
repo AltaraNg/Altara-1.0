@@ -150,4 +150,12 @@ class NewOrderRepository extends Repository
             ->with('customer')
             ->first();
     }
+
+    public function changeOrderStatus(array $data)
+    {
+        $order = $this->firstById($data['order_id']);
+        $order->status_id = $data['status_id'];
+        $order->save();
+        return $order;
+    }
 }
