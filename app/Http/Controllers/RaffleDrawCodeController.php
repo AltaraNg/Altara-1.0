@@ -57,7 +57,7 @@ class RaffleDrawCodeController extends Controller
             $savedCode = $this->raffleDrawRepository->store(['phone_number' => $validated['phone_number'], 'code' => $code]);
             return $this->sendSuccess($savedCode->toArray(), 'Raffledraw code created successfully');
         }
-        return $this->sendError("This number has a code that has not been used", 422);
+        return $this->sendError("This number has a code that has not been used", 422, [], 422);
     }
 
     /**
