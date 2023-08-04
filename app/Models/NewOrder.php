@@ -287,6 +287,11 @@ class   NewOrder extends Model implements \OwenIt\Auditing\Contracts\Auditable
     {
         return $this->hasMany(MissMatchedPayments::class, 'order_id');
     }
+
+    public function raffleDrawCode()
+    {
+        return $this->hasOne(RaffleDrawCode::class, 'order_id');
+    }
     public function toArray()
     {
         return [

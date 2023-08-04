@@ -71,6 +71,7 @@ use App\Http\Controllers\ProductTransferController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\PromiseCallController;
 use App\Http\Controllers\ProspectActivityController;
+use App\Http\Controllers\RaffleDrawCodeController;
 use App\Http\Controllers\ReasonController;
 use App\Http\Controllers\RecollectionController;
 use App\Http\Controllers\RecommendationController;
@@ -227,7 +228,8 @@ Route::middleware('auth:api')->group(function () {
         'feedback' => FeedbackController::class,
         'role' => RoleController::class,
         'late_fee' => LateFeeController::class,
-        'guarantor_paystack' => GuarantorPaystackAuthCodeController::class
+        'guarantor_paystack' => GuarantorPaystackAuthCodeController::class,
+        'raffle_draw_code' => RaffleDrawCodeController::class
 
     ]);
 
