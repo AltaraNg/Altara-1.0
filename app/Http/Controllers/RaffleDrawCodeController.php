@@ -60,6 +60,23 @@ class RaffleDrawCodeController extends Controller
         return $this->sendError("This number has a code that has not been used", 422, [], 422);
     }
 
+    public function validateCode(Request $request)
+    {
+        $validated = $this->validate($request, [
+            'phone_number' => ['required', 'string', 'max:11', 'min:11', 'exists:raffle_draw_codes,phone_number'],
+            'code' => ['required', 'string', 'exists:raffle_draw_codes,code']
+        ], [
+            'phone_number.exists' => 'The given number does not exist',
+            'code.exists' => 'The given raffle code is incorrect'
+        ]);
+        $raffleCode = RaffleDrawCode::where('phone_number', $validated['phone_number'])->where('code', $validated['code'])->first();
+        if (is_null($raffleCode->order_id)) {
+            return $this->sendSuccess($raffleCode->toArray(), 'Raffledraw code is valid');
+        }
+        return $this->sendError("This code has been used already", 422, [], 422);
+
+    }
+
     /**
      * Display the specified resource.
      *

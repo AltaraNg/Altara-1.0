@@ -71,7 +71,8 @@ class   NewOrder extends Model implements \OwenIt\Auditing\Contracts\Auditable
             'bank_name' => ['sometimes', 'string'],
             'fixed_repayment' => ['sometimes', 'boolean'],
             'reference' => ['sometimes', 'boolean'],
-            'cost_price' => ['sometimes', 'numeric' ]
+            'cost_price' => ['sometimes', 'numeric' ],
+            'raffle_code' => ['sometimes', 'string', 'exists:raffle_draw_codes,code']
         ];
     }
 

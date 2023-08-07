@@ -148,6 +148,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/paymentgateways', [PaymentGatewayController::class, 'index']);
     Route::get('/customer-contact/get-by-id/{reg_id}', [ContactCustomerController::class, 'findByRegId']);
     Route::post('/change-order-status', [NewOrderController::class, 'changeOrderStatus']);
+    Route::post('/validate-raffle-draw', [RaffleDrawCodeController::class, 'validateCode']);
 
 
     Route::get('/inactive/prospects', [ProspectActivityController::class, 'inActiveProspects']);
