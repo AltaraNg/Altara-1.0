@@ -343,6 +343,7 @@ class   NewOrder extends Model implements \OwenIt\Auditing\Contracts\Auditable
             'commitment_amount' => $this->commitment_amount,
             'commitment_percentage' => $this->commitment_percentage,
             'missMatchedPayments' => $this->missMatchedPayments,
+            'raffle_draw_code' => $this->raffleDrawCode ? $this->raffleDrawCode->code : null
         ];
     }
 }
