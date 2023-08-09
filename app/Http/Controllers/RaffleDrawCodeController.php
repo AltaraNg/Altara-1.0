@@ -66,8 +66,8 @@ class RaffleDrawCodeController extends Controller
             'phone_number' => ['required', 'string', 'max:11', 'min:11', 'exists:raffle_draw_codes,phone_number'],
             'code' => ['required', 'string', 'exists:raffle_draw_codes,code']
         ], [
-            'phone_number.exists' => 'The given number does not exist',
-            'code.exists' => 'The given raffle code is incorrect'
+            'phone_number.exists' => 'Raffle code is validated against the wrong phone number',
+            'code.exists' => 'The given raffle code is invalid'
         ]);
         $raffleCode = RaffleDrawCode::where('phone_number', $validated['phone_number'])->where('code', $validated['code'])->first();
         if (is_null($raffleCode->order_id)) {
