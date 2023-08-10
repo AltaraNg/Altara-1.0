@@ -416,7 +416,7 @@ abstract class Amortization
         $orderCount = $this->order->customer->new_orders->count();
         if ($orderCount == 0) {
             $interest = 3.5;
-        } else if ($orderCount = 1) {
+        } else if ($orderCount == 1) {
             $interest = 3.0;
         } else {
             $interest = 2.75;
