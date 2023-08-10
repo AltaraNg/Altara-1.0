@@ -71,6 +71,7 @@ use App\Http\Controllers\ProductTransferController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\PromiseCallController;
 use App\Http\Controllers\ProspectActivityController;
+use App\Http\Controllers\RaffleDrawCodeController;
 use App\Http\Controllers\ReasonController;
 use App\Http\Controllers\RecollectionController;
 use App\Http\Controllers\RecommendationController;
@@ -147,6 +148,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/paymentgateways', [PaymentGatewayController::class, 'index']);
     Route::get('/customer-contact/get-by-id/{reg_id}', [ContactCustomerController::class, 'findByRegId']);
     Route::post('/change-order-status', [NewOrderController::class, 'changeOrderStatus']);
+    Route::post('/validate-raffle-draw', [RaffleDrawCodeController::class, 'validateCode']);
 
 
     Route::get('/inactive/prospects', [ProspectActivityController::class, 'inActiveProspects']);
@@ -227,7 +229,8 @@ Route::middleware('auth:api')->group(function () {
         'feedback' => FeedbackController::class,
         'role' => RoleController::class,
         'late_fee' => LateFeeController::class,
-        'guarantor_paystack' => GuarantorPaystackAuthCodeController::class
+        'guarantor_paystack' => GuarantorPaystackAuthCodeController::class,
+        'raffle_draw_code' => RaffleDrawCodeController::class
 
     ]);
 
