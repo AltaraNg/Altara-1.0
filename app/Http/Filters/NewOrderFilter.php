@@ -99,6 +99,10 @@ class NewOrderFilter extends BaseFilter
                 ->where('id', $type);
         });
     }
+    public function billboardOrders(string $true)
+    {
+        $this->builder->has('raffleDrawCode');
+    }
 
     public function repaymentPlan(int $type)
     {
