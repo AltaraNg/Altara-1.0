@@ -54,6 +54,7 @@ use App\Http\Controllers\NewDocumentController;
 use App\Http\Controllers\NewOrderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderRequestController;
+use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\OrderTypeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentGatewayController;
@@ -70,6 +71,7 @@ use App\Http\Controllers\ProductTransferController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\PromiseCallController;
 use App\Http\Controllers\ProspectActivityController;
+use App\Http\Controllers\RaffleDrawCodeController;
 use App\Http\Controllers\ReasonController;
 use App\Http\Controllers\RecollectionController;
 use App\Http\Controllers\RecommendationController;
@@ -117,6 +119,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/orders/direct-debit-sales', [OrderController::class, 'directDebitSales']);
     Route::post('/report', [ReportController::class, 'generateReport']);
     Route::post('/report/daily', [ReportController::class, 'getRegistrationReport']);
+    Route::get('/repayment-schedule/report', [NewOrderController::class, 'repaymentSchedule']);
     Route::get('/renewal-list/status/{status}', [RenewalListController::class, 'list']);
     Route::post('/new-order-renewal', [RenewalListController::class, 'newOrderRenewal']);
     Route::get('/sales-category/{salesCat}/roles', [SalesCategoryController::class, 'getRoles']);
@@ -144,6 +147,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/order-types', [OrderTypeController::class, 'index']);
     Route::get('/paymentgateways', [PaymentGatewayController::class, 'index']);
     Route::get('/customer-contact/get-by-id/{reg_id}', [ContactCustomerController::class, 'findByRegId']);
+    Route::post('/change-order-status', [NewOrderController::class, 'changeOrderStatus']);
+    Route::post('/validate-raffle-draw', [RaffleDrawCodeController::class, 'validateCode']);
+
 
     Route::get('/inactive/prospects', [ProspectActivityController::class, 'inActiveProspects']);
     Route::Resource('prospect_activities', ProspectActivityController::class)->only(['index', 'show']);
@@ -218,11 +224,13 @@ Route::middleware('auth:api')->group(function () {
         'sales_category' => SalesCategoryController::class,
         'inventory_status' => InventoryStatusController::class,
         'todo' => TodoController::class,
+        'order_status' => OrderStatusController::class,
         'reason' => ReasonController::class,
         'feedback' => FeedbackController::class,
         'role' => RoleController::class,
         'late_fee' => LateFeeController::class,
-        'guarantor_paystack' => GuarantorPaystackAuthCodeController::class
+        'guarantor_paystack' => GuarantorPaystackAuthCodeController::class,
+        'raffle_draw_code' => RaffleDrawCodeController::class
 
     ]);
 

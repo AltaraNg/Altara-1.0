@@ -20,6 +20,7 @@ class BusinessType extends Model
     const ALTARA_PAY_SUPER_LOAN_NEW = 'ap_super_loan-new';
     const ALTARA_PAY_CASH_LOAN_NO_COLLATERAL = 'ap_cash_loan-no_collateral';
     const ALTARA_PAY_STARTER_CASH_LOAN_NO_COLLATERAL = 'ap_starter_cash_loan-no_collateral';
+    const ALTARA_PAY_CASH_N_CARRY = 'ap_cash_n_carry';
 
     //
     public function newOrder()
