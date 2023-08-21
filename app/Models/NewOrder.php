@@ -71,7 +71,8 @@ class   NewOrder extends Model implements \OwenIt\Auditing\Contracts\Auditable
             'bank_name' => ['sometimes', 'string'],
             'fixed_repayment' => ['sometimes', 'boolean'],
             'reference' => ['sometimes', 'boolean'],
-            'cost_price' => ['sometimes', 'numeric' ]
+            'cost_price' => ['sometimes', 'numeric' ],
+            'raffle_code' => ['sometimes', 'string', 'exists:raffle_draw_codes,code']
         ];
     }
 
@@ -287,6 +288,11 @@ class   NewOrder extends Model implements \OwenIt\Auditing\Contracts\Auditable
     {
         return $this->hasMany(MissMatchedPayments::class, 'order_id');
     }
+
+    public function raffleDrawCode()
+    {
+        return $this->hasOne(RaffleDrawCode::class, 'order_id');
+    }
     public function toArray()
     {
         return [
@@ -337,6 +343,7 @@ class   NewOrder extends Model implements \OwenIt\Auditing\Contracts\Auditable
             'commitment_amount' => $this->commitment_amount,
             'commitment_percentage' => $this->commitment_percentage,
             'missMatchedPayments' => $this->missMatchedPayments,
+            'raffle_draw_code' => $this->raffleDrawCode ? $this->raffleDrawCode->code : null
         ];
     }
 }

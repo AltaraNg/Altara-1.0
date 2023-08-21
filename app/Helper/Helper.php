@@ -39,6 +39,11 @@ class Helper
         return strtoupper(substr(uniqid($prefix, true), 0, $length));
     }
 
+    public static function generateRaffleDrawCode(string $prefix, $length = 15)
+    {
+        return strtoupper(substr(uniqid($prefix, true), 0, $length));
+    }
+
     /**
      * Generates custom SKU for product, can be used for generating other uniques
      * @param int length,
