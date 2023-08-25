@@ -70,8 +70,17 @@ class NewDocumentController extends Controller
 
 
             $customer = Customer::find($request['customer_id']);
+            $data = [
+                "document_type" => $document->document_type,
+                "name" => $document->name,
+                "user_id" => $document->user_id,
+                "document_url" => $document->document_url
+            ];
 
-            $customer->newDocuments()->save($document);
+            $customer->newDocuments()->updateOrCreate(['name' => $request['name']], $data);
+
+
+
         }
 
         /** if the check 3 is not passed it return the record for the document with no changes
