@@ -10,6 +10,8 @@ class NewDocument extends Model
     //
     use SoftDeletes;
 
+    protected $guarded = [];
+
     public function documentable(){
         return $this->morphTo();
     }
