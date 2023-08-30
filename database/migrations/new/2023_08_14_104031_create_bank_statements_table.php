@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('account_name')->nullable();
             $table->string('account_number')->nullable();
-            $table->decimal('opening_balance')->nullable();
+            $table->decimal('opening_balance', 12)->nullable();
             $table->decimal('closing_balance', 12)->nullable();
             $table->decimal('total_deposit', 12)->nullable();
             $table->decimal('total_withdrawal', 12)->nullable();
