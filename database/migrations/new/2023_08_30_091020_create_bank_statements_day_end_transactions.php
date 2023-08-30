@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('bank_statements_day_end_transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('bank_statement_id')->constrained('bank_statements');
             $table->float('balance', 12)->nullable();
             $table->float('deposit', 12)->nullable();
             $table->float('withdrawal', 12)->nullable();
