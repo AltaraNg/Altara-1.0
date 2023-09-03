@@ -138,6 +138,7 @@ abstract class Amortization
         if ($this->order->down_payment > $price) {
             throw new AException("Calculation of residual failed, cost price must be higher than down payment");
         }
+        // dd($price);
 
         return (float) $price - $this->order->down_payment;
     }
@@ -215,7 +216,7 @@ abstract class Amortization
 
     private function bnpl40PercentPercentage()
     {
-        return [25, 12.5, 12.5];
+        return [26.94, 16.67, 6.39];
     }
 
     //** Percentage is gotten by  (repayment/total * 100) */
