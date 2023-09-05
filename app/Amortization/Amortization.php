@@ -138,7 +138,7 @@ abstract class Amortization
         if ($this->order->down_payment > $price) {
             throw new AException("Calculation of residual failed, cost price must be higher than down payment");
         }
-        // dd($price);
+        // dd($this->order->down_payment);
 
         return (float) $price - $this->order->down_payment;
     }
@@ -181,7 +181,7 @@ abstract class Amortization
             return $this->getSuperLoaPaymentPlans();
         }
         else if($useBNPLPercentage){
-            return $this->getBnplPlans();
+            return $this->getDecliningPaymentPlans();
         }
         
         else if (!$this->order->fixed_repayment || $IsRental) {
