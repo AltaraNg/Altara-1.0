@@ -246,7 +246,7 @@ class Customer extends Model implements \OwenIt\Auditing\Contracts\Auditable
                 if ($value == null || !Auth::hasUser()) {
                     return $value;
                 }
-                // if this means there is an auth user, so we can check it the user has the ability to view a customer
+                // This means there is an auth user, so we can check if the user has the ability to view a customer bvn
                 $authUserRoleId = auth()->user()->role_id ?? -1;
                 if (in_array($authUserRoleId, User::BVN_ACCESS)) {
                     return $value;
