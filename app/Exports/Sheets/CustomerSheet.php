@@ -50,7 +50,7 @@ class CustomerSheet implements FromCollection, WithHeadings, WithMapping, WithTi
             $dateOfBirth,   // 'Date of Birth',
             'N/A', // 'National Identity Number',
             'N/A', // 'Drivers License No',
-            $customer->bvn_no ?? 'N/A', // 'BVN No',
+            $customer->bvn ?? 'N/A', // 'BVN No',
             $customer->passport_no ?? 'N/A', // 'Passport No',
             $customer->gender, // 'Gender',
             'NG',   // 'Nationality',
