@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helper\GenerateDateRange;
+use App\Helper\Helper;
 use App\Models\BusinessType;
 use App\Repositories\BranchRepository;
 use Carbon\Carbon;
@@ -89,7 +90,7 @@ class RepaymentScheduleService
             $amortization = $order->amortization->toArray();
             $amortizationCount = count($amortization);
             for ($i = 0; $i < $maxAmortizationCount; $i++) {
-                $key = 'group_' . $i;
+                $key = Helper::getEnglishOrdinalSuffix($i + 1) . '_repayment';
                 if (!array_key_exists($key, $groupedAmortization)) {
                     $groupedAmortization[$key] = [];
                 }
