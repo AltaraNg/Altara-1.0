@@ -107,7 +107,7 @@ class Helper
         return number_format($number) . $suffix;
     }
 
-    public static  function calculator(int $productPrice, $data)
+    public static function calculator(int $productPrice, $data)
     {
         $count = Helper::repaymentCount($data->repayment_dur, $data->repayment_cycle);
         // $marketPrice = $productPrice * (1 + $params->margin);
@@ -154,5 +154,21 @@ class Helper
     public static function PaymentCompleted($order): bool
     {
         return $order->amortization->sum('actual_amount') >= $order->amortization->sum('expected_amount');
+    }
+
+    public static function getEnglishOrdinalSuffix($n)
+    {
+        if (!in_array(($n % 100), array(11, 12, 13))) {
+            switch ($n % 10) {
+                // Only Handle 1st, 2nd, 3rd from Here
+                case 1:
+                    return $n . 'st';
+                case 2:
+                    return $n . 'nd';
+                case 3:
+                    return $n . 'rd';
+            }
+        }
+        return $n . 'th';
     }
 }
