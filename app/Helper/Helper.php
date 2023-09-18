@@ -156,7 +156,19 @@ class Helper
         return $order->amortization->sum('actual_amount') >= $order->amortization->sum('expected_amount');
     }
 
-    public static function getEnglishOrdinalSuffix($n)
+
+    /**
+     * getEnglishOrdinalSuffix
+     * 
+     * converts number to ordinal suffix
+     * example:
+     * getEnglishOrdinalSuffix(2) = 2nd
+     * getEnglishOrdinalSuffix(31) = 31st
+     *
+     * @param  mixed $n
+     * @return void
+     */
+    public static function getEnglishOrdinalSuffix($n): string
     {
         if (!in_array(($n % 100), array(11, 12, 13))) {
             switch ($n % 10) {
